@@ -53,5 +53,76 @@ public class Method {
                             , null
                     )
             ),
+            Production.create(
+                    /*
+                     * <formal parameters> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FORMAL_PARAMETERS),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            )
+                            , null
+                    ),
+                    /*
+                     * <formal parameters> → <formal parameter list>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FORMAL_PARAMETERS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(FORMAL_PARAMETER_LIST)
+                            )
+                            , null
+                    )
+            ),
+            Production.create(
+                    /*
+                     * <formal parameter list> → <formal parameter list> , <formal parameter>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FORMAL_PARAMETER_LIST),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(FORMAL_PARAMETER_LIST),
+                                    Symbol.createTerminator(NORMAL_COMMA),
+                                    Symbol.createNonTerminator(FORMAL_PARAMETER)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <formal parameter list> → <formal parameter>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FORMAL_PARAMETER_LIST),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(FORMAL_PARAMETER)
+                            )
+                            , null
+                    )
+            ),
+            Production.create(
+                    /*
+                     * <formal parameter> → @type @identifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FORMAL_PARAMETER),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_TYPE),
+                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER)
+                            )
+                            , null
+                    )
+            ),
+            Production.create(
+                    /*
+                     * <method body> → <block>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(METHOD_BODY),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(BLOCK)
+                            )
+                            , null
+                    )
+            ),
     };
 }
