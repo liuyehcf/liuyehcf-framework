@@ -17,6 +17,7 @@ import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
  */
 public class Block {
     public static final String BLOCK = "<block>"; // 139
+    public static final String EPSILON_OR_BLOCK_STATEMENTS = "<epsilon or block statements>"; // new
     public static final String BLOCK_STATEMENTS = "<block statements>"; // 140
     public static final String BLOCK_STATEMENT = "<block statement>"; // 142
     public static final String LOCAL_VARIABLE_DECLARATION_STATEMENT = "<local variable declaration statement>"; // 144
@@ -52,25 +53,42 @@ public class Block {
              */
             Production.create(
                     /*
-                     * <block> → { }
+                     * <block> → { <block statements>? }
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(BLOCK),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(EPSILON_OR_BLOCK_STATEMENTS),
                                     Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <epsilon or block statements>
+             * DIFFERENT
+             */
+            Production.create(
+                    /*
+                     * <epsilon or block statements> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_BLOCK_STATEMENTS),
+                            SymbolString.create(
+                                    Symbol.EPSILON
                             )
                             , null
                     ),
                     /*
-                     * <block> → { <block statements> }
+                     * <epsilon or block statements> → <block statements>
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(BLOCK),
+                            Symbol.createNonTerminator(EPSILON_OR_BLOCK_STATEMENTS),
                             SymbolString.create(
-                                    Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES),
-                                    Symbol.createNonTerminator(BLOCK_STATEMENTS),
-                                    Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES)
+                                    Symbol.createNonTerminator(BLOCK_STATEMENTS)
                             )
                             , null
                     )

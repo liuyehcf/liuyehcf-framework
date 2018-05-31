@@ -21,7 +21,8 @@ public class Program {
      * 非终结符
      */
     public static final String PROGRAMS = "<programs>";
-    public static final String METHOD_DECLARATIONS = "<method declarations>";
+    public static final String METHOD_DECLARATIONS = "<method declarations>"; // new
+    public static final String EPSILON_OR_FORMAL_PARAMETER_LIST = "<epsilon or formal parameter list>"; // new
     public static final String FORMAL_PARAMETER_LIST = "<formal parameter list>"; // 48
     public static final String FORMAL_PARAMETER = "<formal parameter>"; // 50
     public static final String VARIABLE_DECLARATORS = "<variable declarators>"; // 66
@@ -318,27 +319,43 @@ public class Program {
              */
             Production.create(
                     /*
-                     * <method declarator> → @identifier ()
+                     * <method declarator> → @identifier ( <formal parameter list>? )
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(METHOD_DECLARATOR),
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <epsilon or formal parameter list>
+             * DIFFERENCE
+             */
+            Production.create(
+                    /*
+                     * <epsilon or formal parameter list> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
+                            SymbolString.create(
+                                    Symbol.EPSILON
                             )
                             , null
                     ),
                     /*
-                     * <method declarator> → @identifier ( <formal parameter list> )
+                     * <epsilon or formal parameter list> → <formal parameter list>
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(METHOD_DECLARATOR),
+                            Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER),
-                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
-                                    Symbol.createNonTerminator(FORMAL_PARAMETER_LIST),
-                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
+                                    Symbol.createNonTerminator(FORMAL_PARAMETER_LIST)
                             )
                             , null
                     )
