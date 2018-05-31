@@ -72,6 +72,31 @@ public class TestGrammar {
                     "        \n" +
                     "      }\n" +
                     "    }\n" +
+                    "}",
+            "int testFor(){\n" +
+                    "  for(int a,b,c,d,e,f,g;c;a=b,c=d,e=f){\n" +
+                    "\n" +
+                    "  }\n" +
+                    "}",
+            "void exchange(int a,int b){\n" +
+                    "    if(a){\n" +
+                    "      b=c;\n" +
+                    "      if(d){\n" +
+                    "        while(a){\n" +
+                    "          if(c)\n" +
+                    "            ;\n" +
+                    "        }\n" +
+                    "      }\n" +
+                    "    }else{\n" +
+                    "      a=b;\n" +
+                    "      for(;;){\n" +
+                    "        for(int a,b;;a=b){\n" +
+                    "          for(;b;a=e,b=c){\n" +
+                    "            ;\n" +
+                    "          }\n" +
+                    "        }\n" +
+                    "      }\n" +
+                    "    }\n" +
                     "}"
     };
 
