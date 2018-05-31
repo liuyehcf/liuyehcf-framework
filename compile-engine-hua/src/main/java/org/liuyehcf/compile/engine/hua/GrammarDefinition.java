@@ -8,6 +8,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.hua.production.*;
 
+import static org.liuyehcf.compile.engine.hua.production.Block.NORMAL_ELSE;
+import static org.liuyehcf.compile.engine.hua.production.Block.NORMAL_IF;
 import static org.liuyehcf.compile.engine.hua.production.Program.NORMAL_VOID;
 import static org.liuyehcf.compile.engine.hua.production.Program.PROGRAMS;
 import static org.liuyehcf.compile.engine.hua.production.Type.*;
@@ -61,6 +63,8 @@ public class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES), "]")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES), "{")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES), "}")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_IF), "if")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_ELSE), "else")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_ASSIGN), "=")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_COMMA), ",")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SEMICOLON), ";")

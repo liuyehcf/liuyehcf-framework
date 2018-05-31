@@ -28,7 +28,12 @@ public class TestGrammar {
                     "}\n",
             "void sort(int a){}\n" +
                     "\n" +
-                    "int add(int a,int b){;;;}"
+                    "int add(int a,int b){;;;}",
+            "void exchange(int a,int b){\n" +
+                    "    if(a){\n" +
+                    "      b=c;\n" +
+                    "    }\n" +
+                    "}"
     };
 
     private static final String[] WRONG_CASES = {

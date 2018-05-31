@@ -279,7 +279,8 @@ public abstract class AbstractCfgCompiler implements CfgCompiler {
 
         // 检查一下是否所有的非终结符都有了follow集
         for (Symbol nonTerminator : this.grammar.getNonTerminators()) {
-            AssertUtils.assertFalse(follows.get(nonTerminator).isEmpty());
+            AssertUtils.assertFalse(follows.get(nonTerminator) == null
+                    || follows.get(nonTerminator).isEmpty());
         }
     }
 
