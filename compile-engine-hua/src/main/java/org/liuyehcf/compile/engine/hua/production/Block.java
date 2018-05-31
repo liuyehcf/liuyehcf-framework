@@ -109,7 +109,6 @@ public class Block {
                             , null
                     )
             ),
-            // TODO 可以扩展更为复杂的语法
             Production.create(
                     /*
                      * <statement> →  <statement without trailing substatement>
@@ -121,8 +120,8 @@ public class Block {
                             )
                             , null
                     )
+                    // TODO 可以扩展更为复杂的语法
             ),
-            // TODO 可以扩展更为复杂的语法
             Production.create(
                     /*
                      * <statement without trailing substatement> → <block>
@@ -164,6 +163,7 @@ public class Block {
 //                            )
 //                            , null
 //                    )
+                    // TODO 可以扩展更为复杂的语法
             ),
             Production.create(
                     /*
@@ -190,7 +190,6 @@ public class Block {
                             , null
                     )
             ),
-            // TODO 可以扩展更为复杂的语法
             Production.create(
                     /*
                      * <statement expression> → <assignment>
@@ -202,6 +201,7 @@ public class Block {
                             )
                             , null
                     )
+                    // TODO 可以扩展更为复杂的语法
             ),
     };
 }

@@ -4,10 +4,12 @@ import org.liuyehcf.compile.engine.core.cfg.DefaultLexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.cfg.lr.LR1;
 import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
-import org.liuyehcf.compile.engine.core.grammar.definition.*;
+import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
+import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.hua.production.Block;
-import org.liuyehcf.compile.engine.hua.production.Method;
+import org.liuyehcf.compile.engine.hua.production.Expression;
 import org.liuyehcf.compile.engine.hua.production.Program;
+import org.liuyehcf.compile.engine.hua.production.Token;
 
 /**
  * @author chenlu
@@ -72,91 +74,9 @@ public class GrammarDefinition {
     public static final Grammar GRAMMAR = Grammar.create(
             Symbol.createNonTerminator(PROGRAMS),
             Program.PRODUCTIONS,
-            Method.PRODUCTIONS,
             Block.PRODUCTIONS,
-
-
-
-
-
-            /*
-             * <assignment> → <left hand side> <assignment operator> <assignment expression>
-             */
-            Production.create(
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(ASSIGNMENT),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(LEFT_HAND_SIDE),
-                                    Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
-                                    Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
-                            )
-                            , null
-                    )
-            ),
-            /*
-             * <left hand side> → <expression name>
-             * TODO 可以扩展更为复杂的语法
-             */
-            Production.create(
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(LEFT_HAND_SIDE),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(EXPRESSION_NAME)
-                            )
-                            , null
-                    )
-            ),
-            /*
-             * <expression name> → @identifier
-             * TODO 可以扩展更为复杂的语法
-             */
-            Production.create(
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(EXPRESSION_NAME),
-                            SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER)
-                            )
-                            , null
-                    )
-            ),
-            /*
-             * <assignment operator> → =
-             * TODO 可以扩展更为复杂的语法
-             */
-            Production.create(
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
-                            SymbolString.create(
-                                    Symbol.createTerminator(NORMAL_ASSIGN)
-                            )
-                            , null
-                    )
-            ),
-            /*
-             * <assignment expression> → <expression name>
-             * TODO 可以扩展更为复杂的语法（这个是最复杂的一部分）
-             */
-            Production.create(
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(EXPRESSION_NAME)
-                            )
-                            , null
-                    )
-            ),
-            /*
-             * <expression> → <assignment expression>
-             */
-            Production.create(
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(EXPRESSION),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
-                            )
-                            , null
-                    )
-            )
+            Expression.PRODUCTIONS,
+            Token.PRODUCTIONS
     );
 
 
