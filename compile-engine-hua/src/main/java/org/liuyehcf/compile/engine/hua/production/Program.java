@@ -30,6 +30,9 @@ public class Program {
     public static final String FORMAL_PARAMETER = "<formal parameter>";
 
     public static final Production[] PRODUCTIONS = {
+            /*
+             * <programs>
+             */
             Production.create(
                     /*
                      * <programs> → <method declarations>
@@ -42,152 +45,13 @@ public class Program {
                             , null
                     )
             ),
-            Production.create(
-                    /*
-                     * <variable declarators> → <variable declarator>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(VARIABLE_DECLARATORS),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(VARIABLE_DECLARATOR)
-                            )
-                            , null
-                    ),
-                    /*
-                     * <variable declarators> → <variable declarators> , <variable declarator>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(VARIABLE_DECLARATORS),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(VARIABLE_DECLARATORS),
-                                    Symbol.createTerminator(NORMAL_COMMA),
-                                    Symbol.createNonTerminator(VARIABLE_DECLARATOR)
-                            )
-                            , null
-                    )
-            ),
-            Production.create(
-                    /*
-                     * <variable declarator> → <variable declarator id>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(VARIABLE_DECLARATOR),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID)
-                            )
-                            , null
-                    ),
-                    /*
-                     * <variable declarator> → <variable declarator id> = <variable initializer>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(VARIABLE_DECLARATOR),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
-                                    Symbol.createTerminator(NORMAL_ASSIGN),
-                                    Symbol.createNonTerminator(VARIABLE_INITIALIZER)
-                            )
-                            , null
-                    )
-            ),
-            Production.create(
-                    /*
-                     * <variable declarator id> →  @identifier
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
-                            SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER)
-                            )
-                            , null
-                    ),
-                    /*
-                     * <variable declarator id> →  <variable declarator id> []
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
-                                    Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
-                                    Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
-                            )
-                            , null
-                    )
-            ),
-            Production.create(
-                    /*
-                     * <variable initializer> → <expression>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(VARIABLE_INITIALIZER),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(EXPRESSION)
-                            )
-                            , null
-                    )
-            ),
-            Production.create(
-                    /*
-                     * <method declarations> →  <method declarations>  <method declaration>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(METHOD_DECLARATIONS),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(METHOD_DECLARATIONS),
-                                    Symbol.createNonTerminator(METHOD_DECLARATION)
-                            )
-                            , null
-                    ),
-                    /*
-                     * <method declarations> → <method declaration>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(METHOD_DECLARATIONS),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(METHOD_DECLARATION)
-                            )
-                            , null
-                    )
-            ),
-            Production.create(
-                    /*
-                     * <method declaration> → @type @identifier ( <formal parameters> ) <method body>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(METHOD_DECLARATION),
-                            SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_TYPE),
-                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER),
-                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
-                                    Symbol.createNonTerminator(FORMAL_PARAMETERS),
-                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
-                                    Symbol.createNonTerminator(METHOD_BODY)
-                            )
-                            , null
-                    )
-            ),
-            Production.create(
-                    /*
-                     * <formal parameters> → ε
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(FORMAL_PARAMETERS),
-                            SymbolString.create(
-                                    Symbol.EPSILON
-                            )
-                            , null
-                    ),
-                    /*
-                     * <formal parameters> → <formal parameter list>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(FORMAL_PARAMETERS),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(FORMAL_PARAMETER_LIST)
-                            )
-                            , null
-                    )
-            ),
+
+
+
+            /*
+             * <formal parameter list>
+             * SAME
+             */
             Production.create(
                     /*
                      * <formal parameter list> → <formal parameter list> , <formal parameter>
@@ -212,6 +76,195 @@ public class Program {
                             , null
                     )
             ),
+
+
+
+            /*
+             * <variable declarators>
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <variable declarators> → <variable declarator>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(VARIABLE_DECLARATORS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(VARIABLE_DECLARATOR)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <variable declarators> → <variable declarators> , <variable declarator>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(VARIABLE_DECLARATORS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(VARIABLE_DECLARATORS),
+                                    Symbol.createTerminator(NORMAL_COMMA),
+                                    Symbol.createNonTerminator(VARIABLE_DECLARATOR)
+                            )
+                            , null
+                    )
+            ),
+
+
+
+            /*
+             * <variable declarator>
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <variable declarator> → <variable declarator id>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(VARIABLE_DECLARATOR),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <variable declarator> → <variable declarator id> = <variable initializer>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(VARIABLE_DECLARATOR),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
+                                    Symbol.createTerminator(NORMAL_ASSIGN),
+                                    Symbol.createNonTerminator(VARIABLE_INITIALIZER)
+                            )
+                            , null
+                    )
+            ),
+
+
+
+            /*
+             * <variable declarator id>
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <variable declarator id> →  @identifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <variable declarator id> →  <variable declarator id> []
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
+                                    Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
+                                    Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
+                            )
+                            , null
+                    )
+            ),
+
+
+
+            /*
+             * <variable initializer>
+             */
+            Production.create(
+                    /*
+                     * <variable initializer> → <expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(VARIABLE_INITIALIZER),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(EXPRESSION)
+                            )
+                            , null
+                    )
+                    // TODO 可以扩展更为复杂的语法
+            ),
+
+
+            /*
+             * <method declarations>
+             */
+            Production.create(
+                    /*
+                     * <method declarations> →  <method declarations>  <method declaration>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(METHOD_DECLARATIONS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(METHOD_DECLARATIONS),
+                                    Symbol.createNonTerminator(METHOD_DECLARATION)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <method declarations> → <method declaration>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(METHOD_DECLARATIONS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(METHOD_DECLARATION)
+                            )
+                            , null
+                    )
+            ),
+            /*
+             * <method declaration>
+             */
+            Production.create(
+                    /*
+                     * <method declaration> → @type @identifier ( <formal parameters> ) <method body>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(METHOD_DECLARATION),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_TYPE),
+                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER),
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(FORMAL_PARAMETERS),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(METHOD_BODY)
+                            )
+                            , null
+                    )
+            ),
+            /*
+             * <formal parameters>
+             */
+            Production.create(
+                    /*
+                     * <formal parameters> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FORMAL_PARAMETERS),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            )
+                            , null
+                    ),
+                    /*
+                     * <formal parameters> → <formal parameter list>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FORMAL_PARAMETERS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(FORMAL_PARAMETER_LIST)
+                            )
+                            , null
+                    )
+            ),
+
+            /*
+             * <formal parameter>
+             */
             Production.create(
                     /*
                      * <formal parameter> → @type @identifier
@@ -225,6 +278,11 @@ public class Program {
                             , null
                     )
             ),
+
+
+            /*
+             * <method body>
+             */
             Production.create(
                     /*
                      * <method body> → <block>
