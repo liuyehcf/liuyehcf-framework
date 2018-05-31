@@ -6,13 +6,30 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
+import static org.liuyehcf.compile.engine.hua.production.Expression.ASSIGNMENT;
+import static org.liuyehcf.compile.engine.hua.production.Program.VARIABLE_DECLARATORS;
 
 /**
  * @author chenlu
  * @date 2018/5/31
  */
 public class Block {
+    public static final String BLOCK = "<block>";
+    public static final String BLOCK_STATEMENTS = "<block statements>";
+    public static final String BLOCK_STATEMENT = "<block statement>";
+    public static final String LOCAL_VARIABLE_DECLARATION_STATEMENT = "<local variable declaration statement>";
+    public static final String LOCAL_VARIABLE_DECLARATION = "<local variable declaration>";
+    public static final String STATEMENT = "<statement>";
+    public static final String STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT = "<statement without trailing substatement>";
+    public static final String EMPTY_STATEMENT = "<empty statement>";
+    public static final String EXPRESSION_STATEMENT = "<expression statement>";
+    public static final String STATEMENT_EXPRESSION = "<statement expression>";
+
     public static final Production[] PRODUCTIONS = {
+
+            /*
+             * <block>
+             */
             Production.create(
                     /*
                      * <block> → { }
@@ -38,6 +55,9 @@ public class Block {
                             , null
                     )
             ),
+            /*
+             * <block statements>
+             */
             Production.create(
                     /*
                      * <block statements> → <block statement>
@@ -61,6 +81,9 @@ public class Block {
                             , null
                     )
             ),
+            /*
+             * <block statement>
+             */
             Production.create(
                     /*
                      * <block statement> → <local variable declaration statement>
@@ -83,6 +106,9 @@ public class Block {
                             , null
                     )
             ),
+            /*
+             * <local variable declaration statement>
+             */
             Production.create(
                     /*
                      * <local variable declaration statement> → <local variable declaration> ;
@@ -96,6 +122,9 @@ public class Block {
                             , null
                     )
             ),
+            /*
+             * <local variable declaration>
+             */
             Production.create(
                     /*
                      * <local variable declaration> → @type <variable declarators>
@@ -109,6 +138,9 @@ public class Block {
                             , null
                     )
             ),
+            /*
+             * <statement>
+             */
             Production.create(
                     /*
                      * <statement> →  <statement without trailing substatement>
@@ -122,6 +154,9 @@ public class Block {
                     )
                     // TODO 可以扩展更为复杂的语法
             ),
+            /*
+             * <statement without trailing substatement>
+             */
             Production.create(
                     /*
                      * <statement without trailing substatement> → <block>
@@ -165,6 +200,9 @@ public class Block {
 //                    )
                     // TODO 可以扩展更为复杂的语法
             ),
+            /*
+             * <empty statement>
+             */
             Production.create(
                     /*
                      * <empty statement> → ;
@@ -177,6 +215,9 @@ public class Block {
                             , null
                     )
             ),
+            /*
+             * <expression statement>
+             */
             Production.create(
                     /*
                      * <expression statement> → <statement expression> ;

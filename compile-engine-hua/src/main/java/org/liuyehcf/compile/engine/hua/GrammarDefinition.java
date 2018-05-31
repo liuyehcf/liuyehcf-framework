@@ -11,6 +11,8 @@ import org.liuyehcf.compile.engine.hua.production.Expression;
 import org.liuyehcf.compile.engine.hua.production.Program;
 import org.liuyehcf.compile.engine.hua.production.Token;
 
+import static org.liuyehcf.compile.engine.hua.production.Program.PROGRAMS;
+
 /**
  * @author chenlu
  * @date 2018/5/28
@@ -20,36 +22,9 @@ public class GrammarDefinition {
     /**
      * 非终结符
      */
-    public static final String PROGRAMS = "<programs>";
-    public static final String METHOD_DECLARATIONS = "<method declarations>";
-    public static final String METHOD_DECLARATION = "<method declaration>";
-    public static final String METHOD_BODY = "<method body>";
-    public static final String FORMAL_PARAMETERS = "<formal parameters>";
-    public static final String FORMAL_PARAMETER_LIST = "<formal parameter list>";
-    public static final String FORMAL_PARAMETER = "<formal parameter>";
-    public static final String BLOCK = "<block>";
-    public static final String BLOCK_STATEMENTS = "<block statements>";
-    public static final String BLOCK_STATEMENT = "<block statement>";
-    public static final String LOCAL_VARIABLE_DECLARATION_STATEMENT = "<local variable declaration statement>";
-    public static final String LOCAL_VARIABLE_DECLARATION = "<local variable declaration>";
-    public static final String VARIABLE_DECLARATORS = "<variable declarators>";
-    public static final String VARIABLE_DECLARATOR = "<variable declarator>";
-    public static final String VARIABLE_DECLARATOR_ID = "<variable declarator id>";
-    public static final String VARIABLE_INITIALIZER = "<variable initializer>";
     public static final String ARRAY_INITIALIZER = "<array initializer>";
-    public static final String EXPRESSION = "<expression>";
-    public static final String STATEMENT = "<statement>";
-    public static final String STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT = "<statement without trailing substatement>";
-    public static final String EMPTY_STATEMENT = "<empty statement>";
-    public static final String EXPRESSION_STATEMENT = "<expression statement>";
     public static final String RETURN_STATEMENT = "<return statement>";
 
-    public static final String STATEMENT_EXPRESSION = "<statement expression>";
-    public static final String ASSIGNMENT = "<assignment>";
-    public static final String LEFT_HAND_SIDE = "<left hand side>";
-    public static final String ASSIGNMENT_OPERATOR = "<assignment operator>";
-    public static final String ASSIGNMENT_EXPRESSION = "<assignment expression>";
-    public static final String EXPRESSION_NAME = "<expression name>";
     public static final String ARRAY_CREATION_EXPRESSION = "<array creation expression>";
 
     /**

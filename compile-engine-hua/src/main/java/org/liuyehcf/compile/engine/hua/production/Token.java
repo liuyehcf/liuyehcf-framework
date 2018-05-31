@@ -5,7 +5,6 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 
-import static org.liuyehcf.compile.engine.hua.GrammarDefinition.EXPRESSION_NAME;
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.REGEX_IDENTIFIER;
 
 /**
@@ -13,6 +12,8 @@ import static org.liuyehcf.compile.engine.hua.GrammarDefinition.REGEX_IDENTIFIER
  * @date 2018/5/31
  */
 public class Token {
+    public static final String EXPRESSION_NAME = "<expression name>";
+
     public static final Production[] PRODUCTIONS = {
             Production.create(
                     /*

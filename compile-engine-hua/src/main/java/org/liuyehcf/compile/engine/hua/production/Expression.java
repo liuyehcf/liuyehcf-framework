@@ -6,13 +6,25 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
+import static org.liuyehcf.compile.engine.hua.production.Token.EXPRESSION_NAME;
 
 /**
  * @author chenlu
  * @date 2018/5/31
  */
 public class Expression {
+
+    public static final String ASSIGNMENT = "<assignment>";
+    public static final String LEFT_HAND_SIDE = "<left hand side>";
+    public static final String ASSIGNMENT_OPERATOR = "<assignment operator>";
+    public static final String ASSIGNMENT_EXPRESSION = "<assignment expression>";
+    public static final String EXPRESSION = "<expression>";
+
+
     public static final Production[] PRODUCTIONS = {
+            /*
+             * <assignment>
+             */
             Production.create(
                     /*
                      * <assignment> → <left hand side> <assignment operator> <assignment expression>
@@ -27,6 +39,9 @@ public class Expression {
                             , null
                     )
             ),
+            /*
+             * <left hand side>
+             */
             Production.create(
                     /*
                      * <left hand side> → <expression name>
@@ -40,6 +55,9 @@ public class Expression {
                     )
                     // TODO 可以扩展更为复杂的语法
             ),
+            /*
+             * <assignment operator>
+             */
             Production.create(
                     /*
                      * <assignment operator> → =
@@ -53,6 +71,9 @@ public class Expression {
                     )
                     // TODO 可以扩展更为复杂的语法
             ),
+            /*
+             * <assignment expression>
+             */
             Production.create(
                     /*
                      * <assignment expression> → <expression name>
@@ -66,6 +87,9 @@ public class Expression {
                     )
                     // TODO 可以扩展更为复杂的语法（这个是最复杂的一部分）
             ),
+            /*
+             * <expression>
+             */
             Production.create(
                     /*
                      * <expression> → <assignment expression>
