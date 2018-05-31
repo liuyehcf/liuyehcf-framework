@@ -6,10 +6,7 @@ import org.liuyehcf.compile.engine.core.cfg.lr.LR1;
 import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
-import org.liuyehcf.compile.engine.hua.production.Block;
-import org.liuyehcf.compile.engine.hua.production.Expression;
-import org.liuyehcf.compile.engine.hua.production.Program;
-import org.liuyehcf.compile.engine.hua.production.Token;
+import org.liuyehcf.compile.engine.hua.production.*;
 
 import static org.liuyehcf.compile.engine.hua.production.Program.PROGRAMS;
 
@@ -49,6 +46,7 @@ public class GrammarDefinition {
     public static final Grammar GRAMMAR = Grammar.create(
             Symbol.createNonTerminator(PROGRAMS),
             Program.PRODUCTIONS,
+//            Type.PRODUCTIONS,
             Block.PRODUCTIONS,
             Expression.PRODUCTIONS,
             Token.PRODUCTIONS

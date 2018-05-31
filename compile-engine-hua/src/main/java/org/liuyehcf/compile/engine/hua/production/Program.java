@@ -22,6 +22,8 @@ public class Program {
     public static final String VARIABLE_INITIALIZER = "<variable initializer>";
     public static final String METHOD_DECLARATIONS = "<method declarations>";
     public static final String METHOD_DECLARATION = "<method declaration>";
+    public static final String METHOD_HEADER = "<method header>";
+    public static final String RESULT_TYPE = "<result type>";
     public static final String METHOD_BODY = "<method body>";
 
     public static final String FORMAL_PARAMETERS = "<formal parameters>";
