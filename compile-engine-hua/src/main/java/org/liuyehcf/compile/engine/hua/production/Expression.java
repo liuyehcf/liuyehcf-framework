@@ -14,16 +14,50 @@ import static org.liuyehcf.compile.engine.hua.production.Token.EXPRESSION_NAME;
  */
 public class Expression {
 
-    public static final String ASSIGNMENT = "<assignment>";
-    public static final String LEFT_HAND_SIDE = "<left hand side>";
-    public static final String ASSIGNMENT_OPERATOR = "<assignment operator>";
-    public static final String ASSIGNMENT_EXPRESSION = "<assignment expression>";
-    public static final String EXPRESSION = "<expression>";
-
+    public static final String EXPRESSION = "<expression>"; // 218
+    public static final String ASSIGNMENT_EXPRESSION = "<assignment expression>"; // 220
+    public static final String ASSIGNMENT = "<assignment>"; // 222
+    public static final String LEFT_HAND_SIDE = "<left hand side>"; // 224
+    public static final String ASSIGNMENT_OPERATOR = "<assignment operator>"; // 226
 
     public static final Production[] PRODUCTIONS = {
             /*
-             * <assignment>
+             * <expression> 218
+             */
+            Production.create(
+                    /*
+                     * <expression> → <assignment expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <assignment expression> 220
+             */
+            Production.create(
+                    /*
+                     * <assignment expression> → <expression name>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(EXPRESSION_NAME)
+                            )
+                            , null
+                    )
+                    // TODO 可以扩展更为复杂的语法（这个是最复杂的一部分）
+            ),
+
+
+            /*
+             * <assignment> 222
              */
             Production.create(
                     /*
@@ -39,8 +73,10 @@ public class Expression {
                             , null
                     )
             ),
+
+
             /*
-             * <left hand side>
+             * <left hand side> 224
              */
             Production.create(
                     /*
@@ -55,8 +91,10 @@ public class Expression {
                     )
                     // TODO 可以扩展更为复杂的语法
             ),
+
+
             /*
-             * <assignment operator>
+             * <assignment operator> 226
              */
             Production.create(
                     /*
@@ -71,36 +109,5 @@ public class Expression {
                     )
                     // TODO 可以扩展更为复杂的语法
             ),
-            /*
-             * <assignment expression>
-             */
-            Production.create(
-                    /*
-                     * <assignment expression> → <expression name>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(EXPRESSION_NAME)
-                            )
-                            , null
-                    )
-                    // TODO 可以扩展更为复杂的语法（这个是最复杂的一部分）
-            ),
-            /*
-             * <expression>
-             */
-            Production.create(
-                    /*
-                     * <expression> → <assignment expression>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(EXPRESSION),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
-                            )
-                            , null
-                    )
-            )
     };
 }
