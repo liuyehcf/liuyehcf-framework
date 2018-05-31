@@ -12,7 +12,7 @@ import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
  * @date 2018/5/31
  */
 public class Method {
-    public static Production[] productions = {
+    public static final Production[] PRODUCTIONS = {
             Production.create(
                     /*
                      * <method declarations> →  <method declarations>  <method declaration>
