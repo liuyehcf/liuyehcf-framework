@@ -154,7 +154,7 @@ public class Block {
              */
             Production.create(
                     /*
-                     * <statement> →  <statement without trailing substatement>
+                     * <statement> → <statement without trailing substatement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT),

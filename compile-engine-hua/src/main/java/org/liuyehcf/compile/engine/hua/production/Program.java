@@ -64,7 +64,7 @@ public class Program {
              */
             Production.create(
                     /*
-                     * <method declarations> →  <method declarations>  <method declaration>
+                     * <method declarations> → <method declarations>  <method declaration>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(METHOD_DECLARATIONS),
@@ -201,7 +201,7 @@ public class Program {
              */
             Production.create(
                     /*
-                     * <variable declarator id> →  @identifier
+                     * <variable declarator id> → @identifier
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
@@ -211,7 +211,7 @@ public class Program {
                             , null
                     ),
                     /*
-                     * <variable declarator id> →  <variable declarator id> []
+                     * <variable declarator id> → <variable declarator id> []
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
