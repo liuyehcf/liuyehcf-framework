@@ -16,6 +16,7 @@ public class Type {
 
     public static final String TYPE = "<type>";
     public static final String PRIMITIVE_TYPE = "<primitive type>";
+    public static final String REFERENCE_TYPE = "<reference type>";
     public static final String NUMERIC_TYPE = "<numeric type>";
     public static final String INTEGRAL_TYPE = "<integral type>";
     public static final String FLOATING_POINT_TYPE = "<floating-point type>";
@@ -28,6 +29,7 @@ public class Type {
     public static final Production[] PRODUCTIONS = {
             /*
              * <type>
+             * SAME
              */
             Production.create(
                     /*
@@ -39,11 +41,23 @@ public class Type {
                                     Symbol.createNonTerminator(PRIMITIVE_TYPE)
                             )
                             , null
+                    ),
+                    /*
+                     * <type> → <primitive type>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(TYPE),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(REFERENCE_TYPE)
+                            )
+                            , null
                     )
-                    // TODO 可以扩展更为复杂的语法
             ),
+
+
             /*
              * <primitive type>
+             * SAME
              */
             Production.create(
                     /*
@@ -67,8 +81,11 @@ public class Type {
                             , null
                     )
             ),
+
+
             /*
              * <numeric type>
+             * SAME
              */
             Production.create(
                     /*
@@ -92,6 +109,8 @@ public class Type {
                             , null
                     )
             ),
+
+
             /*
              * <integral type>
              */
@@ -108,6 +127,8 @@ public class Type {
                     )
                     // TODO 可以扩展更为复杂的语法
             ),
+
+
             /*
              * <floating-point type>
              */
@@ -124,6 +145,26 @@ public class Type {
                     )
                     // TODO 可以扩展更为复杂的语法
             ),
+
+
+            /*
+             * <reference type>
+             */
+            Production.create(
+                    /*
+                     * <reference type> → <array type>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(REFERENCE_TYPE),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(ARRAY_TYPE)
+                            )
+                            , null
+                    )
+                    // TODO 可以扩展更为复杂的语法
+            ),
+
+
             /*
              * <array type>
              */

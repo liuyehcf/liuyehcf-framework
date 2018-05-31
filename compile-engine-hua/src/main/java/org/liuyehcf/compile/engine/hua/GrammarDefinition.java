@@ -9,6 +9,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.hua.production.*;
 
 import static org.liuyehcf.compile.engine.hua.production.Program.PROGRAMS;
+import static org.liuyehcf.compile.engine.hua.production.Type.*;
 
 /**
  * @author chenlu
@@ -28,7 +29,6 @@ public class GrammarDefinition {
      * 正则表达式的终结符
      */
     public static final String REGEX_IDENTIFIER = "@identifier";
-    public static final String REGEX_TYPE = "@type";
 
     /**
      * 普通终结符
@@ -46,7 +46,7 @@ public class GrammarDefinition {
     public static final Grammar GRAMMAR = Grammar.create(
             Symbol.createNonTerminator(PROGRAMS),
             Program.PRODUCTIONS,
-//            Type.PRODUCTIONS,
+            Type.PRODUCTIONS,
             Block.PRODUCTIONS,
             Expression.PRODUCTIONS,
             Token.PRODUCTIONS
@@ -58,8 +58,9 @@ public class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES), ")")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES), "{")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES), "}")
-            .addNormalMorpheme(Symbol.createTerminator(NORMAL_COMMA), ",")
-            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_TYPE), "(void)|(int)|(float)|(char)|(bool)")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_INT), "int")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_FLOAT), "float")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN), "boolean")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
             .build();
 

@@ -8,6 +8,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.production.Expression.ASSIGNMENT;
 import static org.liuyehcf.compile.engine.hua.production.Program.VARIABLE_DECLARATORS;
+import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
 
 /**
  * @author chenlu
@@ -127,12 +128,12 @@ public class Block {
              */
             Production.create(
                     /*
-                     * <local variable declaration> → @type <variable declarators>
+                     * <local variable declaration> → <type> <variable declarators>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_TYPE),
+                                    Symbol.createNonTerminator(TYPE),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATORS)
                             )
                             , null
