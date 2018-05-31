@@ -14,13 +14,13 @@ import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_RI
  */
 public class Type {
 
-    public static final String TYPE = "<type>";
-    public static final String PRIMITIVE_TYPE = "<primitive type>";
-    public static final String REFERENCE_TYPE = "<reference type>";
-    public static final String NUMERIC_TYPE = "<numeric type>";
-    public static final String INTEGRAL_TYPE = "<integral type>";
-    public static final String FLOATING_POINT_TYPE = "<floating-point type>";
-    public static final String ARRAY_TYPE = "<array type>";
+    public static final String TYPE = "<type>"; // 119
+    public static final String PRIMITIVE_TYPE = "<primitive type>"; // 120
+    public static final String NUMERIC_TYPE = "<numeric type>"; // 122
+    public static final String INTEGRAL_TYPE = "<integral type>"; // 124
+    public static final String FLOATING_POINT_TYPE = "<floating-point type>"; // 126
+    public static final String REFERENCE_TYPE = "<reference type>"; // 128
+    public static final String ARRAY_TYPE = "<array type>"; // 136
 
     public static final String NORMAL_BOOLEAN = "boolean";
     public static final String NORMAL_INT = "int";
@@ -28,7 +28,7 @@ public class Type {
 
     public static final Production[] PRODUCTIONS = {
             /*
-             * <type>
+             * <type> 119
              * SAME
              */
             Production.create(
@@ -56,7 +56,7 @@ public class Type {
 
 
             /*
-             * <primitive type>
+             * <primitive type> 120
              * SAME
              */
             Production.create(
@@ -84,7 +84,7 @@ public class Type {
 
 
             /*
-             * <numeric type>
+             * <numeric type> 122
              * SAME
              */
             Production.create(
@@ -112,7 +112,7 @@ public class Type {
 
 
             /*
-             * <integral type>
+             * <integral type> 124
              */
             Production.create(
                     /*
@@ -130,7 +130,7 @@ public class Type {
 
 
             /*
-             * <floating-point type>
+             * <floating-point type> 126
              */
             Production.create(
                     /*
@@ -148,7 +148,7 @@ public class Type {
 
 
             /*
-             * <reference type>
+             * <reference type> 128
              */
             Production.create(
                     /*
@@ -166,7 +166,7 @@ public class Type {
 
 
             /*
-             * <array type>
+             * <array type> 136
              */
             Production.create(
                     /*
