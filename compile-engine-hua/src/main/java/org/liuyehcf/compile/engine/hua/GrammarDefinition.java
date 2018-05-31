@@ -25,7 +25,6 @@ public class GrammarDefinition {
     private static final String BLOCK = "<block>";
     private static final String BLOCK_STATEMENTS = "<block statements>";
     private static final String BLOCK_STATEMENT = "<block statement>";
-    private static final String STATEMENT = "<statement>";
     private static final String LOCAL_VARIABLE_DECLARATION_STATEMENT = "<local variable declaration statement>";
     private static final String LOCAL_VARIABLE_DECLARATION = "<local variable declaration>";
     private static final String VARIABLE_DECLARATORS = "<variable declarators>";
@@ -34,6 +33,11 @@ public class GrammarDefinition {
     private static final String VARIABLE_INITIALIZER = "<variable initializer>";
     private static final String ARRAY_INITIALIZER = "<array initializer>";
     private static final String EXPRESSION = "<expression>";
+    private static final String STATEMENT = "<statement>";
+    private static final String STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT = "<statement without trailing substatement>";
+    private static final String EMPTY_STATEMENT = "<empty statement>";
+    private static final String EXPRESSION_STATEMENT = "<expression statement>";
+    private static final String RETURN_STATEMENT = "<return statement>";
 
     /**
      * 正则表达式的终结符
@@ -249,18 +253,18 @@ public class GrammarDefinition {
                             , null
                     )
             ),
-//            /*
-//             * <block statement> → <statement>
-//             */
-//            Production.create(
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(BLOCK_STATEMENT),
-//                            SymbolString.create(
-//                                    Symbol.createNonTerminator(STATEMENT)
-//                            )
-//                            , null
-//                    )
-//            ),
+            /*
+             * <block statement> → <statement>
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(BLOCK_STATEMENT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(STATEMENT)
+                            )
+                            , null
+                    )
+            ),
             /*
              * <local variable declaration statement> → <local variable declaration> ;
              */
@@ -358,7 +362,7 @@ public class GrammarDefinition {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(VARIABLE_DECLARATOR_ID),
+                                    Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
                                     Symbol.createTerminator(MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createTerminator(MIDDLE_RIGHT_PARENTHESES)
                             )
@@ -376,7 +380,7 @@ public class GrammarDefinition {
                             )
                             , null
                     )
-            )
+            ),
 //            /*
 //             * <variable initializer> → <expression>
 //             */
@@ -401,6 +405,80 @@ public class GrammarDefinition {
 //                            , null
 //                    )
 //            ),
+            /*
+             * <statement> →  <statement without trailing substatement>
+             * TODO 可以扩展更为复杂的语法
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT)
+                            )
+                            , null
+                    )
+            ),
+            /*
+             * <statement without trailing substatement> → <block>
+             * TODO 可以扩展更为复杂的语法
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(BLOCK)
+                            )
+                            , null
+                    )
+            ),
+            /*
+             * <statement without trailing substatement> → <empty statement>
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(EMPTY_STATEMENT)
+                            )
+                            , null
+                    )
+            ),
+//            /*
+//             * <statement without trailing substatement> → <expression statement>
+//             */
+//            Production.create(
+//                    PrimaryProduction.create(
+//                            Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
+//                            SymbolString.create(
+//                                    Symbol.createNonTerminator(EXPRESSION_STATEMENT)
+//                            )
+//                            , null
+//                    )
+//            ),
+//            /*
+//             * <statement without trailing substatement> → <return statement>
+//             */
+//            Production.create(
+//                    PrimaryProduction.create(
+//                            Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
+//                            SymbolString.create(
+//                                    Symbol.createNonTerminator(RETURN_STATEMENT)
+//                            )
+//                            , null
+//                    )
+//            ),
+            /*
+             * <empty statement> → ;
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EMPTY_STATEMENT),
+                            SymbolString.create(
+                                    Symbol.createTerminator(SEMICOLON)
+                            )
+                            , null
+                    )
+            )
     );
 
 
