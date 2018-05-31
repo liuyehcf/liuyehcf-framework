@@ -45,25 +45,26 @@ public class GrammarDefinition {
     private static final String ASSIGNMENT_OPERATOR = "<assignment operator>";
     private static final String ASSIGNMENT_EXPRESSION = "<assignment expression>";
     private static final String EXPRESSION_NAME = "<expression name>";
+    private static final String ARRAY_CREATION_EXPRESSION = "<array creation expression>";
 
     /**
      * 正则表达式的终结符
      */
-    private static final String IDENTIFIER = "@identifier";
-    private static final String TYPE = "@type";
+    private static final String REGEX_IDENTIFIER = "@identifier";
+    private static final String REGEX_TYPE = "@type";
 
     /**
      * 普通终结符
      */
-    private static final String SMALL_LEFT_PARENTHESES = "(";
-    private static final String SMALL_RIGHT_PARENTHESES = ")";
-    private static final String MIDDLE_LEFT_PARENTHESES = "[";
-    private static final String MIDDLE_RIGHT_PARENTHESES = "]";
-    private static final String LARGE_LEFT_PARENTHESES = "{";
-    private static final String LARGE_RIGHT_PARENTHESES = "}";
-    private static final String ASSIGN = "=";
-    private static final String COMMA = "comma";
-    private static final String SEMICOLON = ";";
+    private static final String NORMAL_SMALL_LEFT_PARENTHESES = "(";
+    private static final String NORMAL_SMALL_RIGHT_PARENTHESES = ")";
+    private static final String NORMAL_MIDDLE_LEFT_PARENTHESES = "[";
+    private static final String NORMAL_MIDDLE_RIGHT_PARENTHESES = "]";
+    private static final String NORMAL_LARGE_LEFT_PARENTHESES = "{";
+    private static final String NORMAL_LARGE_RIGHT_PARENTHESES = "}";
+    private static final String NORMAL_ASSIGN = "=";
+    private static final String NORMAL_COMMA = "comma";
+    private static final String NORMAL_SEMICOLON = ";";
 
     public static final Grammar GRAMMAR = Grammar.create(
             Symbol.createNonTerminator(PROGRAMS),
@@ -111,11 +112,11 @@ public class GrammarDefinition {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(METHOD_DECLARATION),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(TYPE),
-                                    Symbol.createRegexTerminator(IDENTIFIER),
-                                    Symbol.createTerminator(SMALL_LEFT_PARENTHESES),
+                                    Symbol.createRegexTerminator(REGEX_TYPE),
+                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER),
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(FORMAL_PARAMETERS),
-                                    Symbol.createTerminator(SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(METHOD_BODY)
                             )
                             , null
@@ -153,7 +154,7 @@ public class GrammarDefinition {
                             Symbol.createNonTerminator(FORMAL_PARAMETER_LIST),
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER_LIST),
-                                    Symbol.createTerminator(COMMA),
+                                    Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             )
                             , null
@@ -178,8 +179,8 @@ public class GrammarDefinition {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FORMAL_PARAMETER),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(TYPE),
-                                    Symbol.createRegexTerminator(IDENTIFIER)
+                                    Symbol.createRegexTerminator(REGEX_TYPE),
+                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             )
                             , null
                     )
@@ -203,8 +204,8 @@ public class GrammarDefinition {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(BLOCK),
                             SymbolString.create(
-                                    Symbol.createTerminator(LARGE_LEFT_PARENTHESES),
-                                    Symbol.createTerminator(LARGE_RIGHT_PARENTHESES)
+                                    Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES),
+                                    Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES)
                             )
                             , null
                     )
@@ -216,9 +217,9 @@ public class GrammarDefinition {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(BLOCK),
                             SymbolString.create(
-                                    Symbol.createTerminator(LARGE_LEFT_PARENTHESES),
+                                    Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(BLOCK_STATEMENTS),
-                                    Symbol.createTerminator(LARGE_RIGHT_PARENTHESES)
+                                    Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES)
                             )
                             , null
                     )
@@ -280,7 +281,7 @@ public class GrammarDefinition {
                             Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION_STATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION),
-                                    Symbol.createTerminator(SEMICOLON)
+                                    Symbol.createTerminator(NORMAL_SEMICOLON)
                             )
                             , null
                     )
@@ -292,7 +293,7 @@ public class GrammarDefinition {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(TYPE),
+                                    Symbol.createRegexTerminator(REGEX_TYPE),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATORS)
                             )
                             , null
@@ -318,7 +319,7 @@ public class GrammarDefinition {
                             Symbol.createNonTerminator(VARIABLE_DECLARATORS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(VARIABLE_DECLARATORS),
-                                    Symbol.createTerminator(COMMA),
+                                    Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR)
                             )
                             , null
@@ -344,7 +345,7 @@ public class GrammarDefinition {
                             Symbol.createNonTerminator(VARIABLE_DECLARATOR),
                             SymbolString.create(
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
-                                    Symbol.createTerminator(ASSIGN),
+                                    Symbol.createTerminator(NORMAL_ASSIGN),
                                     Symbol.createNonTerminator(VARIABLE_INITIALIZER)
                             )
                             , null
@@ -357,7 +358,7 @@ public class GrammarDefinition {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(IDENTIFIER)
+                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             )
                             , null
                     )
@@ -370,20 +371,8 @@ public class GrammarDefinition {
                             Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
                             SymbolString.create(
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
-                                    Symbol.createTerminator(MIDDLE_LEFT_PARENTHESES),
-                                    Symbol.createTerminator(MIDDLE_RIGHT_PARENTHESES)
-                            )
-                            , null
-                    )
-            ),
-            /*
-             * TODO 删掉这个
-             */
-            Production.create(
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(VARIABLE_INITIALIZER),
-                            SymbolString.create(
-                                    Symbol.EPSILON
+                                    Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
+                                    Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             )
                             , null
                     )
@@ -400,18 +389,6 @@ public class GrammarDefinition {
                             , null
                     )
             ),
-//            /*
-//             * <variable initializer> → <array initializer>
-//             */
-//            Production.create(
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(VARIABLE_INITIALIZER),
-//                            SymbolString.create(
-//                                    Symbol.createNonTerminator(ARRAY_INITIALIZER)
-//                            )
-//                            , null
-//                    )
-//            ),
             /*
              * <statement> →  <statement without trailing substatement>
              * TODO 可以扩展更为复杂的语法
@@ -481,7 +458,7 @@ public class GrammarDefinition {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(EMPTY_STATEMENT),
                             SymbolString.create(
-                                    Symbol.createTerminator(SEMICOLON)
+                                    Symbol.createTerminator(NORMAL_SEMICOLON)
                             )
                             , null
                     )
@@ -494,7 +471,7 @@ public class GrammarDefinition {
                             Symbol.createNonTerminator(EXPRESSION_STATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION),
-                                    Symbol.createTerminator(SEMICOLON)
+                                    Symbol.createTerminator(NORMAL_SEMICOLON)
                             )
                             , null
                     )
@@ -547,7 +524,7 @@ public class GrammarDefinition {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(EXPRESSION_NAME),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(IDENTIFIER)
+                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             )
                             , null
                     )
@@ -560,7 +537,7 @@ public class GrammarDefinition {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
                             SymbolString.create(
-                                    Symbol.createTerminator(ASSIGN)
+                                    Symbol.createTerminator(NORMAL_ASSIGN)
                             )
                             , null
                     )
@@ -594,24 +571,26 @@ public class GrammarDefinition {
 
 
     public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
-            .addNormalMorpheme(Symbol.createTerminator(SMALL_LEFT_PARENTHESES), "(")
-            .addNormalMorpheme(Symbol.createTerminator(SMALL_RIGHT_PARENTHESES), ")")
-            .addNormalMorpheme(Symbol.createTerminator(LARGE_LEFT_PARENTHESES), "{")
-            .addNormalMorpheme(Symbol.createTerminator(LARGE_RIGHT_PARENTHESES), "}")
-            .addNormalMorpheme(Symbol.createTerminator(COMMA), ",")
-            .addRegexMorpheme(Symbol.createRegexTerminator(TYPE), "(void)|(int)|(float)|(char)|(bool)")
-            .addRegexMorpheme(Symbol.createRegexTerminator(IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES), ")")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES), "{")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES), "}")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_COMMA), ",")
+            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_TYPE), "(void)|(int)|(float)|(char)|(bool)")
+            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
             .build();
 
     public static void main(String[] args) {
         LRCompiler compiler = LR1.create(LEXICAL_ANALYZER, GRAMMAR);
         System.out.println(compiler.isLegal());
-        System.out.println(compiler.compile("void sort(int a){}\n" +
+        compiler.compile("void sort(int a){}\n" +
                 "\n" +
                 "int add(int a,int b){}\n" +
                 "\n" +
                 "void exchange(int a,int b){\n" +
                 "    int a, b[][];\n" +
-                "}"));
+                "    a=b;\n" +
+                "    b=c;\n" +
+                "}");
     }
 }
