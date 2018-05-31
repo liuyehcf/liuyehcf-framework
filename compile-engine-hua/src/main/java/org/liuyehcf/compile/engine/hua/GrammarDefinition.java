@@ -65,6 +65,7 @@ public class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_IF), "if")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_ELSE), "else")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_WHILE), "while")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_FOR), "for")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_ASSIGN), "=")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_COMMA), ",")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SEMICOLON), ";")

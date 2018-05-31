@@ -31,10 +31,18 @@ public class Block {
     public static final String IF_THEN_ELSE_STATEMENT = "<if then else statement>"; // 166
     public static final String IF_THEN_ELSE_STATEMENT_NO_SHORT_IF = "<if then else statement no short if>"; // 168
     public static final String WHILE_STATEMENT = "<while statement>"; // 182
+    public static final String FOR_STATEMENT = "<for statement>"; // 188
+    public static final String EPSILON_OR_FOR_INIT = "<epsilon or for init>"; // new
+    public static final String FOR_INIT = "<for init>"; // 192
+    public static final String EPSILON_OR_EXPRESSION = "<epsilon or expression>"; // new
+    public static final String EPSILON_OR_FOR_UPDATE = "<epsilon or for update>"; // new
+    public static final String FOR_UPDATE = "<for update>"; // 194
+    public static final String STATEMENT_EXPRESSION_LIST = "<statement expression list>"; // 196
 
     public static final String NORMAL_IF = "if";
     public static final String NORMAL_ELSE = "else";
     public static final String NORMAL_WHILE = "while";
+    public static final String NORMAL_FOR = "for";
 
     public static final Production[] PRODUCTIONS = {
 
@@ -205,6 +213,16 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(WHILE_STATEMENT)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <statement> → <for statement>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(FOR_STATEMENT)
                             )
                             , null
                     )
@@ -429,6 +447,192 @@ public class Block {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <for statement> 188
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <for statement> → for ( <for init>? ; <expression>? ; <for update>? ) <statement>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FOR_STATEMENT),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_FOR),
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
+                                    Symbol.createTerminator(NORMAL_SEMICOLON),
+                                    Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
+                                    Symbol.createTerminator(NORMAL_SEMICOLON),
+                                    Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(STATEMENT)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <epsilon or for init>
+             * DIFFERENT
+             */
+            Production.create(
+                    /*
+                     * <epsilon or for init> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            )
+                            , null
+                    ),
+                    /*
+                     * <epsilon or for init> → <for init>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(FOR_INIT)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <epsilon or expression>
+             * DIFFERENT
+             */
+            Production.create(
+                    /*
+                     * <epsilon or expression> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            )
+                            , null
+                    ),
+                    /*
+                     * <epsilon or expression> → <expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(EXPRESSION)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <epsilon or for update>
+             * DIFFERENT
+             */
+            Production.create(
+                    /*
+                     * <epsilon or for update> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            )
+                            , null
+                    ),
+                    /*
+                     * <epsilon or for update> → <for update>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(FOR_UPDATE)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <for init> 192
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <for init> → <statement expression list>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FOR_INIT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <for init> → <local variable declaration>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FOR_INIT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <for update> 194
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <for update> → <statement expression list>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FOR_UPDATE),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <statement expression list> 196
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <statement expression list> → <statement expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(STATEMENT_EXPRESSION)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <statement expression list> → <statement expression list> , <statement expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST),
+                                    Symbol.createTerminator(NORMAL_COMMA),
+                                    Symbol.createNonTerminator(STATEMENT_EXPRESSION)
                             )
                             , null
                     )

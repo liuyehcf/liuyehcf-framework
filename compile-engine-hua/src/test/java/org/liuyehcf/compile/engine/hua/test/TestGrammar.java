@@ -56,6 +56,22 @@ public class TestGrammar {
                     "    }else{\n" +
                     "      a=b;\n" +
                     "    }\n" +
+                    "}",
+            "void exchange(int a,int b){\n" +
+                    "    if(a){\n" +
+                    "      b=c;\n" +
+                    "      if(d){\n" +
+                    "        while(a){\n" +
+                    "          if(c)\n" +
+                    "            ;\n" +
+                    "        }\n" +
+                    "      }\n" +
+                    "    }else{\n" +
+                    "      a=b;\n" +
+                    "      for(;;){\n" +
+                    "        \n" +
+                    "      }\n" +
+                    "    }\n" +
                     "}"
     };
 
