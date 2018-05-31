@@ -15,21 +15,21 @@ import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
  * @date 2018/5/31
  */
 public class Block {
-    public static final String BLOCK = "<block>";
-    public static final String BLOCK_STATEMENTS = "<block statements>";
-    public static final String BLOCK_STATEMENT = "<block statement>";
-    public static final String LOCAL_VARIABLE_DECLARATION_STATEMENT = "<local variable declaration statement>";
-    public static final String LOCAL_VARIABLE_DECLARATION = "<local variable declaration>";
-    public static final String STATEMENT = "<statement>";
-    public static final String STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT = "<statement without trailing substatement>";
-    public static final String EMPTY_STATEMENT = "<empty statement>";
-    public static final String EXPRESSION_STATEMENT = "<expression statement>";
-    public static final String STATEMENT_EXPRESSION = "<statement expression>";
+    public static final String BLOCK = "<block>"; // 139
+    public static final String BLOCK_STATEMENTS = "<block statements>"; // 140
+    public static final String BLOCK_STATEMENT = "<block statement>"; // 142
+    public static final String LOCAL_VARIABLE_DECLARATION_STATEMENT = "<local variable declaration statement>"; // 144
+    public static final String LOCAL_VARIABLE_DECLARATION = "<local variable declaration>"; // 146
+    public static final String STATEMENT = "<statement>"; // 148
+    public static final String STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT = "<statement without trailing substatement>"; // 152
+    public static final String EMPTY_STATEMENT = "<empty statement>"; // 154
+    public static final String EXPRESSION_STATEMENT = "<expression statement>"; // 160
+    public static final String STATEMENT_EXPRESSION = "<statement expression>"; // 162
 
     public static final Production[] PRODUCTIONS = {
 
             /*
-             * <block>
+             * <block> 139
              */
             Production.create(
                     /*
@@ -56,8 +56,10 @@ public class Block {
                             , null
                     )
             ),
+
+
             /*
-             * <block statements>
+             * <block statements> 140
              */
             Production.create(
                     /*
@@ -82,8 +84,10 @@ public class Block {
                             , null
                     )
             ),
+
+
             /*
-             * <block statement>
+             * <block statement> 142
              */
             Production.create(
                     /*
@@ -107,8 +111,10 @@ public class Block {
                             , null
                     )
             ),
+
+
             /*
-             * <local variable declaration statement>
+             * <local variable declaration statement> 144
              */
             Production.create(
                     /*
@@ -123,8 +129,10 @@ public class Block {
                             , null
                     )
             ),
+
+
             /*
-             * <local variable declaration>
+             * <local variable declaration> 146
              */
             Production.create(
                     /*
@@ -139,8 +147,10 @@ public class Block {
                             , null
                     )
             ),
+
+
             /*
-             * <statement>
+             * <statement> 148
              */
             Production.create(
                     /*
@@ -155,8 +165,10 @@ public class Block {
                     )
                     // TODO 可以扩展更为复杂的语法
             ),
+
+
             /*
-             * <statement without trailing substatement>
+             * <statement without trailing substatement> 152
              */
             Production.create(
                     /*
@@ -201,8 +213,10 @@ public class Block {
 //                    )
                     // TODO 可以扩展更为复杂的语法
             ),
+
+            
             /*
-             * <empty statement>
+             * <empty statement> 154
              */
             Production.create(
                     /*
@@ -216,8 +230,10 @@ public class Block {
                             , null
                     )
             ),
+
+
             /*
-             * <expression statement>
+             * <expression statement> 160
              */
             Production.create(
                     /*
@@ -232,6 +248,11 @@ public class Block {
                             , null
                     )
             ),
+
+
+            /*
+             * <statement expression> 162
+             */
             Production.create(
                     /*
                      * <statement expression> → <assignment>

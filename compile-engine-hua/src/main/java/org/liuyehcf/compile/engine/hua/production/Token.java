@@ -12,9 +12,12 @@ import static org.liuyehcf.compile.engine.hua.GrammarDefinition.REGEX_IDENTIFIER
  * @date 2018/5/31
  */
 public class Token {
-    public static final String EXPRESSION_NAME = "<expression name>";
+    public static final String EXPRESSION_NAME = "<expression name>"; // 294
 
     public static final Production[] PRODUCTIONS = {
+            /*
+             * <expression name> 294
+             */
             Production.create(
                     /*
                      * <expression name> → @identifier
