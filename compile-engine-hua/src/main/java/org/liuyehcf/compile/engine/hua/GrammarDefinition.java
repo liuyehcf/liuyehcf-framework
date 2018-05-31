@@ -5,6 +5,7 @@ import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.cfg.lr.LR1;
 import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
+import org.liuyehcf.compile.engine.hua.production.Method;
 
 /**
  * @author chenlu
@@ -15,56 +16,56 @@ public class GrammarDefinition {
     /**
      * 非终结符
      */
-    private static final String PROGRAMS = "<programs>";
-    private static final String METHOD_DECLARATIONS = "<method declarations>";
-    private static final String METHOD_DECLARATION = "<method declaration>";
-    private static final String METHOD_BODY = "<method body>";
-    private static final String FORMAL_PARAMETERS = "<formal parameters>";
-    private static final String FORMAL_PARAMETER_LIST = "<formal parameter list>";
-    private static final String FORMAL_PARAMETER = "<formal parameter>";
-    private static final String BLOCK = "<block>";
-    private static final String BLOCK_STATEMENTS = "<block statements>";
-    private static final String BLOCK_STATEMENT = "<block statement>";
-    private static final String LOCAL_VARIABLE_DECLARATION_STATEMENT = "<local variable declaration statement>";
-    private static final String LOCAL_VARIABLE_DECLARATION = "<local variable declaration>";
-    private static final String VARIABLE_DECLARATORS = "<variable declarators>";
-    private static final String VARIABLE_DECLARATOR = "<variable declarator>";
-    private static final String VARIABLE_DECLARATOR_ID = "<variable declarator id>";
-    private static final String VARIABLE_INITIALIZER = "<variable initializer>";
-    private static final String ARRAY_INITIALIZER = "<array initializer>";
-    private static final String EXPRESSION = "<expression>";
-    private static final String STATEMENT = "<statement>";
-    private static final String STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT = "<statement without trailing substatement>";
-    private static final String EMPTY_STATEMENT = "<empty statement>";
-    private static final String EXPRESSION_STATEMENT = "<expression statement>";
-    private static final String RETURN_STATEMENT = "<return statement>";
+    public static final String PROGRAMS = "<programs>";
+    public static final String METHOD_DECLARATIONS = "<method declarations>";
+    public static final String METHOD_DECLARATION = "<method declaration>";
+    public static final String METHOD_BODY = "<method body>";
+    public static final String FORMAL_PARAMETERS = "<formal parameters>";
+    public static final String FORMAL_PARAMETER_LIST = "<formal parameter list>";
+    public static final String FORMAL_PARAMETER = "<formal parameter>";
+    public static final String BLOCK = "<block>";
+    public static final String BLOCK_STATEMENTS = "<block statements>";
+    public static final String BLOCK_STATEMENT = "<block statement>";
+    public static final String LOCAL_VARIABLE_DECLARATION_STATEMENT = "<local variable declaration statement>";
+    public static final String LOCAL_VARIABLE_DECLARATION = "<local variable declaration>";
+    public static final String VARIABLE_DECLARATORS = "<variable declarators>";
+    public static final String VARIABLE_DECLARATOR = "<variable declarator>";
+    public static final String VARIABLE_DECLARATOR_ID = "<variable declarator id>";
+    public static final String VARIABLE_INITIALIZER = "<variable initializer>";
+    public static final String ARRAY_INITIALIZER = "<array initializer>";
+    public static final String EXPRESSION = "<expression>";
+    public static final String STATEMENT = "<statement>";
+    public static final String STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT = "<statement without trailing substatement>";
+    public static final String EMPTY_STATEMENT = "<empty statement>";
+    public static final String EXPRESSION_STATEMENT = "<expression statement>";
+    public static final String RETURN_STATEMENT = "<return statement>";
 
-    private static final String STATEMENT_EXPRESSION = "<statement expression>";
-    private static final String ASSIGNMENT = "<assignment>";
-    private static final String LEFT_HAND_SIDE = "<left hand side>";
-    private static final String ASSIGNMENT_OPERATOR = "<assignment operator>";
-    private static final String ASSIGNMENT_EXPRESSION = "<assignment expression>";
-    private static final String EXPRESSION_NAME = "<expression name>";
-    private static final String ARRAY_CREATION_EXPRESSION = "<array creation expression>";
+    public static final String STATEMENT_EXPRESSION = "<statement expression>";
+    public static final String ASSIGNMENT = "<assignment>";
+    public static final String LEFT_HAND_SIDE = "<left hand side>";
+    public static final String ASSIGNMENT_OPERATOR = "<assignment operator>";
+    public static final String ASSIGNMENT_EXPRESSION = "<assignment expression>";
+    public static final String EXPRESSION_NAME = "<expression name>";
+    public static final String ARRAY_CREATION_EXPRESSION = "<array creation expression>";
 
     /**
      * 正则表达式的终结符
      */
-    private static final String REGEX_IDENTIFIER = "@identifier";
-    private static final String REGEX_TYPE = "@type";
+    public static final String REGEX_IDENTIFIER = "@identifier";
+    public static final String REGEX_TYPE = "@type";
 
     /**
      * 普通终结符
      */
-    private static final String NORMAL_SMALL_LEFT_PARENTHESES = "(";
-    private static final String NORMAL_SMALL_RIGHT_PARENTHESES = ")";
-    private static final String NORMAL_MIDDLE_LEFT_PARENTHESES = "[";
-    private static final String NORMAL_MIDDLE_RIGHT_PARENTHESES = "]";
-    private static final String NORMAL_LARGE_LEFT_PARENTHESES = "{";
-    private static final String NORMAL_LARGE_RIGHT_PARENTHESES = "}";
-    private static final String NORMAL_ASSIGN = "=";
-    private static final String NORMAL_COMMA = "comma";
-    private static final String NORMAL_SEMICOLON = ";";
+    public static final String NORMAL_SMALL_LEFT_PARENTHESES = "(";
+    public static final String NORMAL_SMALL_RIGHT_PARENTHESES = ")";
+    public static final String NORMAL_MIDDLE_LEFT_PARENTHESES = "[";
+    public static final String NORMAL_MIDDLE_RIGHT_PARENTHESES = "]";
+    public static final String NORMAL_LARGE_LEFT_PARENTHESES = "{";
+    public static final String NORMAL_LARGE_RIGHT_PARENTHESES = "}";
+    public static final String NORMAL_ASSIGN = "=";
+    public static final String NORMAL_COMMA = "comma";
+    public static final String NORMAL_SEMICOLON = ";";
 
     public static final Grammar GRAMMAR = Grammar.create(
             Symbol.createNonTerminator(PROGRAMS),
@@ -80,48 +81,7 @@ public class GrammarDefinition {
                             , null
                     )
             ),
-            /*
-             * <method declarations> →  <method declarations>  <method declaration>
-             */
-            Production.create(
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(METHOD_DECLARATIONS),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(METHOD_DECLARATIONS),
-                                    Symbol.createNonTerminator(METHOD_DECLARATION)
-                            )
-                            , null
-                    )
-            ),
-            /*
-             * <method declarations> → <method declaration>
-             */
-            Production.create(
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(METHOD_DECLARATIONS),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(METHOD_DECLARATION)
-                            )
-                            , null
-                    )
-            ),
-            /*
-             * <method declaration> → @type @identifier ( <formal parameters> ) <method body>
-             */
-            Production.create(
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(METHOD_DECLARATION),
-                            SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_TYPE),
-                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER),
-                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
-                                    Symbol.createNonTerminator(FORMAL_PARAMETERS),
-                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
-                                    Symbol.createNonTerminator(METHOD_BODY)
-                            )
-                            , null
-                    )
-            ),
+            Method.productions,
             /*
              * <formal parameters> → ε
              */

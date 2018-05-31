@@ -2,10 +2,7 @@ package org.liuyehcf.compile.engine.core.grammar.definition;
 
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 
@@ -64,6 +61,21 @@ public class Grammar {
     }
 
     public static Grammar create(Symbol start, Production... productions) {
+        return new Grammar(start, ListUtils.of(productions));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Grammar create(Symbol start, Object... objects) {
+        List<Production> productions = new ArrayList<>();
+        for (Object obj : objects) {
+            if (obj instanceof Production) {
+                productions.add((Production) obj);
+            } else if (obj instanceof Production[]) {
+                productions.addAll(Arrays.asList((Production[]) obj));
+            } else if (obj instanceof List) {
+                productions.addAll((List<Production>) obj);
+            }
+        }
         return new Grammar(start, ListUtils.of(productions));
     }
 
