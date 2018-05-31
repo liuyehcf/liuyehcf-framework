@@ -388,18 +388,18 @@ public class GrammarDefinition {
                             , null
                     )
             ),
-//            /*
-//             * <variable initializer> → <expression>
-//             */
-//            Production.create(
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(VARIABLE_INITIALIZER),
-//                            SymbolString.create(
-//                                    Symbol.createNonTerminator(EXPRESSION)
-//                            )
-//                            , null
-//                    )
-//            ),
+            /*
+             * <variable initializer> → <expression>
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(VARIABLE_INITIALIZER),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(EXPRESSION)
+                            )
+                            , null
+                    )
+            ),
 //            /*
 //             * <variable initializer> → <array initializer>
 //             */
@@ -450,18 +450,18 @@ public class GrammarDefinition {
                             , null
                     )
             ),
-//            /*
-//             * <statement without trailing substatement> → <expression statement>
-//             */
-//            Production.create(
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
-//                            SymbolString.create(
-//                                    Symbol.createNonTerminator(EXPRESSION_STATEMENT)
-//                            )
-//                            , null
-//                    )
-//            ),
+            /*
+             * <statement without trailing substatement> → <expression statement>
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(EXPRESSION_STATEMENT)
+                            )
+                            , null
+                    )
+            ),
 //            /*
 //             * <statement without trailing substatement> → <return statement>
 //             */
@@ -485,99 +485,111 @@ public class GrammarDefinition {
                             )
                             , null
                     )
+            ),
+            /*
+             * <expression statement> → <statement expression> ;
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EXPRESSION_STATEMENT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(STATEMENT_EXPRESSION),
+                                    Symbol.createTerminator(SEMICOLON)
+                            )
+                            , null
+                    )
+            ),
+            /*
+             * <statement expression> → <assignment>
+             * TODO 可以扩展更为复杂的语法
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(ASSIGNMENT)
+                            )
+                            , null
+                    )
+            ),
+            /*
+             * <assignment> → <left hand side> <assignment operator> <assignment expression>
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(ASSIGNMENT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(LEFT_HAND_SIDE),
+                                    Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
+                                    Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
+                            )
+                            , null
+                    )
+            ),
+            /*
+             * <left hand side> → <expression name>
+             * TODO 可以扩展更为复杂的语法
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(LEFT_HAND_SIDE),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(EXPRESSION_NAME)
+                            )
+                            , null
+                    )
+            ),
+            /*
+             * <expression name> → @identifier
+             * TODO 可以扩展更为复杂的语法
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EXPRESSION_NAME),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(IDENTIFIER)
+                            )
+                            , null
+                    )
+            ),
+            /*
+             * <assignment operator> → =
+             * TODO 可以扩展更为复杂的语法
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
+                            SymbolString.create(
+                                    Symbol.createTerminator(ASSIGN)
+                            )
+                            , null
+                    )
+            ),
+            /*
+             * <assignment expression> → <expression name>
+             * TODO 可以扩展更为复杂的语法（这个是最复杂的一部分）
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(EXPRESSION_NAME)
+                            )
+                            , null
+                    )
+            ),
+            /*
+             * <expression> → <assignment expression>
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
+                            )
+                            , null
+                    )
             )
-//            /*
-//             * <expression statement> → <statement expression> ;
-//             */
-//            Production.create(
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(EXPRESSION_STATEMENT),
-//                            SymbolString.create(
-//                                    Symbol.createNonTerminator(STATEMENT_EXPRESSION),
-//                                    Symbol.createTerminator(SEMICOLON)
-//                            )
-//                            , null
-//                    )
-//            ),
-//            /*
-//             * <statement expression> → <assignment>
-//             * TODO 可以扩展更为复杂的语法
-//             */
-//            Production.create(
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(STATEMENT_EXPRESSION),
-//                            SymbolString.create(
-//                                    Symbol.createNonTerminator(ASSIGNMENT)
-//                            )
-//                            , null
-//                    )
-//            ),
-//            /*
-//             * <assignment> → <left hand side> <assignment operator> <assignment expression>
-//             */
-//            Production.create(
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(ASSIGNMENT),
-//                            SymbolString.create(
-//                                    Symbol.createNonTerminator(LEFT_HAND_SIDE),
-//                                    Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
-//                                    Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
-//                            )
-//                            , null
-//                    )
-//            ),
-//            /*
-//             * <left hand side> → <expression name>
-//             * TODO 可以扩展更为复杂的语法
-//             */
-//            Production.create(
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(LEFT_HAND_SIDE),
-//                            SymbolString.create(
-//                                    Symbol.createNonTerminator(EXPRESSION_NAME)
-//                            )
-//                            , null
-//                    )
-//            ),
-//            /*
-//             * <expression name> → @identifier
-//             * TODO 可以扩展更为复杂的语法
-//             */
-//            Production.create(
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(EXPRESSION_NAME),
-//                            SymbolString.create(
-//                                    Symbol.createRegexTerminator(IDENTIFIER)
-//                            )
-//                            , null
-//                    )
-//            ),
-//            /*
-//             * <assignment operator> → =
-//             * TODO 可以扩展更为复杂的语法
-//             */
-//            Production.create(
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
-//                            SymbolString.create(
-//                                    Symbol.createRegexTerminator(ASSIGN)
-//                            )
-//                            , null
-//                    )
-//            ),
-//            /*
-//             * <assignment expression> → <expression>
-//             * TODO 可以扩展更为复杂的语法
-//             */
-//            Production.create(
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION),
-//                            SymbolString.create(
-//                                    Symbol.createRegexTerminator(EXPRESSION)
-//                            )
-//                            , null
-//                    )
-//            )
     );
 
 
