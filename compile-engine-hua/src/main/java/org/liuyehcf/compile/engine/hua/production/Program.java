@@ -15,15 +15,16 @@ import static org.liuyehcf.compile.engine.hua.production.Expression.EXPRESSION;
  */
 public class Program {
     public static final String PROGRAMS = "<programs>";
+    public static final String FORMAL_PARAMETER_LIST = "<formal parameter list>";
     public static final String VARIABLE_DECLARATORS = "<variable declarators>";
     public static final String VARIABLE_DECLARATOR = "<variable declarator>";
     public static final String VARIABLE_DECLARATOR_ID = "<variable declarator id>";
     public static final String VARIABLE_INITIALIZER = "<variable initializer>";
-    public static final String FORMAL_PARAMETER_LIST = "<formal parameter list>";
     public static final String METHOD_DECLARATIONS = "<method declarations>";
     public static final String METHOD_DECLARATION = "<method declaration>";
-    public static final String FORMAL_PARAMETERS = "<formal parameters>";
     public static final String METHOD_BODY = "<method body>";
+
+    public static final String FORMAL_PARAMETERS = "<formal parameters>";
     public static final String FORMAL_PARAMETER = "<formal parameter>";
 
     public static final Production[] PRODUCTIONS = {
