@@ -8,6 +8,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.hua.production.*;
 
+import static org.liuyehcf.compile.engine.hua.production.Program.NORMAL_VOID;
 import static org.liuyehcf.compile.engine.hua.production.Program.PROGRAMS;
 import static org.liuyehcf.compile.engine.hua.production.Type.*;
 
@@ -40,7 +41,7 @@ public class GrammarDefinition {
     public static final String NORMAL_LARGE_LEFT_PARENTHESES = "{";
     public static final String NORMAL_LARGE_RIGHT_PARENTHESES = "}";
     public static final String NORMAL_ASSIGN = "=";
-    public static final String NORMAL_COMMA = "comma";
+    public static final String NORMAL_COMMA = ",";
     public static final String NORMAL_SEMICOLON = ";";
 
     public static final Grammar GRAMMAR = Grammar.create(
@@ -56,8 +57,14 @@ public class GrammarDefinition {
     public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES), ")")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES), "[")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES), "]")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES), "{")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES), "}")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_ASSIGN), "=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_COMMA), ",")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_SEMICOLON), ";")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_VOID), "void")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_INT), "int")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_FLOAT), "float")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN), "boolean")
