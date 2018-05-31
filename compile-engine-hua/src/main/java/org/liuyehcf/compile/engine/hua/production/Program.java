@@ -15,22 +15,31 @@ import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
  * @date 2018/5/31
  */
 public class Program {
+
+
+    /**
+     * 非终结符
+     */
     public static final String PROGRAMS = "<programs>";
     public static final String METHOD_DECLARATIONS = "<method declarations>";
-    public static final String FORMAL_PARAMETER_LIST = "<formal parameter list>";
-    public static final String VARIABLE_DECLARATORS = "<variable declarators>";
-    public static final String VARIABLE_DECLARATOR = "<variable declarator>";
-    public static final String VARIABLE_DECLARATOR_ID = "<variable declarator id>";
-    public static final String VARIABLE_INITIALIZER = "<variable initializer>";
-    public static final String METHOD_DECLARATION = "<method declaration>";
-    public static final String METHOD_HEADER = "<method header>";
-    public static final String RESULT_TYPE = "<result type>";
-    public static final String METHOD_DECLARATOR = "<method declarator>";
-    public static final String METHOD_BODY = "<method body>";
+    public static final String FORMAL_PARAMETER_LIST = "<formal parameter list>"; // 48
+    public static final String FORMAL_PARAMETER = "<formal parameter>"; // 50
+    public static final String VARIABLE_DECLARATORS = "<variable declarators>"; // 66
+    public static final String VARIABLE_DECLARATOR = "<variable declarator>"; // 68
+    public static final String VARIABLE_DECLARATOR_ID = "<variable declarator id>"; // 70
+    public static final String VARIABLE_INITIALIZER = "<variable initializer>"; // 72
+    public static final String METHOD_DECLARATION = "<method declaration>"; // 74
+    public static final String METHOD_HEADER = "<method header>"; // 76
+    public static final String RESULT_TYPE = "<result type>"; // 78
+    public static final String METHOD_DECLARATOR = "<method declarator>"; // 84
+    public static final String METHOD_BODY = "<method body>"; // 86
 
-    public static final String FORMAL_PARAMETER = "<formal parameter>";
 
+    /**
+     * 普通终结符
+     */
     public static final String NORMAL_VOID = "void";
+
 
     public static final Production[] PRODUCTIONS = {
             /*
@@ -79,7 +88,7 @@ public class Program {
 
 
             /*
-             * <formal parameter list>
+             * <formal parameter list> 48
              * SAME
              */
             Production.create(
@@ -109,7 +118,7 @@ public class Program {
 
 
             /*
-             * <formal parameter>
+             * <formal parameter> 50
              */
             Production.create(
                     /*
@@ -127,7 +136,7 @@ public class Program {
 
 
             /*
-             * <variable declarators>
+             * <variable declarators> 66
              * SAME
              */
             Production.create(
@@ -157,7 +166,7 @@ public class Program {
 
 
             /*
-             * <variable declarator>
+             * <variable declarator> 68
              * SAME
              */
             Production.create(
@@ -187,7 +196,7 @@ public class Program {
 
 
             /*
-             * <variable declarator id>
+             * <variable declarator id> 70
              * SAME
              */
             Production.create(
@@ -217,7 +226,7 @@ public class Program {
 
 
             /*
-             * <variable initializer>
+             * <variable initializer> 72
              */
             Production.create(
                     /*
@@ -235,7 +244,7 @@ public class Program {
 
 
             /*
-             * <method declaration>
+             * <method declaration> 74
              * SAME
              */
             Production.create(
@@ -254,7 +263,7 @@ public class Program {
 
 
             /*
-             * <method header>
+             * <method header> 76
              */
             Production.create(
                     /*
@@ -273,7 +282,7 @@ public class Program {
 
 
             /*
-             * <result type>
+             * <result type> 78
              * SAME
              */
             Production.create(
@@ -301,7 +310,7 @@ public class Program {
 
 
             /*
-             * <method declarator>
+             * <method declarator> 84
              * SAME
              */
             Production.create(
@@ -334,7 +343,8 @@ public class Program {
 
 
             /*
-             * <method body>
+             * <method body> 86
+             * SAME
              */
             Production.create(
                     /*
