@@ -30,9 +30,11 @@ public class Block {
     public static final String IF_THEN_STATEMENT = "<if then statement>"; // 164
     public static final String IF_THEN_ELSE_STATEMENT = "<if then else statement>"; // 166
     public static final String IF_THEN_ELSE_STATEMENT_NO_SHORT_IF = "<if then else statement no short if>"; // 168
+    public static final String WHILE_STATEMENT = "<while statement>"; // 182
 
     public static final String NORMAL_IF = "if";
     public static final String NORMAL_ELSE = "else";
+    public static final String NORMAL_WHILE = "while";
 
     public static final Production[] PRODUCTIONS = {
 
@@ -193,6 +195,16 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <statement> → <while statement>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(WHILE_STATEMENT)
                             )
                             , null
                     )
@@ -395,6 +407,28 @@ public class Block {
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
                                     Symbol.createTerminator(NORMAL_ELSE),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <while statement> 182
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <while statement> → while ( <expression> ) <statement>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(WHILE_STATEMENT),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_WHILE),
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(EXPRESSION),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(STATEMENT)
                             )
                             , null
                     )
