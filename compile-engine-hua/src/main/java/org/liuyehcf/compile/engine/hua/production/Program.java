@@ -366,7 +366,7 @@ public class Program {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(METHOD_BODY),
                             SymbolString.create(
-                                    Symbol.createTerminator(NORMAL_COMMA)
+                                    Symbol.createTerminator(NORMAL_SEMICOLON)
                             )
                             , null
                     )
