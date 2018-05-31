@@ -44,6 +44,7 @@ public class Program {
     public static final Production[] PRODUCTIONS = {
             /*
              * <programs>
+             * DIFFERENT
              */
             Production.create(
                     /*
@@ -61,6 +62,7 @@ public class Program {
 
             /*
              * <method declarations>
+             * DIFFERENT
              */
             Production.create(
                     /*
@@ -119,6 +121,7 @@ public class Program {
 
             /*
              * <formal parameter> 50
+             * SAME
              */
             Production.create(
                     /*

@@ -23,6 +23,7 @@ public class Expression {
     public static final Production[] PRODUCTIONS = {
             /*
              * <expression> 218
+             * SAME
              */
             Production.create(
                     /*
@@ -58,6 +59,7 @@ public class Expression {
 
             /*
              * <assignment> 222
+             * SAME
              */
             Production.create(
                     /*

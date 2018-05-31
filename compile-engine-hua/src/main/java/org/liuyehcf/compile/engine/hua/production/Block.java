@@ -30,6 +30,7 @@ public class Block {
 
             /*
              * <block> 139
+             * SAME
              */
             Production.create(
                     /*
@@ -60,6 +61,7 @@ public class Block {
 
             /*
              * <block statements> 140
+             * SAME
              */
             Production.create(
                     /*
@@ -88,6 +90,7 @@ public class Block {
 
             /*
              * <block statement> 142
+             * SAME
              */
             Production.create(
                     /*
@@ -115,6 +118,7 @@ public class Block {
 
             /*
              * <local variable declaration statement> 144
+             * SAME
              */
             Production.create(
                     /*
@@ -133,6 +137,7 @@ public class Block {
 
             /*
              * <local variable declaration> 146
+             * SAME
              */
             Production.create(
                     /*
@@ -217,6 +222,7 @@ public class Block {
             
             /*
              * <empty statement> 154
+             * SAME
              */
             Production.create(
                     /*
@@ -234,6 +240,7 @@ public class Block {
 
             /*
              * <expression statement> 160
+             * SAME
              */
             Production.create(
                     /*
