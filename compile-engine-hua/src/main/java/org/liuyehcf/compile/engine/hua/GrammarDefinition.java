@@ -12,6 +12,7 @@ import static org.liuyehcf.compile.engine.hua.production.Block.*;
 import static org.liuyehcf.compile.engine.hua.production.Expression.*;
 import static org.liuyehcf.compile.engine.hua.production.Program.NORMAL_VOID;
 import static org.liuyehcf.compile.engine.hua.production.Program.PROGRAMS;
+import static org.liuyehcf.compile.engine.hua.production.Token.*;
 import static org.liuyehcf.compile.engine.hua.production.Type.*;
 
 /**
@@ -111,6 +112,9 @@ public class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_BIT_REVERSED), "~")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_COMMA), ",")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SEMICOLON), ";")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_NUMBER_0), "0")
+            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_NON_ZERO_DIGIT), "[1-9]")
+            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_INTEGER_TYPE_SUFFIX), "l|L")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
             .build();
 

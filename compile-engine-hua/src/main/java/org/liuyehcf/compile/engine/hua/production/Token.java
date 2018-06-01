@@ -43,13 +43,12 @@ public class Token {
     public static final String STRING_CHARACTERS = "<string characters>"; // 350
     public static final String STRING_CHARACTER = "<string character>"; // 352
 
-    public static final String REGEX_INTEGER_TYPE_SUFFIX = "l|L";
-    public static final String REGEX_NON_ZERO_DIGIT = "[1-9]";
-    public static final String REGEX_HEX_DIGIT = "[0-9A-Fa-f]";
+    public static final String REGEX_NON_ZERO_DIGIT = "@nonZeroDigit";
+    public static final String REGEX_INTEGER_TYPE_SUFFIX = "@integerTypeSuffix";
 
     public static final String NORMAL_NUMBER_0 = "0";
-    public static final String NORMAL_CHAR_SMALL_X = "x";
-    public static final String NORMAL_CHAR_BIG_X = "X";
+    public static final String NORMAL_BOOLEAN_TRUE = "true";
+    public static final String NORMAL_BOOLEAN_FALSE = "false";
 
     public static final Production[] PRODUCTIONS = {
             /*
@@ -103,42 +102,12 @@ public class Token {
                             , null
                     ),
                     /*
-                     * <literal> → <floating-point literal>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(LITERAL),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(FLOATING_POINT_LITERAL)
-                            )
-                            , null
-                    ),
-                    /*
                      * <literal> → <boolean literal>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(LITERAL),
                             SymbolString.create(
                                     Symbol.createNonTerminator(BOOLEAN_LITERAL)
-                            )
-                            , null
-                    ),
-                    /*
-                     * <literal> → <character literal>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(LITERAL),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(CHARACTER_LITERAL)
-                            )
-                            , null
-                    ),
-                    /*
-                     * <literal> → <string literal>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(LITERAL),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(STRING_LITERAL)
                             )
                             , null
                     )
@@ -149,7 +118,6 @@ public class Token {
 
             /*
              * <integer literal> 302
-             * SAME
              */
             Production.create(
                     /*
@@ -161,27 +129,8 @@ public class Token {
                                     Symbol.createNonTerminator(DECIMAL_INTEGER_LITERAL)
                             )
                             , null
-                    ),
-                    /*
-                     * <integer literal> → <hex integer literal>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(INTEGER_LITERAL),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(HEX_INTEGER_LITERAL)
-                            )
-                            , null
-                    ),
-                    /*
-                     * <integer literal> → <octal integer literal>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(INTEGER_LITERAL),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(OCTAL_INTEGER_LITERAL)
-                            )
-                            , null
                     )
+                    // TODO
             ),
 
 
@@ -233,44 +182,6 @@ public class Token {
 
 
             /*
-             * <hex integer literal> 306
-             * SAME
-             */
-            Production.create(
-                    /*
-                     * <hex integer literal> → <hex numeral> <integer type suffix>?
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(HEX_INTEGER_LITERAL),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(HEX_NUMERAL),
-                                    Symbol.createNonTerminator(EPSILON_OR_INTEGER_TYPE_SUFFIX)
-                            )
-                            , null
-                    )
-            ),
-
-
-            /*
-             * <octal integer literal> 308
-             * SAME
-             */
-            Production.create(
-                    /*
-                     * <octal integer literal> → <octal numeral> <integer type suffix>?
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(OCTAL_INTEGER_LITERAL),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(OCTAL_NUMERAL),
-                                    Symbol.createNonTerminator(EPSILON_OR_INTEGER_TYPE_SUFFIX)
-                            )
-                            , null
-                    )
-            ),
-
-
-            /*
              * <integer type suffix> 310
              * SAME
              */
@@ -286,7 +197,6 @@ public class Token {
                             , null
                     )
             ),
-
 
             /*
              * <decimal numeral> 312
@@ -421,100 +331,30 @@ public class Token {
 
 
             /*
-             * <hex numeral> 320
+             * <boolean literal> 342
              * SAME
              */
             Production.create(
                     /*
-                     * <hex numeral> → 0 x <hex digit>
+                     * <boolean literal> → true
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(HEX_NUMERAL),
+                            Symbol.createNonTerminator(BOOLEAN_LITERAL),
                             SymbolString.create(
-                                    Symbol.createTerminator(NORMAL_NUMBER_0),
-                                    Symbol.createTerminator(NORMAL_CHAR_SMALL_X),
-                                    Symbol.createNonTerminator(HEX_DIGIT)
+                                    Symbol.createTerminator(NORMAL_BOOLEAN_TRUE)
                             )
                             , null
                     ),
                     /*
-                     * <hex numeral> → 0 X <hex digit>
+                     * <boolean literal> → false
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(HEX_NUMERAL),
+                            Symbol.createNonTerminator(BOOLEAN_LITERAL),
                             SymbolString.create(
-                                    Symbol.createTerminator(NORMAL_NUMBER_0),
-                                    Symbol.createTerminator(NORMAL_CHAR_BIG_X),
-                                    Symbol.createNonTerminator(HEX_DIGIT)
-                            )
-                            , null
-                    ),
-                    /*
-                     * <hex numeral> → <hex numeral> <hex digit>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(HEX_NUMERAL),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(HEX_NUMERAL),
-                                    Symbol.createNonTerminator(HEX_DIGIT)
-                            )
-                            , null
-                    )
-            ),
-
-
-            /*
-             * <hex digit> 322
-             * SAME
-             */
-            Production.create(
-                    /*
-                     * <hex digit> → 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | a | b | c | d | e | f | A | B | C | D | E | F
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(HEX_DIGIT),
-                            SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_HEX_DIGIT)
-                            )
-                            , null
-                    )
-            ),
-
-
-            /*
-             * <octal numeral> 324
-             */
-            Production.create(
-                    /*
-                     * <octal numeral> →
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(),
-                            SymbolString.create(
-
+                                    Symbol.createTerminator(NORMAL_BOOLEAN_FALSE)
                             )
                             , null
                     )
             )
-
-
-            /*
-             *  →
-             */
-
-            /*
-
-            Production.create(
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(),
-                            SymbolString.create(
-
-                            )
-                            , null
-                    )
-            )
-
-
-             */
     };
 }

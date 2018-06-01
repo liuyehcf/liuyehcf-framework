@@ -6,8 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
-import static org.liuyehcf.compile.engine.hua.production.Token.EXPRESSION_NAME;
-import static org.liuyehcf.compile.engine.hua.production.Token.METHOD_NAME;
+import static org.liuyehcf.compile.engine.hua.production.Token.*;
 import static org.liuyehcf.compile.engine.hua.production.Type.PRIMITIVE_TYPE;
 import static org.liuyehcf.compile.engine.hua.production.Type.REFERENCE_TYPE;
 
@@ -1076,6 +1075,16 @@ public class Expression {
              * <primary no new array> 272
              */
             Production.create(
+                    /*
+                     * <primary no new array> → <literal>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(PRIMARY_NO_NEW_ARRAY),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(LITERAL)
+                            )
+                            , null
+                    ),
                     /*
                      * <primary no new array> → ( <expression> )
                      */

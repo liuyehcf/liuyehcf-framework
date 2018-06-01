@@ -103,7 +103,26 @@ public class TestGrammar {
                     "}",
             "void func(){\n" +
                     "  int[] a = new int[c];\n" +
-                    "}"
+                    "}",
+            "void exchange(int[] nums, int i, int j) {\n" +
+                    "        int temp = nums[i];\n" +
+                    "        nums[i] = nums[j];\n" +
+                    "        nums[j] = temp;\n" +
+                    "    }",
+            "int partition(int[] nums, int lo, int hi) {\n" +
+                    "        int i = lo - 1;\n" +
+                    "        int pivot = nums[hi];\n" +
+                    "\n" +
+                    "        for (int j = lo; j < hi; j++) {\n" +
+                    "            if (nums[j] < pivot) {\n" +
+                    "                exchange(nums, ++i, j);\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "\n" +
+                    "        exchange(nums, ++i, hi);\n" +
+                    "\n" +
+                    "        return i;\n" +
+                    "    }"
     };
 
     private static final String[] WRONG_CASES = {
