@@ -99,7 +99,7 @@ public class TestGrammar {
                     "    }\n" +
                     "}",
             "void func(){\n" +
-                    "  int a=!a*b\\++c%--d+e-f<<1-->>2>>>~3++;\n" +
+                    "  int h = ++a * b++ / c-- % --d + e - f << g >> h >>> ~j;\n" +
                     "}",
             "void func(){\n" +
                     "  int[] a = new int[c];\n" +
@@ -156,4 +156,5 @@ public class TestGrammar {
         System.out.println(compilerLR1.getAnalysisTableMarkdownString());
         System.out.println(compilerLALR.getAnalysisTableMarkdownString());
     }
+
 }
