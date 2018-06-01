@@ -43,6 +43,7 @@ public class Expression {
     public static final String METHOD_INVOCATION = "<method invocation>"; // 266
     public static final String PRIMARY = "<primary>"; // 270
     public static final String PRIMARY_NO_NEW_ARRAY = "<primary no new array>"; // 272
+    public static final String EPSILON_OR_ARGUMENT_LIST = "<epsilon or argument list>"; // new
     public static final String ARGUMENT_LIST = "<argument list>"; // 276
     public static final String ARRAY_CREATION_EXPRESSION = "<array creation expression>"; // 278
     public static final String DIM_EXPRS = "<dim exprs>"; // 280
@@ -1034,12 +1035,40 @@ public class Expression {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_NAME),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
-                                    Symbol.createNonTerminator(ARGUMENT_LIST),
+                                    Symbol.createNonTerminator(EPSILON_OR_ARGUMENT_LIST),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             )
                             , null
                     )
                     // TODO
+            ),
+
+
+            /*
+             * <epsilon or argument list>
+             * DIFFERENT
+             */
+            Production.create(
+                    /*
+                     * <epsilon or argument list> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_ARGUMENT_LIST),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            )
+                            , null
+                    ),
+                    /*
+                     * <epsilon or argument list> → <argument list>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_ARGUMENT_LIST),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(ARGUMENT_LIST)
+                            )
+                            , null
+                    )
             ),
 
 

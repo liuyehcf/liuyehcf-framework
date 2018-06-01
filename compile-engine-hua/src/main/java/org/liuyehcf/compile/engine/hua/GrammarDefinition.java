@@ -12,13 +12,13 @@ import static org.liuyehcf.compile.engine.hua.production.Block.*;
 import static org.liuyehcf.compile.engine.hua.production.Expression.*;
 import static org.liuyehcf.compile.engine.hua.production.Program.NORMAL_VOID;
 import static org.liuyehcf.compile.engine.hua.production.Program.PROGRAMS;
-import static org.liuyehcf.compile.engine.hua.production.Token.NORMAL_NUMBER_0;
-import static org.liuyehcf.compile.engine.hua.production.Token.REGEX_NON_ZERO_DIGIT;
+import static org.liuyehcf.compile.engine.hua.production.Token.*;
 import static org.liuyehcf.compile.engine.hua.production.Type.*;
 
 /**
  * @author chenlu
  * @date 2018/5/28
+ * TODO 检查?语法；补全TODO；doSomething无法识别
  */
 public class GrammarDefinition {
 
@@ -62,6 +62,8 @@ public class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN), "boolean")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_NEW), "new")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_RETURN), "return")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_TRUE), "true")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_FALSE), "false")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES), ")")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES), "[")
