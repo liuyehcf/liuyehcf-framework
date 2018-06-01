@@ -8,6 +8,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.production.Token.EXPRESSION_NAME;
 import static org.liuyehcf.compile.engine.hua.production.Token.METHOD_NAME;
+import static org.liuyehcf.compile.engine.hua.production.Type.PRIMITIVE_TYPE;
+import static org.liuyehcf.compile.engine.hua.production.Type.REFERENCE_TYPE;
 
 /**
  * @author chenlu
@@ -45,7 +47,8 @@ public class Expression {
     public static final String ARGUMENT_LIST = "<argument list>"; // 276
     public static final String ARRAY_CREATION_EXPRESSION = "<array creation expression>"; // 278
     public static final String DIM_EXPRS = "<dim exprs>"; // 280
-    public static final String dim_expr = "<dim expr>"; // 282
+    public static final String DIM_EXPR = "<dim expr>"; // 282
+    public static final String EPSILON_OR_DIMS = "<epsilon or dims>"; // new
     public static final String DIMS = "<dims>"; // 284
     public static final String ARRAY_ACCESS = "<array access>"; // 286
 
@@ -85,6 +88,7 @@ public class Expression {
     public static final String NORMAL_DOUBLE_MINUS = "--";
     public static final String NORMAL_LOGICAL_NOT = "!";
     public static final String NORMAL_BIT_REVERSED = "~";
+    public static final String NORMAL_NEW = "new";
 
     public static final Production[] PRODUCTIONS = {
             /*
@@ -556,7 +560,7 @@ public class Expression {
                             Symbol.createNonTerminator(RELATIONAL_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION),
-                                    Symbol.createNonTerminator(NORMAL_LESS),
+                                    Symbol.createTerminator(NORMAL_LESS),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             )
                             , null
@@ -568,7 +572,7 @@ public class Expression {
                             Symbol.createNonTerminator(RELATIONAL_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION),
-                                    Symbol.createNonTerminator(NORMAL_LARGE),
+                                    Symbol.createTerminator(NORMAL_LARGE),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             )
                             , null
@@ -580,7 +584,7 @@ public class Expression {
                             Symbol.createNonTerminator(RELATIONAL_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION),
-                                    Symbol.createNonTerminator(NORMAL_LESS_EQUAL),
+                                    Symbol.createTerminator(NORMAL_LESS_EQUAL),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             )
                             , null
@@ -592,7 +596,7 @@ public class Expression {
                             Symbol.createNonTerminator(RELATIONAL_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION),
-                                    Symbol.createNonTerminator(NORMAL_LARGE_EQUAL),
+                                    Symbol.createTerminator(NORMAL_LARGE_EQUAL),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             )
                             , null
@@ -752,7 +756,41 @@ public class Expression {
 
 
             /*
-             * <unary expression>
+             * <cast expression> 250
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <cast expression> → ( <primitive type> ) <unary expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(CAST_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(PRIMITIVE_TYPE),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(UNARY_EXPRESSION)
+                            ),
+                            null
+                    ),
+                    /*
+                     * <cast expression> → ( <reference type> ) <unary expression not plus minus>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(CAST_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(REFERENCE_TYPE),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(UNARY_EXPRESSION_NOT_PLUS_MINUS)
+                            ),
+                            null
+                    )
+            ),
+
+
+            /*
+             * <unary expression> 252
              * SAME
              */
             Production.create(
@@ -1035,20 +1073,234 @@ public class Expression {
 
 
             /*
-             *
+             * <primary no new array>
              */
+            Production.create(
+                    /*
+                     * <primary no new array> → ( <expression> )
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(PRIMARY_NO_NEW_ARRAY),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(EXPRESSION),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <primary no new array> → <method invocation>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(PRIMARY_NO_NEW_ARRAY),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(METHOD_INVOCATION)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <primary no new array> → <array access>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(PRIMARY_NO_NEW_ARRAY),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(ARRAY_ACCESS)
+                            )
+                            , null
+                    )
+                    // TODO 可以扩展更为复杂的语法
+            ),
 
-//          Production.create(
-//                    /*
-//                     *  →
-//                     */
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(),
-//                            SymbolString.create(
-//
-//                            )
-//                            , null
-//                    )
-//            ),
+
+            /*
+             * <argument list> 276
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <argument list> → <expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(ARGUMENT_LIST),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(EXPRESSION)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <argument list> → <argument list> , <expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(ARGUMENT_LIST),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(ARGUMENT_LIST),
+                                    Symbol.createTerminator(NORMAL_COMMA),
+                                    Symbol.createNonTerminator(EXPRESSION)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <array creation expression> 278
+             */
+            Production.create(
+                    /*
+                     * <array creation expression> → new <primitive type> <dim exprs> <dims>?
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(ARRAY_CREATION_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_NEW),
+                                    Symbol.createNonTerminator(PRIMITIVE_TYPE),
+                                    Symbol.createNonTerminator(DIM_EXPRS),
+                                    Symbol.createNonTerminator(EPSILON_OR_DIMS)
+                            )
+                            , null
+                    )
+                    // TODO 可以扩展更为复杂的语法
+            ),
+
+
+            /*
+             * <epsilon or dims>
+             * DIFFERENT
+             */
+            Production.create(
+                    /*
+                     * <epsilon or dims> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_DIMS),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            )
+                            , null
+                    ),
+                    /*
+                     * <epsilon or dims> → <dims>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_DIMS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(DIMS)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <dim exprs> 280
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <dim exprs> → <dim expr>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(DIM_EXPRS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(DIM_EXPR)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <dim exprs> → <dim exprs> <dim expr>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(DIM_EXPRS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(DIM_EXPRS),
+                                    Symbol.createNonTerminator(DIM_EXPR)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <dim expr> 282
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <dim expr> → [ <expression> ]
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(DIM_EXPR),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(EXPRESSION),
+                                    Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <dims> 284
+             */
+            Production.create(
+                    /*
+                     * <dims> → [ ]
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(DIMS),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
+                                    Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <dims> → <dims> [ ]
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(DIMS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(DIMS),
+                                    Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
+                                    Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
+                            )
+                            , null
+                    )
+            ),
+
+
+            /*
+             * <array access> 286
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <array access> → <expression name> [ <expression> ]
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(ARRAY_ACCESS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(EXPRESSION_NAME),
+                                    Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(EXPRESSION),
+                                    Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <array access> → <primary no new array> [ <expression>]
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(ARRAY_ACCESS),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(PRIMARY_NO_NEW_ARRAY),
+                                    Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(EXPRESSION),
+                                    Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
+                            )
+                            , null
+                    )
+            ),
     };
 }
