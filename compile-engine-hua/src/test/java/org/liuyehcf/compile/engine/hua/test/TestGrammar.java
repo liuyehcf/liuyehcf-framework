@@ -117,12 +117,12 @@ public class TestGrammar {
                     "}"
     };
 
-    private LRCompiler compilerLR1;
+    private static LRCompiler compilerLR1;
 
-    private LRCompiler compilerLALR;
+    private static LRCompiler compilerLALR;
 
     @BeforeClass
-    public void init() {
+    public static void init() {
         long start, end;
         start = System.currentTimeMillis();
         compilerLR1 = LR1.create(GrammarDefinition.LEXICAL_ANALYZER, GrammarDefinition.GRAMMAR);
