@@ -22,14 +22,6 @@ import static org.liuyehcf.compile.engine.hua.production.Type.*;
 public class GrammarDefinition {
 
     /**
-     * 非终结符
-     */
-    public static final String ARRAY_INITIALIZER = "<array initializer>";
-    public static final String RETURN_STATEMENT = "<return statement>";
-
-    public static final String ARRAY_CREATION_EXPRESSION = "<array creation expression>";
-
-    /**
      * 正则表达式的终结符
      */
     public static final String REGEX_IDENTIFIER = "@identifier";
@@ -67,6 +59,7 @@ public class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_FLOAT), "float")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN), "boolean")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_NEW), "new")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_RETURN), "return")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES), ")")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES), "[")
@@ -114,7 +107,6 @@ public class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SEMICOLON), ";")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_NUMBER_0), "0")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_NON_ZERO_DIGIT), "[1-9]")
-            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_INTEGER_TYPE_SUFFIX), "l|L")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
             .build();
 

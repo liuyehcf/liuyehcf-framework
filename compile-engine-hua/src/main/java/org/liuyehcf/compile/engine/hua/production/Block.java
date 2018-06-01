@@ -6,8 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
-import static org.liuyehcf.compile.engine.hua.production.Expression.ASSIGNMENT;
-import static org.liuyehcf.compile.engine.hua.production.Expression.EXPRESSION;
+import static org.liuyehcf.compile.engine.hua.production.Expression.*;
 import static org.liuyehcf.compile.engine.hua.production.Program.VARIABLE_DECLARATORS;
 import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
 
@@ -39,11 +38,13 @@ public class Block {
     public static final String EPSILON_OR_FOR_UPDATE = "<epsilon or for update>"; // new
     public static final String FOR_UPDATE = "<for update>"; // 194
     public static final String STATEMENT_EXPRESSION_LIST = "<statement expression list>"; // 196
+    public static final String RETURN_STATEMENT = "<return statement>"; // 202
 
     public static final String NORMAL_IF = "if";
     public static final String NORMAL_ELSE = "else";
     public static final String NORMAL_WHILE = "while";
     public static final String NORMAL_FOR = "for";
+    public static final String NORMAL_RETURN = "return";
 
     public static final Production[] PRODUCTIONS = {
 
@@ -309,17 +310,17 @@ public class Block {
                                     Symbol.createNonTerminator(EXPRESSION_STATEMENT)
                             )
                             , null
+                    ),
+                    /*
+                     * <statement without trailing substatement> → <return statement>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(RETURN_STATEMENT)
+                            )
+                            , null
                     )
-//                    /*
-//                     * <statement without trailing substatement> → <return statement>
-//                     */
-//                    PrimaryProduction.create(
-//                            Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
-//                            SymbolString.create(
-//                                    Symbol.createNonTerminator(RETURN_STATEMENT)
-//                            )
-//                            , null
-//                    )
                     // TODO
             ),
 
@@ -372,6 +373,56 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(ASSIGNMENT)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <statement expression> → <preincrement expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(PREINCREMENT_EXPRESSION)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <statement expression> → <postincrement expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(POSTINCREMENT_EXPRESSION)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <statement expression> → <predecrement expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(PREDECREMENT_EXPRESSION)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <statement expression> → <postdecrement expression>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(POSTDECREMENT_EXPRESSION)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <statement expression> → <method invocation>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(METHOD_INVOCATION)
                             )
                             , null
                     )
@@ -655,5 +706,26 @@ public class Block {
                             , null
                     )
             ),
+
+
+            /*
+             * <return statement> 202
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <return statement> → return <expression>? ;
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(RETURN_STATEMENT),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_RETURN),
+                                    Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
+                                    Symbol.createTerminator(NORMAL_SEMICOLON)
+                            ),
+                            null
+                    )
+            )
     };
+
 }

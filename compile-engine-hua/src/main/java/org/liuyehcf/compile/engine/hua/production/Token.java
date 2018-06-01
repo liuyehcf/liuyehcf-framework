@@ -136,67 +136,66 @@ public class Token {
 
             /*
              * <decimal integer literal> 304
-             * SAME
+             * DIFFERENT  TODO 现在没法解决<integer type suffix>的问题，例如变量lo，词法分析器先解析l还是lo呢
              */
             Production.create(
                     /*
-                     * <decimal integer literal> → <decimal numeral> <integer type suffix>?
+                     * <decimal integer literal> → <decimal numeral>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(DECIMAL_INTEGER_LITERAL),
                             SymbolString.create(
-                                    Symbol.createNonTerminator(DECIMAL_NUMERAL),
-                                    Symbol.createNonTerminator(EPSILON_OR_INTEGER_TYPE_SUFFIX)
+                                    Symbol.createNonTerminator(DECIMAL_NUMERAL)
                             )
                             , null
                     )
             ),
 
 
-            /*
-             * <epsilon or integer type suffix>
-             * DIFFERENT
-             */
-            Production.create(
-                    /*
-                     * <epsilon or integer type suffix> → ε
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(EPSILON_OR_INTEGER_TYPE_SUFFIX),
-                            SymbolString.create(
-                                    Symbol.EPSILON
-                            )
-                            , null
-                    ),
-                    /*
-                     * <epsilon or integer type suffix> → <integer type suffix>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(EPSILON_OR_INTEGER_TYPE_SUFFIX),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(INTEGER_TYPE_SUFFIX)
-                            )
-                            , null
-                    )
-            ),
+//            /*
+//             * <epsilon or integer type suffix>
+//             * DIFFERENT
+//             */
+//            Production.create(
+//                    /*
+//                     * <epsilon or integer type suffix> → ε
+//                     */
+//                    PrimaryProduction.create(
+//                            Symbol.createNonTerminator(EPSILON_OR_INTEGER_TYPE_SUFFIX),
+//                            SymbolString.create(
+//                                    Symbol.EPSILON
+//                            )
+//                            , null
+//                    ),
+//                    /*
+//                     * <epsilon or integer type suffix> → <integer type suffix>
+//                     */
+//                    PrimaryProduction.create(
+//                            Symbol.createNonTerminator(EPSILON_OR_INTEGER_TYPE_SUFFIX),
+//                            SymbolString.create(
+//                                    Symbol.createNonTerminator(INTEGER_TYPE_SUFFIX)
+//                            )
+//                            , null
+//                    )
+//            ),
 
 
-            /*
-             * <integer type suffix> 310
-             * SAME
-             */
-            Production.create(
-                    /*
-                     * <integer type suffix> → l | L
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(INTEGER_TYPE_SUFFIX),
-                            SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_INTEGER_TYPE_SUFFIX)
-                            )
-                            , null
-                    )
-            ),
+//            /*
+//             * <integer type suffix> 310
+//             * SAME
+//             */
+//            Production.create(
+//                    /*
+//                     * <integer type suffix> → l | L
+//                     */
+//                    PrimaryProduction.create(
+//                            Symbol.createNonTerminator(INTEGER_TYPE_SUFFIX),
+//                            SymbolString.create(
+//                                    Symbol.createRegexTerminator(REGEX_INTEGER_TYPE_SUFFIX)
+//                            )
+//                            , null
+//                    )
+//            ),
 
             /*
              * <decimal numeral> 312
