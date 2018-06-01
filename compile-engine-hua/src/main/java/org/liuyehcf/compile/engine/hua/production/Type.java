@@ -113,6 +113,7 @@ public class Type {
 
             /*
              * <integral type> 124
+             * LACK
              */
             Production.create(
                     /*
@@ -137,6 +138,7 @@ public class Type {
 
             /*
              * <floating-point type> 126
+             * LACK
              */
             Production.create(
                     /*
@@ -158,6 +160,7 @@ public class Type {
 
             /*
              * <reference type> 128
+             * LACK
              */
             Production.create(
                     /*

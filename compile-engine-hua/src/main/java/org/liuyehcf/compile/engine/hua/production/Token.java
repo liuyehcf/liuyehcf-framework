@@ -53,6 +53,7 @@ public class Token {
     public static final Production[] PRODUCTIONS = {
             /*
              * <expression name> 294
+             * LACK
              */
             Production.create(
                     /*
@@ -74,6 +75,7 @@ public class Token {
 
             /*
              * <method name> 296
+             * LACK
              */
             Production.create(
                     /*
@@ -95,6 +97,7 @@ public class Token {
 
             /*
              * <literal> 300
+             * LACK
              */
             Production.create(
                     /*
@@ -130,6 +133,7 @@ public class Token {
 
             /*
              * <integer literal> 302
+             * LACK
              */
             Production.create(
                     /*

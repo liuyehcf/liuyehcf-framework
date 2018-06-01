@@ -231,6 +231,7 @@ public class Program {
 
             /*
              * <variable initializer> 72
+             * LACK
              */
             Production.create(
                     /*
