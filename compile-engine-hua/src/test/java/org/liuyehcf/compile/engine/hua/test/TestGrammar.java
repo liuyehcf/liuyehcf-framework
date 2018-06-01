@@ -99,7 +99,10 @@ public class TestGrammar {
                     "    }\n" +
                     "}",
             "void func(){\n" +
-                    "  int[] a=new int[5];\n" +
+                    "  int a=!a*b\\++c%--d+e-f<<1-->>2>>>~3++;\n" +
+                    "}",
+            "void func(){\n" +
+                    "  int[] a = new int[c];\n" +
                     "}"
     };
 
@@ -138,7 +141,6 @@ public class TestGrammar {
     @Test
     public void testCase1() {
         for (String rightCase : RIGHT_CASES) {
-            System.out.println(rightCase);
             assertTrue(compilerLR1.compile(rightCase).isSuccess());
             assertTrue(compilerLALR.compile(rightCase).isSuccess());
         }
