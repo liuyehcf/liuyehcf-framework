@@ -97,6 +97,9 @@ public class TestGrammar {
                     "        }\n" +
                     "      }\n" +
                     "    }\n" +
+                    "}",
+            "void func(){\n" +
+                    "  int[] a=new int[5];\n" +
                     "}"
     };
 
@@ -117,8 +120,17 @@ public class TestGrammar {
 
     @Before
     public void init() {
+        long start, end;
+        start = System.currentTimeMillis();
         compilerLR1 = LR1.create(GrammarDefinition.LEXICAL_ANALYZER, GrammarDefinition.GRAMMAR);
+        end = System.currentTimeMillis();
+        System.out.println("build LR1 consume " + (end - start) / 1000 + "s");
+
+        start = System.currentTimeMillis();
         compilerLALR = LALR1.create(GrammarDefinition.LEXICAL_ANALYZER, GrammarDefinition.GRAMMAR);
+        end = System.currentTimeMillis();
+        System.out.println("build LALR1 consume " + (end - start) / 1000 + "s");
+
         assertTrue(compilerLR1.isLegal());
         assertTrue(compilerLALR.isLegal());
     }
@@ -126,6 +138,7 @@ public class TestGrammar {
     @Test
     public void testCase1() {
         for (String rightCase : RIGHT_CASES) {
+            System.out.println(rightCase);
             assertTrue(compilerLR1.compile(rightCase).isSuccess());
             assertTrue(compilerLALR.compile(rightCase).isSuccess());
         }
