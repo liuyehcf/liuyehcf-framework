@@ -125,7 +125,7 @@ public class Type {
                             )
                             , null
                     )
-                    // TODO 可以扩展更为复杂的语法
+                    // TODO
             ),
 
 
@@ -143,7 +143,7 @@ public class Type {
                             )
                             , null
                     )
-                    // TODO 可以扩展更为复杂的语法
+                    // TODO
             ),
 
 
@@ -161,7 +161,7 @@ public class Type {
                             )
                             , null
                     )
-                    // TODO 可以扩展更为复杂的语法
+                    // TODO
             ),
 
 
@@ -181,7 +181,7 @@ public class Type {
                             )
                             , null
                     )
-                    // TODO 可以扩展更为复杂的语法
+                    // TODO
             ),
     };
 }
