@@ -12,7 +12,8 @@ import static org.liuyehcf.compile.engine.hua.production.Block.*;
 import static org.liuyehcf.compile.engine.hua.production.Expression.*;
 import static org.liuyehcf.compile.engine.hua.production.Program.NORMAL_VOID;
 import static org.liuyehcf.compile.engine.hua.production.Program.PROGRAMS;
-import static org.liuyehcf.compile.engine.hua.production.Token.*;
+import static org.liuyehcf.compile.engine.hua.production.Token.NORMAL_NUMBER_0;
+import static org.liuyehcf.compile.engine.hua.production.Token.REGEX_NON_ZERO_DIGIT;
 import static org.liuyehcf.compile.engine.hua.production.Type.*;
 
 /**
@@ -54,6 +55,7 @@ public class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_ELSE), "else")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_WHILE), "while")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_FOR), "for")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_DO), "do")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_VOID), "void")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_INT), "int")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_FLOAT), "float")

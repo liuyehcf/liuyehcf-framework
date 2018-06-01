@@ -31,7 +31,10 @@ public class Block {
     public static final String IF_THEN_ELSE_STATEMENT = "<if then else statement>"; // 166
     public static final String IF_THEN_ELSE_STATEMENT_NO_SHORT_IF = "<if then else statement no short if>"; // 168
     public static final String WHILE_STATEMENT = "<while statement>"; // 182
+    public static final String WHILE_STATEMENT_NO_SHORT_IF = "<while statement no short if>"; // 184
+    public static final String DO_STATEMENT = "<do statement>"; // 186
     public static final String FOR_STATEMENT = "<for statement>"; // 188
+    public static final String FOR_STATEMENT_NO_SHORT_IF = "<for statement no short if>"; // 190
     public static final String EPSILON_OR_FOR_INIT = "<epsilon or for init>"; // new
     public static final String FOR_INIT = "<for init>"; // 192
     public static final String EPSILON_OR_EXPRESSION = "<epsilon or expression>"; // new
@@ -44,6 +47,7 @@ public class Block {
     public static final String NORMAL_ELSE = "else";
     public static final String NORMAL_WHILE = "while";
     public static final String NORMAL_FOR = "for";
+    public static final String NORMAL_DO = "do";
     public static final String NORMAL_RETURN = "return";
 
     public static final Production[] PRODUCTIONS = {
@@ -272,8 +276,31 @@ public class Block {
                                     Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT_NO_SHORT_IF)
                             )
                             , null
+                    ),
+                    /*
+                     * <statement no short if> → <while statement no short if>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(WHILE_STATEMENT_NO_SHORT_IF)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <statement no short if> → <for statement no short if>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(FOR_STATEMENT_NO_SHORT_IF)
+                            )
+                            , null
                     )
-                    // TODO 可修改
+                    /*
+                     * TODO 缺少以下产生式
+                     * <statement no short if> → <labeled statement no short if>
+                     */
             ),
 
 
@@ -308,6 +335,16 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_STATEMENT)
+                            )
+                            , null
+                    ),
+                    /*
+                     * <statement without trailing substatement> → <do statement>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(DO_STATEMENT)
                             )
                             , null
                     ),
@@ -523,6 +560,52 @@ public class Block {
 
 
             /*
+             * <while statement no short if> 184
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <while statement no short if> → while ( <expression> ) <statement no short if>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(WHILE_STATEMENT_NO_SHORT_IF),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_WHILE),
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(EXPRESSION),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
+                            ),
+                            null
+                    )
+            ),
+
+
+            /*
+             * <do statement> 186
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <do statement> → do <statement> while ( <expression> ) ;
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(DO_STATEMENT),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_DO),
+                                    Symbol.createNonTerminator(STATEMENT),
+                                    Symbol.createTerminator(NORMAL_WHILE),
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(EXPRESSION),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createTerminator(NORMAL_SEMICOLON)
+                            ),
+                            null
+                    )
+            ),
+
+
+            /*
              * <for statement> 188
              * SAME
              */
@@ -628,6 +711,32 @@ public class Block {
                                     Symbol.createNonTerminator(FOR_UPDATE)
                             )
                             , null
+                    )
+            ),
+
+
+            /*
+             * <for statement no short if> 190
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * <for statement no short if> → for ( <for init>? ; <expression>? ; <for update>? ) <statement no short if>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FOR_STATEMENT_NO_SHORT_IF),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_FOR),
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
+                                    Symbol.createTerminator(NORMAL_SEMICOLON),
+                                    Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
+                                    Symbol.createTerminator(NORMAL_SEMICOLON),
+                                    Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
+                            ),
+                            null
                     )
             ),
 
