@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.test;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.liuyehcf.compile.engine.core.cfg.lr.LALR1;
 import org.liuyehcf.compile.engine.core.cfg.lr.LR1;
@@ -121,7 +121,7 @@ public class TestGrammar {
 
     private LRCompiler compilerLALR;
 
-    @Before
+    @BeforeClass
     public void init() {
         long start, end;
         start = System.currentTimeMillis();

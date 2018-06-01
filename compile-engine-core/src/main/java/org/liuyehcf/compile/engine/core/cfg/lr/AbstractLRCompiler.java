@@ -182,7 +182,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
         for (Symbol symbol : analysisTerminators) {
             sb.append(separator)
                     .append(' ')
-                    .append(symbol)
+                    .append(wrapMarkdownKeywords(symbol.toString()))
                     .append(' ');
         }
 
@@ -192,7 +192,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
             }
             sb.append(separator)
                     .append(' ')
-                    .append(symbol)
+                    .append(wrapMarkdownKeywords(symbol.toString()))
                     .append(' ');
         }
 
@@ -231,14 +231,14 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
                         if (nodeTransferOperation.getOperator() == NodeTransferOperation.OperationCode.ACCEPT
                                 || nodeTransferOperation.getOperator() == NodeTransferOperation.OperationCode.REDUCTION) {
                             sb.append(' ')
-                                    .append(nodeTransferOperation.getOperator())
+                                    .append(wrapMarkdownKeywords(nodeTransferOperation.getOperator().toString()))
                                     .append(" \"")
-                                    .append(nodeTransferOperation.getPrimaryProduction())
+                                    .append(wrapMarkdownKeywords(nodeTransferOperation.getPrimaryProduction().toString()))
                                     .append('\"')
                                     .append(" /");
                         } else {
                             sb.append(' ')
-                                    .append(nodeTransferOperation.getOperator())
+                                    .append(wrapMarkdownKeywords(nodeTransferOperation.getOperator().toString()))
                                     .append(" \"")
                                     .append(nodeTransferOperation.getNextClosureId())
                                     .append('\"')
@@ -254,6 +254,13 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
         }
 
         return sb.toString();
+    }
+
+    private String wrapMarkdownKeywords(String s) {
+        s = s.replaceAll("\\|", "\\\\|");
+        s = s.replaceAll("<", "\\\\<");
+        s = s.replaceAll(">", "\\\\>");
+        return s;
     }
 
     @Override
