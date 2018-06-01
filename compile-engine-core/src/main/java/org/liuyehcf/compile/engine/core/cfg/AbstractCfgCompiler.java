@@ -316,21 +316,7 @@ public abstract class AbstractCfgCompiler implements CfgCompiler {
             sb.append("\"terminator\":");
             sb.append('{');
 
-            for (Symbol terminator : this.grammar.getTerminators()) {
-                sb.append('\"').append(terminator).append("\":");
-                sb.append('\"');
-
-                AssertUtils.assertFalse(map.get(terminator).isEmpty());
-
-                for (Symbol firstSymbol : map.get(terminator)) {
-                    sb.append(firstSymbol).append(',');
-                }
-
-                sb.setLength(sb.length() - 1);
-
-                sb.append('\"');
-                sb.append(',');
-            }
+            appendAttr(sb, map, this.grammar.getTerminators());
 
             AssertUtils.assertFalse(this.grammar.getTerminators().isEmpty());
             sb.setLength(sb.length() - 1);
@@ -345,21 +331,7 @@ public abstract class AbstractCfgCompiler implements CfgCompiler {
         sb.append("\"nonTerminator\":");
         sb.append('{');
 
-        for (Symbol nonTerminator : this.grammar.getNonTerminators()) {
-            sb.append('\"').append(nonTerminator).append("\":");
-            sb.append('\"');
-
-            AssertUtils.assertFalse(map.get(nonTerminator).isEmpty());
-
-            for (Symbol firstSymbol : map.get(nonTerminator)) {
-                sb.append(firstSymbol).append(',');
-            }
-
-            sb.setLength(sb.length() - 1);
-
-            sb.append('\"');
-            sb.append(',');
-        }
+        appendAttr(sb, map, this.grammar.getNonTerminators());
 
         AssertUtils.assertFalse(this.grammar.getNonTerminators().isEmpty());
         sb.setLength(sb.length() - 1);
@@ -368,6 +340,24 @@ public abstract class AbstractCfgCompiler implements CfgCompiler {
         sb.append('}');
 
         return sb.toString();
+    }
+
+    private void appendAttr(StringBuilder sb, Map<Symbol, Set<Symbol>> map, Set<Symbol> symbols) {
+        for (Symbol symbol : symbols) {
+            sb.append('\"').append(symbol).append("\":");
+            sb.append('\"');
+
+            AssertUtils.assertFalse(map.get(symbol).isEmpty());
+
+            for (Symbol firstSymbol : map.get(symbol)) {
+                sb.append(firstSymbol).append(',');
+            }
+
+            sb.setLength(sb.length() - 1);
+
+            sb.append('\"');
+            sb.append(',');
+        }
     }
 
     @Override
