@@ -9,6 +9,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.hua.production.*;
 
 import static org.liuyehcf.compile.engine.hua.production.Block.*;
+import static org.liuyehcf.compile.engine.hua.production.Expression.*;
 import static org.liuyehcf.compile.engine.hua.production.Program.NORMAL_VOID;
 import static org.liuyehcf.compile.engine.hua.production.Program.PROGRAMS;
 import static org.liuyehcf.compile.engine.hua.production.Type.*;
@@ -67,6 +68,17 @@ public class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_WHILE), "while")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_FOR), "for")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_ASSIGN), "=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_MUL_ASSIGN), "*=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_DIV_ASSIGN), "/=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_MOD_ASSIGN), "%=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_ADD_ASSIGN), "+=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_MINUS_ASSIGN), "-=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_LEFT_SHIFT_ASSIGN), "<<=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_RIGHT_SHIFT_SIGNED_ASSIGN), ">>=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_RIGHT_SHIFT_UNSIGNED_ASSIGN), ">>>=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_BIT_AND_ASSIGN), "&=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_BIT_EXCLUSIVE_OR_ASSIGN), "^=")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_BIT_OR_ASSIGN), "|=")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_COMMA), ",")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SEMICOLON), ";")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_VOID), "void")
