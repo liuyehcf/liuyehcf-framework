@@ -268,11 +268,11 @@ public class Program {
 
             /*
              * <method header> 76
+             * DIFFERENT
              */
             Production.create(
                     /*
                      * <method header> → <result type> <method declarator>
-                     * TODO 可扩展
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(METHOD_HEADER),

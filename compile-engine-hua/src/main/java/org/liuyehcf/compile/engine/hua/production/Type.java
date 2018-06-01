@@ -167,6 +167,7 @@ public class Type {
 
             /*
              * <array type> 136
+             * SAME
              */
             Production.create(
                     /*
@@ -181,7 +182,6 @@ public class Type {
                             )
                             , null
                     )
-                    // TODO
             ),
     };
 }
