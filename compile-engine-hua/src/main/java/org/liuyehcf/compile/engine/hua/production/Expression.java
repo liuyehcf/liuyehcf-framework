@@ -408,7 +408,7 @@ public class Expression {
 
 
             /*
-             * <inclusive or expression> // 234
+             * <inclusive or expression> 234
              * SAME
              */
             Production.create(
@@ -1073,7 +1073,7 @@ public class Expression {
 
 
             /*
-             * <primary no new array>
+             * <primary no new array> 272
              */
             Production.create(
                     /*
@@ -1242,6 +1242,7 @@ public class Expression {
 
             /*
              * <dims> 284
+             * SAME
              */
             Production.create(
                     /*
