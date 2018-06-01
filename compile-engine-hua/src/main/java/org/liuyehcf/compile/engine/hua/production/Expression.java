@@ -182,7 +182,10 @@ public class Expression {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <left hand side> → <field access>
+                     */
             ),
 
 
@@ -601,7 +604,10 @@ public class Expression {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <relational expression> → <relational expression> instanceof <reference type>
+                     */
             ),
 
 
@@ -1040,7 +1046,11 @@ public class Expression {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <method invocation> → <primary> . <identifier> ( <argument list>? )
+                     * <method invocation> → super . <identifier> ( <argument list>? )
+                     */
             ),
 
 
@@ -1146,7 +1156,12 @@ public class Expression {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <primary no new array> → this
+                     * <primary no new array> → <class instance creation expression>
+                     * <primary no new array> → <field access>
+                     */
             ),
 
 
@@ -1197,7 +1212,10 @@ public class Expression {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <array creation expression> → new <class or interface type> <dim exprs> <dims>?
+                     */
             ),
 
 

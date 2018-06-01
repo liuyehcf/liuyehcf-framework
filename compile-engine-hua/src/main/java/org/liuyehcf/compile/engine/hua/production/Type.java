@@ -125,7 +125,13 @@ public class Type {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <integral type> → byte
+                     * <integral type> → short
+                     * <integral type> → long
+                     * <integral type> → char
+                     */
             ),
 
 
@@ -143,7 +149,10 @@ public class Type {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <floating-point type> → double
+                     */
             ),
 
 
@@ -161,7 +170,10 @@ public class Type {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <reference type> → <class or interface type>
+                     */
             ),
 
 

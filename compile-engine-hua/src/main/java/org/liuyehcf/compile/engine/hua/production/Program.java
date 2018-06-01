@@ -243,7 +243,10 @@ public class Program {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <variable initializer> → <array initializer>
+                     */
             ),
 
 

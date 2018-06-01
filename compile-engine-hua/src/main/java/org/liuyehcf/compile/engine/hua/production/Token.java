@@ -65,7 +65,10 @@ public class Token {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <expression name> → <ambiguous name> . @identifier
+                     */
             ),
 
 
@@ -83,7 +86,10 @@ public class Token {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <method name> → <ambiguous name>. @identifier
+                     */
             ),
 
 
@@ -111,7 +117,13 @@ public class Token {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <literal> → <floating-point literal>
+                     * <literal> → <character literal>
+                     * <literal> → <string literal>
+                     * <literal> → <null literal>
+                     */
 
             ),
 
@@ -130,7 +142,11 @@ public class Token {
                             )
                             , null
                     )
-                    // TODO
+                    /*
+                     * TODO 缺少以下产生式
+                     * <integer literal> → <hex integer literal>
+                     * <integer literal> → <octal integer literal>
+                     */
             ),
 
 
