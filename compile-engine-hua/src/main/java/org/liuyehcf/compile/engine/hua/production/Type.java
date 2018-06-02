@@ -7,8 +7,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_LEFT_PARENTHESES;
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_RIGHT_PARENTHESES;
-import static org.liuyehcf.compile.engine.hua.action.TypeAction.ACTION_122_1;
-import static org.liuyehcf.compile.engine.hua.action.TypeAction.ACTION_124_3;
+import static org.liuyehcf.compile.engine.hua.action.TypeAction.*;
 
 /**
  * @author hechenfeng
@@ -35,17 +34,17 @@ public class Type {
              */
             Production.create(
                     /*
-                     * <type> → <primitive type>
+                     * (1) <type> → <primitive type>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(TYPE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(PRIMITIVE_TYPE)
                             )
-                            , null
+                            , ACTION_119_1
                     ),
                     /*
-                     * <type> → <primitive type>
+                     * (2) <type> → <reference type>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(TYPE),
@@ -63,24 +62,24 @@ public class Type {
              */
             Production.create(
                     /*
-                     * <primitive type> → <numeric type>
+                     * (1) <primitive type> → <numeric type>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(PRIMITIVE_TYPE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(NUMERIC_TYPE)
                             )
-                            , null
+                            , ACTION_120_1
                     ),
                     /*
-                     * <primitive type> → boolean
+                     * (2) <primitive type> → boolean
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(PRIMITIVE_TYPE),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN)
                             )
-                            , null
+                            , ACTION_120_2
                     )
             ),
 

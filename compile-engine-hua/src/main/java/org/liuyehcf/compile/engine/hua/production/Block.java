@@ -163,7 +163,7 @@ public class Block {
              */
             Production.create(
                     /*
-                     * <local variable declaration statement> → <local variable declaration> ;
+                     * (1) <local variable declaration statement> → <local variable declaration> ;
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION_STATEMENT),
