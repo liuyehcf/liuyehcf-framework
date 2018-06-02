@@ -9,6 +9,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
 import org.liuyehcf.compile.engine.hua.semantic.SetAttr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
@@ -32,24 +33,42 @@ public class HuaCompiler extends LALR {
 
     @Override
     protected Engine createCompiler(String input) {
-        return new Engine(input) {
-            @Override
-            protected void action(PrimaryProduction ppReduction, List<SyntaxNode> syntaxNodes) {
-                List<AbstractSemanticAction> semanticActions = ppReduction.getSemanticActions();
-                if (semanticActions == null) {
-                    return;
-                }
+        return new HuaEngine(input);
+    }
 
-                for (AbstractSemanticAction semanticAction : semanticActions) {
-                    if (semanticAction instanceof SetAttr) {
-                        processSetSynAttr(syntaxNodes, (SetAttr) semanticAction);
-                    } else if (semanticAction instanceof AssignAttr) {
-                        processCopySynAttr(syntaxNodes, (AssignAttr) semanticAction);
-                    }
+    private class HuaEngine extends Engine {
+
+        /**
+         * 栈顶指针
+         */
+        private int top = 0;
+
+        /**
+         * 语法树节点栈
+         */
+        List<SyntaxNode> stack = new ArrayList<>();
+
+        public HuaEngine(String input) {
+            super(input);
+        }
+
+        @Override
+        protected void action(PrimaryProduction ppReduction, List<SyntaxNode> syntaxNodes) {
+            List<AbstractSemanticAction> semanticActions = ppReduction.getSemanticActions();
+            if (semanticActions == null) {
+                return;
+            }
+
+            for (AbstractSemanticAction semanticAction : semanticActions) {
+                if (semanticAction instanceof SetAttr) {
+                    processSetSynAttr(syntaxNodes, (SetAttr) semanticAction);
+                } else if (semanticAction instanceof AssignAttr) {
+                    processCopySynAttr(syntaxNodes, (AssignAttr) semanticAction);
                 }
             }
-        };
+        }
     }
+
 
     private static void processSetSynAttr(List<SyntaxNode> syntaxNodes, SetAttr semanticAction) {
         int pos = semanticAction.getPos();

@@ -324,7 +324,7 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
             Symbol firstSymbol = symbols.get(0);
 
             // 跳过非平凡前缀
-            if (firstSymbol.equals(Symbol.EPSILON)) {
+            if (Symbol.EPSILON.equals(firstSymbol)) {
                 continue;
             }
 

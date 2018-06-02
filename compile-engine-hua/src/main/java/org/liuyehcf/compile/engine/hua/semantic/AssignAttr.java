@@ -8,7 +8,10 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  */
 public class AssignAttr extends AbstractSemanticAction {
     /**
-     * 源属性-偏移量（相对于产生式，从产生式左部为0，产生式右部为1、2、3...）
+     * 源属性-偏移量，相对于语法树栈
+     * '0'  表示栈顶
+     * '-1' 表示栈次顶，以此类推
+     * '1' 表示即将入栈的元素，以此类推
      */
     private final int fromPos;
 
@@ -18,7 +21,10 @@ public class AssignAttr extends AbstractSemanticAction {
     private final String fromAttrName;
 
     /**
-     * 宿属性-偏移量（相对于产生式，从产生式左部为0，产生式右部为1、2、3...）
+     * 宿属性-偏移量，相对于语法树栈
+     * '0'  表示栈顶
+     * '-1' 表示栈次顶，以此类推
+     * '1' 表示即将入栈的元素，以此类推
      */
     private final int toPos;
 

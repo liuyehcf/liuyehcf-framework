@@ -321,7 +321,7 @@ public class LL1 extends AbstractCfgCompiler implements LLCompiler {
 
                     if (symbol.isTerminator()) {
                         // 若当前符号是ε则不消耗token
-                        if (!symbol.equals(Symbol.EPSILON)) {
+                        if (!Symbol.EPSILON.equals(symbol)) {
 
                             if (tokenId == null) {
                                 throw new CompilerException();

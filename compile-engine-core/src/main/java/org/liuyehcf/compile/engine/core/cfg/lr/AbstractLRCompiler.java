@@ -962,7 +962,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
 
             LinkedList<SyntaxNode> rights = new LinkedList<>();
             // 如果是形如 "A → ε"这样的产生式，那么特殊处理一下（不进行出栈操作）
-            if (!ppReduction.getRight().equals(SymbolString.EPSILON_RAW)) {
+            if (!SymbolString.EPSILON_RAW.equals(ppReduction.getRight())) {
                 for (int i = 0; i < ppReduction.getRight().getSymbols().size(); i++) {
                     statusStack.pop();
                     rights.addFirst(nodeStack.pop());

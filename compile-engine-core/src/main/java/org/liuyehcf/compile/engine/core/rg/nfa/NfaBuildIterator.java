@@ -148,25 +148,25 @@ public class NfaBuildIterator {
         AssertUtils.assertTrue(getCurSymbol().isTerminator());
         Symbol curSymbol = getCurSymbol();
 
-        if (curSymbol.equals(SymbolUtils.ANY)) {
+        if (SymbolUtils.ANY.equals(curSymbol)) {
             processWhenEncounteredAny();
-        } else if (curSymbol.equals(SymbolUtils.OR)) {
+        } else if (SymbolUtils.OR.equals(curSymbol)) {
             processWhenEncounteredOr();
-        } else if (curSymbol.equals(SymbolUtils.UN_KNOW)) {
+        } else if (SymbolUtils.UN_KNOW.equals(curSymbol)) {
             processWhenEncounteredUnKnow();
-        } else if (curSymbol.equals(SymbolUtils.STAR)) {
+        } else if (SymbolUtils.STAR.equals(curSymbol)) {
             processWhenEncounteredStar();
-        } else if (curSymbol.equals(SymbolUtils.ADD)) {
+        } else if (SymbolUtils.ADD.equals(curSymbol)) {
             processWhenEncounteredAdd();
-        } else if (curSymbol.equals(SymbolUtils.LEFT_BIG_PARENTHESIS)) {
+        } else if (SymbolUtils.LEFT_BIG_PARENTHESIS.equals(curSymbol)) {
             processWhenEncounteredLeftBigParenthesis();
-        } else if (curSymbol.equals(SymbolUtils.ESCAPED)) {
+        } else if (SymbolUtils.ESCAPED.equals(curSymbol)) {
             processWhenEncounteredEscaped();
-        } else if (curSymbol.equals(SymbolUtils.LEFT_MIDDLE_PARENTHESIS)) {
+        } else if (SymbolUtils.LEFT_MIDDLE_PARENTHESIS.equals(curSymbol)) {
             processWhenEncounteredLeftMiddleParenthesis();
-        } else if (curSymbol.equals(SymbolUtils.LEFT_SMALL_PARENTHESIS)) {
+        } else if (SymbolUtils.LEFT_SMALL_PARENTHESIS.equals(curSymbol)) {
             processWhenEncounteredLeftSmallParenthesis();
-        } else if (curSymbol.equals(SymbolUtils.RIGHT_SMALL_PARENTHESIS)) {
+        } else if (SymbolUtils.RIGHT_SMALL_PARENTHESIS.equals(curSymbol)) {
             processWhenEncounteredRightSmallParenthesis();
         } else {
             processWhenEncounteredNormalSymbol();
@@ -512,7 +512,7 @@ public class NfaBuildIterator {
         Integer leftNumber = null, rightNumber = null;
 
         StringBuilder sb = new StringBuilder();
-        while (!getCurSymbol().equals(SymbolUtils.RIGHT_BIG_PARENTHESIS)) {
+        while (!SymbolUtils.RIGHT_BIG_PARENTHESIS.equals(getCurSymbol())) {
 
             if (SymbolUtils.getChar(getCurSymbol()) == ',') {
                 AssertUtils.assertNull(leftNumber);
@@ -573,7 +573,7 @@ public class NfaBuildIterator {
 
     private Set<Symbol> getOptionalSymbols() {
         moveForward();
-        boolean isNot = getCurSymbol().equals(SymbolUtils.MIDDLE_PARENTHESIS_NOT);
+        boolean isNot = SymbolUtils.MIDDLE_PARENTHESIS_NOT.equals(getCurSymbol());
         if (isNot) {
             moveForward();
         }
@@ -584,7 +584,7 @@ public class NfaBuildIterator {
         boolean hasTo = false;
 
         do {
-            if (getCurSymbol().equals(SymbolUtils.ESCAPED)) {
+            if (SymbolUtils.ESCAPED.equals(getCurSymbol())) {
                 moveForward();
                 optionalSymbols.addAll(
                         EscapedUtil.getSymbolsOfEscapedCharInMiddleParenthesis(
@@ -592,7 +592,7 @@ public class NfaBuildIterator {
                 pre = -1;
             }
             // '-'前面存在有效字符时
-            else if (pre != -1 && getCurSymbol().equals(SymbolUtils.TO)) {
+            else if (pre != -1 && SymbolUtils.TO.equals(getCurSymbol())) {
                 AssertUtils.assertFalse(hasTo);
                 hasTo = true;
             } else {
@@ -611,7 +611,7 @@ public class NfaBuildIterator {
                 }
             }
             moveForward();
-        } while (!getCurSymbol().equals(SymbolUtils.RIGHT_MIDDLE_PARENTHESIS));
+        } while (!SymbolUtils.RIGHT_MIDDLE_PARENTHESIS.equals(getCurSymbol()));
 
         // 最后一个'-'当做普通字符
         if (hasTo) {
