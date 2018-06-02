@@ -6,6 +6,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
+import static org.liuyehcf.compile.engine.hua.action.BlockAction.ACTION_146_1;
+import static org.liuyehcf.compile.engine.hua.action.BlockAction.ACTION_146_1_1;
 import static org.liuyehcf.compile.engine.hua.production.Expression.*;
 import static org.liuyehcf.compile.engine.hua.production.Program.VARIABLE_DECLARATORS;
 import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
@@ -42,6 +44,8 @@ public class Block {
     public static final String FOR_UPDATE = "<for update>"; // 194
     public static final String STATEMENT_EXPRESSION_LIST = "<statement expression list>"; // 196
     public static final String RETURN_STATEMENT = "<return statement>"; // 202
+
+    private static final String MARK_146_1_1 = "<mark 146_1_1>";
 
     public static final String NORMAL_IF = "if";
     public static final String NORMAL_ELSE = "else";
@@ -170,8 +174,8 @@ public class Block {
                             SymbolString.create(
                                     Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION),
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -182,15 +186,33 @@ public class Block {
              */
             Production.create(
                     /*
-                     * <local variable declaration> → <type> <variable declarators>
+                     * <local variable declaration> → <type> <mark 146_1_1> <variable declarators>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(TYPE),
+                                    Symbol.createNonTerminator(MARK_146_1_1),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATORS)
-                            )
-                            , null
+                            ),
+                            ACTION_146_1
+                    )
+            ),
+
+
+            /*
+             * <mark 146_1_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 146_1_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_146_1_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            ACTION_146_1_1
                     )
             ),
 

@@ -6,6 +6,7 @@ import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
+import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
 import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
 import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromLexical;
 import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromSystem;
@@ -60,7 +61,9 @@ public class HuaCompiler extends LALR {
             }
 
             for (AbstractSemanticAction semanticAction : semanticActions) {
-                if (semanticAction instanceof AssignAttr) {
+                if (semanticAction instanceof AddFutureSyntaxNode) {
+                    processAddFutureSyntaxNode(stack, (AddFutureSyntaxNode) semanticAction);
+                } else if (semanticAction instanceof AssignAttr) {
                     processAssignAttr(stack, (AssignAttr) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromLexical) {
                     processSetSynAttrFromLexical(stack, (SetSynAttrFromLexical) semanticAction);
@@ -69,6 +72,12 @@ public class HuaCompiler extends LALR {
                 }
             }
         }
+
+        private void processAddFutureSyntaxNode(FutureSyntaxNodeStack stack, AddFutureSyntaxNode semanticAction) {
+            int offset = semanticAction.getOffset();
+            stack.addFutureSyntaxNode(offset);
+        }
+
 
         private void processAssignAttr(FutureSyntaxNodeStack stack, AssignAttr semanticAction) {
             int fromPos = semanticAction.getFromPos();

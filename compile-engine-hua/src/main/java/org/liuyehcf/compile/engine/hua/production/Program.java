@@ -6,6 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
+import static org.liuyehcf.compile.engine.hua.action.ProgramAction.*;
 import static org.liuyehcf.compile.engine.hua.production.Block.BLOCK;
 import static org.liuyehcf.compile.engine.hua.production.Expression.EXPRESSION;
 import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
@@ -35,6 +36,7 @@ public class Program {
     public static final String METHOD_DECLARATOR = "<method declarator>"; // 84
     public static final String METHOD_BODY = "<method body>"; // 86
 
+    private static final String MARK_66_2_1 = "<mark 66_2_1>";
 
     /**
      * 普通终结符
@@ -145,26 +147,44 @@ public class Program {
              */
             Production.create(
                     /*
-                     * <variable declarators> → <variable declarator>
+                     * (1) <variable declarators> → <variable declarator>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(VARIABLE_DECLARATORS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR)
-                            )
-                            , null
+                            ),
+                            ACTION_66_1
                     ),
                     /*
-                     * <variable declarators> → <variable declarators> , <variable declarator>
+                     * (2) <variable declarators> → <variable declarators> , <mark 66_2_1> <variable declarator>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(VARIABLE_DECLARATORS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(VARIABLE_DECLARATORS),
                                     Symbol.createTerminator(NORMAL_COMMA),
+                                    Symbol.createNonTerminator(MARK_66_2_1),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR)
-                            )
-                            , null
+                            ),
+                            ACTION_66_2
+                    )
+            ),
+
+
+            /*
+             * <mark 66_2_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 66_2_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_66_2_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            ACTION_66_2_1
                     )
             ),
 

@@ -59,6 +59,6 @@ public class TestGrammar {
 
     @Test
     public void test() {
-        assertTrue(compiler.compile("void f(){ int a; }").isSuccess());
+        assertTrue(compiler.compile("void f(){ int a,b,c; }").isSuccess());
     }
 }
