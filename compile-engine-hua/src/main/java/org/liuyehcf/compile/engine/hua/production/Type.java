@@ -9,7 +9,7 @@ import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_LE
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_RIGHT_PARENTHESES;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/5/31
  */
 public class Type {
@@ -117,7 +117,8 @@ public class Type {
              */
             Production.create(
                     /*
-                     * <integral type> → int
+                     *
+                     * (3) <integral type> → int
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(INTEGRAL_TYPE),
@@ -128,10 +129,10 @@ public class Type {
                     )
                     /*
                      * TODO 缺少以下产生式
-                     * <integral type> → byte
-                     * <integral type> → short
-                     * <integral type> → long
-                     * <integral type> → char
+                     * (1) <integral type> → byte
+                     * (2) <integral type> → short
+                     * (4) <integral type> → long
+                     * (5) <integral type> → char
                      */
             ),
 

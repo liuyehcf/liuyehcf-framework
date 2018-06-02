@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.REGEX_IDENTIFIER;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/5/31
  */
 public class Token {
