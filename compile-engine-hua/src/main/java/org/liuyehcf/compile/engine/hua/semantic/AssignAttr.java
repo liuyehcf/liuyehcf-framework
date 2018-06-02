@@ -3,6 +3,8 @@ package org.liuyehcf.compile.engine.hua.semantic;
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
 
 /**
+ * 属性赋值
+ *
  * @author chenlu
  * @date 2018/6/2
  */

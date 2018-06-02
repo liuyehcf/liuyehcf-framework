@@ -3,6 +3,8 @@ package org.liuyehcf.compile.engine.hua.semantic;
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
 
 /**
+ * 创建一个变量，记录类型、宽度、偏移量等信息
+ *
  * @author chenlu
  * @date 2018/6/2
  */
