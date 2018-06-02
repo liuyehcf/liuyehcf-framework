@@ -6,8 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  * @author chenlu
  * @date 2018/6/2
  */
-public class AddFutureSyntaxNode extends AbstractSemanticAction {
-
+public class CreateVariable extends AbstractSemanticAction {
     /**
      * 偏移量，相对于语法树栈
      * '0'  表示栈顶
@@ -16,7 +15,7 @@ public class AddFutureSyntaxNode extends AbstractSemanticAction {
      */
     private final int offset;
 
-    public AddFutureSyntaxNode(int offset) {
+    public CreateVariable(int offset) {
         this.offset = offset;
     }
 

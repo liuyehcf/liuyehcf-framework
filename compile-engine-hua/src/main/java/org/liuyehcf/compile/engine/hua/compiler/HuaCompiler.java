@@ -6,10 +6,8 @@ import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
-import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
-import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
-import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromLexical;
-import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromSystem;
+import org.liuyehcf.compile.engine.hua.semantic.*;
+import org.liuyehcf.compile.engine.hua.type.AttrName;
 
 import java.util.List;
 
@@ -65,6 +63,8 @@ public class HuaCompiler extends LALR {
                     processAddFutureSyntaxNode(stack, (AddFutureSyntaxNode) semanticAction);
                 } else if (semanticAction instanceof AssignAttr) {
                     processAssignAttr(stack, (AssignAttr) semanticAction);
+                } else if (semanticAction instanceof CreateVariable) {
+                    processCreateVariable(stack, (CreateVariable) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromLexical) {
                     processSetSynAttrFromLexical(stack, (SetSynAttrFromLexical) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromSystem) {
@@ -80,8 +80,8 @@ public class HuaCompiler extends LALR {
 
 
         private void processAssignAttr(FutureSyntaxNodeStack stack, AssignAttr semanticAction) {
-            int fromPos = semanticAction.getFromPos();
-            int toPos = semanticAction.getToPos();
+            int fromPos = semanticAction.getFromOffset();
+            int toPos = semanticAction.getToOffset();
             String fromAttrName = semanticAction.getFromAttrName();
             String toAttrName = semanticAction.getToAttrName();
 
@@ -92,9 +92,16 @@ public class HuaCompiler extends LALR {
             toNode.put(toAttrName, fromNode.get(fromAttrName));
         }
 
+        private void processCreateVariable(FutureSyntaxNodeStack stack, CreateVariable semanticAction) {
+            int offset = semanticAction.getOffset();
+
+            SyntaxNode node = stack.get(offset);
+            System.out.println("name: " + node.getValue() + ", type: " + node.get(AttrName.TYPE.getName()) + ", width: " + node.get(AttrName.WIDTH.getName()));
+        }
+
         private void processSetSynAttrFromLexical(FutureSyntaxNodeStack stack, SetSynAttrFromLexical semanticAction) {
-            int fromPos = semanticAction.getFromPos();
-            int toPos = semanticAction.getToPos();
+            int fromPos = semanticAction.getFromOffset();
+            int toPos = semanticAction.getToOffset();
             String toAttrName = semanticAction.getToAttrName();
 
             SyntaxNode fromNode = stack.get(fromPos);
@@ -105,7 +112,7 @@ public class HuaCompiler extends LALR {
         }
 
         private void processSetSynAttrFromSystem(FutureSyntaxNodeStack stack, SetSynAttrFromSystem semanticAction) {
-            int pos = semanticAction.getPos();
+            int pos = semanticAction.getOffset();
             String attrName = semanticAction.getAttrName();
             Object attrValue = semanticAction.getAttrValue();
 

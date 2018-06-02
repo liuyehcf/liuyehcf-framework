@@ -231,8 +231,8 @@ public class Program {
                             Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
-                            )
-                            , null
+                            ),
+                            ACTION_70_1
                     ),
                     /*
                      * <variable declarator id> → <variable declarator id> []

@@ -15,7 +15,7 @@ public class SetSynAttrFromSystem extends AbstractSemanticAction {
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
      */
-    private final int pos;
+    private final int offset;
 
     /**
      * 属性-名称
@@ -27,14 +27,14 @@ public class SetSynAttrFromSystem extends AbstractSemanticAction {
      */
     private final Object attrValue;
 
-    public SetSynAttrFromSystem(int pos, String attrName, Object attrValue) {
-        this.pos = pos;
+    public SetSynAttrFromSystem(int offset, String attrName, Object attrValue) {
+        this.offset = offset;
         this.attrName = attrName;
         this.attrValue = attrValue;
     }
 
-    public int getPos() {
-        return pos;
+    public int getOffset() {
+        return offset;
     }
 
     public String getAttrName() {

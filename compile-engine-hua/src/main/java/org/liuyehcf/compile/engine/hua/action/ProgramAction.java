@@ -3,6 +3,7 @@ package org.liuyehcf.compile.engine.hua.action;
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
 import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
+import org.liuyehcf.compile.engine.hua.semantic.CreateVariable;
 import org.liuyehcf.compile.engine.hua.type.AttrName;
 
 import java.util.Arrays;
@@ -35,5 +36,9 @@ public class ProgramAction {
                     1,
                     AttrName.WIDTH.getName()
             )
+    );
+
+    public static final List<AbstractSemanticAction> ACTION_70_1 = Arrays.asList(
+            new CreateVariable(0)
     );
 }
