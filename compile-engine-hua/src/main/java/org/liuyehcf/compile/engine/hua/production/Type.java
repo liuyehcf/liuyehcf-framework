@@ -40,8 +40,8 @@ public class Type {
                             Symbol.createNonTerminator(TYPE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(PRIMITIVE_TYPE)
-                            )
-                            , ACTION_119_1
+                            ),
+                            ACTION_119_1
                     ),
                     /*
                      * (2) <type> → <reference type>
@@ -50,8 +50,8 @@ public class Type {
                             Symbol.createNonTerminator(TYPE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(REFERENCE_TYPE)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -68,8 +68,8 @@ public class Type {
                             Symbol.createNonTerminator(PRIMITIVE_TYPE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(NUMERIC_TYPE)
-                            )
-                            , ACTION_120_1
+                            ),
+                            ACTION_120_1
                     ),
                     /*
                      * (2) <primitive type> → boolean
@@ -78,8 +78,8 @@ public class Type {
                             Symbol.createNonTerminator(PRIMITIVE_TYPE),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN)
-                            )
-                            , ACTION_120_2
+                            ),
+                            ACTION_120_2
                     )
             ),
 
@@ -96,8 +96,8 @@ public class Type {
                             Symbol.createNonTerminator(NUMERIC_TYPE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(INTEGRAL_TYPE)
-                            )
-                            , ACTION_122_1
+                            ),
+                            ACTION_122_1
                     ),
                     /*
                      * (2) <numeric type> → <floating-point type>
@@ -106,8 +106,8 @@ public class Type {
                             Symbol.createNonTerminator(NUMERIC_TYPE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(FLOATING_POINT_TYPE)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -125,8 +125,8 @@ public class Type {
                             Symbol.createNonTerminator(INTEGRAL_TYPE),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_INT)
-                            )
-                            , ACTION_124_3
+                            ),
+                            ACTION_124_3
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -150,8 +150,8 @@ public class Type {
                             Symbol.createNonTerminator(FLOATING_POINT_TYPE),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_FLOAT)
-                            )
-                            , null
+                            ),
+                            null
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -172,8 +172,8 @@ public class Type {
                             Symbol.createNonTerminator(REFERENCE_TYPE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(ARRAY_TYPE)
-                            )
-                            , null
+                            ),
+                            null
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -196,8 +196,8 @@ public class Type {
                                     Symbol.createNonTerminator(TYPE),
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
     };

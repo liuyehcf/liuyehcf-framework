@@ -63,8 +63,8 @@ public class Token {
                             Symbol.createNonTerminator(EXPRESSION_NAME),
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
-                            )
-                            , null
+                            ),
+                            null
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -85,8 +85,8 @@ public class Token {
                             Symbol.createNonTerminator(METHOD_NAME),
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
-                            )
-                            , null
+                            ),
+                            null
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -107,8 +107,8 @@ public class Token {
                             Symbol.createNonTerminator(LITERAL),
                             SymbolString.create(
                                     Symbol.createNonTerminator(INTEGER_LITERAL)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <literal> → <boolean literal>
@@ -117,8 +117,8 @@ public class Token {
                             Symbol.createNonTerminator(LITERAL),
                             SymbolString.create(
                                     Symbol.createNonTerminator(BOOLEAN_LITERAL)
-                            )
-                            , null
+                            ),
+                            null
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -143,8 +143,8 @@ public class Token {
                             Symbol.createNonTerminator(INTEGER_LITERAL),
                             SymbolString.create(
                                     Symbol.createNonTerminator(DECIMAL_INTEGER_LITERAL)
-                            )
-                            , null
+                            ),
+                            null
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -166,8 +166,8 @@ public class Token {
                             Symbol.createNonTerminator(DECIMAL_INTEGER_LITERAL),
                             SymbolString.create(
                                     Symbol.createNonTerminator(DECIMAL_NUMERAL)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -229,8 +229,8 @@ public class Token {
                             Symbol.createNonTerminator(DECIMAL_NUMERAL),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_NUMBER_0)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <decimal numeral> → <non zero digit> <digits>?
@@ -240,8 +240,8 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createNonTerminator(NON_ZERO_DIGIT),
                                     Symbol.createNonTerminator(EPSILON_OR_DIGITS)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -258,8 +258,8 @@ public class Token {
                             Symbol.createNonTerminator(EPSILON_OR_DIGITS),
                             SymbolString.create(
                                     Symbol.EPSILON
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <epsilon or digits> → <digits>
@@ -268,8 +268,8 @@ public class Token {
                             Symbol.createNonTerminator(EPSILON_OR_DIGITS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(DIGITS)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -286,8 +286,8 @@ public class Token {
                             Symbol.createNonTerminator(DIGITS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(DIGIT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <digits> → <digits> <digit>
@@ -297,8 +297,8 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createNonTerminator(DIGITS),
                                     Symbol.createNonTerminator(DIGIT)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -315,8 +315,8 @@ public class Token {
                             Symbol.createNonTerminator(DIGIT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_NUMBER_0)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <digit> → <non zero digit>
@@ -325,8 +325,8 @@ public class Token {
                             Symbol.createNonTerminator(DIGIT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(NON_ZERO_DIGIT)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -343,8 +343,8 @@ public class Token {
                             Symbol.createNonTerminator(NON_ZERO_DIGIT),
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_NON_ZERO_DIGIT)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -361,8 +361,8 @@ public class Token {
                             Symbol.createNonTerminator(BOOLEAN_LITERAL),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN_TRUE)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <boolean literal> → false
@@ -371,8 +371,8 @@ public class Token {
                             Symbol.createNonTerminator(BOOLEAN_LITERAL),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN_FALSE)
-                            )
-                            , null
+                            ),
+                            null
                     )
             )
     };

@@ -35,15 +35,11 @@ public class Program {
     public static final String RESULT_TYPE = "<result type>"; // 78
     public static final String METHOD_DECLARATOR = "<method declarator>"; // 84
     public static final String METHOD_BODY = "<method body>"; // 86
-
-    private static final String MARK_66_2_1 = "<mark 66_2_1>";
-
     /**
      * 普通终结符
      */
     public static final String NORMAL_VOID = "void";
-
-
+    private static final String MARK_66_2_1 = "<mark 66_2_1>";
     public static final Production[] PRODUCTIONS = {
             /*
              * <programs>
@@ -57,8 +53,8 @@ public class Program {
                             Symbol.createNonTerminator(PROGRAMS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_DECLARATIONS)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -76,8 +72,8 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_DECLARATIONS),
                                     Symbol.createNonTerminator(METHOD_DECLARATION)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <method declarations> → <method declaration>
@@ -86,8 +82,8 @@ public class Program {
                             Symbol.createNonTerminator(METHOD_DECLARATIONS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_DECLARATION)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -106,8 +102,8 @@ public class Program {
                                     Symbol.createNonTerminator(FORMAL_PARAMETER_LIST),
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <formal parameter list> → <formal parameter>
@@ -116,8 +112,8 @@ public class Program {
                             Symbol.createNonTerminator(FORMAL_PARAMETER_LIST),
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -135,8 +131,8 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createNonTerminator(TYPE),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -201,8 +197,8 @@ public class Program {
                             Symbol.createNonTerminator(VARIABLE_DECLARATOR),
                             SymbolString.create(
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <variable declarator> → <variable declarator id> = <variable initializer>
@@ -213,8 +209,8 @@ public class Program {
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
                                     Symbol.createTerminator(NORMAL_ASSIGN),
                                     Symbol.createNonTerminator(VARIABLE_INITIALIZER)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -243,8 +239,8 @@ public class Program {
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID),
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -261,8 +257,8 @@ public class Program {
                             Symbol.createNonTerminator(VARIABLE_INITIALIZER),
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
-                            )
-                            , null
+                            ),
+                            null
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -284,8 +280,8 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_HEADER),
                                     Symbol.createNonTerminator(METHOD_BODY)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -303,8 +299,8 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createNonTerminator(RESULT_TYPE),
                                     Symbol.createNonTerminator(METHOD_DECLARATOR)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -321,8 +317,8 @@ public class Program {
                             Symbol.createNonTerminator(RESULT_TYPE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(TYPE)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <result type> → void
@@ -331,8 +327,8 @@ public class Program {
                             Symbol.createNonTerminator(RESULT_TYPE),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_VOID)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -352,8 +348,8 @@ public class Program {
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -370,8 +366,8 @@ public class Program {
                             Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
                             SymbolString.create(
                                     Symbol.EPSILON
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <epsilon or formal parameter list> → <formal parameter list>
@@ -380,8 +376,8 @@ public class Program {
                             Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER_LIST)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -398,8 +394,8 @@ public class Program {
                             Symbol.createNonTerminator(METHOD_BODY),
                             SymbolString.create(
                                     Symbol.createNonTerminator(BLOCK)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <method body> → ;
@@ -408,8 +404,8 @@ public class Program {
                             Symbol.createNonTerminator(METHOD_BODY),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
     };

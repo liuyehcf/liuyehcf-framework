@@ -21,6 +21,7 @@ import static org.liuyehcf.compile.engine.hua.test.TestCases.*;
 public class TestGrammar {
 
     private static final List<String> RIGHT_CASES = new ArrayList<>();
+    private static LRCompiler compiler;
 
     static {
         RIGHT_CASES.addAll(Arrays.asList(WHILE_CASES));
@@ -31,8 +32,6 @@ public class TestGrammar {
         RIGHT_CASES.addAll(Arrays.asList(OPERATOR_CASES));
         RIGHT_CASES.addAll(Arrays.asList(CLASSIC_CASES));
     }
-
-    private static LRCompiler compiler;
 
     @BeforeClass
     public static void init() {

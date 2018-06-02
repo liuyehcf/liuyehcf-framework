@@ -44,16 +44,13 @@ public class Block {
     public static final String FOR_UPDATE = "<for update>"; // 194
     public static final String STATEMENT_EXPRESSION_LIST = "<statement expression list>"; // 196
     public static final String RETURN_STATEMENT = "<return statement>"; // 202
-
-    private static final String MARK_146_1_1 = "<mark 146_1_1>";
-
     public static final String NORMAL_IF = "if";
     public static final String NORMAL_ELSE = "else";
     public static final String NORMAL_WHILE = "while";
     public static final String NORMAL_FOR = "for";
     public static final String NORMAL_DO = "do";
     public static final String NORMAL_RETURN = "return";
-
+    private static final String MARK_146_1_1 = "<mark 146_1_1>";
     public static final Production[] PRODUCTIONS = {
 
             /*
@@ -70,8 +67,8 @@ public class Block {
                                     Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(EPSILON_OR_BLOCK_STATEMENTS),
                                     Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -88,8 +85,8 @@ public class Block {
                             Symbol.createNonTerminator(EPSILON_OR_BLOCK_STATEMENTS),
                             SymbolString.create(
                                     Symbol.EPSILON
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <epsilon or block statements> → <block statements>
@@ -98,8 +95,8 @@ public class Block {
                             Symbol.createNonTerminator(EPSILON_OR_BLOCK_STATEMENTS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(BLOCK_STATEMENTS)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -116,8 +113,8 @@ public class Block {
                             Symbol.createNonTerminator(BLOCK_STATEMENTS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(BLOCK_STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <block statements> → <block statements> <block statement>
@@ -127,8 +124,8 @@ public class Block {
                             SymbolString.create(
                                     Symbol.createNonTerminator(BLOCK_STATEMENTS),
                                     Symbol.createNonTerminator(BLOCK_STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -145,8 +142,8 @@ public class Block {
                             Symbol.createNonTerminator(BLOCK_STATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION_STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <block statement> → <statement>
@@ -155,8 +152,8 @@ public class Block {
                             Symbol.createNonTerminator(BLOCK_STATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -229,8 +226,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement> → <if then statement>
@@ -239,8 +236,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(IF_THEN_STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement> → <if then else statement>
@@ -249,8 +246,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement> → <while statement>
@@ -259,8 +256,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(WHILE_STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement> → <for statement>
@@ -269,8 +266,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(FOR_STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -291,8 +288,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement no short if> → <if then else statement no short if>
@@ -301,8 +298,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
                             SymbolString.create(
                                     Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT_NO_SHORT_IF)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement no short if> → <while statement no short if>
@@ -311,8 +308,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
                             SymbolString.create(
                                     Symbol.createNonTerminator(WHILE_STATEMENT_NO_SHORT_IF)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement no short if> → <for statement no short if>
@@ -321,8 +318,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
                             SymbolString.create(
                                     Symbol.createNonTerminator(FOR_STATEMENT_NO_SHORT_IF)
-                            )
-                            , null
+                            ),
+                            null
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -343,8 +340,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(BLOCK)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement without trailing substatement> → <empty statement>
@@ -353,8 +350,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(EMPTY_STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement without trailing substatement> → <expression statement>
@@ -363,8 +360,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement without trailing substatement> → <do statement>
@@ -373,8 +370,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(DO_STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement without trailing substatement> → <return statement>
@@ -383,8 +380,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(RETURN_STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -410,8 +407,8 @@ public class Block {
                             Symbol.createNonTerminator(EMPTY_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -429,8 +426,8 @@ public class Block {
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -447,8 +444,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(ASSIGNMENT)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement expression> → <preincrement expression>
@@ -457,8 +454,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREINCREMENT_EXPRESSION)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement expression> → <postincrement expression>
@@ -467,8 +464,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTINCREMENT_EXPRESSION)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement expression> → <predecrement expression>
@@ -477,8 +474,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREDECREMENT_EXPRESSION)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement expression> → <postdecrement expression>
@@ -487,8 +484,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTDECREMENT_EXPRESSION)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement expression> → <method invocation>
@@ -497,8 +494,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_INVOCATION)
-                            )
-                            , null
+                            ),
+                            null
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -523,8 +520,8 @@ public class Block {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -547,8 +544,8 @@ public class Block {
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
                                     Symbol.createTerminator(NORMAL_ELSE),
                                     Symbol.createNonTerminator(STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -571,8 +568,8 @@ public class Block {
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
                                     Symbol.createTerminator(NORMAL_ELSE),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -593,8 +590,8 @@ public class Block {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -665,8 +662,8 @@ public class Block {
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -683,8 +680,8 @@ public class Block {
                             Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
                             SymbolString.create(
                                     Symbol.EPSILON
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <epsilon or for init> → <for init>
@@ -693,8 +690,8 @@ public class Block {
                             Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(FOR_INIT)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -711,8 +708,8 @@ public class Block {
                             Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
                             SymbolString.create(
                                     Symbol.EPSILON
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <epsilon or expression> → <expression>
@@ -721,8 +718,8 @@ public class Block {
                             Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -739,8 +736,8 @@ public class Block {
                             Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
                             SymbolString.create(
                                     Symbol.EPSILON
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <epsilon or for update> → <for update>
@@ -749,8 +746,8 @@ public class Block {
                             Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(FOR_UPDATE)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -793,8 +790,8 @@ public class Block {
                             Symbol.createNonTerminator(FOR_INIT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <for init> → <local variable declaration>
@@ -803,8 +800,8 @@ public class Block {
                             Symbol.createNonTerminator(FOR_INIT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -821,8 +818,8 @@ public class Block {
                             Symbol.createNonTerminator(FOR_UPDATE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 
@@ -839,8 +836,8 @@ public class Block {
                             Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST),
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION)
-                            )
-                            , null
+                            ),
+                            null
                     ),
                     /*
                      * <statement expression list> → <statement expression list> , <statement expression>
@@ -851,8 +848,8 @@ public class Block {
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST),
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION)
-                            )
-                            , null
+                            ),
+                            null
                     )
             ),
 

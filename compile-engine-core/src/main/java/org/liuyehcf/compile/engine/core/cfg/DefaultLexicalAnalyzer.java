@@ -29,6 +29,10 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
         return new DefaultTokenIterator(input);
     }
 
+    private boolean isBlankChar(char c) {
+        return 9 <= c && c <= 13 || c == 32;
+    }
+
     public static class Builder {
 
         /**
@@ -227,9 +231,5 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
 
             return hasNext;
         }
-    }
-
-    private boolean isBlankChar(char c) {
-        return 9 <= c && c <= 13 || c == 32;
     }
 }
