@@ -4,7 +4,6 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
 import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
 import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
 import org.liuyehcf.compile.engine.hua.semantic.CreateVariable;
-import org.liuyehcf.compile.engine.hua.type.AttrName;
 
 import java.util.Arrays;
 import java.util.List;

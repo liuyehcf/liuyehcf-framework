@@ -7,7 +7,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.hua.semantic.*;
-import org.liuyehcf.compile.engine.hua.type.AttrName;
+import org.liuyehcf.compile.engine.hua.action.AttrName;
 
 import java.util.List;
 

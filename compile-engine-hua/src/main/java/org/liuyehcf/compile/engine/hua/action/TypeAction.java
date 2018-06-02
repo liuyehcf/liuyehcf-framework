@@ -4,13 +4,12 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
 import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
 import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromLexical;
 import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromSystem;
-import org.liuyehcf.compile.engine.hua.type.AttrName;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.liuyehcf.compile.engine.hua.constant.TypeWidth.BOOLEAN_WIDTH;
-import static org.liuyehcf.compile.engine.hua.constant.TypeWidth.INTEGER_WIDTH;
+import static org.liuyehcf.compile.engine.hua.action.TypeWidth.BOOLEAN_WIDTH;
+import static org.liuyehcf.compile.engine.hua.action.TypeWidth.INTEGER_WIDTH;
 
 /**
  * @author hechenfeng
