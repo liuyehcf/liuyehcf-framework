@@ -14,6 +14,22 @@ import java.util.List;
  * @date 2018/6/2
  */
 public class ProgramAction {
+    public static final List<AbstractSemanticAction> ACTION_50_1_1 = Arrays.asList(
+            new AddFutureSyntaxNode(1),
+            new AssignAttr(
+                    0,
+                    AttrName.TYPE.getName(),
+                    1,
+                    AttrName.TYPE.getName()
+            ),
+            new AssignAttr(
+                    0,
+                    AttrName.WIDTH.getName(),
+                    1,
+                    AttrName.WIDTH.getName()
+            )
+    );
+
     public static final List<AbstractSemanticAction> ACTION_66_1 = Arrays.asList(
 
     );

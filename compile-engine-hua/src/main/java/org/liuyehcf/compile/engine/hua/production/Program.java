@@ -35,6 +35,9 @@ public class Program {
     public static final String RESULT_TYPE = "<result type>"; // 78
     public static final String METHOD_DECLARATOR = "<method declarator>"; // 84
     public static final String METHOD_BODY = "<method body>"; // 86
+
+    private static final String MARK_50_1_1 = "<mark 50_1_1>";
+
     /**
      * 普通终结符
      */
@@ -124,15 +127,33 @@ public class Program {
              */
             Production.create(
                     /*
-                     * <formal parameter> → <type> <variable declarator id>
+                     * (1) <formal parameter> → <type> <mark 50_1_1> <variable declarator id>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FORMAL_PARAMETER),
                             SymbolString.create(
                                     Symbol.createNonTerminator(TYPE),
+                                    Symbol.createNonTerminator(MARK_50_1_1),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID)
                             ),
                             null
+                    )
+            ),
+
+
+            /*
+             * <mark 50_1_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 50_1_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_50_1_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            ACTION_50_1_1
                     )
             ),
 
