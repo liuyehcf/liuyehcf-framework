@@ -7,6 +7,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_LEFT_PARENTHESES;
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_RIGHT_PARENTHESES;
+import static org.liuyehcf.compile.engine.hua.action.TypeAction.ACTION_122_1;
+import static org.liuyehcf.compile.engine.hua.action.TypeAction.ACTION_124_3;
 
 /**
  * @author hechenfeng
@@ -89,17 +91,17 @@ public class Type {
              */
             Production.create(
                     /*
-                     * <numeric type> → <integral type>
+                     * (1) <numeric type> → <integral type>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(NUMERIC_TYPE),
                             SymbolString.create(
                                     Symbol.createNonTerminator(INTEGRAL_TYPE)
                             )
-                            , null
+                            , ACTION_122_1
                     ),
                     /*
-                     * <numeric type> → <floating-point type>
+                     * (2) <numeric type> → <floating-point type>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(NUMERIC_TYPE),
@@ -125,7 +127,7 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_INT)
                             )
-                            , null
+                            , ACTION_124_3
                     )
                     /*
                      * TODO 缺少以下产生式
