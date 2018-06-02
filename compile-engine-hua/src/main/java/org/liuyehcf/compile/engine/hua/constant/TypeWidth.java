@@ -5,6 +5,6 @@ package org.liuyehcf.compile.engine.hua.constant;
  * @date 2018/6/2
  */
 public class TypeWidth {
-    public static final String INTEGER_WIDTH = "4";
-    public static final String BOOLEAN_WIDTH = "2";
+    public static final int INTEGER_WIDTH = 4;
+    public static final int BOOLEAN_WIDTH = 2;
 }

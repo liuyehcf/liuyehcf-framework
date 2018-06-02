@@ -20,6 +20,8 @@ import org.liuyehcf.compile.engine.core.utils.SetUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.*;
+
 /**
  * LR文法编辑器抽象基类
  *
@@ -715,17 +717,19 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
     /**
      * 语法树节点
      */
-    public static final class SyntaxNode {
-        private final Symbol id;
+    protected static final class SyntaxNode {
+        private Symbol id;
 
-        private final String value;
+        private String value;
 
-        private final Map<String, Object> attrs;
+        private final Map<String, Object> attrs = new HashMap<>(16);
 
-        public SyntaxNode(Symbol id, String value) {
+        private SyntaxNode(Symbol id, String value) {
             this.id = id;
             this.value = value;
-            this.attrs = new HashMap<>(16);
+        }
+
+        private SyntaxNode() {
         }
 
         public Object putIfAbsent(String key, Object attr) {
@@ -744,8 +748,16 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
             return id;
         }
 
+        void setId(Symbol id) {
+            this.id = id;
+        }
+
         public String getValue() {
             return value;
+        }
+
+        void setValue(String value) {
+            this.value = value;
         }
     }
 
@@ -777,15 +789,15 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
             this.operator = operator;
         }
 
-        protected int getNextClosureId() {
+        int getNextClosureId() {
             return nextClosureId;
         }
 
-        protected PrimaryProduction getPrimaryProduction() {
+        PrimaryProduction getPrimaryProduction() {
             return primaryProduction;
         }
 
-        protected OperationCode getOperator() {
+        OperationCode getOperator() {
             return operator;
         }
 
@@ -849,7 +861,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
         /**
          * 语法树节点栈，语法树节点包括文法符号，实际值，各种属性
          */
-        private LinkedList<SyntaxNode> nodeStack;
+        private FutureSyntaxNodeStack nodeStack;
         /**
          * 剩余输入符号（词法分析器解析到的Symbol）
          */
@@ -895,11 +907,11 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
             LexicalAnalyzer.TokenIterator tokenIterator = lexicalAnalyzer.iterator(input);
 
             statusStack = new LinkedList<>();
-            nodeStack = new LinkedList<>();
+            nodeStack = new FutureSyntaxNodeStack();
             remainTokens = new LinkedList<>();
 
             statusStack.push(0);
-            nodeStack.push(new SyntaxNode(Symbol.DOLLAR, null));
+            nodeStack.addNormalSyntaxNode(Symbol.DOLLAR, null);
 
             while (tokenIterator.hasNext()) {
                 remainTokens.offer(tokenIterator.next());
@@ -951,7 +963,9 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
             statusStack.push(nodeTransferOperation.getNextClosureId());
 
             Token token = remainTokens.poll();
-            nodeStack.push(new SyntaxNode(token.getId(), token.getValue()));
+
+            assertNotNull(token);
+            nodeStack.addNormalSyntaxNode(token.getId(), token.getValue());
         }
 
         private void reduction() {
@@ -960,29 +974,34 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
             PrimaryProduction ppReduction = nodeTransferOperation.getPrimaryProduction();
             AssertUtils.assertNotNull(ppReduction);
 
-            LinkedList<SyntaxNode> rights = new LinkedList<>();
+            action(ppReduction, nodeStack);
+
+            SyntaxNode left = null;
+
             // 如果是形如 "A → ε"这样的产生式，那么特殊处理一下（不进行出栈操作）
             if (!SymbolString.EPSILON_RAW.equals(ppReduction.getRight())) {
                 for (int i = 0; i < ppReduction.getRight().getSymbols().size(); i++) {
                     statusStack.pop();
-                    rights.addFirst(nodeStack.pop());
+                    left = nodeStack.pop();
                 }
             }
 
-            SyntaxNode left = new SyntaxNode(ppReduction.getLeft(), null);
-            nodeStack.push(left);
-
-            List<SyntaxNode> syntaxNodes = ListUtils.of(left, rights);
-            action(ppReduction, syntaxNodes);
+            if (left != null) {
+                left.setId(ppReduction.getLeft());
+                left.setValue(null);
+            } else {
+                left = new SyntaxNode(ppReduction.getLeft(), null);
+            }
+            nodeStack.pushNormalSyntaxNode(left);
         }
 
         /**
          * 规约时具体的语义动作，交由子类扩展
          *
          * @param ppReduction 规约产生式
-         * @param syntaxNodes 产生式对应的语法树节点
+         * @param stack       语法树节点栈
          */
-        protected void action(PrimaryProduction ppReduction, List<SyntaxNode> syntaxNodes) {
+        protected void action(PrimaryProduction ppReduction, FutureSyntaxNodeStack stack) {
 
         }
 
@@ -1006,5 +1025,104 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
             canReceive = false;
         }
 
+    }
+
+    protected static final class FutureSyntaxNodeStack {
+        private int top = -1;
+        private LinkedList<SyntaxNode> stack = new LinkedList<>();
+
+        /**
+         * 添加正常语法树节点
+         */
+        public void addNormalSyntaxNode(Symbol id, String value) {
+            /*
+             * 如果之前已经创建过Future语法树节点
+             * 由于标记非终结符要为未来的语法树节点设置继承属性，这些语法树节点称为Future语法树节点
+             */
+            if (size() < stack.size()) {
+                top++;
+                SyntaxNode node = stack.get(top);
+
+                assertNull(node.getId());
+                assertNull(node.getValue());
+
+                node.setId(id);
+                node.setValue(value);
+            } else if (size() == stack.size()) {
+                stack.addLast(new SyntaxNode(id, value));
+                top++;
+            } else {
+                throw new RuntimeException();
+            }
+        }
+
+        /**
+         * 增加Future语法树节点
+         *
+         * @param offset 相对于top的偏移量
+         */
+        public void addFutureSyntaxNode(int offset) {
+            assertTrue(offset > 0);
+            if (top + offset <= stack.size() - 1) {
+                return;
+            }
+            while (top + offset > stack.size() - 1) {
+                stack.addLast(new SyntaxNode());
+            }
+        }
+
+        /**
+         * 压入正常语法树节点
+         */
+        public void pushNormalSyntaxNode(SyntaxNode node) {
+            stack.add(++top, node);
+        }
+
+        /**
+         * 返回当前实际语法树节点数，不包括Future语法树节点
+         */
+        public int size() {
+            return top + 1;
+        }
+
+        /**
+         * 弹出实际栈顶元素，不包括Future语法树节点
+         */
+        public SyntaxNode pop() {
+            if (size() < stack.size()) {
+                return stack.remove(top--);
+            } else {
+                --top;
+                return stack.removeLast();
+
+            }
+        }
+
+        /**
+         * 返回实际栈顶元素，不包括Future语法树节点
+         */
+        public SyntaxNode peek() {
+            if (top > -1) {
+                return stack.get(top);
+            }
+            return null;
+        }
+
+        /**
+         * 是否为空，不包括Future语法树节点
+         */
+        public boolean isEmpty() {
+            return top == -1;
+        }
+
+
+        /**
+         * 依据偏移量从栈中获取语法树节点
+         *
+         * @param offset 相对于top的偏移量。例如1表示Future语法树节点，-1表示栈次顶元素
+         */
+        public SyntaxNode get(int offset) {
+            return stack.get(top + offset);
+        }
     }
 }

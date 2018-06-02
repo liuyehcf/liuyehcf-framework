@@ -56,4 +56,9 @@ public class TestGrammar {
     public void testCase2() {
         System.out.println(compiler.getAnalysisTableMarkdownString());
     }
+
+    @Test
+    public void test() {
+        assertTrue(compiler.compile("void f(){ int a; }").isSuccess());
+    }
 }

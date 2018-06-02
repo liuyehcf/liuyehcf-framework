@@ -3,15 +3,17 @@ package org.liuyehcf.compile.engine.hua.semantic;
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
 
 /**
+ * 设置综合属性，来源于系统
+ *
  * @author chenlu
  * @date 2018/6/2
  */
-public class SetAttr extends AbstractSemanticAction {
+public class SetSynAttrFromSystem extends AbstractSemanticAction {
     /**
      * 属性-偏移量，相对于语法树栈
      * '0'  表示栈顶
      * '-1' 表示栈次顶，以此类推
-     * '1' 表示即将入栈的元素，以此类推
+     * '1' 表示未来入栈的元素，以此类推
      */
     private final int pos;
 
@@ -23,9 +25,9 @@ public class SetAttr extends AbstractSemanticAction {
     /**
      * 属性-值
      */
-    private final String attrValue;
+    private final Object attrValue;
 
-    public SetAttr(int pos, String attrName, String attrValue) {
+    public SetSynAttrFromSystem(int pos, String attrName, Object attrValue) {
         this.pos = pos;
         this.attrName = attrName;
         this.attrValue = attrValue;
@@ -39,7 +41,7 @@ public class SetAttr extends AbstractSemanticAction {
         return attrName;
     }
 
-    public String getAttrValue() {
+    public Object getAttrValue() {
         return attrValue;
     }
 }

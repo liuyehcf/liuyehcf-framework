@@ -2,7 +2,8 @@ package org.liuyehcf.compile.engine.hua.action;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
-import org.liuyehcf.compile.engine.hua.semantic.SetAttr;
+import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromLexical;
+import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromSystem;
 import org.liuyehcf.compile.engine.hua.type.AttrName;
 
 import java.util.Arrays;
@@ -10,8 +11,6 @@ import java.util.List;
 
 import static org.liuyehcf.compile.engine.hua.constant.TypeWidth.BOOLEAN_WIDTH;
 import static org.liuyehcf.compile.engine.hua.constant.TypeWidth.INTEGER_WIDTH;
-import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
 
 /**
  * @author hechenfeng
@@ -20,13 +19,13 @@ import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
 public class TypeAction {
     public static final List<AbstractSemanticAction> ACTION_119_1 = Arrays.asList(
             new AssignAttr(
-                    1,
+                    0,
                     AttrName.TYPE.getName(),
                     0,
                     AttrName.TYPE.getName()
             ),
             new AssignAttr(
-                    1,
+                    0,
                     AttrName.WIDTH.getName(),
                     0,
                     AttrName.WIDTH.getName())
@@ -34,25 +33,25 @@ public class TypeAction {
 
     public static final List<AbstractSemanticAction> ACTION_120_1 = Arrays.asList(
             new AssignAttr(
-                    1,
+                    0,
                     AttrName.TYPE.getName(),
                     0,
                     AttrName.TYPE.getName()
             ),
             new AssignAttr(
-                    1,
+                    0,
                     AttrName.WIDTH.getName(),
                     0,
                     AttrName.WIDTH.getName())
     );
 
     public static final List<AbstractSemanticAction> ACTION_120_2 = Arrays.asList(
-            new SetAttr(
+            new SetSynAttrFromLexical(
                     0,
                     AttrName.TYPE.getName(),
-                    NORMAL_BOOLEAN
+                    0
             ),
-            new SetAttr(
+            new SetSynAttrFromSystem(
                     0,
                     AttrName.WIDTH.getName(),
                     BOOLEAN_WIDTH
@@ -61,25 +60,25 @@ public class TypeAction {
 
     public static final List<AbstractSemanticAction> ACTION_122_1 = Arrays.asList(
             new AssignAttr(
-                    1,
+                    0,
                     AttrName.TYPE.getName(),
                     0,
                     AttrName.TYPE.getName()
             ),
             new AssignAttr(
-                    1,
+                    0,
                     AttrName.WIDTH.getName(),
                     0,
                     AttrName.WIDTH.getName())
     );
 
     public static final List<AbstractSemanticAction> ACTION_124_3 = Arrays.asList(
-            new SetAttr(
+            new SetSynAttrFromLexical(
                     0,
                     AttrName.TYPE.getName(),
-                    NORMAL_INT
+                    0
             ),
-            new SetAttr(
+            new SetSynAttrFromSystem(
                     0,
                     AttrName.WIDTH.getName(),
                     INTEGER_WIDTH
