@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  * @author chenlu
  * @date 2018/6/2
  */
-public class SetSynAttr extends AbstractSemanticAction {
+public class SetAttr extends AbstractSemanticAction {
     /**
      * 属性-偏移量（相对于产生式，从产生式左部为0，产生式右部为1、2、3...）
      */
@@ -22,7 +22,7 @@ public class SetSynAttr extends AbstractSemanticAction {
      */
     private final String attrValue;
 
-    public SetSynAttr(int pos, String attrName, String attrValue) {
+    public SetAttr(int pos, String attrName, String attrValue) {
         this.pos = pos;
         this.attrName = attrName;
         this.attrValue = attrValue;

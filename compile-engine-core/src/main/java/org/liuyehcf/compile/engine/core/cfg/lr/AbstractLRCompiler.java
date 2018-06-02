@@ -972,17 +972,17 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
             SyntaxNode left = new SyntaxNode(ppReduction.getLeft(), null);
             nodeStack.push(left);
 
-            action(ppReduction, left, rights);
+            List<SyntaxNode> syntaxNodes = ListUtils.of(left, rights);
+            action(ppReduction, syntaxNodes);
         }
 
         /**
          * 规约时具体的语义动作，交由子类扩展
          *
          * @param ppReduction 规约产生式
-         * @param left        产生式左侧非终结符对应的节点
-         * @param rights      产生式右侧终结符对应的节点列表
+         * @param syntaxNodes 产生式对应的语法树节点
          */
-        protected void action(PrimaryProduction ppReduction, SyntaxNode left, List<SyntaxNode> rights) {
+        protected void action(PrimaryProduction ppReduction, List<SyntaxNode> syntaxNodes) {
 
         }
 

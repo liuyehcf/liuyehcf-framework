@@ -1,8 +1,8 @@
 package org.liuyehcf.compile.engine.hua.action;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
-import org.liuyehcf.compile.engine.hua.semantic.CopySynAttr;
-import org.liuyehcf.compile.engine.hua.semantic.SetSynAttr;
+import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
+import org.liuyehcf.compile.engine.hua.semantic.SetAttr;
 import org.liuyehcf.compile.engine.hua.type.AttrName;
 
 import java.util.Arrays;
@@ -17,28 +17,28 @@ import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
  */
 public class TypeAction {
     public static final List<AbstractSemanticAction> ACTION_122_1 = Arrays.asList(
-            new CopySynAttr(
+            new AssignAttr(
                     1,
-                    AttrName.TYPE.name(),
+                    AttrName.TYPE.getName(),
                     0,
-                    AttrName.TYPE.name()
+                    AttrName.TYPE.getName()
             ),
-            new CopySynAttr(
+            new AssignAttr(
                     1,
-                    AttrName.WIDTH.name(),
+                    AttrName.WIDTH.getName(),
                     0,
-                    AttrName.WIDTH.name())
+                    AttrName.WIDTH.getName())
     );
 
     public static final List<AbstractSemanticAction> ACTION_124_3 = Arrays.asList(
-            new SetSynAttr(
+            new SetAttr(
                     0,
-                    AttrName.TYPE.name(),
+                    AttrName.TYPE.getName(),
                     NORMAL_INT
             ),
-            new SetSynAttr(
+            new SetAttr(
                     0,
-                    AttrName.WIDTH.name(),
+                    AttrName.WIDTH.getName(),
                     INTEGER_WIDTH
             )
     );

@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  * @author chenlu
  * @date 2018/6/2
  */
-public class CopySynAttr extends AbstractSemanticAction {
+public class AssignAttr extends AbstractSemanticAction {
     /**
      * 源属性-偏移量（相对于产生式，从产生式左部为0，产生式右部为1、2、3...）
      */
@@ -27,7 +27,7 @@ public class CopySynAttr extends AbstractSemanticAction {
      */
     private final String toAttrName;
 
-    public CopySynAttr(int fromPos, String fromAttrName, int toPos, String toAttrName) {
+    public AssignAttr(int fromPos, String fromAttrName, int toPos, String toAttrName) {
         this.fromPos = fromPos;
         this.fromAttrName = fromAttrName;
         this.toPos = toPos;
