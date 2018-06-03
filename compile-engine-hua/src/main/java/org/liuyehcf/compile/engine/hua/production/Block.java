@@ -6,8 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
-import static org.liuyehcf.compile.engine.hua.action.BlockAction.ACTION_146_1;
-import static org.liuyehcf.compile.engine.hua.action.BlockAction.ACTION_146_1_1;
+import static org.liuyehcf.compile.engine.hua.action.BlockAction.*;
 import static org.liuyehcf.compile.engine.hua.production.Expression.*;
 import static org.liuyehcf.compile.engine.hua.production.Program.VARIABLE_DECLARATORS;
 import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
@@ -50,7 +49,12 @@ public class Block {
     public static final String NORMAL_FOR = "for";
     public static final String NORMAL_DO = "do";
     public static final String NORMAL_RETURN = "return";
+
+    private static final String MARK_139_1_1 = "<mark 139_1_1>";
     private static final String MARK_146_1_1 = "<mark 146_1_1>";
+    private static final String MARK_152_1_1 = "<mark 152_1_1>";
+    private static final String MARK_188_1_1 = "<mark 188_1_1>";
+
     public static final Production[] PRODUCTIONS = {
 
             /*
@@ -59,17 +63,36 @@ public class Block {
              */
             Production.create(
                     /*
-                     * <block> → { <block statements>? }
+                     * (1) <block> → <mark 139_1_1> { <block statements>? }
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(BLOCK),
                             SymbolString.create(
+                                    Symbol.createNonTerminator(MARK_139_1_1),
                                     Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(EPSILON_OR_BLOCK_STATEMENTS),
                                     Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES)
                             ),
-                            null
+                            ACTION_139_1
                     )
+            ),
+
+
+            /*
+             * <mark 139_1_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 139_1_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_139_1_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            ACTION_139_1_1
+                    )
+
             ),
 
 
@@ -334,17 +357,18 @@ public class Block {
              */
             Production.create(
                     /*
-                     * <statement without trailing substatement> → <block>
+                     * (1) <statement without trailing substatement> → <mark 152_1_1> <block>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
                             SymbolString.create(
+                                    Symbol.createNonTerminator(MARK_152_1_1),
                                     Symbol.createNonTerminator(BLOCK)
                             ),
                             null
                     ),
                     /*
-                     * <statement without trailing substatement> → <empty statement>
+                     * (2) <statement without trailing substatement> → <empty statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
@@ -354,7 +378,7 @@ public class Block {
                             null
                     ),
                     /*
-                     * <statement without trailing substatement> → <expression statement>
+                     * (3) <statement without trailing substatement> → <expression statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
@@ -364,7 +388,7 @@ public class Block {
                             null
                     ),
                     /*
-                     * <statement without trailing substatement> → <do statement>
+                     * (5) <statement without trailing substatement> → <do statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
@@ -374,7 +398,7 @@ public class Block {
                             null
                     ),
                     /*
-                     * <statement without trailing substatement> → <return statement>
+                     * (8) <statement without trailing substatement> → <return statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
@@ -385,13 +409,30 @@ public class Block {
                     )
                     /*
                      * TODO 缺少以下产生式
-                     * <statement without trailing substatement> → <switch statement>
-                     * <statement without trailing substatement> → <break statement>
-                     * <statement without trailing substatement> → <continue statement>
-                     * <statement without trailing substatement> → <synchronized statement>
-                     * <statement without trailing substatement> → <throws statements>
-                     * <statement without trailing substatement> → <try statement>
+                     * (4) <statement without trailing substatement> → <switch statement>
+                     * (6) <statement without trailing substatement> → <break statement>
+                     * (7) <statement without trailing substatement> → <continue statement>
+                     * (9) <statement without trailing substatement> → <synchronized statement>
+                     * (10) <statement without trailing substatement> → <throws statements>
+                     * (11) <statement without trailing substatement> → <try statement>
                      */
+            ),
+
+
+            /*
+             * <mark 152_1_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 152_1_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_152_1_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            ACTION_152_1_1
+                    )
             ),
 
 
@@ -648,12 +689,13 @@ public class Block {
              */
             Production.create(
                     /*
-                     * <for statement> → for ( <for init>? ; <expression>? ; <for update>? ) <statement>
+                     * (1) <for statement> → for <mark 188_1_1> ( <for init>? ; <expression>? ; <for update>? ) <statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_FOR),
+                                    Symbol.createNonTerminator(MARK_188_1_1),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
@@ -664,6 +706,22 @@ public class Block {
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
                             null
+                    )
+            ),
+
+            /*
+             * <mark 188_1_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 188_1_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_188_1_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            ACTION_188_1_1
                     )
             ),
 

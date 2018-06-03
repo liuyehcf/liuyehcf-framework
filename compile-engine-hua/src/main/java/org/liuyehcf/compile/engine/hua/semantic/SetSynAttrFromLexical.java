@@ -15,7 +15,7 @@ public class SetSynAttrFromLexical extends AbstractSemanticAction {
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
      */
-    private final int fromOffset;
+    private final int fromStackOffset;
 
     /**
      * 宿属性-名称
@@ -28,24 +28,24 @@ public class SetSynAttrFromLexical extends AbstractSemanticAction {
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
      */
-    private final int toOffset;
+    private final int toStackOffset;
 
 
-    public SetSynAttrFromLexical(int fromOffset, String toAttrName, int toOffset) {
-        this.fromOffset = fromOffset;
+    public SetSynAttrFromLexical(int fromStackOffset, String toAttrName, int toStackOffset) {
+        this.fromStackOffset = fromStackOffset;
         this.toAttrName = toAttrName;
-        this.toOffset = toOffset;
+        this.toStackOffset = toStackOffset;
     }
 
-    public int getFromOffset() {
-        return fromOffset;
+    public int getFromStackOffset() {
+        return fromStackOffset;
     }
 
     public String getToAttrName() {
         return toAttrName;
     }
 
-    public int getToOffset() {
-        return toOffset;
+    public int getToStackOffset() {
+        return toStackOffset;
     }
 }

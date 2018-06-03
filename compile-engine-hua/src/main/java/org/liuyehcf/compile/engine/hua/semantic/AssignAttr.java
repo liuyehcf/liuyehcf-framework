@@ -15,7 +15,7 @@ public class AssignAttr extends AbstractSemanticAction {
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
      */
-    private final int fromOffset;
+    private final int fromStackOffset;
 
     /**
      * 源属性-名称
@@ -28,30 +28,30 @@ public class AssignAttr extends AbstractSemanticAction {
      * '-1' 表示栈次顶，以此类推
      * '1' 表示即将入栈的元素，以此类推
      */
-    private final int toOffset;
+    private final int toStackOffset;
 
     /**
      * 宿属性-名称
      */
     private final String toAttrName;
 
-    public AssignAttr(int fromOffset, String fromAttrName, int toOffset, String toAttrName) {
-        this.fromOffset = fromOffset;
+    public AssignAttr(int fromStackOffset, String fromAttrName, int toStackOffset, String toAttrName) {
+        this.fromStackOffset = fromStackOffset;
         this.fromAttrName = fromAttrName;
-        this.toOffset = toOffset;
+        this.toStackOffset = toStackOffset;
         this.toAttrName = toAttrName;
     }
 
-    public int getFromOffset() {
-        return fromOffset;
+    public int getFromStackOffset() {
+        return fromStackOffset;
     }
 
     public String getFromAttrName() {
         return fromAttrName;
     }
 
-    public int getToOffset() {
-        return toOffset;
+    public int getToStackOffset() {
+        return toStackOffset;
     }
 
     public String getToAttrName() {

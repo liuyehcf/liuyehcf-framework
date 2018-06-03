@@ -16,13 +16,13 @@ public class AddFutureSyntaxNode extends AbstractSemanticAction {
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
      */
-    private final int offset;
+    private final int stackOffset;
 
-    public AddFutureSyntaxNode(int offset) {
-        this.offset = offset;
+    public AddFutureSyntaxNode(int stackOffset) {
+        this.stackOffset = stackOffset;
     }
 
-    public int getOffset() {
-        return offset;
+    public int getStackOffset() {
+        return stackOffset;
     }
 }
