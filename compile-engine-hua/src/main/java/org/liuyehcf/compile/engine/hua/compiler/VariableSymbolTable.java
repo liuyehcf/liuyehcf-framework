@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -103,6 +104,6 @@ public class VariableSymbolTable {
 
     @Override
     public String toString() {
-        return JSON.toJSONString(this);
+        return JSON.toJSONString(this, SerializerFeature.DisableCircularReferenceDetect);
     }
 }

@@ -37,6 +37,7 @@ public class Program {
     public static final String METHOD_BODY = "<method body>"; // 86
 
     private static final String MARK_50_1_1 = "<mark 50_1_1>";
+    private static final String MARK_74_1_1 = "<mark 74_1_1>";
 
     /**
      * 普通终结符
@@ -294,16 +295,35 @@ public class Program {
              */
             Production.create(
                     /*
-                     * <method declaration> → <method header> <method body>
+                     * <method declaration> → <mark 74_1_1> <method header> <method body>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(METHOD_DECLARATION),
                             SymbolString.create(
+                                    Symbol.createNonTerminator(MARK_74_1_1),
                                     Symbol.createNonTerminator(METHOD_HEADER),
                                     Symbol.createNonTerminator(METHOD_BODY)
                             ),
-                            null
+                            ACTION_74_1
                     )
+            ),
+
+
+            /*
+             * <mark 74_1_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 74_1_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_74_1_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            ACTION_74_1_1
+                    )
+
             ),
 
 

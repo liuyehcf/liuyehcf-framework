@@ -157,17 +157,5 @@ public class HuaCompiler extends LALR {
             variableSymbolTable.exitNamespace();
         }
 
-        private void lookup(String name) {
-
-        }
-
-        private void gen() {
-        }
-
-        private void newTemp() {
-
-        }
     }
-
-
 }

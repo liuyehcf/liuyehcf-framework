@@ -1,9 +1,7 @@
 package org.liuyehcf.compile.engine.hua.action;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
-import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
-import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
-import org.liuyehcf.compile.engine.hua.semantic.CreateVariable;
+import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,5 +53,13 @@ public class ProgramAction {
 
     public static final List<AbstractSemanticAction> ACTION_70_1 = Arrays.asList(
             new CreateVariable(0)
+    );
+
+    public static final List<AbstractSemanticAction> ACTION_74_1 = Arrays.asList(
+            new ExitNamespace()
+    );
+
+    public static final List<AbstractSemanticAction> ACTION_74_1_1 = Arrays.asList(
+            new EnterNamespace()
     );
 }

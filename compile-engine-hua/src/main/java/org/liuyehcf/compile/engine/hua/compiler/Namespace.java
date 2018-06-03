@@ -1,7 +1,5 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 /**
  * @author chenlu
  * @date 2018/6/3
