@@ -59,6 +59,30 @@ public class TestGrammar {
 
     @Test
     public void test() {
-        assertTrue(compiler.compile("void f(){ int a,b,c; }").isSuccess());
+        assertTrue(compiler.compile("void testFor(){\n" +
+                "  for(;;)\n" +
+                "    something();\n" +
+                "\n" +
+                "  for(;;){\n" +
+                "    something();\n" +
+                "  }\n" +
+                "\n" +
+                "  for(int a,b;;)\n" +
+                "    something();\n" +
+                "\n" +
+                "  for(int b=3;;){\n" +
+                "    something();\n" +
+                "  }\n" +
+                "\n" +
+                "  for(;true;)\n" +
+                "    something();\n" +
+                "\n" +
+                "  for(;;i++,j++)\n" +
+                "    something();\n" +
+                "\n" +
+                "  for(int a=3;b<6;i++,j++){\n" +
+                "    something();\n" +
+                "  }\n" +
+                "}").isSuccess());
     }
 }

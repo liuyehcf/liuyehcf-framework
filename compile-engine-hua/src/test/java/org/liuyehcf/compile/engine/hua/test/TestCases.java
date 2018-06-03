@@ -120,8 +120,8 @@ public class TestCases {
     static final String[] VARIABLE_DECLARATION_CASES = {
             "void testDeclaration(){\n" +
                     "  int a,b,c,d;\n" +
-                    "  int[][] a=new int[5][];\n" +
-                    "  int a=something();\n" +
+                    "  int[][] e=new int[5][];\n" +
+                    "  int f=something();\n" +
                     "}"
     };
 

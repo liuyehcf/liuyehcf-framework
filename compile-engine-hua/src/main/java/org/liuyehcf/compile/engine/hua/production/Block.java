@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.semantic.EnterNamespace;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.action.BlockAction.*;
@@ -52,6 +53,8 @@ public class Block {
 
     private static final String MARK_139_1_1 = "<mark 139_1_1>";
     private static final String MARK_146_1_1 = "<mark 146_1_1>";
+    private static final String MARK_192_1_1 = "<mark 192_1_1>";
+    private static final String MARK_192_2_1 = "<mark 192_2_1>";
 
     public static final Production[] PRODUCTIONS = {
 
@@ -702,7 +705,7 @@ public class Block {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            new EnterNamespace()
                     ),
                     /*
                      * <epsilon or for init> → <for init>
@@ -779,7 +782,7 @@ public class Block {
              */
             Production.create(
                     /*
-                     * <for statement no short if> → for ( <for init>? ; <expression>? ; <for update>? ) <statement no short if>
+                     * (1) <for statement no short if> → for ( <for init>? ; <expression>? ; <for update>? ) <statement no short if>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_STATEMENT_NO_SHORT_IF),
@@ -794,7 +797,7 @@ public class Block {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            null
+                            ACTION_190_1
                     )
             ),
 
@@ -805,25 +808,63 @@ public class Block {
              */
             Production.create(
                     /*
-                     * <for init> → <statement expression list>
+                     * (1) <for init> → <mark 192_1_1> <statement expression list>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_INIT),
                             SymbolString.create(
+                                    Symbol.createNonTerminator(MARK_192_1_1),
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST)
                             ),
                             null
                     ),
                     /*
-                     * <for init> → <local variable declaration>
+                     * (1) <for init> → <mark 192_2_1> <local variable declaration>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_INIT),
                             SymbolString.create(
+                                    Symbol.createNonTerminator(MARK_192_2_1),
                                     Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION)
                             ),
                             null
                     )
+            ),
+
+
+            /*
+             * <mark 192_1_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 192_1_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_192_1_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            ACTION_192_1_1
+                    )
+
+            ),
+
+
+            /*
+             * <mark 192_2_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 192_2_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_192_2_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            ACTION_192_2_1
+                    )
+
             ),
 
 

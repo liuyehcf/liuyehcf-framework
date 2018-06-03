@@ -76,11 +76,9 @@ public class HuaCompiler extends LALR {
                 } else if (semanticAction instanceof CreateVariable) {
                     processCreateVariable(stack, (CreateVariable) semanticAction);
                 } else if (semanticAction instanceof EnterNamespace) {
-                    processEnterNamespace(stack);
+                    processEnterNamespace();
                 } else if (semanticAction instanceof ExitNamespace) {
                     processExitNamespace();
-                } else if (semanticAction instanceof IgnoreNextEnterNamespace) {
-                    processIgnoreNextEnterNamespace(stack, (IgnoreNextEnterNamespace) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromLexical) {
                     processSetSynAttrFromLexical(stack, (SetSynAttrFromLexical) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromSystem) {
@@ -123,22 +121,12 @@ public class HuaCompiler extends LALR {
             this.offset += width;
         }
 
-        private void processEnterNamespace(FutureSyntaxNodeStack stack) {
-            if (stack.get(0).get(AttrName.IGNORE_NEXT_ENTER_NAMESPACE.getName()) != null) {
-                stack.get(0).put(AttrName.IGNORE_NEXT_ENTER_NAMESPACE.getName(), null);
-                return;
-            }
+        private void processEnterNamespace() {
             enterNamespace();
         }
 
         private void processExitNamespace() {
             exitNamespace();
-        }
-
-        private void processIgnoreNextEnterNamespace(FutureSyntaxNodeStack stack, IgnoreNextEnterNamespace semanticAction) {
-            int stackOffset = semanticAction.getStackOffset();
-
-            stack.get(stackOffset).put(AttrName.IGNORE_NEXT_ENTER_NAMESPACE.getName(), AttrName.IGNORE_NEXT_ENTER_NAMESPACE.getName());
         }
 
         private void processSetSynAttrFromLexical(FutureSyntaxNodeStack stack, SetSynAttrFromLexical semanticAction) {

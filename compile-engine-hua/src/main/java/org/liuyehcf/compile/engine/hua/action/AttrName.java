@@ -6,9 +6,7 @@ package org.liuyehcf.compile.engine.hua.action;
  */
 public enum AttrName {
     TYPE("type"),
-    WIDTH("width"),
-    IGNORE_NEXT_ENTER_NAMESPACE("ignore_next_enter_namespace");
-
+    WIDTH("width");
     private final String name;
 
     AttrName(String name) {

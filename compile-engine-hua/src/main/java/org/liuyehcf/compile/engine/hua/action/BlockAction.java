@@ -1,7 +1,10 @@
 package org.liuyehcf.compile.engine.hua.action;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
-import org.liuyehcf.compile.engine.hua.semantic.*;
+import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
+import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
+import org.liuyehcf.compile.engine.hua.semantic.EnterNamespace;
+import org.liuyehcf.compile.engine.hua.semantic.ExitNamespace;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,5 +48,17 @@ public class BlockAction {
 
     public static final List<AbstractSemanticAction> ACTION_188_1 = Arrays.asList(
             new ExitNamespace()
+    );
+
+    public static final List<AbstractSemanticAction> ACTION_190_1 = Arrays.asList(
+            new ExitNamespace()
+    );
+
+    public static final List<AbstractSemanticAction> ACTION_192_1_1 = Arrays.asList(
+            new EnterNamespace()
+    );
+
+    public static final List<AbstractSemanticAction> ACTION_192_2_1 = Arrays.asList(
+            new EnterNamespace()
     );
 }
