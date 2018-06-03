@@ -52,8 +52,6 @@ public class Block {
 
     private static final String MARK_139_1_1 = "<mark 139_1_1>";
     private static final String MARK_146_1_1 = "<mark 146_1_1>";
-    private static final String MARK_188_1_1 = "<mark 188_1_1>";
-
 
     public static final Production[] PRODUCTIONS = {
 
@@ -243,7 +241,7 @@ public class Block {
              */
             Production.create(
                     /*
-                     * <statement> → <statement without trailing substatement>
+                     * (1) <statement> → <statement without trailing substatement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT),
@@ -253,7 +251,7 @@ public class Block {
                             null
                     ),
                     /*
-                     * <statement> → <if then statement>
+                     * (3) <statement> → <if then statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT),
@@ -263,7 +261,7 @@ public class Block {
                             null
                     ),
                     /*
-                     * <statement> → <if then else statement>
+                     * (4) <statement> → <if then else statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT),
@@ -273,7 +271,7 @@ public class Block {
                             null
                     ),
                     /*
-                     * <statement> → <while statement>
+                     * (5) <statement> → <while statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT),
@@ -283,7 +281,7 @@ public class Block {
                             null
                     ),
                     /*
-                     * <statement> → <for statement>
+                     * (6) <statement> → <for statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT),
@@ -294,7 +292,7 @@ public class Block {
                     )
                     /*
                      * TODO 缺少以下产生式
-                     * <statement> → <labeled statement>
+                     * (2) <statement> → <labeled statement>
                      */
             ),
 
@@ -671,13 +669,12 @@ public class Block {
              */
             Production.create(
                     /*
-                     * (1) <for statement> → for <mark 188_1_1> ( <for init>? ; <expression>? ; <for update>? ) <statement>
+                     * (1) <for statement> → for ( <for init>? ; <expression>? ; <for update>? ) <statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_FOR),
-                                    Symbol.createNonTerminator(MARK_188_1_1),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
@@ -688,22 +685,6 @@ public class Block {
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
                             ACTION_188_1
-                    )
-            ),
-
-            /*
-             * <mark 188_1_1>
-             */
-            Production.create(
-                    /*
-                     * <mark 188_1_1> → ε
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_188_1_1),
-                            SymbolString.create(
-                                    Symbol.EPSILON
-                            ),
-                            ACTION_188_1_1
                     )
             ),
 

@@ -46,9 +46,4 @@ public class BlockAction {
     public static final List<AbstractSemanticAction> ACTION_188_1 = Arrays.asList(
             new ExitNamespace()
     );
-
-    public static final List<AbstractSemanticAction> ACTION_188_1_1 = Arrays.asList(
-            new EnterNamespace(),
-            new IgnoreNextEnterNamespace(8)
-    );
 }
