@@ -52,8 +52,8 @@ public class Block {
 
     private static final String MARK_139_1_1 = "<mark 139_1_1>";
     private static final String MARK_146_1_1 = "<mark 146_1_1>";
-    private static final String MARK_152_1_1 = "<mark 152_1_1>";
     private static final String MARK_188_1_1 = "<mark 188_1_1>";
+
 
     public static final Production[] PRODUCTIONS = {
 
@@ -63,13 +63,13 @@ public class Block {
              */
             Production.create(
                     /*
-                     * (1) <block> → <mark 139_1_1> { <block statements>? }
+                     * (1) <block> → { <mark 139_1_1> <block statements>? }
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(BLOCK),
                             SymbolString.create(
-                                    Symbol.createNonTerminator(MARK_139_1_1),
                                     Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_139_1_1),
                                     Symbol.createNonTerminator(EPSILON_OR_BLOCK_STATEMENTS),
                                     Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES)
                             ),
@@ -357,12 +357,11 @@ public class Block {
              */
             Production.create(
                     /*
-                     * (1) <statement without trailing substatement> → <mark 152_1_1> <block>
+                     * (1) <statement without trailing substatement> → <block>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT),
                             SymbolString.create(
-                                    Symbol.createNonTerminator(MARK_152_1_1),
                                     Symbol.createNonTerminator(BLOCK)
                             ),
                             null
@@ -416,23 +415,6 @@ public class Block {
                      * (10) <statement without trailing substatement> → <throws statements>
                      * (11) <statement without trailing substatement> → <try statement>
                      */
-            ),
-
-
-            /*
-             * <mark 152_1_1>
-             */
-            Production.create(
-                    /*
-                     * <mark 152_1_1> → ε
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_152_1_1),
-                            SymbolString.create(
-                                    Symbol.EPSILON
-                            ),
-                            ACTION_152_1_1
-                    )
             ),
 
 
@@ -705,7 +687,7 @@ public class Block {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            null
+                            ACTION_188_1
                     )
             ),
 
