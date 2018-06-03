@@ -4,9 +4,9 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
-import static org.liuyehcf.compile.engine.hua.action.ProgramAction.*;
 import static org.liuyehcf.compile.engine.hua.production.Block.BLOCK;
 import static org.liuyehcf.compile.engine.hua.production.Expression.EXPRESSION;
 import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
@@ -35,14 +35,12 @@ public class Program {
     public static final String RESULT_TYPE = "<result type>"; // 78
     public static final String METHOD_DECLARATOR = "<method declarator>"; // 84
     public static final String METHOD_BODY = "<method body>"; // 86
-
-    private static final String MARK_50_1_1 = "<mark 50_1_1>";
-    private static final String MARK_74_1_1 = "<mark 74_1_1>";
-
     /**
      * 普通终结符
      */
     public static final String NORMAL_VOID = "void";
+    private static final String MARK_50_1_1 = "<mark 50_1_1>";
+    private static final String MARK_74_1_1 = "<mark 74_1_1>";
     private static final String MARK_66_2_1 = "<mark 66_2_1>";
     public static final Production[] PRODUCTIONS = {
             /*
@@ -154,7 +152,19 @@ public class Program {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            ACTION_50_1_1
+                            new AddFutureSyntaxNode(1),
+                            new AssignAttr(
+                                    0,
+                                    AttrName.TYPE.getName(),
+                                    1,
+                                    AttrName.TYPE.getName()
+                            ),
+                            new AssignAttr(
+                                    0,
+                                    AttrName.WIDTH.getName(),
+                                    1,
+                                    AttrName.WIDTH.getName()
+                            )
                     )
             ),
 
@@ -172,7 +182,7 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR)
                             ),
-                            ACTION_66_1
+                            null
                     ),
                     /*
                      * (2) <variable declarators> → <variable declarators> , <mark 66_2_1> <variable declarator>
@@ -185,7 +195,7 @@ public class Program {
                                     Symbol.createNonTerminator(MARK_66_2_1),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR)
                             ),
-                            ACTION_66_2
+                            null
                     )
             ),
 
@@ -202,7 +212,19 @@ public class Program {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            ACTION_66_2_1
+                            new AddFutureSyntaxNode(1),
+                            new AssignAttr(
+                                    -1,
+                                    AttrName.TYPE.getName(),
+                                    1,
+                                    AttrName.TYPE.getName()
+                            ),
+                            new AssignAttr(
+                                    -1,
+                                    AttrName.WIDTH.getName(),
+                                    1,
+                                    AttrName.WIDTH.getName()
+                            )
                     )
             ),
 
@@ -250,7 +272,7 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             ),
-                            ACTION_70_1
+                            new CreateVariable(0)
                     ),
                     /*
                      * <variable declarator id> → <variable declarator id> []
@@ -304,7 +326,7 @@ public class Program {
                                     Symbol.createNonTerminator(METHOD_HEADER),
                                     Symbol.createNonTerminator(METHOD_BODY)
                             ),
-                            ACTION_74_1
+                            new ExitNamespace()
                     )
             ),
 
@@ -321,7 +343,7 @@ public class Program {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            ACTION_74_1_1
+                            new EnterNamespace()
                     )
 
             ),

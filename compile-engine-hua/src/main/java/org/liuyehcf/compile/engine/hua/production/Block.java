@@ -4,10 +4,12 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
+import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
 import org.liuyehcf.compile.engine.hua.semantic.EnterNamespace;
+import org.liuyehcf.compile.engine.hua.semantic.ExitNamespace;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
-import static org.liuyehcf.compile.engine.hua.action.BlockAction.*;
 import static org.liuyehcf.compile.engine.hua.production.Expression.*;
 import static org.liuyehcf.compile.engine.hua.production.Program.VARIABLE_DECLARATORS;
 import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
@@ -74,7 +76,7 @@ public class Block {
                                     Symbol.createNonTerminator(EPSILON_OR_BLOCK_STATEMENTS),
                                     Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES)
                             ),
-                            ACTION_139_1
+                            new ExitNamespace()
                     )
             ),
 
@@ -91,7 +93,7 @@ public class Block {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            ACTION_139_1_1
+                            new EnterNamespace()
                     )
 
             ),
@@ -216,7 +218,7 @@ public class Block {
                                     Symbol.createNonTerminator(MARK_146_1_1),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATORS)
                             ),
-                            ACTION_146_1
+                            null
                     )
             ),
 
@@ -233,7 +235,19 @@ public class Block {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            ACTION_146_1_1
+                            new AddFutureSyntaxNode(1),
+                            new AssignAttr(
+                                    0,
+                                    AttrName.TYPE.getName(),
+                                    1,
+                                    AttrName.TYPE.getName()
+                            ),
+                            new AssignAttr(
+                                    0,
+                                    AttrName.WIDTH.getName(),
+                                    1,
+                                    AttrName.WIDTH.getName()
+                            )
                     )
             ),
 
@@ -687,7 +701,7 @@ public class Block {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            ACTION_188_1
+                            new ExitNamespace()
                     )
             ),
 
@@ -797,7 +811,7 @@ public class Block {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            ACTION_190_1
+                            new ExitNamespace()
                     )
             ),
 
@@ -844,7 +858,7 @@ public class Block {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            ACTION_192_1_1
+                            new EnterNamespace()
                     )
 
             ),
@@ -862,7 +876,7 @@ public class Block {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            ACTION_192_2_1
+                            new EnterNamespace()
                     )
 
             ),

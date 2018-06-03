@@ -4,10 +4,14 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
+import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromLexical;
+import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromSystem;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_LEFT_PARENTHESES;
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_RIGHT_PARENTHESES;
-import static org.liuyehcf.compile.engine.hua.action.TypeAction.*;
+import static org.liuyehcf.compile.engine.hua.production.TypeWidth.BOOLEAN_WIDTH;
+import static org.liuyehcf.compile.engine.hua.production.TypeWidth.INTEGER_WIDTH;
 
 /**
  * @author hechenfeng
@@ -41,7 +45,17 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PRIMITIVE_TYPE)
                             ),
-                            ACTION_119_1
+                            new AssignAttr(
+                                    0,
+                                    AttrName.TYPE.getName(),
+                                    0,
+                                    AttrName.TYPE.getName()
+                            ),
+                            new AssignAttr(
+                                    0,
+                                    AttrName.WIDTH.getName(),
+                                    0,
+                                    AttrName.WIDTH.getName())
                     ),
                     /*
                      * (2) <type> → <reference type>
@@ -69,7 +83,17 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createNonTerminator(NUMERIC_TYPE)
                             ),
-                            ACTION_120_1
+                            new AssignAttr(
+                                    0,
+                                    AttrName.TYPE.getName(),
+                                    0,
+                                    AttrName.TYPE.getName()
+                            ),
+                            new AssignAttr(
+                                    0,
+                                    AttrName.WIDTH.getName(),
+                                    0,
+                                    AttrName.WIDTH.getName())
                     ),
                     /*
                      * (2) <primitive type> → boolean
@@ -79,7 +103,16 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN)
                             ),
-                            ACTION_120_2
+                            new SetSynAttrFromLexical(
+                                    0,
+                                    AttrName.TYPE.getName(),
+                                    0
+                            ),
+                            new SetSynAttrFromSystem(
+                                    0,
+                                    AttrName.WIDTH.getName(),
+                                    BOOLEAN_WIDTH
+                            )
                     )
             ),
 
@@ -97,7 +130,17 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createNonTerminator(INTEGRAL_TYPE)
                             ),
-                            ACTION_122_1
+                            new AssignAttr(
+                                    0,
+                                    AttrName.TYPE.getName(),
+                                    0,
+                                    AttrName.TYPE.getName()
+                            ),
+                            new AssignAttr(
+                                    0,
+                                    AttrName.WIDTH.getName(),
+                                    0,
+                                    AttrName.WIDTH.getName())
                     ),
                     /*
                      * (2) <numeric type> → <floating-point type>
@@ -126,7 +169,16 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_INT)
                             ),
-                            ACTION_124_3
+                            new SetSynAttrFromLexical(
+                                    0,
+                                    AttrName.TYPE.getName(),
+                                    0
+                            ),
+                            new SetSynAttrFromSystem(
+                                    0,
+                                    AttrName.WIDTH.getName(),
+                                    INTEGER_WIDTH
+                            )
                     )
                     /*
                      * TODO 缺少以下产生式

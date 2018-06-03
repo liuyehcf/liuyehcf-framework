@@ -16,26 +16,23 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 public class VariableSymbolTable {
 
     /**
-     * 命名空间计数值
-     */
-    private int namespaceCnt;
-
-    /**
-     * 当前命名空间，初始化为最大的全局命名空间
-     */
-    private Namespace currentNamespace;
-
-    /**
      * 命名空间映射
      * id -> Namespace
      */
     private final Map<Integer, Namespace> namespaceMap;
-
     /**
      * 符号表
      * 标志符名字 -> 符号详细信息
      */
     private final Map<Namespace, Map<String, VariableSymbol>> table;
+    /**
+     * 命名空间计数值
+     */
+    private int namespaceCnt;
+    /**
+     * 当前命名空间，初始化为最大的全局命名空间
+     */
+    private Namespace currentNamespace;
 
     public VariableSymbolTable() {
         namespaceCnt = 0;
