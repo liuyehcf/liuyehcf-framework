@@ -6,9 +6,11 @@ import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
+import org.liuyehcf.compile.engine.hua.bytecode.AbstractByteCode;
 import org.liuyehcf.compile.engine.hua.production.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
@@ -81,6 +83,10 @@ public class HuaCompiler extends LALR {
                     processExitNamespace();
                 } else if (semanticAction instanceof GetVariableSymbolFromIdentifier) {
                     processGetVariableSymbolFromIdentifier(stack);
+                } else if (semanticAction instanceof PostDecrement) {
+                    processPostDecrement(stack);
+                } else if (semanticAction instanceof PostIncrement) {
+                    processPostIncrement(stack);
                 } else if (semanticAction instanceof SetSynAttrFromLexical) {
                     processSetSynAttrFromLexical(stack, (SetSynAttrFromLexical) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromSystem) {
@@ -138,6 +144,23 @@ public class HuaCompiler extends LALR {
                 throw new RuntimeException("标志符 " + identifierName + " 尚未定义");
             }
             stack.get(0).put(AttrName.ADDRESS.getName(), variableSymbol);
+        }
+
+        @SuppressWarnings("unchecked")
+        private void processPostDecrement(FutureSyntaxNodeStack stack) {
+            if (stack.get(0).get(AttrName.CODES.getName()) == null) {
+                stack.get(0).put(AttrName.CODES.getName(), new ArrayList<>());
+            }
+            ((List<AbstractByteCode>) stack.get(0).get(AttrName.CODES.getName())).add(new AbstractByteCode._iinc(1));
+        }
+
+        @SuppressWarnings("unchecked")
+        private void processPostIncrement(FutureSyntaxNodeStack stack) {
+            if (stack.get(0).get(AttrName.CODES.getName()) == null) {
+                stack.get(0).put(AttrName.CODES.getName(), new ArrayList<>());
+            }
+            ((List<AbstractByteCode>) stack.get(0).get(AttrName.CODES.getName())).add(new AbstractByteCode._iinc(1));
+
         }
 
         private void processSetSynAttrFromLexical(FutureSyntaxNodeStack stack, SetSynAttrFromLexical semanticAction) {

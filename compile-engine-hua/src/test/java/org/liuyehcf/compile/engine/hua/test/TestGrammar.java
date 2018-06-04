@@ -47,7 +47,6 @@ public class TestGrammar {
     @Test
     public void testCase1() {
         for (String rightCase : RIGHT_CASES) {
-            System.out.println(rightCase);
             assertTrue(compiler.compile(rightCase).isSuccess());
         }
     }

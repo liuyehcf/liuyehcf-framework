@@ -4,6 +4,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.semantic.PostDecrement;
+import org.liuyehcf.compile.engine.hua.semantic.PostIncrement;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.production.Token.*;
@@ -950,7 +952,7 @@ public class Expression {
              */
             Production.create(
                     /*
-                     * <postdecrement expression> → <postfix expression> --
+                     * (1) <postdecrement expression> → <postfix expression> --
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(POSTDECREMENT_EXPRESSION),
@@ -958,7 +960,7 @@ public class Expression {
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_DOUBLE_MINUS)
                             ),
-                            null
+                            new PostDecrement() // TODO，如何实现返回原值
                     )
             ),
 
@@ -969,7 +971,7 @@ public class Expression {
              */
             Production.create(
                     /*
-                     * <postincrement expression> → <postfix expression> ++
+                     * (1) <postincrement expression> → <postfix expression> ++
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(POSTINCREMENT_EXPRESSION),
@@ -977,7 +979,7 @@ public class Expression {
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_DOUBLE_PLUS)
                             ),
-                            null
+                            new PostIncrement() // TODO，如何实现返回原值
                     )
             ),
 
@@ -988,7 +990,7 @@ public class Expression {
              */
             Production.create(
                     /*
-                     * <postfix expression> → <primary>
+                     * (1) <postfix expression> → <primary>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(POSTFIX_EXPRESSION),
@@ -998,7 +1000,7 @@ public class Expression {
                             null
                     ),
                     /*
-                     * <postfix expression> → <expression name>
+                     * (2) <postfix expression> → <expression name>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(POSTFIX_EXPRESSION),
@@ -1008,7 +1010,7 @@ public class Expression {
                             null
                     ),
                     /*
-                     * <postfix expression> → <postincrement expression>
+                     * (3) <postfix expression> → <postincrement expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(POSTFIX_EXPRESSION),
@@ -1018,7 +1020,7 @@ public class Expression {
                             null
                     ),
                     /*
-                     * <postfix expression> → <postdecrement expression>
+                     * (4) <postfix expression> → <postdecrement expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(POSTFIX_EXPRESSION),
