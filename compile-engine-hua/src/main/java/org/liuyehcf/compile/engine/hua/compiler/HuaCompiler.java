@@ -79,6 +79,8 @@ public class HuaCompiler extends LALR {
                     processEnterNamespace();
                 } else if (semanticAction instanceof ExitNamespace) {
                     processExitNamespace();
+                } else if (semanticAction instanceof GetVariableSymbolFromIdentifier) {
+                    processGetVariableSymbolFromIdentifier(stack);
                 } else if (semanticAction instanceof SetSynAttrFromLexical) {
                     processSetSynAttrFromLexical(stack, (SetSynAttrFromLexical) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromSystem) {
@@ -127,6 +129,15 @@ public class HuaCompiler extends LALR {
 
         private void processExitNamespace() {
             exitNamespace();
+        }
+
+        private void processGetVariableSymbolFromIdentifier(FutureSyntaxNodeStack stack) {
+            String identifierName = stack.get(0).getValue();
+            VariableSymbol variableSymbol = variableSymbolTable.getVariableSymbol(identifierName);
+            if (variableSymbol == null) {
+                throw new RuntimeException("标志符 " + identifierName + " 尚未定义");
+            }
+            stack.get(0).put(AttrName.ADDRESS.getName(), variableSymbol);
         }
 
         private void processSetSynAttrFromLexical(FutureSyntaxNodeStack stack, SetSynAttrFromLexical semanticAction) {

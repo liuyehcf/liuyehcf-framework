@@ -7,11 +7,12 @@ package org.liuyehcf.compile.engine.hua.test;
 public class TestCases {
     static final String[] WHILE_CASES = {
             "void testWhile(){\n" +
+                    "  int a,b;\n" +
                     "  while(true||false){\n" +
                     "    ;\n" +
                     "  }\n" +
                     "  while(a<b){\n" +
-                    "    int a=3;\n" +
+                    "    something();\n" +
                     "  }\n" +
                     "  while(a==3)\n" +
                     "    something();\n" +
@@ -37,9 +38,13 @@ public class TestCases {
                     "  for(;true;)\n" +
                     "    something();\n" +
                     "\n" +
+                    "  int i,j;\n" +
+                    "\n" +
                     "  for(;;i++,j++)\n" +
                     "    something();\n" +
                     "\n" +
+                    "  int b;\n" +
+                    "  \n" +
                     "  for(int a=3;b<6;i++,j++){\n" +
                     "    something();\n" +
                     "  }\n" +
@@ -72,6 +77,8 @@ public class TestCases {
                     "    something();\n" +
                     "  }\n" +
                     "\n" +
+                    "  int a;\n" +
+                    "\n" +
                     "  if(a<3){\n" +
                     "    something();\n" +
                     "  }else\n" +
@@ -83,7 +90,8 @@ public class TestCases {
                     "    something();\n" +
                     "  }\n" +
                     "\n" +
-                    "\n" +
+                    "  int b;\n" +
+                    "  \n" +
                     "  if(true){\n" +
                     "    if(b>4){\n" +
                     "      something();\n" +
@@ -127,28 +135,30 @@ public class TestCases {
 
     static final String[] OPERATOR_CASES = {
             "void testOperator() {\n" +
-                    "        z = a * b;\n" +
-                    "        z = a / b;\n" +
-                    "        z = a % b;\n" +
-                    "        z = a + b;\n" +
-                    "        z = a - b;\n" +
-                    "        --a;\n" +
-                    "        a--;\n" +
-                    "        ++a;\n" +
-                    "        a++;\n" +
-                    "        z = a << 1;\n" +
-                    "        z = a >> 1;\n" +
-                    "        z = a >>> 1;\n" +
-                    "        z = a & 1;\n" +
-                    "        z = a | 1;\n" +
-                    "        z = a ^ 1;\n" +
-                    "        z = a || b;\n" +
-                    "        z = a && b;\n" +
-                    "        z = b = -a;\n" +
-                    "        z = b = ~a;\n" +
-                    "        z = b = !a;\n" +
-                    "        int h = ++a * b++ / c-- % --d + e - f << g >> h >>> ~j;\n" +
-                    "    }"
+                    "  int a,b,z;\n" +
+                    "  z = a * b;\n" +
+                    "  z = a / b;\n" +
+                    "  z = a % b;\n" +
+                    "  z = a + b;\n" +
+                    "  z = a - b;\n" +
+                    "  --a;\n" +
+                    "  a--;\n" +
+                    "  ++a;\n" +
+                    "  a++;\n" +
+                    "  z = a << 1;\n" +
+                    "  z = a >> 1;\n" +
+                    "  z = a >>> 1;\n" +
+                    "  z = a & 1;\n" +
+                    "  z = a | 1;\n" +
+                    "  z = a ^ 1;\n" +
+                    "  z = a || b;\n" +
+                    "  z = a && b;\n" +
+                    "  z = b = -a;\n" +
+                    "  z = b = ~a;\n" +
+                    "  z = b = !a;\n" +
+                    "  int c,d,e,f,g,h,j;\n" +
+                    "  int k = ++a * b++ / c-- % --d + e - f << g >> h >>> ~j;\n" +
+                    "}\n"
     };
 
     static final String[] CLASSIC_CASES = {

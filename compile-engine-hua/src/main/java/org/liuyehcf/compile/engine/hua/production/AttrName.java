@@ -6,7 +6,9 @@ package org.liuyehcf.compile.engine.hua.production;
  */
 public enum AttrName {
     TYPE("type"),
-    WIDTH("width");
+    WIDTH("width"),
+    ADDRESS("address");
+
     private final String name;
 
     AttrName(String name) {

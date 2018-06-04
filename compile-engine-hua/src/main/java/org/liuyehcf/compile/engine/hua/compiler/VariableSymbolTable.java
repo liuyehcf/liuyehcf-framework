@@ -91,6 +91,19 @@ public class VariableSymbolTable {
         return true;
     }
 
+    public VariableSymbol getVariableSymbol(String name) {
+        Namespace namespace = currentNamespace;
+
+        while (namespace != null) {
+            if (table.get(namespace).containsKey(name)) {
+                return table.get(namespace).get(name);
+            }
+            namespace = namespaceMap.get(namespace.getPid());
+        }
+
+        return null;
+    }
+
     public Map<String, Map<String, VariableSymbol>> getJSONTable() {
         Map<String, Map<String, VariableSymbol>> tableJSONMap = new HashMap<>();
         table.forEach((key, value) -> {
