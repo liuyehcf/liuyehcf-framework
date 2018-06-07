@@ -82,6 +82,8 @@ public class HuaCompiler extends LALR {
                     processAddFutureSyntaxNode(stack, (AddFutureSyntaxNode) semanticAction);
                 } else if (semanticAction instanceof AssignAttr) {
                     processAssignAttr(stack, (AssignAttr) semanticAction);
+                } else if (semanticAction instanceof BinaryOperator) {
+                    processBinaryOperator(stack, (BinaryOperator) semanticAction);
                 } else if (semanticAction instanceof CreateVariable) {
                     processCreateVariable(stack, (CreateVariable) semanticAction);
                 } else if (semanticAction instanceof EnterMethod) {
@@ -135,6 +137,18 @@ public class HuaCompiler extends LALR {
             toNode.put(toAttrName, fromNode.get(fromAttrName));
         }
 
+        private void processBinaryOperator(FutureSyntaxNodeStack stack, BinaryOperator binaryOperator) {
+            int leftStackOffset = binaryOperator.getLeftStackOffset();
+            int rightStackOffset = binaryOperator.getRightStackOffset();
+            BinaryOperator.Operator operator = binaryOperator.getOperator();
+            switch (operator) {
+                case ADDITION:
+                    break;
+                case SUBTRACTION:
+                    break;
+            }
+        }
+
         private void processCreateVariable(FutureSyntaxNodeStack stack, CreateVariable semanticAction) {
             int stackOffset = semanticAction.getStackOffset();
 
@@ -167,8 +181,8 @@ public class HuaCompiler extends LALR {
         }
 
         private void processGetMethodNameFromIdentifier(FutureSyntaxNodeStack stack, GetMethodNameFromIdentifier semanticAction) {
-            int offset = semanticAction.getOffset();
-            String methodName = stack.get(offset).getValue();
+            int stackOffset = semanticAction.getStackOffset();
+            String methodName = stack.get(stackOffset).getValue();
             methodInfoTable.setMethodNameOfCurrentMethod(methodName);
         }
 
@@ -189,9 +203,9 @@ public class HuaCompiler extends LALR {
         }
 
         private void processIncreaseParamSize(FutureSyntaxNodeStack stack, IncreaseParamSize semanticAction) {
-            int offset = semanticAction.getOffset();
-            int paramSize = stack.get(offset).get(AttrName.PARAM_SIZE.getName());
-            stack.get(offset).put(AttrName.PARAM_SIZE.getName(), paramSize + 1);
+            int stackOffset = semanticAction.getStackOffset();
+            int paramSize = stack.get(stackOffset).get(AttrName.PARAM_SIZE.getName());
+            stack.get(stackOffset).put(AttrName.PARAM_SIZE.getName(), paramSize + 1);
         }
 
         @SuppressWarnings("unchecked")
@@ -211,17 +225,17 @@ public class HuaCompiler extends LALR {
         }
 
         private void processSaveParamInfo(FutureSyntaxNodeStack stack, SaveParamInfo saveParamInfo) {
-            int offset = saveParamInfo.getOffset();
-            String type = stack.get(offset).get(AttrName.TYPE.getName());
-            int width = stack.get(offset).get(AttrName.WIDTH.getName());
+            int stackOffset = saveParamInfo.getStackOffset();
+            String type = stack.get(stackOffset).get(AttrName.TYPE.getName());
+            int width = stack.get(stackOffset).get(AttrName.WIDTH.getName());
             methodInfoTable.addParamInfoToCurrentMethod(new ParamInfo(type, width));
         }
 
         private void processSetParamSize(FutureSyntaxNodeStack stack, SetParamSize semanticAction) {
-            int offset = semanticAction.getOffset();
+            int stackOffset = semanticAction.getStackOffset();
             int value = semanticAction.getValue();
-            assertNull(stack.get(offset).get(AttrName.PARAM_SIZE.getName()));
-            stack.get(offset).put(AttrName.PARAM_SIZE.getName(), value);
+            assertNull(stack.get(stackOffset).get(AttrName.PARAM_SIZE.getName()));
+            stack.get(stackOffset).put(AttrName.PARAM_SIZE.getName(), value);
         }
 
         private void processSetSynAttrFromLexical(FutureSyntaxNodeStack stack, SetSynAttrFromLexical semanticAction) {

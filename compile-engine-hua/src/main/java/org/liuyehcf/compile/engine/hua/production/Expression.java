@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.semantic.BinaryOperator;
 import org.liuyehcf.compile.engine.hua.semantic.PostDecrement;
 import org.liuyehcf.compile.engine.hua.semantic.PostIncrement;
 
@@ -693,7 +694,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_ADD),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.ADDITION)
                     ),
                     /*
                      * <additive expression> → <additive expression> - <multiplicative expression>
@@ -705,7 +706,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_MINUS),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.SUBTRACTION)
                     )
             ),
 

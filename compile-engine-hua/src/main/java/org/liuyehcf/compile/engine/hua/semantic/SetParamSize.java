@@ -8,17 +8,17 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  */
 public class SetParamSize extends AbstractSemanticAction {
 
-    private final int offset;
+    private final int stackOffset;
 
     private final int value;
 
-    public SetParamSize(int offset, int value) {
-        this.offset = offset;
+    public SetParamSize(int stackOffset, int value) {
+        this.stackOffset = stackOffset;
         this.value = value;
     }
 
-    public int getOffset() {
-        return offset;
+    public int getStackOffset() {
+        return stackOffset;
     }
 
     public int getValue() {

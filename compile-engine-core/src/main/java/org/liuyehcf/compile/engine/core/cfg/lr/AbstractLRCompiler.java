@@ -877,14 +877,14 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
         /**
          * 增加Future语法树节点
          *
-         * @param offset 相对于top的偏移量
+         * @param stackOffset 相对于top的偏移量
          */
-        public void addFutureSyntaxNode(int offset) {
-            assertTrue(offset > 0);
-            if (top + offset <= stack.size() - 1) {
+        public void addFutureSyntaxNode(int stackOffset) {
+            assertTrue(stackOffset > 0);
+            if (top + stackOffset <= stack.size() - 1) {
                 return;
             }
-            while (top + offset > stack.size() - 1) {
+            while (top + stackOffset > stack.size() - 1) {
                 stack.addLast(new SyntaxNode());
             }
         }
@@ -937,10 +937,10 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
         /**
          * 依据偏移量从栈中获取语法树节点
          *
-         * @param offset 相对于top的偏移量。例如1表示Future语法树节点，-1表示栈次顶元素
+         * @param stackOffset 相对于top的偏移量。例如1表示Future语法树节点，-1表示栈次顶元素
          */
-        public SyntaxNode get(int offset) {
-            return stack.get(top + offset);
+        public SyntaxNode get(int stackOffset) {
+            return stack.get(top + stackOffset);
         }
     }
 

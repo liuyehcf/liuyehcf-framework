@@ -7,13 +7,13 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  * @date 2018/6/7
  */
 public class GetMethodNameFromIdentifier extends AbstractSemanticAction {
-    private final int offset;
+    private final int stackOffset;
 
-    public GetMethodNameFromIdentifier(int offset) {
-        this.offset = offset;
+    public GetMethodNameFromIdentifier(int stackOffset) {
+        this.stackOffset = stackOffset;
     }
 
-    public int getOffset() {
-        return offset;
+    public int getStackOffset() {
+        return stackOffset;
     }
 }
