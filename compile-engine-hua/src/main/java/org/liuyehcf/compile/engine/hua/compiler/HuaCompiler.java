@@ -6,7 +6,8 @@ import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
-import org.liuyehcf.compile.engine.hua.bytecode.AbstractByteCode;
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+import org.liuyehcf.compile.engine.hua.bytecode._iinc;
 import org.liuyehcf.compile.engine.hua.production.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNull;
 
 /**
  * @author chenlu
@@ -83,10 +85,14 @@ public class HuaCompiler extends LALR {
                     processExitNamespace();
                 } else if (semanticAction instanceof GetVariableSymbolFromIdentifier) {
                     processGetVariableSymbolFromIdentifier(stack);
+                } else if (semanticAction instanceof IncreaseParamSize) {
+                    processIncreaseParamSize(stack, (IncreaseParamSize) semanticAction);
                 } else if (semanticAction instanceof PostDecrement) {
                     processPostDecrement(stack);
                 } else if (semanticAction instanceof PostIncrement) {
                     processPostIncrement(stack);
+                } else if (semanticAction instanceof SetParamSize) {
+                    processSetParamSize(stack, (SetParamSize) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromLexical) {
                     processSetSynAttrFromLexical(stack, (SetSynAttrFromLexical) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromSystem) {
@@ -146,12 +152,18 @@ public class HuaCompiler extends LALR {
             stack.get(0).put(AttrName.ADDRESS.getName(), variableSymbol);
         }
 
+        private void processIncreaseParamSize(FutureSyntaxNodeStack stack, IncreaseParamSize semanticAction) {
+            int offset = semanticAction.getOffset();
+            int paramSize = (int) stack.get(offset).get(AttrName.PARAM_SIZE.getName());
+            stack.get(offset).put(AttrName.PARAM_SIZE.getName(), paramSize + 1);
+        }
+
         @SuppressWarnings("unchecked")
         private void processPostDecrement(FutureSyntaxNodeStack stack) {
             if (stack.get(0).get(AttrName.CODES.getName()) == null) {
                 stack.get(0).put(AttrName.CODES.getName(), new ArrayList<>());
             }
-            ((List<AbstractByteCode>) stack.get(0).get(AttrName.CODES.getName())).add(new AbstractByteCode._iinc(1));
+            ((List<ByteCode>) stack.get(0).get(AttrName.CODES.getName())).add(new _iinc(1));
         }
 
         @SuppressWarnings("unchecked")
@@ -159,8 +171,14 @@ public class HuaCompiler extends LALR {
             if (stack.get(0).get(AttrName.CODES.getName()) == null) {
                 stack.get(0).put(AttrName.CODES.getName(), new ArrayList<>());
             }
-            ((List<AbstractByteCode>) stack.get(0).get(AttrName.CODES.getName())).add(new AbstractByteCode._iinc(1));
+            ((List<ByteCode>) stack.get(0).get(AttrName.CODES.getName())).add(new _iinc(1));
+        }
 
+        private void processSetParamSize(FutureSyntaxNodeStack stack, SetParamSize semanticAction) {
+            int offset = semanticAction.getOffset();
+            int value = semanticAction.getValue();
+            assertNull(stack.get(offset).get(AttrName.PARAM_SIZE.getName()));
+            stack.get(offset).put(AttrName.PARAM_SIZE.getName(), value);
         }
 
         private void processSetSynAttrFromLexical(FutureSyntaxNodeStack stack, SetSynAttrFromLexical semanticAction) {

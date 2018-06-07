@@ -119,7 +119,7 @@ public class GrammarDefinition {
         System.out.println(compiler.isLegal());
         compiler.compile("void sort(int a){}\n" +
                 "\n" +
-                "int add(int a,int b){}\n" +
+                "int addByteCode(int a,int b){}\n" +
                 "\n" +
                 "void exchange(int a,int b){\n" +
                 "    int a, b[][];\n" +

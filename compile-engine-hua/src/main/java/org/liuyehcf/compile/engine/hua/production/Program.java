@@ -105,7 +105,7 @@ public class Program {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            null
+                            new IncreaseParamSize(-2)
                     ),
                     /*
                      * <formal parameter list> → <formal parameter>
@@ -115,7 +115,7 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            null
+                            new SetParamSize(0, 1)
                     )
             ),
 
@@ -412,7 +412,7 @@ public class Program {
                                     Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            null
+                            new CreateMethod()
                     )
             ),
 
@@ -423,17 +423,17 @@ public class Program {
              */
             Production.create(
                     /*
-                     * <epsilon or formal parameter list> → ε
+                     * (1) <epsilon or formal parameter list> → ε
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            new SetParamSize(0, 0)
                     ),
                     /*
-                     * <epsilon or formal parameter list> → <formal parameter list>
+                     * (2) <epsilon or formal parameter list> → <formal parameter list>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),

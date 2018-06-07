@@ -8,6 +8,7 @@ public enum AttrName {
     TYPE("type"),
     WIDTH("width"),
     ADDRESS("address"),
+    PARAM_SIZE("param_size"),
     CODES("codes");
 
     private final String name;

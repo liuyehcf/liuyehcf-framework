@@ -45,19 +45,32 @@ public class TestGrammar {
     }
 
     @Test
-    public void testCase1() {
+    public void testRightCases() {
         for (String rightCase : RIGHT_CASES) {
+            System.out.println(rightCase);
             assertTrue(compiler.compile(rightCase).isSuccess());
         }
     }
 
     @Test
-    public void testCase2() {
+    public void printMarkdown() {
         System.out.println(compiler.getAnalysisTableMarkdownString());
     }
 
     @Test
-    public void test() {
-        assertTrue(compiler.compile("").isSuccess());
+    public void testPostIncrement() {
+        assertTrue(compiler.compile("void testPostIncrement(){\n" +
+                "  int a=1;\n" +
+                "  a++;\n" +
+                "}").isSuccess());
+    }
+
+    @Test
+    public void testParamSize(){
+        assertTrue(compiler.compile("void exchange(int[] nums, int i, int j) {\n" +
+                "        int temp = nums[i];\n" +
+                "        nums[i] = nums[j];\n" +
+                "        nums[j] = temp;\n" +
+                "    }").isSuccess());
     }
 }
