@@ -17,6 +17,10 @@ public class MethodInfoTable {
         table = new HashMap<>(16);
     }
 
+    public MethodInfo getCurMethodInfo() {
+        return curMethodInfo;
+    }
+
     public void enterMethod() {
         curMethodInfo = new MethodInfo();
     }

@@ -32,6 +32,11 @@ public class VariableSymbol {
      */
     private final int width;
 
+    /**
+     * 符号值
+     */
+    private Object value;
+
     public VariableSymbol(int offset, Namespace namespace, String name, String type, int width) {
         this.offset = offset;
         this.namespace = namespace;
@@ -58,6 +63,10 @@ public class VariableSymbol {
 
     public int getWidth() {
         return width;
+    }
+
+    public Object getValue() {
+        return value;
     }
 
     @Override

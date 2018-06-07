@@ -35,7 +35,17 @@ public class BinaryOperator extends AbstractSemanticAction {
     }
 
     public enum Operator {
-        ADDITION,
-        SUBTRACTION,
+        ADDITION("+"),
+        SUBTRACTION("-");
+
+        private String sign;
+
+        Operator(String sign) {
+            this.sign = sign;
+        }
+
+        public String getSign() {
+            return sign;
+        }
     }
 }

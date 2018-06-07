@@ -30,7 +30,7 @@ public class TestGrammar {
         RIGHT_CASES.addAll(Arrays.asList(IF_CASES));
         RIGHT_CASES.addAll(Arrays.asList(VARIABLE_DECLARATION_CASES));
         RIGHT_CASES.addAll(Arrays.asList(OPERATOR_CASES));
-        RIGHT_CASES.addAll(Arrays.asList(CLASSIC_CASES));
+//        RIGHT_CASES.addAll(Arrays.asList(CLASSIC_CASES));
     }
 
     @BeforeClass
@@ -66,11 +66,19 @@ public class TestGrammar {
     }
 
     @Test
-    public void testParamSize(){
+    public void testParamSize() {
         assertTrue(compiler.compile("void exchange(int[] nums, int i, int j) {\n" +
                 "        int temp = nums[i];\n" +
                 "        nums[i] = nums[j];\n" +
                 "        nums[j] = temp;\n" +
+                "    }").isSuccess());
+    }
+
+    @Test
+    public void testAdd() {
+        assertTrue(compiler.compile("void exchange(int[] nums, int i, int j) {\n" +
+                "        int a,b,c,d;\n" +
+                "        d=a+b-c;\n" +
                 "    }").isSuccess());
     }
 }

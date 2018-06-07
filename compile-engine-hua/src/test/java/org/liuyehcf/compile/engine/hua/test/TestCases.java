@@ -157,7 +157,6 @@ public class TestCases {
                     "  z = b = ~a;\n" +
                     "  z = b = !a;\n" +
                     "  int c,d,e,f,g,h,j;\n" +
-                    "  int k = ++a * b++ / c-- % --d + e - f << g >> h >>> ~j;\n" +
                     "}\n"
     };
 

@@ -26,6 +26,11 @@ public class VariableSymbolTable {
      */
     private final Map<Namespace, Map<String, VariableSymbol>> table;
     /**
+     * 符号表
+     * 标志符偏移量 -> 符号详细信息
+     */
+    private final Map<Namespace, Map<Integer, VariableSymbol>> offsetMap;
+    /**
      * 命名空间计数值
      */
     private int namespaceCnt;
@@ -39,17 +44,21 @@ public class VariableSymbolTable {
         currentNamespace = new Namespace(namespaceCnt++, Namespace.NO_PARENT_NAMESPACE);
         namespaceMap = new HashMap<>(16);
         table = new HashMap<>(16);
+        offsetMap = new HashMap<>(16);
 
         assertFalse(namespaceMap.containsKey(currentNamespace.getId()));
         namespaceMap.put(currentNamespace.getId(), currentNamespace);
         table.put(currentNamespace, new HashMap<>());
+        offsetMap.put(currentNamespace, new HashMap<>());
     }
 
     public void enterNamespace() {
         currentNamespace = new Namespace(namespaceCnt++, currentNamespace.getId());
 
         assertFalse(table.containsKey(currentNamespace));
+        assertFalse(offsetMap.containsKey(currentNamespace));
         table.put(currentNamespace, new HashMap<>(16));
+        offsetMap.put(currentNamespace, new HashMap<>(16));
 
         assertFalse(namespaceMap.containsKey(currentNamespace.getId()));
         namespaceMap.put(currentNamespace.getId(), currentNamespace);
@@ -83,20 +92,37 @@ public class VariableSymbolTable {
         return false;
     }
 
-    public boolean enter(int offset, String name, String type, int width) {
+    public VariableSymbol enter(int offset, String name, String type, int width) {
         if (exists(name)) {
-            return false;
+            return null;
         }
-        table.get(currentNamespace).put(name, new VariableSymbol(offset, currentNamespace, name, type, width));
-        return true;
+
+        VariableSymbol newVariableSymbol = new VariableSymbol(offset, currentNamespace, name, type, width);
+        table.get(currentNamespace).put(name, newVariableSymbol);
+        offsetMap.get(currentNamespace).put(offset, newVariableSymbol);
+
+        return newVariableSymbol;
     }
 
-    public VariableSymbol getVariableSymbol(String name) {
+    public VariableSymbol getVariableSymbolByName(String name) {
         Namespace namespace = currentNamespace;
 
         while (namespace != null) {
             if (table.get(namespace).containsKey(name)) {
                 return table.get(namespace).get(name);
+            }
+            namespace = namespaceMap.get(namespace.getPid());
+        }
+
+        return null;
+    }
+
+    public VariableSymbol getVariableSymbolByOffset(int offset) {
+        Namespace namespace = currentNamespace;
+
+        while (namespace != null) {
+            if (offsetMap.get(namespace).containsKey(offset)) {
+                return offsetMap.get(namespace).get(offset);
             }
             namespace = namespaceMap.get(namespace.getPid());
         }

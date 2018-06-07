@@ -7,12 +7,15 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+import org.liuyehcf.compile.engine.hua.bytecode._add;
 import org.liuyehcf.compile.engine.hua.bytecode._iinc;
+import org.liuyehcf.compile.engine.hua.bytecode._sub;
 import org.liuyehcf.compile.engine.hua.production.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNull;
@@ -141,10 +144,39 @@ public class HuaCompiler extends LALR {
             int leftStackOffset = binaryOperator.getLeftStackOffset();
             int rightStackOffset = binaryOperator.getRightStackOffset();
             BinaryOperator.Operator operator = binaryOperator.getOperator();
+
+            int leftVariableOffset = stack.get(leftStackOffset).get(AttrName.ADDRESS.getName());
+            int rightVariableOffset = stack.get(rightStackOffset).get(AttrName.ADDRESS.getName());
+
+            VariableSymbol leftVariable = variableSymbolTable.getVariableSymbolByOffset(leftVariableOffset);
+            VariableSymbol rightVariable = variableSymbolTable.getVariableSymbolByOffset(rightVariableOffset);
+
+            VariableSymbol newVariableSymbol;
+
             switch (operator) {
                 case ADDITION:
+                    checkIfTypeMatches(leftVariable, rightVariable, operator);
+                    newVariableSymbol = variableSymbolTable.enter(
+                            offset,
+                            UUID.randomUUID().toString(),
+                            leftVariable.getType(),
+                            leftVariable.getWidth());
+                    offset += leftVariable.getWidth();
+
+                    stack.get(0).put(AttrName.ADDRESS.getName(), newVariableSymbol);
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _add(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
                     break;
                 case SUBTRACTION:
+                    checkIfTypeMatches(leftVariable, rightVariable, operator);
+                    newVariableSymbol = variableSymbolTable.enter(
+                            offset,
+                            UUID.randomUUID().toString(),
+                            leftVariable.getType(),
+                            leftVariable.getWidth());
+                    offset += leftVariable.getWidth();
+
+                    stack.get(0).put(AttrName.ADDRESS.getName(), newVariableSymbol);
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _sub(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
                     break;
             }
         }
@@ -158,7 +190,7 @@ public class HuaCompiler extends LALR {
             String type = node.get(AttrName.TYPE.getName());
             int width = node.get(AttrName.WIDTH.getName());
 
-            if (!variableSymbolTable.enter(this.offset, name, type, width)) {
+            if (variableSymbolTable.enter(this.offset, name, type, width) == null) {
                 throw new RuntimeException("标志符 " + name + " 已存在，请勿重复定义");
             }
             this.offset += width;
@@ -188,11 +220,11 @@ public class HuaCompiler extends LALR {
 
         private void processGetVariableSymbolFromIdentifier(FutureSyntaxNodeStack stack) {
             String identifierName = stack.get(0).getValue();
-            VariableSymbol variableSymbol = variableSymbolTable.getVariableSymbol(identifierName);
+            VariableSymbol variableSymbol = variableSymbolTable.getVariableSymbolByName(identifierName);
             if (variableSymbol == null) {
                 throw new RuntimeException("标志符 " + identifierName + " 尚未定义");
             }
-            stack.get(0).put(AttrName.ADDRESS.getName(), variableSymbol);
+            stack.get(0).put(AttrName.ADDRESS.getName(), variableSymbol.getOffset());
         }
 
         private void processIncreaseArrayTypeDim(FutureSyntaxNodeStack stack, IncreaseArrayTypeDim increaseArrayTypeDim) {
@@ -258,13 +290,18 @@ public class HuaCompiler extends LALR {
             stack.get(stackOffset).put(attrName, attrValue);
         }
 
-        public void enterNamespace() {
+        private void enterNamespace() {
             variableSymbolTable.enterNamespace();
         }
 
-        public void exitNamespace() {
+        private void exitNamespace() {
             variableSymbolTable.exitNamespace();
         }
 
+        private void checkIfTypeMatches(VariableSymbol leftVariable, VariableSymbol rightVariable, BinaryOperator.Operator operator) {
+            if (!leftVariable.getType().equals(rightVariable.getType())) {
+                throw new RuntimeException(operator.getSign() + " 运算符两侧类型不匹配");
+            }
+        }
     }
 }

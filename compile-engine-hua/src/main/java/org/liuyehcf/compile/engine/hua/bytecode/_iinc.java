@@ -14,4 +14,9 @@ public class _iinc implements ByteCode {
     public int getIncrement() {
         return increment;
     }
+
+    @Override
+    public void operate() {
+
+    }
 }

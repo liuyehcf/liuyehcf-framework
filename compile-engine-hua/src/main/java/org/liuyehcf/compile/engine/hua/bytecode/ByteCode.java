@@ -5,5 +5,5 @@ package org.liuyehcf.compile.engine.hua.bytecode;
  * @date 2018/6/2
  */
 public interface ByteCode {
-
+    void operate();
 }
