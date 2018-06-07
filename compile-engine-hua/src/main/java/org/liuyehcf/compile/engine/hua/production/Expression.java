@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.semantic.Assignment;
 import org.liuyehcf.compile.engine.hua.semantic.BinaryOperator;
 import org.liuyehcf.compile.engine.hua.semantic.PostDecrement;
 import org.liuyehcf.compile.engine.hua.semantic.PostIncrement;
@@ -156,7 +157,7 @@ public class Expression {
                                     Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
                                     Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
                             ),
-                            null
+                            new Assignment(0, -2, -1)
                     )
             ),
 

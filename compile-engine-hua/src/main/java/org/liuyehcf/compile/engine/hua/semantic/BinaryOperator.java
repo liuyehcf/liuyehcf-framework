@@ -38,7 +38,7 @@ public class BinaryOperator extends AbstractSemanticAction {
         ADDITION("+"),
         SUBTRACTION("-");
 
-        private String sign;
+        private final String sign;
 
         Operator(String sign) {
             this.sign = sign;

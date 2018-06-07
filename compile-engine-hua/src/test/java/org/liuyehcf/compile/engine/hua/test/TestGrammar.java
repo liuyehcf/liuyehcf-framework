@@ -81,4 +81,12 @@ public class TestGrammar {
                 "        d=a+b-c;\n" +
                 "    }").isSuccess());
     }
+
+    @Test
+    public void testNormalAssign() {
+        assertTrue(compiler.compile("void testNormalAssign() {\n" +
+                "  int a,b,c;\n" +
+                "  c=a+b-a;\n" +
+                "}").isSuccess());
+    }
 }

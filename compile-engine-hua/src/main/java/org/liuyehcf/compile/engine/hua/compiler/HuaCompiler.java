@@ -85,6 +85,8 @@ public class HuaCompiler extends LALR {
                     processAddFutureSyntaxNode(stack, (AddFutureSyntaxNode) semanticAction);
                 } else if (semanticAction instanceof AssignAttr) {
                     processAssignAttr(stack, (AssignAttr) semanticAction);
+                } else if (semanticAction instanceof Assignment) {
+                    processAssignment(stack, (Assignment) semanticAction);
                 } else if (semanticAction instanceof BinaryOperator) {
                     processBinaryOperator(stack, (BinaryOperator) semanticAction);
                 } else if (semanticAction instanceof CreateVariable) {
@@ -140,10 +142,23 @@ public class HuaCompiler extends LALR {
             toNode.put(toAttrName, fromNode.get(fromAttrName));
         }
 
-        private void processBinaryOperator(FutureSyntaxNodeStack stack, BinaryOperator binaryOperator) {
-            int leftStackOffset = binaryOperator.getLeftStackOffset();
-            int rightStackOffset = binaryOperator.getRightStackOffset();
-            BinaryOperator.Operator operator = binaryOperator.getOperator();
+        private void processAssignment(FutureSyntaxNodeStack stack, Assignment semanticAction) {
+            int fromStackOffset = semanticAction.getFromStackOffset();
+            int toStackOffset = semanticAction.getToStackOffset();
+            Assignment.Operator assignOperator = semanticAction.getAssignOperator();
+
+            switch (assignOperator) {
+                case NORMAL_ASSIGN:
+                    int fromVariableOffset = stack.get(fromStackOffset).get(AttrName.ADDRESS.getName());
+                    stack.get(toStackOffset).put(AttrName.ADDRESS.getName(), fromVariableOffset);
+                    break;
+            }
+        }
+
+        private void processBinaryOperator(FutureSyntaxNodeStack stack, BinaryOperator semanticAction) {
+            int leftStackOffset = semanticAction.getLeftStackOffset();
+            int rightStackOffset = semanticAction.getRightStackOffset();
+            BinaryOperator.Operator operator = semanticAction.getOperator();
 
             int leftVariableOffset = stack.get(leftStackOffset).get(AttrName.ADDRESS.getName());
             int rightVariableOffset = stack.get(rightStackOffset).get(AttrName.ADDRESS.getName());
