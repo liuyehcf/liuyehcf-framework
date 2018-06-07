@@ -17,6 +17,18 @@ public class _sub implements ByteCode {
         this.resultOffset = resultOffset;
     }
 
+    public int getLeftOffset() {
+        return leftOffset;
+    }
+
+    public int getRightOffset() {
+        return rightOffset;
+    }
+
+    public int getResultOffset() {
+        return resultOffset;
+    }
+
     @Override
     public void operate() {
 

@@ -9,7 +9,8 @@ public enum AttrName {
     WIDTH("width"),
     ADDRESS("address"),
     PARAM_SIZE("param_size"),
-    CODES("codes");
+    CODES("codes"),
+    ASSIGN_OPERATOR("assign_operator");
 
     private final String name;
 

@@ -21,4 +21,16 @@ public class _add implements ByteCode {
     public void operate() {
 
     }
+
+    public int getLeftOffset() {
+        return leftOffset;
+    }
+
+    public int getRightOffset() {
+        return rightOffset;
+    }
+
+    public int getResultOffset() {
+        return resultOffset;
+    }
 }

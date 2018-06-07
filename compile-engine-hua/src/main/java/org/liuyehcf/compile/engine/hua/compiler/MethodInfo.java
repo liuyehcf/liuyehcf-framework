@@ -35,6 +35,18 @@ public class MethodInfo {
         return paramInfoList.size();
     }
 
+    public int getOffset() {
+        return offset;
+    }
+
+    public List<ParamInfo> getParamInfoList() {
+        return paramInfoList;
+    }
+
+    public List<ByteCode> getByteCodes() {
+        return byteCodes;
+    }
+
     public void addParamInfo(ParamInfo paramInfo) {
         paramInfoList.add(paramInfo);
     }

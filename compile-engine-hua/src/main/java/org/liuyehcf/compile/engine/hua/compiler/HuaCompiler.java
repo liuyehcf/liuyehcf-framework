@@ -71,6 +71,7 @@ public class HuaCompiler extends LALR {
         @Override
         protected void after() {
             System.out.println(variableSymbolTable);
+            System.out.println(methodInfoTable);
         }
 
         @Override
@@ -113,6 +114,8 @@ public class HuaCompiler extends LALR {
                     processPostIncrement(stack);
                 } else if (semanticAction instanceof SaveParamInfo) {
                     processSaveParamInfo(stack, (SaveParamInfo) semanticAction);
+                } else if (semanticAction instanceof SetAssignOperator) {
+                    processSetAssignOperator(stack, (SetAssignOperator) semanticAction);
                 } else if (semanticAction instanceof SetParamSize) {
                     processSetParamSize(stack, (SetParamSize) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromLexical) {
@@ -145,7 +148,9 @@ public class HuaCompiler extends LALR {
         private void processAssignment(FutureSyntaxNodeStack stack, Assignment semanticAction) {
             int fromStackOffset = semanticAction.getFromStackOffset();
             int toStackOffset = semanticAction.getToStackOffset();
-            Assignment.Operator assignOperator = semanticAction.getAssignOperator();
+            int operatorOffset = semanticAction.getOperatorOffset();
+
+            SetAssignOperator.Operator assignOperator = stack.get(operatorOffset).get(AttrName.ASSIGN_OPERATOR.getName());
 
             switch (assignOperator) {
                 case NORMAL_ASSIGN:
@@ -178,7 +183,7 @@ public class HuaCompiler extends LALR {
                             leftVariable.getWidth());
                     offset += leftVariable.getWidth();
 
-                    stack.get(0).put(AttrName.ADDRESS.getName(), newVariableSymbol);
+                    stack.get(0).put(AttrName.ADDRESS.getName(), newVariableSymbol.getOffset());
                     methodInfoTable.getCurMethodInfo().addByteCode(new _add(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
                     break;
                 case SUBTRACTION:
@@ -190,7 +195,7 @@ public class HuaCompiler extends LALR {
                             leftVariable.getWidth());
                     offset += leftVariable.getWidth();
 
-                    stack.get(0).put(AttrName.ADDRESS.getName(), newVariableSymbol);
+                    stack.get(0).put(AttrName.ADDRESS.getName(), newVariableSymbol.getOffset());
                     methodInfoTable.getCurMethodInfo().addByteCode(new _sub(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
                     break;
             }
@@ -271,11 +276,17 @@ public class HuaCompiler extends LALR {
             ((List<ByteCode>) stack.get(0).get(AttrName.CODES.getName())).add(new _iinc(1));
         }
 
-        private void processSaveParamInfo(FutureSyntaxNodeStack stack, SaveParamInfo saveParamInfo) {
-            int stackOffset = saveParamInfo.getStackOffset();
+        private void processSaveParamInfo(FutureSyntaxNodeStack stack, SaveParamInfo semanticAction) {
+            int stackOffset = semanticAction.getStackOffset();
             String type = stack.get(stackOffset).get(AttrName.TYPE.getName());
             int width = stack.get(stackOffset).get(AttrName.WIDTH.getName());
             methodInfoTable.addParamInfoToCurrentMethod(new ParamInfo(type, width));
+        }
+
+        private void processSetAssignOperator(FutureSyntaxNodeStack stack, SetAssignOperator semanticAction) {
+            int stackOffset = semanticAction.getStackOffset();
+            SetAssignOperator.Operator operator = semanticAction.getOperator();
+            stack.get(stackOffset).put(AttrName.ASSIGN_OPERATOR.getName(), operator);
         }
 
         private void processSetParamSize(FutureSyntaxNodeStack stack, SetParamSize semanticAction) {

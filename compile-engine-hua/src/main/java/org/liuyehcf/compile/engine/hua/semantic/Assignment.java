@@ -30,18 +30,4 @@ public class Assignment extends AbstractSemanticAction {
     public int getOperatorOffset() {
         return operatorOffset;
     }
-
-    public enum Operator {
-        NORMAL_ASSIGN("=");
-
-        private final String sign;
-
-        Operator(String sign) {
-            this.sign = sign;
-        }
-
-        public String getSign() {
-            return sign;
-        }
-    }
 }

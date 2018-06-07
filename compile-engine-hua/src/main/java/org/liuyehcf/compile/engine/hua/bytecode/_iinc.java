@@ -5,6 +5,8 @@ package org.liuyehcf.compile.engine.hua.bytecode;
  * @date 2018/6/6
  */
 public class _iinc implements ByteCode {
+
+
     private final int increment;
 
     public _iinc(int increment) {
@@ -19,4 +21,5 @@ public class _iinc implements ByteCode {
     public void operate() {
 
     }
+
 }

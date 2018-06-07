@@ -131,7 +131,7 @@ public class VariableSymbolTable {
     }
 
     public Map<String, Map<String, VariableSymbol>> getJSONTable() {
-        Map<String, Map<String, VariableSymbol>> tableJSONMap = new HashMap<>();
+        Map<String, Map<String, VariableSymbol>> tableJSONMap = new HashMap<>(16);
         table.forEach((key, value) -> {
             tableJSONMap.put("[" + key.getId() + ", " + key.getPid() + "]", value);
         });

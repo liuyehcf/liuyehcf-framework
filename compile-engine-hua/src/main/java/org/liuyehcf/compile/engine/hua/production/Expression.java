@@ -4,10 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.semantic.Assignment;
-import org.liuyehcf.compile.engine.hua.semantic.BinaryOperator;
-import org.liuyehcf.compile.engine.hua.semantic.PostDecrement;
-import org.liuyehcf.compile.engine.hua.semantic.PostIncrement;
+import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.production.Token.*;
@@ -207,7 +204,7 @@ public class Expression {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_ASSIGN)
                             ),
-                            null
+                            new SetAssignOperator(0, SetAssignOperator.Operator.NORMAL_ASSIGN)
                     ),
                     /*
                      * <assignment operator> → *=
