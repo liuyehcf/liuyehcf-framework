@@ -96,6 +96,8 @@ public class HuaCompiler extends LALR {
                     processGetMethodNameFromIdentifier(stack, (GetMethodNameFromIdentifier) semanticAction);
                 } else if (semanticAction instanceof GetVariableSymbolFromIdentifier) {
                     processGetVariableSymbolFromIdentifier(stack);
+                } else if (semanticAction instanceof IncreaseArrayTypeDim) {
+                    processIncreaseArrayTypeDim(stack, (IncreaseArrayTypeDim) semanticAction);
                 } else if (semanticAction instanceof IncreaseParamSize) {
                     processIncreaseParamSize(stack, (IncreaseParamSize) semanticAction);
                 } else if (semanticAction instanceof PostDecrement) {
@@ -177,6 +179,13 @@ public class HuaCompiler extends LALR {
                 throw new RuntimeException("标志符 " + identifierName + " 尚未定义");
             }
             stack.get(0).put(AttrName.ADDRESS.getName(), variableSymbol);
+        }
+
+        private void processIncreaseArrayTypeDim(FutureSyntaxNodeStack stack, IncreaseArrayTypeDim increaseArrayTypeDim) {
+            int stackOffset = increaseArrayTypeDim.getStackOffset();
+            String originType = (String) stack.get(stackOffset).get(AttrName.TYPE.getName());
+            originType = originType + "[]";
+            stack.get(stackOffset).put(AttrName.TYPE.getName(), originType);
         }
 
         private void processIncreaseParamSize(FutureSyntaxNodeStack stack, IncreaseParamSize semanticAction) {

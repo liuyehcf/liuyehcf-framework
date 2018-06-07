@@ -4,7 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
+import org.liuyehcf.compile.engine.hua.semantic.IncreaseArrayTypeDim;
 import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromLexical;
 import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromSystem;
 
@@ -219,7 +219,7 @@ public class Type {
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            null
+                            new IncreaseArrayTypeDim(-2)
                     )
             ),
     };
