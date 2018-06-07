@@ -85,12 +85,12 @@ public class Type {
                             ),
                             new SetSynAttrFromLexical(
                                     0,
-                                    AttrName.TYPE.getName(),
+                                    AttrName.TYPE.name(),
                                     0
                             ),
                             new SetSynAttrFromSystem(
                                     0,
-                                    AttrName.WIDTH.getName(),
+                                    AttrName.WIDTH.name(),
                                     BOOLEAN_WIDTH
                             )
                     )
@@ -141,12 +141,12 @@ public class Type {
                             ),
                             new SetSynAttrFromLexical(
                                     0,
-                                    AttrName.TYPE.getName(),
+                                    AttrName.TYPE.name(),
                                     0
                             ),
                             new SetSynAttrFromSystem(
                                     0,
-                                    AttrName.WIDTH.getName(),
+                                    AttrName.WIDTH.name(),
                                     INTEGER_WIDTH
                             )
                     )

@@ -238,15 +238,15 @@ public class Block {
                             new AddFutureSyntaxNode(1),
                             new AssignAttr(
                                     0,
-                                    AttrName.TYPE.getName(),
+                                    AttrName.TYPE.name(),
                                     1,
-                                    AttrName.TYPE.getName()
+                                    AttrName.TYPE.name()
                             ),
                             new AssignAttr(
                                     0,
-                                    AttrName.WIDTH.getName(),
+                                    AttrName.WIDTH.name(),
                                     1,
-                                    AttrName.WIDTH.getName()
+                                    AttrName.WIDTH.name()
                             )
                     )
             ),

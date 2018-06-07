@@ -150,12 +150,12 @@ public class HuaCompiler extends LALR {
             int toStackOffset = semanticAction.getToStackOffset();
             int operatorOffset = semanticAction.getOperatorOffset();
 
-            SetAssignOperator.Operator assignOperator = stack.get(operatorOffset).get(AttrName.ASSIGN_OPERATOR.getName());
+            SetAssignOperator.Operator assignOperator = stack.get(operatorOffset).get(AttrName.ASSIGN_OPERATOR.name());
 
             switch (assignOperator) {
                 case NORMAL_ASSIGN:
-                    int fromVariableOffset = stack.get(fromStackOffset).get(AttrName.ADDRESS.getName());
-                    stack.get(toStackOffset).put(AttrName.ADDRESS.getName(), fromVariableOffset);
+                    int fromVariableOffset = stack.get(fromStackOffset).get(AttrName.ADDRESS.name());
+                    stack.get(toStackOffset).put(AttrName.ADDRESS.name(), fromVariableOffset);
                     break;
             }
         }
@@ -165,8 +165,8 @@ public class HuaCompiler extends LALR {
             int rightStackOffset = semanticAction.getRightStackOffset();
             BinaryOperator.Operator operator = semanticAction.getOperator();
 
-            int leftVariableOffset = stack.get(leftStackOffset).get(AttrName.ADDRESS.getName());
-            int rightVariableOffset = stack.get(rightStackOffset).get(AttrName.ADDRESS.getName());
+            int leftVariableOffset = stack.get(leftStackOffset).get(AttrName.ADDRESS.name());
+            int rightVariableOffset = stack.get(rightStackOffset).get(AttrName.ADDRESS.name());
 
             VariableSymbol leftVariable = variableSymbolTable.getVariableSymbolByOffset(leftVariableOffset);
             VariableSymbol rightVariable = variableSymbolTable.getVariableSymbolByOffset(rightVariableOffset);
@@ -183,7 +183,7 @@ public class HuaCompiler extends LALR {
                             leftVariable.getWidth());
                     offset += leftVariable.getWidth();
 
-                    stack.get(0).put(AttrName.ADDRESS.getName(), newVariableSymbol.getOffset());
+                    stack.get(-2).put(AttrName.ADDRESS.name(), newVariableSymbol.getOffset());
                     methodInfoTable.getCurMethodInfo().addByteCode(new _add(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
                     break;
                 case SUBTRACTION:
@@ -195,7 +195,7 @@ public class HuaCompiler extends LALR {
                             leftVariable.getWidth());
                     offset += leftVariable.getWidth();
 
-                    stack.get(0).put(AttrName.ADDRESS.getName(), newVariableSymbol.getOffset());
+                    stack.get(-2).put(AttrName.ADDRESS.name(), newVariableSymbol.getOffset());
                     methodInfoTable.getCurMethodInfo().addByteCode(new _sub(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
                     break;
             }
@@ -207,8 +207,8 @@ public class HuaCompiler extends LALR {
             SyntaxNode node = stack.get(stackOffset);
 
             String name = node.getValue();
-            String type = node.get(AttrName.TYPE.getName());
-            int width = node.get(AttrName.WIDTH.getName());
+            String type = node.get(AttrName.TYPE.name());
+            int width = node.get(AttrName.WIDTH.name());
 
             if (variableSymbolTable.enter(this.offset, name, type, width) == null) {
                 throw new RuntimeException("标志符 " + name + " 已存在，请勿重复定义");
@@ -244,56 +244,56 @@ public class HuaCompiler extends LALR {
             if (variableSymbol == null) {
                 throw new RuntimeException("标志符 " + identifierName + " 尚未定义");
             }
-            stack.get(0).put(AttrName.ADDRESS.getName(), variableSymbol.getOffset());
+            stack.get(0).put(AttrName.ADDRESS.name(), variableSymbol.getOffset());
         }
 
         private void processIncreaseArrayTypeDim(FutureSyntaxNodeStack stack, IncreaseArrayTypeDim increaseArrayTypeDim) {
             int stackOffset = increaseArrayTypeDim.getStackOffset();
-            String originType = stack.get(stackOffset).get(AttrName.TYPE.getName());
+            String originType = stack.get(stackOffset).get(AttrName.TYPE.name());
             originType = originType + "[]";
-            stack.get(stackOffset).put(AttrName.TYPE.getName(), originType);
+            stack.get(stackOffset).put(AttrName.TYPE.name(), originType);
         }
 
         private void processIncreaseParamSize(FutureSyntaxNodeStack stack, IncreaseParamSize semanticAction) {
             int stackOffset = semanticAction.getStackOffset();
-            int paramSize = stack.get(stackOffset).get(AttrName.PARAM_SIZE.getName());
-            stack.get(stackOffset).put(AttrName.PARAM_SIZE.getName(), paramSize + 1);
+            int paramSize = stack.get(stackOffset).get(AttrName.PARAM_SIZE.name());
+            stack.get(stackOffset).put(AttrName.PARAM_SIZE.name(), paramSize + 1);
         }
 
         @SuppressWarnings("unchecked")
         private void processPostDecrement(FutureSyntaxNodeStack stack) {
-            if (stack.get(0).get(AttrName.CODES.getName()) == null) {
-                stack.get(0).put(AttrName.CODES.getName(), new ArrayList<>());
+            if (stack.get(0).get(AttrName.CODES.name()) == null) {
+                stack.get(0).put(AttrName.CODES.name(), new ArrayList<>());
             }
-            ((List<ByteCode>) stack.get(0).get(AttrName.CODES.getName())).add(new _iinc(1));
+            ((List<ByteCode>) stack.get(0).get(AttrName.CODES.name())).add(new _iinc(1));
         }
 
         @SuppressWarnings("unchecked")
         private void processPostIncrement(FutureSyntaxNodeStack stack) {
-            if (stack.get(0).get(AttrName.CODES.getName()) == null) {
-                stack.get(0).put(AttrName.CODES.getName(), new ArrayList<>());
+            if (stack.get(0).get(AttrName.CODES.name()) == null) {
+                stack.get(0).put(AttrName.CODES.name(), new ArrayList<>());
             }
-            ((List<ByteCode>) stack.get(0).get(AttrName.CODES.getName())).add(new _iinc(1));
+            ((List<ByteCode>) stack.get(0).get(AttrName.CODES.name())).add(new _iinc(1));
         }
 
         private void processSaveParamInfo(FutureSyntaxNodeStack stack, SaveParamInfo semanticAction) {
             int stackOffset = semanticAction.getStackOffset();
-            String type = stack.get(stackOffset).get(AttrName.TYPE.getName());
-            int width = stack.get(stackOffset).get(AttrName.WIDTH.getName());
+            String type = stack.get(stackOffset).get(AttrName.TYPE.name());
+            int width = stack.get(stackOffset).get(AttrName.WIDTH.name());
             methodInfoTable.addParamInfoToCurrentMethod(new ParamInfo(type, width));
         }
 
         private void processSetAssignOperator(FutureSyntaxNodeStack stack, SetAssignOperator semanticAction) {
             int stackOffset = semanticAction.getStackOffset();
             SetAssignOperator.Operator operator = semanticAction.getOperator();
-            stack.get(stackOffset).put(AttrName.ASSIGN_OPERATOR.getName(), operator);
+            stack.get(stackOffset).put(AttrName.ASSIGN_OPERATOR.name(), operator);
         }
 
         private void processSetParamSize(FutureSyntaxNodeStack stack, SetParamSize semanticAction) {
             int stackOffset = semanticAction.getStackOffset();
             int value = semanticAction.getValue();
-            assertNull(stack.get(stackOffset).get(AttrName.PARAM_SIZE.getName()));
-            stack.get(stackOffset).put(AttrName.PARAM_SIZE.getName(), value);
+            assertNull(stack.get(stackOffset).get(AttrName.PARAM_SIZE.name()));
+            stack.get(stackOffset).put(AttrName.PARAM_SIZE.name(), value);
         }
 
         private void processSetSynAttrFromLexical(FutureSyntaxNodeStack stack, SetSynAttrFromLexical semanticAction) {
