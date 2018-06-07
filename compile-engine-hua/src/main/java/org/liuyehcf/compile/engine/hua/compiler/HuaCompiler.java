@@ -141,8 +141,8 @@ public class HuaCompiler extends LALR {
             SyntaxNode node = stack.get(stackOffset);
 
             String name = node.getValue();
-            String type = (String) node.get(AttrName.TYPE.getName());
-            int width = (int) node.get(AttrName.WIDTH.getName());
+            String type = node.get(AttrName.TYPE.getName());
+            int width = node.get(AttrName.WIDTH.getName());
 
             if (!variableSymbolTable.enter(this.offset, name, type, width)) {
                 throw new RuntimeException("标志符 " + name + " 已存在，请勿重复定义");
@@ -183,14 +183,14 @@ public class HuaCompiler extends LALR {
 
         private void processIncreaseArrayTypeDim(FutureSyntaxNodeStack stack, IncreaseArrayTypeDim increaseArrayTypeDim) {
             int stackOffset = increaseArrayTypeDim.getStackOffset();
-            String originType = (String) stack.get(stackOffset).get(AttrName.TYPE.getName());
+            String originType = stack.get(stackOffset).get(AttrName.TYPE.getName());
             originType = originType + "[]";
             stack.get(stackOffset).put(AttrName.TYPE.getName(), originType);
         }
 
         private void processIncreaseParamSize(FutureSyntaxNodeStack stack, IncreaseParamSize semanticAction) {
             int offset = semanticAction.getOffset();
-            int paramSize = (int) stack.get(offset).get(AttrName.PARAM_SIZE.getName());
+            int paramSize = stack.get(offset).get(AttrName.PARAM_SIZE.getName());
             stack.get(offset).put(AttrName.PARAM_SIZE.getName(), paramSize + 1);
         }
 
@@ -212,9 +212,8 @@ public class HuaCompiler extends LALR {
 
         private void processSaveParamInfo(FutureSyntaxNodeStack stack, SaveParamInfo saveParamInfo) {
             int offset = saveParamInfo.getOffset();
-            String name = stack.get(offset).getValue();
-            String type = (String) stack.get(offset).get(AttrName.TYPE.getName());
-            int width = (int) stack.get(offset).get(AttrName.WIDTH.getName());
+            String type = stack.get(offset).get(AttrName.TYPE.getName());
+            int width = stack.get(offset).get(AttrName.WIDTH.getName());
             methodInfoTable.addParamInfoToCurrentMethod(new ParamInfo(type, width));
         }
 

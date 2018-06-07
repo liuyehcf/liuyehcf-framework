@@ -734,12 +734,14 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
             return attrs.putIfAbsent(key, attr);
         }
 
-        public Object put(String key, Object attr) {
-            return attrs.put(key, attr);
+        @SuppressWarnings("unchecked")
+        public <T> T put(String key, T attr) {
+            return (T) attrs.put(key, attr);
         }
 
-        public Object get(String key) {
-            return attrs.get(key);
+        @SuppressWarnings("unchecked")
+        public <T> T get(String key) {
+            return (T) attrs.get(key);
         }
 
         public Symbol getId() {
