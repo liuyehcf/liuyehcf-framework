@@ -45,17 +45,7 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PRIMITIVE_TYPE)
                             ),
-                            new AssignAttr(
-                                    0,
-                                    AttrName.TYPE.getName(),
-                                    0,
-                                    AttrName.TYPE.getName()
-                            ),
-                            new AssignAttr(
-                                    0,
-                                    AttrName.WIDTH.getName(),
-                                    0,
-                                    AttrName.WIDTH.getName())
+                            null
                     ),
                     /*
                      * (2) <type> → <reference type>
@@ -83,17 +73,7 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createNonTerminator(NUMERIC_TYPE)
                             ),
-                            new AssignAttr(
-                                    0,
-                                    AttrName.TYPE.getName(),
-                                    0,
-                                    AttrName.TYPE.getName()
-                            ),
-                            new AssignAttr(
-                                    0,
-                                    AttrName.WIDTH.getName(),
-                                    0,
-                                    AttrName.WIDTH.getName())
+                            null
                     ),
                     /*
                      * (2) <primitive type> → boolean
@@ -130,17 +110,7 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createNonTerminator(INTEGRAL_TYPE)
                             ),
-                            new AssignAttr(
-                                    0,
-                                    AttrName.TYPE.getName(),
-                                    0,
-                                    AttrName.TYPE.getName()
-                            ),
-                            new AssignAttr(
-                                    0,
-                                    AttrName.WIDTH.getName(),
-                                    0,
-                                    AttrName.WIDTH.getName())
+                            null
                     ),
                     /*
                      * (2) <numeric type> → <floating-point type>
