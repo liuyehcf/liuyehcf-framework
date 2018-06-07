@@ -51,6 +51,11 @@ public class HuaCompiler extends LALR {
          */
         private VariableSymbolTable variableSymbolTable = new VariableSymbolTable();
 
+        /**
+         * 方法定义表
+         */
+        private MethodInfoTable methodInfoTable = new MethodInfoTable();
+
         HuaEngine(String input) {
             super(input);
         }
@@ -79,10 +84,16 @@ public class HuaCompiler extends LALR {
                     processAssignAttr(stack, (AssignAttr) semanticAction);
                 } else if (semanticAction instanceof CreateVariable) {
                     processCreateVariable(stack, (CreateVariable) semanticAction);
+                } else if (semanticAction instanceof EnterMethod) {
+                    processEnterMethod();
                 } else if (semanticAction instanceof EnterNamespace) {
                     processEnterNamespace();
+                } else if (semanticAction instanceof ExitMethod) {
+                    processExitMethod();
                 } else if (semanticAction instanceof ExitNamespace) {
                     processExitNamespace();
+                } else if (semanticAction instanceof GetMethodNameFromIdentifier) {
+                    processGetMethodNameFromIdentifier(stack, (GetMethodNameFromIdentifier) semanticAction);
                 } else if (semanticAction instanceof GetVariableSymbolFromIdentifier) {
                     processGetVariableSymbolFromIdentifier(stack);
                 } else if (semanticAction instanceof IncreaseParamSize) {
@@ -91,6 +102,8 @@ public class HuaCompiler extends LALR {
                     processPostDecrement(stack);
                 } else if (semanticAction instanceof PostIncrement) {
                     processPostIncrement(stack);
+                } else if (semanticAction instanceof SaveParamInfo) {
+                    processSaveParamInfo(stack, (SaveParamInfo) semanticAction);
                 } else if (semanticAction instanceof SetParamSize) {
                     processSetParamSize(stack, (SetParamSize) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromLexical) {
@@ -135,12 +148,26 @@ public class HuaCompiler extends LALR {
             this.offset += width;
         }
 
+        private void processEnterMethod() {
+            methodInfoTable.enterMethod();
+        }
+
         private void processEnterNamespace() {
             enterNamespace();
         }
 
+        private void processExitMethod() {
+            methodInfoTable.exitMethod();
+        }
+
         private void processExitNamespace() {
             exitNamespace();
+        }
+
+        private void processGetMethodNameFromIdentifier(FutureSyntaxNodeStack stack, GetMethodNameFromIdentifier semanticAction) {
+            int offset = semanticAction.getOffset();
+            String methodName = stack.get(offset).getValue();
+            methodInfoTable.setMethodNameOfCurrentMethod(methodName);
         }
 
         private void processGetVariableSymbolFromIdentifier(FutureSyntaxNodeStack stack) {
@@ -172,6 +199,14 @@ public class HuaCompiler extends LALR {
                 stack.get(0).put(AttrName.CODES.getName(), new ArrayList<>());
             }
             ((List<ByteCode>) stack.get(0).get(AttrName.CODES.getName())).add(new _iinc(1));
+        }
+
+        private void processSaveParamInfo(FutureSyntaxNodeStack stack, SaveParamInfo saveParamInfo) {
+            int offset = saveParamInfo.getOffset();
+            String name = stack.get(offset).getValue();
+            String type = (String) stack.get(offset).get(AttrName.TYPE.getName());
+            int width = (int) stack.get(offset).get(AttrName.WIDTH.getName());
+            methodInfoTable.addParamInfoToCurrentMethod(new ParamInfo(type, width));
         }
 
         private void processSetParamSize(FutureSyntaxNodeStack stack, SetParamSize semanticAction) {

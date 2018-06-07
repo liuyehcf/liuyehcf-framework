@@ -6,10 +6,10 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  * @author chenlu
  * @date 2018/6/7
  */
-public class AddParamDefinition extends AbstractSemanticAction {
+public class GetMethodNameFromIdentifier extends AbstractSemanticAction {
     private final int offset;
 
-    public AddParamDefinition(int offset) {
+    public GetMethodNameFromIdentifier(int offset) {
         this.offset = offset;
     }
 

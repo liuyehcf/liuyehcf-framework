@@ -11,18 +11,43 @@ import java.util.List;
  */
 public class MethodInfo {
 
-    private final int offset;
+    private int offset;
 
-    private final int paramNum;
+    private String methodName;
+
+    private final List<ParamInfo> paramInfoList = new ArrayList<>();
 
     private final List<ByteCode> byteCodes = new ArrayList<>();
 
-    public MethodInfo(int offset, int paramNum) {
+    public void setOffset(int offset) {
         this.offset = offset;
-        this.paramNum = paramNum;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public int getParamSize() {
+        return paramInfoList.size();
+    }
+
+    public void addParamInfo(ParamInfo paramInfo) {
+        paramInfoList.add(paramInfo);
     }
 
     public void addByteCode(ByteCode byteCode) {
         byteCodes.add(byteCode);
+    }
+
+    public MethodDescription buildMethodDescription() {
+        String[] types = new String[paramInfoList.size()];
+        for (int i = 0; i < types.length; i++) {
+            types[i] = paramInfoList.get(i).getType();
+        }
+        return new MethodDescription(methodName, types);
     }
 }

@@ -105,7 +105,8 @@ public class Program {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new IncreaseParamSize(-2)
+                            new IncreaseParamSize(-2),
+                            new SaveParamInfo(0)
                     ),
                     /*
                      * <formal parameter list> → <formal parameter>
@@ -115,7 +116,8 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new SetParamSize(0, 1)
+                            new SetParamSize(0, 1),
+                            new SaveParamInfo(0)
                     )
             ),
 
@@ -326,7 +328,8 @@ public class Program {
                                     Symbol.createNonTerminator(METHOD_HEADER),
                                     Symbol.createNonTerminator(METHOD_BODY)
                             ),
-                            new ExitNamespace()
+                            new ExitNamespace(),
+                            new ExitMethod()
                     )
             ),
 
@@ -343,7 +346,8 @@ public class Program {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new EnterNamespace()
+                            new EnterNamespace(),
+                            new EnterMethod()
                     )
 
             ),
@@ -412,7 +416,7 @@ public class Program {
                                     Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new CreateMethod()
+                            new GetMethodNameFromIdentifier(-3)
                     )
             ),
 
