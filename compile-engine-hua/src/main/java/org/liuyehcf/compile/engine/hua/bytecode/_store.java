@@ -6,14 +6,21 @@ package org.liuyehcf.compile.engine.hua.bytecode;
  */
 public class _store implements ByteCode {
 
-    private final int offset;
+    private final int fromOffset;
 
-    public _store(int offset) {
-        this.offset = offset;
+    private final int toOffset;
+
+    public _store(int fromOffset, int toOffset) {
+        this.fromOffset = fromOffset;
+        this.toOffset = toOffset;
     }
 
-    public int getOffset() {
-        return offset;
+    public int getFromOffset() {
+        return fromOffset;
+    }
+
+    public int getToOffset() {
+        return toOffset;
     }
 
     @Override

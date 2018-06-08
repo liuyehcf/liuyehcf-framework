@@ -153,8 +153,7 @@ public class HuaCompiler extends LALR {
                 case NORMAL_ASSIGN:
                     int fromVariableOffset = stack.get(fromStackOffset).get(AttrName.ADDRESS.name());
                     int toVariableOffset = stack.get(toStackOffset).get(AttrName.ADDRESS.name());
-                    stack.get(toStackOffset).put(AttrName.ADDRESS.name(), fromVariableOffset);
-                    methodInfoTable.getCurMethodInfo().pushByteCode(new _store(toVariableOffset));
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _store(fromVariableOffset, toVariableOffset));
                     break;
             }
         }
@@ -183,7 +182,7 @@ public class HuaCompiler extends LALR {
                     offset += leftVariable.getWidth();
 
                     stack.get(-2).put(AttrName.ADDRESS.name(), newVariableSymbol.getOffset());
-                    methodInfoTable.getCurMethodInfo().pushByteCode(new _add(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _add(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
                     break;
                 case SUBTRACTION:
                     checkIfTypeMatches(leftVariable, rightVariable, operator);
@@ -195,7 +194,7 @@ public class HuaCompiler extends LALR {
                     offset += leftVariable.getWidth();
 
                     stack.get(-2).put(AttrName.ADDRESS.name(), newVariableSymbol.getOffset());
-                    methodInfoTable.getCurMethodInfo().pushByteCode(new _sub(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _sub(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
                     break;
             }
         }
@@ -244,7 +243,6 @@ public class HuaCompiler extends LALR {
                 throw new RuntimeException("标志符 " + identifierName + " 尚未定义");
             }
             stack.get(0).put(AttrName.ADDRESS.name(), variableSymbol.getOffset());
-            methodInfoTable.getCurMethodInfo().pushOperand(variableSymbol.getOffset());
         }
 
         private void processIncreaseArrayTypeDim(FutureSyntaxNodeStack stack, IncreaseArrayTypeDim increaseArrayTypeDim) {

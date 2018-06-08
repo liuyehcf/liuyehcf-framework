@@ -3,7 +3,6 @@ package org.liuyehcf.compile.engine.hua.compiler;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ public class MethodInfo {
 
     private final List<ParamInfo> paramInfoList = new ArrayList<>();
 
-    private final List<Object> operatorStack = new LinkedList<>();
+    private final List<ByteCode> byteCodes = new ArrayList<>();
 
     public void setOffset(int offset) {
         this.offset = offset;
@@ -44,20 +43,16 @@ public class MethodInfo {
         return paramInfoList;
     }
 
-    public List<Object> getOperatorStack() {
-        return operatorStack;
+    public List<ByteCode> getByteCodes() {
+        return byteCodes;
     }
 
     public void addParamInfo(ParamInfo paramInfo) {
         paramInfoList.add(paramInfo);
     }
 
-    public void pushByteCode(ByteCode byteCode) {
-        operatorStack.add(byteCode);
-    }
-
-    public void pushOperand(int address) {
-        operatorStack.add(address);
+    public void addByteCode(ByteCode byteCode) {
+        byteCodes.add(byteCode);
     }
 
     public MethodDescription buildMethodDescription() {
