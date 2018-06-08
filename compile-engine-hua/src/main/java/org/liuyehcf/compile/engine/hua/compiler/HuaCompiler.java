@@ -6,10 +6,7 @@ import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
-import org.liuyehcf.compile.engine.hua.bytecode._add;
-import org.liuyehcf.compile.engine.hua.bytecode._iinc;
-import org.liuyehcf.compile.engine.hua.bytecode._sub;
+import org.liuyehcf.compile.engine.hua.bytecode.*;
 import org.liuyehcf.compile.engine.hua.production.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
@@ -155,7 +152,9 @@ public class HuaCompiler extends LALR {
             switch (assignOperator) {
                 case NORMAL_ASSIGN:
                     int fromVariableOffset = stack.get(fromStackOffset).get(AttrName.ADDRESS.name());
+                    int toVariableOffset = stack.get(toStackOffset).get(AttrName.ADDRESS.name());
                     stack.get(toStackOffset).put(AttrName.ADDRESS.name(), fromVariableOffset);
+                    methodInfoTable.getCurMethodInfo().pushByteCode(new _store(toVariableOffset));
                     break;
             }
         }
@@ -184,7 +183,7 @@ public class HuaCompiler extends LALR {
                     offset += leftVariable.getWidth();
 
                     stack.get(-2).put(AttrName.ADDRESS.name(), newVariableSymbol.getOffset());
-                    methodInfoTable.getCurMethodInfo().addByteCode(new _add(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
+                    methodInfoTable.getCurMethodInfo().pushByteCode(new _add(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
                     break;
                 case SUBTRACTION:
                     checkIfTypeMatches(leftVariable, rightVariable, operator);
@@ -196,7 +195,7 @@ public class HuaCompiler extends LALR {
                     offset += leftVariable.getWidth();
 
                     stack.get(-2).put(AttrName.ADDRESS.name(), newVariableSymbol.getOffset());
-                    methodInfoTable.getCurMethodInfo().addByteCode(new _sub(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
+                    methodInfoTable.getCurMethodInfo().pushByteCode(new _sub(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
                     break;
             }
         }
@@ -245,6 +244,7 @@ public class HuaCompiler extends LALR {
                 throw new RuntimeException("标志符 " + identifierName + " 尚未定义");
             }
             stack.get(0).put(AttrName.ADDRESS.name(), variableSymbol.getOffset());
+            methodInfoTable.getCurMethodInfo().pushOperand(variableSymbol.getOffset());
         }
 
         private void processIncreaseArrayTypeDim(FutureSyntaxNodeStack stack, IncreaseArrayTypeDim increaseArrayTypeDim) {

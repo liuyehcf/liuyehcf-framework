@@ -17,11 +17,6 @@ public class _add implements ByteCode {
         this.resultOffset = resultOffset;
     }
 
-    @Override
-    public void operate() {
-
-    }
-
     public int getLeftOffset() {
         return leftOffset;
     }
@@ -32,5 +27,10 @@ public class _add implements ByteCode {
 
     public int getResultOffset() {
         return resultOffset;
+    }
+
+    @Override
+    public void operate() {
+
     }
 }
