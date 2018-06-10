@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class TestLR0 {
     @Test
     public void testLR0Status1() {
-        LRCompiler compiler = LR0.create(GrammarCase.GRAMMAR_4.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_4.GRAMMAR);
+        LRCompiler compiler = new LR0(GrammarCase.GRAMMAR_4.GRAMMAR, GrammarCase.GRAMMAR_4.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -48,7 +48,7 @@ public class TestLR0 {
 
     @Test
     public void testSLRStatus1() {
-        LRCompiler compiler = LR0.create(GrammarCase.GRAMMAR_5.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_5.GRAMMAR);
+        LRCompiler compiler = new LR0(GrammarCase.GRAMMAR_5.GRAMMAR, GrammarCase.GRAMMAR_5.LEXICAL_ANALYZER);
 
         assertFalse(compiler.isLegal());
 
@@ -85,7 +85,7 @@ public class TestLR0 {
     @Test
     public void testLR0Case1() {
 
-        LRCompiler compiler = LR0.create(GrammarCase.GRAMMAR_4.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_4.GRAMMAR);
+        LRCompiler compiler = new LR0(GrammarCase.GRAMMAR_4.GRAMMAR, GrammarCase.GRAMMAR_4.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 

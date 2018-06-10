@@ -37,7 +37,7 @@ public class TestGrammar {
     public static void init() {
         long start, end;
         start = System.currentTimeMillis();
-        compiler = HuaCompiler.create(GrammarDefinition.LEXICAL_ANALYZER, GrammarDefinition.GRAMMAR);
+        compiler = new HuaCompiler(GrammarDefinition.GRAMMAR, GrammarDefinition.LEXICAL_ANALYZER);
         end = System.currentTimeMillis();
         System.out.println("build HuaCompiler consume " + (end - start) / 1000 + "s");
 

@@ -31,29 +31,25 @@ public class LL1 extends AbstractCfgCompiler implements LLCompiler {
      */
     private Map<Symbol, Map<PrimaryProduction, Set<Symbol>>> selects = new HashMap<>();
 
-    private LL1(LexicalAnalyzer lexicalAnalyzer, Grammar originalGrammar) {
-        super(lexicalAnalyzer, originalGrammar, GrammarConverterPipelineImpl
+    public LL1(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
+        super(originalGrammar, lexicalAnalyzer, GrammarConverterPipelineImpl
                 .builder()
                 .registerGrammarConverter(MergeGrammarConverter.class)
                 .registerGrammarConverter(LreElfGrammarConverter.class)
                 .build());
-    }
 
-    public static LLCompiler create(LexicalAnalyzer lexicalAnalyzer, Grammar originalGrammar) {
-        LL1 compiler = new LL1(lexicalAnalyzer, originalGrammar);
-
-        compiler.init();
-
-        return compiler;
+        init();
     }
 
     /**
      * 初始化方法
      */
-    @Override
-    protected void postInit() {
+    private void init() {
         // 计算select集
         calculateSelect();
+
+        // 检查正确性
+        checkIsLegal();
     }
 
     @SuppressWarnings("unchecked")
@@ -92,8 +88,7 @@ public class LL1 extends AbstractCfgCompiler implements LLCompiler {
         }
     }
 
-    @Override
-    protected void checkIsLegal() {
+    private void checkIsLegal() {
         // 检查select集的唯一性：具有相同左部的产生式其SELECT集不相交
         for (Symbol a : this.grammar.getNonTerminators()) {
             Map<PrimaryProduction, Set<Symbol>> map = selects.get(a);

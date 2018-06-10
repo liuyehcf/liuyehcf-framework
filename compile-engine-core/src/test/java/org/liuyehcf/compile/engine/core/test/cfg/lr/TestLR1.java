@@ -10,8 +10,7 @@ import static org.junit.Assert.*;
 public class TestLR1 {
     @Test
     public void testAmbiguityStatus1() {
-        LRCompiler compiler = LR1.create(GrammarCase.GRAMMAR_8.LEXICAL_ANALYZER,
-                GrammarCase.GRAMMAR_8.GRAMMAR);
+        LRCompiler compiler = new LR1(GrammarCase.GRAMMAR_8.GRAMMAR, GrammarCase.GRAMMAR_8.LEXICAL_ANALYZER);
 
         assertFalse(compiler.isLegal());
 
@@ -54,7 +53,7 @@ public class TestLR1 {
     @Test
     public void testLR1Status1() {
 
-        LRCompiler compiler = LR1.create(GrammarCase.GRAMMAR_7.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_7.GRAMMAR);
+        LRCompiler compiler = new LR1(GrammarCase.GRAMMAR_7.GRAMMAR, GrammarCase.GRAMMAR_7.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -118,7 +117,7 @@ public class TestLR1 {
 
     @Test
     public void testLR1Case1() {
-        LRCompiler compiler = LR1.create(GrammarCase.GRAMMAR_7.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_7.GRAMMAR);
+        LRCompiler compiler = new LR1(GrammarCase.GRAMMAR_7.GRAMMAR, GrammarCase.GRAMMAR_7.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -133,7 +132,7 @@ public class TestLR1 {
 
     @Test
     public void testLL1Case1() {
-        LRCompiler compiler = LR1.create(GrammarCase.GRAMMAR_1.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_1.GRAMMAR);
+        LRCompiler compiler = new LR1(GrammarCase.GRAMMAR_1.GRAMMAR, GrammarCase.GRAMMAR_1.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -148,7 +147,7 @@ public class TestLR1 {
 
     @Test
     public void testLL1Case2() {
-        LRCompiler compiler = LR1.create(GrammarCase.GRAMMAR_2.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_2.GRAMMAR);
+        LRCompiler compiler = new LR1(GrammarCase.GRAMMAR_2.GRAMMAR, GrammarCase.GRAMMAR_2.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -163,7 +162,7 @@ public class TestLR1 {
 
     @Test
     public void testLL1Case3() {
-        LRCompiler compiler = LR1.create(GrammarCase.GRAMMAR_3.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_3.GRAMMAR);
+        LRCompiler compiler = new LR1(GrammarCase.GRAMMAR_3.GRAMMAR, GrammarCase.GRAMMAR_3.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -178,7 +177,7 @@ public class TestLR1 {
 
     @Test
     public void testLR0Case1() {
-        LRCompiler compiler = LR1.create(GrammarCase.GRAMMAR_4.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_4.GRAMMAR);
+        LRCompiler compiler = new LR1(GrammarCase.GRAMMAR_4.GRAMMAR, GrammarCase.GRAMMAR_4.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -193,7 +192,7 @@ public class TestLR1 {
 
     @Test
     public void testSLRCase1() {
-        LRCompiler compiler = LR1.create(GrammarCase.GRAMMAR_5.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_5.GRAMMAR);
+        LRCompiler compiler = new LR1(GrammarCase.GRAMMAR_5.GRAMMAR, GrammarCase.GRAMMAR_5.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -208,7 +207,7 @@ public class TestLR1 {
 
     @Test
     public void testSLRCase2() {
-        LRCompiler compiler = LR1.create(GrammarCase.GRAMMAR_6.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_6.GRAMMAR);
+        LRCompiler compiler = new LR1(GrammarCase.GRAMMAR_6.GRAMMAR, GrammarCase.GRAMMAR_6.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -223,7 +222,7 @@ public class TestLR1 {
 
     @Test
     public void testSLRCase3() {
-        LRCompiler compiler = LR1.create(GrammarCase.GRAMMAR_9.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_9.GRAMMAR);
+        LRCompiler compiler = new LR1(GrammarCase.GRAMMAR_9.GRAMMAR, GrammarCase.GRAMMAR_9.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 

@@ -65,8 +65,8 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
      */
     private int closureCnt;
 
-    AbstractLRCompiler(LexicalAnalyzer lexicalAnalyzer, Grammar originalGrammar, boolean needMerge) {
-        super(lexicalAnalyzer, originalGrammar, GrammarConverterPipelineImpl
+    AbstractLRCompiler(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer, boolean needMerge) {
+        super(originalGrammar, lexicalAnalyzer, GrammarConverterPipelineImpl
                 .builder()
                 .registerGrammarConverter(AugmentedGrammarConverter.class)
                 .registerGrammarConverter(StatusExpandGrammarConverter.class)
@@ -80,6 +80,8 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
         this.analysisTerminators = new ArrayList<>();
         this.analysisSymbols = new ArrayList<>();
         this.closureCnt = 0;
+
+        init();
     }
 
     static Item successor(Item preItem) {
@@ -306,8 +308,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
         return sb.toString();
     }
 
-    @Override
-    protected final void postInit() {
+    private void init() {
         // 初始化项目集闭包
         initClosure();
 
@@ -316,6 +317,9 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
 
         // 初始化分析表
         initAnalysisTable();
+
+        // 检查正确性
+        checkIsLegal();
     }
 
     private void initClosure() {
@@ -662,8 +666,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
         }
     }
 
-    @Override
-    protected void checkIsLegal() {
+    private void checkIsLegal() {
         // 检查合法性，即检查表项动作是否唯一
         for (Closure closure : closures.values()) {
             for (Symbol symbol : analysisSymbols) {

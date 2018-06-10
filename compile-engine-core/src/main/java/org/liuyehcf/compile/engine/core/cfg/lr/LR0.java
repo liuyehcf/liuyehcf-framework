@@ -15,16 +15,8 @@ import java.util.List;
  */
 public class LR0 extends AbstractLRCompiler {
 
-    protected LR0(LexicalAnalyzer lexicalAnalyzer, Grammar originalGrammar) {
-        super(lexicalAnalyzer, originalGrammar, false);
-    }
-
-    public static LRCompiler create(LexicalAnalyzer lexicalAnalyzer, Grammar originalGrammar) {
-        LR0 compiler = new LR0(lexicalAnalyzer, originalGrammar);
-
-        compiler.init();
-
-        return compiler;
+    public LR0(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
+        super(originalGrammar, lexicalAnalyzer, false);
     }
 
     @Override

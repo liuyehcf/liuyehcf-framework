@@ -11,7 +11,7 @@ public class TestSLR {
 
     @Test
     public void testSLRStatus1() {
-        LRCompiler compiler = SLR.create(GrammarCase.GRAMMAR_5.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_5.GRAMMAR);
+        LRCompiler compiler = new SLR(GrammarCase.GRAMMAR_5.GRAMMAR, GrammarCase.GRAMMAR_5.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -81,7 +81,7 @@ public class TestSLR {
 
     @Test
     public void testSLRStatus2() {
-        LRCompiler compiler = SLR.create(GrammarCase.GRAMMAR_6.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_6.GRAMMAR);
+        LRCompiler compiler = new SLR(GrammarCase.GRAMMAR_6.GRAMMAR, GrammarCase.GRAMMAR_6.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -125,7 +125,7 @@ public class TestSLR {
 
     @Test
     public void testLR1Status1() {
-        LRCompiler compiler = SLR.create(GrammarCase.GRAMMAR_7.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_7.GRAMMAR);
+        LRCompiler compiler = new SLR(GrammarCase.GRAMMAR_7.GRAMMAR, GrammarCase.GRAMMAR_7.LEXICAL_ANALYZER);
 
         assertFalse(compiler.isLegal());
 
@@ -176,7 +176,7 @@ public class TestSLR {
 
     @Test
     public void testSLRCase1() {
-        LRCompiler compiler = SLR.create(GrammarCase.GRAMMAR_5.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_5.GRAMMAR);
+        LRCompiler compiler = new SLR(GrammarCase.GRAMMAR_5.GRAMMAR, GrammarCase.GRAMMAR_5.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -191,7 +191,7 @@ public class TestSLR {
 
     @Test
     public void testSLRCase2() {
-        LRCompiler compiler = SLR.create(GrammarCase.GRAMMAR_6.LEXICAL_ANALYZER, GrammarCase.GRAMMAR_6.GRAMMAR);
+        LRCompiler compiler = new SLR(GrammarCase.GRAMMAR_6.GRAMMAR, GrammarCase.GRAMMAR_6.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 

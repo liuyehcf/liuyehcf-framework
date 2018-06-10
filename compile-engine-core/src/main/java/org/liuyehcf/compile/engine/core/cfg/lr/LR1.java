@@ -18,16 +18,12 @@ import java.util.Set;
  */
 public class LR1 extends AbstractLRCompiler {
 
-    protected LR1(LexicalAnalyzer lexicalAnalyzer, Grammar originalGrammar, boolean needMerge) {
-        super(lexicalAnalyzer, originalGrammar, needMerge);
+    protected LR1(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer, boolean needMerge) {
+        super(originalGrammar, lexicalAnalyzer, needMerge);
     }
 
-    public static LRCompiler create(LexicalAnalyzer lexicalAnalyzer, Grammar originalGrammar) {
-        LR1 compiler = new LR1(lexicalAnalyzer, originalGrammar, false);
-
-        compiler.init();
-
-        return compiler;
+    public LR1(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
+        super(originalGrammar, lexicalAnalyzer, false);
     }
 
     @Override

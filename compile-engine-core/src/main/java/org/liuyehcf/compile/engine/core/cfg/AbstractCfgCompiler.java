@@ -24,17 +24,17 @@ import java.util.Set;
 public abstract class AbstractCfgCompiler implements CfgCompiler {
 
     /**
-     * 词法分析器
-     */
-    protected final LexicalAnalyzer lexicalAnalyzer;
-
-    /**
      * 原始文法
      */
     private final Grammar originalGrammar;
 
     /**
-     * 文法转换流水线
+     * 词法分析器
+     */
+    protected final LexicalAnalyzer lexicalAnalyzer;
+
+    /**
+     * 文法转换pipeline
      */
     private final GrammarConverterPipeline grammarConverterPipeline;
 
@@ -60,14 +60,16 @@ public abstract class AbstractCfgCompiler implements CfgCompiler {
 
     private boolean isLegal;
 
-    protected AbstractCfgCompiler(LexicalAnalyzer lexicalAnalyzer, Grammar originalGrammar,
+    protected AbstractCfgCompiler(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer,
                                   GrammarConverterPipeline grammarConverterPipeline) {
         if (originalGrammar == null || lexicalAnalyzer == null) {
             throw new NullPointerException();
         }
-        this.lexicalAnalyzer = lexicalAnalyzer;
         this.originalGrammar = originalGrammar;
+        this.lexicalAnalyzer = lexicalAnalyzer;
         this.grammarConverterPipeline = grammarConverterPipeline;
+
+        init();
     }
 
     protected Map<Symbol, Production> getProductionMap() {
@@ -104,7 +106,7 @@ public abstract class AbstractCfgCompiler implements CfgCompiler {
         return grammar;
     }
 
-    protected final void init() {
+    private void init() {
         // 转换给定文法，包括消除直接/间接左递归；提取公因子
         convertGrammar();
 
@@ -113,12 +115,6 @@ public abstract class AbstractCfgCompiler implements CfgCompiler {
 
         // 计算follow集
         calculateFollow();
-
-        // 后续初始化动作
-        postInit();
-
-        // 检查当前文法分析器是否支持该文法
-        checkIsLegal();
     }
 
     private void convertGrammar() {
@@ -292,11 +288,6 @@ public abstract class AbstractCfgCompiler implements CfgCompiler {
         return copy;
     }
 
-    /**
-     * 计算完first集以及follow集之后，接下来执行的初始化动作，交由子类实现
-     */
-    protected abstract void postInit();
-
     @Override
     public final String getFirstJSONString() {
         return getJSONStringFor(this.getFirsts(), true);
@@ -368,9 +359,4 @@ public abstract class AbstractCfgCompiler implements CfgCompiler {
     protected void setLegal(boolean isLegal) {
         this.isLegal = isLegal;
     }
-
-    /**
-     * 检查编译器是否支持当前文法
-     */
-    protected abstract void checkIsLegal();
 }

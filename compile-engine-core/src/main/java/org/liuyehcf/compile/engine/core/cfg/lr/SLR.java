@@ -13,16 +13,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
  */
 public class SLR extends LR0 {
 
-    protected SLR(LexicalAnalyzer lexicalAnalyzer, Grammar originalGrammar) {
-        super(lexicalAnalyzer, originalGrammar);
-    }
-
-    public static LRCompiler create(LexicalAnalyzer lexicalAnalyzer, Grammar originalGrammar) {
-        SLR compiler = new SLR(lexicalAnalyzer, originalGrammar);
-
-        compiler.init();
-
-        return compiler;
+    public SLR(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
+        super(originalGrammar, lexicalAnalyzer);
     }
 
     @Override

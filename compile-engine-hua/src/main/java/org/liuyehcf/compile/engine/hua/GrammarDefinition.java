@@ -115,7 +115,7 @@ public class GrammarDefinition {
             .build();
 
     public static void main(String[] args) {
-        LRCompiler compiler = LR1.create(LEXICAL_ANALYZER, GRAMMAR);
+        LRCompiler compiler = new LR1(GRAMMAR, LEXICAL_ANALYZER);
         System.out.println(compiler.isLegal());
         compiler.compile("void sort(int a){}\n" +
                 "\n" +
