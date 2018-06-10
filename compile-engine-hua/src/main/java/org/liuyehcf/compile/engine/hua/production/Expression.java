@@ -1182,7 +1182,7 @@ public class Expression {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            null
+                            new InitArgumentSize()
                     ),
                     /*
                      * <argument list> → <argument list> , <expression>
@@ -1194,7 +1194,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            null
+                            new IncreaseArgumentSize()
                     )
             ),
 

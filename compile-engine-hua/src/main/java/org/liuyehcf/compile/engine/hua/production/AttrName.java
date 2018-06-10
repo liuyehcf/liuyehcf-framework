@@ -9,6 +9,7 @@ public enum AttrName {
     WIDTH,
     METHOD_NAME,
     PARAMETER_LIST,
+    ARGUMENT_SIZE,
     CODES,
     ASSIGN_OPERATOR
 }

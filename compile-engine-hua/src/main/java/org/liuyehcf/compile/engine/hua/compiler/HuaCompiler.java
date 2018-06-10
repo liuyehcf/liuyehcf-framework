@@ -88,8 +88,12 @@ public class HuaCompiler extends LALR {
                     processExitNamespace();
                 } else if (semanticAction instanceof GetVariableSymbolFromIdentifier) {
                     processGetVariableSymbolFromIdentifier(stack);
+                } else if (semanticAction instanceof IncreaseArgumentSize) {
+                    processIncreaseArgumentSize(stack);
                 } else if (semanticAction instanceof IncreaseArrayTypeDim) {
                     processIncreaseArrayTypeDim(stack, (IncreaseArrayTypeDim) semanticAction);
+                } else if (semanticAction instanceof InitArgumentSize) {
+                    processInitArgumentSize(stack);
                 } else if (semanticAction instanceof MethodInvocation) {
                     processMethodInvocation(stack);
                 } else if (semanticAction instanceof PostDecrement) {
@@ -239,6 +243,11 @@ public class HuaCompiler extends LALR {
             }
         }
 
+        private void processIncreaseArgumentSize(FutureSyntaxNodeStack stack) {
+            Integer argumentSize = stack.get(IncreaseArgumentSize.ARGUMENT_SIZE_STACK_OFFSET).get(AttrName.ARGUMENT_SIZE.name());
+            stack.get(IncreaseArgumentSize.ARGUMENT_SIZE_STACK_OFFSET).put(AttrName.ARGUMENT_SIZE.name(), argumentSize + 1);
+        }
+
         private void processIncreaseArrayTypeDim(FutureSyntaxNodeStack stack, IncreaseArrayTypeDim increaseArrayTypeDim) {
             int stackOffset = increaseArrayTypeDim.getStackOffset();
             String originType = stack.get(stackOffset).get(AttrName.TYPE.name());
@@ -246,8 +255,22 @@ public class HuaCompiler extends LALR {
             stack.get(stackOffset).put(AttrName.TYPE.name(), originType);
         }
 
-        private void processMethodInvocation(FutureSyntaxNodeStack stack) {
+        private void processInitArgumentSize(FutureSyntaxNodeStack stack) {
+            stack.get(InitArgumentSize.ARGUMENT_SIZE_STACK_OFFSET).put(AttrName.ARGUMENT_SIZE.name(), 1);
+        }
 
+        private void processMethodInvocation(FutureSyntaxNodeStack stack) {
+            String methodName = stack.get(MethodInvocation.METHOD_NAME_STACK_OFFSET).get(AttrName.METHOD_NAME.name());
+            Integer argumentSize = stack.get(MethodInvocation.ARGUMENT_SIZE_STACK_OFFSET).get(AttrName.ARGUMENT_SIZE.name());
+
+            if (argumentSize == null) {
+                /*
+                 * 对应于 <epsilon or argument list> → ε
+                 */
+                argumentSize = 0;
+            }
+
+            methodInfoTable.getCurMethodInfo().addByteCode(new _invokestatic(methodName, argumentSize));
         }
 
         @SuppressWarnings("unchecked")

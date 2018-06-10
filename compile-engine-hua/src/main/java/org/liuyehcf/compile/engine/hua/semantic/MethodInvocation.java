@@ -8,4 +8,5 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  */
 public class MethodInvocation extends AbstractSemanticAction {
     public static final int METHOD_NAME_STACK_OFFSET = -3;
+    public static final int ARGUMENT_SIZE_STACK_OFFSET = -1;
 }

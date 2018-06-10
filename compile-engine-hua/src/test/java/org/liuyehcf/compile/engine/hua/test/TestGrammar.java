@@ -176,4 +176,13 @@ public class TestGrammar {
                 "  c=a+b-a;\n" +
                 "}").isSuccess());
     }
+
+    @Test
+    public void testMethodInvocation() {
+        assertTrue(compiler.compile("void testMethodInvocation() {\n" +
+                "    int a,b,c;\n" +
+                "    func1();\n" +
+                "    func2(a+b,c);\n" +
+                "}").isSuccess());
+    }
 }
