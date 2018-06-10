@@ -122,6 +122,54 @@ public class TestGrammar {
     }
 
     @Test
+    public void testShl() {
+        assertTrue(compiler.compile("void func() {\n" +
+                "        int a,b,c;\n" +
+                "        c=a<<b;\n" +
+                "    }").isSuccess());
+    }
+
+    @Test
+    public void testShr() {
+        assertTrue(compiler.compile("void func() {\n" +
+                "        int a,b,c;\n" +
+                "        c=a>>b;\n" +
+                "    }").isSuccess());
+    }
+
+    @Test
+    public void testUshr() {
+        assertTrue(compiler.compile("void func() {\n" +
+                "        int a,b,c;\n" +
+                "        c=a>>>b;\n" +
+                "    }").isSuccess());
+    }
+
+    @Test
+    public void testBitAnd() {
+        assertTrue(compiler.compile("void func() {\n" +
+                "        int a,b,c;\n" +
+                "        c=a&b;\n" +
+                "    }").isSuccess());
+    }
+
+    @Test
+    public void testBitOr() {
+        assertTrue(compiler.compile("void func() {\n" +
+                "        int a,b,c;\n" +
+                "        c=a|b;\n" +
+                "    }").isSuccess());
+    }
+
+    @Test
+    public void testBitXor() {
+        assertTrue(compiler.compile("void func() {\n" +
+                "        int a,b,c;\n" +
+                "        c=a^b;\n" +
+                "    }").isSuccess());
+    }
+
+    @Test
     public void testNormalAssign() {
         assertTrue(compiler.compile("void func() {\n" +
                 "  int a,b,c;\n" +
