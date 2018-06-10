@@ -1,6 +1,8 @@
 package org.liuyehcf.compile.engine.hua.bytecode;
 
 /**
+ * int 自增
+ *
  * @author chenlu
  * @date 2018/6/6
  */

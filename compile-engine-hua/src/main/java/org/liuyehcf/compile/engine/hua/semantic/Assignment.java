@@ -4,30 +4,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
 
 /**
  * @author chenlu
- * @date 2018/6/7
+ * @date 2018/6/10
  */
 public class Assignment extends AbstractSemanticAction {
-    private final int fromStackOffset;
-
-    private final int toStackOffset;
-
-    private final int operatorOffset;
-
-    public Assignment(int fromStackOffset, int toStackOffset, int operatorOffset) {
-        this.fromStackOffset = fromStackOffset;
-        this.toStackOffset = toStackOffset;
-        this.operatorOffset = operatorOffset;
-    }
-
-    public int getFromStackOffset() {
-        return fromStackOffset;
-    }
-
-    public int getToStackOffset() {
-        return toStackOffset;
-    }
-
-    public int getOperatorOffset() {
-        return operatorOffset;
-    }
+    public static final int OPERATOR_STACK_OFFSET = -1;
 }

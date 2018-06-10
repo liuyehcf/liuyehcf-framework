@@ -1,12 +1,12 @@
 package org.liuyehcf.compile.engine.hua.bytecode;
 
 /**
- * 跳转
+ * 加载常量
  *
  * @author chenlu
- * @date 2018/6/6
+ * @date 2018/6/10
  */
-public class _goto implements ByteCode {
+public class _ldc implements ByteCode {
 
     @Override
     public void operate() {

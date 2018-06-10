@@ -11,7 +11,6 @@ import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNull;
@@ -75,9 +74,9 @@ public class HuaCompiler extends LALR {
                 } else if (semanticAction instanceof AssignAttr) {
                     processAssignAttr(stack, (AssignAttr) semanticAction);
                 } else if (semanticAction instanceof Assignment) {
-                    processAssignment(stack, (Assignment) semanticAction);
+                    processAssignment(stack);
                 } else if (semanticAction instanceof BinaryOperator) {
-                    processBinaryOperator(stack, (BinaryOperator) semanticAction);
+                    processBinaryOperator((BinaryOperator) semanticAction);
                 } else if (semanticAction instanceof CreateVariable) {
                     processCreateVariable(stack, (CreateVariable) semanticAction);
                 } else if (semanticAction instanceof EnterMethod) {
@@ -133,59 +132,65 @@ public class HuaCompiler extends LALR {
             toNode.put(toAttrName, fromNode.get(fromAttrName));
         }
 
-        private void processAssignment(FutureSyntaxNodeStack stack, Assignment semanticAction) {
-            int fromStackOffset = semanticAction.getFromStackOffset();
-            int toStackOffset = semanticAction.getToStackOffset();
-            int operatorOffset = semanticAction.getOperatorOffset();
-
-            SetAssignOperator.Operator assignOperator = stack.get(operatorOffset).get(AttrName.ASSIGN_OPERATOR.name());
-
-            switch (assignOperator) {
+        private void processAssignment(FutureSyntaxNodeStack stack) {
+            SetAssignOperator.Operator operator = stack.get(Assignment.OPERATOR_STACK_OFFSET).get(AttrName.ASSIGN_OPERATOR.name());
+            switch (operator) {
                 case NORMAL_ASSIGN:
-                    int fromVariableOffset = stack.get(fromStackOffset).get(AttrName.ADDRESS.name());
-                    int toVariableOffset = stack.get(toStackOffset).get(AttrName.ADDRESS.name());
-                    methodInfoTable.getCurMethodInfo().addByteCode(new _store(fromVariableOffset, toVariableOffset));
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _istore());
                     break;
             }
         }
 
-        private void processBinaryOperator(FutureSyntaxNodeStack stack, BinaryOperator semanticAction) {
-            int leftStackOffset = semanticAction.getLeftStackOffset();
-            int rightStackOffset = semanticAction.getRightStackOffset();
-            BinaryOperator.Operator operator = semanticAction.getOperator();
-
-            int leftVariableOffset = stack.get(leftStackOffset).get(AttrName.ADDRESS.name());
-            int rightVariableOffset = stack.get(rightStackOffset).get(AttrName.ADDRESS.name());
-
-            VariableSymbol leftVariable = variableSymbolTable.getVariableSymbolByOffset(leftVariableOffset);
-            VariableSymbol rightVariable = variableSymbolTable.getVariableSymbolByOffset(rightVariableOffset);
-
-            VariableSymbol newVariableSymbol;
-
-            switch (operator) {
+        private void processBinaryOperator(BinaryOperator semanticAction) {
+            switch (semanticAction.getOperator()) {
+                case LOGICAL_OR:
+                    throw new UnsupportedOperationException();
+                case LOGICAL_AND:
+                    throw new UnsupportedOperationException();
+                case BIT_OR:
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _ior());
+                    break;
+                case BIT_XOR:
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _ixor());
+                    break;
+                case BIT_AND:
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _iand());
+                    break;
+                case EQUAL:
+                    throw new UnsupportedOperationException();
+                case NOT_EQUAL:
+                    throw new UnsupportedOperationException();
+                case LESS:
+                    throw new UnsupportedOperationException();
+                case LARGE:
+                    throw new UnsupportedOperationException();
+                case LESS_EQUAL:
+                    throw new UnsupportedOperationException();
+                case LARGE_EQUAL:
+                    throw new UnsupportedOperationException();
+                case SHIFT_LEFT:
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _ishl());
+                    break;
+                case SHIFT_RIGHT:
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _ishr());
+                    break;
+                case UNSIGNED_SHIFT_RIGHT:
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _iushr());
+                    break;
                 case ADDITION:
-                    checkIfTypeMatches(leftVariable, rightVariable, operator);
-                    newVariableSymbol = variableSymbolTable.enter(
-                            offset,
-                            UUID.randomUUID().toString(),
-                            leftVariable.getType(),
-                            leftVariable.getWidth());
-                    offset += leftVariable.getWidth();
-
-                    stack.get(-2).put(AttrName.ADDRESS.name(), newVariableSymbol.getOffset());
-                    methodInfoTable.getCurMethodInfo().addByteCode(new _add(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _iadd());
                     break;
                 case SUBTRACTION:
-                    checkIfTypeMatches(leftVariable, rightVariable, operator);
-                    newVariableSymbol = variableSymbolTable.enter(
-                            offset,
-                            UUID.randomUUID().toString(),
-                            leftVariable.getType(),
-                            leftVariable.getWidth());
-                    offset += leftVariable.getWidth();
-
-                    stack.get(-2).put(AttrName.ADDRESS.name(), newVariableSymbol.getOffset());
-                    methodInfoTable.getCurMethodInfo().addByteCode(new _sub(leftVariableOffset, rightVariableOffset, newVariableSymbol.getOffset()));
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _isub());
+                    break;
+                case MULTIPLICATION:
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _imul());
+                    break;
+                case DIVISION:
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _idiv());
+                    break;
+                case REMAINDER:
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _irem());
                     break;
             }
         }
@@ -233,7 +238,15 @@ public class HuaCompiler extends LALR {
             if (variableSymbol == null) {
                 throw new RuntimeException("标志符 " + identifierName + " 尚未定义");
             }
-            stack.get(0).put(AttrName.ADDRESS.name(), variableSymbol.getOffset());
+
+            switch (variableSymbol.getType()) {
+                case "int":
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
+                    break;
+                case "boolean":
+                    methodInfoTable.getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
+                    break;
+            }
         }
 
         private void processIncreaseArrayTypeDim(FutureSyntaxNodeStack stack, IncreaseArrayTypeDim increaseArrayTypeDim) {
@@ -273,9 +286,9 @@ public class HuaCompiler extends LALR {
         }
 
         private void processSetAssignOperator(FutureSyntaxNodeStack stack, SetAssignOperator semanticAction) {
-            int stackOffset = semanticAction.getStackOffset();
             SetAssignOperator.Operator operator = semanticAction.getOperator();
-            stack.get(stackOffset).put(AttrName.ASSIGN_OPERATOR.name(), operator);
+
+            stack.get(0).put(AttrName.ASSIGN_OPERATOR.name(), operator);
         }
 
         private void processSetParamSize(FutureSyntaxNodeStack stack, SetParamSize semanticAction) {
@@ -313,10 +326,5 @@ public class HuaCompiler extends LALR {
             variableSymbolTable.exitNamespace();
         }
 
-        private void checkIfTypeMatches(VariableSymbol leftVariable, VariableSymbol rightVariable, BinaryOperator.Operator operator) {
-            if (!leftVariable.getType().equals(rightVariable.getType())) {
-                throw new RuntimeException(operator.getSign() + " 运算符两侧类型不匹配");
-            }
-        }
     }
 }

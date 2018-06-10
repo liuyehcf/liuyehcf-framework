@@ -1,16 +1,15 @@
 package org.liuyehcf.compile.engine.hua.bytecode;
 
 /**
- * 跳转
+ * int 无符号右移
  *
  * @author chenlu
- * @date 2018/6/6
+ * @date 2018/6/10
  */
-public class _goto implements ByteCode {
+public class _iushr implements ByteCode {
 
     @Override
     public void operate() {
 
     }
-
 }

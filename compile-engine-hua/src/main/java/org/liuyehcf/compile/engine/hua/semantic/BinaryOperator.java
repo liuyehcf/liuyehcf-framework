@@ -10,24 +10,20 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  */
 public class BinaryOperator extends AbstractSemanticAction {
 
-    private final int leftStackOffset;
+    /**
+     * 左运算子的偏移量
+     */
+    public static final int LEFT_STACK_OFFSET = -2;
 
-    private final int rightStackOffset;
+    /**
+     * 右运算子的偏移量
+     */
+    public static final int RIGHT_STACK_OFFSET = 0;
 
     private final Operator operator;
 
-    public BinaryOperator(int leftStackOffset, int rightStackOffset, Operator operator) {
-        this.leftStackOffset = leftStackOffset;
-        this.rightStackOffset = rightStackOffset;
+    public BinaryOperator(Operator operator) {
         this.operator = operator;
-    }
-
-    public int getLeftStackOffset() {
-        return leftStackOffset;
-    }
-
-    public int getRightStackOffset() {
-        return rightStackOffset;
     }
 
     public Operator getOperator() {
@@ -35,8 +31,25 @@ public class BinaryOperator extends AbstractSemanticAction {
     }
 
     public enum Operator {
+        LOGICAL_OR("||"),
+        LOGICAL_AND("&&"),
+        BIT_OR("|"),
+        BIT_XOR("^"),
+        BIT_AND("&"),
+        EQUAL("=="),
+        NOT_EQUAL("!="),
+        LESS("<"),
+        LARGE(">"),
+        LESS_EQUAL("<="),
+        LARGE_EQUAL(">="),
+        SHIFT_LEFT("<<"),
+        SHIFT_RIGHT(">>"),
+        UNSIGNED_SHIFT_RIGHT(">>>"),
         ADDITION("+"),
-        SUBTRACTION("-");
+        SUBTRACTION("-"),
+        MULTIPLICATION("*"),
+        DIVISION("/"),
+        REMAINDER("%"),;
 
         private final String sign;
 

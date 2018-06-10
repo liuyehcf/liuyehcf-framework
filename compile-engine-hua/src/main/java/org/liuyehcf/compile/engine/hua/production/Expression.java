@@ -58,9 +58,9 @@ public class Expression {
     public static final String NORMAL_MOD_ASSIGN = "%=";
     public static final String NORMAL_ADD_ASSIGN = "+=";
     public static final String NORMAL_MINUS_ASSIGN = "-=";
-    public static final String NORMAL_LEFT_SHIFT_ASSIGN = "<<=";
-    public static final String NORMAL_RIGHT_SHIFT_SIGNED_ASSIGN = ">>=";
-    public static final String NORMAL_RIGHT_SHIFT_UNSIGNED_ASSIGN = ">>>=";
+    public static final String NORMAL_SHIFT_LEFT_ASSIGN = "<<=";
+    public static final String NORMAL_SHIFT_RIGHT_ASSIGN = ">>=";
+    public static final String NORMAL_UNSIGNED_SHIFT_RIGHT_ASSIGN = ">>>=";
     public static final String NORMAL_BIT_AND_ASSIGN = "&=";
     public static final String NORMAL_BIT_EXCLUSIVE_OR_ASSIGN = "^=";
     public static final String NORMAL_BIT_OR_ASSIGN = "|=";
@@ -77,9 +77,9 @@ public class Expression {
     public static final String NORMAL_LARGE = ">";
     public static final String NORMAL_LESS_EQUAL = "<=";
     public static final String NORMAL_LARGE_EQUAL = ">=";
-    public static final String NORMAL_LEFT_SHIFT = "<<";
-    public static final String NORMAL_RIGHT_SHIFT_SIGNED = ">>";
-    public static final String NORMAL_RIGHT_SHIFT_UNSIGNED = ">>>";
+    public static final String NORMAL_SHIFT_LEFT = "<<";
+    public static final String NORMAL_SHIFT_RIGHT = ">>";
+    public static final String NORMAL_UNSIGNED_SHIFT_RIGHT = ">>>";
     public static final String NORMAL_MUL = "*";
     public static final String NORMAL_DIV = "/";
     public static final String NORMAL_MOD = "%";
@@ -154,7 +154,7 @@ public class Expression {
                                     Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
                                     Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
                             ),
-                            new Assignment(0, -2, -1)
+                            new Assignment()
                     )
             ),
 
@@ -204,7 +204,7 @@ public class Expression {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_ASSIGN)
                             ),
-                            new SetAssignOperator(0, SetAssignOperator.Operator.NORMAL_ASSIGN)
+                            new SetAssignOperator(SetAssignOperator.Operator.NORMAL_ASSIGN)
                     ),
                     /*
                      * <assignment operator> → *=
@@ -262,7 +262,7 @@ public class Expression {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
                             SymbolString.create(
-                                    Symbol.createTerminator(NORMAL_LEFT_SHIFT_ASSIGN)
+                                    Symbol.createTerminator(NORMAL_SHIFT_LEFT_ASSIGN)
                             ),
                             null
                     ),
@@ -272,7 +272,7 @@ public class Expression {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
                             SymbolString.create(
-                                    Symbol.createTerminator(NORMAL_RIGHT_SHIFT_SIGNED_ASSIGN)
+                                    Symbol.createTerminator(NORMAL_SHIFT_RIGHT_ASSIGN)
                             ),
                             null
                     ),
@@ -282,7 +282,7 @@ public class Expression {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
                             SymbolString.create(
-                                    Symbol.createTerminator(NORMAL_RIGHT_SHIFT_UNSIGNED_ASSIGN)
+                                    Symbol.createTerminator(NORMAL_UNSIGNED_SHIFT_RIGHT_ASSIGN)
                             ),
                             null
                     ),
@@ -376,7 +376,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_LOGICAL_OR),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.LOGICAL_OR)
                     )
             ),
 
@@ -406,7 +406,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_LOGICAL_AND),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.LOGICAL_AND)
                     )
             ),
 
@@ -436,7 +436,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_BIT_OR),
                                     Symbol.createNonTerminator(EXCLUSIVE_OR_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.BIT_OR)
                     )
             ),
 
@@ -466,7 +466,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_BIT_EXCLUSIVE_OR),
                                     Symbol.createNonTerminator(AND_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.BIT_XOR)
                     )
             ),
 
@@ -496,7 +496,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_BIT_AND),
                                     Symbol.createNonTerminator(EQUALITY_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.BIT_AND)
                     )
             ),
 
@@ -526,7 +526,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_EQUAL),
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.EQUAL)
                     ),
                     /*
                      * <equality expression> → <equality expression> != <relational expression>
@@ -538,7 +538,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_NOT_EQUAL),
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.NOT_EQUAL)
                     )
             ),
 
@@ -568,7 +568,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_LESS),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.LESS)
                     ),
                     /*
                      * <relational expression> → <relational expression> > <shift expression>
@@ -580,7 +580,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_LARGE),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.LARGE)
                     ),
                     /*
                      * <relational expression> → <relational expression> <= <shift expression>
@@ -592,7 +592,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_LESS_EQUAL),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.LESS_EQUAL)
                     ),
                     /*
                      * <relational expression> → <relational expression> >= <shift expression>
@@ -604,7 +604,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_LARGE_EQUAL),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.LARGE_EQUAL)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -635,10 +635,10 @@ public class Expression {
                             Symbol.createNonTerminator(SHIFT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION),
-                                    Symbol.createTerminator(NORMAL_LEFT_SHIFT),
+                                    Symbol.createTerminator(NORMAL_SHIFT_LEFT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.SHIFT_LEFT)
                     ),
                     /*
                      * <shift expression> → <shift expression> >> <additive expression>
@@ -647,10 +647,10 @@ public class Expression {
                             Symbol.createNonTerminator(SHIFT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION),
-                                    Symbol.createTerminator(NORMAL_RIGHT_SHIFT_SIGNED),
+                                    Symbol.createTerminator(NORMAL_SHIFT_RIGHT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.SHIFT_RIGHT)
                     ),
                     /*
                      * <shift expression> → <shift expression> >>> <additive expression>
@@ -659,10 +659,10 @@ public class Expression {
                             Symbol.createNonTerminator(SHIFT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION),
-                                    Symbol.createTerminator(NORMAL_RIGHT_SHIFT_UNSIGNED),
+                                    Symbol.createTerminator(NORMAL_UNSIGNED_SHIFT_RIGHT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.UNSIGNED_SHIFT_RIGHT)
                     )
             ),
 
@@ -692,7 +692,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_ADD),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.ADDITION)
+                            new BinaryOperator(BinaryOperator.Operator.ADDITION)
                     ),
                     /*
                      * <additive expression> → <additive expression> - <multiplicative expression>
@@ -704,7 +704,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_MINUS),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.SUBTRACTION)
+                            new BinaryOperator(BinaryOperator.Operator.SUBTRACTION)
                     )
             ),
 
@@ -734,7 +734,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_MUL),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.MULTIPLICATION)
                     ),
                     /*
                      * <multiplicative expression> → <multiplicative expression> / <unary expression>
@@ -746,7 +746,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_DIV),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.DIVISION)
                     ),
                     /*
                      * <multiplicative expression> → <multiplicative expression> % <unary expression>
@@ -758,7 +758,7 @@ public class Expression {
                                     Symbol.createTerminator(NORMAL_MOD),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            null
+                            new BinaryOperator(BinaryOperator.Operator.REMAINDER)
                     )
             ),
 

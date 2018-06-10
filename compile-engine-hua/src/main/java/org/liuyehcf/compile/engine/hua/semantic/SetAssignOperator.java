@@ -8,17 +8,10 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  */
 public class SetAssignOperator extends AbstractSemanticAction {
 
-    private final int stackOffset;
-
     private final Operator operator;
 
-    public SetAssignOperator(int stackOffset, Operator operator) {
-        this.stackOffset = stackOffset;
+    public SetAssignOperator(Operator operator) {
         this.operator = operator;
-    }
-
-    public int getStackOffset() {
-        return stackOffset;
     }
 
     public Operator getOperator() {

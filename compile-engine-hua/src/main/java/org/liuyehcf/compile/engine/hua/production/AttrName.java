@@ -7,7 +7,6 @@ package org.liuyehcf.compile.engine.hua.production;
 public enum AttrName {
     TYPE,
     WIDTH,
-    ADDRESS,
     PARAM_SIZE,
     CODES,
     ASSIGN_OPERATOR
