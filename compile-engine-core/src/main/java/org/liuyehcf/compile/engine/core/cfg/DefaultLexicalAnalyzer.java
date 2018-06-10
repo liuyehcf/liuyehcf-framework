@@ -4,7 +4,9 @@ import org.liuyehcf.compile.engine.core.grammar.definition.MorphemeType;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,8 +22,14 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
      */
     private final List<Morpheme> morphemes;
 
-    private DefaultLexicalAnalyzer(List<Morpheme> morphemes) {
+    /**
+     * 关键字集合
+     */
+    private final Map<String, Symbol> keyWords;
+
+    private DefaultLexicalAnalyzer(List<Morpheme> morphemes, Map<String, Symbol> keyWords) {
         this.morphemes = morphemes;
+        this.keyWords = keyWords;
     }
 
     @Override
@@ -40,6 +48,11 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
          */
         private List<Morpheme> tokenRegex = new ArrayList<>();
 
+        /**
+         * 关键字集合
+         */
+        private Map<String, Symbol> keyWords = new HashMap<>();
+
         private Builder() {
 
         }
@@ -49,6 +62,11 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
         }
 
         public Builder addNormalMorpheme(Symbol id, String morpheme) {
+            return addMorpheme(id, morpheme, MorphemeType.NORMAL);
+        }
+
+        public Builder addKeyWordMorpheme(Symbol id, String morpheme) {
+            keyWords.put(morpheme, id);
             return addMorpheme(id, morpheme, MorphemeType.NORMAL);
         }
 
@@ -62,7 +80,7 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
         }
 
         public DefaultLexicalAnalyzer build() {
-            return new DefaultLexicalAnalyzer(tokenRegex);
+            return new DefaultLexicalAnalyzer(tokenRegex, keyWords);
         }
 
     }
@@ -194,7 +212,14 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
                             String s = matcher.group();
 
                             hasNext = true;
-                            nextToken = new Token(morpheme.getId(), s, morpheme.getMorphemeType());
+                            /*
+                             * 如果仅为keyword，那么按照keyword处理
+                             */
+                            if (keyWords.containsKey(s)) {
+                                nextToken = new Token(keyWords.get(s), s, MorphemeType.NORMAL);
+                            } else {
+                                nextToken = new Token(morpheme.getId(), s, morpheme.getMorphemeType());
+                            }
                             index += s.length();
 
                             canBreak = true;

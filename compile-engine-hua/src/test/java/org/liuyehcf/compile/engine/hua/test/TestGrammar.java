@@ -30,7 +30,7 @@ public class TestGrammar {
         RIGHT_CASES.addAll(Arrays.asList(IF_CASES));
         RIGHT_CASES.addAll(Arrays.asList(VARIABLE_DECLARATION_CASES));
         RIGHT_CASES.addAll(Arrays.asList(OPERATOR_CASES));
-//        RIGHT_CASES.addAll(Arrays.asList(CLASSIC_CASES));
+        RIGHT_CASES.addAll(Arrays.asList(CLASSIC_CASES));
     }
 
     @BeforeClass
@@ -44,7 +44,6 @@ public class TestGrammar {
         assertTrue(compiler.isLegal());
     }
 
-    @Test
     public void testRightCases() {
         for (String rightCase : RIGHT_CASES) {
             System.out.println(rightCase);
@@ -52,9 +51,17 @@ public class TestGrammar {
         }
     }
 
-    @Test
     public void printMarkdown() {
         System.out.println(compiler.getAnalysisTableMarkdownString());
+    }
+
+
+    @Test
+    public void testNameWithKeyWord() {
+        assertTrue(compiler.compile("void doSomething(){\n" +
+                "  doSomething();\n" +
+                "  int intI;\n" +
+                "}").isSuccess());
     }
 
     @Test
@@ -76,15 +83,47 @@ public class TestGrammar {
 
     @Test
     public void testAdd() {
-        assertTrue(compiler.compile("void exchange(int[] nums, int i, int j) {\n" +
-                "        int a,b,c,d;\n" +
-                "        d=a+b-c;\n" +
+        assertTrue(compiler.compile("void func() {\n" +
+                "        int a,b,c;\n" +
+                "        c=a+b;\n" +
+                "    }").isSuccess());
+    }
+
+    @Test
+    public void testSub() {
+        assertTrue(compiler.compile("void func() {\n" +
+                "        int a,b,c;\n" +
+                "        c=a-b;\n" +
+                "    }").isSuccess());
+    }
+
+    @Test
+    public void testMul() {
+        assertTrue(compiler.compile("void func() {\n" +
+                "        int a,b,c;\n" +
+                "        c=a*b;\n" +
+                "    }").isSuccess());
+    }
+
+    @Test
+    public void testDiv() {
+        assertTrue(compiler.compile("void func() {\n" +
+                "        int a,b,c;\n" +
+                "        c=a/b;\n" +
+                "    }").isSuccess());
+    }
+
+    @Test
+    public void testRem() {
+        assertTrue(compiler.compile("void func() {\n" +
+                "        int a,b,c;\n" +
+                "        c=a%b;\n" +
                 "    }").isSuccess());
     }
 
     @Test
     public void testNormalAssign() {
-        assertTrue(compiler.compile("void testNormalAssign() {\n" +
+        assertTrue(compiler.compile("void func() {\n" +
                 "  int a,b,c;\n" +
                 "  c=a+b-a;\n" +
                 "}").isSuccess());
