@@ -105,7 +105,6 @@ public class Program {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new IncreaseParamSize(-2),
                             new SaveParamInfo(0)
                     ),
                     /*
@@ -116,7 +115,6 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new SetParamSize(0, 1),
                             new SaveParamInfo(0)
                     )
             ),
@@ -434,7 +432,7 @@ public class Program {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetParamSize(0, 0)
+                            null
                     ),
                     /*
                      * (2) <epsilon or formal parameter list> → <formal parameter list>

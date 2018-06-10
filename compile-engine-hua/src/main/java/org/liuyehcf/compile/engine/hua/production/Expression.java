@@ -1047,7 +1047,7 @@ public class Expression {
                                     Symbol.createNonTerminator(EPSILON_OR_ARGUMENT_LIST),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            null
+                            new MethodInvocation()
                     )
                     /*
                      * TODO 缺少以下产生式

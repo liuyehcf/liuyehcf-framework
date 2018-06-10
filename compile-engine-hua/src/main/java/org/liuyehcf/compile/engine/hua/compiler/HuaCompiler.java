@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNull;
 
 /**
  * @author chenlu
@@ -93,8 +92,8 @@ public class HuaCompiler extends LALR {
                     processGetVariableSymbolFromIdentifier(stack);
                 } else if (semanticAction instanceof IncreaseArrayTypeDim) {
                     processIncreaseArrayTypeDim(stack, (IncreaseArrayTypeDim) semanticAction);
-                } else if (semanticAction instanceof IncreaseParamSize) {
-                    processIncreaseParamSize(stack, (IncreaseParamSize) semanticAction);
+                } else if (semanticAction instanceof MethodInvocation) {
+                    processMethodInvocation(stack);
                 } else if (semanticAction instanceof PostDecrement) {
                     processPostDecrement(stack);
                 } else if (semanticAction instanceof PostIncrement) {
@@ -103,8 +102,6 @@ public class HuaCompiler extends LALR {
                     processSaveParamInfo(stack, (SaveParamInfo) semanticAction);
                 } else if (semanticAction instanceof SetAssignOperator) {
                     processSetAssignOperator(stack, (SetAssignOperator) semanticAction);
-                } else if (semanticAction instanceof SetParamSize) {
-                    processSetParamSize(stack, (SetParamSize) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromLexical) {
                     processSetSynAttrFromLexical(stack, (SetSynAttrFromLexical) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromSystem) {
@@ -256,10 +253,8 @@ public class HuaCompiler extends LALR {
             stack.get(stackOffset).put(AttrName.TYPE.name(), originType);
         }
 
-        private void processIncreaseParamSize(FutureSyntaxNodeStack stack, IncreaseParamSize semanticAction) {
-            int stackOffset = semanticAction.getStackOffset();
-            int paramSize = stack.get(stackOffset).get(AttrName.PARAM_SIZE.name());
-            stack.get(stackOffset).put(AttrName.PARAM_SIZE.name(), paramSize + 1);
+        private void processMethodInvocation(FutureSyntaxNodeStack stack) {
+
         }
 
         @SuppressWarnings("unchecked")
@@ -289,13 +284,6 @@ public class HuaCompiler extends LALR {
             SetAssignOperator.Operator operator = semanticAction.getOperator();
 
             stack.get(0).put(AttrName.ASSIGN_OPERATOR.name(), operator);
-        }
-
-        private void processSetParamSize(FutureSyntaxNodeStack stack, SetParamSize semanticAction) {
-            int stackOffset = semanticAction.getStackOffset();
-            int value = semanticAction.getValue();
-            assertNull(stack.get(stackOffset).get(AttrName.PARAM_SIZE.name()));
-            stack.get(stackOffset).put(AttrName.PARAM_SIZE.name(), value);
         }
 
         private void processSetSynAttrFromLexical(FutureSyntaxNodeStack stack, SetSynAttrFromLexical semanticAction) {
