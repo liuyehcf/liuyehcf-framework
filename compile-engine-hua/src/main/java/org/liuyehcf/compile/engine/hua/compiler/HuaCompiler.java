@@ -86,8 +86,6 @@ public class HuaCompiler extends LALR {
                     processExitMethod();
                 } else if (semanticAction instanceof ExitNamespace) {
                     processExitNamespace();
-                } else if (semanticAction instanceof GetMethodNameFromIdentifier) {
-                    processGetMethodNameFromIdentifier(stack, (GetMethodNameFromIdentifier) semanticAction);
                 } else if (semanticAction instanceof GetVariableSymbolFromIdentifier) {
                     processGetVariableSymbolFromIdentifier(stack);
                 } else if (semanticAction instanceof IncreaseArrayTypeDim) {
@@ -98,8 +96,10 @@ public class HuaCompiler extends LALR {
                     processPostDecrement(stack);
                 } else if (semanticAction instanceof PostIncrement) {
                     processPostIncrement(stack);
-                } else if (semanticAction instanceof SaveParamInfo) {
-                    processSaveParamInfo(stack, (SaveParamInfo) semanticAction);
+                } else if (semanticAction instanceof RecordMethodDescription) {
+                    processRecordMethodDescription(stack);
+                } else if (semanticAction instanceof AddParamInfo) {
+                    processAddParamInfo(stack, (AddParamInfo) semanticAction);
                 } else if (semanticAction instanceof SetAssignOperator) {
                     processSetAssignOperator(stack, (SetAssignOperator) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromLexical) {
@@ -125,7 +125,6 @@ public class HuaCompiler extends LALR {
             SyntaxNode fromNode = stack.get(fromStackOffset);
             SyntaxNode toNode = stack.get(toStackOffset);
 
-            assertNotNull(fromNode.get(fromAttrName));
             toNode.put(toAttrName, fromNode.get(fromAttrName));
         }
 
@@ -223,12 +222,6 @@ public class HuaCompiler extends LALR {
             exitNamespace();
         }
 
-        private void processGetMethodNameFromIdentifier(FutureSyntaxNodeStack stack, GetMethodNameFromIdentifier semanticAction) {
-            int stackOffset = semanticAction.getStackOffset();
-            String methodName = stack.get(stackOffset).getValue();
-            methodInfoTable.setMethodNameOfCurrentMethod(methodName);
-        }
-
         private void processGetVariableSymbolFromIdentifier(FutureSyntaxNodeStack stack) {
             String identifierName = stack.get(0).getValue();
             VariableSymbol variableSymbol = variableSymbolTable.getVariableSymbolByName(identifierName);
@@ -273,11 +266,32 @@ public class HuaCompiler extends LALR {
             ((List<ByteCode>) stack.get(0).get(AttrName.CODES.name())).add(new _iinc(1));
         }
 
-        private void processSaveParamInfo(FutureSyntaxNodeStack stack, SaveParamInfo semanticAction) {
-            int stackOffset = semanticAction.getStackOffset();
-            String type = stack.get(stackOffset).get(AttrName.TYPE.name());
-            int width = stack.get(stackOffset).get(AttrName.WIDTH.name());
-            methodInfoTable.addParamInfoToCurrentMethod(new ParamInfo(type, width));
+        private void processRecordMethodDescription(FutureSyntaxNodeStack stack) {
+            String resultType = stack.get(RecordMethodDescription.RESULT_TYPE_STACK_OFFSET).get(AttrName.TYPE.name());
+            methodInfoTable.getCurMethodInfo().setResultType(resultType);
+
+            String methodName = stack.get(RecordMethodDescription.METHOD_DECLARATOR_STACK_OFFSET).get(AttrName.METHOD_NAME.name());
+            methodInfoTable.getCurMethodInfo().setMethodName(methodName);
+
+            List<ParamInfo> paramInfoList = stack.get(RecordMethodDescription.METHOD_DECLARATOR_STACK_OFFSET).get(AttrName.PARAMETER_LIST.name());
+            if (paramInfoList == null) {
+                /*
+                 * 对应于 <epsilon or formal parameter list> → ε
+                 */
+                paramInfoList = new ArrayList<>();
+            }
+            methodInfoTable.getCurMethodInfo().setParamInfoList(paramInfoList);
+        }
+
+        private void processAddParamInfo(FutureSyntaxNodeStack stack, AddParamInfo semanticAction) {
+            int paramStackOffset = semanticAction.getParamStackOffset();
+            int listStackOffset = semanticAction.getListStackOffset();
+
+            String type = stack.get(paramStackOffset).get(AttrName.TYPE.name());
+            int width = stack.get(paramStackOffset).get(AttrName.WIDTH.name());
+
+            List<ParamInfo> paramInfoList = stack.get(listStackOffset).get(AttrName.PARAMETER_LIST.name());
+            paramInfoList.add(new ParamInfo(type, width));
         }
 
         private void processSetAssignOperator(FutureSyntaxNodeStack stack, SetAssignOperator semanticAction) {

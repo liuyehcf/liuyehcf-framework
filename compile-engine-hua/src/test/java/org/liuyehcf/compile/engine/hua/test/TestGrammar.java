@@ -147,7 +147,7 @@ public class TestGrammar {
 
     @Test
     public void testBitAnd() {
-        assertTrue(compiler.compile("void func() {\n" +
+        assertTrue(compiler.compile("int func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a&b;\n" +
                 "    }").isSuccess());
@@ -155,7 +155,7 @@ public class TestGrammar {
 
     @Test
     public void testBitOr() {
-        assertTrue(compiler.compile("void func() {\n" +
+        assertTrue(compiler.compile("boolean func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a|b;\n" +
                 "    }").isSuccess());

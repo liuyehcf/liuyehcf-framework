@@ -4,7 +4,10 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.compiler.ParamInfo;
 import org.liuyehcf.compile.engine.hua.semantic.*;
+
+import java.util.ArrayList;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.production.Block.BLOCK;
@@ -105,7 +108,7 @@ public class Program {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new SaveParamInfo(0)
+                            new AddParamInfo(-2, 0)
                     ),
                     /*
                      * <formal parameter list> → <formal parameter>
@@ -115,7 +118,12 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new SaveParamInfo(0)
+                            new SetSynAttrFromSystem(
+                                    0,
+                                    AttrName.PARAMETER_LIST.name(),
+                                    new ArrayList<ParamInfo>()
+                            ),
+                            new AddParamInfo(0, 0)
                     )
             ),
 
@@ -365,7 +373,7 @@ public class Program {
                                     Symbol.createNonTerminator(RESULT_TYPE),
                                     Symbol.createNonTerminator(METHOD_DECLARATOR)
                             ),
-                            null
+                            new RecordMethodDescription()
                     )
             ),
 
@@ -393,7 +401,11 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_VOID)
                             ),
-                            null
+                            new SetSynAttrFromSystem(
+                                    0,
+                                    AttrName.TYPE.name(),
+                                    NORMAL_VOID
+                            )
                     )
             ),
 
@@ -414,7 +426,17 @@ public class Program {
                                     Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new GetMethodNameFromIdentifier(-3)
+                            new SetSynAttrFromLexical(
+                                    -3,
+                                    AttrName.METHOD_NAME.name(),
+                                    -3
+                            ),
+                            new AssignAttr(
+                                    -1,
+                                    AttrName.PARAMETER_LIST.name(),
+                                    -3,
+                                    AttrName.PARAMETER_LIST.name()
+                            )
                     )
             ),
 

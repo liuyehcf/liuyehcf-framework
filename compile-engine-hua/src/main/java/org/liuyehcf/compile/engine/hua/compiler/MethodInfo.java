@@ -15,7 +15,9 @@ public class MethodInfo {
 
     private String methodName;
 
-    private final List<ParamInfo> paramInfoList = new ArrayList<>();
+    private String resultType;
+
+    private List<ParamInfo> paramInfoList;
 
     private final List<ByteCode> byteCodes = new ArrayList<>();
 
@@ -31,6 +33,14 @@ public class MethodInfo {
         return methodName;
     }
 
+    public String getResultType() {
+        return resultType;
+    }
+
+    public void setResultType(String resultType) {
+        this.resultType = resultType;
+    }
+
     public int getParamSize() {
         return paramInfoList.size();
     }
@@ -43,12 +53,12 @@ public class MethodInfo {
         return paramInfoList;
     }
 
-    public List<ByteCode> getByteCodes() {
-        return byteCodes;
+    public void setParamInfoList(List<ParamInfo> paramInfoList) {
+        this.paramInfoList = paramInfoList;
     }
 
-    public void addParamInfo(ParamInfo paramInfo) {
-        paramInfoList.add(paramInfo);
+    public List<ByteCode> getByteCodes() {
+        return byteCodes;
     }
 
     public void addByteCode(ByteCode byteCode) {

@@ -34,14 +34,6 @@ public class MethodInfoTable {
         curMethodInfo = null;
     }
 
-    public void setMethodNameOfCurrentMethod(String methodName) {
-        curMethodInfo.setMethodName(methodName);
-    }
-
-    public void addParamInfoToCurrentMethod(ParamInfo paramInfo) {
-        curMethodInfo.addParamInfo(paramInfo);
-    }
-
     public Map<String, MethodInfo> getJSONTable() {
         Map<String, MethodInfo> tableJSONMap = new HashMap<>(16);
         table.forEach(
