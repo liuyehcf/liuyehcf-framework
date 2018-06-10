@@ -1073,7 +1073,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
             PrimaryProduction ppReduction = nodeTransferOperation.getPrimaryProduction();
             AssertUtils.assertNotNull(ppReduction);
 
-            action(ppReduction, nodeStack);
+            onReduction(ppReduction, nodeStack);
 
             SyntaxNode left = null;
 
@@ -1100,7 +1100,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
          * @param ppReduction 规约产生式
          * @param stack       语法树节点栈
          */
-        protected void action(PrimaryProduction ppReduction, FutureSyntaxNodeStack stack) {
+        protected void onReduction(PrimaryProduction ppReduction, FutureSyntaxNodeStack stack) {
 
         }
 
