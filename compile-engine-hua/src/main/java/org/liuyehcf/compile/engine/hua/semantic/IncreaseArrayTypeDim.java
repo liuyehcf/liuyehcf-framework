@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.production.AttrName;
 
 /**
  * @author chenlu
@@ -13,7 +14,11 @@ public class IncreaseArrayTypeDim extends AbstractSemanticAction {
         this.stackOffset = stackOffset;
     }
 
-    public int getStackOffset() {
-        return stackOffset;
+
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        String originType = context.getStack().get(stackOffset).get(AttrName.TYPE.name());
+        originType = originType + "[]";
+        context.getStack().get(stackOffset).put(AttrName.TYPE.name(), originType);
     }
 }

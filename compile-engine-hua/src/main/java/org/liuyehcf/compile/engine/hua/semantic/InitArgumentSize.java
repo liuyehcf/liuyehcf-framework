@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.production.AttrName;
 
 /**
  * @author chenlu
@@ -8,4 +9,9 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  */
 public class InitArgumentSize extends AbstractSemanticAction {
     public static final int ARGUMENT_SIZE_STACK_OFFSET = 0;
+
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        context.getStack().get(InitArgumentSize.ARGUMENT_SIZE_STACK_OFFSET).put(AttrName.ARGUMENT_SIZE.name(), 1);
+    }
 }

@@ -720,7 +720,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
     /**
      * 语法树节点
      */
-    protected static final class SyntaxNode {
+    public static final class SyntaxNode {
         private final Map<String, Object> attrs = new HashMap<>(16);
         private Symbol id;
         private String value;
@@ -770,7 +770,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
      * @author hechenfeng
      * @date 2018/04/16
      */
-    protected static class NodeTransferOperation {
+    public static final class NodeTransferOperation {
         /**
          * 下一跳项目集闭包id
          */
@@ -848,7 +848,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
         }
     }
 
-    protected static final class FutureSyntaxNodeStack {
+    public static final class FutureSyntaxNodeStack {
         private int top = -1;
         private LinkedList<SyntaxNode> stack = new LinkedList<>();
 
@@ -947,7 +947,31 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
         }
     }
 
-    protected class Engine {
+    public static class Context {
+        private final PrimaryProduction rawPrimaryProduction;
+        private final FutureSyntaxNodeStack stack;
+        private final SyntaxNode leftNode;
+
+        public Context(PrimaryProduction rawPrimaryProduction, FutureSyntaxNodeStack stack, SyntaxNode leftNode) {
+            this.rawPrimaryProduction = rawPrimaryProduction;
+            this.stack = stack;
+            this.leftNode = leftNode;
+        }
+
+        public PrimaryProduction getRawPrimaryProduction() {
+            return rawPrimaryProduction;
+        }
+
+        public FutureSyntaxNodeStack getStack() {
+            return stack;
+        }
+
+        public SyntaxNode getLeftNode() {
+            return leftNode;
+        }
+    }
+
+    public class Engine {
         /**
          * 输入
          */
@@ -1084,7 +1108,7 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
                 leftNode = nodeStack.get(-ppReduction.getRight().getSymbols().size() + 1);
             }
 
-            onReduction(ppReduction, nodeStack, leftNode);
+            onReduction(new Context(ppReduction, nodeStack, leftNode));
 
             // 如果是形如 "A → ε"这样的产生式，那么特殊处理一下（不进行出栈操作）
             if (!SymbolString.EPSILON_RAW.equals(ppReduction.getRight())) {
@@ -1103,11 +1127,9 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
         /**
          * 规约时具体的语义动作，交由子类扩展
          *
-         * @param ppReduction 规约产生式
-         * @param stack       语法树节点栈
-         * @param leftNode    规约后产生式左部的语法树节点
+         * @param context 上下文信息
          */
-        protected void onReduction(PrimaryProduction ppReduction, FutureSyntaxNodeStack stack, SyntaxNode leftNode) {
+        protected void onReduction(Context context) {
 
         }
 

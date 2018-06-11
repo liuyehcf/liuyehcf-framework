@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.production.AttrName;
 
 /**
  * @author chenlu
@@ -14,8 +15,9 @@ public class SetAssignOperator extends AbstractSemanticAction {
         this.operator = operator;
     }
 
-    public Operator getOperator() {
-        return operator;
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        context.getStack().get(0).put(AttrName.ASSIGN_OPERATOR.name(), operator);
     }
 
     public enum Operator {

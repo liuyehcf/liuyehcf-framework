@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 
 /**
  * 进入方法标记
@@ -9,4 +9,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
  * @date 2018/6/7
  */
 public class EnterMethod extends AbstractSemanticAction {
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        context.getHuaEngine().getMethodInfoTable().enterMethod();
+    }
 }

@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.hua.bytecode._istore;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 
 /**
  * @author chenlu
@@ -9,4 +10,9 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
 public class VariableInitialization extends AbstractSemanticAction {
     public static final int INITIALIZATION_EXPRESSION_STACK_OFFSET = 0;
     public static final int VARIABLE_ID_STACK_OFFSET = -2;
+
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore());
+    }
 }

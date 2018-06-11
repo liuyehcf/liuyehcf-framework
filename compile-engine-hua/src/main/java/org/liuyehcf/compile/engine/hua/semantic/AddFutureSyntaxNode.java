@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 
 /**
  * 创建一个Future语法树节点，仅用于标记非终结符
@@ -22,7 +22,8 @@ public class AddFutureSyntaxNode extends AbstractSemanticAction {
         this.stackOffset = stackOffset;
     }
 
-    public int getStackOffset() {
-        return stackOffset;
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        context.getStack().addFutureSyntaxNode(stackOffset);
     }
 }

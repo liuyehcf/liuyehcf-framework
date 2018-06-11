@@ -1,6 +1,10 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.ParamInfo;
+import org.liuyehcf.compile.engine.hua.production.AttrName;
+
+import java.util.List;
 
 /**
  * @author chenlu
@@ -9,4 +13,16 @@ import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticActio
 public class RecordMethodDescription extends AbstractSemanticAction {
     public static final int RESULT_TYPE_STACK_OFFSET = -1;
     public static final int METHOD_DECLARATOR_STACK_OFFSET = 0;
+
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        String resultType = context.getStack().get(RecordMethodDescription.RESULT_TYPE_STACK_OFFSET).get(AttrName.TYPE.name());
+        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().setResultType(resultType);
+
+        String methodName = context.getStack().get(RecordMethodDescription.METHOD_DECLARATOR_STACK_OFFSET).get(AttrName.METHOD_NAME.name());
+        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().setMethodName(methodName);
+
+        List<ParamInfo> paramInfoList = context.getStack().get(RecordMethodDescription.METHOD_DECLARATOR_STACK_OFFSET).get(AttrName.PARAMETER_LIST.name());
+        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().setParamInfoList(paramInfoList);
+    }
 }

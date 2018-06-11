@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.hua.bytecode.*;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 
 /**
  * 双目运算
@@ -26,8 +27,59 @@ public class BinaryOperator extends AbstractSemanticAction {
         this.operator = operator;
     }
 
-    public Operator getOperator() {
-        return operator;
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        switch (operator) {
+            case LOGICAL_OR:
+                throw new UnsupportedOperationException();
+            case LOGICAL_AND:
+                throw new UnsupportedOperationException();
+            case BIT_OR:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ior());
+                break;
+            case BIT_XOR:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ixor());
+                break;
+            case BIT_AND:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iand());
+                break;
+            case EQUAL:
+                throw new UnsupportedOperationException();
+            case NOT_EQUAL:
+                throw new UnsupportedOperationException();
+            case LESS:
+                throw new UnsupportedOperationException();
+            case LARGE:
+                throw new UnsupportedOperationException();
+            case LESS_EQUAL:
+                throw new UnsupportedOperationException();
+            case LARGE_EQUAL:
+                throw new UnsupportedOperationException();
+            case SHIFT_LEFT:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ishl());
+                break;
+            case SHIFT_RIGHT:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ishr());
+                break;
+            case UNSIGNED_SHIFT_RIGHT:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iushr());
+                break;
+            case ADDITION:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iadd());
+                break;
+            case SUBTRACTION:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _isub());
+                break;
+            case MULTIPLICATION:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _imul());
+                break;
+            case DIVISION:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _idiv());
+                break;
+            case REMAINDER:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _irem());
+                break;
+        }
     }
 
     public enum Operator {

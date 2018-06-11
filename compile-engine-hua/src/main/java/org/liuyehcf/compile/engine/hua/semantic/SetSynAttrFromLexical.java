@@ -1,6 +1,9 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.core.cfg.lr.AbstractLRCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 
 /**
  * 设置综合属性，来源于词法分析器
@@ -37,15 +40,12 @@ public class SetSynAttrFromLexical extends AbstractSemanticAction {
         this.toStackOffset = toStackOffset;
     }
 
-    public int getFromStackOffset() {
-        return fromStackOffset;
-    }
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        AbstractLRCompiler.SyntaxNode fromNode = context.getStack().get(fromStackOffset);
+        AbstractLRCompiler.SyntaxNode toNode = context.getStack().get(toStackOffset);
 
-    public String getToAttrName() {
-        return toAttrName;
-    }
-
-    public int getToStackOffset() {
-        return toStackOffset;
+        assertNotNull(fromNode.getValue());
+        toNode.put(toAttrName, fromNode.getValue());
     }
 }

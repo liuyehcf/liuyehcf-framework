@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.core.cfg.lr.AbstractLRCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 
 /**
  * 属性赋值
@@ -42,19 +43,11 @@ public class AssignAttr extends AbstractSemanticAction {
         this.toAttrName = toAttrName;
     }
 
-    public int getFromStackOffset() {
-        return fromStackOffset;
-    }
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        AbstractLRCompiler.SyntaxNode fromNode = context.getStack().get(fromStackOffset);
+        AbstractLRCompiler.SyntaxNode toNode = context.getStack().get(toStackOffset);
 
-    public String getFromAttrName() {
-        return fromAttrName;
-    }
-
-    public int getToStackOffset() {
-        return toStackOffset;
-    }
-
-    public String getToAttrName() {
-        return toAttrName;
+        toNode.put(toAttrName, fromNode.get(fromAttrName));
     }
 }

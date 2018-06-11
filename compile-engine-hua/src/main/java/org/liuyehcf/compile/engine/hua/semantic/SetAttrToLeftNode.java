@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.core.grammar.definition.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 
 /**
  * 为产生式左部的语法树节点设定属性值
@@ -18,11 +18,8 @@ public class SetAttrToLeftNode extends AbstractSemanticAction {
         this.value = value;
     }
 
-    public String getAttrName() {
-        return attrName;
-    }
-
-    public Object getValue() {
-        return value;
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        context.getLeftNode().put(attrName, value);
     }
 }
