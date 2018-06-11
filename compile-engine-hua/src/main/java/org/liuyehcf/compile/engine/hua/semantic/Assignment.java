@@ -35,6 +35,8 @@ public class Assignment extends AbstractSemanticAction {
             case NORMAL_ASSIGN:
                 context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
                 break;
+            default:
+                throw new RuntimeException("尚不支持赋值运算符 \'" + operator + "\'");
         }
     }
 }

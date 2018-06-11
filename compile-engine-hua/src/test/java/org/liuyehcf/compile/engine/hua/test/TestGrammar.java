@@ -174,6 +174,9 @@ public class TestGrammar {
         assertTrue(compiler.compile("void func() {\n" +
                 "  int a,b,c;\n" +
                 "  c=a+b-a;\n" +
+                "  boolean d=true,f;\n" +
+                "  f=d;\n" +
+                "  f=false;\n" +
                 "}").isSuccess());
     }
 
@@ -206,6 +209,13 @@ public class TestGrammar {
     public void testDecimalLiteral() {
         assertTrue(compiler.compile("void testDecimalLiteral() {\n" +
                 "    int a=5,b=100000;\n" +
+                "}").isSuccess());
+    }
+
+    @Test
+    public void testBooleanLiteral() {
+        assertTrue(compiler.compile("void testBooleanLiteral() {\n" +
+                "    boolean a=true,b=false;\n" +
                 "}").isSuccess());
     }
 }

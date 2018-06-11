@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.hua.bytecode._ldc;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.production.AttrName;
 
+import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_BOOLEAN;
 import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
 
 /**
@@ -24,9 +25,12 @@ public class PushLiteralToOperatorStack extends AbstractSemanticAction {
     public void onAction(HuaCompiler.HuaContext context) {
         switch (type) {
             case NORMAL_INT:
-                String literal = context.getStack().get(LITERAL_STACK_OFFSET).get(AttrName.DECIMAL_LITERAL.name());
+            case NORMAL_BOOLEAN:
+                String literal = context.getStack().get(LITERAL_STACK_OFFSET).get(AttrName.LITERAL_VALUE.name());
                 context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ldc(type, literal));
                 break;
+            default:
+                throw new UnsupportedOperationException();
         }
     }
 }

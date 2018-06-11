@@ -5,6 +5,9 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.production.AttrName;
 
+import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_BOOLEAN;
+import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
+
 /**
  * @author chenlu
  * @date 2018/6/11
@@ -23,6 +26,15 @@ public class VariableInitialization extends AbstractSemanticAction {
             throw new RuntimeException("变量初始化语句两侧类型不匹配");
         }
 
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+        switch (variableSymbol.getType()) {
+            case NORMAL_INT:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                break;
+            case NORMAL_BOOLEAN:
+                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                break;
+            default:
+                throw new RuntimeException("尚不支持类型 \'" + variableSymbol.getType() + "\'");
+        }
     }
 }

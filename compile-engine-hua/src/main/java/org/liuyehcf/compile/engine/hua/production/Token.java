@@ -7,7 +7,9 @@ import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.REGEX_IDENTIFIER;
+import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_BOOLEAN;
 import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.production.TypeWidth.BOOLEAN_WIDTH;
 import static org.liuyehcf.compile.engine.hua.production.TypeWidth.INTEGER_WIDTH;
 
 /**
@@ -127,7 +129,9 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createNonTerminator(BOOLEAN_LITERAL)
                             ),
-                            null
+                            new PushLiteralToOperatorStack(NORMAL_BOOLEAN),
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), NORMAL_BOOLEAN),
+                            new SetAttrFromSystem(0, AttrName.WIDTH.name(), BOOLEAN_WIDTH)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -239,7 +243,7 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_NUMBER_0)
                             ),
-                            new SetAttrFromSystem(0, AttrName.DECIMAL_LITERAL.name(), "0")
+                            new SetAttrFromSystem(0, AttrName.LITERAL_VALUE.name(), "0")
                     ),
                     /*
                      * <decimal numeral> → <non zero digit> <digits>?
@@ -250,7 +254,7 @@ public class Token {
                                     Symbol.createNonTerminator(NON_ZERO_DIGIT),
                                     Symbol.createNonTerminator(EPSILON_OR_DIGITS)
                             ),
-                            new CombineAttr(-1, 0, AttrName.DECIMAL_LITERAL.name())
+                            new CombineAttr(-1, 0, AttrName.LITERAL_VALUE.name())
                     )
             ),
 
@@ -268,7 +272,7 @@ public class Token {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.DECIMAL_LITERAL.name(), "")
+                            new SetAttrToLeftNode(AttrName.LITERAL_VALUE.name(), "")
                     ),
                     /*
                      * <epsilon or digits> → <digits>
@@ -307,7 +311,7 @@ public class Token {
                                     Symbol.createNonTerminator(DIGITS),
                                     Symbol.createNonTerminator(DIGIT)
                             ),
-                            new CombineAttr(-1, -2, AttrName.DECIMAL_LITERAL.name())
+                            new CombineAttr(-1, 0, AttrName.LITERAL_VALUE.name())
                     )
             ),
 
@@ -327,7 +331,7 @@ public class Token {
                             ),
                             new SetAttrFromLexical(
                                     0,
-                                    AttrName.DECIMAL_LITERAL.name(),
+                                    AttrName.LITERAL_VALUE.name(),
                                     0
                             )
                     ),
@@ -357,11 +361,7 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_NON_ZERO_DIGIT)
                             ),
-                            new SetAttrFromLexical(
-                                    0,
-                                    AttrName.DECIMAL_LITERAL.name(),
-                                    0
-                            )
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0)
                     )
             ),
 
@@ -379,7 +379,7 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN_TRUE)
                             ),
-                            null
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0)
                     ),
                     /*
                      * <boolean literal> → false
@@ -389,7 +389,7 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN_FALSE)
                             ),
-                            null
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0)
                     )
             )
     };

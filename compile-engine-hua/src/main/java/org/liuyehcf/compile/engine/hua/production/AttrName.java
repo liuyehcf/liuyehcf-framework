@@ -41,7 +41,7 @@ public enum AttrName {
     ASSIGN_OPERATOR,
 
     /**
-     * 整数字面值
+     * 字面值
      */
-    DECIMAL_LITERAL,
+    LITERAL_VALUE,
 }
