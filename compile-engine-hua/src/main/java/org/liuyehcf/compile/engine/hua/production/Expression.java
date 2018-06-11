@@ -1070,7 +1070,7 @@ public class Expression {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            new SetAttrToLeftNode(AttrName.ARGUMENT_SIZE.name(), 0)
                     ),
                     /*
                      * <epsilon or argument list> → <argument list>

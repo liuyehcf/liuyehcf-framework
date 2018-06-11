@@ -106,6 +106,8 @@ public class HuaCompiler extends LALR {
                     processAddParamInfo(stack, (AddParamInfo) semanticAction);
                 } else if (semanticAction instanceof SetAssignOperator) {
                     processSetAssignOperator(stack, (SetAssignOperator) semanticAction);
+                } else if (semanticAction instanceof SetAttrToLeftNode) {
+                    processSetAttrToLeftNode(leftNode, (SetAttrToLeftNode) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromLexical) {
                     processSetSynAttrFromLexical(stack, (SetSynAttrFromLexical) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromSystem) {
@@ -263,13 +265,6 @@ public class HuaCompiler extends LALR {
             String methodName = stack.get(MethodInvocation.METHOD_NAME_STACK_OFFSET).get(AttrName.METHOD_NAME.name());
             Integer argumentSize = stack.get(MethodInvocation.ARGUMENT_SIZE_STACK_OFFSET).get(AttrName.ARGUMENT_SIZE.name());
 
-            if (argumentSize == null) {
-                /*
-                 * 对应于 <epsilon or argument list> → ε
-                 */
-                argumentSize = 0;
-            }
-
             methodInfoTable.getCurMethodInfo().addByteCode(new _invokestatic(methodName, argumentSize));
         }
 
@@ -297,12 +292,6 @@ public class HuaCompiler extends LALR {
             methodInfoTable.getCurMethodInfo().setMethodName(methodName);
 
             List<ParamInfo> paramInfoList = stack.get(RecordMethodDescription.METHOD_DECLARATOR_STACK_OFFSET).get(AttrName.PARAMETER_LIST.name());
-            if (paramInfoList == null) {
-                /*
-                 * 对应于 <epsilon or formal parameter list> → ε
-                 */
-                paramInfoList = new ArrayList<>();
-            }
             methodInfoTable.getCurMethodInfo().setParamInfoList(paramInfoList);
         }
 
@@ -321,6 +310,13 @@ public class HuaCompiler extends LALR {
             SetAssignOperator.Operator operator = semanticAction.getOperator();
 
             stack.get(0).put(AttrName.ASSIGN_OPERATOR.name(), operator);
+        }
+
+        private void processSetAttrToLeftNode(SyntaxNode leftNode, SetAttrToLeftNode semanticAction) {
+            String attrName = semanticAction.getAttrName();
+            Object value = semanticAction.getValue();
+
+            leftNode.put(attrName, value);
         }
 
         private void processSetSynAttrFromLexical(FutureSyntaxNodeStack stack, SetSynAttrFromLexical semanticAction) {

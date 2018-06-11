@@ -454,7 +454,7 @@ public class Program {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            new SetAttrToLeftNode(AttrName.PARAMETER_LIST.name(), new ArrayList<ParamInfo>())
                     ),
                     /*
                      * (2) <epsilon or formal parameter list> → <formal parameter list>
