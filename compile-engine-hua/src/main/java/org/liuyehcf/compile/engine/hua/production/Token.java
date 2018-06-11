@@ -4,10 +4,11 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.semantic.SetIdentifierAttr;
-import org.liuyehcf.compile.engine.hua.semantic.SetAttrFromLexical;
+import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.REGEX_IDENTIFIER;
+import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.production.TypeWidth.INTEGER_WIDTH;
 
 /**
  * @author hechenfeng
@@ -114,7 +115,9 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createNonTerminator(INTEGER_LITERAL)
                             ),
-                            null
+                            new PushLiteralToOperatorStack(NORMAL_INT),
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), NORMAL_INT),
+                            new SetAttrFromSystem(0, AttrName.WIDTH.name(), INTEGER_WIDTH)
                     ),
                     /*
                      * <literal> → <boolean literal>
@@ -236,7 +239,7 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_NUMBER_0)
                             ),
-                            null
+                            new SetAttrFromSystem(0, AttrName.DECIMAL_LITERAL.name(), "0")
                     ),
                     /*
                      * <decimal numeral> → <non zero digit> <digits>?
@@ -247,7 +250,7 @@ public class Token {
                                     Symbol.createNonTerminator(NON_ZERO_DIGIT),
                                     Symbol.createNonTerminator(EPSILON_OR_DIGITS)
                             ),
-                            null
+                            new CombineAttr(-1, 0, AttrName.DECIMAL_LITERAL.name())
                     )
             ),
 
@@ -265,7 +268,7 @@ public class Token {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            new SetAttrToLeftNode(AttrName.DECIMAL_LITERAL.name(), "")
                     ),
                     /*
                      * <epsilon or digits> → <digits>
@@ -304,7 +307,7 @@ public class Token {
                                     Symbol.createNonTerminator(DIGITS),
                                     Symbol.createNonTerminator(DIGIT)
                             ),
-                            null
+                            new CombineAttr(-1, -2, AttrName.DECIMAL_LITERAL.name())
                     )
             ),
 
@@ -322,7 +325,11 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_NUMBER_0)
                             ),
-                            null
+                            new SetAttrFromLexical(
+                                    0,
+                                    AttrName.DECIMAL_LITERAL.name(),
+                                    0
+                            )
                     ),
                     /*
                      * <digit> → <non zero digit>
@@ -350,7 +357,11 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_NON_ZERO_DIGIT)
                             ),
-                            null
+                            new SetAttrFromLexical(
+                                    0,
+                                    AttrName.DECIMAL_LITERAL.name(),
+                                    0
+                            )
                     )
             ),
 

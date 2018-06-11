@@ -39,4 +39,9 @@ public enum AttrName {
      * 赋值符号
      */
     ASSIGN_OPERATOR,
+
+    /**
+     * 整数字面值
+     */
+    DECIMAL_LITERAL,
 }

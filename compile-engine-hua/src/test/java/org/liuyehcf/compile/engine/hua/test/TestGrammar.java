@@ -201,4 +201,11 @@ public class TestGrammar {
                 "    int j = a + b - c * d / e % f & g ^ h | i;\n" +
                 "}").isSuccess());
     }
+
+    @Test
+    public void testDecimalLiteral() {
+        assertTrue(compiler.compile("void testDecimalLiteral() {\n" +
+                "    int a=5,b=100000;\n" +
+                "}").isSuccess());
+    }
 }
