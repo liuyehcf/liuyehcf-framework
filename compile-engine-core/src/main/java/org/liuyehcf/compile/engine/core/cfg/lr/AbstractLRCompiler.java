@@ -1076,25 +1076,28 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
             PrimaryProduction ppReduction = nodeTransferOperation.getPrimaryProduction();
             AssertUtils.assertNotNull(ppReduction);
 
-            onReduction(ppReduction, nodeStack);
+            SyntaxNode leftNode;
 
-            SyntaxNode left = null;
+            if (SymbolString.EPSILON_RAW.equals(ppReduction.getRight())) {
+                leftNode = new SyntaxNode(ppReduction.getLeft(), null);
+            } else {
+                leftNode = nodeStack.get(-ppReduction.getRight().getSymbols().size() + 1);
+            }
+
+            onReduction(ppReduction, nodeStack, leftNode);
 
             // 如果是形如 "A → ε"这样的产生式，那么特殊处理一下（不进行出栈操作）
             if (!SymbolString.EPSILON_RAW.equals(ppReduction.getRight())) {
                 for (int i = 0; i < ppReduction.getRight().getSymbols().size(); i++) {
                     statusStack.pop();
-                    left = nodeStack.pop();
+                    nodeStack.pop();
                 }
             }
 
-            if (left != null) {
-                left.setId(ppReduction.getLeft());
-                left.setValue(null);
-            } else {
-                left = new SyntaxNode(ppReduction.getLeft(), null);
-            }
-            nodeStack.pushNormalSyntaxNode(left);
+            leftNode.setId(ppReduction.getLeft());
+            leftNode.setValue(null);
+
+            nodeStack.pushNormalSyntaxNode(leftNode);
         }
 
         /**
@@ -1102,8 +1105,9 @@ public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements 
          *
          * @param ppReduction 规约产生式
          * @param stack       语法树节点栈
+         * @param leftNode    规约后产生式左部的语法树节点
          */
-        protected void onReduction(PrimaryProduction ppReduction, FutureSyntaxNodeStack stack) {
+        protected void onReduction(PrimaryProduction ppReduction, FutureSyntaxNodeStack stack, SyntaxNode leftNode) {
 
         }
 

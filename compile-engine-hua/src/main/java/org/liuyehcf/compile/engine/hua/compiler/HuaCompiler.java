@@ -61,7 +61,7 @@ public class HuaCompiler extends LALR {
         }
 
         @Override
-        protected void onReduction(PrimaryProduction ppReduction, FutureSyntaxNodeStack stack) {
+        protected void onReduction(PrimaryProduction ppReduction, FutureSyntaxNodeStack stack, SyntaxNode leftNode) {
             List<AbstractSemanticAction> semanticActions = ppReduction.getSemanticActions();
             if (semanticActions == null) {
                 return;
