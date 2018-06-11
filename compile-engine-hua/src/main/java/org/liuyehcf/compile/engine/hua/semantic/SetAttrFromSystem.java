@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
  * @author chenlu
  * @date 2018/6/2
  */
-public class SetSynAttrFromSystem extends AbstractSemanticAction {
+public class SetAttrFromSystem extends AbstractSemanticAction {
     /**
      * 属性-偏移量，相对于语法树栈
      * '0'  表示栈顶
@@ -27,7 +27,7 @@ public class SetSynAttrFromSystem extends AbstractSemanticAction {
      */
     private final Object attrValue;
 
-    public SetSynAttrFromSystem(int stackOffset, String attrName, Object attrValue) {
+    public SetAttrFromSystem(int stackOffset, String attrName, Object attrValue) {
         this.stackOffset = stackOffset;
         this.attrName = attrName;
         this.attrValue = attrValue;

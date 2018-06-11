@@ -4,8 +4,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.semantic.GetVariableSymbolFromIdentifier;
-import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromLexical;
+import org.liuyehcf.compile.engine.hua.semantic.SetIdentifierAttr;
+import org.liuyehcf.compile.engine.hua.semantic.SetAttrFromLexical;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.REGEX_IDENTIFIER;
 
@@ -66,7 +66,7 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             ),
-                            new GetVariableSymbolFromIdentifier()
+                            new SetIdentifierAttr()
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -88,7 +88,7 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             ),
-                            new SetSynAttrFromLexical(
+                            new SetAttrFromLexical(
                                     0,
                                     AttrName.METHOD_NAME.name(),
                                     0

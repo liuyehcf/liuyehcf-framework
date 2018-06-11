@@ -11,5 +11,6 @@ public enum AttrName {
     PARAMETER_LIST,
     ARGUMENT_SIZE,
     CODES,
-    ASSIGN_OPERATOR
+    ASSIGN_OPERATOR,
+    IDENTIFIER_NAME,
 }

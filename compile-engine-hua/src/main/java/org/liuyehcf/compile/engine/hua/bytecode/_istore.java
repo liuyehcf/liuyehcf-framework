@@ -11,6 +11,16 @@ package org.liuyehcf.compile.engine.hua.bytecode;
  */
 public class _istore implements ByteCode {
 
+    private final int offset;
+
+    public _istore(int offset) {
+        this.offset = offset;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
     @Override
     public void operate() {
 

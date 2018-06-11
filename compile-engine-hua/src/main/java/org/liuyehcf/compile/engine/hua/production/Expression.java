@@ -204,7 +204,11 @@ public class Expression {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_ASSIGN)
                             ),
-                            new SetAssignOperator(SetAssignOperator.Operator.NORMAL_ASSIGN)
+                            new SetAttrFromSystem(
+                                    0,
+                                    AttrName.ASSIGN_OPERATOR.name(),
+                                    NORMAL_ASSIGN
+                            )
                     ),
                     /*
                      * <assignment operator> → *=
@@ -1006,7 +1010,7 @@ public class Expression {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_NAME)
                             ),
-                            null
+                            new PushIdentifierToOperatorStack()
                     ),
                     /*
                      * (3) <postfix expression> → <postincrement expression>

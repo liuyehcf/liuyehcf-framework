@@ -9,8 +9,8 @@ import org.liuyehcf.compile.engine.hua.production.AttrName;
  * @date 2018/6/10
  */
 public class MethodInvocation extends AbstractSemanticAction {
-    public static final int METHOD_NAME_STACK_OFFSET = -3;
-    public static final int ARGUMENT_SIZE_STACK_OFFSET = -1;
+    private static final int METHOD_NAME_STACK_OFFSET = -3;
+    private static final int ARGUMENT_SIZE_STACK_OFFSET = -1;
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {

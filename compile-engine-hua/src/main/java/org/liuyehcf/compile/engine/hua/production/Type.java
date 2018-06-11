@@ -5,8 +5,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.semantic.IncreaseArrayTypeDim;
-import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromLexical;
-import org.liuyehcf.compile.engine.hua.semantic.SetSynAttrFromSystem;
+import org.liuyehcf.compile.engine.hua.semantic.SetAttrFromLexical;
+import org.liuyehcf.compile.engine.hua.semantic.SetAttrFromSystem;
 
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_LEFT_PARENTHESES;
 import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_RIGHT_PARENTHESES;
@@ -83,12 +83,12 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN)
                             ),
-                            new SetSynAttrFromLexical(
+                            new SetAttrFromLexical(
                                     0,
                                     AttrName.TYPE.name(),
                                     0
                             ),
-                            new SetSynAttrFromSystem(
+                            new SetAttrFromSystem(
                                     0,
                                     AttrName.WIDTH.name(),
                                     BOOLEAN_WIDTH
@@ -139,12 +139,12 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_INT)
                             ),
-                            new SetSynAttrFromLexical(
+                            new SetAttrFromLexical(
                                     0,
                                     AttrName.TYPE.name(),
                                     0
                             ),
-                            new SetSynAttrFromSystem(
+                            new SetAttrFromSystem(
                                     0,
                                     AttrName.WIDTH.name(),
                                     INTEGER_WIDTH

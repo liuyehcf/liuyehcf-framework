@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.hua.production.AttrName;
  * @date 2018/6/10
  */
 public class InitArgumentSize extends AbstractSemanticAction {
-    public static final int ARGUMENT_SIZE_STACK_OFFSET = 0;
+    private static final int ARGUMENT_SIZE_STACK_OFFSET = 0;
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {

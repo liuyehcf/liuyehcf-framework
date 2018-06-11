@@ -11,7 +11,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
  * @author chenlu
  * @date 2018/6/2
  */
-public class SetSynAttrFromLexical extends AbstractSemanticAction {
+public class SetAttrFromLexical extends AbstractSemanticAction {
     /**
      * 源属性-偏移量，相对于语法树栈
      * '0'  表示栈顶
@@ -34,7 +34,7 @@ public class SetSynAttrFromLexical extends AbstractSemanticAction {
     private final int toStackOffset;
 
 
-    public SetSynAttrFromLexical(int fromStackOffset, String toAttrName, int toStackOffset) {
+    public SetAttrFromLexical(int fromStackOffset, String toAttrName, int toStackOffset) {
         this.fromStackOffset = fromStackOffset;
         this.toAttrName = toAttrName;
         this.toStackOffset = toStackOffset;

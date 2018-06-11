@@ -67,17 +67,17 @@ public class TestGrammar {
     @Test
     public void testPostIncrement() {
         assertTrue(compiler.compile("void testPostIncrement(){\n" +
-                "  int a=1;\n" +
+                "  int a;\n" +
                 "  a++;\n" +
                 "}").isSuccess());
     }
 
     @Test
     public void testParamSize() {
-        assertTrue(compiler.compile("void exchange(int[] nums, int i, int j) {\n" +
-                "        int temp = nums[i];\n" +
-                "        nums[i] = nums[j];\n" +
-                "        nums[j] = temp;\n" +
+        assertTrue(compiler.compile("void add(int i, int j, int k) {\n" +
+                "        int temp = i;\n" +
+                "        j = k;\n" +
+                "        k = temp;\n" +
                 "    }").isSuccess());
     }
 

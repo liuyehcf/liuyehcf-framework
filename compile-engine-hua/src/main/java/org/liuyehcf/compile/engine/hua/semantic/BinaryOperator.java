@@ -33,8 +33,8 @@ public class BinaryOperator extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        String leftType;
-        String rightType;
+        String leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
+        String rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
 
         switch (operator) {
             case LOGICAL_OR:
@@ -42,12 +42,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case LOGICAL_AND:
                 throw new UnsupportedOperationException();
             case BIT_OR:
-                leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-                rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
-
-                if (!leftType.equals(rightType)) {
-                    throw new RuntimeException(" \'" + BIT_OR.getSign() + "\' 运算符两侧运算子类型不一致");
-                }
+                checkEqualType(leftType, rightType, BIT_OR);
 
                 switch (leftType) {
                     case NORMAL_INT:
@@ -60,12 +55,7 @@ public class BinaryOperator extends AbstractSemanticAction {
 
                 break;
             case BIT_XOR:
-                leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-                rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
-
-                if (!leftType.equals(rightType)) {
-                    throw new RuntimeException(" \'" + BIT_XOR.getSign() + "\' 运算符两侧运算子类型不一致");
-                }
+                checkEqualType(leftType, rightType, BIT_XOR);
 
                 switch (leftType) {
                     case NORMAL_INT:
@@ -78,12 +68,7 @@ public class BinaryOperator extends AbstractSemanticAction {
 
                 break;
             case BIT_AND:
-                leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-                rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
-
-                if (!leftType.equals(rightType)) {
-                    throw new RuntimeException(" \'" + BIT_AND.getSign() + "\' 运算符两侧运算子类型不一致");
-                }
+                checkEqualType(leftType, rightType, BIT_AND);
 
                 switch (leftType) {
                     case NORMAL_INT:
@@ -108,12 +93,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case LARGE_EQUAL:
                 throw new UnsupportedOperationException();
             case SHIFT_LEFT:
-                leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-                rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
-
-                if (!NORMAL_INT.equals(rightType)) {
-                    throw new RuntimeException(" \'" + SHIFT_LEFT.getSign() + "\' 运算符右侧必须是整型");
-                }
+                checkIntegralType(rightType, SHIFT_LEFT);
 
                 switch (leftType) {
                     case NORMAL_INT:
@@ -126,12 +106,7 @@ public class BinaryOperator extends AbstractSemanticAction {
 
                 break;
             case SHIFT_RIGHT:
-                leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-                rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
-
-                if (!NORMAL_INT.equals(rightType)) {
-                    throw new RuntimeException(" \'" + SHIFT_RIGHT.getSign() + "\' 运算符右侧必须是整型");
-                }
+                checkIntegralType(rightType, SHIFT_RIGHT);
 
                 switch (leftType) {
                     case NORMAL_INT:
@@ -144,12 +119,7 @@ public class BinaryOperator extends AbstractSemanticAction {
 
                 break;
             case UNSIGNED_SHIFT_RIGHT:
-                leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-                rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
-
-                if (!NORMAL_INT.equals(rightType)) {
-                    throw new RuntimeException(" \'" + UNSIGNED_SHIFT_RIGHT.getSign() + "\' 运算符右侧必须是整型");
-                }
+                checkIntegralType(rightType, UNSIGNED_SHIFT_RIGHT);
 
                 switch (leftType) {
                     case NORMAL_INT:
@@ -162,12 +132,8 @@ public class BinaryOperator extends AbstractSemanticAction {
 
                 break;
             case ADDITION:
-                leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-                rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
+                checkEqualType(leftType, rightType, ADDITION);
 
-                if (!leftType.equals(rightType)) {
-                    throw new RuntimeException(" \'" + ADDITION.getSign() + "\' 运算符两侧运算子类型不一致");
-                }
 
                 switch (leftType) {
                     case NORMAL_INT:
@@ -180,12 +146,7 @@ public class BinaryOperator extends AbstractSemanticAction {
 
                 break;
             case SUBTRACTION:
-                leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-                rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
-
-                if (!leftType.equals(rightType)) {
-                    throw new RuntimeException(" \'" + SUBTRACTION.getSign() + "\' 运算符两侧运算子类型不一致");
-                }
+                checkEqualType(leftType, rightType, SUBTRACTION);
 
                 switch (leftType) {
                     case NORMAL_INT:
@@ -198,12 +159,7 @@ public class BinaryOperator extends AbstractSemanticAction {
 
                 break;
             case MULTIPLICATION:
-                leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-                rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
-
-                if (!leftType.equals(rightType)) {
-                    throw new RuntimeException(" \'" + MULTIPLICATION.getSign() + "\' 运算符两侧运算子类型不一致");
-                }
+                checkEqualType(leftType, rightType, MULTIPLICATION);
 
                 switch (leftType) {
                     case NORMAL_INT:
@@ -216,12 +172,7 @@ public class BinaryOperator extends AbstractSemanticAction {
 
                 break;
             case DIVISION:
-                leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-                rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
-
-                if (!leftType.equals(rightType)) {
-                    throw new RuntimeException(" \'" + DIVISION.getSign() + "\' 运算符两侧运算子类型不一致");
-                }
+                checkEqualType(leftType, rightType, DIVISION);
 
                 switch (leftType) {
                     case NORMAL_INT:
@@ -234,24 +185,30 @@ public class BinaryOperator extends AbstractSemanticAction {
 
                 break;
             case REMAINDER:
-                leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-                rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
-
-                if (!leftType.equals(rightType)) {
-                    throw new RuntimeException(" \'" + REMAINDER.getSign() + "\' 运算符两侧运算子类型不一致");
-                }
+                checkEqualType(leftType, rightType, REMAINDER);
 
                 switch (leftType) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _idiv());
+                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _irem());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + REMAINDER.getSign() + "\' 运算");
                 }
 
-                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _irem());
                 break;
+        }
+    }
+
+    private void checkEqualType(String type1, String type2, Operator operator) {
+        if (!type1.equals(type2)) {
+            throw new RuntimeException(" \'" + operator.getSign() + "\' 运算符两侧运算子类型不一致");
+        }
+    }
+
+    private void checkIntegralType(String type, Operator operator) {
+        if (!NORMAL_INT.equals(type)) {
+            throw new RuntimeException(" \'" + operator.getSign() + "\' 运算符右侧必须是整型");
         }
     }
 

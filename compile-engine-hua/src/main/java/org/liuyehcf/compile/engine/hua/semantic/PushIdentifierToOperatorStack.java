@@ -9,15 +9,18 @@ import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_BOOLEAN;
 import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
 
 /**
- * 查找标志符对应的地址，并将其作为属性值存入语法树节点
+ * 将标志符压入操作数栈
  *
  * @author chenlu
  * @date 2018/6/4
  */
-public class GetVariableSymbolFromIdentifier extends AbstractSemanticAction {
+public class PushIdentifierToOperatorStack extends AbstractSemanticAction {
+
+    private static final int IDENTIFIER_NAME_STACK_OFFSET = 0;
+
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        String identifierName = context.getStack().get(0).getValue();
+        String identifierName = context.getStack().get(IDENTIFIER_NAME_STACK_OFFSET).get(AttrName.IDENTIFIER_NAME.name());
         VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
         if (variableSymbol == null) {
             throw new RuntimeException("标志符 " + identifierName + " 尚未定义");

@@ -8,4 +8,8 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
  * @date 2018/6/11
  */
 public abstract class AbstractSemanticAction implements SemanticAction<HuaCompiler.HuaContext> {
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        
+    }
 }

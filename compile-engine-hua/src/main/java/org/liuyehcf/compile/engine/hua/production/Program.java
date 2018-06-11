@@ -118,7 +118,7 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new SetSynAttrFromSystem(
+                            new SetAttrFromSystem(
                                     0,
                                     AttrName.PARAMETER_LIST.name(),
                                     new ArrayList<ParamInfo>()
@@ -280,7 +280,12 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             ),
-                            new CreateVariable(0)
+                            new CreateVariable(0),
+                            new SetAttrFromLexical(
+                                    0,
+                                    AttrName.IDENTIFIER_NAME.name(),
+                                    0
+                            )
                     ),
                     /*
                      * <variable declarator id> → <variable declarator id> []
@@ -401,7 +406,7 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_VOID)
                             ),
-                            new SetSynAttrFromSystem(
+                            new SetAttrFromSystem(
                                     0,
                                     AttrName.TYPE.name(),
                                     NORMAL_VOID
@@ -426,7 +431,7 @@ public class Program {
                                     Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new SetSynAttrFromLexical(
+                            new SetAttrFromLexical(
                                     -3,
                                     AttrName.METHOD_NAME.name(),
                                     -3

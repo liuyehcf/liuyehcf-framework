@@ -11,8 +11,8 @@ import java.util.List;
  * @date 2018/6/10
  */
 public class RecordMethodDescription extends AbstractSemanticAction {
-    public static final int RESULT_TYPE_STACK_OFFSET = -1;
-    public static final int METHOD_DECLARATOR_STACK_OFFSET = 0;
+    private static final int RESULT_TYPE_STACK_OFFSET = -1;
+    private static final int METHOD_DECLARATOR_STACK_OFFSET = 0;
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
