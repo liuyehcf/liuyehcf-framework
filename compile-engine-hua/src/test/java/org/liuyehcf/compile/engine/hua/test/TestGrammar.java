@@ -185,4 +185,12 @@ public class TestGrammar {
                 "    func2(a+b,c);\n" +
                 "}").isSuccess());
     }
+
+    @Test
+    public void testVariableInitialize() {
+        assertTrue(compiler.compile("void testVariableInitialize() {\n" +
+                "    int a,b,c;\n" +
+                "    int d=a+b-c;\n" +
+                "}").isSuccess());
+    }
 }

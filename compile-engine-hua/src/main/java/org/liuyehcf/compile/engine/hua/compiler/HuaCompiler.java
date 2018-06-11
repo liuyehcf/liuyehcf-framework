@@ -112,6 +112,8 @@ public class HuaCompiler extends LALR {
                     processSetSynAttrFromLexical(stack, (SetSynAttrFromLexical) semanticAction);
                 } else if (semanticAction instanceof SetSynAttrFromSystem) {
                     processSetSynAttrFromSystem(stack, (SetSynAttrFromSystem) semanticAction);
+                } else if (semanticAction instanceof VariableInitialization) {
+                    processVariableInitialization(stack);
                 }
             }
         }
@@ -337,6 +339,10 @@ public class HuaCompiler extends LALR {
             Object attrValue = semanticAction.getAttrValue();
 
             stack.get(stackOffset).put(attrName, attrValue);
+        }
+
+        private void processVariableInitialization(FutureSyntaxNodeStack stack) {
+            methodInfoTable.getCurMethodInfo().addByteCode(new _istore());
         }
 
         private void enterNamespace() {

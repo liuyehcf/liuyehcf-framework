@@ -262,7 +262,7 @@ public class Program {
                                     Symbol.createTerminator(NORMAL_ASSIGN),
                                     Symbol.createNonTerminator(VARIABLE_INITIALIZER)
                             ),
-                            null
+                            new VariableInitialization()
                     )
             ),
 
