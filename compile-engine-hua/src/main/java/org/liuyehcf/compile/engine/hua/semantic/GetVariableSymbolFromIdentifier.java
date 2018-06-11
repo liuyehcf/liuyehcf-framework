@@ -3,6 +3,10 @@ package org.liuyehcf.compile.engine.hua.semantic;
 import org.liuyehcf.compile.engine.hua.bytecode._iload;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
+import org.liuyehcf.compile.engine.hua.production.AttrName;
+
+import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_BOOLEAN;
+import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
 
 /**
  * 查找标志符对应的地址，并将其作为属性值存入语法树节点
@@ -20,11 +24,13 @@ public class GetVariableSymbolFromIdentifier extends AbstractSemanticAction {
         }
 
         switch (variableSymbol.getType()) {
-            case "int":
+            case NORMAL_INT:
                 context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
+                context.getLeftNode().put(AttrName.TYPE.name(), NORMAL_INT);
                 break;
-            case "boolean":
+            case NORMAL_BOOLEAN:
                 context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
+                context.getLeftNode().put(AttrName.TYPE.name(), NORMAL_BOOLEAN);
                 break;
         }
     }

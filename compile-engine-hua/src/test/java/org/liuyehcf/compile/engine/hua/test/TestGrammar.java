@@ -193,4 +193,12 @@ public class TestGrammar {
                 "    int d=a+b-c;\n" +
                 "}").isSuccess());
     }
+
+    @Test
+    public void testMixBinaryOperator() {
+        assertTrue(compiler.compile("void testMixBinaryOperator() {\n" +
+                "    int a, b, c, d, e, f, g, h, i;\n" +
+                "    int j = a + b - c * d / e % f & g ^ h | i;\n" +
+                "}").isSuccess());
+    }
 }
