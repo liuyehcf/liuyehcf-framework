@@ -963,7 +963,7 @@ public class Expression {
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_DOUBLE_MINUS)
                             ),
-                            new PostDecrement() // TODO，如何实现返回原值
+                            null // TODO，如何实现返回原值
                     )
             ),
 
@@ -982,7 +982,7 @@ public class Expression {
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_DOUBLE_PLUS)
                             ),
-                            new PostIncrement() // TODO，如何实现返回原值
+                            null // TODO，如何实现返回原值
                     )
             ),
 

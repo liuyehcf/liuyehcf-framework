@@ -112,18 +112,4 @@ public class GrammarDefinition {
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_TRUE), "true")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_FALSE), "false")
             .build();
-
-    public static void main(String[] args) {
-        LRCompiler compiler = new LR1(GRAMMAR, LEXICAL_ANALYZER);
-        System.out.println(compiler.isLegal());
-        compiler.compile("void sort(int a){}\n" +
-                "\n" +
-                "int addByteCode(int a,int b){}\n" +
-                "\n" +
-                "void exchange(int a,int b){\n" +
-                "    int a, b[][];\n" +
-                "    a=b;\n" +
-                "    b=c;\n" +
-                "}");
-    }
 }
