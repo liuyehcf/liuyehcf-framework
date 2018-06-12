@@ -1,23 +1,24 @@
-package org.liuyehcf.compile.engine.hua.production;
+package org.liuyehcf.compile.engine.hua.definition;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.IncreaseArrayTypeDim;
-import org.liuyehcf.compile.engine.hua.semantic.SetAttrFromLexical;
 import org.liuyehcf.compile.engine.hua.semantic.SetAttrFromSystem;
 
-import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_LEFT_PARENTHESES;
-import static org.liuyehcf.compile.engine.hua.GrammarDefinition.NORMAL_MIDDLE_RIGHT_PARENTHESES;
-import static org.liuyehcf.compile.engine.hua.production.TypeWidth.BOOLEAN_WIDTH;
-import static org.liuyehcf.compile.engine.hua.production.TypeWidth.INTEGER_WIDTH;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
+import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_MIDDLE_LEFT_PARENTHESES;
+import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_MIDDLE_RIGHT_PARENTHESES;
+import static org.liuyehcf.compile.engine.hua.model.Type.BOOLEAN_WIDTH;
+import static org.liuyehcf.compile.engine.hua.model.Type.INT_WIDTH;
 
 /**
  * @author hechenfeng
  * @date 2018/5/31
  */
-public class Type {
+abstract class TypeProductions {
 
     public static final String TYPE = "<type>"; // 119
     public static final String PRIMITIVE_TYPE = "<primitive type>"; // 120
@@ -26,10 +27,6 @@ public class Type {
     public static final String FLOATING_POINT_TYPE = "<floating-point type>"; // 126
     public static final String REFERENCE_TYPE = "<reference type>"; // 128
     public static final String ARRAY_TYPE = "<array type>"; // 136
-
-    public static final String NORMAL_BOOLEAN = "boolean";
-    public static final String NORMAL_INT = "int";
-    public static final String NORMAL_FLOAT = "float";
 
     public static final Production[] PRODUCTIONS = {
             /*
@@ -83,16 +80,7 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN)
                             ),
-                            new SetAttrFromLexical(
-                                    0,
-                                    AttrName.TYPE.name(),
-                                    0
-                            ),
-                            new SetAttrFromSystem(
-                                    0,
-                                    AttrName.WIDTH.name(),
-                                    BOOLEAN_WIDTH
-                            )
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.createNormalType(NORMAL_BOOLEAN, BOOLEAN_WIDTH))
                     )
             ),
 
@@ -139,16 +127,7 @@ public class Type {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_INT)
                             ),
-                            new SetAttrFromLexical(
-                                    0,
-                                    AttrName.TYPE.name(),
-                                    0
-                            ),
-                            new SetAttrFromSystem(
-                                    0,
-                                    AttrName.WIDTH.name(),
-                                    INTEGER_WIDTH
-                            )
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.createNormalType(NORMAL_INT, INT_WIDTH))
                     )
                     /*
                      * TODO 缺少以下产生式

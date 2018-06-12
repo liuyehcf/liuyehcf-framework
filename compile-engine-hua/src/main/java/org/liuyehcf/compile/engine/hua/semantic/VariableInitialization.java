@@ -3,10 +3,11 @@ package org.liuyehcf.compile.engine.hua.semantic;
 import org.liuyehcf.compile.engine.hua.bytecode._istore;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
-import org.liuyehcf.compile.engine.hua.production.AttrName;
+import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.Type;
 
-import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_BOOLEAN;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
 
 /**
  * @author chenlu
@@ -18,7 +19,7 @@ public class VariableInitialization extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        String expressionType = context.getStack().get(INITIALIZATION_EXPRESSION_STACK_OFFSET).get(AttrName.TYPE.name());
+        Type expressionType = context.getStack().get(INITIALIZATION_EXPRESSION_STACK_OFFSET).get(AttrName.TYPE.name());
         String identifierName = context.getStack().get(VARIABLE_ID_STACK_OFFSET).get(AttrName.IDENTIFIER_NAME.name());
         VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
 
@@ -26,7 +27,7 @@ public class VariableInitialization extends AbstractSemanticAction {
             throw new RuntimeException("变量初始化语句两侧类型不匹配");
         }
 
-        switch (variableSymbol.getType()) {
+        switch (variableSymbol.getType().getTypeName()) {
             case NORMAL_INT:
                 context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
                 break;

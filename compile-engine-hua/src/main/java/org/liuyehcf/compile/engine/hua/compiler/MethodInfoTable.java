@@ -12,9 +12,8 @@ import java.util.Map;
  */
 public class MethodInfoTable {
 
-    private MethodInfo curMethodInfo;
-
     private final Map<MethodDescription, MethodInfo> table;
+    private MethodInfo curMethodInfo;
 
     public MethodInfoTable() {
         table = new HashMap<>(16);

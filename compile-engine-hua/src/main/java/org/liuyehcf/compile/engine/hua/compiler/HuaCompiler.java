@@ -22,6 +22,20 @@ public class HuaCompiler extends LALR {
         return new HuaEngine(input);
     }
 
+    public static final class HuaContext extends Context {
+
+        private final HuaEngine huaEngine;
+
+        public HuaContext(Context context, HuaEngine huaEngine) {
+            super(context.getRawPrimaryProduction(), context.getStack(), context.getLeftNode());
+            this.huaEngine = huaEngine;
+        }
+
+        public HuaEngine getHuaEngine() {
+            return huaEngine;
+        }
+    }
+
     public class HuaEngine extends Engine {
 
         /**
@@ -39,6 +53,10 @@ public class HuaCompiler extends LALR {
          */
         private MethodInfoTable methodInfoTable = new MethodInfoTable();
 
+        HuaEngine(String input) {
+            super(input);
+        }
+
         public int getOffset() {
             return offset;
         }
@@ -53,10 +71,6 @@ public class HuaCompiler extends LALR {
 
         public void increaseOffset(int step) {
             offset += step;
-        }
-
-        HuaEngine(String input) {
-            super(input);
         }
 
         @Override
@@ -82,20 +96,6 @@ public class HuaCompiler extends LALR {
             }
         }
 
-    }
-
-    public static final class HuaContext extends Context {
-
-        private final HuaEngine huaEngine;
-
-        public HuaContext(Context context, HuaEngine huaEngine) {
-            super(context.getRawPrimaryProduction(), context.getStack(), context.getLeftNode());
-            this.huaEngine = huaEngine;
-        }
-
-        public HuaEngine getHuaEngine() {
-            return huaEngine;
-        }
     }
 
 }

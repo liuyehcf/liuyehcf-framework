@@ -2,10 +2,10 @@ package org.liuyehcf.compile.engine.hua.semantic;
 
 import org.liuyehcf.compile.engine.hua.bytecode._ldc;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
-import org.liuyehcf.compile.engine.hua.production.AttrName;
+import org.liuyehcf.compile.engine.hua.definition.AttrName;
 
-import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_BOOLEAN;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
 
 /**
  * @author chenlu

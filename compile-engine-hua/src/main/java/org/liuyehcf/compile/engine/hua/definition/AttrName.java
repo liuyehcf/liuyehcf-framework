@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.production;
+package org.liuyehcf.compile.engine.hua.definition;
 
 /**
  * @author chenlu
@@ -14,11 +14,6 @@ public enum AttrName {
      * 类型
      */
     TYPE,
-
-    /**
-     * 宽度
-     */
-    WIDTH,
 
     /**
      * 方法名称

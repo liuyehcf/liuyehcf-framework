@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
-import org.liuyehcf.compile.engine.hua.production.AttrName;
+import org.liuyehcf.compile.engine.hua.definition.AttrName;
 
 /**
  * @author chenlu

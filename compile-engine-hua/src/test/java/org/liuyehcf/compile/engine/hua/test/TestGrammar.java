@@ -3,8 +3,8 @@ package org.liuyehcf.compile.engine.hua.test;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
-import org.liuyehcf.compile.engine.hua.GrammarDefinition;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.definition.GrammarDefinition;
 
 import java.util.ArrayList;
 import java.util.Arrays;

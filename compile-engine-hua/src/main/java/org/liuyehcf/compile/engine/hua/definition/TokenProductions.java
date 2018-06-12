@@ -1,22 +1,22 @@
-package org.liuyehcf.compile.engine.hua.production;
+package org.liuyehcf.compile.engine.hua.definition;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
-import static org.liuyehcf.compile.engine.hua.GrammarDefinition.REGEX_IDENTIFIER;
-import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
-import static org.liuyehcf.compile.engine.hua.production.TypeWidth.BOOLEAN_WIDTH;
-import static org.liuyehcf.compile.engine.hua.production.TypeWidth.INTEGER_WIDTH;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
+import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.REGEX_IDENTIFIER;
+import static org.liuyehcf.compile.engine.hua.model.Type.BOOLEAN_WIDTH;
+import static org.liuyehcf.compile.engine.hua.model.Type.INT_WIDTH;
 
 /**
  * @author hechenfeng
  * @date 2018/5/31
  */
-public class Token {
+abstract class TokenProductions {
     public static final String EXPRESSION_NAME = "<expression name>"; // 294
     public static final String METHOD_NAME = "<method name>"; // 296
     public static final String LITERAL = "<literal>"; // 300
@@ -50,10 +50,6 @@ public class Token {
 
     public static final String REGEX_NON_ZERO_DIGIT = "@nonZeroDigit";
     public static final String REGEX_INTEGER_TYPE_SUFFIX = "@integerTypeSuffix";
-
-    public static final String NORMAL_NUMBER_0 = "0";
-    public static final String NORMAL_BOOLEAN_TRUE = "true";
-    public static final String NORMAL_BOOLEAN_FALSE = "false";
 
     public static final Production[] PRODUCTIONS = {
             /*
@@ -91,11 +87,7 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             ),
-                            new SetAttrFromLexical(
-                                    0,
-                                    AttrName.METHOD_NAME.name(),
-                                    0
-                            )
+                            new SetAttrFromLexical(0, AttrName.METHOD_NAME.name(), 0)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -118,8 +110,7 @@ public class Token {
                                     Symbol.createNonTerminator(INTEGER_LITERAL)
                             ),
                             new PushLiteralToOperatorStack(NORMAL_INT),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), NORMAL_INT),
-                            new SetAttrFromSystem(0, AttrName.WIDTH.name(), INTEGER_WIDTH)
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.createNormalType(NORMAL_INT, INT_WIDTH))
                     ),
                     /*
                      * <literal> → <boolean literal>
@@ -130,8 +121,7 @@ public class Token {
                                     Symbol.createNonTerminator(BOOLEAN_LITERAL)
                             ),
                             new PushLiteralToOperatorStack(NORMAL_BOOLEAN),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), NORMAL_BOOLEAN),
-                            new SetAttrFromSystem(0, AttrName.WIDTH.name(), BOOLEAN_WIDTH)
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.createNormalType(NORMAL_BOOLEAN, BOOLEAN_WIDTH))
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -329,11 +319,7 @@ public class Token {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_NUMBER_0)
                             ),
-                            new SetAttrFromLexical(
-                                    0,
-                                    AttrName.LITERAL_VALUE.name(),
-                                    0
-                            )
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0)
                     ),
                     /*
                      * <digit> → <non zero digit>

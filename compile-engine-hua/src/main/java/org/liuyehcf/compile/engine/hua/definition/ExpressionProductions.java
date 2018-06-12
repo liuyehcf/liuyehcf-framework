@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.production;
+package org.liuyehcf.compile.engine.hua.definition;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
@@ -6,16 +6,17 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
-import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
-import static org.liuyehcf.compile.engine.hua.production.Token.*;
-import static org.liuyehcf.compile.engine.hua.production.Type.PRIMITIVE_TYPE;
-import static org.liuyehcf.compile.engine.hua.production.Type.REFERENCE_TYPE;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
+import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
+import static org.liuyehcf.compile.engine.hua.definition.TokenProductions.*;
+import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.PRIMITIVE_TYPE;
+import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.REFERENCE_TYPE;
 
 /**
  * @author hechenfeng
  * @date 2018/5/31
  */
-public class Expression {
+abstract class ExpressionProductions {
 
     public static final String EXPRESSION = "<expression>"; // 218
     public static final String ASSIGNMENT_EXPRESSION = "<assignment expression>"; // 220
@@ -54,44 +55,6 @@ public class Expression {
     public static final String ARRAY_ACCESS = "<array access>"; // 286
 
     private static final String MARK_286_1_1 = "<mark 286_1_1>";
-
-    public static final String NORMAL_MUL_ASSIGN = "*=";
-    public static final String NORMAL_DIV_ASSIGN = "/=";
-    public static final String NORMAL_MOD_ASSIGN = "%=";
-    public static final String NORMAL_ADD_ASSIGN = "+=";
-    public static final String NORMAL_MINUS_ASSIGN = "-=";
-    public static final String NORMAL_SHIFT_LEFT_ASSIGN = "<<=";
-    public static final String NORMAL_SHIFT_RIGHT_ASSIGN = ">>=";
-    public static final String NORMAL_UNSIGNED_SHIFT_RIGHT_ASSIGN = ">>>=";
-    public static final String NORMAL_BIT_AND_ASSIGN = "&=";
-    public static final String NORMAL_BIT_EXCLUSIVE_OR_ASSIGN = "^=";
-    public static final String NORMAL_BIT_OR_ASSIGN = "|=";
-    public static final String NORMAL_COLON = ":";
-    public static final String NORMAL_QUESTION_MARK = "?";
-    public static final String NORMAL_LOGICAL_OR = "||";
-    public static final String NORMAL_LOGICAL_AND = "&&";
-    public static final String NORMAL_BIT_OR = "|";
-    public static final String NORMAL_BIT_EXCLUSIVE_OR = "^";
-    public static final String NORMAL_BIT_AND = "&";
-    public static final String NORMAL_EQUAL = "==";
-    public static final String NORMAL_NOT_EQUAL = "!=";
-    public static final String NORMAL_LESS = "<";
-    public static final String NORMAL_LARGE = ">";
-    public static final String NORMAL_LESS_EQUAL = "<=";
-    public static final String NORMAL_LARGE_EQUAL = ">=";
-    public static final String NORMAL_SHIFT_LEFT = "<<";
-    public static final String NORMAL_SHIFT_RIGHT = ">>";
-    public static final String NORMAL_UNSIGNED_SHIFT_RIGHT = ">>>";
-    public static final String NORMAL_MUL = "*";
-    public static final String NORMAL_DIV = "/";
-    public static final String NORMAL_MOD = "%";
-    public static final String NORMAL_ADD = "+";
-    public static final String NORMAL_MINUS = "-";
-    public static final String NORMAL_DOUBLE_PLUS = "++";
-    public static final String NORMAL_DOUBLE_MINUS = "--";
-    public static final String NORMAL_LOGICAL_NOT = "!";
-    public static final String NORMAL_BIT_REVERSED = "~";
-    public static final String NORMAL_NEW = "new";
 
     public static final Production[] PRODUCTIONS = {
             /*
@@ -206,11 +169,7 @@ public class Expression {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_ASSIGN)
                             ),
-                            new SetAttrFromSystem(
-                                    0,
-                                    AttrName.ASSIGN_OPERATOR.name(),
-                                    NORMAL_ASSIGN
-                            )
+                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR.name(), NORMAL_ASSIGN)
                     ),
                     /*
                      * <assignment operator> → *=

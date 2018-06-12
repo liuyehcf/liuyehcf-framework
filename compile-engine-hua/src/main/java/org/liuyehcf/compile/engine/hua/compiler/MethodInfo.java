@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+import org.liuyehcf.compile.engine.hua.model.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,33 +12,25 @@ import java.util.List;
  */
 public class MethodInfo {
 
-    private int offset;
-
-    private String methodName;
-
-    private String resultType;
-
-    private List<ParamInfo> paramInfoList;
-
     private final List<ByteCode> byteCodes = new ArrayList<>();
+    private int offset;
+    private String methodName;
+    private Type resultType;
+    private List<Type> paramInfoList;
 
-    public void setOffset(int offset) {
-        this.offset = offset;
+    public String getMethodName() {
+        return methodName;
     }
 
     public void setMethodName(String methodName) {
         this.methodName = methodName;
     }
 
-    public String getMethodName() {
-        return methodName;
-    }
-
-    public String getResultType() {
+    public Type getResultType() {
         return resultType;
     }
 
-    public void setResultType(String resultType) {
+    public void setResultType(Type resultType) {
         this.resultType = resultType;
     }
 
@@ -49,11 +42,15 @@ public class MethodInfo {
         return offset;
     }
 
-    public List<ParamInfo> getParamInfoList() {
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public List<Type> getParamInfoList() {
         return paramInfoList;
     }
 
-    public void setParamInfoList(List<ParamInfo> paramInfoList) {
+    public void setParamInfoList(List<Type> paramInfoList) {
         this.paramInfoList = paramInfoList;
     }
 
@@ -68,7 +65,7 @@ public class MethodInfo {
     public MethodDescription buildMethodDescription() {
         String[] types = new String[paramInfoList.size()];
         for (int i = 0; i < types.length; i++) {
-            types[i] = paramInfoList.get(i).getType();
+            types[i] = paramInfoList.get(i).toTypeDescription();
         }
         return new MethodDescription(methodName, types);
     }

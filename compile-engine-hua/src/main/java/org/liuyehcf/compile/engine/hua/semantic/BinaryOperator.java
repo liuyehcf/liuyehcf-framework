@@ -2,9 +2,10 @@ package org.liuyehcf.compile.engine.hua.semantic;
 
 import org.liuyehcf.compile.engine.hua.bytecode.*;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
-import org.liuyehcf.compile.engine.hua.production.AttrName;
+import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.Type;
 
-import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
 import static org.liuyehcf.compile.engine.hua.semantic.BinaryOperator.Operator.*;
 
 /**
@@ -33,8 +34,8 @@ public class BinaryOperator extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        String leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
-        String rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
+        Type leftType = context.getStack().get(LEFT_STACK_OFFSET).get(AttrName.TYPE.name());
+        Type rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
 
         switch (operator) {
             case LOGICAL_OR:
@@ -44,7 +45,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case BIT_OR:
                 checkEqualType(leftType, rightType, BIT_OR);
 
-                switch (leftType) {
+                switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ior());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
@@ -57,7 +58,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case BIT_XOR:
                 checkEqualType(leftType, rightType, BIT_XOR);
 
-                switch (leftType) {
+                switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ixor());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
@@ -70,7 +71,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case BIT_AND:
                 checkEqualType(leftType, rightType, BIT_AND);
 
-                switch (leftType) {
+                switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iand());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
@@ -95,7 +96,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case SHIFT_LEFT:
                 checkIntegralType(rightType, SHIFT_LEFT);
 
-                switch (leftType) {
+                switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ishl());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
@@ -108,7 +109,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case SHIFT_RIGHT:
                 checkIntegralType(rightType, SHIFT_RIGHT);
 
-                switch (leftType) {
+                switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ishr());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
@@ -121,7 +122,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case UNSIGNED_SHIFT_RIGHT:
                 checkIntegralType(rightType, UNSIGNED_SHIFT_RIGHT);
 
-                switch (leftType) {
+                switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iushr());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
@@ -135,7 +136,7 @@ public class BinaryOperator extends AbstractSemanticAction {
                 checkEqualType(leftType, rightType, ADDITION);
 
 
-                switch (leftType) {
+                switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iadd());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
@@ -148,7 +149,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case SUBTRACTION:
                 checkEqualType(leftType, rightType, SUBTRACTION);
 
-                switch (leftType) {
+                switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _isub());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
@@ -161,7 +162,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case MULTIPLICATION:
                 checkEqualType(leftType, rightType, MULTIPLICATION);
 
-                switch (leftType) {
+                switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _imul());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
@@ -174,7 +175,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case DIVISION:
                 checkEqualType(leftType, rightType, DIVISION);
 
-                switch (leftType) {
+                switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _idiv());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
@@ -187,7 +188,7 @@ public class BinaryOperator extends AbstractSemanticAction {
             case REMAINDER:
                 checkEqualType(leftType, rightType, REMAINDER);
 
-                switch (leftType) {
+                switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _irem());
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
@@ -200,14 +201,14 @@ public class BinaryOperator extends AbstractSemanticAction {
         }
     }
 
-    private void checkEqualType(String type1, String type2, Operator operator) {
+    private void checkEqualType(Type type1, Type type2, Operator operator) {
         if (!type1.equals(type2)) {
             throw new RuntimeException(" \'" + operator.getSign() + "\' 运算符两侧运算子类型不一致");
         }
     }
 
-    private void checkIntegralType(String type, Operator operator) {
-        if (!NORMAL_INT.equals(type)) {
+    private void checkIntegralType(Type type, Operator operator) {
+        if (!NORMAL_INT.equals(type.getTypeName())) {
             throw new RuntimeException(" \'" + operator.getSign() + "\' 运算符右侧必须是整型");
         }
     }

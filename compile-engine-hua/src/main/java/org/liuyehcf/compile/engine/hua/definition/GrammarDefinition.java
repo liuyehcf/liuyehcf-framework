@@ -1,25 +1,19 @@
-package org.liuyehcf.compile.engine.hua;
+package org.liuyehcf.compile.engine.hua.definition;
 
 import org.liuyehcf.compile.engine.core.cfg.DefaultLexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
-import org.liuyehcf.compile.engine.core.cfg.lr.LR1;
-import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
-import org.liuyehcf.compile.engine.hua.production.*;
 
-import static org.liuyehcf.compile.engine.hua.production.Block.*;
-import static org.liuyehcf.compile.engine.hua.production.Expression.*;
-import static org.liuyehcf.compile.engine.hua.production.Program.NORMAL_VOID;
-import static org.liuyehcf.compile.engine.hua.production.Program.PROGRAMS;
-import static org.liuyehcf.compile.engine.hua.production.Token.*;
-import static org.liuyehcf.compile.engine.hua.production.Type.*;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
+import static org.liuyehcf.compile.engine.hua.definition.ProgramProductions.PROGRAMS;
+import static org.liuyehcf.compile.engine.hua.definition.TokenProductions.REGEX_NON_ZERO_DIGIT;
 
 /**
  * @author hechenfeng
  * @date 2018/5/28
  */
-public class GrammarDefinition {
+public abstract class GrammarDefinition {
 
     /**
      * 正则表达式的终结符
@@ -41,11 +35,11 @@ public class GrammarDefinition {
 
     public static final Grammar GRAMMAR = Grammar.create(
             Symbol.createNonTerminator(PROGRAMS),
-            Program.PRODUCTIONS,
-            Type.PRODUCTIONS,
-            Block.PRODUCTIONS,
-            Expression.PRODUCTIONS,
-            Token.PRODUCTIONS
+            ProgramProductions.PRODUCTIONS,
+            TypeProductions.PRODUCTIONS,
+            BlockProductions.PRODUCTIONS,
+            ExpressionProductions.PRODUCTIONS,
+            TokenProductions.PRODUCTIONS
     );
 
 

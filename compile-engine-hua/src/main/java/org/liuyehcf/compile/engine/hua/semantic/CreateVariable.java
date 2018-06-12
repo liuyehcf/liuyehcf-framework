@@ -2,7 +2,8 @@ package org.liuyehcf.compile.engine.hua.semantic;
 
 import org.liuyehcf.compile.engine.core.cfg.lr.AbstractLRCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
-import org.liuyehcf.compile.engine.hua.production.AttrName;
+import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.Type;
 
 /**
  * 创建一个变量，记录类型、宽度、偏移量等信息
@@ -29,14 +30,13 @@ public class CreateVariable extends AbstractSemanticAction {
         AbstractLRCompiler.SyntaxNode node = context.getStack().get(stackOffset);
 
         String name = node.getValue();
-        String type = node.get(AttrName.TYPE.name());
-        int width = node.get(AttrName.WIDTH.name());
+        Type type = node.get(AttrName.TYPE.name());
 
         if (context.getHuaEngine().getVariableSymbolTable().enter(
-                context.getHuaEngine().getOffset(), name, type, width) == null) {
+                context.getHuaEngine().getOffset(), name, type) == null) {
             throw new RuntimeException("标志符 " + name + " 已存在，请勿重复定义");
         }
 
-        context.getHuaEngine().increaseOffset(width);
+        context.getHuaEngine().increaseOffset(type.getTypeWidth());
     }
 }

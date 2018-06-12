@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.hua.compiler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.liuyehcf.compile.engine.hua.model.Type;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -92,12 +93,12 @@ public class VariableSymbolTable {
         return false;
     }
 
-    public VariableSymbol enter(int offset, String name, String type, int width) {
+    public VariableSymbol enter(int offset, String name, Type type) {
         if (exists(name)) {
             return null;
         }
 
-        VariableSymbol newVariableSymbol = new VariableSymbol(offset, currentNamespace, name, type, width);
+        VariableSymbol newVariableSymbol = new VariableSymbol(offset, currentNamespace, name, type);
         table.get(currentNamespace).put(name, newVariableSymbol);
         offsetMap.get(currentNamespace).put(offset, newVariableSymbol);
 

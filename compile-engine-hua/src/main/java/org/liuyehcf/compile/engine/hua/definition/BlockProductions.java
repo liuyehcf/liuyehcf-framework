@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.production;
+package org.liuyehcf.compile.engine.hua.definition;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
@@ -9,16 +9,17 @@ import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
 import org.liuyehcf.compile.engine.hua.semantic.EnterNamespace;
 import org.liuyehcf.compile.engine.hua.semantic.ExitNamespace;
 
-import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
-import static org.liuyehcf.compile.engine.hua.production.Expression.*;
-import static org.liuyehcf.compile.engine.hua.production.Program.VARIABLE_DECLARATORS;
-import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
+import static org.liuyehcf.compile.engine.hua.definition.ExpressionProductions.*;
+import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
+import static org.liuyehcf.compile.engine.hua.definition.ProgramProductions.VARIABLE_DECLARATORS;
+import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.TYPE;
 
 /**
  * @author hechenfeng
  * @date 2018/5/31
  */
-public class Block {
+abstract class BlockProductions {
     public static final String BLOCK = "<block>"; // 139
     public static final String EPSILON_OR_BLOCK_STATEMENTS = "<epsilon or block statements>"; // new
     public static final String BLOCK_STATEMENTS = "<block statements>"; // 140
@@ -46,12 +47,6 @@ public class Block {
     public static final String FOR_UPDATE = "<for update>"; // 194
     public static final String STATEMENT_EXPRESSION_LIST = "<statement expression list>"; // 196
     public static final String RETURN_STATEMENT = "<return statement>"; // 202
-    public static final String NORMAL_IF = "if";
-    public static final String NORMAL_ELSE = "else";
-    public static final String NORMAL_WHILE = "while";
-    public static final String NORMAL_FOR = "for";
-    public static final String NORMAL_DO = "do";
-    public static final String NORMAL_RETURN = "return";
 
     private static final String MARK_139_1_1 = "<mark 139_1_1>";
     private static final String MARK_146_1_1 = "<mark 146_1_1>";
@@ -236,18 +231,7 @@ public class Block {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new AssignAttr(
-                                    0,
-                                    AttrName.TYPE.name(),
-                                    1,
-                                    AttrName.TYPE.name()
-                            ),
-                            new AssignAttr(
-                                    0,
-                                    AttrName.WIDTH.name(),
-                                    1,
-                                    AttrName.WIDTH.name()
-                            )
+                            new AssignAttr(0, AttrName.TYPE.name(), 1, AttrName.TYPE.name())
                     )
             ),
 

@@ -1,25 +1,26 @@
-package org.liuyehcf.compile.engine.hua.production;
+package org.liuyehcf.compile.engine.hua.definition;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.compiler.ParamInfo;
+import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import java.util.ArrayList;
 
-import static org.liuyehcf.compile.engine.hua.GrammarDefinition.*;
-import static org.liuyehcf.compile.engine.hua.production.Block.BLOCK;
-import static org.liuyehcf.compile.engine.hua.production.Expression.EXPRESSION;
-import static org.liuyehcf.compile.engine.hua.production.Type.TYPE;
+import static org.liuyehcf.compile.engine.hua.definition.BlockProductions.BLOCK;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_VOID;
+import static org.liuyehcf.compile.engine.hua.definition.ExpressionProductions.EXPRESSION;
+import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
+import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.TYPE;
+import static org.liuyehcf.compile.engine.hua.model.Type.VOID_WIDTH;
 
 /**
  * @author hechenfeng
  * @date 2018/5/31
  */
-public class Program {
-
+abstract class ProgramProductions {
 
     /**
      * 非终结符
@@ -38,10 +39,7 @@ public class Program {
     public static final String RESULT_TYPE = "<result type>"; // 78
     public static final String METHOD_DECLARATOR = "<method declarator>"; // 84
     public static final String METHOD_BODY = "<method body>"; // 86
-    /**
-     * 普通终结符
-     */
-    public static final String NORMAL_VOID = "void";
+
     private static final String MARK_50_1_1 = "<mark 50_1_1>";
     private static final String MARK_74_1_1 = "<mark 74_1_1>";
     private static final String MARK_66_2_1 = "<mark 66_2_1>";
@@ -108,7 +106,7 @@ public class Program {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new AddParamInfo(-2, 0)
+                            new AddParamTypeInfo(-2, 0)
                     ),
                     /*
                      * <formal parameter list> → <formal parameter>
@@ -118,12 +116,8 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new SetAttrFromSystem(
-                                    0,
-                                    AttrName.PARAMETER_LIST.name(),
-                                    new ArrayList<ParamInfo>()
-                            ),
-                            new AddParamInfo(0, 0)
+                            new SetAttrFromSystem(0, AttrName.PARAMETER_LIST.name(), new ArrayList<Type>()),
+                            new AddParamTypeInfo(0, 0)
                     )
             ),
 
@@ -161,18 +155,7 @@ public class Program {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new AssignAttr(
-                                    0,
-                                    AttrName.TYPE.name(),
-                                    1,
-                                    AttrName.TYPE.name()
-                            ),
-                            new AssignAttr(
-                                    0,
-                                    AttrName.WIDTH.name(),
-                                    1,
-                                    AttrName.WIDTH.name()
-                            )
+                            new AssignAttr(0, AttrName.TYPE.name(), 1, AttrName.TYPE.name())
                     )
             ),
 
@@ -221,18 +204,7 @@ public class Program {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new AssignAttr(
-                                    -1,
-                                    AttrName.TYPE.name(),
-                                    1,
-                                    AttrName.TYPE.name()
-                            ),
-                            new AssignAttr(
-                                    -1,
-                                    AttrName.WIDTH.name(),
-                                    1,
-                                    AttrName.WIDTH.name()
-                            )
+                            new AssignAttr(-1, AttrName.TYPE.name(), 1, AttrName.TYPE.name())
                     )
             ),
 
@@ -281,11 +253,7 @@ public class Program {
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             ),
                             new CreateVariable(0),
-                            new SetAttrFromLexical(
-                                    0,
-                                    AttrName.IDENTIFIER_NAME.name(),
-                                    0
-                            )
+                            new SetAttrFromLexical(0, AttrName.IDENTIFIER_NAME.name(), 0)
                     ),
                     /*
                      * <variable declarator id> → <variable declarator id> []
@@ -406,11 +374,7 @@ public class Program {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_VOID)
                             ),
-                            new SetAttrFromSystem(
-                                    0,
-                                    AttrName.TYPE.name(),
-                                    NORMAL_VOID
-                            )
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.createNormalType(NORMAL_VOID, VOID_WIDTH))
                     )
             ),
 
@@ -431,17 +395,8 @@ public class Program {
                                     Symbol.createNonTerminator(EPSILON_OR_FORMAL_PARAMETER_LIST),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new SetAttrFromLexical(
-                                    -3,
-                                    AttrName.METHOD_NAME.name(),
-                                    -3
-                            ),
-                            new AssignAttr(
-                                    -1,
-                                    AttrName.PARAMETER_LIST.name(),
-                                    -3,
-                                    AttrName.PARAMETER_LIST.name()
-                            )
+                            new SetAttrFromLexical(-3, AttrName.METHOD_NAME.name(), -3),
+                            new AssignAttr(-1, AttrName.PARAMETER_LIST.name(), -3, AttrName.PARAMETER_LIST.name())
                     )
             ),
 
@@ -459,7 +414,7 @@ public class Program {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.PARAMETER_LIST.name(), new ArrayList<ParamInfo>())
+                            new SetAttrToLeftNode(AttrName.PARAMETER_LIST.name(), new ArrayList<Type>())
                     ),
                     /*
                      * (2) <epsilon or formal parameter list> → <formal parameter list>
