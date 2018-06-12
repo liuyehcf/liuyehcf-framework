@@ -410,6 +410,25 @@ public class TestGrammar {
     }
 
     @Test
+    public void testMixBinaryOperatorWithSmallParenthesis() {
+        String text = "void testMixBinaryOperator() {\n" +
+                "    int a, b, c, d, e, f, g, h, i;\n" +
+                "    int j = ((a + b) - ((c)) * d) / e % ((f) & g) ^ h | i;\n" +
+                "}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"testMixBinaryOperator()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_iload\",\"offset\":24},{\"name\":\"_imul\"},{\"name\":\"_isub\"},{\"name\":\"_iload\",\"offset\":32},{\"name\":\"_idiv\"},{\"name\":\"_iload\",\"offset\":40},{\"name\":\"_iload\",\"offset\":48},{\"name\":\"_iand\"},{\"name\":\"_irem\"},{\"name\":\"_iload\",\"offset\":56},{\"name\":\"_ixor\"},{\"name\":\"_iload\",\"offset\":64},{\"name\":\"_ior\"},{\"name\":\"_istore\",\"offset\":72}],\"methodName\":\"testMixBinaryOperator\",\"offset\":0,\"paramSize\":0,\"paramTypeList\":[],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+        assertEquals(
+                "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"d\":{\"name\":\"d\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":24,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"e\":{\"name\":\"e\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":32,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"f\":{\"name\":\"f\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":40,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"g\":{\"name\":\"g\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":48,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"h\":{\"name\":\"h\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":56,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"i\":{\"name\":\"i\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":64,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"j\":{\"name\":\"j\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":72,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}",
+                result.getResult().getVariableSymbolTable().toString()
+        );
+    }
+
+    @Test
     public void testDecimalLiteral() {
         String text = "void testDecimalLiteral() {\n" +
                 "    int a=5,b=100000;\n" +
@@ -470,18 +489,19 @@ public class TestGrammar {
                 "    c[5] = 10000;\n" +
                 "}\n" +
                 "void testArrayStore(int[] a) {\n" +
-                "    a[5]=100;\n" +
-                "    a[5]=a[200];\n" +
+                "    int b = 1, c = 1, d = 1;\n" +
+                "    a[5] = 100;\n" +
+                "    a[5] = a[b * (c - d)];\n" +
                 "}";
 
         CompileResult<HuaResult> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_aload\",\"offset\":16},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"10000\"},{\"name\":\"_iastore\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"testArrayStore(int[])\":{\"byteCodes\":[{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"100\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"200\"},{\"name\":\"_iaload\"},{\"name\":\"_iastore\"}],\"methodName\":\"testArrayStore\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_aload\",\"offset\":16},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"10000\"},{\"name\":\"_iastore\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"testArrayStore(int[])\":{\"byteCodes\":[{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"1\"},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"1\"},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"1\"},{\"name\":\"_istore\",\"offset\":24},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"100\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_iload\",\"offset\":24},{\"name\":\"_isub\"},{\"name\":\"_imul\"},{\"name\":\"_iaload\"},{\"name\":\"_iastore\"}],\"methodName\":\"testArrayStore\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
                 result.getResult().getMethodInfoTable().toString()
         );
         assertEquals(
-                "{\"jSONTable\":{\"[3, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":3,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}}},\"[1, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[2, 1]\":{\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{},\"[4, 3]\":{}}}",
+                "{\"jSONTable\":{\"[3, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":3,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}}},\"[1, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[2, 1]\":{\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{},\"[4, 3]\":{\"b\":{\"name\":\"b\",\"namespace\":{\"id\":4,\"pid\":3},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":4,\"pid\":3},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"d\":{\"name\":\"d\",\"namespace\":{\"id\":4,\"pid\":3},\"offset\":24,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}}}}",
                 result.getResult().getVariableSymbolTable().toString()
         );
     }

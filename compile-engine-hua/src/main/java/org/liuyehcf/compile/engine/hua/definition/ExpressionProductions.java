@@ -1103,7 +1103,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            null
+                            new AssignAttr(-1, AttrName.TYPE.name(), -2, AttrName.TYPE.name())
                     ),
                     /*
                      * <primary no new array> → <method invocation>
