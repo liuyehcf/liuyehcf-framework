@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,13 +17,17 @@ public class RecordMethodDescription extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        Type resultType = context.getStack().get(RecordMethodDescription.RESULT_TYPE_STACK_OFFSET).get(AttrName.TYPE.name());
+        Type resultType = context.getStack().get(RESULT_TYPE_STACK_OFFSET).get(AttrName.TYPE.name());
         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().setResultType(resultType);
 
-        String methodName = context.getStack().get(RecordMethodDescription.METHOD_DECLARATOR_STACK_OFFSET).get(AttrName.METHOD_NAME.name());
+        String methodName = context.getStack().get(METHOD_DECLARATOR_STACK_OFFSET).get(AttrName.METHOD_NAME.name());
         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().setMethodName(methodName);
 
-        List<Type> paramInfoList = context.getStack().get(RecordMethodDescription.METHOD_DECLARATOR_STACK_OFFSET).get(AttrName.PARAMETER_LIST.name());
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().setParamInfoList(paramInfoList);
+        List<Type> paramTypeList = context.getStack().get(METHOD_DECLARATOR_STACK_OFFSET).get(AttrName.PARAMETER_LIST.name());
+        if (paramTypeList == null) {
+            paramTypeList = new ArrayList<>();
+            context.getStack().get(METHOD_DECLARATOR_STACK_OFFSET).put(AttrName.PARAMETER_LIST.name(), paramTypeList);
+        }
+        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().setParamTypeList(paramTypeList);
     }
 }

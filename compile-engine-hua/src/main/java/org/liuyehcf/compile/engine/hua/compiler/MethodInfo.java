@@ -16,7 +16,7 @@ public class MethodInfo {
     private int offset;
     private String methodName;
     private Type resultType;
-    private List<Type> paramInfoList;
+    private List<Type> paramTypeList;
 
     public String getMethodName() {
         return methodName;
@@ -35,7 +35,7 @@ public class MethodInfo {
     }
 
     public int getParamSize() {
-        return paramInfoList.size();
+        return paramTypeList.size();
     }
 
     public int getOffset() {
@@ -46,12 +46,12 @@ public class MethodInfo {
         this.offset = offset;
     }
 
-    public List<Type> getParamInfoList() {
-        return paramInfoList;
+    public List<Type> getParamTypeList() {
+        return paramTypeList;
     }
 
-    public void setParamInfoList(List<Type> paramInfoList) {
-        this.paramInfoList = paramInfoList;
+    public void setParamTypeList(List<Type> paramTypeList) {
+        this.paramTypeList = paramTypeList;
     }
 
     public List<ByteCode> getByteCodes() {
@@ -63,9 +63,9 @@ public class MethodInfo {
     }
 
     public MethodDescription buildMethodDescription() {
-        String[] types = new String[paramInfoList.size()];
+        String[] types = new String[paramTypeList.size()];
         for (int i = 0; i < types.length; i++) {
-            types[i] = paramInfoList.get(i).toTypeDescription();
+            types[i] = paramTypeList.get(i).toTypeDescription();
         }
         return new MethodDescription(methodName, types);
     }

@@ -7,8 +7,6 @@ import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
-import java.util.ArrayList;
-
 import static org.liuyehcf.compile.engine.hua.definition.BlockProductions.BLOCK;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_VOID;
 import static org.liuyehcf.compile.engine.hua.definition.ExpressionProductions.EXPRESSION;
@@ -116,7 +114,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new SetAttrFromSystem(0, AttrName.PARAMETER_LIST.name(), new ArrayList<Type>()),
+                            new SetAttrFromSystem(0, AttrName.PARAMETER_LIST.name(), null),
                             new AddParamTypeInfo(0, 0)
                     )
             ),
@@ -414,7 +412,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.PARAMETER_LIST.name(), new ArrayList<Type>())
+                            new SetAttrToLeftNode(AttrName.PARAMETER_LIST.name(), null)
                     ),
                     /*
                      * (2) <epsilon or formal parameter list> → <formal parameter list>

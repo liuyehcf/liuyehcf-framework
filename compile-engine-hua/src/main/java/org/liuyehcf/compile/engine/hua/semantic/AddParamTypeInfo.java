@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +26,10 @@ public class AddParamTypeInfo extends AbstractSemanticAction {
         Type type = context.getStack().get(paramStackOffset).get(AttrName.TYPE.name());
 
         List<Type> paramTypeList = context.getStack().get(listStackOffset).get(AttrName.PARAMETER_LIST.name());
+        if (paramTypeList == null) {
+            paramTypeList = new ArrayList<>();
+            context.getStack().get(listStackOffset).put(AttrName.PARAMETER_LIST.name(), paramTypeList);
+        }
         paramTypeList.add(type);
     }
 }
