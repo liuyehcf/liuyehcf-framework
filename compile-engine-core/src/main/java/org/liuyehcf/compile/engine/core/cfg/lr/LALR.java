@@ -9,7 +9,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class LALR extends LR1 {
+public class LALR<T> extends LR1<T> {
     public LALR(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
         super(originalGrammar, lexicalAnalyzer, true);
     }

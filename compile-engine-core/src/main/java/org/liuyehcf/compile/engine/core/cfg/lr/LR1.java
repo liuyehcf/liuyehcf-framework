@@ -16,7 +16,7 @@ import java.util.Set;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class LR1 extends AbstractLRCompiler {
+public class LR1<T> extends AbstractLRCompiler<T> {
 
     protected LR1(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer, boolean needMerge) {
         super(originalGrammar, lexicalAnalyzer, needMerge);

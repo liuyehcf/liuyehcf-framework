@@ -2,14 +2,17 @@ package org.liuyehcf.compile.engine.hua.test;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaResult;
 import org.liuyehcf.compile.engine.hua.definition.GrammarDefinition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.liuyehcf.compile.engine.hua.test.TestCases.*;
 
@@ -21,7 +24,7 @@ import static org.liuyehcf.compile.engine.hua.test.TestCases.*;
 public class TestGrammar {
 
     private static final List<String> RIGHT_CASES = new ArrayList<>();
-    private static LRCompiler compiler;
+    private static LRCompiler<HuaResult> compiler;
 
     static {
         RIGHT_CASES.addAll(Arrays.asList(WHILE_CASES));
@@ -58,179 +61,296 @@ public class TestGrammar {
 
     @Test
     public void testNameWithKeyWord() {
-        assertTrue(compiler.compile("void doSomething(){\n" +
-                "  doSomething();\n" +
-                "  int intI;\n" +
-                "}").isSuccess());
+        String text = "void testNameWithKeyWord() {\n" +
+                "    doSomething();\n" +
+                "}\n" +
+                "\n" +
+                "void doSomething() {\n" +
+                "\n" +
+                "}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"doSomething()\":{\"byteCodes\":[],\"methodName\":\"doSomething\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"testNameWithKeyWord()\":{\"byteCodes\":[{\"argumentSize\":0,\"methodName\":\"doSomething\",\"name\":\"_invokestatic\"}],\"methodName\":\"testNameWithKeyWord\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[3, 0]\":{},\"[1, 0]\":{},\"[2, 1]\":{},\"[0, -1]\":{},\"[4, 3]\":{}}}");
     }
 
     @Test
     public void testPostIncrement() {
-        assertTrue(compiler.compile("void testPostIncrement(){\n" +
+        String text = "void testPostIncrement(){\n" +
                 "  int a;\n" +
                 "  a++;\n" +
-                "}").isSuccess());
+                "}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"testPostIncrement()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0}],\"methodName\":\"testPostIncrement\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testParamSize() {
-        assertTrue(compiler.compile("void add(int i, int j, int k) {\n" +
+        String text = "void add(int i, int j, int k) {\n" +
                 "        int temp = i;\n" +
                 "        j = k;\n" +
                 "        k = temp;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"add(int,int,int[],int,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_istore\",\"offset\":24},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_iload\",\"offset\":24},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"add\",\"offset\":0,\"paramInfoList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"paramSize\":6,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{\"i\":{\"name\":\"i\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"j\":{\"name\":\"j\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"k\":{\"name\":\"k\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[2, 1]\":{\"temp\":{\"name\":\"temp\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":24,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testAdd() {
-        assertTrue(compiler.compile("void func() {\n" +
+        String text = "void func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a+b;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testSub() {
-        assertTrue(compiler.compile("void func() {\n" +
+        String text = "void func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a-b;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testMul() {
-        assertTrue(compiler.compile("void func() {\n" +
+        String text = "void func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a*b;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_imul\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testDiv() {
-        assertTrue(compiler.compile("void func() {\n" +
+        String text = "void func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a/b;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_idiv\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testRem() {
-        assertTrue(compiler.compile("void func() {\n" +
+        String text = "void func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a%b;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_irem\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testShl() {
-        assertTrue(compiler.compile("void func() {\n" +
+        String text = "void func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a<<b;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_ishl\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testShr() {
-        assertTrue(compiler.compile("void func() {\n" +
+        String text = "void func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a>>b;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_ishr\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testUshr() {
-        assertTrue(compiler.compile("void func() {\n" +
+        String text = "void func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a>>>b;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iushr\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testBitAnd() {
-        assertTrue(compiler.compile("int func() {\n" +
+        String text = "int func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a&b;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iand\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testBitOr() {
-        assertTrue(compiler.compile("boolean func() {\n" +
+        String text = "boolean func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a|b;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_ior\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testBitXor() {
-        assertTrue(compiler.compile("void func() {\n" +
+        String text = "void func() {\n" +
                 "        int a,b,c;\n" +
                 "        c=a^b;\n" +
-                "    }").isSuccess());
+                "    }";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_ixor\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testNormalAssign() {
-        assertTrue(compiler.compile("void func() {\n" +
+        String text = "void func() {\n" +
                 "  int a,b,c;\n" +
                 "  c=a+b-a;\n" +
                 "  boolean d=true,f;\n" +
                 "  f=d;\n" +
                 "  f=false;\n" +
-                "}").isSuccess());
+                "}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_ldc\",\"type\":\"boolean\",\"value\":\"true\"},{\"name\":\"_istore\",\"offset\":24},{\"name\":\"_iload\",\"offset\":24},{\"name\":\"_istore\",\"offset\":28},{\"name\":\"_ldc\",\"type\":\"boolean\",\"value\":\"false\"},{\"name\":\"_istore\",\"offset\":28}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"d\":{\"name\":\"d\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":24,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"f\":{\"name\":\"f\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":28,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testMethodInvocation() {
-        assertTrue(compiler.compile("void testMethodInvocation() {\n" +
+        String text = "void testMethodInvocation() {\n" +
                 "    int a,b,c;\n" +
                 "    func1();\n" +
                 "    func2(a+b,c);\n" +
-                "}").isSuccess());
+                "}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"testMethodInvocation()\":{\"byteCodes\":[{\"argumentSize\":0,\"methodName\":\"func1\",\"name\":\"_invokestatic\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"offset\":16},{\"argumentSize\":2,\"methodName\":\"func2\",\"name\":\"_invokestatic\"}],\"methodName\":\"testMethodInvocation\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testVariableInitialize() {
-        assertTrue(compiler.compile("void testVariableInitialize() {\n" +
+        String text = "void testVariableInitialize() {\n" +
                 "    int a,b,c;\n" +
                 "    int d=a+b-c;\n" +
-                "}").isSuccess());
+                "}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"testVariableInitialize()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"offset\":24}],\"methodName\":\"testVariableInitialize\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"d\":{\"name\":\"d\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":24,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testMixBinaryOperator() {
-        assertTrue(compiler.compile("void testMixBinaryOperator() {\n" +
+        String text = "void testMixBinaryOperator() {\n" +
                 "    int a, b, c, d, e, f, g, h, i;\n" +
                 "    int j = a + b - c * d / e % f & g ^ h | i;\n" +
-                "}").isSuccess());
+                "}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"testMixBinaryOperator()\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_iload\",\"offset\":24},{\"name\":\"_imul\"},{\"name\":\"_iload\",\"offset\":32},{\"name\":\"_idiv\"},{\"name\":\"_iload\",\"offset\":40},{\"name\":\"_irem\"},{\"name\":\"_isub\"},{\"name\":\"_iload\",\"offset\":48},{\"name\":\"_iand\"},{\"name\":\"_iload\",\"offset\":56},{\"name\":\"_ixor\"},{\"name\":\"_iload\",\"offset\":64},{\"name\":\"_ior\"},{\"name\":\"_istore\",\"offset\":72}],\"methodName\":\"testMixBinaryOperator\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"d\":{\"name\":\"d\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":24,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"e\":{\"name\":\"e\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":32,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"f\":{\"name\":\"f\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":40,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"g\":{\"name\":\"g\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":48,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"h\":{\"name\":\"h\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":56,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"i\":{\"name\":\"i\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":64,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"j\":{\"name\":\"j\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":72,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testDecimalLiteral() {
-        assertTrue(compiler.compile("void testDecimalLiteral() {\n" +
+        String text = "void testDecimalLiteral() {\n" +
                 "    int a=5,b=100000;\n" +
-                "}").isSuccess());
+                "}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"testDecimalLiteral()\":{\"byteCodes\":[{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"100000\"},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"testDecimalLiteral\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testBooleanLiteral() {
-        assertTrue(compiler.compile("void testBooleanLiteral() {\n" +
+        String text = "void testBooleanLiteral() {\n" +
                 "    boolean a=true,b=false;\n" +
-                "}").isSuccess());
+                "}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"testBooleanLiteral()\":{\"byteCodes\":[{\"name\":\"_ldc\",\"type\":\"boolean\",\"value\":\"true\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"boolean\",\"value\":\"false\"},{\"name\":\"_istore\",\"offset\":4}],\"methodName\":\"testBooleanLiteral\",\"offset\":0,\"paramInfoList\":[],\"paramSize\":0,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{},\"[2, 1]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testArrayLoad() {
-        assertTrue(compiler.compile("void testArrayLoad(int[] a) {\n" +
+        String text = "void testArrayLoad(int[] a) {\n" +
                 "    int b=a[1];\n" +
-                "}").isSuccess());
+                "}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"testArrayLoad(int,int,int[],int,int,int,int[])\":{\"byteCodes\":[{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"1\"},{\"name\":\"_iaload\"},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"testArrayLoad\",\"offset\":0,\"paramInfoList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}],\"paramSize\":7,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[1, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}}},\"[2, 1]\":{\"b\":{\"name\":\"b\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{}}}");
     }
 
     @Test
     public void testArrayStore() {
-        assertTrue(compiler.compile("void testArrayStore(int[] a) {\n" +
+        String text = "void func(int a,int b) {\n" +
+                "    int[] c;\n" +
+                "    c[5] = 10000;\n" +
+                "}\n" +
+                "void testArrayStore(int[] a) {\n" +
                 "    a[5]=100;\n" +
                 "    a[5]=a[200];\n" +
-                "}").isSuccess());
+                "}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(result.getResult().getMethodInfoTable().toString(), "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_aload\",\"offset\":16},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"10000\"},{\"name\":\"_iastore\"}],\"methodName\":\"func\",\"offset\":0,\"paramInfoList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}],\"paramSize\":3,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"testArrayStore(int,int,int[])\":{\"byteCodes\":[{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"100\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"200\"},{\"name\":\"_iaload\"},{\"name\":\"_iastore\"}],\"methodName\":\"testArrayStore\",\"offset\":0,\"paramInfoList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}],\"paramSize\":3,\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}");
+        assertEquals(result.getResult().getVariableSymbolTable().toString(), "{\"jSONTable\":{\"[3, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":3,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}}},\"[1, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[2, 1]\":{\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{},\"[4, 3]\":{}}}");
     }
 }

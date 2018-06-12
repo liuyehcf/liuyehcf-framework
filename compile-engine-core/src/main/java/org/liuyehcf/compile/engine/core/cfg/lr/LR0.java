@@ -13,7 +13,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class LR0 extends AbstractLRCompiler {
+public class LR0<T> extends AbstractLRCompiler<T> {
 
     public LR0(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
         super(originalGrammar, lexicalAnalyzer, false);

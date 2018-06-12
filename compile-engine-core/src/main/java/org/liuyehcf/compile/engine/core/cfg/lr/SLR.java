@@ -11,7 +11,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class SLR extends LR0 {
+public class SLR<T> extends LR0<T> {
 
     public SLR(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
         super(originalGrammar, lexicalAnalyzer);

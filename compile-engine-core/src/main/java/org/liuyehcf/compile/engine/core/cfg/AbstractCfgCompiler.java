@@ -21,7 +21,7 @@ import java.util.Set;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public abstract class AbstractCfgCompiler implements CfgCompiler {
+public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
 
     /**
      * 原始文法

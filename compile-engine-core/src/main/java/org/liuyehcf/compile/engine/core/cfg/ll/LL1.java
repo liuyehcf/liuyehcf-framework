@@ -24,7 +24,7 @@ import java.util.*;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class LL1 extends AbstractCfgCompiler implements LLCompiler {
+public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
 
     /**
      * select集

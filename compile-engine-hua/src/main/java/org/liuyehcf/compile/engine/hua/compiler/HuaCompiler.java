@@ -12,7 +12,7 @@ import java.util.List;
  * @author chenlu
  * @date 2018/6/2
  */
-public class HuaCompiler extends LALR {
+public class HuaCompiler extends LALR<HuaResult> {
     public HuaCompiler(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
         super(originalGrammar, lexicalAnalyzer);
     }
@@ -73,15 +73,18 @@ public class HuaCompiler extends LALR {
             offset += step;
         }
 
+        public void resetOffset() {
+            offset = 0;
+        }
+
         @Override
         protected void before() {
-            super.before();
+
         }
 
         @Override
         protected void after() {
-            System.out.println(variableSymbolTable);
-            System.out.println(methodInfoTable);
+            this.result = new HuaResult(variableSymbolTable, methodInfoTable);
         }
 
         @Override

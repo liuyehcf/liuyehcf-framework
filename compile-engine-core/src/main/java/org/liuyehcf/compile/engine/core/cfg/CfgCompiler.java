@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.core.Compiler;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public interface CfgCompiler extends Compiler {
+public interface CfgCompiler<T> extends Compiler<T> {
     /**
      * 获取First集的JSON串
      *

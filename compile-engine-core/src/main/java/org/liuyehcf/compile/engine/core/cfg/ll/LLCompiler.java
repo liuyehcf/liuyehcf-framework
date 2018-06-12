@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.core.cfg.CfgCompiler;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public interface LLCompiler extends CfgCompiler {
+public interface LLCompiler<T> extends CfgCompiler<T> {
     /**
      * 获取Select的JSON串
      *

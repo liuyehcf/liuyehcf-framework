@@ -6,7 +6,7 @@ package org.liuyehcf.compile.engine.core;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class CompileResult {
+public class CompileResult<T> {
     /**
      * 编译是否成功
      */
@@ -15,9 +15,9 @@ public class CompileResult {
     /**
      * 编译结果
      */
-    private final Object result;
+    private final T result;
 
-    public CompileResult(boolean success, Object result) {
+    public CompileResult(boolean success, T result) {
         this.success = success;
         this.result = result;
     }
@@ -26,7 +26,7 @@ public class CompileResult {
         return success;
     }
 
-    public Object getResult() {
+    public T getResult() {
         return result;
     }
 }

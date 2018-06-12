@@ -28,7 +28,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.*;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public abstract class AbstractLRCompiler extends AbstractCfgCompiler implements LRCompiler {
+public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> implements LRCompiler<T> {
 
     /**
      * 是否合并同心闭包（只有LALR才是true）

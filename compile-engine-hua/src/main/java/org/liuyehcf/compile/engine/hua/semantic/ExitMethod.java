@@ -12,5 +12,6 @@ public class ExitMethod extends AbstractSemanticAction {
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
         context.getHuaEngine().getMethodInfoTable().exitMethod();
+        context.getHuaEngine().resetOffset();
     }
 }

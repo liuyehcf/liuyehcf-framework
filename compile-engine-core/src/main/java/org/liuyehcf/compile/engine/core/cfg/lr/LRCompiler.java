@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.core.cfg.CfgCompiler;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public interface LRCompiler extends CfgCompiler {
+public interface LRCompiler<T> extends CfgCompiler<T> {
     /**
      * 获取Closure的JSON串
      *
