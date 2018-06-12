@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
+import org.liuyehcf.compile.engine.hua.bytecode._aload;
 import org.liuyehcf.compile.engine.hua.bytecode._iload;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
@@ -7,6 +8,7 @@ import org.liuyehcf.compile.engine.hua.production.AttrName;
 
 import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_BOOLEAN;
 import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.util.TypeUtil.isArrayType;
 
 /**
  * 将标志符压入操作数栈
@@ -26,15 +28,26 @@ public class PushIdentifierToOperatorStack extends AbstractSemanticAction {
             throw new RuntimeException("标志符 " + identifierName + " 尚未定义");
         }
 
-        switch (variableSymbol.getType()) {
-            case NORMAL_INT:
-                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
-                context.getLeftNode().put(AttrName.TYPE.name(), NORMAL_INT);
-                break;
-            case NORMAL_BOOLEAN:
-                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
-                context.getLeftNode().put(AttrName.TYPE.name(), NORMAL_BOOLEAN);
-                break;
+        String type = variableSymbol.getType();
+
+        if (isArrayType(type)) {
+
+            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _aload(variableSymbol.getOffset()));
+            context.getLeftNode().put(AttrName.TYPE.name(), type);
+
+        } else {
+            switch (type) {
+                case NORMAL_INT:
+                    context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
+                    context.getLeftNode().put(AttrName.TYPE.name(), NORMAL_INT);
+                    break;
+                case NORMAL_BOOLEAN:
+                    context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
+                    context.getLeftNode().put(AttrName.TYPE.name(), NORMAL_BOOLEAN);
+                    break;
+                default:
+                    throw new UnsupportedOperationException();
+            }
         }
     }
 }

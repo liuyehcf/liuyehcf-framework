@@ -53,6 +53,8 @@ public class Expression {
     public static final String DIMS = "<dims>"; // 284
     public static final String ARRAY_ACCESS = "<array access>"; // 286
 
+    private static final String MARK_286_1_1 = "<mark 286_1_1>";
+
     public static final String NORMAL_MUL_ASSIGN = "*=";
     public static final String NORMAL_DIV_ASSIGN = "/=";
     public static final String NORMAL_MOD_ASSIGN = "%=";
@@ -1162,7 +1164,7 @@ public class Expression {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ARRAY_ACCESS)
                             ),
-                            null
+                            new ArrayLoad()
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -1342,20 +1344,21 @@ public class Expression {
              */
             Production.create(
                     /*
-                     * <array access> → <expression name> [ <expression> ]
+                     * (1) <array access> → <expression name> <mark 286_1_1> [ <expression> ]
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(ARRAY_ACCESS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_NAME),
+                                    Symbol.createNonTerminator(MARK_286_1_1),
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            null
+                            new ArrayTypeDimDecrease()//TODO 这里要给出数组的大小，数组地址，在<expression name>推入操作数栈
                     ),
                     /*
-                     * <array access> → <primary no new array> [ <expression>]
+                     * (2) <array access> → <primary no new array> [ <expression>]
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(ARRAY_ACCESS),
@@ -1368,5 +1371,22 @@ public class Expression {
                             null
                     )
             ),
+
+
+            /*
+             * <mark 286_1_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 286_1_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_286_1_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new PushIdentifierToOperatorStack()
+                    )
+            )
     };
 }

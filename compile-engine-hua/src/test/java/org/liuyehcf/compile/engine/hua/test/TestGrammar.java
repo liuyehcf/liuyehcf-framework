@@ -218,4 +218,19 @@ public class TestGrammar {
                 "    boolean a=true,b=false;\n" +
                 "}").isSuccess());
     }
+
+    @Test
+    public void testArrayLoad() {
+        assertTrue(compiler.compile("void testArrayLoad(int[] a) {\n" +
+                "    int b=a[1];\n" +
+                "}").isSuccess());
+    }
+
+    @Test
+    public void testArrayStore() {
+        assertTrue(compiler.compile("void testArrayStore(int[] a) {\n" +
+                "    a[5]=100;\n" +
+                "    a[5]=a[200];\n" +
+                "}").isSuccess());
+    }
 }

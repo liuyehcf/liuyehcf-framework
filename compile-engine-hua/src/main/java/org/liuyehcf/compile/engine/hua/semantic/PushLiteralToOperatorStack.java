@@ -13,7 +13,7 @@ import static org.liuyehcf.compile.engine.hua.production.Type.NORMAL_INT;
  */
 public class PushLiteralToOperatorStack extends AbstractSemanticAction {
 
-    private final int LITERAL_STACK_OFFSET = 0;
+    private final static int LITERAL_STACK_OFFSET = 0;
 
     private final String type;
 
