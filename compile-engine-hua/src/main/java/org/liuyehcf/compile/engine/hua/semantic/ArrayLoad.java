@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.hua.bytecode._iaload;
+import org.liuyehcf.compile.engine.hua.bytecode.sl._iaload;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 
 /**

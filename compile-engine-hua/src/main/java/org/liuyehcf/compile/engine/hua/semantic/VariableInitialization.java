@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.hua.bytecode._istore;
+import org.liuyehcf.compile.engine.hua.bytecode.sl._istore;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;

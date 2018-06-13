@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.hua.bytecode._ldc;
+import org.liuyehcf.compile.engine.hua.bytecode.sl._ldc;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;
 

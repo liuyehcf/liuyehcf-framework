@@ -1,4 +1,6 @@
-package org.liuyehcf.compile.engine.hua.bytecode;
+package org.liuyehcf.compile.engine.hua.bytecode.sl;
+
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
  * 加载常量

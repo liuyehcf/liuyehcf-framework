@@ -1,4 +1,6 @@
-package org.liuyehcf.compile.engine.hua.bytecode;
+package org.liuyehcf.compile.engine.hua.bytecode.invoke;
+
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
  * @author chenlu

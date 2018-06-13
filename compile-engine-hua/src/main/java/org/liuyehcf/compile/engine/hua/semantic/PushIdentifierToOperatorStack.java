@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.hua.bytecode._aload;
-import org.liuyehcf.compile.engine.hua.bytecode._iload;
+import org.liuyehcf.compile.engine.hua.bytecode.sl._aload;
+import org.liuyehcf.compile.engine.hua.bytecode.sl._iload;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;

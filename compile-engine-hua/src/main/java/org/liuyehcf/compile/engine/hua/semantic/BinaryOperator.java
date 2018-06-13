@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
-import org.liuyehcf.compile.engine.hua.bytecode.*;
+import org.liuyehcf.compile.engine.hua.bytecode.compute.*;
+import org.liuyehcf.compile.engine.hua.bytecode.sl._iadd;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
@@ -39,7 +40,8 @@ public class BinaryOperator extends AbstractSemanticAction {
 
         switch (operator) {
             case LOGICAL_OR:
-                throw new UnsupportedOperationException();
+
+                break;
             case LOGICAL_AND:
                 throw new UnsupportedOperationException();
             case BIT_OR:
