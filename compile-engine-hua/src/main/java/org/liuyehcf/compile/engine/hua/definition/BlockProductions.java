@@ -71,7 +71,7 @@ abstract class BlockProductions {
                             Symbol.createNonTerminator(BLOCK),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_LARGE_LEFT_PARENTHESES),
-                                    Symbol.createNonTerminator(MARK_139_1_1),
+                                    Symbol.createMarkNonTerminator(MARK_139_1_1),
                                     Symbol.createNonTerminator(EPSILON_OR_BLOCK_STATEMENTS),
                                     Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES)
                             ),
@@ -88,7 +88,7 @@ abstract class BlockProductions {
                      * <mark 139_1_1> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_139_1_1),
+                            Symbol.createMarkNonTerminator(MARK_139_1_1),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
@@ -214,7 +214,7 @@ abstract class BlockProductions {
                             Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(TYPE),
-                                    Symbol.createNonTerminator(MARK_146_1_1),
+                                    Symbol.createMarkNonTerminator(MARK_146_1_1),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATORS)
                             ),
                             null
@@ -230,7 +230,7 @@ abstract class BlockProductions {
                      * <mark 146_1_1> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_146_1_1),
+                            Symbol.createMarkNonTerminator(MARK_146_1_1),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
@@ -887,7 +887,7 @@ abstract class BlockProductions {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_INIT),
                             SymbolString.create(
-                                    Symbol.createNonTerminator(MARK_192_1_1),
+                                    Symbol.createMarkNonTerminator(MARK_192_1_1),
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST)
                             ),
                             null
@@ -898,7 +898,7 @@ abstract class BlockProductions {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_INIT),
                             SymbolString.create(
-                                    Symbol.createNonTerminator(MARK_192_2_1),
+                                    Symbol.createMarkNonTerminator(MARK_192_2_1),
                                     Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION)
                             ),
                             null
@@ -914,7 +914,7 @@ abstract class BlockProductions {
                      * <mark 192_1_1> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_192_1_1),
+                            Symbol.createMarkNonTerminator(MARK_192_1_1),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
@@ -932,7 +932,7 @@ abstract class BlockProductions {
                      * <mark 192_2_1> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_192_2_1),
+                            Symbol.createMarkNonTerminator(MARK_192_2_1),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),

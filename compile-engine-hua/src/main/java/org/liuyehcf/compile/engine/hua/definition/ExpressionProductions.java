@@ -1309,7 +1309,7 @@ abstract class ExpressionProductions {
                             Symbol.createNonTerminator(ARRAY_ACCESS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_NAME),
-                                    Symbol.createNonTerminator(MARK_286_1_1),
+                                    Symbol.createMarkNonTerminator(MARK_286_1_1),
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
@@ -1340,7 +1340,7 @@ abstract class ExpressionProductions {
                      * <mark 286_1_1> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_286_1_1),
+                            Symbol.createMarkNonTerminator(MARK_286_1_1),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
