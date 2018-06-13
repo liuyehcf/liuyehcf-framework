@@ -53,6 +53,11 @@ public class HuaCompiler extends LALR<HuaResult> {
          */
         private MethodInfoTable methodInfoTable = new MethodInfoTable();
 
+        /**
+         * 状态信息
+         */
+        private StatusInfo statusInfo = new StatusInfo();
+
         HuaEngine(String input) {
             super(input);
         }
@@ -67,6 +72,10 @@ public class HuaCompiler extends LALR<HuaResult> {
 
         public MethodInfoTable getMethodInfoTable() {
             return methodInfoTable;
+        }
+
+        public StatusInfo getStatusInfo() {
+            return statusInfo;
         }
 
         public void increaseOffset(int step) {

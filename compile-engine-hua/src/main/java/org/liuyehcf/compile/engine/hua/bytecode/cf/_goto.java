@@ -8,10 +8,6 @@ package org.liuyehcf.compile.engine.hua.bytecode.cf;
  */
 public class _goto extends ControlTransfer {
 
-    public _goto(int codeOffset) {
-        super(codeOffset);
-    }
-
     @Override
     public void operate() {
 

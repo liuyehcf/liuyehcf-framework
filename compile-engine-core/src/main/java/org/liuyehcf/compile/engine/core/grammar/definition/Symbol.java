@@ -71,10 +71,6 @@ public class Symbol implements Comparable<Symbol> {
         return createSymbol(false, value, MorphemeType.NORMAL);
     }
 
-    public static Symbol createMarkNonTerminator(String value) {
-        return createSymbol(false, value, MorphemeType.MARK);
-    }
-
     /**
      * 仅用于创建普通Symbol，需要检查value值的合法性
      */

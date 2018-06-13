@@ -39,11 +39,6 @@ public class BinaryOperator extends AbstractSemanticAction {
         Type rightType = context.getStack().get(RIGHT_STACK_OFFSET).get(AttrName.TYPE.name());
 
         switch (operator) {
-            case LOGICAL_OR:
-
-                break;
-            case LOGICAL_AND:
-                throw new UnsupportedOperationException();
             case BIT_OR:
                 checkEqualType(leftType, rightType, BIT_OR);
 
@@ -200,6 +195,8 @@ public class BinaryOperator extends AbstractSemanticAction {
                 }
 
                 break;
+            default:
+                throw new UnsupportedOperationException();
         }
     }
 

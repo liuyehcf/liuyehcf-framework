@@ -668,46 +668,13 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         // 检查合法性，即检查表项动作是否唯一
         for (Closure closure : closures.values()) {
             for (Symbol symbol : analysisSymbols) {
-                if (!doCheck(closure.getId(), symbol)) {
+                if (analysisTable.get(closure.getId()).get(symbol).size() > 1) {
                     setLegal(false);
                     return;
                 }
             }
         }
         setLegal(true);
-    }
-
-    private boolean doCheck(int closureId, Symbol symbol) {
-        LinkedHashSet<NodeTransferOperation> operations = analysisTable.get(closureId).get(symbol);
-
-        if (operations.size() <= 1) {
-            return true;
-        } else if (operations.size() > 2) {
-            return false;
-        }
-
-        boolean hasMarkNonTerminator = false;
-
-        for (NodeTransferOperation operation : operations) {
-            if (REDUCTION.equals(operation.operator)
-                    && MorphemeType.MARK.equals(operation.primaryProduction.getLeft().getType())) {
-                hasMarkNonTerminator = true;
-            }
-        }
-
-        if (!hasMarkNonTerminator) {
-            return false;
-        }
-
-        /*
-         * 当有标记非终结符进行规约时，强制保留标记非终结符的规约动作
-         */
-        operations.removeIf((operation) ->
-                !(REDUCTION.equals(operation.operator)
-                        && MorphemeType.MARK.equals(operation.primaryProduction.getLeft().getType()))
-        );
-
-        return true;
     }
 
     /**
@@ -1010,7 +977,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         /**
          * 编译返回参数
          */
-        protected Object result = null;
+        protected T result = null;
         /**
          * 状态栈，状态即项目集闭包的id
          */
@@ -1043,7 +1010,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
             after();
 
-            return new CompileResult(canReceive, result);
+            return new CompileResult<>(canReceive, result);
         }
 
         /**

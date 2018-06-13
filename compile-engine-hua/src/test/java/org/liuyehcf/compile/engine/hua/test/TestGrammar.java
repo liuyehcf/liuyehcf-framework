@@ -505,4 +505,24 @@ public class TestGrammar {
                 result.getResult().getVariableSymbolTable().toString()
         );
     }
+
+    @Test
+    public void testIf() {
+        String text = "void func(boolean a,boolean b){\n" +
+                "\t\tif(true){\n" +
+                "\t\t\tdoSomething();\n" +
+                "\t\t}\n" +
+                "\t}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_aload\",\"offset\":16},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"10000\"},{\"name\":\"_iastore\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"testArrayStore(int[])\":{\"byteCodes\":[{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"1\"},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"1\"},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"1\"},{\"name\":\"_istore\",\"offset\":24},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"100\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"5\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_iload\",\"offset\":24},{\"name\":\"_isub\"},{\"name\":\"_imul\"},{\"name\":\"_iaload\"},{\"name\":\"_iastore\"}],\"methodName\":\"testArrayStore\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+        assertEquals(
+                "{\"jSONTable\":{\"[3, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":3,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}}},\"[1, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[2, 1]\":{\"c\":{\"name\":\"c\",\"namespace\":{\"id\":2,\"pid\":1},\"offset\":16,\"type\":{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}}},\"[0, -1]\":{},\"[4, 3]\":{\"b\":{\"name\":\"b\",\"namespace\":{\"id\":4,\"pid\":3},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":4,\"pid\":3},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}},\"d\":{\"name\":\"d\",\"namespace\":{\"id\":4,\"pid\":3},\"offset\":24,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}}}}",
+                result.getResult().getVariableSymbolTable().toString()
+        );
+    }
 }

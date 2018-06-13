@@ -6,10 +6,6 @@ package org.liuyehcf.compile.engine.hua.bytecode.cf;
  */
 public class _ifle extends ControlTransfer {
 
-    public _ifle(int codeOffset) {
-        super(codeOffset);
-    }
-
     @Override
     public void operate() {
 

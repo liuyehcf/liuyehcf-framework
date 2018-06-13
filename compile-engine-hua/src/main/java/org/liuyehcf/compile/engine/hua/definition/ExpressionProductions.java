@@ -55,6 +55,7 @@ abstract class ExpressionProductions {
     public static final String ARRAY_ACCESS = "<array access>"; // 286
 
     private static final String MARK_230_2_1 = "<mark 230_2_1>";
+    private static final String MARK_232_2_1 = "<mark 232_2_1>";
     private static final String MARK_286_1_1 = "<mark 286_1_1>";
 
     public static final Production[] PRODUCTIONS = {
@@ -339,11 +340,11 @@ abstract class ExpressionProductions {
                             Symbol.createNonTerminator(CONDITIONAL_OR_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_OR_EXPRESSION),
-                                    Symbol.createMarkNonTerminator(MARK_230_2_1),
+                                    Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createTerminator(NORMAL_LOGICAL_OR),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.LOGICAL_OR)
+                            new AddControlTransferByteCode(AddControlTransferByteCode.ControlTransferType.IFEQ)
                     )
             ),
 
@@ -356,7 +357,7 @@ abstract class ExpressionProductions {
                      * <mark 230_2_1> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createMarkNonTerminator(MARK_230_2_1),
+                            Symbol.createNonTerminator(MARK_230_2_1),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
@@ -381,16 +382,34 @@ abstract class ExpressionProductions {
                             null
                     ),
                     /*
-                     * <conditional and expression> → <conditional and expression> && <inclusive or expression>
+                     * <conditional and expression> → <conditional and expression> <mark 232_2_1> && <inclusive or expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION),
+                                    Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createTerminator(NORMAL_LOGICAL_AND),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.LOGICAL_AND)
+                            new AddControlTransferByteCode(AddControlTransferByteCode.ControlTransferType.IFEQ)
+                    )
+            ),
+
+
+            /*
+             * <mark 232_2_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 232_2_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_232_2_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new AddControlTransferByteCode(AddControlTransferByteCode.ControlTransferType.IFEQ)
                     )
             ),
 
@@ -1328,7 +1347,7 @@ abstract class ExpressionProductions {
                             Symbol.createNonTerminator(ARRAY_ACCESS),
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_NAME),
-                                    Symbol.createMarkNonTerminator(MARK_286_1_1),
+                                    Symbol.createNonTerminator(MARK_286_1_1),
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
@@ -1359,7 +1378,7 @@ abstract class ExpressionProductions {
                      * <mark 286_1_1> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createMarkNonTerminator(MARK_286_1_1),
+                            Symbol.createNonTerminator(MARK_286_1_1),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),

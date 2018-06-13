@@ -6,10 +6,6 @@ package org.liuyehcf.compile.engine.hua.bytecode.cf;
  */
 public class ifgt extends ControlTransfer {
 
-    public ifgt(int codeOffset) {
-        super(codeOffset);
-    }
-
     @Override
     public void operate() {
 

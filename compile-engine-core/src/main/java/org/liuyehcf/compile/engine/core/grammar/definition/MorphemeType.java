@@ -15,13 +15,7 @@ public enum MorphemeType {
     /**
      * 正则表达式词素
      */
-    REGEX(8),
-
-
-    /**
-     * 标记非终结符词素
-     */
-    MARK(64);
+    REGEX(8);
 
     private final int order;
 

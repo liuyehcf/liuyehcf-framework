@@ -132,7 +132,7 @@ abstract class ProgramProductions {
                             Symbol.createNonTerminator(FORMAL_PARAMETER),
                             SymbolString.create(
                                     Symbol.createNonTerminator(TYPE),
-                                    Symbol.createMarkNonTerminator(MARK_50_1_1),
+                                    Symbol.createNonTerminator(MARK_50_1_1),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID)
                             ),
                             null
@@ -148,7 +148,7 @@ abstract class ProgramProductions {
                      * <mark 50_1_1> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createMarkNonTerminator(MARK_50_1_1),
+                            Symbol.createNonTerminator(MARK_50_1_1),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
@@ -181,7 +181,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(VARIABLE_DECLARATORS),
                                     Symbol.createTerminator(NORMAL_COMMA),
-                                    Symbol.createMarkNonTerminator(MARK_66_2_1),
+                                    Symbol.createNonTerminator(MARK_66_2_1),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR)
                             ),
                             null
@@ -197,7 +197,7 @@ abstract class ProgramProductions {
                      * <mark 66_2_1> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createMarkNonTerminator(MARK_66_2_1),
+                            Symbol.createNonTerminator(MARK_66_2_1),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
@@ -301,7 +301,7 @@ abstract class ProgramProductions {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(METHOD_DECLARATION),
                             SymbolString.create(
-                                    Symbol.createMarkNonTerminator(MARK_74_1_1),
+                                    Symbol.createNonTerminator(MARK_74_1_1),
                                     Symbol.createNonTerminator(METHOD_HEADER),
                                     Symbol.createNonTerminator(METHOD_BODY)
                             ),
@@ -319,7 +319,7 @@ abstract class ProgramProductions {
                      * <mark 74_1_1> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createMarkNonTerminator(MARK_74_1_1),
+                            Symbol.createNonTerminator(MARK_74_1_1),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
