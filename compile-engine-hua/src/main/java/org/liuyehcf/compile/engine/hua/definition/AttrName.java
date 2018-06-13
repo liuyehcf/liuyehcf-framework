@@ -48,5 +48,10 @@ public enum AttrName {
     /**
      * 布尔表达式为false时的字节码
      */
-    FALSE_BYTE_CODE;
+    FALSE_BYTE_CODE,
+
+    /**
+     * 是否为条件表达式
+     */
+    IS_CONDITION_EXPRESSION,
 }

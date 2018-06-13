@@ -4,10 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
-import org.liuyehcf.compile.engine.hua.semantic.AssignAttr;
-import org.liuyehcf.compile.engine.hua.semantic.EnterNamespace;
-import org.liuyehcf.compile.engine.hua.semantic.ExitNamespace;
+import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.ExpressionProductions.*;
@@ -50,8 +47,9 @@ abstract class BlockProductions {
 
     private static final String MARK_139_1_1 = "<mark 139_1_1>";
     private static final String MARK_146_1_1 = "<mark 146_1_1>";
-    private static final String MARK_COMMON_164_166_168 = "<mark common 164_166_168>";
-    private static final String MARK_COMMON_166_168 = "<mark common 166_168>";
+    private static final String MARK_CONDITION_EXPRESSION = "<mark condition expression>";
+    private static final String MARK_TRUE_BLOCK = "<mark true block>";
+    private static final String MARK_FALSE_BLOCK = "<mark false block>";
     private static final String MARK_192_1_1 = "<mark 192_1_1>";
     private static final String MARK_192_2_1 = "<mark 192_2_1>";
 
@@ -534,16 +532,17 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * (1) <if then statement> → if ( <expression> ) <mark common 164_166_168> <statement>
+                     * (1) <if then statement> → if ( <mark condition expression> <expression> ) <mark true block> <statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(IF_THEN_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_IF),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_CONDITION_EXPRESSION),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
-                                    Symbol.createNonTerminator(MARK_COMMON_164_166_168),
+                                    Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
                             null
@@ -552,18 +551,36 @@ abstract class BlockProductions {
 
 
             /*
-             * <mark common 164_166_168>
+             * <mark condition expression>
              */
             Production.create(
                     /*
-                     * <mark common 164_166_168> → ε
+                     * <mark condition expression> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_COMMON_164_166_168),
+                            Symbol.createNonTerminator(MARK_CONDITION_EXPRESSION),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            new AddFutureSyntaxNode(1),
+                            new SetAttrFromSystem(1, AttrName.IS_CONDITION_EXPRESSION.name(), new Object())
+                    )
+            ),
+
+
+            /*
+             * <mark true block>
+             */
+            Production.create(
+                    /*
+                     * <mark true block> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_TRUE_BLOCK),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new TrueBackFill()
                     )
             ),
 
@@ -574,19 +591,20 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <if then else statement> → if ( <expression> ) <mark common 164_166_168> <statement no short if> else <mark common 166_168> <statement>
+                     * <if then else statement> → if ( <mark condition expression> <expression> ) <mark true block> <statement no short if> else <mark false block> <statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_IF),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_CONDITION_EXPRESSION),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
-                                    Symbol.createNonTerminator(MARK_COMMON_164_166_168),
+                                    Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
                                     Symbol.createTerminator(NORMAL_ELSE),
-                                    Symbol.createNonTerminator(MARK_COMMON_166_168),
+                                    Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
                             null
@@ -595,18 +613,18 @@ abstract class BlockProductions {
 
 
             /*
-             * <mark common 166_168>
+             * <mark false block>
              */
             Production.create(
                     /*
-                     * <mark common 166_168> → ε
+                     * <mark false block> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_COMMON_166_168),
+                            Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            new FalseBackFill()
                     )
             ),
 
@@ -617,19 +635,20 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <if then else statement no short if> → if ( <expression> ) <mark common 164_166_168> <statement no short if> else <mark common 166_168> <statement no short if>
+                     * <if then else statement no short if> → if ( <mark condition expression> <expression> ) <mark true block> <statement no short if> else <mark false block> <statement no short if>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT_NO_SHORT_IF),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_IF),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_CONDITION_EXPRESSION),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
-                                    Symbol.createNonTerminator(MARK_COMMON_164_166_168),
+                                    Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
                                     Symbol.createTerminator(NORMAL_ELSE),
-                                    Symbol.createNonTerminator(MARK_COMMON_166_168),
+                                    Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
                             null
@@ -643,13 +662,14 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <while statement> → while ( <expression> ) <statement>
+                     * <while statement> → while ( <mark condition expression> <expression> ) <statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(WHILE_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_WHILE),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_CONDITION_EXPRESSION),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT)
@@ -665,13 +685,14 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <while statement no short if> → while ( <expression> ) <statement no short if>
+                     * <while statement no short if> → while ( <mark condition expression> <expression> ) <statement no short if>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(WHILE_STATEMENT_NO_SHORT_IF),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_WHILE),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_CONDITION_EXPRESSION),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
@@ -687,7 +708,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <do statement> → do <statement> while ( <expression> ) ;
+                     * <do statement> → do <statement> while ( <mark condition expression> <expression> ) ;
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(DO_STATEMENT),
@@ -696,6 +717,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(STATEMENT),
                                     Symbol.createTerminator(NORMAL_WHILE),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_CONDITION_EXPRESSION),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_SEMICOLON)

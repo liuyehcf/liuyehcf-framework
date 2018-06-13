@@ -331,7 +331,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            null
+                            new AddControlTransferByteCode(false, 0, AddControlTransferByteCode.ControlTransferType.IFEQ)
                     ),
                     /*
                      * (2) <conditional or expression> → <conditional or expression> || <mark 230_2_1> <conditional and expression>
@@ -344,7 +344,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            new AddControlTransferByteCode(AddControlTransferByteCode.ControlTransferType.IFEQ)
+                            new AddControlTransferByteCode(true, -3, AddControlTransferByteCode.ControlTransferType.IFEQ)
                     )
             ),
 
@@ -361,7 +361,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(AddControlTransferByteCode.ControlTransferType.IFNE)
+                            new AddControlTransferByteCode(true, -1, AddControlTransferByteCode.ControlTransferType.IFNE)
                     )
             ),
 
@@ -392,7 +392,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            new AddControlTransferByteCode(AddControlTransferByteCode.ControlTransferType.IFEQ)
+                            new AddControlTransferByteCode(true, -3, AddControlTransferByteCode.ControlTransferType.IFEQ)
                     )
             ),
 
@@ -409,7 +409,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(AddControlTransferByteCode.ControlTransferType.IFEQ)
+                            new AddControlTransferByteCode(true, -1, AddControlTransferByteCode.ControlTransferType.IFEQ)
                     )
             ),
 

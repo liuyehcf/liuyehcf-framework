@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.liuyehcf.compile.engine.hua.test.TestCases.*;
+import static org.liuyehcf.compile.engine.hua.test.TestCases.IF_CASES;
 
 
 /**
@@ -509,10 +509,12 @@ public class TestGrammar {
 
     @Test
     public void testIf() {
-        String text = "void func() {\n" +
-                "    boolean a;\n" +
-                "\n" +
-                "    a=true||false;\n" +
+        String text = "void func(boolean a,int b){\n" +
+                "    if (a) {\n" +
+                "        b = 3;\n" +
+                "    } else {" +
+                "        b = 4;\n" +
+                "    }\n" +
                 "}";
 
         CompileResult<HuaResult> result = compiler.compile(text);
