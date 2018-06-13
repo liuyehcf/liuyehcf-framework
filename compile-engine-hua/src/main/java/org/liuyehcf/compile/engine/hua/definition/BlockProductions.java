@@ -53,7 +53,6 @@ abstract class BlockProductions {
     private static final String MARK_166_1_1 = "<mark 166_1_1>";
     private static final String MARK_166_1_2 = "<mark 166_1_2>";
     private static final String MARK_166_1_3 = "<mark 166_1_3>";
-    private static final String MARK_166_1_4 = "<mark 166_1_4>";
     private static final String MARK_192_1_1 = "<mark 192_1_1>";
     private static final String MARK_192_2_1 = "<mark 192_2_1>";
 
@@ -558,21 +557,20 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <if then else statement> → if <mark 166_1_1> ( <expression> ) <mark 166_1_2> <statement no short if> <mark 166_1_3> else <mark 166_1_4> <statement>
+                     * <if then else statement> → if ( <expression> ) <mark 166_1_1> <statement no short if> <mark 166_1_2> else <mark 166_1_3> <statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_IF),
-                                    Symbol.createMarkNonTerminator(MARK_166_1_1),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
-                                    Symbol.createMarkNonTerminator(MARK_166_1_2),
+                                    Symbol.createMarkNonTerminator(MARK_166_1_1),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF),
-                                    Symbol.createMarkNonTerminator(MARK_166_1_3),
+                                    Symbol.createMarkNonTerminator(MARK_166_1_2),
                                     Symbol.createTerminator(NORMAL_ELSE),
-                                    Symbol.createMarkNonTerminator(MARK_166_1_4),
+                                    Symbol.createMarkNonTerminator(MARK_166_1_3),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
                             null
@@ -592,7 +590,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            null//TODO true code偏移量回填，要求压入跳转指令时，也将其作为属性存入语法树节点
                     )
             ),
 
@@ -609,7 +607,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            null// TODO 跳过false代码段
                     )
             ),
 
@@ -626,24 +624,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
-                    )
-            ),
-
-
-            /*
-             * <mark 166_1_4>
-             */
-            Production.create(
-                    /*
-                     * <mark 166_1_4> → ε
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createMarkNonTerminator(MARK_166_1_4),
-                            SymbolString.create(
-                                    Symbol.EPSILON
-                            ),
-                            null
+                            null//TODO false code偏移量回填，要求压入跳转指令时，也将其作为属性存入语法树节点
                     )
             ),
 

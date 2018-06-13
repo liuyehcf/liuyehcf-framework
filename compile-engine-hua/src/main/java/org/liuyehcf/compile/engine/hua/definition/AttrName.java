@@ -39,4 +39,14 @@ public enum AttrName {
      * 字面值
      */
     LITERAL_VALUE,
+
+    /**
+     * 布尔表达式为true时的字节码
+     */
+    TRUE_BYTE_CODE,
+
+    /**
+     * 布尔表达式为false时的字节码
+     */
+    FALSE_BYTE_CODE;
 }
