@@ -79,7 +79,7 @@ public class TestCases {
                     "\n" +
                     "  int a;\n" +
                     "\n" +
-                    "  if(a<3){\n" +
+                    "  if(true){\n" +
                     "    something();\n" +
                     "  }else\n" +
                     "    something();\n" +
@@ -93,7 +93,7 @@ public class TestCases {
                     "  int b;\n" +
                     "  \n" +
                     "  if(true){\n" +
-                    "    if(b>4){\n" +
+                    "    if(false){\n" +
                     "      something();\n" +
                     "    }\n" +
                     "  }else{\n" +

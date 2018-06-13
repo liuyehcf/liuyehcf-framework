@@ -27,13 +27,13 @@ public class TestGrammar {
     private static LRCompiler<HuaResult> compiler;
 
     static {
-        RIGHT_CASES.addAll(Arrays.asList(WHILE_CASES));
-        RIGHT_CASES.addAll(Arrays.asList(FOR_CASES));
-        RIGHT_CASES.addAll(Arrays.asList(DO_CASES));
+//        RIGHT_CASES.addAll(Arrays.asList(WHILE_CASES));
+//        RIGHT_CASES.addAll(Arrays.asList(FOR_CASES));
+//        RIGHT_CASES.addAll(Arrays.asList(DO_CASES));
         RIGHT_CASES.addAll(Arrays.asList(IF_CASES));
-        RIGHT_CASES.addAll(Arrays.asList(VARIABLE_DECLARATION_CASES));
-        RIGHT_CASES.addAll(Arrays.asList(OPERATOR_CASES));
-        RIGHT_CASES.addAll(Arrays.asList(CLASSIC_CASES));
+//        RIGHT_CASES.addAll(Arrays.asList(VARIABLE_DECLARATION_CASES));
+//        RIGHT_CASES.addAll(Arrays.asList(OPERATOR_CASES));
+//        RIGHT_CASES.addAll(Arrays.asList(CLASSIC_CASES));
     }
 
     @BeforeClass
@@ -47,6 +47,7 @@ public class TestGrammar {
         assertTrue(compiler.isLegal());
     }
 
+    @Test
     public void testRightCases() {
         for (String rightCase : RIGHT_CASES) {
             System.out.println(rightCase);
@@ -508,11 +509,11 @@ public class TestGrammar {
 
     @Test
     public void testIf() {
-        String text = "void func(boolean a,boolean b){\n" +
-                "\t\tif(true){\n" +
-                "\t\t\tdoSomething();\n" +
-                "\t\t}\n" +
-                "\t}";
+        String text = "void func() {\n" +
+                "    boolean a;\n" +
+                "\n" +
+                "    a=true||false;\n" +
+                "}";
 
         CompileResult<HuaResult> result = compiler.compile(text);
         assertTrue(result.isSuccess());

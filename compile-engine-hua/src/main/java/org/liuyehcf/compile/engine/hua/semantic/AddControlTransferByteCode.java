@@ -21,9 +21,6 @@ public class AddControlTransferByteCode extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        if (!context.getHuaEngine().getStatusInfo().isCondition()) {
-            return;
-        }
         switch (controlTransferType) {
             case IFEQ:
                 break;

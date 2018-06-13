@@ -334,14 +334,14 @@ abstract class ExpressionProductions {
                             null
                     ),
                     /*
-                     * (2) <conditional or expression> → <conditional or expression> <mark 230_2_1> || <conditional and expression>
+                     * (2) <conditional or expression> → <conditional or expression> || <mark 230_2_1> <conditional and expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(CONDITIONAL_OR_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_OR_EXPRESSION),
-                                    Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createTerminator(NORMAL_LOGICAL_OR),
+                                    Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
                             new AddControlTransferByteCode(AddControlTransferByteCode.ControlTransferType.IFEQ)
@@ -382,14 +382,14 @@ abstract class ExpressionProductions {
                             null
                     ),
                     /*
-                     * <conditional and expression> → <conditional and expression> <mark 232_2_1> && <inclusive or expression>
+                     * <conditional and expression> → <conditional and expression> && <mark 232_2_1> <inclusive or expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION),
-                                    Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createTerminator(NORMAL_LOGICAL_AND),
+                                    Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
                             new AddControlTransferByteCode(AddControlTransferByteCode.ControlTransferType.IFEQ)
