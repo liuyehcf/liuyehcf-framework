@@ -1,14 +1,12 @@
 package org.liuyehcf.compile.engine.hua.bytecode.sl;
 
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
-
 /**
  * 加载常量
  *
  * @author chenlu
  * @date 2018/6/10
  */
-public class _ldc implements ByteCode {
+public class _ldc extends StoreLoad {
 
     private final String type;
 

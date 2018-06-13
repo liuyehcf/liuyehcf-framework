@@ -1,6 +1,4 @@
-package org.liuyehcf.compile.engine.hua.bytecode.compute;
-
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+package org.liuyehcf.compile.engine.hua.bytecode.cp;
 
 /**
  * int 自增
@@ -8,7 +6,7 @@ import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
  * @author chenlu
  * @date 2018/6/6
  */
-public class _iinc implements ByteCode {
+public class _iinc extends Compute {
 
 
     private final int increment;

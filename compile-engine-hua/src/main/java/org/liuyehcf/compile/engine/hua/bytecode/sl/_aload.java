@@ -1,12 +1,10 @@
 package org.liuyehcf.compile.engine.hua.bytecode.sl;
 
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
-
 /**
  * @author chenlu
  * @date 2018/6/12
  */
-public class _aload implements ByteCode {
+public class _aload extends StoreLoad {
 
     private final int offset;
 

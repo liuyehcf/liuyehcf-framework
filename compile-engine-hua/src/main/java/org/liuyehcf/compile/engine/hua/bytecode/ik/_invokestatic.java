@@ -1,12 +1,10 @@
-package org.liuyehcf.compile.engine.hua.bytecode.invoke;
-
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+package org.liuyehcf.compile.engine.hua.bytecode.ik;
 
 /**
  * @author chenlu
  * @date 2018/6/10
  */
-public class _invokestatic implements ByteCode {
+public class _invokestatic extends Invoke {
     private final String methodName;
 
     private final int argumentSize;

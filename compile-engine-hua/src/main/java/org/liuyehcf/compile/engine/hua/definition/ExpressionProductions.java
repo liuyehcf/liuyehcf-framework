@@ -54,6 +54,7 @@ abstract class ExpressionProductions {
     public static final String DIMS = "<dims>"; // 284
     public static final String ARRAY_ACCESS = "<array access>"; // 286
 
+    private static final String MARK_230_2_1 = "<mark 230_2_1>";
     private static final String MARK_286_1_1 = "<mark 286_1_1>";
 
     public static final Production[] PRODUCTIONS = {
@@ -322,7 +323,7 @@ abstract class ExpressionProductions {
              */
             Production.create(
                     /*
-                     * <conditional or expression> → <conditional and expression>
+                     * (1) <conditional or expression> → <conditional and expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(CONDITIONAL_OR_EXPRESSION),
@@ -332,16 +333,34 @@ abstract class ExpressionProductions {
                             null
                     ),
                     /*
-                     * <conditional or expression> → <conditional or expression> || <conditional and expression>
+                     * (2) <conditional or expression> → <conditional or expression> <mark 230_2_1> || <conditional and expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(CONDITIONAL_OR_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_OR_EXPRESSION),
+                                    Symbol.createMarkNonTerminator(MARK_230_2_1),
                                     Symbol.createTerminator(NORMAL_LOGICAL_OR),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
                             new BinaryOperator(BinaryOperator.Operator.LOGICAL_OR)
+                    )
+            ),
+
+
+            /*
+             * <mark 230_2_1>
+             */
+            Production.create(
+                    /*
+                     * <mark 230_2_1> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createMarkNonTerminator(MARK_230_2_1),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new AddControlTransferByteCode(AddControlTransferByteCode.ControlTransferType.IFNE)
                     )
             ),
 
