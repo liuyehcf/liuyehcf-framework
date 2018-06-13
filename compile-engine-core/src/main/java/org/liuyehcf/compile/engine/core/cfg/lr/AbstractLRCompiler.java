@@ -8,10 +8,7 @@ import org.liuyehcf.compile.engine.core.grammar.converter.AugmentedGrammarConver
 import org.liuyehcf.compile.engine.core.grammar.converter.GrammarConverterPipelineImpl;
 import org.liuyehcf.compile.engine.core.grammar.converter.MergeGrammarConverter;
 import org.liuyehcf.compile.engine.core.grammar.converter.StatusExpandGrammarConverter;
-import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
-import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
-import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
-import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.core.grammar.definition.*;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 import org.liuyehcf.compile.engine.core.utils.Pair;
@@ -20,6 +17,7 @@ import org.liuyehcf.compile.engine.core.utils.SetUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.liuyehcf.compile.engine.core.cfg.lr.AbstractLRCompiler.NodeTransferOperation.OperationCode.REDUCTION;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.*;
 
 /**
@@ -233,7 +231,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                     sb.append(separator);
                     for (NodeTransferOperation nodeTransferOperation : nodeTransferOperations) {
                         if (nodeTransferOperation.getOperator() == NodeTransferOperation.OperationCode.ACCEPT
-                                || nodeTransferOperation.getOperator() == NodeTransferOperation.OperationCode.REDUCTION) {
+                                || nodeTransferOperation.getOperator() == REDUCTION) {
                             sb.append(' ')
                                     .append(wrapMarkdownKeywords(nodeTransferOperation.getOperator().toString()))
                                     .append(" \"")
@@ -670,13 +668,46 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         // 检查合法性，即检查表项动作是否唯一
         for (Closure closure : closures.values()) {
             for (Symbol symbol : analysisSymbols) {
-                if (analysisTable.get(closure.getId()).get(symbol).size() > 1) {
+                if (!doCheck(closure.getId(), symbol)) {
                     setLegal(false);
                     return;
                 }
             }
         }
         setLegal(true);
+    }
+
+    private boolean doCheck(int closureId, Symbol symbol) {
+        LinkedHashSet<NodeTransferOperation> operations = analysisTable.get(closureId).get(symbol);
+
+        if (operations.size() <= 1) {
+            return true;
+        } else if (operations.size() > 2) {
+            return false;
+        }
+
+        boolean hasMarkNonTerminator = false;
+
+        for (NodeTransferOperation operation : operations) {
+            if (REDUCTION.equals(operation.operator)
+                    && MorphemeType.MARK.equals(operation.primaryProduction.getLeft().getType())) {
+                hasMarkNonTerminator = true;
+            }
+        }
+
+        if (!hasMarkNonTerminator) {
+            return false;
+        }
+
+        /*
+         * 当有标记非终结符进行规约时，强制保留标记非终结符的规约动作
+         */
+        operations.removeIf((operation) ->
+                !(REDUCTION.equals(operation.operator)
+                        && MorphemeType.MARK.equals(operation.primaryProduction.getLeft().getType()))
+        );
+
+        return true;
     }
 
     /**
