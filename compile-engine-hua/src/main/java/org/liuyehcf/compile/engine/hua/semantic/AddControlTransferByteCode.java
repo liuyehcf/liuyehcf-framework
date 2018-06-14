@@ -3,6 +3,8 @@ package org.liuyehcf.compile.engine.hua.semantic;
 import org.liuyehcf.compile.engine.hua.bytecode.cf.*;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.BackFillType;
+import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 
 /**
  * @author chenlu
@@ -87,21 +89,5 @@ public class AddControlTransferByteCode extends AbstractSemanticAction {
             default:
                 throw new UnsupportedOperationException();
         }
-    }
-
-    public enum ControlTransferType {
-        IFEQ,
-        IFLT,
-        IFLE,
-        IFNE,
-        IFGT,
-        IFGE,
-        GOTO
-    }
-
-    public enum BackFillType {
-        TRUE,
-        FALSE,
-        NEXT
     }
 }

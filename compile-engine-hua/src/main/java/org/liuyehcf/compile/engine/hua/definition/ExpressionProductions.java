@@ -4,6 +4,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.model.BackFillType;
+import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
@@ -331,7 +333,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            new AddControlTransferByteCode(false, 0, AddControlTransferByteCode.ControlTransferType.IFEQ, AddControlTransferByteCode.BackFillType.FALSE)
+                            new AddControlTransferByteCode(false, 0, ControlTransferType.IFEQ, BackFillType.FALSE)
                     ),
                     /*
                      * (2) <conditional or expression> → <conditional or expression> || <mark 230_2_1> <conditional and expression>
@@ -344,7 +346,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            new AddControlTransferByteCode(true, -3, AddControlTransferByteCode.ControlTransferType.IFEQ, AddControlTransferByteCode.BackFillType.FALSE)
+                            new AddControlTransferByteCode(true, -3, ControlTransferType.IFEQ, BackFillType.FALSE)
                     )
             ),
 
@@ -361,7 +363,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(true, -1, AddControlTransferByteCode.ControlTransferType.IFNE, AddControlTransferByteCode.BackFillType.TRUE)
+                            new AddControlTransferByteCode(true, -1, ControlTransferType.IFNE, BackFillType.TRUE)
                     )
             ),
 
@@ -392,7 +394,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            new AddControlTransferByteCode(true, -3, AddControlTransferByteCode.ControlTransferType.IFEQ, AddControlTransferByteCode.BackFillType.FALSE)
+                            new AddControlTransferByteCode(true, -3, ControlTransferType.IFEQ, BackFillType.FALSE)
                     )
             ),
 
@@ -409,7 +411,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(true, -1, AddControlTransferByteCode.ControlTransferType.IFEQ, AddControlTransferByteCode.BackFillType.FALSE)
+                            new AddControlTransferByteCode(true, -1, ControlTransferType.IFEQ, BackFillType.FALSE)
                     )
             ),
 

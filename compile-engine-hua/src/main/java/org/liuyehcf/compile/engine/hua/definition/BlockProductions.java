@@ -4,6 +4,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.model.BackFillType;
+import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
@@ -556,7 +558,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new TrueBackFill()
+                            new BackFill(-1, BackFillType.TRUE)
                     )
             ),
 
@@ -573,8 +575,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(true, -7, AddControlTransferByteCode.ControlTransferType.GOTO, AddControlTransferByteCode.BackFillType.NEXT),
-                            new FalseBackFill(-4)
+                            new AddControlTransferByteCode(true, -7, ControlTransferType.GOTO, BackFillType.NEXT),
+                            new BackFill(-4, BackFillType.FALSE)
                     )
             ),
 
@@ -598,7 +600,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new FalseBackFill(-3)
+                            new BackFill(-3, BackFillType.FALSE)
                     )
             ),
 
@@ -625,7 +627,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new NextBackFill()
+                            new BackFill(-9, BackFillType.NEXT)
                     )
             ),
 
@@ -652,7 +654,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            new NextBackFill()
+                            new BackFill(-9, BackFillType.NEXT)
                     )
             ),
 
