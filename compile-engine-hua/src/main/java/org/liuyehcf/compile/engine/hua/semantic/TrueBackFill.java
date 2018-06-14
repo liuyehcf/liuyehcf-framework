@@ -16,6 +16,12 @@ public class TrueBackFill extends AbstractSemanticAction {
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
         ControlTransfer code = context.getStack().get(EXPRESSION_STACK_OFFSET).get(AttrName.TRUE_BYTE_CODE.name());
-        code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+
+        /*
+         * 允许 `if(a) {...} ` 直接往下走，不需要回填值
+         */
+        if (code != null) {
+            code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+        }
     }
 }

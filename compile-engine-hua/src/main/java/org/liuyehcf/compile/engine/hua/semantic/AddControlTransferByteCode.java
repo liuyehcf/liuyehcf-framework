@@ -10,16 +10,32 @@ import org.liuyehcf.compile.engine.hua.definition.AttrName;
  */
 public class AddControlTransferByteCode extends AbstractSemanticAction {
 
+    /**
+     * 是否必须
+     * 对于例如 boolean c=true; 是不需要转移指令的
+     */
     private final boolean isNeed;
 
+    /**
+     * 待回填字节码的栈偏移量
+     */
     private final int firstStackOffset;
 
+    /**
+     * 转移字节码类型
+     */
     private final ControlTransferType controlTransferType;
 
-    public AddControlTransferByteCode(boolean isNeed, int firstStackOffset, ControlTransferType controlTransferType) {
+    /**
+     * 回填类型
+     */
+    private final BackFillType backFillType;
+
+    public AddControlTransferByteCode(boolean isNeed, int firstStackOffset, ControlTransferType controlTransferType, BackFillType backFillType) {
         this.isNeed = isNeed;
         this.firstStackOffset = firstStackOffset;
         this.controlTransferType = controlTransferType;
+        this.backFillType = backFillType;
     }
 
     @Override
@@ -49,12 +65,28 @@ public class AddControlTransferByteCode extends AbstractSemanticAction {
             case IFGE:
                 code = new _ifge();
                 break;
+            case GOTO:
+                code = new _goto();
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
 
         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(code);
-        context.getStack().get(firstStackOffset).put(AttrName.FALSE_BYTE_CODE.name(), code);
+
+        switch (backFillType) {
+            case TRUE:
+                context.getStack().get(firstStackOffset).put(AttrName.TRUE_BYTE_CODE.name(), code);
+                break;
+            case FALSE:
+                context.getStack().get(firstStackOffset).put(AttrName.FALSE_BYTE_CODE.name(), code);
+                break;
+            case NEXT:
+                context.getStack().get(firstStackOffset).put(AttrName.NEXT_BYTE_CODE.name(), code);
+                break;
+            default:
+                throw new UnsupportedOperationException();
+        }
     }
 
     public enum ControlTransferType {
@@ -63,6 +95,13 @@ public class AddControlTransferByteCode extends AbstractSemanticAction {
         IFLE,
         IFNE,
         IFGT,
-        IFGE
+        IFGE,
+        GOTO
+    }
+
+    public enum BackFillType {
+        TRUE,
+        FALSE,
+        NEXT
     }
 }
