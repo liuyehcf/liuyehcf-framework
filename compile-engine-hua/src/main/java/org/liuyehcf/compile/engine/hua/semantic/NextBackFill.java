@@ -5,22 +5,17 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;
 
 /**
- * 布尔值回填
- *
  * @author chenlu
- * @date 2018/6/13
+ * @date 2018/6/14
  */
-public class FalseBackFill extends AbstractSemanticAction {
+public class NextBackFill extends AbstractSemanticAction {
 
-    private final int backFillStackOffset;
-
-    public FalseBackFill(int backFillStackOffset) {
-        this.backFillStackOffset = backFillStackOffset;
-    }
+    private static final int EXPRESSION_STACK_OFFSET = -9;
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        ControlTransfer code = context.getStack().get(backFillStackOffset).get(AttrName.FALSE_BYTE_CODE.name());
+        ControlTransfer code = context.getStack().get(EXPRESSION_STACK_OFFSET).get(AttrName.NEXT_BYTE_CODE.name());
+
         code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
     }
 }

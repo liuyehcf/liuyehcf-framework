@@ -509,13 +509,18 @@ public class TestGrammar {
 
     @Test
     public void testIf() {
-        String text = "void func(boolean a,int b){\n" +
+        String text = "void testIf1(boolean a,int b){\n" +
+                "    if(a){\n" +
+                "        b=3;\n" +
+                "    }\n" +
+                "}" +
+                "void testIf2(boolean a,int b){\n" +
                 "    if (a) {\n" +
                 "        b = 3;\n" +
                 "    } else {" +
                 "        b = 4;\n" +
                 "    }\n" +
-                "}";
+                "}\n";
 
         CompileResult<HuaResult> result = compiler.compile(text);
         assertTrue(result.isSuccess());

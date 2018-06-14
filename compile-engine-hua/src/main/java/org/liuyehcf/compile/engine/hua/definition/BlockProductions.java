@@ -527,30 +527,6 @@ abstract class BlockProductions {
 
 
             /*
-             * <if then statement> 164
-             * SAME
-             */
-            Production.create(
-                    /*
-                     * (1) <if then statement> → if ( <mark condition expression> <expression> ) <mark true block> <statement>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(IF_THEN_STATEMENT),
-                            SymbolString.create(
-                                    Symbol.createTerminator(NORMAL_IF),
-                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
-                                    Symbol.createNonTerminator(MARK_CONDITION_EXPRESSION),
-                                    Symbol.createNonTerminator(EXPRESSION),
-                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
-                                    Symbol.createNonTerminator(MARK_TRUE_BLOCK),
-                                    Symbol.createNonTerminator(STATEMENT)
-                            ),
-                            null
-                    )
-            ),
-
-
-            /*
              * <mark condition expression>
              */
             Production.create(
@@ -586,6 +562,48 @@ abstract class BlockProductions {
 
 
             /*
+             * <mark false block>
+             */
+            Production.create(
+                    /*
+                     * <mark false block> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_FALSE_BLOCK),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new AddControlTransferByteCode(true, -7, AddControlTransferByteCode.ControlTransferType.GOTO, AddControlTransferByteCode.BackFillType.NEXT),
+                            new FalseBackFill(-4)
+                    )
+            ),
+
+
+            /*
+             * <if then statement> 164
+             * SAME
+             */
+            Production.create(
+                    /*
+                     * (1) <if then statement> → if ( <mark condition expression> <expression> ) <mark true block> <statement>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(IF_THEN_STATEMENT),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_IF),
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_CONDITION_EXPRESSION),
+                                    Symbol.createNonTerminator(EXPRESSION),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_TRUE_BLOCK),
+                                    Symbol.createNonTerminator(STATEMENT)
+                            ),
+                            new FalseBackFill(-3)
+                    )
+            ),
+
+
+            /*
              * <if then else statement> 166
              * SAME
              */
@@ -607,25 +625,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            null
-                    )
-            ),
-
-
-            /*
-             * <mark false block>
-             */
-            Production.create(
-                    /*
-                     * <mark false block> → ε
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_FALSE_BLOCK),
-                            SymbolString.create(
-                                    Symbol.EPSILON
-                            ),
-                            new AddControlTransferByteCode(true, -7, AddControlTransferByteCode.ControlTransferType.GOTO, AddControlTransferByteCode.BackFillType.NEXT),
-                            new FalseBackFill()
+                            new NextBackFill()
                     )
             ),
 
@@ -652,7 +652,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            null
+                            new NextBackFill()
                     )
             ),
 
