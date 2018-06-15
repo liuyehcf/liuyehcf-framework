@@ -22,20 +22,20 @@ public class MakeSureBackFill extends AbstractSemanticAction {
             return;
         }
 
-        ControlTransfer transferCode = context.getHuaEngine().getStatusInfo().getUncertainCodes().get(0);
-        int transferCodeOffset = transferCode.getCodeOffset();
+        List<ControlTransfer> toCodes = context.getStack().get(HEAD_STACK_OFFSET).get(AttrName.NEXT_BYTE_CODE.name());
+        if (toCodes == null) {
+            toCodes = new ArrayList<>();
+            context.getStack().get(HEAD_STACK_OFFSET).put(AttrName.NEXT_BYTE_CODE.name(), toCodes);
+        }
 
-        if (context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().get(transferCodeOffset) instanceof _goto) {
+        for (ControlTransfer transferCode : context.getHuaEngine().getStatusInfo().getUncertainCodes()) {
+            if (isValidTransferCodeOffset(context, transferCode)) {
+                continue;
+            }
             /*
              * 需要二次回填
              */
-            List<ControlTransfer> toCodes = context.getStack().get(HEAD_STACK_OFFSET).get(AttrName.NEXT_BYTE_CODE.name());
-            if (toCodes == null) {
-                toCodes = new ArrayList<>();
-                context.getStack().get(HEAD_STACK_OFFSET).put(AttrName.NEXT_BYTE_CODE.name(), toCodes);
-            }
-
-            toCodes.addAll(context.getHuaEngine().getStatusInfo().getUncertainCodes());
+            toCodes.add(transferCode);
         }
 
         /*
@@ -43,5 +43,10 @@ public class MakeSureBackFill extends AbstractSemanticAction {
          * 2. 二次回填已经记录了，这里同样清空即可
          */
         context.getHuaEngine().getStatusInfo().getUncertainCodes().clear();
+    }
+
+    private boolean isValidTransferCodeOffset(HuaCompiler.HuaContext context, ControlTransfer transferCode) {
+        int transferCodeOffset = transferCode.getCodeOffset();
+        return !(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().get(transferCodeOffset) instanceof _goto);
     }
 }

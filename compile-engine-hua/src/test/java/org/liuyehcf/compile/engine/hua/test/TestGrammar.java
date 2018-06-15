@@ -756,6 +756,148 @@ public class TestGrammar {
     }
 
     @Test
+    public void testNestedIf6() {
+        String text = "void func1(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\ti=1;\n" +
+                "\t}\n" +
+                "\telse\n" +
+                "\t\tif(b)\n" +
+                "\t\t\ti=2;\n" +
+                "\t\telse {\n" +
+                "\t\t\ti=3;\n" +
+                "\t\t}\t\n" +
+                "}\n" +
+                "\n" +
+                "void func2(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\ti=1;\n" +
+                "\t}\n" +
+                "\telse\n" +
+                "\t\tif(b)\n" +
+                "\t\t\ti=2;\n" +
+                "\t\telse {\n" +
+                "\t\t\ti=3;\n" +
+                "\t\t}\n" +
+                "\tj=1;\t\t\n" +
+                "}\n" +
+                "\n" +
+                "void func3(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\ti=1;\n" +
+                "\t}\n" +
+                "\telse {\n" +
+                "\t\tif(b)\n" +
+                "\t\t\ti=2;\n" +
+                "\t\telse {\n" +
+                "\t\t\ti=3;\n" +
+                "\t\t}\n" +
+                "\t\tj=1;\n" +
+                "\t}\n" +
+                "}\n" +
+                "\n" +
+                "void func4(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(c){\n" +
+                "\t\t\ti=5;\n" +
+                "\t\t}else{\n" +
+                "\t\t\ti=6;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\telse {\n" +
+                "\t\tif(b)\n" +
+                "\t\t\ti=2;\n" +
+                "\t\telse {\n" +
+                "\t\t\ti=3;\n" +
+                "\t\t}\n" +
+                "\t\tj=1;\n" +
+                "\t}\n" +
+                "\tj=2;\n" +
+                "}\n" +
+                "\n" +
+                "void func5(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(c){\n" +
+                "\t\t\tif(d)\n" +
+                "\t\t\t\ti=7;\n" +
+                "\t\t}else{\n" +
+                "\t\t\tif(d)\n" +
+                "\t\t\t\ti=8;\n" +
+                "\t\t\telse\n" +
+                "\t\t\t\ti=9;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\telse {\n" +
+                "\t\ti=3;\n" +
+                "\t}\n" +
+                "\tj=2;\n" +
+                "}\n" +
+                "\n" +
+                "void func6(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(c){\n" +
+                "\t\t\tif(d)\n" +
+                "\t\t\t\ti=7;\n" +
+                "\t\t}else{\n" +
+                "\t\t\tif(d)\n" +
+                "\t\t\t\ti=8;\n" +
+                "\t\t\telse\n" +
+                "\t\t\t\ti=9;\n" +
+                "\t\t}\n" +
+                "\t\tj=2;\n" +
+                "\t}\n" +
+                "\telse {\n" +
+                "\t\ti=3;\n" +
+                "\t}\n" +
+                "}\n" +
+                "\n" +
+                "void func7(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(c){\n" +
+                "\t\t\tif(d)\n" +
+                "\t\t\t\tif(b){\n" +
+                "\t\t\t\t\ti=1;\n" +
+                "\t\t\t\t}\n" +
+                "\t\t\telse{\n" +
+                "\t\t\t\ti=2;\n" +
+                "\t\t\t}\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\telse {\n" +
+                "\t\ti=3;\n" +
+                "\t}\n" +
+                "\tj=1;\n" +
+                "}\n" +
+                "\n" +
+                "void func8(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(c){\n" +
+                "\t\t\tif(d)\n" +
+                "\t\t\t\tif(b){\n" +
+                "\t\t\t\t\ti=1;\n" +
+                "\t\t\t\t}\n" +
+                "\t\t\telse{\n" +
+                "\t\t\t\ti=2;\n" +
+                "\t\t\t}\n" +
+                "\t\t}\n" +
+                "\t\tj=1;\n" +
+                "\t}\n" +
+                "\telse {\n" +
+                "\t\ti=3;\n" +
+                "\t}\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func1(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":5,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func1\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func2(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":5,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":24}],\"methodName\":\"func2\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func3(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":5,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":24}],\"methodName\":\"func3\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func4(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":6},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":15,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":17,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":24},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":24}],\"methodName\":\"func4\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func5(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":17,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":19,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":7},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":8},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":9},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":24}],\"methodName\":\"func5\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func6(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":19,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":16,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":7},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":16,\"name\":\"_goto\"},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":8},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":16,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":9},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":24},{\"codeOffset\":21,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func6\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func7(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":16,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":16,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":11,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":16,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":16,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":24}],\"methodName\":\"func7\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func8(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":16,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":13,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":13,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":11,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":13,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":24},{\"codeOffset\":18,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func8\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
     public void testComplexConditionAssign1() {
         String text = "void func(boolean a, boolean b, boolean c, boolean d){\n" +
                 "\tboolean e= a||b&&c||d;\n" +
