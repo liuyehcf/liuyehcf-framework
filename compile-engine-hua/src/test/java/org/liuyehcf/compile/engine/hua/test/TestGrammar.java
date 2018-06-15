@@ -622,7 +622,135 @@ public class TestGrammar {
         CompileResult<HuaResult> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"jSONTable\":{\"func(boolean,boolean,boolean,boolean,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":5,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                "{\"jSONTable\":{\"func(boolean,boolean,boolean,boolean,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":5,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testNestedIf4() {
+        String text = "void func1(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\telse\n" +
+                "\t\ti=3;\t\n" +
+                "}\n" +
+                "\n" +
+                "void func2(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\telse\n" +
+                "\t\ti=3;\n" +
+                "\tj=1;\t\n" +
+                "}\n" +
+                "\n" +
+                "void func3(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}\n" +
+                "\t\tj=1;\n" +
+                "\t}\n" +
+                "\telse\n" +
+                "\t\ti=3;\n" +
+                "}\n" +
+                "\n" +
+                "\n" +
+                "void func4(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}else\n" +
+                "\t\t\ti=2;\n" +
+                "\t}\n" +
+                "\telse\n" +
+                "\t\ti=3;\n" +
+                "}\n" +
+                "\n" +
+                "void func5(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}else\n" +
+                "\t\t\ti=2;\n" +
+                "\t\tj=1;\n" +
+                "\t}\n" +
+                "\telse\n" +
+                "\t\ti=3;\n" +
+                "}\n" +
+                "\n" +
+                "void func6(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}else\n" +
+                "\t\t\ti=2;\n" +
+                "\t}\n" +
+                "\telse\n" +
+                "\t\ti=3;\n" +
+                "\tj=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(boolean,boolean,boolean,boolean,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":5,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testNestedIf5() {
+        String text = "void func1(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}\n" +
+                "\t\tj=5;\n" +
+                "\t}\n" +
+                "}\n" +
+                "\n" +
+                "void func2(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "}\n" +
+                "\n" +
+                "void func3(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}else\n" +
+                "\t\t\ti=2;\n" +
+                "\t}\n" +
+                "}\n" +
+                "\n" +
+                "void func4(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}else\n" +
+                "\t\t\ti=2;\n" +
+                "\t\tj=5;\n" +
+                "\t}\n" +
+                "}\n";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func1(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":8,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"offset\":24}],\"methodName\":\"func1\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func2(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func2\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func3(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func3\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func4(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":11,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"offset\":24}],\"methodName\":\"func4\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
                 result.getResult().getMethodInfoTable().toString()
         );
     }
