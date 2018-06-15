@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.hua.compiler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -16,7 +16,7 @@ public class MethodInfoTable {
     private MethodInfo curMethodInfo;
 
     public MethodInfoTable() {
-        table = new HashMap<>(16);
+        table = new LinkedHashMap<>(16);
     }
 
     public MethodInfo getCurMethodInfo() {
@@ -34,12 +34,8 @@ public class MethodInfoTable {
     }
 
     public Map<String, MethodInfo> getJSONTable() {
-        Map<String, MethodInfo> tableJSONMap = new HashMap<>(16);
-        table.forEach(
-                (key, value) -> {
-                    tableJSONMap.put(key.getDescription(), value);
-                }
-        );
+        Map<String, MethodInfo> tableJSONMap = new LinkedHashMap<>(16);
+        table.forEach((key, value) -> tableJSONMap.put(key.getDescription(), value));
         return tableJSONMap;
     }
 

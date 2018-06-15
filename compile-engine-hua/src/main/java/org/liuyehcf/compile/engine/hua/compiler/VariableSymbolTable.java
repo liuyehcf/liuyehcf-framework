@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.liuyehcf.compile.engine.hua.model.Type;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
@@ -43,14 +43,14 @@ public class VariableSymbolTable {
     public VariableSymbolTable() {
         namespaceCnt = 0;
         currentNamespace = new Namespace(namespaceCnt++, Namespace.NO_PARENT_NAMESPACE);
-        namespaceMap = new HashMap<>(16);
-        table = new HashMap<>(16);
-        offsetMap = new HashMap<>(16);
+        namespaceMap = new LinkedHashMap<>(16);
+        table = new LinkedHashMap<>(16);
+        offsetMap = new LinkedHashMap<>(16);
 
         assertFalse(namespaceMap.containsKey(currentNamespace.getId()));
         namespaceMap.put(currentNamespace.getId(), currentNamespace);
-        table.put(currentNamespace, new HashMap<>());
-        offsetMap.put(currentNamespace, new HashMap<>());
+        table.put(currentNamespace, new LinkedHashMap<>());
+        offsetMap.put(currentNamespace, new LinkedHashMap<>());
     }
 
     public void enterNamespace() {
@@ -58,8 +58,8 @@ public class VariableSymbolTable {
 
         assertFalse(table.containsKey(currentNamespace));
         assertFalse(offsetMap.containsKey(currentNamespace));
-        table.put(currentNamespace, new HashMap<>(16));
-        offsetMap.put(currentNamespace, new HashMap<>(16));
+        table.put(currentNamespace, new LinkedHashMap<>(16));
+        offsetMap.put(currentNamespace, new LinkedHashMap<>(16));
 
         assertFalse(namespaceMap.containsKey(currentNamespace.getId()));
         namespaceMap.put(currentNamespace.getId(), currentNamespace);
@@ -132,10 +132,8 @@ public class VariableSymbolTable {
     }
 
     public Map<String, Map<String, VariableSymbol>> getJSONTable() {
-        Map<String, Map<String, VariableSymbol>> tableJSONMap = new HashMap<>(16);
-        table.forEach((key, value) -> {
-            tableJSONMap.put("[" + key.getId() + ", " + key.getPid() + "]", value);
-        });
+        Map<String, Map<String, VariableSymbol>> tableJSONMap = new LinkedHashMap<>(16);
+        table.forEach((key, value) -> tableJSONMap.put("[" + key.getId() + ", " + key.getPid() + "]", value));
         return tableJSONMap;
     }
 
