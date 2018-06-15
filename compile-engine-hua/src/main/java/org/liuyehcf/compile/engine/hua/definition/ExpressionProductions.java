@@ -346,7 +346,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            null
+                            new MergeControlTransferByteCode(0, -3)
                     )
             ),
 
@@ -363,7 +363,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(-1, ControlTransferType.IFNE, BackFillType.TRUE)
+                            new AddControlTransferByteCode(-1, ControlTransferType.IFNE, BackFillType.TRUE),
+                            new BackFill(-1, BackFillType.FALSE)
                     )
             ),
 
@@ -411,7 +412,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(-1, ControlTransferType.IFEQ, BackFillType.FALSE)
+                            new AddControlTransferByteCode(-1, ControlTransferType.IFEQ, BackFillType.FALSE),
+                            new BackFill(-1, BackFillType.TRUE)
                     )
             ),
 
@@ -1143,7 +1145,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new AssignAttr(-1, AttrName.TYPE.name(), -2, AttrName.TYPE.name())
+                            new AssignAllAttr(-1, -2)
                     ),
                     /*
                      * <primary no new array> → <method invocation>

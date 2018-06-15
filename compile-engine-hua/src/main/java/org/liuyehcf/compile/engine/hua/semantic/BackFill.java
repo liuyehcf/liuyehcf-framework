@@ -7,9 +7,6 @@ import org.liuyehcf.compile.engine.hua.model.BackFillType;
 
 import java.util.List;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
-import static org.liuyehcf.compile.engine.hua.model.BackFillType.TRUE;
-
 /**
  * 布尔值回填
  *
@@ -51,16 +48,19 @@ public class BackFill extends AbstractSemanticAction {
                 throw new UnsupportedOperationException();
         }
 
-
+        /*
+         * 允许以下情况不进行回填
+         * 1. `if(a) {...} ` 直接往下走TRUE代码块，不需要回填TRUE
+         * 2. `a||b` 当a不成立的时候，直接往下走，不需要回填FALSE
+         */
         if (codes != null) {
             for (ControlTransfer code : codes) {
                 code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
             }
-        } else {
             /*
-             * 允许 `if(a) {...} ` 直接往下走TRUE代码块，不需要回填值
+             * 已经回填的就删除，避免二次回填
              */
-            assertEquals(backFillType, TRUE);
+            codes.clear();
         }
     }
 }

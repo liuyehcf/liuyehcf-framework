@@ -536,7 +536,7 @@ public class TestGrammar {
 
 
     @Test
-    public void testComplexConditionIf() {
+    public void testComplexConditionIf1() {
         String text = "\tvoid if1(boolean a, boolean b, int c){\n" +
                 "\t\tif(a||b){\n" +
                 "\t\t\tc=3;\n" +
@@ -574,6 +574,50 @@ public class TestGrammar {
         );
         assertEquals(
                 "{\"jSONTable\":{\"[4, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":4,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":4,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":4,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[6, 5]\":{},\"[12, 11]\":{},\"[8, 7]\":{},\"[11, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":11,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":11,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":11,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[2, 1]\":{},\"[0, -1]\":{},\"[13, 12]\":{},\"[9, 8]\":{},\"[1, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[7, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":7,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":7,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":7,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[14, 12]\":{},\"[3, 2]\":{},\"[10, 8]\":{},\"[5, 4]\":{}}}",
+                result.getResult().getVariableSymbolTable().toString()
+        );
+    }
+
+    @Test
+    public void testComplexConditionIf2() {
+        String text = "\tvoid testIf(boolean a, boolean b, boolean c, boolean d, int e){\n" +
+                "\t\tif(a||b&&c){\n" +
+                "\t\t\te=3;\n" +
+                "\t\t}else{\n" +
+                "\t\t\te=4;\n" +
+                "\t\t}\n" +
+                "\t}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"testIf(boolean,boolean,boolean,boolean,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":6,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"3\"},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":11,\"name\":\"_goto\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"4\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"testIf\",\"offset\":0,\"paramSize\":5,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+        assertEquals(
+                "{\"jSONTable\":{\"[4, 2]\":{},\"[1, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"d\":{\"name\":\"d\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":12,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"e\":{\"name\":\"e\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[2, 1]\":{},\"[0, -1]\":{},\"[3, 2]\":{}}}",
+                result.getResult().getVariableSymbolTable().toString()
+        );
+    }
+
+    @Test
+    public void testComplexConditionIf3() {
+        String text = "\tvoid if5(boolean a, boolean b, boolean c, boolean d, int e){\n" +
+                "\t\tif((a||b)&&c||(d)){\n" +
+                "\t\t\te=3;\n" +
+                "\t\t}else{\n" +
+                "\t\t\te=4;\n" +
+                "\t\t}\n" +
+                "\t}";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"if5(boolean,boolean,boolean,boolean,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":4,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":8,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":11,\"name\":\"_ifeq\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"3\"},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":13,\"name\":\"_goto\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"4\"},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"if5\",\"offset\":0,\"paramSize\":5,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+        assertEquals(
+                "{\"jSONTable\":{\"[4, 2]\":{},\"[1, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"d\":{\"name\":\"d\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":12,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"e\":{\"name\":\"e\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":16,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[2, 1]\":{},\"[0, -1]\":{},\"[3, 2]\":{}}}",
                 result.getResult().getVariableSymbolTable().toString()
         );
     }
