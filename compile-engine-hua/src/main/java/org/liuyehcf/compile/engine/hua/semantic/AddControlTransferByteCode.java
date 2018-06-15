@@ -6,17 +6,14 @@ import org.liuyehcf.compile.engine.hua.definition.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author chenlu
  * @date 2018/6/13
  */
 public class AddControlTransferByteCode extends AbstractSemanticAction {
-
-    /**
-     * 是否必须
-     * 对于例如 boolean c=true; 是不需要转移指令的
-     */
-    private final boolean isNeed;
 
     /**
      * 待回填字节码的栈偏移量
@@ -33,8 +30,7 @@ public class AddControlTransferByteCode extends AbstractSemanticAction {
      */
     private final BackFillType backFillType;
 
-    public AddControlTransferByteCode(boolean isNeed, int firstStackOffset, ControlTransferType controlTransferType, BackFillType backFillType) {
-        this.isNeed = isNeed;
+    public AddControlTransferByteCode(int firstStackOffset, ControlTransferType controlTransferType, BackFillType backFillType) {
         this.firstStackOffset = firstStackOffset;
         this.controlTransferType = controlTransferType;
         this.backFillType = backFillType;
@@ -42,11 +38,6 @@ public class AddControlTransferByteCode extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        if (!isNeed
-                && context.getStack().get(firstStackOffset).get(AttrName.IS_CONDITION_EXPRESSION.name()) == null) {
-            return;
-        }
-
         ControlTransfer code;
         switch (controlTransferType) {
             case IFEQ:
@@ -78,16 +69,27 @@ public class AddControlTransferByteCode extends AbstractSemanticAction {
 
         switch (backFillType) {
             case TRUE:
-                context.getStack().get(firstStackOffset).put(AttrName.TRUE_BYTE_CODE.name(), code);
+                addCode(context, AttrName.TRUE_BYTE_CODE.name(), code);
                 break;
             case FALSE:
-                context.getStack().get(firstStackOffset).put(AttrName.FALSE_BYTE_CODE.name(), code);
+                addCode(context, AttrName.FALSE_BYTE_CODE.name(), code);
                 break;
             case NEXT:
-                context.getStack().get(firstStackOffset).put(AttrName.NEXT_BYTE_CODE.name(), code);
+                addCode(context, AttrName.NEXT_BYTE_CODE.name(), code);
                 break;
             default:
                 throw new UnsupportedOperationException();
         }
+    }
+
+    private void addCode(HuaCompiler.HuaContext context, String attrName, ControlTransfer code) {
+        List<ControlTransfer> codes = context.getStack().get(firstStackOffset).get(attrName);
+
+        if (codes == null) {
+            codes = new ArrayList<>();
+            context.getStack().get(firstStackOffset).put(attrName, codes);
+        }
+
+        codes.add(code);
     }
 }

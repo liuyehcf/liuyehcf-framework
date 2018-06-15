@@ -5,6 +5,11 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 
+import java.util.List;
+
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
+import static org.liuyehcf.compile.engine.hua.model.BackFillType.TRUE;
+
 /**
  * 布尔值回填
  *
@@ -30,27 +35,32 @@ public class BackFill extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        ControlTransfer code;
+        List<ControlTransfer> codes;
 
         switch (backFillType) {
             case TRUE:
-                code = context.getStack().get(backFillStackOffset).get(AttrName.TRUE_BYTE_CODE.name());
+                codes = context.getStack().get(backFillStackOffset).get(AttrName.TRUE_BYTE_CODE.name());
                 break;
             case FALSE:
-                code = context.getStack().get(backFillStackOffset).get(AttrName.FALSE_BYTE_CODE.name());
+                codes = context.getStack().get(backFillStackOffset).get(AttrName.FALSE_BYTE_CODE.name());
                 break;
             case NEXT:
-                code = context.getStack().get(backFillStackOffset).get(AttrName.NEXT_BYTE_CODE.name());
+                codes = context.getStack().get(backFillStackOffset).get(AttrName.NEXT_BYTE_CODE.name());
                 break;
             default:
                 throw new UnsupportedOperationException();
         }
 
-        /*
-         * 允许 `if(a) {...} ` 直接往下走，不需要回填值
-         */
-        if (code != null) {
-            code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+
+        if (codes != null) {
+            for (ControlTransfer code : codes) {
+                code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+            }
+        } else {
+            /*
+             * 允许 `if(a) {...} ` 直接往下走TRUE代码块，不需要回填值
+             */
+            assertEquals(backFillType, TRUE);
         }
     }
 }

@@ -54,9 +54,4 @@ public enum AttrName {
      * 布尔表达式后续的字节码
      */
     NEXT_BYTE_CODE,
-
-    /**
-     * 是否为条件表达式
-     */
-    IS_CONDITION_EXPRESSION,
 }

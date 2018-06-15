@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.core.utils;
 
+import java.util.Objects;
+
 /**
  * 断言工具类
  *
@@ -30,6 +32,12 @@ public class AssertUtils {
 
     public static void assertNull(Object obj) {
         if (obj != null) {
+            throw new AssertionError();
+        }
+    }
+
+    public static void assertEquals(Object obj1, Object obj2) {
+        if (!Objects.equals(obj1, obj2)) {
             throw new AssertionError();
         }
     }

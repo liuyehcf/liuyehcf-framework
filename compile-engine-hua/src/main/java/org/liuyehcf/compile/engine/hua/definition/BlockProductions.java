@@ -540,8 +540,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddFutureSyntaxNode(1),
-                            new SetAttrFromSystem(1, AttrName.IS_CONDITION_EXPRESSION.name(), new Object())
+                            new AddFutureSyntaxNode(1)
                     )
             ),
 
@@ -558,6 +557,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
+                            new AddControlTransferByteCode(-1, ControlTransferType.IFEQ, BackFillType.FALSE),
                             new BackFill(-1, BackFillType.TRUE)
                     )
             ),
@@ -575,7 +575,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(true, -7, ControlTransferType.GOTO, BackFillType.NEXT),
+                            new AddControlTransferByteCode(-7, ControlTransferType.GOTO, BackFillType.NEXT),
                             new BackFill(-4, BackFillType.FALSE)
                     )
             ),

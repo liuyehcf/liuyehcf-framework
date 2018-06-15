@@ -508,7 +508,7 @@ public class TestGrammar {
     }
 
     @Test
-    public void testIf() {
+    public void testSingleConditionIf() {
         String text = "void testIf1(boolean a,int b){\n" +
                 "    if(a){\n" +
                 "        b=3;\n" +
@@ -530,6 +530,50 @@ public class TestGrammar {
         );
         assertEquals(
                 "{\"jSONTable\":{\"[4, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":4,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":4,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[6, 5]\":{},\"[1, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[2, 1]\":{},\"[0, -1]\":{},\"[3, 2]\":{},\"[7, 5]\":{},\"[5, 4]\":{}}}",
+                result.getResult().getVariableSymbolTable().toString()
+        );
+    }
+
+
+    @Test
+    public void testComplexConditionIf() {
+        String text = "\tvoid if1(boolean a, boolean b, int c){\n" +
+                "\t\tif(a||b){\n" +
+                "\t\t\tc=3;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\n" +
+                "\tvoid if2(boolean a, boolean b, int c){\n" +
+                "\t\tif(a&&b){\n" +
+                "\t\t\tc=3;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\n" +
+                "\tvoid if3(boolean a, boolean b, int c){\n" +
+                "\t\tif(a||b){\n" +
+                "\t\t\tc=3;\n" +
+                "\t\t}else{\n" +
+                "\t\t\tc=4;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\n" +
+                "\tvoid if4(boolean a, boolean b, int c){\n" +
+                "\t\tif(a&&b){\n" +
+                "\t\t\tc=3;\n" +
+                "\t\t}else{\n" +
+                "\t\t\tc=4;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\n";
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"if2(boolean,boolean,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"3\"},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"if2\",\"offset\":0,\"paramSize\":3,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"if1(boolean,boolean,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":4,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"3\"},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"if1\",\"offset\":0,\"paramSize\":3,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"if3(boolean,boolean,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":4,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"3\"},{\"name\":\"_istore\",\"offset\":8},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"4\"},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"if3\",\"offset\":0,\"paramSize\":3,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"if4(boolean,boolean,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"3\"},{\"name\":\"_istore\",\"offset\":8},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_ldc\",\"type\":\"int\",\"value\":\"4\"},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"if4\",\"offset\":0,\"paramSize\":3,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+        assertEquals(
+                "{\"jSONTable\":{\"[4, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":4,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":4,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":4,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[6, 5]\":{},\"[12, 11]\":{},\"[8, 7]\":{},\"[11, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":11,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":11,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":11,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[2, 1]\":{},\"[0, -1]\":{},\"[13, 12]\":{},\"[9, 8]\":{},\"[1, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":1,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[7, 0]\":{\"a\":{\"name\":\"a\",\"namespace\":{\"id\":7,\"pid\":0},\"offset\":0,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"b\":{\"name\":\"b\",\"namespace\":{\"id\":7,\"pid\":0},\"offset\":4,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}},\"c\":{\"name\":\"c\",\"namespace\":{\"id\":7,\"pid\":0},\"offset\":8,\"type\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}}},\"[14, 12]\":{},\"[3, 2]\":{},\"[10, 8]\":{},\"[5, 4]\":{}}}",
                 result.getResult().getVariableSymbolTable().toString()
         );
     }

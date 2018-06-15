@@ -333,7 +333,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            new AddControlTransferByteCode(false, 0, ControlTransferType.IFEQ, BackFillType.FALSE)
+                            null
                     ),
                     /*
                      * (2) <conditional or expression> → <conditional or expression> || <mark 230_2_1> <conditional and expression>
@@ -346,7 +346,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            new AddControlTransferByteCode(true, -3, ControlTransferType.IFEQ, BackFillType.FALSE)
+                            null
                     )
             ),
 
@@ -363,7 +363,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(true, -1, ControlTransferType.IFNE, BackFillType.TRUE)
+                            new AddControlTransferByteCode(-1, ControlTransferType.IFNE, BackFillType.TRUE)
                     )
             ),
 
@@ -394,7 +394,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            new AddControlTransferByteCode(true, -3, ControlTransferType.IFEQ, BackFillType.FALSE)
+                            null
                     )
             ),
 
@@ -411,7 +411,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(true, -1, ControlTransferType.IFEQ, BackFillType.FALSE)
+                            new AddControlTransferByteCode(-1, ControlTransferType.IFEQ, BackFillType.FALSE)
                     )
             ),
 
