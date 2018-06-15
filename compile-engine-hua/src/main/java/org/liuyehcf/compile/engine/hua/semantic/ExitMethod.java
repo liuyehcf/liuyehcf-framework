@@ -2,6 +2,8 @@ package org.liuyehcf.compile.engine.hua.semantic;
 
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
+
 /**
  * 退出方法标记
  *
@@ -13,5 +15,7 @@ public class ExitMethod extends AbstractSemanticAction {
     public void onAction(HuaCompiler.HuaContext context) {
         context.getHuaEngine().getMethodInfoTable().exitMethod();
         context.getHuaEngine().resetOffset();
+        context.getHuaEngine().getStatusInfo().getUncertainCodes().clear();
+        assertTrue(context.getHuaEngine().getStatusInfo().getIfNestedLevel() == 0);
     }
 }

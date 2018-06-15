@@ -366,7 +366,7 @@ abstract class ExpressionProductions {
                                     Symbol.EPSILON
                             ),
                             new AddControlTransferByteCode(-1, ControlTransferType.IFNE, BackFillType.TRUE),
-                            new BackFill(-1, BackFillType.FALSE)
+                            new BackFill(-1, BackFillType.FALSE, true)
                     )
             ),
 
@@ -416,7 +416,7 @@ abstract class ExpressionProductions {
                                     Symbol.EPSILON
                             ),
                             new AddControlTransferByteCode(-1, ControlTransferType.IFEQ, BackFillType.FALSE),
-                            new BackFill(-1, BackFillType.TRUE)
+                            new BackFill(-1, BackFillType.TRUE, true)
                     )
             ),
 

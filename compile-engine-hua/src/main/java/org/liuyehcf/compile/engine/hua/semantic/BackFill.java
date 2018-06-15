@@ -25,9 +25,17 @@ public class BackFill extends AbstractSemanticAction {
      */
     private final BackFillType backFillType;
 
-    public BackFill(int backFillStackOffset, BackFillType backFillType) {
+    /**
+     * 是否确定回填
+     * true：本次即完成回填
+     * false：还可以被再次回填
+     */
+    private final boolean isCertain;
+
+    public BackFill(int backFillStackOffset, BackFillType backFillType, boolean isCertain) {
         this.backFillStackOffset = backFillStackOffset;
         this.backFillType = backFillType;
+        this.isCertain = isCertain;
     }
 
     @Override
@@ -57,10 +65,29 @@ public class BackFill extends AbstractSemanticAction {
             for (ControlTransfer code : codes) {
                 code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
             }
+
+            /*
+             * 解决的是如下情况
+             *  if(a){
+             *      if(b){  // 这里的回填值，需要被二次回填（第一次回填的是else部分的语句）
+             *          ...
+             *      }
+             *  } else {
+             *      ...
+             *  }
+             */
+            if (!isCertain && hasOuterIfStatement(context)) {
+                context.getHuaEngine().getStatusInfo().getUncertainCodes().addAll(codes);
+            }
+
             /*
              * 已经回填的就删除，避免二次回填
              */
             codes.clear();
         }
+    }
+
+    private boolean hasOuterIfStatement(HuaCompiler.HuaContext context) {
+        return context.getHuaEngine().getStatusInfo().getIfNestedLevel() > 0;
     }
 }
