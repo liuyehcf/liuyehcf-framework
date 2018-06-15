@@ -281,7 +281,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            null
+                            new BooleanAssign()
                     )
                     /*
                      * TODO 缺少以下产生式

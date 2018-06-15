@@ -12,6 +12,7 @@ public abstract class Constant {
     public static final String NORMAL_INT = "int";
     public static final String NORMAL_FLOAT = "float";
     public static final String NORMAL_VOID = "void";
+    public static final String COMPLEX_BOOLEAN_EXPRESSION = "complex_boolean_expression";
 
     /**
      * control

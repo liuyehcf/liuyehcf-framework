@@ -4,13 +4,12 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.*;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.REGEX_IDENTIFIER;
-import static org.liuyehcf.compile.engine.hua.model.Type.BOOLEAN_WIDTH;
-import static org.liuyehcf.compile.engine.hua.model.Type.INT_WIDTH;
+import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
+import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_INT;
 
 /**
  * @author hechenfeng
@@ -110,7 +109,7 @@ abstract class TokenProductions {
                                     Symbol.createNonTerminator(INTEGER_LITERAL)
                             ),
                             new PushLiteralToOperatorStack(NORMAL_INT),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.createNormalType(NORMAL_INT, INT_WIDTH))
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_INT)
                     ),
                     /*
                      * <literal> → <boolean literal>
@@ -121,7 +120,7 @@ abstract class TokenProductions {
                                     Symbol.createNonTerminator(BOOLEAN_LITERAL)
                             ),
                             new PushLiteralToOperatorStack(NORMAL_BOOLEAN),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.createNormalType(NORMAL_BOOLEAN, BOOLEAN_WIDTH))
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_BOOLEAN)
                     )
                     /*
                      * TODO 缺少以下产生式

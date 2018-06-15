@@ -107,7 +107,5 @@ public class HuaCompiler extends LALR<HuaResult> {
                 ((AbstractSemanticAction) semanticAction).onAction(new HuaContext(context, this));
             }
         }
-
     }
-
 }

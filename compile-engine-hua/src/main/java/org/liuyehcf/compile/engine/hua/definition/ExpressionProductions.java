@@ -346,6 +346,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
+                            new SetAttrFromSystem(-3, AttrName.COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
                             new MergeControlTransferByteCode(0, -3)
                     )
             ),
@@ -395,7 +396,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            null
+                            new SetAttrFromSystem(-3, AttrName.COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
+                            new MergeControlTransferByteCode(0, -3)
                     )
             ),
 

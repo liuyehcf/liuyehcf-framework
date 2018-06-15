@@ -4,15 +4,14 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.IncreaseArrayTypeDim;
 import org.liuyehcf.compile.engine.hua.semantic.SetAttrFromSystem;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_MIDDLE_LEFT_PARENTHESES;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_MIDDLE_RIGHT_PARENTHESES;
-import static org.liuyehcf.compile.engine.hua.model.Type.BOOLEAN_WIDTH;
-import static org.liuyehcf.compile.engine.hua.model.Type.INT_WIDTH;
+import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
+import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_INT;
 
 /**
  * @author hechenfeng
@@ -80,7 +79,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.createNormalType(NORMAL_BOOLEAN, BOOLEAN_WIDTH))
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_BOOLEAN)
                     )
             ),
 
@@ -127,7 +126,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_INT)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.createNormalType(NORMAL_INT, INT_WIDTH))
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_INT)
                     )
                     /*
                      * TODO 缺少以下产生式

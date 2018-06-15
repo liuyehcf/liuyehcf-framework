@@ -2,16 +2,19 @@ package org.liuyehcf.compile.engine.hua.model;
 
 import java.util.Objects;
 
+import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_BOOLEAN;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
+
 /**
  * @author chenlu
  * @date 2018/6/12
  */
 public class Type {
 
-    public final static int INT_WIDTH = 8;
-    public final static int BOOLEAN_WIDTH = 4;
     public final static int VOID_WIDTH = 0;
     private final static int NORMAL_TYPE_DIM = 0;
+    public final static Type TYPE_INT = createNormalType(NORMAL_INT, 8);
+    public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, 4);
     private final static int ARRAY_TYPE_WIDTH = 8;
     /**
      * 类型名称

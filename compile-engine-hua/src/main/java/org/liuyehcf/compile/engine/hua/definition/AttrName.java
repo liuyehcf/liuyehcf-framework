@@ -41,6 +41,11 @@ public enum AttrName {
     LITERAL_VALUE,
 
     /**
+     * 是否为复杂布尔表达式
+     */
+    COMPLEX_BOOLEAN_EXPRESSION,
+
+    /**
      * 布尔表达式为true时的字节码
      */
     TRUE_BYTE_CODE,
