@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.hua.semantic;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._goto;
+import org.liuyehcf.compile.engine.hua.bytecode.cf._ifeq;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._iconst;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;
@@ -26,6 +27,14 @@ public class BooleanAssign extends AbstractSemanticAction {
 
         List<ControlTransfer> codes;
 
+        ControlTransfer __ifeq = new _ifeq();
+        ControlTransfer __goto = new _goto();
+
+        /*
+         * 插入一个IFEQ
+         */
+        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(__ifeq);
+
         /*
          * TRUE回填
          */
@@ -42,11 +51,15 @@ public class BooleanAssign extends AbstractSemanticAction {
          */
         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iconst(1));
 
-
         /*
          * 压入goto
          */
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _goto());
+        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(__goto);
+
+        /*
+         * 回填ifeq
+         */
+        __ifeq.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
 
         /*
          * FALSE回填
@@ -63,5 +76,10 @@ public class BooleanAssign extends AbstractSemanticAction {
          * 压入0，代表false
          */
         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iconst(0));
+
+        /*
+         * 回填goto
+         */
+        __goto.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
     }
 }

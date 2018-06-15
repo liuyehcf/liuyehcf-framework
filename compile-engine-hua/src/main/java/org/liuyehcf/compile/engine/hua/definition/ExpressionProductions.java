@@ -123,6 +123,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
                                     Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
                             ),
+                            new BooleanAssign(),
                             new Assignment()
                     )
             ),
