@@ -611,7 +611,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <if then else statement> → if ( <mark condition expression> <expression> ) <mark true block> <statement no short if> else <mark false block> <statement>
+                     * (1) <if then else statement> → if ( <mark condition expression> <expression> ) <mark true block> <statement no short if> else <mark false block> <statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT),
@@ -638,7 +638,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <if then else statement no short if> → if ( <mark condition expression> <expression> ) <mark true block> <statement no short if> else <mark false block> <statement no short if>
+                     * (1) <if then else statement no short if> → if ( <mark condition expression> <expression> ) <mark true block> <statement no short if> else <mark false block> <statement no short if>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT_NO_SHORT_IF),
