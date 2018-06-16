@@ -8,7 +8,10 @@ import org.liuyehcf.compile.engine.core.grammar.converter.AugmentedGrammarConver
 import org.liuyehcf.compile.engine.core.grammar.converter.GrammarConverterPipelineImpl;
 import org.liuyehcf.compile.engine.core.grammar.converter.MergeGrammarConverter;
 import org.liuyehcf.compile.engine.core.grammar.converter.StatusExpandGrammarConverter;
-import org.liuyehcf.compile.engine.core.grammar.definition.*;
+import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
+import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
+import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
+import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 import org.liuyehcf.compile.engine.core.utils.Pair;
@@ -142,7 +145,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
     }
 
     @Override
-    protected final CompileResult doCompile(String input) {
+    protected final CompileResult<T> doCompile(String input) {
         return createCompiler(input).compile();
     }
 
@@ -152,20 +155,17 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
     @Override
     public final String getClosureJSONString() {
-        StringBuilder sb = new StringBuilder();
+        String sb = "";
 
-        sb.append('{');
+        sb += '{';
 
-        sb.append('\"')
-                .append("closures:")
-                .append('\"')
-                .append(':');
+        sb += "\"closures:\":";
 
-        sb.append(closures.values());
+        sb += closures.values();
 
-        sb.append('}');
+        sb += '}';
 
-        return sb.toString();
+        return sb;
     }
 
     @Override
@@ -853,7 +853,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         /**
          * 添加正常语法树节点
          */
-        public void addNormalSyntaxNode(Symbol id, String value) {
+        private void addNormalSyntaxNode(Symbol id, String value) {
             /*
              * 如果之前已经创建过Future语法树节点
              * 由于标记非终结符要为未来的语法树节点设置继承属性，这些语法树节点称为Future语法树节点
@@ -893,7 +893,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         /**
          * 压入正常语法树节点
          */
-        public void pushNormalSyntaxNode(SyntaxNode node) {
+        private void pushNormalSyntaxNode(SyntaxNode node) {
             stack.add(++top, node);
         }
 
@@ -907,20 +907,19 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         /**
          * 弹出实际栈顶元素，不包括Future语法树节点
          */
-        public SyntaxNode pop() {
+        private void pop() {
             if (size() < stack.size()) {
-                return stack.remove(top--);
+                stack.remove(top--);
             } else {
                 --top;
-                return stack.removeLast();
-
+                stack.removeLast();
             }
         }
 
         /**
          * 返回实际栈顶元素，不包括Future语法树节点
          */
-        public SyntaxNode peek() {
+        private SyntaxNode peek() {
             if (top > -1) {
                 return stack.get(top);
             }
@@ -977,7 +976,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         /**
          * 编译返回参数
          */
-        protected T result = null;
+        private T result = null;
         /**
          * 状态栈，状态即项目集闭包的id
          */
@@ -1003,7 +1002,11 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
             this.input = input;
         }
 
-        private CompileResult compile() {
+        protected void setResult(T result) {
+            this.result = result;
+        }
+
+        private CompileResult<T> compile() {
             before();
 
             doCompile();
@@ -1050,7 +1053,12 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
             boolean canBreak = false;
             while (!canBreak) {
-                nodeTransferOperation = getOperationFromAnalysisTable(statusStack.peek(), remainTokens.peek().getId());
+                Integer peekStatus = statusStack.peek();
+                Token peekToken = remainTokens.peek();
+                assertNotNull(peekStatus);
+                assertNotNull(peekToken);
+
+                nodeTransferOperation = getOperationFromAnalysisTable(peekStatus, peekToken.getId());
 
                 if (nodeTransferOperation == null) {
                     error();
@@ -1133,10 +1141,14 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
         private void jump() {
             AssertUtils.assertTrue(statusStack.size() + 1 == nodeStack.size());
-            AssertUtils.assertTrue(!statusStack.isEmpty() && !nodeStack.isEmpty());
 
-            NodeTransferOperation nextNodeTransferOperation = getOperationFromAnalysisTable(statusStack.peek(),
-                    nodeStack.peek().getId());
+            Integer peekStatus = statusStack.peek();
+            SyntaxNode peekNode = nodeStack.peek();
+
+            assertNotNull(peekStatus);
+            assertNotNull(peekNode);
+
+            NodeTransferOperation nextNodeTransferOperation = getOperationFromAnalysisTable(peekStatus, peekNode.getId());
             AssertUtils.assertNotNull(nextNodeTransferOperation);
             AssertUtils.assertFalse(nextNodeTransferOperation.getNextClosureId() == -1);
 

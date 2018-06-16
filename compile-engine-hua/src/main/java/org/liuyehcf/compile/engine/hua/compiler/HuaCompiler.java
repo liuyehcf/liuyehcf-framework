@@ -93,7 +93,7 @@ public class HuaCompiler extends LALR<HuaResult> {
 
         @Override
         protected void after() {
-            this.result = new HuaResult(variableSymbolTable, methodInfoTable);
+            setResult(new HuaResult(variableSymbolTable, methodInfoTable));
         }
 
         @Override

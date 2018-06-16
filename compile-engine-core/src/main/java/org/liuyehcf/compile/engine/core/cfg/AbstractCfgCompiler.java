@@ -85,7 +85,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
     }
 
     @Override
-    public final CompileResult compile(String input) {
+    public final CompileResult<T> compile(String input) {
         if (!isLegal) {
             throw new RuntimeException(this.getClass().getSimpleName() + " can't support this Grammar");
         }
@@ -99,7 +99,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
      * @param input 待匹配的输入
      * @return 编译结果
      */
-    protected abstract CompileResult doCompile(String input);
+    protected abstract CompileResult<T> doCompile(String input);
 
     @Override
     public final Grammar getGrammar() {

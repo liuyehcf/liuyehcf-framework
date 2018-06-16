@@ -110,7 +110,7 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
     }
 
     @Override
-    protected CompileResult doCompile(String input) {
+    protected CompileResult<T> doCompile(String input) {
         return new Engine(input).compile();
     }
 
@@ -269,13 +269,17 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
         /**
          * 编译返回参数
          */
-        protected Object result = null;
+        private T result = null;
 
         private Engine(String input) {
             this.input = input;
         }
 
-        private CompileResult compile() {
+        protected void setResult(T result) {
+            this.result = result;
+        }
+
+        private CompileResult<T> compile() {
             LexicalAnalyzer.TokenIterator tokenIterator = lexicalAnalyzer.iterator(input);
 
             // 取出全部的TokenId
@@ -284,7 +288,7 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
                 tokenIds.offer(tokenIterator.next().getId());
             }
             if (!tokenIterator.reachesEof()) {
-                return new CompileResult(false, null);
+                return new CompileResult<>(false, null);
             }
             tokenIds.offer(Symbol.DOLLAR);
 
@@ -342,10 +346,10 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
                     }
                 }
             } catch (CompilerException e) {
-                return new CompileResult(false, null);
+                return new CompileResult<>(false, null);
             }
 
-            return new CompileResult(true, result);
+            return new CompileResult<>(true, result);
         }
     }
 }
