@@ -89,18 +89,6 @@ public class BinaryOperator extends AbstractSemanticAction {
                 }
 
                 break;
-            case EQUAL:
-                throw new UnsupportedOperationException();
-            case NOT_EQUAL:
-                throw new UnsupportedOperationException();
-            case LESS:
-                throw new UnsupportedOperationException();
-            case LARGE:
-                throw new UnsupportedOperationException();
-            case LESS_EQUAL:
-                throw new UnsupportedOperationException();
-            case LARGE_EQUAL:
-                throw new UnsupportedOperationException();
             case SHIFT_LEFT:
                 checkIntegralType(rightType, SHIFT_LEFT);
 
@@ -224,17 +212,9 @@ public class BinaryOperator extends AbstractSemanticAction {
     }
 
     public enum Operator {
-        LOGICAL_OR("||"),
-        LOGICAL_AND("&&"),
         BIT_OR("|"),
         BIT_XOR("^"),
         BIT_AND("&"),
-        EQUAL("=="),
-        NOT_EQUAL("!="),
-        LESS("<"),
-        LARGE(">"),
-        LESS_EQUAL("<="),
-        LARGE_EQUAL(">="),
         SHIFT_LEFT("<<"),
         SHIFT_RIGHT(">>"),
         UNSIGNED_SHIFT_RIGHT(">>>"),
@@ -242,7 +222,7 @@ public class BinaryOperator extends AbstractSemanticAction {
         SUBTRACTION("-"),
         MULTIPLICATION("*"),
         DIVISION("/"),
-        REMAINDER("%"),;
+        REMAINDER("%");
 
         private final String sign;
 

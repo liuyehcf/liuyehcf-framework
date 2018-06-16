@@ -6,6 +6,7 @@ import org.liuyehcf.compile.engine.hua.bytecode.cf._ifeq;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._iconst;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 import java.util.List;
@@ -16,41 +17,52 @@ import java.util.List;
  * @author chenlu
  * @date 2018/6/15
  */
-public class BooleanAssign extends AbstractSemanticAction {
+public class BooleanAssignment extends AbstractSemanticAction {
 
     /**
-     * 布尔表达式的栈偏移量，相对于语法树栈
+     * 布尔表达式-栈偏移量，相对于语法树栈
      * '0'  表示栈顶
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
      */
     private final int booleanExpressionStackOffset;
 
-    public BooleanAssign(int booleanExpressionStackOffset) {
+    public BooleanAssignment(int booleanExpressionStackOffset) {
         this.booleanExpressionStackOffset = booleanExpressionStackOffset;
     }
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        Object obj = context.getStack().get(booleanExpressionStackOffset).get(AttrName.COMPLEX_BOOLEAN_EXPRESSION.name());
+        Object obj = context.getStack().get(booleanExpressionStackOffset).get(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name());
 
+        /*
+         * 对于普通的boolean字面值，或者boolean类型的变量，直接赋值即可
+         */
         if (obj == null) {
             return;
         }
 
-        List<ControlTransfer> codes;
+        ControlTransferType type = context.getStack().get(booleanExpressionStackOffset).get(AttrName.BOOLEAN_EXPRESSION_TYPE.name());
+        
+        ControlTransfer __code;
 
-        ControlTransfer __ifeq = new _ifeq();
+        if (type == null) {
+            __code = new _ifeq();
+        } else {
+            __code = ControlTransferType.getControlTransferByType(type);
+        }
+
         ControlTransfer __goto = new _goto();
 
         /*
-         * 插入一个IFEQ
+         * 插入一个__code
          */
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(__ifeq);
+        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(__code);
 
         /*
          * TRUE回填
          */
+        List<ControlTransfer> codes;
         codes = context.getStack().get(booleanExpressionStackOffset).get(AttrName.TRUE_BYTE_CODE.name());
         if (codes != null) {
             for (ControlTransfer code : codes) {
@@ -70,9 +82,9 @@ public class BooleanAssign extends AbstractSemanticAction {
         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(__goto);
 
         /*
-         * 回填ifeq
+         * 回填__code
          */
-        __ifeq.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+        __code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
 
         /*
          * FALSE回填
@@ -91,7 +103,7 @@ public class BooleanAssign extends AbstractSemanticAction {
         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iconst(0));
 
         /*
-         * 回填goto
+         * 回填__goto
          */
         __goto.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
     }

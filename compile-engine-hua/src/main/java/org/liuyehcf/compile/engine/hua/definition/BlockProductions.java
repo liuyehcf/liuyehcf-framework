@@ -563,7 +563,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(-1, ControlTransferType.IFEQ, BackFillType.FALSE),
+                            new AddControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
                             new BackFill(-1, BackFillType.TRUE, true)
                     )
             ),

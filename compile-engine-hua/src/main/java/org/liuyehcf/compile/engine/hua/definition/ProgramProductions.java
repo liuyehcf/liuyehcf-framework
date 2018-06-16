@@ -10,7 +10,7 @@ import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
 import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromLexical;
 import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
 import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrToLeftNode;
-import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssign;
+import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssignment;
 import org.liuyehcf.compile.engine.hua.semantic.method.EnterMethod;
 import org.liuyehcf.compile.engine.hua.semantic.method.ExitMethod;
 import org.liuyehcf.compile.engine.hua.semantic.method.RecordMethodDescription;
@@ -294,7 +294,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new BooleanAssign(0)
+                            new BooleanAssignment(0)
                     )
                     /*
                      * TODO 缺少以下产生式

@@ -285,6 +285,151 @@ public class TestGrammar {
     }
 
     @Test
+    public void testEqual() {
+        String text = "void func(int i, int j) {\n" +
+                "\tif(i==j)\n" +
+                "\t\ti=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":5,\"name\":\"_if_icmpne\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":0}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testNotEqual() {
+        String text = "void func(int i, int j) {\n" +
+                "\tif(i!=j)\n" +
+                "\t\ti=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":5,\"name\":\"_if_icmpeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":0}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testLess() {
+        String text = "void func(int i, int j) {\n" +
+                "\tif(i<j)\n" +
+                "\t\ti=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":5,\"name\":\"_if_icmpge\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":0}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testLarge() {
+        String text = "void func(int i, int j) {\n" +
+                "\tif(i>j)\n" +
+                "\t\ti=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":5,\"name\":\"_if_icmple\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":0}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testLessEqual() {
+        String text = "void func(int i, int j) {\n" +
+                "\tif(i<=j)\n" +
+                "\t\ti=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":5,\"name\":\"_if_icmpgt\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":0}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testLargeEqual() {
+        String text = "void func(int i, int j) {\n" +
+                "\tif(i>=j)\n" +
+                "\t\ti=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":5,\"name\":\"_if_icmplt\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":0}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testComplexCompareOperator1() {
+        String text = "void func1(boolean a, boolean b, int i, int j) {\n" +
+                "\tif(i>=j&&i<j||i>3&&j>=5||a&&b)\n" +
+                "\t\ti=1;\n" +
+                "}\n" +
+                "\n" +
+                "void func2(boolean a, boolean b, int i, int j) {\n" +
+                "\tif((i>=j&&(i<j||i>3))&&((j>=5)||a&&b))\n" +
+                "\t\ti=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func1(boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iload\",\"offset\":16},{\"codeOffset\":6,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iload\",\"offset\":16},{\"codeOffset\":16,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":12,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"func1\",\"offset\":0,\"paramSize\":4,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func2(boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iload\",\"offset\":16},{\"codeOffset\":18,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iload\",\"offset\":16},{\"codeOffset\":9,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":18,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"func2\",\"offset\":0,\"paramSize\":4,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testComplexCompareOperator2() {
+        String text = "void func1(boolean a, boolean b, int i, int j) {\n" +
+                "\tboolean c=i>=j&&i<j||i>3&&j>=5||a&&b;\n" +
+                "}\n" +
+                "\n" +
+                "void func2(boolean a, boolean b, int i, int j) {\n" +
+                "\tboolean c;\n" +
+                "\tc=((i>=j&&(i<j||i>3))&&((j>=5)||a&&b));\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func1(boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iload\",\"offset\":16},{\"codeOffset\":6,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iload\",\"offset\":16},{\"codeOffset\":16,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":12,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"offset\":24}],\"methodName\":\"func1\",\"offset\":0,\"paramSize\":4,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func2(boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iload\",\"offset\":16},{\"codeOffset\":18,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iload\",\"offset\":16},{\"codeOffset\":9,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":18,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"offset\":24}],\"methodName\":\"func2\",\"offset\":0,\"paramSize\":4,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
     public void testNormalAssign() {
         String text = "void func(int a,int b) {\n" +
                 "\tint c;\n" +

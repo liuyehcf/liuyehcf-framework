@@ -6,12 +6,13 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
+import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
 import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttrs;
 import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
 import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrToLeftNode;
-import org.liuyehcf.compile.engine.hua.semantic.condition.AddControlTransferByteCode;
+import org.liuyehcf.compile.engine.hua.semantic.condition.AddControlTransferByteCodeByType;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BackFill;
-import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssign;
+import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssignment;
 import org.liuyehcf.compile.engine.hua.semantic.condition.MergeControlTransferByteCode;
 import org.liuyehcf.compile.engine.hua.semantic.load.ArrayLoad;
 import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoad;
@@ -27,6 +28,7 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.definition.TokenProductions.*;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.PRIMITIVE_TYPE;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.REFERENCE_TYPE;
+import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
 
 /**
  * @author hechenfeng
@@ -137,7 +139,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
                                     Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
                             ),
-                            new BooleanAssign(0),
+                            new BooleanAssignment(0),
                             new Assignment(0, -1, -2)
                     )
             ),
@@ -361,7 +363,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(-3, AttrName.COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
+                            new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE.name()),
+                            new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
                             new MergeControlTransferByteCode(0, -3)
                     )
             ),
@@ -379,7 +382,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(-1, ControlTransferType.IFNE, BackFillType.TRUE),
+                            new AddControlTransferByteCodeByType(-1, -1, BackFillType.TRUE, true),
                             new BackFill(-1, BackFillType.FALSE, true)
                     )
             ),
@@ -411,7 +414,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(-3, AttrName.COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
+                            new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE.name()),
+                            new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
                             new MergeControlTransferByteCode(0, -3)
                     )
             ),
@@ -429,7 +433,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCode(-1, ControlTransferType.IFEQ, BackFillType.FALSE),
+                            new AddControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
                             new BackFill(-1, BackFillType.TRUE, true)
                     )
             ),
@@ -550,7 +554,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_EQUAL),
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.EQUAL)
+                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPNE)
                     ),
                     /*
                      * <equality expression> → <equality expression> != <relational expression>
@@ -562,7 +567,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_NOT_EQUAL),
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.NOT_EQUAL)
+                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPEQ)
                     )
             ),
 
@@ -592,7 +598,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LESS),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.LESS)
+                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPGE)
                     ),
                     /*
                      * <relational expression> → <relational expression> > <shift expression>
@@ -604,7 +611,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LARGE),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.LARGE)
+                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPLE)
                     ),
                     /*
                      * <relational expression> → <relational expression> <= <shift expression>
@@ -616,7 +624,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LESS_EQUAL),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.LESS_EQUAL)
+                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPGT)
                     ),
                     /*
                      * <relational expression> → <relational expression> >= <shift expression>
@@ -628,7 +637,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LARGE_EQUAL),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.LARGE_EQUAL)
+                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPLT)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -1162,7 +1172,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new AssignAttrs(-1, -2, AttrName.TYPE, AttrName.COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AssignAttrs(-1, -2, AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <primary no new array> → <method invocation>
