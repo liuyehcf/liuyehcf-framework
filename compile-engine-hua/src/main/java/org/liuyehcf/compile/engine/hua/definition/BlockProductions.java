@@ -715,8 +715,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
                             new ExitConditionStatement(),
-                            new BackToLoop(-1),
-                            new BackFill(-1, BackFillType.FALSE, false)
+                            new BackToLoop(-3),
+                            new BackFill(-3, BackFillType.FALSE, false)
                     )
             ),
 
