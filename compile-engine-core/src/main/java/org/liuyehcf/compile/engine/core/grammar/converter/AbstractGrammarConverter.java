@@ -1,6 +1,12 @@
 package org.liuyehcf.compile.engine.core.grammar.converter;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
+import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 /**
  * 文法转换器抽象基类
@@ -37,4 +43,30 @@ public abstract class AbstractGrammarConverter implements GrammarConverter {
      * @return 转换后的文法
      */
     protected abstract Grammar doConvert();
+
+    static void traverseDirectedGraph(Map<Symbol, List<Symbol>> edges, Map<Symbol, Integer> degrees, List<Symbol> visitedSymbol) {
+        Queue<Symbol> queue = new LinkedList<>();
+
+        for (Map.Entry<Symbol, Integer> entry : degrees.entrySet()) {
+            if (entry.getValue() == 0) {
+                queue.add(entry.getKey());
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            Symbol curSymbol = queue.poll();
+            visitedSymbol.add(curSymbol);
+
+            // 有向邻接节点
+            List<Symbol> adjList = edges.get(curSymbol);
+
+            for (Symbol adjSymbol : adjList) {
+                degrees.put(adjSymbol, degrees.get(adjSymbol) - 1);
+                // 度为0，可以访问
+                if (degrees.get(adjSymbol) == 0) {
+                    queue.offer(adjSymbol);
+                }
+            }
+        }
+    }
 }

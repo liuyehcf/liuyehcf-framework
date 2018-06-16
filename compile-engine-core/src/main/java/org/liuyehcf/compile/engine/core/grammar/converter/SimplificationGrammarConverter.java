@@ -3,7 +3,10 @@ package org.liuyehcf.compile.engine.core.grammar.converter;
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
 import org.liuyehcf.compile.engine.core.rg.utils.SymbolUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.*;
 
@@ -102,31 +105,9 @@ public class SimplificationGrammarConverter extends AbstractGrammarConverter {
             }
         }
 
-        Queue<Symbol> queue = new LinkedList<>();
-
         List<Symbol> visitedSymbol = new ArrayList<>();
 
-        for (Map.Entry<Symbol, Integer> entry : degrees.entrySet()) {
-            if (entry.getValue() == 0) {
-                queue.add(entry.getKey());
-            }
-        }
-
-        while (!queue.isEmpty()) {
-            Symbol curSymbol = queue.poll();
-            visitedSymbol.add(curSymbol);
-
-            // 有向邻接节点
-            List<Symbol> adjList = edges.get(curSymbol);
-
-            for (Symbol adjSymbol : adjList) {
-                degrees.put(adjSymbol, degrees.get(adjSymbol) - 1);
-                // 度为0，可以访问
-                if (degrees.get(adjSymbol) == 0) {
-                    queue.offer(adjSymbol);
-                }
-            }
-        }
+        traverseDirectedGraph(edges, degrees, visitedSymbol);
 
         assertTrue(visitedSymbol.size() == productionMap.size());
 
