@@ -9,6 +9,8 @@ import org.liuyehcf.compile.engine.core.utils.Pair;
 
 import java.util.*;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+
 /**
  * <p>Nfa自动机构造器</p>
  * <p>todo 目前还不支持：1. 匹配模式的选择</p>
@@ -255,7 +257,7 @@ public class NfaBuildIterator {
         NfaState outerQ = new NfaState();
         NfaState outerE = wrapNfaClosure.getEndNfaStates().get(0);
 
-        AssertUtils.assertNotNull(inner);
+        assertNotNull(inner);
         NfaState innerS = inner.getStartNfaState();
 
         // (1)
@@ -342,7 +344,7 @@ public class NfaBuildIterator {
         NfaState outerE = outer.getEndNfaStates().get(0);
         NfaState outerP = new NfaState();
 
-        AssertUtils.assertNotNull(inner);
+        assertNotNull(inner);
         NfaState innerS = inner.getStartNfaState();
 
         // (1)
@@ -425,7 +427,7 @@ public class NfaBuildIterator {
         NfaState outerQ = new NfaState();
         NfaState outerE = wrapNfaClosure.getEndNfaStates().get(0);
 
-        AssertUtils.assertNotNull(inner);
+        assertNotNull(inner);
         NfaState innerS = inner.getStartNfaState();
 
         // (1)
@@ -465,7 +467,7 @@ public class NfaBuildIterator {
     }
 
     private NfaClosure buildNfaClosureForRepeatInterval(Pair<Integer, Integer> repeatInterval) {
-        AssertUtils.assertNotNull(repeatInterval.getFirst());
+        assertNotNull(repeatInterval.getFirst());
 
         NfaClosure newNfaClosure;
 
@@ -705,12 +707,12 @@ public class NfaBuildIterator {
     }
 
     private void setStartAndReceiveOfCurNfaClosure() {
-        AssertUtils.assertNotNull(curNfaClosure);
+        assertNotNull(curNfaClosure);
         curNfaClosure.setStartAndReceive(getCurGroup());
     }
 
     private void changeGroupOfCurNfaClosure() {
-        AssertUtils.assertNotNull(curNfaClosure);
+        assertNotNull(curNfaClosure);
         curNfaClosure.setGroup(getCurGroup());
     }
 
@@ -724,7 +726,7 @@ public class NfaBuildIterator {
     }
 
     private void buildNfaClosureForNormalSymbol() {
-        curNfaClosure = buildNfaClosureWithSymbols(Arrays.asList(getCurSymbol()));
+        curNfaClosure = buildNfaClosureWithSymbols(Collections.singletonList(getCurSymbol()));
     }
 
     private void buildNonOrdinaryNfaClosure() {
@@ -860,7 +862,9 @@ public class NfaBuildIterator {
         }
 
         private int getCurGroup() {
-            return groupStack.peek();
+            Integer peek = groupStack.peek();
+            assertNotNull(peek);
+            return peek;
         }
 
         private int getMaxGroup() {
