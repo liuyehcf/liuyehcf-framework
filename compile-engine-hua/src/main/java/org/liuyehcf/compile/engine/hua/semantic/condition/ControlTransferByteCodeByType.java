@@ -58,6 +58,6 @@ public class ControlTransferByteCodeByType extends AbstractControlTransferByteCo
 
         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(code);
 
-        backFill(context, code);
+        doAddCode(context, code);
     }
 }
