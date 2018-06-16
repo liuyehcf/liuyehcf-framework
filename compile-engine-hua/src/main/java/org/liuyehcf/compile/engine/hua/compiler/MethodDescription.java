@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * 该类需要实现equals方法与hashCode方法（需要作为map的key）
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/6
  */
 public class MethodDescription {

@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.bytecode.ik;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/10
  */
 public class _invokestatic extends Invoke {

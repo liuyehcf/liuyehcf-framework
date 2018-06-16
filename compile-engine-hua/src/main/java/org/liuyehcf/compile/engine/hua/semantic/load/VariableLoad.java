@@ -14,7 +14,7 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
 /**
  * 将标志符压入操作数栈
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/4
  */
 public class VariableLoad extends AbstractSemanticAction {

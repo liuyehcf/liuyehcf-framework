@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 /**
  * 设置综合属性，来源于系统
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/2
  */
 public class SetAttrFromSystem extends AbstractSemanticAction {

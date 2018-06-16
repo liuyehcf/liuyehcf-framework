@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import org.liuyehcf.compile.engine.hua.model.Type;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/3
  */
 public class VariableSymbol {

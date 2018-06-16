@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 记录方法描述符
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/10
  */
 public class RecordMethodDescription extends AbstractSemanticAction {

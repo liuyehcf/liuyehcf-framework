@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.hua.bytecode.sl;
 /**
  * int 存储
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/8
  */
 public class _istore extends StoreLoad {

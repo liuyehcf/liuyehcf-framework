@@ -11,7 +11,7 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 /**
  * 加载字面值
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/11
  */
 public class LiteralLoad extends AbstractSemanticAction {

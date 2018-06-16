@@ -9,7 +9,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNull;
 /**
  * 属性赋值
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/15
  */
 public class AssignAttrs extends AbstractSemanticAction {

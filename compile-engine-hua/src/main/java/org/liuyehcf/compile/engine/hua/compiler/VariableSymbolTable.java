@@ -11,7 +11,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/3
  */
 public class VariableSymbolTable {

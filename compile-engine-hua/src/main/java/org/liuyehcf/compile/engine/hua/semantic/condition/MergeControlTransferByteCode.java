@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 合并待回填字节码属性
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/15
  */
 public class MergeControlTransferByteCode extends AbstractSemanticAction {

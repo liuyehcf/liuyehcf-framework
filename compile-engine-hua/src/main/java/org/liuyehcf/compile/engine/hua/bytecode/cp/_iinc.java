@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.hua.bytecode.cp;
 /**
  * int 自增
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/6
  */
 public class _iinc extends Compute {

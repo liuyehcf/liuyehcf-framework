@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.bytecode;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/2
  */
 public interface ByteCode {

@@ -15,7 +15,7 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMA
 /**
  * 赋值
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/10
  */
 public class Assignment extends AbstractSemanticAction {

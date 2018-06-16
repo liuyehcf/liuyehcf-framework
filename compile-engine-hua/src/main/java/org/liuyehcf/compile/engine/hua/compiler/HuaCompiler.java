@@ -9,7 +9,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 import java.util.List;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/2
  */
 public class HuaCompiler extends LALR<HuaResult> {

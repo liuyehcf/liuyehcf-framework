@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 /**
  * 进入方法标记
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/7
  */
 public class EnterMethod extends AbstractSemanticAction {

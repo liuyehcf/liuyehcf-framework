@@ -13,7 +13,7 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
 /**
  * 变量初始化
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/11
  */
 public class VariableInitialization extends AbstractSemanticAction {

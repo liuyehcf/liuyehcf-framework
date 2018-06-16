@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/12
  */
 public class HuaResult {

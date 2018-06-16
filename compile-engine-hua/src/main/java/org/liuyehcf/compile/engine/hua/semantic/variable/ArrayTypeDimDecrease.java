@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 /**
  * 数组类型降维
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/12
  */
 public class ArrayTypeDimDecrease extends AbstractSemanticAction {

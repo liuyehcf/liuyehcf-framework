@@ -5,7 +5,7 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 /**
  * 创建一个Future语法树节点，仅用于标记非终结符
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/2
  */
 public class AddFutureSyntaxNode extends AbstractSemanticAction {

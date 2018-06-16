@@ -7,7 +7,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 /**
  * 设置循环偏移量，即code编号
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/16
  */
 public class SetLoopOffset extends AbstractSemanticAction {

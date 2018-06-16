@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 /**
  * 根据标志符名称，设置IDENTIFIER_NAME、TYPE属性
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/11
  */
 public class SetIdentifierAttr extends AbstractSemanticAction {

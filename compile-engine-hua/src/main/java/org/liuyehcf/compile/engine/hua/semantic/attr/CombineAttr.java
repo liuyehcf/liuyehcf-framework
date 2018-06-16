@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 /**
  * 合并属性值，仅用于合并数值字面值
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/11
  */
 public class CombineAttr extends AbstractSemanticAction {

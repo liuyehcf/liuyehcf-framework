@@ -7,7 +7,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 /**
  * 属性赋值
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/2
  */
 public class AssignAttr extends AbstractSemanticAction {

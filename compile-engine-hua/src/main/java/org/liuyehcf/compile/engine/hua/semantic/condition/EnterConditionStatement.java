@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 /**
  * 进入条件语句，包括if语句、while语句
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/15
  */
 public class EnterConditionStatement extends AbstractSemanticAction {

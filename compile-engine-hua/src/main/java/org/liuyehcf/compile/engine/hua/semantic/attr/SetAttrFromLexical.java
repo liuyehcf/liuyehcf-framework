@@ -9,7 +9,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 /**
  * 设置综合属性，来源于词法分析器
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/2
  */
 public class SetAttrFromLexical extends AbstractSemanticAction {

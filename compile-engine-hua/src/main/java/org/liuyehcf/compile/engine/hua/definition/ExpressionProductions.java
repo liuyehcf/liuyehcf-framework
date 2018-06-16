@@ -10,9 +10,9 @@ import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
 import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttrs;
 import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
 import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrToLeftNode;
-import org.liuyehcf.compile.engine.hua.semantic.condition.AddControlTransferByteCodeByType;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BackFill;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssignment;
+import org.liuyehcf.compile.engine.hua.semantic.condition.ControlTransferByteCodeByType;
 import org.liuyehcf.compile.engine.hua.semantic.condition.MergeControlTransferByteCode;
 import org.liuyehcf.compile.engine.hua.semantic.load.ArrayLoad;
 import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoad;
@@ -382,7 +382,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCodeByType(-1, -1, BackFillType.TRUE, true),
+                            new ControlTransferByteCodeByType(-1, -1, BackFillType.TRUE, true),
                             new BackFill(-1, BackFillType.FALSE, true)
                     )
             ),
@@ -433,7 +433,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
+                            new ControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
                             new BackFill(-1, BackFillType.TRUE, true)
                     )
             ),

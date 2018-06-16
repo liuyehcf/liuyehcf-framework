@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 布尔赋值语句
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/15
  */
 public class BooleanAssignment extends AbstractSemanticAction {
@@ -43,7 +43,7 @@ public class BooleanAssignment extends AbstractSemanticAction {
         }
 
         ControlTransferType type = context.getStack().get(booleanExpressionStackOffset).get(AttrName.BOOLEAN_EXPRESSION_TYPE.name());
-        
+
         ControlTransfer __code;
 
         if (type == null) {

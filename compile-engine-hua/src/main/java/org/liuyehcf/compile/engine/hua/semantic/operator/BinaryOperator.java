@@ -12,7 +12,7 @@ import static org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperator.O
 /**
  * 双目运算
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/7
  */
 public class BinaryOperator extends AbstractSemanticAction {

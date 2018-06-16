@@ -9,7 +9,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 /**
  * 创建一个变量，记录类型、宽度、偏移量等信息
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/2
  */
 public class CreateVariable extends AbstractSemanticAction {

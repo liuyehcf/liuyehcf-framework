@@ -6,7 +6,7 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_BOOLEAN
 import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/12
  */
 public class Type {

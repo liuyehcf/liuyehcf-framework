@@ -8,7 +8,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 /**
  * 退出方法标记
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/7
  */
 public class ExitMethod extends AbstractSemanticAction {
