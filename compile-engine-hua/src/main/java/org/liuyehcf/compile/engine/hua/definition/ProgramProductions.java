@@ -5,7 +5,20 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.Type;
-import org.liuyehcf.compile.engine.hua.semantic.*;
+import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
+import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
+import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromLexical;
+import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
+import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrToLeftNode;
+import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssign;
+import org.liuyehcf.compile.engine.hua.semantic.method.EnterMethod;
+import org.liuyehcf.compile.engine.hua.semantic.method.ExitMethod;
+import org.liuyehcf.compile.engine.hua.semantic.method.RecordMethodDescription;
+import org.liuyehcf.compile.engine.hua.semantic.method.RecordParamTypeInfo;
+import org.liuyehcf.compile.engine.hua.semantic.operator.VariableInitialization;
+import org.liuyehcf.compile.engine.hua.semantic.variable.CreateVariable;
+import org.liuyehcf.compile.engine.hua.semantic.variable.EnterNamespace;
+import org.liuyehcf.compile.engine.hua.semantic.variable.ExitNamespace;
 
 import static org.liuyehcf.compile.engine.hua.definition.BlockProductions.BLOCK;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_VOID;
@@ -104,7 +117,7 @@ abstract class ProgramProductions {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new AddParamTypeInfo(-2, 0)
+                            new RecordParamTypeInfo(-2, 0)
                     ),
                     /*
                      * <formal parameter list> → <formal parameter>
@@ -115,7 +128,7 @@ abstract class ProgramProductions {
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
                             new SetAttrFromSystem(0, AttrName.PARAMETER_LIST.name(), null),
-                            new AddParamTypeInfo(0, 0)
+                            new RecordParamTypeInfo(0, 0)
                     )
             ),
 
@@ -153,7 +166,7 @@ abstract class ProgramProductions {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new AssignAttr(0, AttrName.TYPE.name(), 1, AttrName.TYPE.name())
+                            new AssignAttr(0, 1, AttrName.TYPE.name())
                     )
             ),
 
@@ -202,7 +215,7 @@ abstract class ProgramProductions {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new AssignAttr(-1, AttrName.TYPE.name(), 1, AttrName.TYPE.name())
+                            new AssignAttr(-1, 1, AttrName.TYPE.name())
                     )
             ),
 
@@ -232,7 +245,7 @@ abstract class ProgramProductions {
                                     Symbol.createTerminator(NORMAL_ASSIGN),
                                     Symbol.createNonTerminator(VARIABLE_INITIALIZER)
                             ),
-                            new VariableInitialization()
+                            new VariableInitialization(0, -2)
                     )
             ),
 
@@ -281,7 +294,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new BooleanAssign()
+                            new BooleanAssign(0)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -344,7 +357,7 @@ abstract class ProgramProductions {
                                     Symbol.createNonTerminator(RESULT_TYPE),
                                     Symbol.createNonTerminator(METHOD_DECLARATOR)
                             ),
-                            new RecordMethodDescription()
+                            new RecordMethodDescription(-1, 0)
                     )
             ),
 
@@ -394,7 +407,7 @@ abstract class ProgramProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
                             new SetAttrFromLexical(-3, AttrName.METHOD_NAME.name(), -3),
-                            new AssignAttr(-1, AttrName.PARAMETER_LIST.name(), -3, AttrName.PARAMETER_LIST.name())
+                            new AssignAttr(-1, -3, AttrName.PARAMETER_LIST.name())
                     )
             ),
 

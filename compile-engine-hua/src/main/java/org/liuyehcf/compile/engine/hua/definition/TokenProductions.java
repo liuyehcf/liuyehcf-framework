@@ -4,7 +4,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.semantic.*;
+import org.liuyehcf.compile.engine.hua.semantic.attr.*;
+import org.liuyehcf.compile.engine.hua.semantic.load.LiteralLoad;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.REGEX_IDENTIFIER;
@@ -64,7 +65,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             ),
-                            new SetIdentifierAttr()
+                            new SetIdentifierAttr(0)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -108,7 +109,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(INTEGER_LITERAL)
                             ),
-                            new PushLiteralToOperatorStack(NORMAL_INT),
+                            new LiteralLoad(0, NORMAL_INT),
                             new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_INT)
                     ),
                     /*
@@ -119,7 +120,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(BOOLEAN_LITERAL)
                             ),
-                            new PushLiteralToOperatorStack(NORMAL_BOOLEAN),
+                            new LiteralLoad(0, NORMAL_BOOLEAN),
                             new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_BOOLEAN)
                     )
                     /*

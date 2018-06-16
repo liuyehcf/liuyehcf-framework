@@ -4,8 +4,8 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.semantic.IncreaseArrayTypeDim;
-import org.liuyehcf.compile.engine.hua.semantic.SetAttrFromSystem;
+import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
+import org.liuyehcf.compile.engine.hua.semantic.variable.IncreaseArrayTypeDim;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_MIDDLE_LEFT_PARENTHESES;

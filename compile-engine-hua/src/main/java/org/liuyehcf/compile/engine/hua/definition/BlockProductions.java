@@ -6,7 +6,11 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
-import org.liuyehcf.compile.engine.hua.semantic.*;
+import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
+import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
+import org.liuyehcf.compile.engine.hua.semantic.condition.*;
+import org.liuyehcf.compile.engine.hua.semantic.variable.EnterNamespace;
+import org.liuyehcf.compile.engine.hua.semantic.variable.ExitNamespace;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.ExpressionProductions.*;
@@ -233,7 +237,7 @@ abstract class BlockProductions {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new AssignAttr(0, AttrName.TYPE.name(), 1, AttrName.TYPE.name())
+                            new AssignAttr(0, 1, AttrName.TYPE.name())
                     )
             ),
 
@@ -577,7 +581,7 @@ abstract class BlockProductions {
                                     Symbol.EPSILON
                             ),
                             new AddControlTransferByteCode(-7, ControlTransferType.GOTO, BackFillType.NEXT),
-                            new MakeSureBackFill(),
+                            new SecondBackFill(-7),
                             new BackFill(-4, BackFillType.FALSE, true)
                     )
             ),

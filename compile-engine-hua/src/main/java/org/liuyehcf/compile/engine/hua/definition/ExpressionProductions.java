@@ -6,7 +6,21 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
-import org.liuyehcf.compile.engine.hua.semantic.*;
+import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttrs;
+import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
+import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrToLeftNode;
+import org.liuyehcf.compile.engine.hua.semantic.condition.AddControlTransferByteCode;
+import org.liuyehcf.compile.engine.hua.semantic.condition.BackFill;
+import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssign;
+import org.liuyehcf.compile.engine.hua.semantic.condition.MergeControlTransferByteCode;
+import org.liuyehcf.compile.engine.hua.semantic.load.ArrayLoad;
+import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoad;
+import org.liuyehcf.compile.engine.hua.semantic.method.IncArgSize;
+import org.liuyehcf.compile.engine.hua.semantic.method.InitArgSize;
+import org.liuyehcf.compile.engine.hua.semantic.method.MethodInvocation;
+import org.liuyehcf.compile.engine.hua.semantic.operator.Assignment;
+import org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperator;
+import org.liuyehcf.compile.engine.hua.semantic.variable.ArrayTypeDimDecrease;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
@@ -123,8 +137,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
                                     Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
                             ),
-                            new BooleanAssign(),
-                            new Assignment()
+                            new BooleanAssign(0),
+                            new Assignment(0, -1, -2)
                     )
             ),
 
@@ -446,7 +460,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_OR),
                                     Symbol.createNonTerminator(EXCLUSIVE_OR_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.BIT_OR)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.BIT_OR)
                     )
             ),
 
@@ -476,7 +490,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_EXCLUSIVE_OR),
                                     Symbol.createNonTerminator(AND_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.BIT_XOR)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.BIT_XOR)
                     )
             ),
 
@@ -506,7 +520,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_AND),
                                     Symbol.createNonTerminator(EQUALITY_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.BIT_AND)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.BIT_AND)
                     )
             ),
 
@@ -536,7 +550,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_EQUAL),
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.EQUAL)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.EQUAL)
                     ),
                     /*
                      * <equality expression> → <equality expression> != <relational expression>
@@ -548,7 +562,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_NOT_EQUAL),
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.NOT_EQUAL)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.NOT_EQUAL)
                     )
             ),
 
@@ -578,7 +592,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LESS),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.LESS)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.LESS)
                     ),
                     /*
                      * <relational expression> → <relational expression> > <shift expression>
@@ -590,7 +604,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LARGE),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.LARGE)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.LARGE)
                     ),
                     /*
                      * <relational expression> → <relational expression> <= <shift expression>
@@ -602,7 +616,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LESS_EQUAL),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.LESS_EQUAL)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.LESS_EQUAL)
                     ),
                     /*
                      * <relational expression> → <relational expression> >= <shift expression>
@@ -614,7 +628,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LARGE_EQUAL),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.LARGE_EQUAL)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.LARGE_EQUAL)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -648,7 +662,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SHIFT_LEFT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.SHIFT_LEFT)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.SHIFT_LEFT)
                     ),
                     /*
                      * <shift expression> → <shift expression> >> <additive expression>
@@ -660,7 +674,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SHIFT_RIGHT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.SHIFT_RIGHT)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.SHIFT_RIGHT)
                     ),
                     /*
                      * <shift expression> → <shift expression> >>> <additive expression>
@@ -672,7 +686,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_UNSIGNED_SHIFT_RIGHT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.UNSIGNED_SHIFT_RIGHT)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.UNSIGNED_SHIFT_RIGHT)
                     )
             ),
 
@@ -702,7 +716,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_ADD),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.ADDITION)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.ADDITION)
                     ),
                     /*
                      * <additive expression> → <additive expression> - <multiplicative expression>
@@ -714,7 +728,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MINUS),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.SUBTRACTION)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.SUBTRACTION)
                     )
             ),
 
@@ -744,7 +758,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MUL),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.MULTIPLICATION)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.MULTIPLICATION)
                     ),
                     /*
                      * <multiplicative expression> → <multiplicative expression> / <unary expression>
@@ -756,7 +770,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DIV),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.DIVISION)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.DIVISION)
                     ),
                     /*
                      * <multiplicative expression> → <multiplicative expression> % <unary expression>
@@ -768,7 +782,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MOD),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperator(BinaryOperator.Operator.REMAINDER)
+                            new BinaryOperator(-2, 0, BinaryOperator.Operator.REMAINDER)
                     )
             ),
 
@@ -1016,7 +1030,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_NAME)
                             ),
-                            new PushIdentifierToOperatorStack()
+                            new VariableLoad(0)
                     ),
                     /*
                      * (3) <postfix expression> → <postincrement expression>
@@ -1057,7 +1071,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EPSILON_OR_ARGUMENT_LIST),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new MethodInvocation()
+                            new MethodInvocation(-3, -1)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -1148,7 +1162,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new AssignAllAttr(-1, -2)
+                            new AssignAttrs(-1, -2, AttrName.TYPE, AttrName.COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <primary no new array> → <method invocation>
@@ -1192,7 +1206,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new InitArgumentSize()
+                            new InitArgSize(0)
                     ),
                     /*
                      * <argument list> → <argument list> , <expression>
@@ -1204,7 +1218,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new IncreaseArgumentSize()
+                            new IncArgSize(-2)
                     )
             ),
 
@@ -1359,7 +1373,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            new ArrayTypeDimDecrease()//TODO 这里要给出数组的大小，数组地址，在<expression name>推入操作数栈
+                            new ArrayTypeDimDecrease(-4)//TODO 这里要给出数组的大小，数组地址，在<expression name>推入操作数栈
                     ),
                     /*
                      * (2) <array access> → <primary no new array> [ <expression>]
@@ -1389,7 +1403,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new PushIdentifierToOperatorStack()
+                            new VariableLoad(0)
                     )
             )
     };

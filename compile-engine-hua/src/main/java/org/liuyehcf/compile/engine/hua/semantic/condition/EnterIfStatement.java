@@ -1,0 +1,17 @@
+package org.liuyehcf.compile.engine.hua.semantic.condition;
+
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
+
+/**
+ * 进入if语句
+ *
+ * @author chenlu
+ * @date 2018/6/15
+ */
+public class EnterIfStatement extends AbstractSemanticAction {
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        context.getHuaEngine().getStatusInfo().enterIfStatement();
+    }
+}
