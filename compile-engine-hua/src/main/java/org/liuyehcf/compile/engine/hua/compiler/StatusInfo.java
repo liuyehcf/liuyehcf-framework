@@ -18,11 +18,11 @@ public class StatusInfo {
         return uncertainCodes;
     }
 
-    public void enterIfStatement() {
+    public void enterConditionStatement() {
         ifNestedLevel++;
     }
 
-    public void exitIfStatement() {
+    public void exitConditionStatement() {
         ifNestedLevel--;
     }
 

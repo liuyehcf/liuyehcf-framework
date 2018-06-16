@@ -17,7 +17,7 @@ import java.util.List;
 public class BackFill extends AbstractSemanticAction {
 
     /**
-     * 待回填字节码的栈偏移量，相对于语法树栈
+     * 待回填字节码-栈偏移量，相对于语法树栈
      * '0'  表示栈顶
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
@@ -80,7 +80,7 @@ public class BackFill extends AbstractSemanticAction {
              *      ...
              *  }
              */
-            if (!isCertain && hasOuterIfStatement(context)) {
+            if (!isCertain && hasOuterConditionStatement(context)) {
                 context.getHuaEngine().getStatusInfo().getUncertainCodes().addAll(codes);
             }
 
@@ -91,7 +91,7 @@ public class BackFill extends AbstractSemanticAction {
         }
     }
 
-    private boolean hasOuterIfStatement(HuaCompiler.HuaContext context) {
+    private boolean hasOuterConditionStatement(HuaCompiler.HuaContext context) {
         return context.getHuaEngine().getStatusInfo().getIfNestedLevel() > 0;
     }
 }

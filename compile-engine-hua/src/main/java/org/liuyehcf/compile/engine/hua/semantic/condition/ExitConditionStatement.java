@@ -4,14 +4,14 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 /**
- * 退出if语句
+ * 退出if语句，包括if语句、while语句
  *
  * @author chenlu
  * @date 2018/6/15
  */
-public class ExitIfStatement extends AbstractSemanticAction {
+public class ExitConditionStatement extends AbstractSemanticAction {
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        context.getHuaEngine().getStatusInfo().exitIfStatement();
+        context.getHuaEngine().getStatusInfo().exitConditionStatement();
     }
 }

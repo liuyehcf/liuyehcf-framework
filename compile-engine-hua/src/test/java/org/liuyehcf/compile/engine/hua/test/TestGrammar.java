@@ -898,6 +898,36 @@ public class TestGrammar {
     }
 
     @Test
+    public void testNestedIf7() {
+        String text = "void func1(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tb=a||b&&c||d;\n" +
+                "\t}\n" +
+                "\telse\n" +
+                "\t\ti=2;\n" +
+                "\tj=1;\n" +
+                "}\n" +
+                "\n" +
+                "void func2(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\tif(a) {\n" +
+                "\t\tb=a||b&&c||d;\n" +
+                "\t\tj=1;\n" +
+                "\t}\n" +
+                "\telse\n" +
+                "\t\ti=2;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func1(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":15,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":10,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":8,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":10,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":12,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":13,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"offset\":4},{\"codeOffset\":17,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":24}],\"methodName\":\"func1\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func2(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":17,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":10,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":8,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":10,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":12,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":13,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"offset\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":24},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func2\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
     public void testComplexConditionAssign1() {
         String text = "void func(boolean a, boolean b, boolean c, boolean d){\n" +
                 "\tboolean e= a||b&&c||d;\n" +
@@ -976,6 +1006,24 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"jSONTable\":{\"func(boolean,boolean,boolean,boolean)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":4,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":4},{\"codeOffset\":12,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":8,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":10,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":8},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":15,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"offset\":16}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":4,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testSimpleWhile1() {
+        String text = "void func1(boolean a, boolean b, boolean c, boolean d, int i, int j){\n" +
+                "\twhile(a){\n" +
+                "\t\ti=i-1;\n" +
+                "\t}\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func1(boolean,boolean,boolean,boolean,int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"offset\":16},{\"codeOffset\":0,\"name\":\"_goto\"}],\"methodName\":\"func1\",\"offset\":0,\"paramSize\":6,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"boolean\",\"typeWidth\":4},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
                 result.getResult().getMethodInfoTable().toString()
         );
     }

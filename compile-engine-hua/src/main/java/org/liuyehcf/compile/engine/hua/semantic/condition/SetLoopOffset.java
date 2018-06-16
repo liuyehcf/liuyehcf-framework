@@ -1,0 +1,32 @@
+package org.liuyehcf.compile.engine.hua.semantic.condition;
+
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
+
+/**
+ * 设置循环偏移量，即code编号
+ *
+ * @author chenlu
+ * @date 2018/6/16
+ */
+public class SetLoopOffset extends AbstractSemanticAction {
+
+    /**
+     * 存储循环起始代码偏移量的节点-栈偏移量，相对于语法树栈
+     * '0'  表示栈顶
+     * '-1' 表示栈次顶，以此类推
+     * '1' 表示未来入栈的元素，以此类推
+     */
+    private final int loopStackOffset;
+
+    public SetLoopOffset(int loopStackOffset) {
+        this.loopStackOffset = loopStackOffset;
+    }
+
+    @Override
+    public void onAction(HuaCompiler.HuaContext context) {
+        int codeOffset = context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size();
+        context.getStack().get(loopStackOffset).put(AttrName.LOOP_CODE_OFFSET.name(), codeOffset);
+    }
+}

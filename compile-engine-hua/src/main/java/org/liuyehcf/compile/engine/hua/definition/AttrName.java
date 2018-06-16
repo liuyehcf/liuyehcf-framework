@@ -59,4 +59,9 @@ public enum AttrName {
      * 布尔表达式后续的字节码
      */
     NEXT_BYTE_CODE,
+
+    /**
+     * 循环偏移量（code）
+     */
+    LOOP_CODE_OFFSET,
 }
