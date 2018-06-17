@@ -1256,4 +1256,110 @@ public class TestGrammar {
                 result.getResult().getMethodInfoTable().toString()
         );
     }
+
+    @Test
+    public void testNestedDoWhile1() {
+        String text = "void func1(int i) {\n" +
+                "\twhile(i>1){\n" +
+                "\t\tdo{\n" +
+                "\t\t\ti=i+1;\n" +
+                "\t\t}while(i<10);\n" +
+                "\t}\n" +
+                "}\n" +
+                "\n" +
+                "void func2(int i, int j) {\n" +
+                "\twhile(i>1){\n" +
+                "\t\tdo{\n" +
+                "\t\t\ti=i+1;\n" +
+                "\t\t}while(i<10);\n" +
+                "\t\tj=j+2;\n" +
+                "\t}\n" +
+                "}\n" +
+                "\n" +
+                "void func3(int i, int j) {\n" +
+                "\twhile(i>1){\n" +
+                "\t\tdo{\n" +
+                "\t\t\ti=i+1;\n" +
+                "\t\t}while(i<10);\n" +
+                "\t}\n" +
+                "\tj=j+2;\n" +
+                "}\n" +
+                "\n" +
+                "void func4(int i, int j) {\n" +
+                "\tif(i>1){\n" +
+                "\t\tdo{\n" +
+                "\t\t\ti=i+1;\n" +
+                "\t\t}while(i<10);\n" +
+                "\t}\n" +
+                "\tj=j+2;\n" +
+                "}\n" +
+                "\n" +
+                "void func5(int i, int j) {\n" +
+                "\tif(i>1){\n" +
+                "\t\tdo{\n" +
+                "\t\t\ti=i+1;\n" +
+                "\t\t}while(i<10);\n" +
+                "\t\tj=j+2;\n" +
+                "\t}\n" +
+                "}\n" +
+                "\n" +
+                "void func6(int i, int j) {\n" +
+                "\tif(i>1){\n" +
+                "\t\tdo{\n" +
+                "\t\t\ti=i+1;\n" +
+                "\t\t}while(i<10);\n" +
+                "\t}else{\n" +
+                "\t\ti=5;\n" +
+                "\t}\n" +
+                "\tj=1;\n" +
+                "}\n" +
+                "\n" +
+                "void func7(int i, int j) {\n" +
+                "\tif(i>1){\n" +
+                "\t\tdo{\n" +
+                "\t\t\ti=i+1;\n" +
+                "\t\t}while(i<10);\n" +
+                "\t\tj=1;\n" +
+                "\t}else{\n" +
+                "\t\ti=5;\n" +
+                "\t}\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func1(int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":11,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"codeOffset\":0,\"name\":\"_goto\"}],\"methodName\":\"func1\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func2(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":15,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":8},{\"codeOffset\":0,\"name\":\"_goto\"}],\"methodName\":\"func2\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func3(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":11,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"func3\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func4(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":10,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"func4\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func5(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":14,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"func5\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func6(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":11,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"codeOffset\":13,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":8}],\"methodName\":\"func6\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func7(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":13,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":8},{\"codeOffset\":15,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"offset\":0}],\"methodName\":\"func7\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testNestedDoWhile2() {
+        String text = "void func1(int i, int j) {\n" +
+                "\tif(i<j){\n" +
+                "\t\twhile(i>=1){\n" +
+                "\t\t\tdo{\n" +
+                "\t\t\t\ti=i+1;\n" +
+                "\t\t\t}while(i<=10);\n" +
+                "\t\t}\n" +
+                "\t}else{\n" +
+                "\t\tif(i>100){\n" +
+                "\t\t\tdo{\n" +
+                "\t\t\t\ti=i+1;\n" +
+                "\t\t\t}while(i<=1000&&(j<=3||(j>1)));\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
 }
