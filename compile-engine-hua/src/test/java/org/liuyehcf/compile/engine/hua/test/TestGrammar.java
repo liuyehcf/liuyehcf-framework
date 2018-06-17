@@ -1342,7 +1342,7 @@ public class TestGrammar {
                 "\t\twhile(i>=1){\n" +
                 "\t\t\tdo{\n" +
                 "\t\t\t\ti=i+1;\n" +
-                "\t\t\t}while(i<=10);\n" +
+                "\t\t\t}while(i<=10||j>10&&j<20);\n" +
                 "\t\t}\n" +
                 "\t}else{\n" +
                 "\t\tif(i>100){\n" +
