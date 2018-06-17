@@ -6,12 +6,12 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.SemanticAction;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
+import org.liuyehcf.compile.engine.hua.bytecode.cf._goto;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 
 /**
  * @author hechenfeng
@@ -101,7 +101,7 @@ public class HuaCompiler extends LALR<HuaResult> {
             /*
              * 代码优化
              */
-//            optimize();
+            optimize();
 
             /*
              * 设置编译结果
@@ -148,11 +148,6 @@ public class HuaCompiler extends LALR<HuaResult> {
         }
 
         private int getFinalCodeOffset(List<ByteCode> byteCodes, final int codeOffset) {
-            if (codeOffset == byteCodes.size()) {
-                // TODO 这是由于没有插入return指令
-                return codeOffset;
-            }
-
             int optimizedCodeOffset = codeOffset;
 
             ByteCode code;
@@ -166,17 +161,55 @@ public class HuaCompiler extends LALR<HuaResult> {
         private void removeRedundantControlTransferCode(List<ByteCode> byteCodes) {
             Set<Integer> visitedCodes = new HashSet<>();
 
-            dfsVisitCode(0, visitedCodes, byteCodes);
+            visitCode(0, visitedCodes, byteCodes);
 
+            List<Integer> unvisitedCodeOffsets = new ArrayList<>();
+            for (int i = 0; i < byteCodes.size(); i++) {
+                unvisitedCodeOffsets.add(i);
+            }
+            unvisitedCodeOffsets.removeAll(visitedCodes);
 
+            Collections.sort(unvisitedCodeOffsets);
+
+            List<ControlTransfer> controlTransferCodes = new ArrayList<>();
+            for (ByteCode code : byteCodes) {
+                if (code instanceof ControlTransfer) {
+                    controlTransferCodes.add((ControlTransfer) code);
+                }
+            }
+
+            for (int codeOffset : unvisitedCodeOffsets) {
+                /*
+                 * 如果转移指令跳转目标代码的序号大于codeOffset，由于codeOffset处的指令会被删除
+                 * 因此该跳转指令的目标代码序号需要-1
+                 */
+                for (ControlTransfer controlTransferCode : controlTransferCodes) {
+                    assertFalse(controlTransferCode.getCodeOffset() == codeOffset);
+                    if (controlTransferCode.getCodeOffset() > codeOffset) {
+                        controlTransferCode.setCodeOffset(controlTransferCode.getCodeOffset() - 1);
+                    }
+                }
+
+                byteCodes.remove(codeOffset);
+            }
         }
 
-        private void dfsVisitCode(int codeOffset, Set<Integer> visitedCodes, List<ByteCode> byteCodes) {
-            if (visitedCodes.contains(codeOffset)) {
+        private void visitCode(int codeOffset, Set<Integer> visitedCodes, List<ByteCode> byteCodes) {
+            if (codeOffset >= byteCodes.size() || visitedCodes.contains(codeOffset)) {
                 return;
             }
 
+            visitedCodes.add(codeOffset);
             ByteCode code = byteCodes.get(codeOffset);
+
+            if (code instanceof ControlTransfer) {
+                visitCode(((ControlTransfer) code).getCodeOffset(), visitedCodes, byteCodes);
+                if (!(code instanceof _goto)) {
+                    visitCode(codeOffset + 1, visitedCodes, byteCodes);
+                }
+            } else {
+                visitCode(codeOffset + 1, visitedCodes, byteCodes);
+            }
         }
 
         @Override
