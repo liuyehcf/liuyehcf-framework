@@ -25,7 +25,6 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_VOID;
 import static org.liuyehcf.compile.engine.hua.definition.ExpressionProductions.EXPRESSION;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.TYPE;
-import static org.liuyehcf.compile.engine.hua.model.Type.VOID_WIDTH;
 
 /**
  * @author hechenfeng
@@ -385,7 +384,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_VOID)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.createNormalType(NORMAL_VOID, VOID_WIDTH))
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.TYPE_VOID)
                     )
             ),
 

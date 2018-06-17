@@ -4,9 +4,14 @@ import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.cfg.lr.LALR;
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.SemanticAction;
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author hechenfeng
@@ -93,7 +98,85 @@ public class HuaCompiler extends LALR<HuaResult> {
 
         @Override
         protected void after() {
+            /*
+             * 代码优化
+             */
+//            optimize();
+
+            /*
+             * 设置编译结果
+             */
             setResult(new HuaResult(variableSymbolTable, methodInfoTable));
+        }
+
+        private void optimize() {
+            Map<MethodDescription, MethodInfo> table = methodInfoTable.getTable();
+
+            for (MethodInfo methodInfo : table.values()) {
+                optimize(methodInfo);
+            }
+        }
+
+        private void optimize(MethodInfo methodInfo) {
+            List<ByteCode> byteCodes = methodInfo.getByteCodes();
+
+            /*
+             * 将多级跳转指令改成一个跳转指令
+             */
+            simplifyControlTransferCode(byteCodes);
+
+            /*
+             * 删除多余的跳转指令（不可达）
+             */
+            removeRedundantControlTransferCode(byteCodes);
+        }
+
+        private void simplifyControlTransferCode(List<ByteCode> byteCodes) {
+            for (ByteCode code : byteCodes) {
+                if (!(code instanceof ControlTransfer)) {
+                    continue;
+                }
+
+                ControlTransfer controlTransferCode = (ControlTransfer) code;
+
+                int codeOffset = controlTransferCode.getCodeOffset();
+
+                codeOffset = getFinalCodeOffset(byteCodes, codeOffset);
+
+                controlTransferCode.setCodeOffset(codeOffset);
+            }
+        }
+
+        private int getFinalCodeOffset(List<ByteCode> byteCodes, final int codeOffset) {
+            if (codeOffset == byteCodes.size()) {
+                // TODO 这是由于没有插入return指令
+                return codeOffset;
+            }
+
+            int optimizedCodeOffset = codeOffset;
+
+            ByteCode code;
+            while ((code = byteCodes.get(optimizedCodeOffset)) instanceof ControlTransfer) {
+                optimizedCodeOffset = ((ControlTransfer) code).getCodeOffset();
+            }
+
+            return optimizedCodeOffset;
+        }
+
+        private void removeRedundantControlTransferCode(List<ByteCode> byteCodes) {
+            Set<Integer> visitedCodes = new HashSet<>();
+
+            dfsVisitCode(0, visitedCodes, byteCodes);
+
+
+        }
+
+        private void dfsVisitCode(int codeOffset, Set<Integer> visitedCodes, List<ByteCode> byteCodes) {
+            if (visitedCodes.contains(codeOffset)) {
+                return;
+            }
+
+            ByteCode code = byteCodes.get(codeOffset);
         }
 
         @Override
