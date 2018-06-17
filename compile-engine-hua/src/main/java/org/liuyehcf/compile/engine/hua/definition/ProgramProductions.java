@@ -27,6 +27,8 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.TYPE;
 
 /**
+ * Program相关的产生式
+ *
  * @author hechenfeng
  * @date 2018/5/31
  */

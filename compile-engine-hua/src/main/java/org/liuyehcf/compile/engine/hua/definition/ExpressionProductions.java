@@ -31,6 +31,8 @@ import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.REFEREN
 import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
 
 /**
+ * Expression相关的产生式
+ *
  * @author hechenfeng
  * @date 2018/5/31
  */
@@ -383,7 +385,7 @@ abstract class ExpressionProductions {
                                     Symbol.EPSILON
                             ),
                             new ControlTransferByteCodeByType(-1, -1, BackFillType.TRUE, true),
-                            new BackFill(-1, BackFillType.FALSE, true)
+                            new BackFill(-1, BackFillType.FALSE)
                     )
             ),
 
@@ -434,7 +436,7 @@ abstract class ExpressionProductions {
                                     Symbol.EPSILON
                             ),
                             new ControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
-                            new BackFill(-1, BackFillType.TRUE, true)
+                            new BackFill(-1, BackFillType.TRUE)
                     )
             ),
 

@@ -10,6 +10,8 @@ import static org.liuyehcf.compile.engine.hua.definition.ProgramProductions.PROG
 import static org.liuyehcf.compile.engine.hua.definition.TokenProductions.REGEX_NON_ZERO_DIGIT;
 
 /**
+ * 文法定义
+ *
  * @author hechenfeng
  * @date 2018/5/28
  */

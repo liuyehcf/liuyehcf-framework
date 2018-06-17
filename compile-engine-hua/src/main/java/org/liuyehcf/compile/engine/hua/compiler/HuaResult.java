@@ -1,6 +1,8 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
 /**
+ * Hua编译后的结果
+ *
  * @author hechenfeng
  * @date 2018/6/12
  */

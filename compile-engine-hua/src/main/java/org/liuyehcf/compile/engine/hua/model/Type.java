@@ -5,6 +5,8 @@ import java.util.Objects;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 
 /**
+ * 变量类型信息
+ *
  * @author hechenfeng
  * @date 2018/6/12
  */

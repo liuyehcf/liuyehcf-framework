@@ -11,6 +11,8 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 
 /**
+ * 符号表
+ *
  * @author hechenfeng
  * @date 2018/6/3
  */

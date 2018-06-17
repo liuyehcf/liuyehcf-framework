@@ -13,6 +13,8 @@ import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
 import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_INT;
 
 /**
+ * Token相关的产生式
+ *
  * @author hechenfeng
  * @date 2018/5/31
  */

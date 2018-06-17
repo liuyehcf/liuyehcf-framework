@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 
 /**
- * 添加跳转指令
+ * 跳转跳转指令
  *
  * @author hechenfeng
  * @date 2018/6/13
@@ -14,7 +14,7 @@ import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 public class ControlTransferByteCode extends AbstractControlTransferByteCode {
 
     /**
-     * 转移字节码类型
+     * 跳转指令类型
      */
     private final ControlTransferType controlTransferType;
 

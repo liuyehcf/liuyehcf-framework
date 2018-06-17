@@ -1,6 +1,8 @@
 package org.liuyehcf.compile.engine.hua.definition;
 
 /**
+ * 属性名称
+ *
  * @author hechenfeng
  * @date 2018/6/2
  */

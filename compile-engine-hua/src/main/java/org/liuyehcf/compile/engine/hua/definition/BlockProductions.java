@@ -19,6 +19,8 @@ import static org.liuyehcf.compile.engine.hua.definition.ProgramProductions.VARI
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.TYPE;
 
 /**
+ * Block相关的产生式
+ *
  * @author hechenfeng
  * @date 2018/5/31
  */
@@ -545,8 +547,7 @@ abstract class BlockProductions {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new SetLoopOffset(1),
-                            new EnterConditionStatement()
+                            new SetLoopOffset(1)
                     )
             ),
 
@@ -564,7 +565,7 @@ abstract class BlockProductions {
                                     Symbol.EPSILON
                             ),
                             new ControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
-                            new BackFill(-1, BackFillType.TRUE, true)
+                            new BackFill(-1, BackFillType.TRUE)
                     )
             ),
 
@@ -582,8 +583,7 @@ abstract class BlockProductions {
                                     Symbol.EPSILON
                             ),
                             new ControlTransferByteCode(-4, ControlTransferType.GOTO, BackFillType.NEXT),
-                            new SecondBackFill(-4),
-                            new BackFill(-4, BackFillType.FALSE, true)
+                            new BackFill(-4, BackFillType.FALSE)
                     )
             ),
 
@@ -607,8 +607,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new ExitConditionStatement(),
-                            new BackFill(-3, BackFillType.FALSE, false)
+                            new BackFill(-3, BackFillType.FALSE)
                     )
             ),
 
@@ -635,8 +634,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new ExitConditionStatement(),
-                            new BackFill(-6, BackFillType.NEXT, false)
+                            new BackFill(-6, BackFillType.NEXT)
                     )
             ),
 
@@ -663,8 +661,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            new ExitConditionStatement(),
-                            new BackFill(-6, BackFillType.NEXT, false)
+                            new BackFill(-6, BackFillType.NEXT)
                     )
             ),
 
@@ -688,9 +685,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new ExitConditionStatement(),
                             new GotoLoop(-3),
-                            new BackFill(-3, BackFillType.FALSE, false)
+                            new BackFill(-3, BackFillType.FALSE)
                     )
             ),
 
@@ -714,9 +710,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            new ExitConditionStatement(),
                             new GotoLoop(-3),
-                            new BackFill(-3, BackFillType.FALSE, false)
+                            new BackFill(-3, BackFillType.FALSE)
                     )
             ),
 
@@ -741,10 +736,9 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
-                            new ExitConditionStatement(),
                             new ControlTransferByteCodeByType(-2, -2, BackFillType.TRUE, true),
                             new BackToLoop(-2, -5, BackFillType.TRUE),
-                            new BackFill(-2, BackFillType.FALSE, false)
+                            new BackFill(-2, BackFillType.FALSE)
                     )
             ),
 

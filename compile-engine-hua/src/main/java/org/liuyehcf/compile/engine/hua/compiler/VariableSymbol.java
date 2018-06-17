@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import org.liuyehcf.compile.engine.hua.model.Type;
 
 /**
+ * 符号
+ *
  * @author hechenfeng
  * @date 2018/6/3
  */

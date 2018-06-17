@@ -1,6 +1,8 @@
 package org.liuyehcf.compile.engine.hua.definition;
 
 /**
+ * 文法定义相关的常量
+ *
  * @author hechenfeng
  * @date 2018/6/12
  */

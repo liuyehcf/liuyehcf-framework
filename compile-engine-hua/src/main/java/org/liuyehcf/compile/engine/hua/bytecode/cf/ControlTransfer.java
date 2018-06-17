@@ -3,6 +3,8 @@ package org.liuyehcf.compile.engine.hua.bytecode.cf;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
+ * 跳转指令的抽象基类
+ *
  * @author hechenfeng
  * @date 2018/6/13
  */

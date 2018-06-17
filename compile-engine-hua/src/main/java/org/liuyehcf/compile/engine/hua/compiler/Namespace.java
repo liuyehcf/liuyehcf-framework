@@ -1,6 +1,8 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
 /**
+ * 命名空间
+ *
  * @author hechenfeng
  * @date 2018/6/3
  */

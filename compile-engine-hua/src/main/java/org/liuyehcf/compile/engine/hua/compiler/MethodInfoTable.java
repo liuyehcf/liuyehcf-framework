@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
+ * 方法表
+ *
  * @author hechenfeng
  * @date 2018/6/6
  */
