@@ -689,7 +689,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
                             new ExitConditionStatement(),
-                            new BackToLoop(-3),
+                            new GotoLoop(-3),
                             new BackFill(-3, BackFillType.FALSE, false)
                     )
             ),
@@ -715,7 +715,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
                             new ExitConditionStatement(),
-                            new BackToLoop(-3),
+                            new GotoLoop(-3),
                             new BackFill(-3, BackFillType.FALSE, false)
                     )
             ),
@@ -727,12 +727,13 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <do statement> → do <statement> while ( <expression> ) ;
+                     * <do statement> → do <mark condition expression> <statement> while ( <expression> ) ;
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(DO_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_DO),
+                                    Symbol.createNonTerminator(MARK_CONDITION_EXPRESSION),
                                     Symbol.createNonTerminator(STATEMENT),
                                     Symbol.createTerminator(NORMAL_WHILE),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
@@ -740,7 +741,9 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
-                            null
+                            new ExitConditionStatement(),
+                            new ControlTransferByteCodeByType(-2, -2, BackFillType.TRUE, true),
+                            new BackToLoop(-2, -5, BackFillType.TRUE)
                     )
             ),
 

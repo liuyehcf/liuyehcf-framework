@@ -9,6 +9,8 @@ import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 
 /**
+ * 按类型添加跳转指令
+ *
  * @author hechenfeng
  * @date 2018/6/16
  */

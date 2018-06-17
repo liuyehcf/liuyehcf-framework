@@ -17,7 +17,7 @@ import java.util.List;
 public class BackFill extends AbstractSemanticAction {
 
     /**
-     * 待回填字节码-栈偏移量，相对于语法树栈
+     * 存储待回填字节码的节点-栈偏移量，相对于语法树栈
      * '0'  表示栈顶
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
