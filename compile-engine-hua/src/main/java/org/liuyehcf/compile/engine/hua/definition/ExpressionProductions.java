@@ -535,7 +535,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EQUALITY_EXPRESSION)
                             ),
                             new BinaryOperation(-2, 0, BIT_AND),
-                            new AttrFilter()
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
