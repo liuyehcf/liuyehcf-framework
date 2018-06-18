@@ -416,7 +416,8 @@ abstract class ProgramProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
                             new SetAttrFromLexical(-3, AttrName.METHOD_NAME.name(), -3),
-                            new AssignAttr(-1, -3, AttrName.PARAMETER_LIST.name())
+                            new AssignAttr(-1, -3, AttrName.PARAMETER_LIST.name()),
+                            new AttrFilter(AttrName.METHOD_NAME, AttrName.PARAMETER_LIST)
                     )
             ),
 
@@ -434,7 +435,8 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.PARAMETER_LIST.name(), null)
+                            new SetAttrToLeftNode(AttrName.PARAMETER_LIST.name(), null),
+                            new AttrFilter(AttrName.PARAMETER_LIST)
                     ),
                     /*
                      * (2) <epsilon or formal parameter list> → <formal parameter list>
@@ -444,7 +446,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER_LIST)
                             ),
-                            null
+                            new AttrFilter(AttrName.PARAMETER_LIST)
                     )
             ),
 
