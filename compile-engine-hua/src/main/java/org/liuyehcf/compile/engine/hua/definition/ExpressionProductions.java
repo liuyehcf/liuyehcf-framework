@@ -20,7 +20,7 @@ import org.liuyehcf.compile.engine.hua.semantic.method.IncArgSize;
 import org.liuyehcf.compile.engine.hua.semantic.method.InitArgSize;
 import org.liuyehcf.compile.engine.hua.semantic.method.MethodInvocation;
 import org.liuyehcf.compile.engine.hua.semantic.operator.Assignment;
-import org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperator;
+import org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperation;
 import org.liuyehcf.compile.engine.hua.semantic.variable.ArrayTypeDimDecrease;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
@@ -28,6 +28,7 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.definition.TokenProductions.*;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.PRIMITIVE_TYPE;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.REFERENCE_TYPE;
+import static org.liuyehcf.compile.engine.hua.model.BinaryOperator.*;
 import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
 
 /**
@@ -466,7 +467,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_OR),
                                     Symbol.createNonTerminator(EXCLUSIVE_OR_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.BIT_OR)
+                            new BinaryOperation(-2, 0, BIT_OR)
                     )
             ),
 
@@ -496,7 +497,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_EXCLUSIVE_OR),
                                     Symbol.createNonTerminator(AND_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.BIT_XOR)
+                            new BinaryOperation(-2, 0, BIT_XOR)
                     )
             ),
 
@@ -526,7 +527,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_AND),
                                     Symbol.createNonTerminator(EQUALITY_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.BIT_AND)
+                            new BinaryOperation(-2, 0, BIT_AND)
                     )
             ),
 
@@ -674,7 +675,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SHIFT_LEFT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.SHIFT_LEFT)
+                            new BinaryOperation(-2, 0, SHIFT_LEFT)
                     ),
                     /*
                      * <shift expression> → <shift expression> >> <additive expression>
@@ -686,7 +687,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SHIFT_RIGHT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.SHIFT_RIGHT)
+                            new BinaryOperation(-2, 0, SHIFT_RIGHT)
                     ),
                     /*
                      * <shift expression> → <shift expression> >>> <additive expression>
@@ -698,7 +699,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_UNSIGNED_SHIFT_RIGHT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.UNSIGNED_SHIFT_RIGHT)
+                            new BinaryOperation(-2, 0, UNSIGNED_SHIFT_RIGHT)
                     )
             ),
 
@@ -728,7 +729,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_ADD),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.ADDITION)
+                            new BinaryOperation(-2, 0, ADDITION)
                     ),
                     /*
                      * <additive expression> → <additive expression> - <multiplicative expression>
@@ -740,7 +741,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MINUS),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.SUBTRACTION)
+                            new BinaryOperation(-2, 0, SUBTRACTION)
                     )
             ),
 
@@ -770,7 +771,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MUL),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.MULTIPLICATION)
+                            new BinaryOperation(-2, 0, MULTIPLICATION)
                     ),
                     /*
                      * <multiplicative expression> → <multiplicative expression> / <unary expression>
@@ -782,7 +783,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DIV),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.DIVISION)
+                            new BinaryOperation(-2, 0, DIVISION)
                     ),
                     /*
                      * <multiplicative expression> → <multiplicative expression> % <unary expression>
@@ -794,7 +795,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MOD),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperator(-2, 0, BinaryOperator.Operator.REMAINDER)
+                            new BinaryOperation(-2, 0, REMAINDER)
                     )
             ),
 

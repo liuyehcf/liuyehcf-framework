@@ -3,11 +3,12 @@ package org.liuyehcf.compile.engine.hua.semantic.operator;
 import org.liuyehcf.compile.engine.hua.bytecode.cp.*;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.BinaryOperator;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
-import static org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperator.Operator.*;
+import static org.liuyehcf.compile.engine.hua.model.BinaryOperator.*;
 
 /**
  * 双目运算
@@ -15,7 +16,7 @@ import static org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperator.O
  * @author hechenfeng
  * @date 2018/6/7
  */
-public class BinaryOperator extends AbstractSemanticAction {
+public class BinaryOperation extends AbstractSemanticAction {
 
     /**
      * 左运算子-偏移量，相对于语法树栈
@@ -36,9 +37,9 @@ public class BinaryOperator extends AbstractSemanticAction {
     /**
      * 操作符
      */
-    private final Operator operator;
+    private final BinaryOperator operator;
 
-    public BinaryOperator(int leftStackOffset, int rightStackOffset, Operator operator) {
+    public BinaryOperation(int leftStackOffset, int rightStackOffset, BinaryOperator operator) {
         this.leftStackOffset = leftStackOffset;
         this.rightStackOffset = rightStackOffset;
         this.operator = operator;
@@ -199,39 +200,15 @@ public class BinaryOperator extends AbstractSemanticAction {
         }
     }
 
-    private void checkEqualType(Type type1, Type type2, Operator operator) {
+    private void checkEqualType(Type type1, Type type2, BinaryOperator operator) {
         if (!type1.equals(type2)) {
             throw new RuntimeException(" \'" + operator.getSign() + "\' 运算符两侧运算子类型不一致");
         }
     }
 
-    private void checkIntegralType(Type type, Operator operator) {
+    private void checkIntegralType(Type type, BinaryOperator operator) {
         if (!NORMAL_INT.equals(type.getTypeName())) {
             throw new RuntimeException(" \'" + operator.getSign() + "\' 运算符右侧必须是整型");
-        }
-    }
-
-    public enum Operator {
-        BIT_OR("|"),
-        BIT_XOR("^"),
-        BIT_AND("&"),
-        SHIFT_LEFT("<<"),
-        SHIFT_RIGHT(">>"),
-        UNSIGNED_SHIFT_RIGHT(">>>"),
-        ADDITION("+"),
-        SUBTRACTION("-"),
-        MULTIPLICATION("*"),
-        DIVISION("/"),
-        REMAINDER("%");
-
-        private final String sign;
-
-        Operator(String sign) {
-            this.sign = sign;
-        }
-
-        public String getSign() {
-            return sign;
         }
     }
 }
