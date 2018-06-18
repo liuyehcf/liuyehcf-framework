@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.semantic.attr.AttrFilter;
 import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
 import org.liuyehcf.compile.engine.hua.semantic.variable.IncreaseArrayTypeDim;
 
@@ -43,7 +44,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PRIMITIVE_TYPE)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * (2) <type> → <reference type>
@@ -53,7 +54,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(REFERENCE_TYPE)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
@@ -71,7 +72,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(NUMERIC_TYPE)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * (2) <primitive type> → boolean
@@ -81,7 +82,8 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_BOOLEAN)
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_BOOLEAN),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
@@ -99,7 +101,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(INTEGRAL_TYPE)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * (2) <numeric type> → <floating-point type>
@@ -109,7 +111,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FLOATING_POINT_TYPE)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
@@ -128,7 +130,8 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_INT)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_INT)
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_INT),
+                            new AttrFilter(AttrName.TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -153,7 +156,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_FLOAT)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -175,7 +178,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ARRAY_TYPE)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -199,7 +202,8 @@ abstract class TypeProductions {
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            new IncreaseArrayTypeDim(-2)
+                            new IncreaseArrayTypeDim(-2),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
     };
