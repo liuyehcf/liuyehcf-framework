@@ -868,7 +868,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREINCREMENT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <unary expression> → <predecrement expression>
@@ -878,7 +878,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREDECREMENT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <unary expression> → + <unary expression>
@@ -889,7 +889,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_ADD),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <unary expression> → - <unary expression>
@@ -900,7 +900,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MINUS),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <unary expression> → <unary expression not plus minus>
@@ -910,7 +910,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(UNARY_EXPRESSION_NOT_PLUS_MINUS)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     )
             ),
 
