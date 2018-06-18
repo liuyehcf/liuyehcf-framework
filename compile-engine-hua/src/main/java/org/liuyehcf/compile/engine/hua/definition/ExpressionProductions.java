@@ -366,7 +366,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE.name()),
+                            new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE),
                             new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
                             new MergeControlTransferByteCode(0, -3),
                             new SetAttrFromSystem(-3, AttrName.TYPE.name(), TYPE_BOOLEAN),
@@ -420,7 +420,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE.name()),
+                            new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE),
                             new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
                             new MergeControlTransferByteCode(0, -3),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)

@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.hua.semantic.attr;
 
 import org.liuyehcf.compile.engine.core.cfg.lr.AbstractLRCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.definition.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 /**
@@ -22,7 +23,7 @@ public class AssignAttr extends AbstractSemanticAction {
     /**
      * 源属性-名称
      */
-    private final String fromAttrName;
+    private final AttrName fromAttrName;
 
     /**
      * 宿属性-偏移量，相对于语法树栈
@@ -35,13 +36,13 @@ public class AssignAttr extends AbstractSemanticAction {
     /**
      * 宿属性-名称
      */
-    private final String toAttrName;
+    private final AttrName toAttrName;
 
-    public AssignAttr(int fromStackOffset, int toStackOffset, String attrName) {
+    public AssignAttr(int fromStackOffset, int toStackOffset, AttrName attrName) {
         this(fromStackOffset, attrName, toStackOffset, attrName);
     }
 
-    public AssignAttr(int fromStackOffset, String fromAttrName, int toStackOffset, String toAttrName) {
+    public AssignAttr(int fromStackOffset, AttrName fromAttrName, int toStackOffset, AttrName toAttrName) {
         this.fromStackOffset = fromStackOffset;
         this.fromAttrName = fromAttrName;
         this.toStackOffset = toStackOffset;
@@ -53,6 +54,6 @@ public class AssignAttr extends AbstractSemanticAction {
         AbstractLRCompiler.SyntaxNode fromNode = context.getStack().get(fromStackOffset);
         AbstractLRCompiler.SyntaxNode toNode = context.getStack().get(toStackOffset);
 
-        toNode.put(toAttrName, fromNode.get(fromAttrName));
+        toNode.put(toAttrName.name(), fromNode.get(fromAttrName.name()));
     }
 }

@@ -245,7 +245,7 @@ abstract class BlockProductions {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new AssignAttr(0, 1, AttrName.TYPE.name()),
+                            new AssignAttr(0, 1, AttrName.TYPE),
                             new AttrFilter()
                     )
             ),

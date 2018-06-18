@@ -166,7 +166,7 @@ abstract class ProgramProductions {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new AssignAttr(0, 1, AttrName.TYPE.name()),
+                            new AssignAttr(0, 1, AttrName.TYPE),
                             new AttrFilter()
                     )
             ),
@@ -216,7 +216,7 @@ abstract class ProgramProductions {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new AssignAttr(-1, 1, AttrName.TYPE.name()),
+                            new AssignAttr(-1, 1, AttrName.TYPE),
                             new AttrFilter()
                     )
             ),
@@ -416,7 +416,7 @@ abstract class ProgramProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
                             new SetAttrFromLexical(-3, AttrName.METHOD_NAME.name(), -3),
-                            new AssignAttr(-1, -3, AttrName.PARAMETER_LIST.name()),
+                            new AssignAttr(-1, -3, AttrName.PARAMETER_LIST),
                             new AttrFilter(AttrName.METHOD_NAME, AttrName.PARAMETER_LIST)
                     )
             ),
