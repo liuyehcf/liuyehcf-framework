@@ -1414,7 +1414,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            new ArrayTypeDimDecrease(-4)//TODO 这里要给出数组的大小，数组地址，在<expression name>推入操作数栈
+                            new ArrayTypeDimDecrease(-4),
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE)
                     ),
                     /*
                      * (2) <array access> → <primary no new array> [ <expression>]
@@ -1427,7 +1428,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
