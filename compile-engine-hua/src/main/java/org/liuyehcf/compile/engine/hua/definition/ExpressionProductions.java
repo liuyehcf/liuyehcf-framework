@@ -202,7 +202,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_MUL_ASSIGN)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <assignment operator> → \=
@@ -212,7 +212,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_DIV_ASSIGN)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <assignment operator> → %=
@@ -222,7 +222,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_MOD_ASSIGN)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <assignment operator> → +=
@@ -232,7 +232,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_ADD_ASSIGN)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <assignment operator> → -=
@@ -242,7 +242,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_MINUS_ASSIGN)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <assignment operator> → <<=
@@ -252,7 +252,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SHIFT_LEFT_ASSIGN)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <assignment operator> → >>=
@@ -262,7 +262,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SHIFT_RIGHT_ASSIGN)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <assignment operator> → >>>=
@@ -272,7 +272,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_UNSIGNED_SHIFT_RIGHT_ASSIGN)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <assignment operator> → &=
@@ -282,7 +282,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BIT_AND_ASSIGN)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <assignment operator> → ^=
@@ -292,7 +292,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BIT_EXCLUSIVE_OR_ASSIGN)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <assignment operator> → |=
@@ -302,7 +302,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BIT_OR_ASSIGN)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
@@ -320,7 +320,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_OR_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <conditional expression> → <conditional or expression> ? <expression> : <conditional expression>
@@ -334,7 +334,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_COLON),
                                     Symbol.createNonTerminator(CONDITIONAL_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
