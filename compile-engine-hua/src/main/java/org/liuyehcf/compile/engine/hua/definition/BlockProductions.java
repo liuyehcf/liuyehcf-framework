@@ -769,7 +769,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * (1) <for statement> → for ( <for init>? ; <expression>? ; <for update>? ) <statement>
+                     * (1) <for statement> → for ( <for init>? ; <mark loop offset> <expression>? ; <for update>? ) <mark true block> <statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_STATEMENT),
@@ -778,10 +778,12 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
+                                    Symbol.createNonTerminator(MARK_LOOP_OFFSET),
                                     Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
                             new ExitNamespace(),
@@ -881,7 +883,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * (1) <for statement no short if> → for ( <for init>? ; <expression>? ; <for update>? ) <statement no short if>
+                     * (1) <for statement no short if> → for ( <for init>? ; <mark loop offset> <expression>? ; <for update>? ) <mark true block> <statement no short if>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_STATEMENT_NO_SHORT_IF),
@@ -890,10 +892,12 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
+                                    Symbol.createNonTerminator(MARK_LOOP_OFFSET),
                                     Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
                             new ExitNamespace(),
