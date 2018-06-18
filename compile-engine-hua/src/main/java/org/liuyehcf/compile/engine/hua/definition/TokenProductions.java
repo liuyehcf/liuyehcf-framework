@@ -114,7 +114,8 @@ abstract class TokenProductions {
                                     Symbol.createNonTerminator(INTEGER_LITERAL)
                             ),
                             new LiteralLoad(0, NORMAL_INT),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_INT)
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_INT),
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <literal> → <boolean literal>
@@ -125,7 +126,8 @@ abstract class TokenProductions {
                                     Symbol.createNonTerminator(BOOLEAN_LITERAL)
                             ),
                             new LiteralLoad(0, NORMAL_BOOLEAN),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_BOOLEAN)
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_BOOLEAN),
+                            new AttrFilter(AttrName.TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
