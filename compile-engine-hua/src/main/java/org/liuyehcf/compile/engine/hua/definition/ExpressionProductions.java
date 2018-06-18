@@ -966,7 +966,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <unary expression not plus minus> → ~ <unary expression>
@@ -977,7 +977,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_REVERSED),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <unary expression not plus minus> → ! <unary expression>
@@ -988,7 +988,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LOGICAL_NOT),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <unary expression not plus minus> → <cast expression>
@@ -998,7 +998,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(CAST_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
