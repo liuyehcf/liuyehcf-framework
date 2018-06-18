@@ -118,7 +118,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <epsilon or block statements> → <block statements>
@@ -128,7 +128,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(BLOCK_STATEMENTS)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
