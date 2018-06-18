@@ -191,7 +191,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR.name(), NORMAL_ASSIGN)
+                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR.name(), NORMAL_ASSIGN),
+                            new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
                      * <assignment operator> → *=
