@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.hua.semantic.attr;
 
 import org.liuyehcf.compile.engine.core.cfg.lr.AbstractLRCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.definition.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
@@ -24,7 +25,7 @@ public class SetAttrFromLexical extends AbstractSemanticAction {
     /**
      * 宿属性-名称
      */
-    private final String toAttrName;
+    private final AttrName toAttrName;
 
     /**
      * 宿属性-偏移量，相对于语法树栈
@@ -35,7 +36,7 @@ public class SetAttrFromLexical extends AbstractSemanticAction {
     private final int toStackOffset;
 
 
-    public SetAttrFromLexical(int fromStackOffset, String toAttrName, int toStackOffset) {
+    public SetAttrFromLexical(int fromStackOffset, AttrName toAttrName, int toStackOffset) {
         this.fromStackOffset = fromStackOffset;
         this.toAttrName = toAttrName;
         this.toStackOffset = toStackOffset;
@@ -47,6 +48,6 @@ public class SetAttrFromLexical extends AbstractSemanticAction {
         AbstractLRCompiler.SyntaxNode toNode = context.getStack().get(toStackOffset);
 
         assertNotNull(fromNode.getValue());
-        toNode.put(toAttrName, fromNode.getValue());
+        toNode.put(toAttrName.name(), fromNode.getValue());
     }
 }

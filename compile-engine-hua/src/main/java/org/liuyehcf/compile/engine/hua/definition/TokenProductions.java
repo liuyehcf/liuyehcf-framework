@@ -90,7 +90,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             ),
-                            new SetAttrFromLexical(0, AttrName.METHOD_NAME.name(), 0),
+                            new SetAttrFromLexical(0, AttrName.METHOD_NAME, 0),
                             new AttrFilter(AttrName.METHOD_NAME)
                     )
                     /*
@@ -329,7 +329,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_NUMBER_0)
                             ),
-                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0),
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)
                     ),
                     /*
@@ -358,7 +358,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_NON_ZERO_DIGIT)
                             ),
-                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0),
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)
                     )
             ),
@@ -377,7 +377,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN_TRUE)
                             ),
-                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0),
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)
                     ),
                     /*
@@ -388,7 +388,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN_FALSE)
                             ),
-                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0),
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)
                     )
             )
