@@ -1054,7 +1054,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PRIMARY)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * (2) <postfix expression> → <expression name>
@@ -1064,7 +1064,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_NAME)
                             ),
-                            new VariableLoad(0)
+                            new VariableLoad(0),
+                            new AttrFilter(AttrName.TYPE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * (3) <postfix expression> → <postincrement expression>
@@ -1074,7 +1075,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTINCREMENT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * (4) <postfix expression> → <postdecrement expression>
@@ -1084,7 +1085,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTDECREMENT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
