@@ -67,7 +67,8 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             ),
-                            new SetIdentifierAttr(0)
+                            new SetIdentifierAttr(0),
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
