@@ -1106,7 +1106,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EPSILON_OR_ARGUMENT_LIST),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new MethodInvocation(-3, -1)
+                            new MethodInvocation(-3, -1),
+                            new AttrFilter()
                     )
                     /*
                      * TODO 缺少以下产生式
