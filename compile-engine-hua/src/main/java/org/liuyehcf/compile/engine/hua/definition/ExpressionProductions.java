@@ -837,7 +837,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <cast expression> → ( <reference type> ) <unary expression not plus minus>
@@ -850,7 +850,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION_NOT_PLUS_MINUS)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
