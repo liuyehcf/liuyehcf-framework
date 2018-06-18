@@ -261,7 +261,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * (3) <statement> → <if then statement>
@@ -271,7 +271,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(IF_THEN_STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * (4) <statement> → <if then else statement>
@@ -281,7 +281,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * (5) <statement> → <while statement>
@@ -291,7 +291,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(WHILE_STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * (6) <statement> → <for statement>
@@ -301,7 +301,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FOR_STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     )
                     /*
                      * TODO 缺少以下产生式
