@@ -1187,7 +1187,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(LITERAL)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <primary no new array> → ( <expression> )
@@ -1199,7 +1199,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new AssignAttrs(-1, -2, AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AssignAttrs(-1, -2, AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE),
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <primary no new array> → <method invocation>
@@ -1209,7 +1210,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_INVOCATION)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <primary no new array> → <array access>
@@ -1219,7 +1220,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ARRAY_ACCESS)
                             ),
-                            new ArrayLoad()
+                            new ArrayLoad(),
+                            new AttrFilter(AttrName.TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
