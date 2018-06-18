@@ -1280,7 +1280,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(DIM_EXPRS),
                                     Symbol.createNonTerminator(EPSILON_OR_DIMS)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
                     /*
                      * TODO 缺少以下产生式
