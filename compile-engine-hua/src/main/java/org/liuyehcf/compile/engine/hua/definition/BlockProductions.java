@@ -323,7 +323,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_WITHOUT_TRAILING_SUBSTATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <statement no short if> → <if then else statement no short if>
@@ -333,7 +333,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT_NO_SHORT_IF)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <statement no short if> → <while statement no short if>
@@ -343,7 +343,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(WHILE_STATEMENT_NO_SHORT_IF)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <statement no short if> → <for statement no short if>
@@ -353,7 +353,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FOR_STATEMENT_NO_SHORT_IF)
                             ),
-                            null
+                            new AttrFilter()
                     )
                     /*
                      * TODO 缺少以下产生式
