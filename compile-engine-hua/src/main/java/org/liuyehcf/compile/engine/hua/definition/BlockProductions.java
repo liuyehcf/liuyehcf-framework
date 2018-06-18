@@ -442,7 +442,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -461,7 +461,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -479,7 +479,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ASSIGNMENT)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <statement expression> → <preincrement expression>
@@ -489,7 +489,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREINCREMENT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <statement expression> → <postincrement expression>
@@ -499,7 +499,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTINCREMENT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <statement expression> → <predecrement expression>
@@ -509,7 +509,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREDECREMENT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <statement expression> → <postdecrement expression>
@@ -519,7 +519,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTDECREMENT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <statement expression> → <method invocation>
@@ -529,7 +529,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_INVOCATION)
                             ),
-                            null
+                            new AttrFilter()
                     )
                     /*
                      * TODO 缺少以下产生式
