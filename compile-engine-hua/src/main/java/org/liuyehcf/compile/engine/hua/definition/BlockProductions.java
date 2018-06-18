@@ -776,7 +776,8 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new ExitNamespace()
+                            new ExitNamespace(),
+                            new AttrFilter()
                     )
             ),
 
@@ -794,7 +795,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new EnterNamespace()
+                            new EnterNamespace(),
+                            new AttrFilter()
                     ),
                     /*
                      * <epsilon or for init> → <for init>
@@ -804,7 +806,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FOR_INIT)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -822,7 +824,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <epsilon or expression> → <expression>
@@ -832,7 +834,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -850,7 +852,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <epsilon or for update> → <for update>
@@ -860,7 +862,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FOR_UPDATE)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -886,7 +888,8 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            new ExitNamespace()
+                            new ExitNamespace(),
+                            new AttrFilter()
                     )
             ),
 
@@ -905,7 +908,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_192_1_1),
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * (1) <for init> → <mark 192_2_1> <local variable declaration>
@@ -916,7 +919,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_192_2_1),
                                     Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -933,7 +936,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new EnterNamespace()
+                            new EnterNamespace(),
+                            new AttrFilter()
                     )
 
             ),
@@ -951,7 +955,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new EnterNamespace()
+                            new EnterNamespace(),
+                            new AttrFilter()
                     )
 
             ),
@@ -970,7 +975,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -988,7 +993,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <statement expression list> → <statement expression list> , <statement expression>
@@ -1000,7 +1005,7 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -1020,7 +1025,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
-                            null
+                            new AttrFilter()
                     )
             )
     };
