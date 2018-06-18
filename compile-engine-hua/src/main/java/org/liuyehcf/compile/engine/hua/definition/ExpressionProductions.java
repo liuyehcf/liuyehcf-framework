@@ -388,7 +388,8 @@ abstract class ExpressionProductions {
                                     Symbol.EPSILON
                             ),
                             new ControlTransferByteCodeByType(-1, -1, BackFillType.TRUE, true),
-                            new BackFill(-1, BackFillType.FALSE)
+                            new BackFill(-1, BackFillType.FALSE),
+                            new AttrFilter()
                     )
             ),
 
@@ -406,7 +407,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <conditional and expression> → <conditional and expression> && <mark 232_2_1> <inclusive or expression>
@@ -421,7 +422,8 @@ abstract class ExpressionProductions {
                             ),
                             new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE.name()),
                             new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
-                            new MergeControlTransferByteCode(0, -3)
+                            new MergeControlTransferByteCode(0, -3),
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     )
             ),
 
@@ -439,7 +441,8 @@ abstract class ExpressionProductions {
                                     Symbol.EPSILON
                             ),
                             new ControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
-                            new BackFill(-1, BackFillType.TRUE)
+                            new BackFill(-1, BackFillType.TRUE),
+                            new AttrFilter()
                     )
             ),
 
