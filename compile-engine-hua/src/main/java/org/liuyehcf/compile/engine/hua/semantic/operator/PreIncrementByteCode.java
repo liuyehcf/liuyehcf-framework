@@ -6,12 +6,12 @@ import org.liuyehcf.compile.engine.hua.definition.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 /**
- * 添加 ++ -- 的字节码
+ * 前置 递增/递减
  *
  * @author chenlu
  * @date 2018/6/18
  */
-public class AddIncrementByteCode extends AbstractSemanticAction {
+public class PreIncrementByteCode extends AbstractSemanticAction {
 
     /**
      * 用于存放回填iinc字节码的节点-偏移量，相对于语法树栈
@@ -21,7 +21,7 @@ public class AddIncrementByteCode extends AbstractSemanticAction {
      */
     private final int backFillStackOffset;
 
-    public AddIncrementByteCode(int backFillStackOffset) {
+    public PreIncrementByteCode(int backFillStackOffset) {
         this.backFillStackOffset = backFillStackOffset;
     }
 

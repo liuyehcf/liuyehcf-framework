@@ -16,10 +16,7 @@ import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoad;
 import org.liuyehcf.compile.engine.hua.semantic.method.IncArgSize;
 import org.liuyehcf.compile.engine.hua.semantic.method.InitArgSize;
 import org.liuyehcf.compile.engine.hua.semantic.method.MethodInvocation;
-import org.liuyehcf.compile.engine.hua.semantic.operator.AddIncrementByteCode;
-import org.liuyehcf.compile.engine.hua.semantic.operator.Assignment;
-import org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperation;
-import org.liuyehcf.compile.engine.hua.semantic.operator.IncrementBackFill;
+import org.liuyehcf.compile.engine.hua.semantic.operator.*;
 import org.liuyehcf.compile.engine.hua.semantic.variable.ArrayTypeDimDecrease;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
@@ -931,7 +928,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddIncrementByteCode(0),
+                            new PreIncrementByteCode(0),
                             new AttrFilter()
                     )
             ),
@@ -1045,7 +1042,9 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_DOUBLE_MINUS)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new PostIncrementByteCode(-1, -1),
+                            new SetAttrFromSystem(-1, AttrName.TYPE.name(), TYPE_INT),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
@@ -1064,7 +1063,9 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_DOUBLE_PLUS)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new PostIncrementByteCode(-1, 1),
+                            new SetAttrFromSystem(-1, AttrName.TYPE.name(), TYPE_INT),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
@@ -1103,7 +1104,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTINCREMENT_EXPRESSION)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * (4) <postfix expression> → <postdecrement expression>
@@ -1113,7 +1114,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTDECREMENT_EXPRESSION)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 

@@ -551,6 +551,42 @@ public class TestGrammar {
     }
 
     @Test
+    public void testPostDecrement() {
+        String text = "void func(int i) {\n" +
+                "\tint j=i--;\n" +
+                "\n" +
+                "\tj=(1+i--)+(j--+3);\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"increment\":-1,\"name\":\"_iinc\",\"offset\":0},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iload\",\"offset\":0},{\"increment\":-1,\"name\":\"_iinc\",\"offset\":0},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"offset\":8},{\"increment\":-1,\"name\":\"_iinc\",\"offset\":8},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iadd\"},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testPostIncrement() {
+        String text = "void func(int i) {\n" +
+                "\tint j=i++;\n" +
+                "\n" +
+                "\tj=((i++)+1)+(3+j++);\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"increment\":1,\"name\":\"_iinc\",\"offset\":0},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_iload\",\"offset\":0},{\"increment\":1,\"name\":\"_iinc\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iload\",\"offset\":8},{\"increment\":1,\"name\":\"_iinc\",\"offset\":8},{\"name\":\"_iadd\"},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
     public void testDecimalLiteral() {
         String text = "void func() {\n" +
                 "\tint a=5,b=100000;\n" +
