@@ -90,7 +90,8 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             ),
-                            new SetAttrFromLexical(0, AttrName.METHOD_NAME.name(), 0)
+                            new SetAttrFromLexical(0, AttrName.METHOD_NAME.name(), 0),
+                            new AttrFilter(AttrName.METHOD_NAME)
                     )
                     /*
                      * TODO 缺少以下产生式
