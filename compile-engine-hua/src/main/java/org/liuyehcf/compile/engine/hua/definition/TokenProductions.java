@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.semantic.load.LiteralLoad;
@@ -269,7 +270,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.LITERAL_VALUE.name(), ""),
+                            new SetAttrToLeftNode(AttrName.LITERAL_VALUE, ""),
                             new AttrFilter(AttrName.LITERAL_VALUE)
                     ),
                     /*

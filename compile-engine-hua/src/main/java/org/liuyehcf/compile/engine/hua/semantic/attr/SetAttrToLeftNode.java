@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic.attr;
 
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 /**
@@ -14,20 +15,20 @@ public class SetAttrToLeftNode extends AbstractSemanticAction {
     /**
      * 属性-名称
      */
-    private final String attrName;
+    private final AttrName attrName;
 
     /**
      * 属性值
      */
     private final Object value;
 
-    public SetAttrToLeftNode(String attrName, Object value) {
+    public SetAttrToLeftNode(AttrName attrName, Object value) {
         this.attrName = attrName;
         this.value = value;
     }
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        context.getLeftNode().put(attrName, value);
+        context.getLeftNode().put(attrName.name(), value);
     }
 }

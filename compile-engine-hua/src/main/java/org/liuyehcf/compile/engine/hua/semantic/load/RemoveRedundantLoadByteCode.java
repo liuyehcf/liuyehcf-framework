@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.hua.semantic.load;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._iload;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
-import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.StatementType;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 

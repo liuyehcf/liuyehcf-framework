@@ -4,7 +4,7 @@ import org.liuyehcf.compile.engine.hua.bytecode.sl._iastore;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._istore;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
-import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 

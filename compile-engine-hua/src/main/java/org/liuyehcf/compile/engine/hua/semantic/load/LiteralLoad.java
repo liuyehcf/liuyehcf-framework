@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.hua.semantic.load;
 
 import org.liuyehcf.compile.engine.hua.bytecode.sl._iconst;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
-import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;

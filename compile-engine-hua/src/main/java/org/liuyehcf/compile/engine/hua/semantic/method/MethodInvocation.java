@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.hua.semantic.method;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ik._invokestatic;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
-import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 /**

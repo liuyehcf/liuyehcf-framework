@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.hua.semantic.condition;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
-import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 import java.util.ArrayList;

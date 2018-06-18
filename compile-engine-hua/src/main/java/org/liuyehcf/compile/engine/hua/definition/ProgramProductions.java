@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
 import org.liuyehcf.compile.engine.hua.semantic.attr.*;
@@ -435,7 +436,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.PARAMETER_LIST.name(), null),
+                            new SetAttrToLeftNode(AttrName.PARAMETER_LIST, null),
                             new AttrFilter(AttrName.PARAMETER_LIST)
                     ),
                     /*

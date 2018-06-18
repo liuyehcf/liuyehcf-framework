@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.definition;
+package org.liuyehcf.compile.engine.hua.model;
 
 /**
  * 属性名称

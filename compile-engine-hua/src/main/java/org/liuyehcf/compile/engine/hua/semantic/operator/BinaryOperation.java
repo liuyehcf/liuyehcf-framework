@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.hua.semantic.operator;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cp.*;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
-import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BinaryOperator;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;

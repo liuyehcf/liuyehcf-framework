@@ -4,10 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.model.BackFillType;
-import org.liuyehcf.compile.engine.hua.model.BinaryOperator;
-import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
-import org.liuyehcf.compile.engine.hua.model.Type;
+import org.liuyehcf.compile.engine.hua.model.*;
 import org.liuyehcf.compile.engine.hua.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BackFill;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssignment;
@@ -1158,7 +1155,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.ARGUMENT_SIZE.name(), 0),
+                            new SetAttrToLeftNode(AttrName.ARGUMENT_SIZE, 0),
                             new AttrFilter(AttrName.ARGUMENT_SIZE)
                     ),
                     /*
