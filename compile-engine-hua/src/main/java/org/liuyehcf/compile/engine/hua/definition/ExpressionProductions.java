@@ -1017,7 +1017,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_DOUBLE_MINUS)
                             ),
-                            null // TODO，如何实现返回原值
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
@@ -1036,7 +1036,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_DOUBLE_PLUS)
                             ),
-                            null // TODO，如何实现返回原值
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
