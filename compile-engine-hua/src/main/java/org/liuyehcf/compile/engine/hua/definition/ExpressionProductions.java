@@ -929,7 +929,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DOUBLE_MINUS),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
@@ -948,7 +948,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DOUBLE_PLUS),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
