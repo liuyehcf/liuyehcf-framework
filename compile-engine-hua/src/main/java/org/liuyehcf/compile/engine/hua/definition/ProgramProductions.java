@@ -235,7 +235,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR_ID)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <variable declarator> → <variable declarator id> = <variable initializer>
@@ -247,7 +247,8 @@ abstract class ProgramProductions {
                                     Symbol.createTerminator(NORMAL_ASSIGN),
                                     Symbol.createNonTerminator(VARIABLE_INITIALIZER)
                             ),
-                            new VariableInitialization(0, -2)
+                            new VariableInitialization(0, -2),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
