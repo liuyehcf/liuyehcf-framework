@@ -1130,7 +1130,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.ARGUMENT_SIZE.name(), 0)
+                            new SetAttrToLeftNode(AttrName.ARGUMENT_SIZE.name(), 0),
+                            new AttrFilter(AttrName.ARGUMENT_SIZE)
                     ),
                     /*
                      * <epsilon or argument list> → <argument list>
@@ -1140,7 +1141,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ARGUMENT_LIST)
                             ),
-                            null
+                            new AttrFilter(AttrName.ARGUMENT_SIZE)
                     )
             ),
 
@@ -1158,7 +1159,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PRIMARY_NO_NEW_ARRAY)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <primary> → <array creation expression>
@@ -1168,7 +1169,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ARRAY_CREATION_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
