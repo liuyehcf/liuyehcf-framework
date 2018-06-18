@@ -1302,7 +1302,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <epsilon or dims> → <dims>
@@ -1312,7 +1312,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(DIMS)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
@@ -1330,7 +1330,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(DIM_EXPR)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <dim exprs> → <dim exprs> <dim expr>
@@ -1341,7 +1341,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(DIM_EXPRS),
                                     Symbol.createNonTerminator(DIM_EXPR)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
@@ -1361,7 +1361,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
@@ -1380,7 +1380,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     ),
                     /*
                      * <dims> → <dims> [ ]
@@ -1392,7 +1392,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            null
+                            new AttrFilter() // TODO 尚不支持
                     )
             ),
 
