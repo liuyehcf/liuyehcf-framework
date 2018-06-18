@@ -185,7 +185,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * (2) <variable declarators> → <variable declarators> , <mark 66_2_1> <variable declarator>
@@ -198,7 +198,7 @@ abstract class ProgramProductions {
                                     Symbol.createNonTerminator(MARK_66_2_1),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATOR)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
@@ -216,7 +216,8 @@ abstract class ProgramProductions {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new AssignAttr(-1, 1, AttrName.TYPE.name())
+                            new AssignAttr(-1, 1, AttrName.TYPE.name()),
+                            new AttrFilter()
                     )
             ),
 
