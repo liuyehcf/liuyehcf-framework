@@ -175,7 +175,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION_STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <block statement> → <statement>
@@ -185,7 +185,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -204,7 +204,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION),
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
