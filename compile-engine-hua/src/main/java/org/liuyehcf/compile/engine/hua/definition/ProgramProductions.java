@@ -464,7 +464,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(BLOCK)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <method body> → ;
@@ -474,7 +474,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
     };
