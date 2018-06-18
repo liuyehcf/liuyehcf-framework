@@ -364,7 +364,8 @@ abstract class ProgramProductions {
                                     Symbol.createNonTerminator(RESULT_TYPE),
                                     Symbol.createNonTerminator(METHOD_DECLARATOR)
                             ),
-                            new RecordMethodDescription(-1, 0)
+                            new RecordMethodDescription(-1, 0),
+                            new AttrFilter()
                     )
             ),
 
@@ -382,7 +383,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(TYPE)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <result type> → void
@@ -392,7 +393,8 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_VOID)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.TYPE_VOID)
+                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.TYPE_VOID),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
