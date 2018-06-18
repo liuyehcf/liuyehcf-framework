@@ -676,7 +676,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <shift expression> → <shift expression> << <additive expression>
@@ -688,7 +688,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SHIFT_LEFT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, SHIFT_LEFT)
+                            new BinaryOperation(-2, 0, SHIFT_LEFT),
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <shift expression> → <shift expression> >> <additive expression>
@@ -700,7 +701,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SHIFT_RIGHT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, SHIFT_RIGHT)
+                            new BinaryOperation(-2, 0, SHIFT_RIGHT),
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <shift expression> → <shift expression> >>> <additive expression>
@@ -712,7 +714,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_UNSIGNED_SHIFT_RIGHT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, UNSIGNED_SHIFT_RIGHT)
+                            new BinaryOperation(-2, 0, UNSIGNED_SHIFT_RIGHT),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
