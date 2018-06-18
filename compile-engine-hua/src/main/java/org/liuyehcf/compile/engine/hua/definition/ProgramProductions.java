@@ -267,7 +267,8 @@ abstract class ProgramProductions {
                                     Symbol.createRegexTerminator(REGEX_IDENTIFIER)
                             ),
                             new CreateVariable(0),
-                            new SetAttrFromLexical(0, AttrName.IDENTIFIER_NAME.name(), 0)
+                            new SetAttrFromLexical(0, AttrName.IDENTIFIER_NAME.name(), 0),
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE)
                     ),
                     /*
                      * <variable declarator id> → <variable declarator id> []
@@ -279,7 +280,7 @@ abstract class ProgramProductions {
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            null
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE)
                     )
             ),
 
