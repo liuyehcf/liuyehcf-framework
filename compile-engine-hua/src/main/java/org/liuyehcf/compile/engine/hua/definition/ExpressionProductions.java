@@ -140,7 +140,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
                             ),
                             new BooleanAssignment(0),
-                            new Assignment(0, -1, -2)
+                            new Assignment(0, -1, -2),
+                            new AttrFilter() //TODO 赋值后还需要保留标志符名字以及类型
                     )
             ),
 
