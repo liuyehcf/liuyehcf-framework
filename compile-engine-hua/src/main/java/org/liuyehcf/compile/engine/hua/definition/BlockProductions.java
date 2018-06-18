@@ -375,7 +375,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(BLOCK)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * (2) <statement without trailing substatement> → <empty statement>
@@ -385,7 +385,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EMPTY_STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * (3) <statement without trailing substatement> → <expression statement>
@@ -395,7 +395,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * (5) <statement without trailing substatement> → <do statement>
@@ -405,7 +405,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(DO_STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * (8) <statement without trailing substatement> → <return statement>
@@ -415,7 +415,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(RETURN_STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     )
                     /*
                      * TODO 缺少以下产生式
