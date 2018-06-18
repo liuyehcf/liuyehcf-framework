@@ -76,4 +76,9 @@ public enum AttrName {
      * 自增字节码
      */
     IINC_BYTE_CODE,
+
+    /**
+     * 语句类型
+     */
+    STATEMTNT_TYPE
 }

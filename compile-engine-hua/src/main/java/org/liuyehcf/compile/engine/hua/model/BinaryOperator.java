@@ -1,6 +1,8 @@
 package org.liuyehcf.compile.engine.hua.model;
 
 /**
+ * 二元操作符
+ *
  * @author hechenfeng
  * @date 2018/6/18
  */

@@ -6,10 +6,13 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
+import org.liuyehcf.compile.engine.hua.model.StatementType;
 import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
 import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
 import org.liuyehcf.compile.engine.hua.semantic.attr.AttrFilter;
+import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
 import org.liuyehcf.compile.engine.hua.semantic.condition.*;
+import org.liuyehcf.compile.engine.hua.semantic.load.RemoveRedundantLoadByteCode;
 import org.liuyehcf.compile.engine.hua.semantic.variable.EnterNamespace;
 import org.liuyehcf.compile.engine.hua.semantic.variable.ExitNamespace;
 
@@ -461,6 +464,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
+                            new RemoveRedundantLoadByteCode(-1),
                             new AttrFilter()
                     )
             ),
@@ -479,7 +483,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ASSIGNMENT)
                             ),
-                            new AttrFilter()
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.ASSIGNMENT),
+                            new AttrFilter(AttrName.STATEMTNT_TYPE)
                     ),
                     /*
                      * <statement expression> → <preincrement expression>
@@ -489,7 +494,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREINCREMENT_EXPRESSION)
                             ),
-                            new AttrFilter()
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.PRE_INCREMENT),
+                            new AttrFilter(AttrName.STATEMTNT_TYPE)
                     ),
                     /*
                      * <statement expression> → <postincrement expression>
@@ -499,7 +505,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTINCREMENT_EXPRESSION)
                             ),
-                            new AttrFilter()
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.POST_INCREMENT),
+                            new AttrFilter(AttrName.STATEMTNT_TYPE)
                     ),
                     /*
                      * <statement expression> → <predecrement expression>
@@ -509,7 +516,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREDECREMENT_EXPRESSION)
                             ),
-                            new AttrFilter()
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.PRE_DECREMENT),
+                            new AttrFilter(AttrName.STATEMTNT_TYPE)
                     ),
                     /*
                      * <statement expression> → <postdecrement expression>
@@ -519,7 +527,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTDECREMENT_EXPRESSION)
                             ),
-                            new AttrFilter()
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.POST_DECREMENT),
+                            new AttrFilter(AttrName.STATEMTNT_TYPE)
                     ),
                     /*
                      * <statement expression> → <method invocation>
@@ -529,7 +538,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_INVOCATION)
                             ),
-                            new AttrFilter()
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.METHOD_INVOCATION),
+                            new AttrFilter(AttrName.STATEMTNT_TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式

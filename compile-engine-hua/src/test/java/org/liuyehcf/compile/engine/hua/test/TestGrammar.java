@@ -515,6 +515,25 @@ public class TestGrammar {
     }
 
     @Test
+    public void testSimpleIncrementDecrement() {
+        String text = "void func(int i) {\n" +
+                "\t++i;\n" +
+                "\ti++;\n" +
+                "\t--i;\n" +
+                "\ti--;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int)\":{\"byteCodes\":[{\"increment\":1,\"name\":\"_iinc\",\"offset\":0},{\"increment\":1,\"name\":\"_iinc\",\"offset\":0},{\"increment\":-1,\"name\":\"_iinc\",\"offset\":0},{\"increment\":-1,\"name\":\"_iinc\",\"offset\":0},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
     public void testPreDecrement() {
         String text = "void func(int i) {\n" +
                 "\tint j=--i;\n" +

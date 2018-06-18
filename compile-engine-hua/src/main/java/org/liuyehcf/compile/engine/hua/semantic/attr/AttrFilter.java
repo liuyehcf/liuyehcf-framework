@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author chenlu
+ * 属性过滤（规约后产生式左部的语法树节点），设置保留的属性值
+ *
+ * @author hechenfeng
  * @date 2018/6/18
  */
 public class AttrFilter extends AbstractSemanticAction {

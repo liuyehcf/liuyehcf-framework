@@ -1,19 +1,13 @@
 package org.liuyehcf.compile.engine.hua.model;
 
 /**
- * @author chenlu
+ * 一元操作符
+ *
+ * @author hechenfeng
  * @date 2018/6/18
  */
 public enum UnaryOperator {
-    /**
-     * 递增
-     */
-    INCREMENT("++"),
-
-    /**
-     * 递减
-     */
-    DECREMENT("--"),;
+    ;
 
     private final String sign;
 

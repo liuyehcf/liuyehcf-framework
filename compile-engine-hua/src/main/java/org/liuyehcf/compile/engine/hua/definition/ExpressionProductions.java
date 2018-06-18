@@ -5,6 +5,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
+import org.liuyehcf.compile.engine.hua.model.BinaryOperator;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BackFill;
@@ -24,7 +25,6 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.definition.TokenProductions.*;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.PRIMITIVE_TYPE;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.REFERENCE_TYPE;
-import static org.liuyehcf.compile.engine.hua.model.BinaryOperator.*;
 import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
 import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_INT;
 
@@ -472,7 +472,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_OR),
                                     Symbol.createNonTerminator(EXCLUSIVE_OR_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, BIT_OR),
+                            new BinaryOperation(-2, 0, BinaryOperator.BIT_OR),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -503,7 +503,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_EXCLUSIVE_OR),
                                     Symbol.createNonTerminator(AND_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, BIT_XOR),
+                            new BinaryOperation(-2, 0, BinaryOperator.BIT_XOR),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -534,7 +534,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_AND),
                                     Symbol.createNonTerminator(EQUALITY_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, BIT_AND),
+                            new BinaryOperation(-2, 0, BinaryOperator.BIT_AND),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -689,7 +689,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SHIFT_LEFT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, SHIFT_LEFT),
+                            new BinaryOperation(-2, 0, BinaryOperator.SHIFT_LEFT),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -702,7 +702,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SHIFT_RIGHT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, SHIFT_RIGHT),
+                            new BinaryOperation(-2, 0, BinaryOperator.SHIFT_RIGHT),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -715,7 +715,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_UNSIGNED_SHIFT_RIGHT),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, UNSIGNED_SHIFT_RIGHT),
+                            new BinaryOperation(-2, 0, BinaryOperator.UNSIGNED_SHIFT_RIGHT),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -746,7 +746,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_ADD),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, ADDITION),
+                            new BinaryOperation(-2, 0, BinaryOperator.ADDITION),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -759,7 +759,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MINUS),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, SUBTRACTION),
+                            new BinaryOperation(-2, 0, BinaryOperator.SUBTRACTION),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -790,7 +790,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MUL),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, MULTIPLICATION),
+                            new BinaryOperation(-2, 0, BinaryOperator.MULTIPLICATION),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -803,7 +803,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DIV),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, DIVISION),
+                            new BinaryOperation(-2, 0, BinaryOperator.DIVISION),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -816,7 +816,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MOD),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, REMAINDER),
+                            new BinaryOperation(-2, 0, BinaryOperator.REMAINDER),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
