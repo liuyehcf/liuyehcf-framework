@@ -18,6 +18,7 @@ import org.liuyehcf.compile.engine.hua.semantic.method.InitArgSize;
 import org.liuyehcf.compile.engine.hua.semantic.method.MethodInvocation;
 import org.liuyehcf.compile.engine.hua.semantic.operator.Assignment;
 import org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperation;
+import org.liuyehcf.compile.engine.hua.semantic.operator.PreUnaryOperation;
 import org.liuyehcf.compile.engine.hua.semantic.variable.ArrayTypeDimDecrease;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
@@ -27,6 +28,8 @@ import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.PRIMITI
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.REFERENCE_TYPE;
 import static org.liuyehcf.compile.engine.hua.model.BinaryOperator.*;
 import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
+import static org.liuyehcf.compile.engine.hua.model.UnaryOperator.DECREMENT;
+import static org.liuyehcf.compile.engine.hua.model.UnaryOperator.INCREMENT;
 
 /**
  * Expression相关的产生式
@@ -910,7 +913,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(UNARY_EXPRESSION_NOT_PLUS_MINUS)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )
             ),
 
@@ -929,6 +932,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DOUBLE_MINUS),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
+                            new PreUnaryOperation(0, DECREMENT),
                             new AttrFilter() // TODO 尚不支持
                     )
             ),
@@ -948,6 +952,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DOUBLE_PLUS),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
+                            new PreUnaryOperation(0, INCREMENT),
                             new AttrFilter() // TODO 尚不支持
                     )
             ),
@@ -966,7 +971,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <unary expression not plus minus> → ~ <unary expression>
@@ -1065,7 +1070,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION_NAME)
                             ),
                             new VariableLoad(0),
-                            new AttrFilter(AttrName.TYPE)
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE)
                     ),
                     /*
                      * (3) <postfix expression> → <postincrement expression>
