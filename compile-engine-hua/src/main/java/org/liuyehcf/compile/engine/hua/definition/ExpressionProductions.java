@@ -1245,7 +1245,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new InitArgSize(0)
+                            new InitArgSize(0),
+                            new AttrFilter(AttrName.ARGUMENT_SIZE)
                     ),
                     /*
                      * <argument list> → <argument list> , <expression>
@@ -1257,7 +1258,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new IncArgSize(-2)
+                            new IncArgSize(-2),
+                            new AttrFilter(AttrName.ARGUMENT_SIZE)
                     )
             ),
 
