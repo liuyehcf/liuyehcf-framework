@@ -6,10 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
-import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
-import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromLexical;
-import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
-import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrToLeftNode;
+import org.liuyehcf.compile.engine.hua.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssignment;
 import org.liuyehcf.compile.engine.hua.semantic.method.EnterMethod;
 import org.liuyehcf.compile.engine.hua.semantic.method.ExitMethod;
@@ -69,7 +66,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_DECLARATIONS)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -88,7 +85,7 @@ abstract class ProgramProductions {
                                     Symbol.createNonTerminator(METHOD_DECLARATIONS),
                                     Symbol.createNonTerminator(METHOD_DECLARATION)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <method declarations> → <method declaration>
@@ -98,7 +95,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_DECLARATION)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -118,7 +115,8 @@ abstract class ProgramProductions {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new RecordParamTypeInfo(-2, 0)
+                            new RecordParamTypeInfo(-2, 0),
+                            new AttrFilter(AttrName.PARAMETER_LIST)
                     ),
                     /*
                      * <formal parameter list> → <formal parameter>
@@ -129,7 +127,8 @@ abstract class ProgramProductions {
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
                             new SetAttrFromSystem(0, AttrName.PARAMETER_LIST.name(), null),
-                            new RecordParamTypeInfo(0, 0)
+                            new RecordParamTypeInfo(0, 0),
+                            new AttrFilter(AttrName.PARAMETER_LIST)
                     )
             ),
 
