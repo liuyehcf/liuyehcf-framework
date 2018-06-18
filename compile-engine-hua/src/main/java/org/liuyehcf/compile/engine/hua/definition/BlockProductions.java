@@ -550,7 +550,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetLoopOffset(0)// 向后设置会造成入侵，Expression所有直传链路都需要带上LOOP_CODE_OFFSET，另外139也是
+                            new SetLoopOffset(0),
+                            new AttrFilter()
                     )
             ),
 
@@ -568,7 +569,8 @@ abstract class BlockProductions {
                                     Symbol.EPSILON
                             ),
                             new ControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
-                            new BackFill(-1, BackFillType.TRUE)
+                            new BackFill(-1, BackFillType.TRUE),
+                            new AttrFilter()
                     )
             ),
 
@@ -586,7 +588,8 @@ abstract class BlockProductions {
                                     Symbol.EPSILON
                             ),
                             new ControlTransferByteCode(-4, ControlTransferType.GOTO, BackFillType.NEXT),
-                            new BackFill(-4, BackFillType.FALSE)
+                            new BackFill(-4, BackFillType.FALSE),
+                            new AttrFilter()
                     )
             ),
 
@@ -610,7 +613,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new BackFill(-3, BackFillType.FALSE)
+                            new BackFill(-3, BackFillType.FALSE),
+                            new AttrFilter()
                     )
             ),
 
@@ -637,7 +641,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new BackFill(-6, BackFillType.NEXT)
+                            new BackFill(-6, BackFillType.NEXT),
+                            new AttrFilter()
                     )
             ),
 
@@ -664,7 +669,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            new BackFill(-6, BackFillType.NEXT)
+                            new BackFill(-6, BackFillType.NEXT),
+                            new AttrFilter()
                     )
             ),
 
@@ -689,7 +695,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
                             new GotoLoop(-5),
-                            new BackFill(-3, BackFillType.FALSE)
+                            new BackFill(-3, BackFillType.FALSE),
+                            new AttrFilter()
                     )
             ),
 
@@ -714,7 +721,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
                             new GotoLoop(-5),
-                            new BackFill(-3, BackFillType.FALSE)
+                            new BackFill(-3, BackFillType.FALSE),
+                            new AttrFilter()
                     )
             ),
 
@@ -741,7 +749,8 @@ abstract class BlockProductions {
                             ),
                             new ControlTransferByteCodeByType(-2, -2, BackFillType.TRUE, true),
                             new BackToLoop(-2, -7, BackFillType.TRUE),
-                            new BackFill(-2, BackFillType.FALSE)
+                            new BackFill(-2, BackFillType.FALSE),
+                            new AttrFilter()
                     )
             ),
 
