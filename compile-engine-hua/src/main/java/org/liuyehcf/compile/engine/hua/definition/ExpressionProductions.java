@@ -1445,7 +1445,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new VariableLoad(0)
+                            new VariableLoad(0),
+                            new AttrFilter()
                     )
             )
     };
