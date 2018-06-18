@@ -159,7 +159,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_NAME)
                             ),
-                            null
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE)
                     ),
                     /*
                      * <left hand side> → <array access>
@@ -169,7 +169,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ARRAY_ACCESS)
                             ),
-                            null
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE) // TODO 现在数组赋值只支持变量，因此需要IDENTIFIER_NAME属性
                     )
                     /*
                      * TODO 缺少以下产生式
