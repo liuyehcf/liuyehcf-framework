@@ -777,7 +777,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <multiplicative expression> → <multiplicative expression> * <unary expression>
@@ -789,7 +789,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MUL),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, MULTIPLICATION)
+                            new BinaryOperation(-2, 0, MULTIPLICATION),
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <multiplicative expression> → <multiplicative expression> / <unary expression>
@@ -801,7 +802,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DIV),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, DIVISION)
+                            new BinaryOperation(-2, 0, DIVISION),
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <multiplicative expression> → <multiplicative expression> % <unary expression>
@@ -813,7 +815,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MOD),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, REMAINDER)
+                            new BinaryOperation(-2, 0, REMAINDER),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
