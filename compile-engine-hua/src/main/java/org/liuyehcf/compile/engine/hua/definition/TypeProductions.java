@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.attr.AttrFilter;
 import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
 import org.liuyehcf.compile.engine.hua.semantic.variable.IncreaseArrayTypeDim;
@@ -11,8 +12,6 @@ import org.liuyehcf.compile.engine.hua.semantic.variable.IncreaseArrayTypeDim;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_MIDDLE_LEFT_PARENTHESES;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_MIDDLE_RIGHT_PARENTHESES;
-import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_INT;
 
 /**
  * Type相关的产生式
@@ -82,7 +81,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_BOOLEAN),
+                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_BOOLEAN),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -130,7 +129,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_INT)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_INT),
+                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )
                     /*

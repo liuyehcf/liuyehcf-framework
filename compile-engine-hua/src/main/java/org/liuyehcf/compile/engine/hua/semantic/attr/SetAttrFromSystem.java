@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic.attr;
 
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.definition.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 /**
@@ -21,14 +22,14 @@ public class SetAttrFromSystem extends AbstractSemanticAction {
     /**
      * 属性-名称
      */
-    private final String attrName;
+    private final AttrName attrName;
 
     /**
      * 属性-值
      */
     private final Object attrValue;
 
-    public SetAttrFromSystem(int stackOffset, String attrName, Object attrValue) {
+    public SetAttrFromSystem(int stackOffset, AttrName attrName, Object attrValue) {
         this.stackOffset = stackOffset;
         this.attrName = attrName;
         this.attrValue = attrValue;
@@ -36,6 +37,6 @@ public class SetAttrFromSystem extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        context.getStack().get(stackOffset).put(attrName, attrValue);
+        context.getStack().get(stackOffset).put(attrName.name(), attrValue);
     }
 }

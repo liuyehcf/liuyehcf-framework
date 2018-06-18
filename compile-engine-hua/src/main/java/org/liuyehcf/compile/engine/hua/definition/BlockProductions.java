@@ -483,7 +483,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ASSIGNMENT)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.ASSIGNMENT),
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.ASSIGNMENT),
                             new AttrFilter(AttrName.STATEMTNT_TYPE)
                     ),
                     /*
@@ -494,7 +494,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREINCREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.PRE_INCREMENT),
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.PRE_INCREMENT),
                             new AttrFilter(AttrName.STATEMTNT_TYPE)
                     ),
                     /*
@@ -505,7 +505,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTINCREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.POST_INCREMENT),
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.POST_INCREMENT),
                             new AttrFilter(AttrName.STATEMTNT_TYPE)
                     ),
                     /*
@@ -516,7 +516,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREDECREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.PRE_DECREMENT),
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.PRE_DECREMENT),
                             new AttrFilter(AttrName.STATEMTNT_TYPE)
                     ),
                     /*
@@ -527,7 +527,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTDECREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.POST_DECREMENT),
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.POST_DECREMENT),
                             new AttrFilter(AttrName.STATEMTNT_TYPE)
                     ),
                     /*
@@ -538,7 +538,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_INVOCATION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE.name(), StatementType.METHOD_INVOCATION),
+                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.METHOD_INVOCATION),
                             new AttrFilter(AttrName.STATEMTNT_TYPE)
                     )
                     /*

@@ -4,9 +4,8 @@ import org.liuyehcf.compile.engine.hua.bytecode.cp._iinc;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.definition.AttrName;
+import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
-
-import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_INT;
 
 /**
  * 自增字节码回填
@@ -53,7 +52,7 @@ public class IncrementBackFill extends AbstractSemanticAction {
             throw new RuntimeException("前置递增/递减运算符不能作用于 '值'");
         }
 
-        if (!TYPE_INT.equals(variableSymbol.getType())) {
+        if (!Type.TYPE_INT.equals(variableSymbol.getType())) {
             throw new RuntimeException("前置递增/递减运算符不能作用于 '非int类型的变量'");
         }
 

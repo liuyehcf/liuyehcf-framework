@@ -7,6 +7,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.BinaryOperator;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
+import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BackFill;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssignment;
@@ -25,8 +26,6 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.definition.TokenProductions.*;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.PRIMITIVE_TYPE;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.REFERENCE_TYPE;
-import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_INT;
 
 /**
  * Expression相关的产生式
@@ -192,7 +191,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR.name(), NORMAL_ASSIGN),
+                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -367,9 +366,9 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
                             new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE),
-                            new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
+                            new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, new Object()),
                             new MergeControlTransferByteCode(0, -3),
-                            new SetAttrFromSystem(-3, AttrName.TYPE.name(), TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-3, AttrName.TYPE, Type.TYPE_BOOLEAN),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )
             ),
@@ -421,7 +420,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
                             new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE),
-                            new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
+                            new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, new Object()),
                             new MergeControlTransferByteCode(0, -3),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )
@@ -565,8 +564,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_EQUAL),
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPNE),
+                            new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPNE),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE)
                     ),
                     /*
@@ -579,8 +578,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_NOT_EQUAL),
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPEQ),
+                            new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPEQ),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE)
                     )
             ),
@@ -611,8 +610,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LESS),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPGE),
+                            new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPGE),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE)
                     ),
                     /*
@@ -625,8 +624,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LARGE),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPLE),
+                            new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPLE),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE)
                     ),
                     /*
@@ -639,8 +638,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LESS_EQUAL),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPGT),
+                            new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPGT),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE)
                     ),
                     /*
@@ -653,8 +652,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LARGE_EQUAL),
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPLT),
+                            new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPLT),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE)
                     )
                     /*
@@ -950,7 +949,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
                             new IncrementBackFill(-2, 0, -1),
-                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_INT),
+                            new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -972,7 +971,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
                             new IncrementBackFill(-2, 0, 1),
-                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_INT),
+                            new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -1043,7 +1042,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DOUBLE_MINUS)
                             ),
                             new PostIncrementByteCode(-1, -1),
-                            new SetAttrFromSystem(-1, AttrName.TYPE.name(), TYPE_INT),
+                            new SetAttrFromSystem(-1, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -1064,7 +1063,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DOUBLE_PLUS)
                             ),
                             new PostIncrementByteCode(-1, 1),
-                            new SetAttrFromSystem(-1, AttrName.TYPE.name(), TYPE_INT),
+                            new SetAttrFromSystem(-1, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),

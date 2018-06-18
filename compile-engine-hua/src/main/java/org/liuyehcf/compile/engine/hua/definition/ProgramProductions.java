@@ -126,7 +126,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(FORMAL_PARAMETER)
                             ),
-                            new SetAttrFromSystem(0, AttrName.PARAMETER_LIST.name(), null),
+                            new SetAttrFromSystem(0, AttrName.PARAMETER_LIST, null),
                             new RecordParamTypeInfo(0, 0),
                             new AttrFilter(AttrName.PARAMETER_LIST)
                     )
@@ -393,7 +393,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_VOID)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), Type.TYPE_VOID),
+                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_VOID),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),

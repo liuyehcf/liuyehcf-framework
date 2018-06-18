@@ -4,13 +4,12 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
+import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.semantic.load.LiteralLoad;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.REGEX_IDENTIFIER;
-import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_INT;
 
 /**
  * Token相关的产生式
@@ -114,7 +113,7 @@ abstract class TokenProductions {
                                     Symbol.createNonTerminator(INTEGER_LITERAL)
                             ),
                             new LiteralLoad(0, NORMAL_INT),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_INT),
+                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -126,7 +125,7 @@ abstract class TokenProductions {
                                     Symbol.createNonTerminator(BOOLEAN_LITERAL)
                             ),
                             new LiteralLoad(0, NORMAL_BOOLEAN),
-                            new SetAttrFromSystem(0, AttrName.TYPE.name(), TYPE_BOOLEAN),
+                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_BOOLEAN),
                             new AttrFilter(AttrName.TYPE)
                     )
                     /*
@@ -239,7 +238,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_NUMBER_0)
                             ),
-                            new SetAttrFromSystem(0, AttrName.LITERAL_VALUE.name(), "0"),
+                            new SetAttrFromSystem(0, AttrName.LITERAL_VALUE, "0"),
                             new AttrFilter(AttrName.LITERAL_VALUE)
                     ),
                     /*
