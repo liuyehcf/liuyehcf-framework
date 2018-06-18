@@ -251,7 +251,7 @@ abstract class TokenProductions {
                                     Symbol.createNonTerminator(NON_ZERO_DIGIT),
                                     Symbol.createNonTerminator(EPSILON_OR_DIGITS)
                             ),
-                            new CombineAttr(-1, 0, AttrName.LITERAL_VALUE.name()),
+                            new ContactLiteral(-1, 0, AttrName.LITERAL_VALUE),
                             new AttrFilter(AttrName.LITERAL_VALUE)
                     )
             ),
@@ -310,7 +310,7 @@ abstract class TokenProductions {
                                     Symbol.createNonTerminator(DIGITS),
                                     Symbol.createNonTerminator(DIGIT)
                             ),
-                            new CombineAttr(-1, 0, AttrName.LITERAL_VALUE.name()),
+                            new ContactLiteral(-1, 0, AttrName.LITERAL_VALUE),
                             new AttrFilter(AttrName.LITERAL_VALUE)
                     )
             ),

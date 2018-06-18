@@ -1,15 +1,16 @@
 package org.liuyehcf.compile.engine.hua.semantic.attr;
 
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.definition.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 /**
- * 合并属性值，仅用于合并数值字面值
+ * 拼接字面值
  *
  * @author hechenfeng
  * @date 2018/6/11
  */
-public class CombineAttr extends AbstractSemanticAction {
+public class ContactLiteral extends AbstractSemanticAction {
 
     /**
      * 主值-偏移量，相对于语法树栈
@@ -30,9 +31,9 @@ public class CombineAttr extends AbstractSemanticAction {
     /**
      * 属性-名称
      */
-    private final String attrName;
+    private final AttrName attrName;
 
-    public CombineAttr(int mainStackOffset, int subStackOffset, String attrName) {
+    public ContactLiteral(int mainStackOffset, int subStackOffset, AttrName attrName) {
         this.mainStackOffset = mainStackOffset;
         this.subStackOffset = subStackOffset;
         this.attrName = attrName;
@@ -40,11 +41,11 @@ public class CombineAttr extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
-        String main = context.getStack().get(mainStackOffset).get(attrName);
-        String sub = context.getStack().get(subStackOffset).get(attrName);
+        String main = context.getStack().get(mainStackOffset).get(attrName.name());
+        String sub = context.getStack().get(subStackOffset).get(attrName.name());
 
         main = main + sub;
 
-        context.getStack().get(mainStackOffset).put(attrName, main);
+        context.getStack().get(mainStackOffset).put(attrName.name(), main);
     }
 }
