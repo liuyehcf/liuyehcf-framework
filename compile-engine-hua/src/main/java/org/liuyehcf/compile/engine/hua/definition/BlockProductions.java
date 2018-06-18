@@ -146,7 +146,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(BLOCK_STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     ),
                     /*
                      * <block statements> → <block statements> <block statement>
@@ -157,7 +157,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(BLOCK_STATEMENTS),
                                     Symbol.createNonTerminator(BLOCK_STATEMENT)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
