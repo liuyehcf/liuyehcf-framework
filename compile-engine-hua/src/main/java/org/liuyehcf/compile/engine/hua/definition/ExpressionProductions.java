@@ -460,7 +460,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXCLUSIVE_OR_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <inclusive or expression> → <inclusive or expression> | <exclusive or expression>
@@ -472,7 +472,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_OR),
                                     Symbol.createNonTerminator(EXCLUSIVE_OR_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, BIT_OR)
+                            new BinaryOperation(-2, 0, BIT_OR),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
