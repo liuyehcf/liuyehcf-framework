@@ -566,7 +566,7 @@ abstract class ExpressionProductions {
                             ),
                             new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
                             new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPNE),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE)
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <equality expression> → <equality expression> != <relational expression>
@@ -580,7 +580,7 @@ abstract class ExpressionProductions {
                             ),
                             new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
                             new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPEQ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE)
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.LOOP_CODE_OFFSET)
                     )
             ),
 
@@ -598,7 +598,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <relational expression> → <relational expression> < <shift expression>
@@ -611,7 +611,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
                             new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPGE)
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPGE),
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <relational expression> → <relational expression> > <shift expression>
@@ -624,7 +625,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
                             new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPLE)
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPLE),
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <relational expression> → <relational expression> <= <shift expression>
@@ -637,7 +639,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
                             new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPGT)
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPGT),
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <relational expression> → <relational expression> >= <shift expression>
@@ -650,7 +653,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
                             new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPLT)
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPLT),
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.LOOP_CODE_OFFSET)
                     )
                     /*
                      * TODO 缺少以下产生式
