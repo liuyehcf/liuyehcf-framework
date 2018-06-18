@@ -8,21 +8,25 @@ package org.liuyehcf.compile.engine.hua.bytecode.cp;
  */
 public class _iinc extends Compute {
 
-    private final int offset;
+    private int offset;
 
-    private final int increment;
+    private int increment;
 
-    public _iinc(int offset, int increment) {
-        this.offset = offset;
-        this.increment = increment;
-    }
 
     public int getOffset() {
         return offset;
     }
 
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
     public int getIncrement() {
         return increment;
+    }
+
+    public void setIncrement(int increment) {
+        this.increment = increment;
     }
 
     @Override

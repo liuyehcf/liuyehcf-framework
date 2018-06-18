@@ -7,6 +7,7 @@ import org.liuyehcf.compile.engine.hua.definition.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_BOOLEAN;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
 
@@ -45,6 +46,8 @@ public class VariableInitialization extends AbstractSemanticAction {
         String identifierName = context.getStack().get(identifierStackOffset).get(AttrName.IDENTIFIER_NAME.name());
         VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
 
+        assertNotNull(expressionType);
+        assertNotNull(variableSymbol);
         if (!expressionType.equals(variableSymbol.getType())) {
             throw new RuntimeException("变量初始化语句两侧类型不匹配");
         }

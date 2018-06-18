@@ -71,4 +71,9 @@ public enum AttrName {
      * 循环偏移量（code）
      */
     LOOP_CODE_OFFSET,
+
+    /**
+     * 自增字节码
+     */
+    IINC_BYTE_CODE,
 }

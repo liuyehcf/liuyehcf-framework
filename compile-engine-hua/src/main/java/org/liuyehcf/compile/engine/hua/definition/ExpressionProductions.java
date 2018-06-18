@@ -16,9 +16,10 @@ import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoad;
 import org.liuyehcf.compile.engine.hua.semantic.method.IncArgSize;
 import org.liuyehcf.compile.engine.hua.semantic.method.InitArgSize;
 import org.liuyehcf.compile.engine.hua.semantic.method.MethodInvocation;
+import org.liuyehcf.compile.engine.hua.semantic.operator.AddIncrementByteCode;
 import org.liuyehcf.compile.engine.hua.semantic.operator.Assignment;
 import org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperation;
-import org.liuyehcf.compile.engine.hua.semantic.operator.PreUnaryOperation;
+import org.liuyehcf.compile.engine.hua.semantic.operator.IncrementBackFill;
 import org.liuyehcf.compile.engine.hua.semantic.variable.ArrayTypeDimDecrease;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
@@ -28,8 +29,7 @@ import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.PRIMITI
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.REFERENCE_TYPE;
 import static org.liuyehcf.compile.engine.hua.model.BinaryOperator.*;
 import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.model.UnaryOperator.DECREMENT;
-import static org.liuyehcf.compile.engine.hua.model.UnaryOperator.INCREMENT;
+import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_INT;
 
 /**
  * Expression相关的产生式
@@ -77,6 +77,7 @@ abstract class ExpressionProductions {
 
     private static final String MARK_230_2_1 = "<mark 230_2_1>";
     private static final String MARK_232_2_1 = "<mark 232_2_1>";
+    private static final String MARK_PREFIX_EXPRESSION = "<mark prefix expression>";
     private static final String MARK_286_1_1 = "<mark 286_1_1>";
 
     public static final Production[] PRODUCTIONS = {
@@ -871,7 +872,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREINCREMENT_EXPRESSION)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <unary expression> → <predecrement expression>
@@ -881,7 +882,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREDECREMENT_EXPRESSION)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <unary expression> → + <unary expression>
@@ -919,21 +920,41 @@ abstract class ExpressionProductions {
 
 
             /*
+             * <mark prefix expression>
+             */
+            Production.create(
+                    /*
+                     * <mark prefix expression> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_PREFIX_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new AddIncrementByteCode(0),
+                            new AttrFilter()
+                    )
+            ),
+
+
+            /*
              * <predecrement expression> 254
              * SAME
              */
             Production.create(
                     /*
-                     * <predecrement expression> → -- <unary expression>
+                     * <predecrement expression> → -- <mark prefix expression> <unary expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(PREDECREMENT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_DOUBLE_MINUS),
+                                    Symbol.createNonTerminator(MARK_PREFIX_EXPRESSION),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new PreUnaryOperation(0, DECREMENT),
-                            new AttrFilter() // TODO 尚不支持
+                            new IncrementBackFill(-2, 0, -1),
+                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_INT),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
@@ -944,16 +965,18 @@ abstract class ExpressionProductions {
              */
             Production.create(
                     /*
-                     * <preincrement expression> → ++ <unary expression>
+                     * <preincrement expression> → ++ <mark prefix expression> <unary expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(PREINCREMENT_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_DOUBLE_PLUS),
+                                    Symbol.createNonTerminator(MARK_PREFIX_EXPRESSION),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new PreUnaryOperation(0, INCREMENT),
-                            new AttrFilter() // TODO 尚不支持
+                            new IncrementBackFill(-2, 0, 1),
+                            new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_INT),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 

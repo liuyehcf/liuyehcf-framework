@@ -517,7 +517,9 @@ public class TestGrammar {
     @Test
     public void testPreDecrement() {
         String text = "void func(int i) {\n" +
-                "\t--i;\n" +
+                "\tint j=--i;\n" +
+                "\n" +
+                "\tj=(1+--i)+(--j+3);\n" +
                 "}";
 
         System.out.println(text);
@@ -525,7 +527,7 @@ public class TestGrammar {
         CompileResult<HuaResult> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "",
+                "{\"jSONTable\":{\"func(int)\":{\"byteCodes\":[{\"increment\":-1,\"name\":\"_iinc\",\"offset\":0},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_iconst\",\"value\":1},{\"increment\":-1,\"name\":\"_iinc\",\"offset\":0},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iadd\"},{\"increment\":-1,\"name\":\"_iinc\",\"offset\":8},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iadd\"},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
                 result.getResult().getMethodInfoTable().toString()
         );
     }
@@ -533,7 +535,9 @@ public class TestGrammar {
     @Test
     public void testPreIncrement() {
         String text = "void func(int i) {\n" +
-                "\t++i;\n" +
+                "\tint j=++i;\n" +
+                "\n" +
+                "\tj=(++i-1)+(++j+3);\n" +
                 "}";
 
         System.out.println(text);
@@ -541,7 +545,7 @@ public class TestGrammar {
         CompileResult<HuaResult> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "",
+                "{\"jSONTable\":{\"func(int)\":{\"byteCodes\":[{\"increment\":1,\"name\":\"_iinc\",\"offset\":0},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_istore\",\"offset\":8},{\"increment\":1,\"name\":\"_iinc\",\"offset\":0},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"increment\":1,\"name\":\"_iinc\",\"offset\":8},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iadd\"},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
                 result.getResult().getMethodInfoTable().toString()
         );
     }
