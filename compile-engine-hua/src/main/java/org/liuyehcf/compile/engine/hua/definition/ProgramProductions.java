@@ -324,7 +324,8 @@ abstract class ProgramProductions {
                                     Symbol.createNonTerminator(METHOD_BODY)
                             ),
                             new ExitNamespace(),
-                            new ExitMethod()
+                            new ExitMethod(),
+                            new AttrFilter()
                     )
             ),
 
@@ -342,7 +343,8 @@ abstract class ProgramProductions {
                                     Symbol.EPSILON
                             ),
                             new EnterNamespace(),
-                            new EnterMethod()
+                            new EnterMethod(),
+                            new AttrFilter()
                     )
 
             ),
