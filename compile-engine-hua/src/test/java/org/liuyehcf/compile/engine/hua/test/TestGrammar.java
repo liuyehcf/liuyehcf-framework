@@ -30,7 +30,7 @@ public class TestGrammar {
 //        RIGHT_CASES.addAll(Arrays.asList(WHILE_CASES));
 //        RIGHT_CASES.addAll(Arrays.asList(FOR_CASES));
 //        RIGHT_CASES.addAll(Arrays.asList(DO_CASES));
-        RIGHT_CASES.addAll(Arrays.asList(IF_CASES));
+//        RIGHT_CASES.addAll(Arrays.asList(IF_CASES));
 //        RIGHT_CASES.addAll(Arrays.asList(VARIABLE_DECLARATION_CASES));
 //        RIGHT_CASES.addAll(Arrays.asList(OPERATOR_CASES));
 //        RIGHT_CASES.addAll(Arrays.asList(CLASSIC_CASES));

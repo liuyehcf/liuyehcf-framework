@@ -6,10 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
-import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
-import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttrs;
-import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
-import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrToLeftNode;
+import org.liuyehcf.compile.engine.hua.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BackFill;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssignment;
 import org.liuyehcf.compile.engine.hua.semantic.condition.ControlTransferByteCodeByType;
@@ -93,7 +90,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     )
             ),
 

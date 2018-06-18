@@ -745,6 +745,10 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
             return (T) attrs.get(key);
         }
 
+        public Map<String, Object> getAttrs() {
+            return attrs;
+        }
+
         public Symbol getId() {
             return id;
         }
