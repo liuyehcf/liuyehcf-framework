@@ -153,7 +153,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(DECIMAL_INTEGER_LITERAL)
                             ),
-                            null
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -176,7 +176,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(DECIMAL_NUMERAL)
                             ),
-                            null
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     )
             ),
 
@@ -239,7 +239,8 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_NUMBER_0)
                             ),
-                            new SetAttrFromSystem(0, AttrName.LITERAL_VALUE.name(), "0")
+                            new SetAttrFromSystem(0, AttrName.LITERAL_VALUE.name(), "0"),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     ),
                     /*
                      * <decimal numeral> → <non zero digit> <digits>?
@@ -250,7 +251,8 @@ abstract class TokenProductions {
                                     Symbol.createNonTerminator(NON_ZERO_DIGIT),
                                     Symbol.createNonTerminator(EPSILON_OR_DIGITS)
                             ),
-                            new CombineAttr(-1, 0, AttrName.LITERAL_VALUE.name())
+                            new CombineAttr(-1, 0, AttrName.LITERAL_VALUE.name()),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     )
             ),
 
@@ -268,7 +270,8 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.LITERAL_VALUE.name(), "")
+                            new SetAttrToLeftNode(AttrName.LITERAL_VALUE.name(), ""),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     ),
                     /*
                      * <epsilon or digits> → <digits>
@@ -278,7 +281,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(DIGITS)
                             ),
-                            null
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     )
             ),
 
@@ -296,7 +299,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(DIGIT)
                             ),
-                            null
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     ),
                     /*
                      * <digits> → <digits> <digit>
@@ -307,7 +310,8 @@ abstract class TokenProductions {
                                     Symbol.createNonTerminator(DIGITS),
                                     Symbol.createNonTerminator(DIGIT)
                             ),
-                            new CombineAttr(-1, 0, AttrName.LITERAL_VALUE.name())
+                            new CombineAttr(-1, 0, AttrName.LITERAL_VALUE.name()),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     )
             ),
 
@@ -325,7 +329,8 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_NUMBER_0)
                             ),
-                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0)
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     ),
                     /*
                      * <digit> → <non zero digit>
@@ -335,7 +340,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(NON_ZERO_DIGIT)
                             ),
-                            null
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     )
             ),
 
@@ -353,7 +358,8 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_NON_ZERO_DIGIT)
                             ),
-                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0)
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     )
             ),
 
@@ -371,7 +377,8 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN_TRUE)
                             ),
-                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0)
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     ),
                     /*
                      * <boolean literal> → false
@@ -381,7 +388,8 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN_FALSE)
                             ),
-                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0)
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE.name(), 0),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
                     )
             )
     };
