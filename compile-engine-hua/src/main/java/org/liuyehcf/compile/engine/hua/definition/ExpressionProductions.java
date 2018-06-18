@@ -6,7 +6,6 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
-import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BackFill;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssignment;
@@ -369,7 +368,7 @@ abstract class ExpressionProductions {
                             new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE.name()),
                             new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
                             new MergeControlTransferByteCode(0, -3),
-                            new SetAttrFromSystem(-3, AttrName.TYPE.name(), Type.TYPE_BOOLEAN),
+                            new SetAttrFromSystem(-3, AttrName.TYPE.name(), TYPE_BOOLEAN),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     )
             ),
@@ -553,7 +552,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <equality expression> → <equality expression> == <relational expression>
@@ -566,7 +565,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
                             new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPNE)
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPNE),
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE)
                     ),
                     /*
                      * <equality expression> → <equality expression> != <relational expression>
@@ -579,7 +579,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
                             new SetAttrFromSystem(-2, AttrName.TYPE.name(), TYPE_BOOLEAN),
-                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPEQ)
+                            new SetAttrFromSystem(-2, AttrName.BOOLEAN_EXPRESSION_TYPE.name(), ControlTransferType.IF_ICMPEQ),
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE)
                     )
             ),
 
