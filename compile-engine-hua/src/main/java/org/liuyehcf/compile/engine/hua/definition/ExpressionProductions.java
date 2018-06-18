@@ -6,6 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
+import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BackFill;
 import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssignment;
@@ -352,7 +353,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * (2) <conditional or expression> → <conditional or expression> || <mark 230_2_1> <conditional and expression>
@@ -367,7 +368,9 @@ abstract class ExpressionProductions {
                             ),
                             new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE.name()),
                             new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name(), new Object()),
-                            new MergeControlTransferByteCode(0, -3)
+                            new MergeControlTransferByteCode(0, -3),
+                            new SetAttrFromSystem(-3, AttrName.TYPE.name(), Type.TYPE_BOOLEAN),
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     )
             ),
 
