@@ -224,7 +224,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_146_1_1),
                                     Symbol.createNonTerminator(VARIABLE_DECLARATORS)
                             ),
-                            null
+                            new AttrFilter()
                     )
             ),
 
@@ -242,7 +242,8 @@ abstract class BlockProductions {
                                     Symbol.EPSILON
                             ),
                             new AddFutureSyntaxNode(1),
-                            new AssignAttr(0, 1, AttrName.TYPE.name())
+                            new AssignAttr(0, 1, AttrName.TYPE.name()),
+                            new AttrFilter()
                     )
             ),
 
