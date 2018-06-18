@@ -733,7 +733,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            null
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE, AttrName.LOOP_CODE_OFFSET)
                     ),
                     /*
                      * <additive expression> → <additive expression> + <multiplicative expression>
@@ -745,7 +745,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_ADD),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, ADDITION)
+                            new BinaryOperation(-2, 0, ADDITION),
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <additive expression> → <additive expression> - <multiplicative expression>
@@ -757,7 +758,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MINUS),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, 0, SUBTRACTION)
+                            new BinaryOperation(-2, 0, SUBTRACTION),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
