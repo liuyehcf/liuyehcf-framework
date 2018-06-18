@@ -8,6 +8,7 @@ import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.semantic.AddFutureSyntaxNode;
 import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
+import org.liuyehcf.compile.engine.hua.semantic.attr.AttrFilter;
 import org.liuyehcf.compile.engine.hua.semantic.condition.*;
 import org.liuyehcf.compile.engine.hua.semantic.variable.EnterNamespace;
 import org.liuyehcf.compile.engine.hua.semantic.variable.ExitNamespace;
@@ -79,7 +80,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(EPSILON_OR_BLOCK_STATEMENTS),
                                     Symbol.createTerminator(NORMAL_LARGE_RIGHT_PARENTHESES)
                             ),
-                            new ExitNamespace()
+                            new ExitNamespace(),
+                            new AttrFilter()
                     )
             ),
 
@@ -96,7 +98,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new EnterNamespace()
+                            new EnterNamespace(),
+                            new AttrFilter()
                     )
 
             ),
@@ -546,8 +549,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AddFutureSyntaxNode(1),
-                            new SetLoopOffset(1)
+                            new SetLoopOffset(0)// 向后设置会造成入侵，Expression所有直传链路都需要带上LOOP_CODE_OFFSET，另外139也是
                     )
             ),
 
@@ -685,7 +687,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new GotoLoop(-3),
+                            new GotoLoop(-5),
                             new BackFill(-3, BackFillType.FALSE)
                     )
             ),
@@ -710,7 +712,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            new GotoLoop(-3),
+                            new GotoLoop(-5),
                             new BackFill(-3, BackFillType.FALSE)
                     )
             ),
@@ -737,7 +739,7 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
                             new ControlTransferByteCodeByType(-2, -2, BackFillType.TRUE, true),
-                            new BackToLoop(-2, -5, BackFillType.TRUE),
+                            new BackToLoop(-2, -7, BackFillType.TRUE),
                             new BackFill(-2, BackFillType.FALSE)
                     )
             ),
