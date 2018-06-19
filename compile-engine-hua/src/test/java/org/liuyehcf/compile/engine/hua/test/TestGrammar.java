@@ -1482,4 +1482,22 @@ public class TestGrammar {
                 result.getResult().getMethodInfoTable().toString()
         );
     }
+
+    @Test
+    public void testSimpleFor2() {
+        String text = "void func(int j) {\n" +
+                "\tfor(int i=0;i<100;i++){\n" +
+                "\t\tj++;\n" +
+                "\t}\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int)\":{\"byteCodes\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":100},{\"codeOffset\":8,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"offset\":0},{\"increment\":1,\"name\":\"_iinc\",\"offset\":8},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
 }

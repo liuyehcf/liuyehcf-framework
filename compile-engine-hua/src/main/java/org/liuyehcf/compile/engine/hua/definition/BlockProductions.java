@@ -869,7 +869,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
                             new SetCodeOffsetAttr(0),
-                            new AttrFilter(AttrName.CODE_OFFSET, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.CODE_OFFSET, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )
             ),
 
@@ -1033,6 +1033,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION)
                             ),
+                            new RemoveRedundantLoadByteCode(0),
                             new AttrFilter()
                     ),
                     /*
@@ -1045,6 +1046,7 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION)
                             ),
+                            new RemoveRedundantLoadByteCode(0),
                             new AttrFilter()
                     )
             ),

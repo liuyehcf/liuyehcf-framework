@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic.attr;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
@@ -41,6 +42,8 @@ public class MoveUpdateByteCodes extends AbstractSemanticAction {
         int start = context.getStack().get(startCodeOffsetStackOffset).get(AttrName.CODE_OFFSET.name());
         int end = context.getStack().get(endCodeOffsetStackOffset).get(AttrName.CODE_OFFSET.name());
 
+        List<ByteCode> codes = context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes();
+
         /*
          * update部分为空
          */
@@ -50,17 +53,43 @@ public class MoveUpdateByteCodes extends AbstractSemanticAction {
 
         List<ByteCode> updateCodes = new ArrayList<>();
 
+
         /*
-         * 取出这部分ByteCode
+         * 取出这部分ByteCode  [start,end)
          */
         for (int i = start; i < end; i++) {
-            updateCodes.add(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().get(start));
-            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().remove(start);
+            updateCodes.add(codes.get(start));
+            codes.remove(start);
         }
 
         /*
          * 追加到尾部
          */
-        updateCodes.forEach((code) -> context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(code));
+        codes.addAll(updateCodes);
+
+
+        /*
+         * 维护跳转字节码的跳转偏移量
+         */
+        for (ByteCode code : codes) {
+            if (!(code instanceof ControlTransfer)) {
+                continue;
+            }
+
+            ControlTransfer controlTransfer = (ControlTransfer) code;
+
+            if (controlTransfer.getCodeOffset() < start) {
+                // 跳转偏移量在 [0,start)，不受影响
+                continue;
+            }
+
+            if (controlTransfer.getCodeOffset() >= end) {
+                // 跳转偏移量在 [start,end)，那么减少 L = end — start
+                controlTransfer.setCodeOffset(controlTransfer.getCodeOffset() - (end - start));
+            } else {
+                // 跳转偏移量在 [start,end)，那么增加 L = size() - end
+                controlTransfer.setCodeOffset(controlTransfer.getCodeOffset() + (codes.size() - end));
+            }
+        }
     }
 }
