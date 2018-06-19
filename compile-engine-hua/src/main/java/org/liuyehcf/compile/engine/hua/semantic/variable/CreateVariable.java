@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic.variable;
 
-import org.liuyehcf.compile.engine.core.cfg.lr.AbstractLRCompiler;
+import org.liuyehcf.compile.engine.core.cfg.lr.SyntaxNode;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
@@ -28,7 +28,7 @@ public class CreateVariable extends AbstractSemanticAction {
     @Override
     public void onAction(HuaCompiler.HuaContext context) {
 
-        AbstractLRCompiler.SyntaxNode node = context.getStack().get(identifierStackOffset);
+        SyntaxNode node = context.getStack().get(identifierStackOffset);
 
         String name = node.getValue();
         Type type = node.get(AttrName.TYPE.name());

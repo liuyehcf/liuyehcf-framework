@@ -29,7 +29,7 @@ public class SLR<T> extends LR0<T> {
                     new NodeTransferOperation(
                             -1,
                             ppRaw,
-                            NodeTransferOperation.OperationCode.ACCEPT)
+                            NodeTransferOperator.ACCEPT)
             );
         } else {
             for (Symbol terminator : getAnalysisTerminators()) {
@@ -40,7 +40,7 @@ public class SLR<T> extends LR0<T> {
                             new NodeTransferOperation(
                                     -1,
                                     ppRaw,
-                                    NodeTransferOperation.OperationCode.REDUCTION)
+                                    NodeTransferOperator.REDUCTION)
                     );
                 }
             }

@@ -20,8 +20,7 @@ import org.liuyehcf.compile.engine.core.utils.SetUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.liuyehcf.compile.engine.core.cfg.lr.AbstractLRCompiler.NodeTransferOperation.OperationCode.REDUCTION;
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.*;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 
 /**
  * LR文法编辑器抽象基类
@@ -230,8 +229,8 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                 } else {
                     sb.append(separator);
                     for (NodeTransferOperation nodeTransferOperation : nodeTransferOperations) {
-                        if (nodeTransferOperation.getOperator() == NodeTransferOperation.OperationCode.ACCEPT
-                                || nodeTransferOperation.getOperator() == REDUCTION) {
+                        if (nodeTransferOperation.getOperator() == NodeTransferOperator.ACCEPT
+                                || nodeTransferOperation.getOperator() == NodeTransferOperator.REDUCTION) {
                             sb.append(' ')
                                     .append(wrapMarkdownKeywords(nodeTransferOperation.getOperator().toString()))
                                     .append(" \"")
@@ -691,7 +690,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                 .add(new NodeTransferOperation(
                         closureTransferTable.get(closure.getId()).get(nextSymbol),
                         null,
-                        NodeTransferOperation.OperationCode.MOVE_IN));
+                        NodeTransferOperator.MOVE_IN));
     }
 
     private void initAnalysisTableWithJump(Closure closure, Symbol nextSymbol) {
@@ -700,7 +699,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                 .add(new NodeTransferOperation(
                         closureTransferTable.get(closure.getId()).get(nextSymbol),
                         null,
-                        NodeTransferOperation.OperationCode.JUMP));
+                        NodeTransferOperator.JUMP));
     }
 
     private NodeTransferOperation getOperationFromAnalysisTable(int closureId, Symbol symbol) {
@@ -713,263 +712,6 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
     void addOperationToAnalysisTable(int closureId, Symbol symbol, NodeTransferOperation nodeTransferOperation) {
         analysisTable.get(closureId).get(symbol).add(nodeTransferOperation);
-    }
-
-    /**
-     * 语法树节点
-     */
-    public static final class SyntaxNode {
-        private final Map<String, Object> attrs = new HashMap<>(16);
-        private Symbol id;
-        private String value;
-
-        private SyntaxNode(Symbol id, String value) {
-            this.id = id;
-            this.value = value;
-        }
-
-        private SyntaxNode() {
-        }
-
-        public Object putIfAbsent(String key, Object attr) {
-            return attrs.putIfAbsent(key, attr);
-        }
-
-        @SuppressWarnings("unchecked")
-        public <T> T put(String key, T attr) {
-            return (T) attrs.put(key, attr);
-        }
-
-        @SuppressWarnings("unchecked")
-        public <T> T get(String key) {
-            return (T) attrs.get(key);
-        }
-
-        public Map<String, Object> getAttrs() {
-            return attrs;
-        }
-
-        public Symbol getId() {
-            return id;
-        }
-
-        void setId(Symbol id) {
-            this.id = id;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        void setValue(String value) {
-            this.value = value;
-        }
-    }
-
-    /**
-     * 用于封装状态转移
-     *
-     * @author hechenfeng
-     * @date 2018/04/16
-     */
-    public static final class NodeTransferOperation {
-        /**
-         * 下一跳项目集闭包id
-         */
-        private final int nextClosureId;
-
-        /**
-         * 规约操作时对应的产生式，仅用于规约操作
-         */
-        private final PrimaryProduction primaryProduction;
-
-        /**
-         * 对应的操作
-         */
-        private final OperationCode operator;
-
-        NodeTransferOperation(int nextClosureId, PrimaryProduction primaryProduction, OperationCode operator) {
-            this.nextClosureId = nextClosureId;
-            this.primaryProduction = primaryProduction;
-            this.operator = operator;
-        }
-
-        int getNextClosureId() {
-            return nextClosureId;
-        }
-
-        PrimaryProduction getPrimaryProduction() {
-            return primaryProduction;
-        }
-
-        OperationCode getOperator() {
-            return operator;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            NodeTransferOperation nodeTransferOperation = (NodeTransferOperation) o;
-            return nextClosureId == nodeTransferOperation.nextClosureId &&
-                    Objects.equals(primaryProduction, nodeTransferOperation.primaryProduction) &&
-                    operator == nodeTransferOperation.operator;
-        }
-
-        @Override
-        public int hashCode() {
-
-            return Objects.hash(nextClosureId, primaryProduction, operator);
-        }
-
-        protected enum OperationCode {
-            /**
-             * 移入
-             */
-            MOVE_IN,
-
-            /**
-             * 规约
-             */
-            REDUCTION,
-
-            /**
-             * 跳转
-             */
-            JUMP,
-
-            /**
-             * 接收
-             */
-            ACCEPT,
-
-        }
-    }
-
-    public static final class FutureSyntaxNodeStack {
-        private int top = -1;
-        private LinkedList<SyntaxNode> stack = new LinkedList<>();
-
-        /**
-         * 添加正常语法树节点
-         */
-        private void addNormalSyntaxNode(Symbol id, String value) {
-            /*
-             * 如果之前已经创建过Future语法树节点
-             * 由于标记非终结符要为未来的语法树节点设置继承属性，这些语法树节点称为Future语法树节点
-             */
-            if (size() < stack.size()) {
-                top++;
-                SyntaxNode node = stack.get(top);
-
-                assertNull(node.getId());
-                assertNull(node.getValue());
-
-                node.setId(id);
-                node.setValue(value);
-            } else if (size() == stack.size()) {
-                stack.addLast(new SyntaxNode(id, value));
-                top++;
-            } else {
-                throw new RuntimeException();
-            }
-        }
-
-        /**
-         * 增加Future语法树节点
-         *
-         * @param stackOffset 相对于top的偏移量
-         */
-        public void addFutureSyntaxNode(int stackOffset) {
-            assertTrue(stackOffset > 0);
-            if (top + stackOffset <= stack.size() - 1) {
-                return;
-            }
-            while (top + stackOffset > stack.size() - 1) {
-                stack.addLast(new SyntaxNode());
-            }
-        }
-
-        /**
-         * 压入正常语法树节点
-         */
-        private void pushNormalSyntaxNode(SyntaxNode node) {
-            stack.add(++top, node);
-        }
-
-        /**
-         * 返回当前实际语法树节点数，不包括Future语法树节点
-         */
-        public int size() {
-            return top + 1;
-        }
-
-        /**
-         * 弹出实际栈顶元素，不包括Future语法树节点
-         */
-        private void pop() {
-            if (size() < stack.size()) {
-                stack.remove(top--);
-            } else {
-                --top;
-                stack.removeLast();
-            }
-        }
-
-        /**
-         * 返回实际栈顶元素，不包括Future语法树节点
-         */
-        private SyntaxNode peek() {
-            if (top > -1) {
-                return stack.get(top);
-            }
-            return null;
-        }
-
-        /**
-         * 是否为空，不包括Future语法树节点
-         */
-        public boolean isEmpty() {
-            return top == -1;
-        }
-
-
-        /**
-         * 依据偏移量从栈中获取语法树节点
-         *
-         * @param stackOffset 相对于top的偏移量。例如1表示Future语法树节点，-1表示栈次顶元素
-         */
-        public SyntaxNode get(int stackOffset) {
-            return stack.get(top + stackOffset);
-        }
-    }
-
-    public static class Context {
-        private final PrimaryProduction rawPrimaryProduction;
-        private final FutureSyntaxNodeStack stack;
-        private final SyntaxNode leftNode;
-
-        public Context(PrimaryProduction rawPrimaryProduction, FutureSyntaxNodeStack stack, SyntaxNode leftNode) {
-            this.rawPrimaryProduction = rawPrimaryProduction;
-            this.stack = stack;
-            this.leftNode = leftNode;
-        }
-
-        public PrimaryProduction getRawPrimaryProduction() {
-            return rawPrimaryProduction;
-        }
-
-        public FutureSyntaxNodeStack getStack() {
-            return stack;
-        }
-
-        public SyntaxNode getLeftNode() {
-            return leftNode;
-        }
     }
 
     public class Engine {

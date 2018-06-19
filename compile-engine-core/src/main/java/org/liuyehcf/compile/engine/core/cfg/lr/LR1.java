@@ -105,7 +105,7 @@ public class LR1<T> extends AbstractLRCompiler<T> {
                     new NodeTransferOperation(
                             -1,
                             ppRaw,
-                            NodeTransferOperation.OperationCode.ACCEPT)
+                            NodeTransferOperator.ACCEPT)
             );
         } else {
             for (Symbol terminator : item.getLookAHeads()) {
@@ -115,7 +115,7 @@ public class LR1<T> extends AbstractLRCompiler<T> {
                         new NodeTransferOperation(
                                 -1,
                                 ppRaw,
-                                NodeTransferOperation.OperationCode.REDUCTION)
+                                NodeTransferOperator.REDUCTION)
                 );
             }
         }

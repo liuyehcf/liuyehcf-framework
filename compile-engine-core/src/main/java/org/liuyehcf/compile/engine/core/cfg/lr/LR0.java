@@ -73,7 +73,7 @@ public class LR0<T> extends AbstractLRCompiler<T> {
                     new NodeTransferOperation(
                             -1,
                             ppRaw,
-                            NodeTransferOperation.OperationCode.ACCEPT)
+                            NodeTransferOperator.ACCEPT)
             );
         } else {
             for (Symbol terminator : getAnalysisTerminators()) {
@@ -83,7 +83,7 @@ public class LR0<T> extends AbstractLRCompiler<T> {
                         new NodeTransferOperation(
                                 -1,
                                 ppRaw,
-                                NodeTransferOperation.OperationCode.REDUCTION)
+                                NodeTransferOperator.REDUCTION)
                 );
             }
         }
