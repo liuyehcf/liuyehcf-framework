@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.semantic.condition;
+package org.liuyehcf.compile.engine.hua.semantic.code;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._goto;
@@ -12,7 +12,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
  * @author hechenfeng
  * @date 2018/6/16
  */
-public class GotoLoop extends AbstractSemanticAction {
+public class PushGotoByteCode extends AbstractSemanticAction {
 
     /**
      * 存储循环起始代码偏移量的节点-栈偏移量，相对于语法树栈
@@ -22,7 +22,7 @@ public class GotoLoop extends AbstractSemanticAction {
      */
     private final int loopStackOffset;
 
-    public GotoLoop(int loopStackOffset) {
+    public PushGotoByteCode(int loopStackOffset) {
         this.loopStackOffset = loopStackOffset;
     }
 

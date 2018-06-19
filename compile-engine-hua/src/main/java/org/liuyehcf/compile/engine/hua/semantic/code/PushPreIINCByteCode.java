@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.semantic.operator;
+package org.liuyehcf.compile.engine.hua.semantic.code;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cp._iinc;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
@@ -11,7 +11,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
  * @author hechenfeng
  * @date 2018/6/18
  */
-public class PreIncrementByteCode extends AbstractSemanticAction {
+public class PushPreIINCByteCode extends AbstractSemanticAction {
 
     /**
      * 用于存放回填iinc字节码的节点-偏移量，相对于语法树栈
@@ -21,7 +21,7 @@ public class PreIncrementByteCode extends AbstractSemanticAction {
      */
     private final int backFillStackOffset;
 
-    public PreIncrementByteCode(int backFillStackOffset) {
+    public PushPreIINCByteCode(int backFillStackOffset) {
         this.backFillStackOffset = backFillStackOffset;
     }
 

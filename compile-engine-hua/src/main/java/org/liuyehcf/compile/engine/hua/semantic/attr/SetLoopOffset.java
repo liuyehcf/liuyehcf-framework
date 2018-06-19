@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.semantic.condition;
+package org.liuyehcf.compile.engine.hua.semantic.attr;
 
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;

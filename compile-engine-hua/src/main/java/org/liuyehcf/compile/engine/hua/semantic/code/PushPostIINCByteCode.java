@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.semantic.operator;
+package org.liuyehcf.compile.engine.hua.semantic.code;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cp._iinc;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
@@ -13,7 +13,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
  * @author hechenfeng
  * @date 2018/6/18
  */
-public class PostIncrementByteCode extends AbstractSemanticAction {
+public class PushPostIINCByteCode extends AbstractSemanticAction {
     /**
      * 表达式-偏移量，相对于语法树栈
      * '0'  表示栈顶
@@ -27,7 +27,7 @@ public class PostIncrementByteCode extends AbstractSemanticAction {
      */
     private final int increment;
 
-    public PostIncrementByteCode(int expressionStackOffset, int increment) {
+    public PushPostIINCByteCode(int expressionStackOffset, int increment) {
         this.expressionStackOffset = expressionStackOffset;
         this.increment = increment;
     }

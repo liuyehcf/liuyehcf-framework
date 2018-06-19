@@ -6,20 +6,20 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.model.*;
 import org.liuyehcf.compile.engine.hua.semantic.attr.*;
-import org.liuyehcf.compile.engine.hua.semantic.condition.BackFill;
-import org.liuyehcf.compile.engine.hua.semantic.condition.BooleanAssignment;
-import org.liuyehcf.compile.engine.hua.semantic.condition.ControlTransferByteCodeByType;
-import org.liuyehcf.compile.engine.hua.semantic.condition.MergeControlTransferByteCode;
+import org.liuyehcf.compile.engine.hua.semantic.backfill.ControlTransferByteCodeBackFill;
+import org.liuyehcf.compile.engine.hua.semantic.backfill.IncrementBackFill;
+import org.liuyehcf.compile.engine.hua.semantic.code.MergeControlTransferByteCode;
+import org.liuyehcf.compile.engine.hua.semantic.code.PushControlTransferByteCodeByType;
+import org.liuyehcf.compile.engine.hua.semantic.code.PushPostIINCByteCode;
+import org.liuyehcf.compile.engine.hua.semantic.code.PushPreIINCByteCode;
 import org.liuyehcf.compile.engine.hua.semantic.load.ArrayLoad;
 import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoad;
 import org.liuyehcf.compile.engine.hua.semantic.method.IncArgSize;
 import org.liuyehcf.compile.engine.hua.semantic.method.InitArgSize;
 import org.liuyehcf.compile.engine.hua.semantic.method.MethodInvocation;
 import org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperation;
-import org.liuyehcf.compile.engine.hua.semantic.operator.IncrementBackFill;
-import org.liuyehcf.compile.engine.hua.semantic.operator.PostIncrementByteCode;
-import org.liuyehcf.compile.engine.hua.semantic.operator.PreIncrementByteCode;
 import org.liuyehcf.compile.engine.hua.semantic.statement.Assignment;
+import org.liuyehcf.compile.engine.hua.semantic.statement.BooleanAssignment;
 import org.liuyehcf.compile.engine.hua.semantic.variable.ArrayTypeDimDecrease;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
@@ -387,8 +387,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new ControlTransferByteCodeByType(-1, -1, BackFillType.TRUE, true),
-                            new BackFill(-1, BackFillType.FALSE),
+                            new PushControlTransferByteCodeByType(-1, -1, BackFillType.TRUE, true),
+                            new ControlTransferByteCodeBackFill(-1, BackFillType.FALSE),
                             new AttrFilter()
                     )
             ),
@@ -440,8 +440,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new ControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
-                            new BackFill(-1, BackFillType.TRUE),
+                            new PushControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
+                            new ControlTransferByteCodeBackFill(-1, BackFillType.TRUE),
                             new AttrFilter()
                     )
             ),
@@ -928,7 +928,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new PreIncrementByteCode(0),
+                            new PushPreIINCByteCode(0),
                             new AttrFilter()
                     )
             ),
@@ -1042,7 +1042,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_DOUBLE_MINUS)
                             ),
-                            new PostIncrementByteCode(-1, -1),
+                            new PushPostIINCByteCode(-1, -1),
                             new SetAttrFromSystem(-1, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )
@@ -1063,7 +1063,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_DOUBLE_PLUS)
                             ),
-                            new PostIncrementByteCode(-1, 1),
+                            new PushPostIINCByteCode(-1, 1),
                             new SetAttrFromSystem(-1, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )

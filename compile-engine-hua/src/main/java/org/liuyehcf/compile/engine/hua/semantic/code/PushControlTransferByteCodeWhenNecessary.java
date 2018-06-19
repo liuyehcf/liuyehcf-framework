@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.semantic.condition;
+package org.liuyehcf.compile.engine.hua.semantic.code;
 
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.hua.model.BackFillType;
  * @author chenlu
  * @date 2018/6/19
  */
-public class ControlTransferByteCodeWhenNecessary extends ControlTransferByteCodeByType {
+public class PushControlTransferByteCodeWhenNecessary extends PushControlTransferByteCodeByType {
 
     /**
      * 包含 expression是否为空 的语法树节点-栈偏移量，相对于语法树栈
@@ -18,7 +18,7 @@ public class ControlTransferByteCodeWhenNecessary extends ControlTransferByteCod
      */
     private final int expressionStackOffset;
 
-    public ControlTransferByteCodeWhenNecessary(int backFillStackOffset, int typeStackOffset, BackFillType backFillType, boolean isOpposite, int expressionStackOffset) {
+    public PushControlTransferByteCodeWhenNecessary(int backFillStackOffset, int typeStackOffset, BackFillType backFillType, boolean isOpposite, int expressionStackOffset) {
         super(backFillStackOffset, typeStackOffset, backFillType, isOpposite);
         this.expressionStackOffset = expressionStackOffset;
     }

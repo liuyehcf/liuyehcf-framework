@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.semantic.condition;
+package org.liuyehcf.compile.engine.hua.semantic.statement;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._goto;

@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.semantic.condition;
+package org.liuyehcf.compile.engine.hua.semantic.backfill;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
@@ -9,12 +9,13 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 import java.util.List;
 
 /**
- * 回填到循环开始处
+ * 跳转指令的回填
  *
  * @author hechenfeng
- * @date 2018/6/17
+ * @date 2018/6/13
  */
-public class BackToLoop extends AbstractSemanticAction {
+public class ControlTransferByteCodeBackFill extends AbstractSemanticAction {
+
     /**
      * 存储待回填字节码的节点-栈偏移量，相对于语法树栈
      * '0'  表示栈顶
@@ -24,21 +25,12 @@ public class BackToLoop extends AbstractSemanticAction {
     private final int backFillStackOffset;
 
     /**
-     * 存储循环起始代码偏移量的节点-栈偏移量，相对于语法树栈
-     * '0'  表示栈顶
-     * '-1' 表示栈次顶，以此类推
-     * '1' 表示未来入栈的元素，以此类推
-     */
-    private final int loopStackOffset;
-
-    /**
      * 回填类型
      */
     private final BackFillType backFillType;
 
-    public BackToLoop(int backFillStackOffset, int loopStackOffset, BackFillType backFillType) {
+    public ControlTransferByteCodeBackFill(int backFillStackOffset, BackFillType backFillType) {
         this.backFillStackOffset = backFillStackOffset;
-        this.loopStackOffset = loopStackOffset;
         this.backFillType = backFillType;
     }
 
@@ -50,14 +42,30 @@ public class BackToLoop extends AbstractSemanticAction {
             case TRUE:
                 codes = context.getStack().get(backFillStackOffset).get(AttrName.TRUE_BYTE_CODE.name());
                 break;
+            case FALSE:
+                codes = context.getStack().get(backFillStackOffset).get(AttrName.FALSE_BYTE_CODE.name());
+                break;
+            case NEXT:
+                codes = context.getStack().get(backFillStackOffset).get(AttrName.NEXT_BYTE_CODE.name());
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
 
-        int codeOffset = context.getStack().get(loopStackOffset).get(AttrName.LOOP_CODE_OFFSET.name());
+        /*
+         * 允许以下情况不进行回填
+         * 1. `if(a) {...} ` 直接往下走TRUE代码块，不需要回填TRUE
+         * 2. `a||b` 当a不成立的时候，直接往下走，不需要回填FALSE
+         */
+        if (codes != null) {
+            for (ControlTransfer code : codes) {
+                code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+            }
 
-        for (ControlTransfer code : codes) {
-            code.setCodeOffset(codeOffset);
+            /*
+             * 已经回填的就删除，避免二次回填
+             */
+            codes.clear();
         }
     }
 }

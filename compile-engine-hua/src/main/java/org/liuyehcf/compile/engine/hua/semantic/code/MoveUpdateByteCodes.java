@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.semantic.attr;
+package org.liuyehcf.compile.engine.hua.semantic.code;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;

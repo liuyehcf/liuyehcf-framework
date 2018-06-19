@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.semantic.condition;
+package org.liuyehcf.compile.engine.hua.semantic.code;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
@@ -11,7 +11,7 @@ import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
  * @author hechenfeng
  * @date 2018/6/13
  */
-public class ControlTransferByteCode extends AbstractControlTransferByteCode {
+public class PushControlTransferByteCode extends AbstractControlTransferByteCode {
 
     /**
      * 跳转指令类型
@@ -19,7 +19,7 @@ public class ControlTransferByteCode extends AbstractControlTransferByteCode {
     final ControlTransferType controlTransferType;
 
 
-    public ControlTransferByteCode(int backFillStackOffset, ControlTransferType controlTransferType, BackFillType backFillType) {
+    public PushControlTransferByteCode(int backFillStackOffset, ControlTransferType controlTransferType, BackFillType backFillType) {
         super(backFillStackOffset, backFillType);
         this.controlTransferType = controlTransferType;
     }

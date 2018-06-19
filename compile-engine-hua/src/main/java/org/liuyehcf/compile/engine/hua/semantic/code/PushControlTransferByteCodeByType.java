@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.semantic.condition;
+package org.liuyehcf.compile.engine.hua.semantic.code;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._ifeq;
@@ -14,7 +14,7 @@ import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
  * @author hechenfeng
  * @date 2018/6/16
  */
-public class ControlTransferByteCodeByType extends AbstractControlTransferByteCode {
+public class PushControlTransferByteCodeByType extends AbstractControlTransferByteCode {
 
     /**
      * 布尔表达式类型-栈偏移量，相对于语法树栈
@@ -29,7 +29,7 @@ public class ControlTransferByteCodeByType extends AbstractControlTransferByteCo
      */
     private final boolean isOpposite;
 
-    public ControlTransferByteCodeByType(int backFillStackOffset, int typeStackOffset, BackFillType backFillType, boolean isOpposite) {
+    public PushControlTransferByteCodeByType(int backFillStackOffset, int typeStackOffset, BackFillType backFillType, boolean isOpposite) {
         super(backFillStackOffset, backFillType);
         this.typeStackOffset = typeStackOffset;
         this.isOpposite = isOpposite;

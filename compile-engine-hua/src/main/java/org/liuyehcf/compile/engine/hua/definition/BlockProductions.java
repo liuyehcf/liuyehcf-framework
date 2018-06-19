@@ -9,8 +9,9 @@ import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.model.StatementType;
 import org.liuyehcf.compile.engine.hua.semantic.attr.*;
-import org.liuyehcf.compile.engine.hua.semantic.condition.*;
-import org.liuyehcf.compile.engine.hua.semantic.load.RemoveRedundantLoadByteCode;
+import org.liuyehcf.compile.engine.hua.semantic.backfill.ControlTransferByteCodeBackFill;
+import org.liuyehcf.compile.engine.hua.semantic.backfill.ControlTransferByteCodeBackFillWithLoop;
+import org.liuyehcf.compile.engine.hua.semantic.code.*;
 import org.liuyehcf.compile.engine.hua.semantic.node.AddFutureSyntaxNode;
 import org.liuyehcf.compile.engine.hua.semantic.variable.EnterNamespace;
 import org.liuyehcf.compile.engine.hua.semantic.variable.ExitNamespace;
@@ -560,8 +561,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new ControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
-                            new BackFill(-1, BackFillType.TRUE),
+                            new PushControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
+                            new ControlTransferByteCodeBackFill(-1, BackFillType.TRUE),
                             new AttrFilter()
                     )
             ),
@@ -579,8 +580,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new ControlTransferByteCode(-4, ControlTransferType.GOTO, BackFillType.NEXT),
-                            new BackFill(-4, BackFillType.FALSE),
+                            new PushControlTransferByteCode(-4, ControlTransferType.GOTO, BackFillType.NEXT),
+                            new ControlTransferByteCodeBackFill(-4, BackFillType.FALSE),
                             new AttrFilter()
                     )
             ),
@@ -604,7 +605,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new BackFill(-3, BackFillType.FALSE),
+                            new ControlTransferByteCodeBackFill(-3, BackFillType.FALSE),
                             new AttrFilter()
                     )
             ),
@@ -631,7 +632,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new BackFill(-6, BackFillType.NEXT),
+                            new ControlTransferByteCodeBackFill(-6, BackFillType.NEXT),
                             new AttrFilter()
                     )
             ),
@@ -658,7 +659,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            new BackFill(-6, BackFillType.NEXT),
+                            new ControlTransferByteCodeBackFill(-6, BackFillType.NEXT),
                             new AttrFilter()
                     )
             ),
@@ -701,8 +702,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new GotoLoop(-5),
-                            new BackFill(-3, BackFillType.FALSE),
+                            new PushGotoByteCode(-5),
+                            new ControlTransferByteCodeBackFill(-3, BackFillType.FALSE),
                             new AttrFilter()
                     )
             ),
@@ -727,8 +728,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            new GotoLoop(-5),
-                            new BackFill(-3, BackFillType.FALSE),
+                            new PushGotoByteCode(-5),
+                            new ControlTransferByteCodeBackFill(-3, BackFillType.FALSE),
                             new AttrFilter()
                     )
             ),
@@ -754,9 +755,9 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
-                            new ControlTransferByteCodeByType(-2, -2, BackFillType.TRUE, true),
-                            new BackToLoop(-2, -7, BackFillType.TRUE),
-                            new BackFill(-2, BackFillType.FALSE),
+                            new PushControlTransferByteCodeByType(-2, -2, BackFillType.TRUE, true),
+                            new ControlTransferByteCodeBackFillWithLoop(-2, -7, BackFillType.TRUE),
+                            new ControlTransferByteCodeBackFill(-2, BackFillType.FALSE),
                             new AttrFilter()
                     )
             ),
@@ -775,8 +776,8 @@ abstract class BlockProductions {
                                     Symbol.EPSILON
                             ),
                             new SetCodeOffsetAttr(0),
-                            new ControlTransferByteCodeWhenNecessary(-3, -3, BackFillType.FALSE, false, -3),
-                            new BackFill(-3, BackFillType.TRUE),
+                            new PushControlTransferByteCodeWhenNecessary(-3, -3, BackFillType.FALSE, false, -3),
+                            new ControlTransferByteCodeBackFill(-3, BackFillType.TRUE),
                             new AttrFilter()
                     )
             ),
@@ -806,8 +807,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
                             new MoveUpdateByteCodes(-5, -2),
-                            new GotoLoop(-7),
-                            new BackFill(-5, BackFillType.FALSE),
+                            new PushGotoByteCode(-7),
+                            new ControlTransferByteCodeBackFill(-5, BackFillType.FALSE),
                             new ExitNamespace(),
                             new AttrFilter()
                     )
@@ -926,8 +927,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
                             new MoveUpdateByteCodes(-5, -2),
-                            new GotoLoop(-7),
-                            new BackFill(-5, BackFillType.FALSE),
+                            new PushGotoByteCode(-7),
+                            new ControlTransferByteCodeBackFill(-5, BackFillType.FALSE),
                             new ExitNamespace(),
                             new AttrFilter()
                     )
