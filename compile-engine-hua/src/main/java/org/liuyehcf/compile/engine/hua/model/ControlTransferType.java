@@ -61,6 +61,12 @@ public enum ControlTransferType {
             case IFEQ:
                 code = new _ifeq();
                 break;
+            case IFNE:
+                code = new _ifne();
+                break;
+            case GOTO:
+                code = new _goto();
+                break;
             case IF_ICMPNE:
                 code = new _if_icmpne();
                 break;

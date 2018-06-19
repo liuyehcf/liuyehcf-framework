@@ -8,9 +8,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.model.StatementType;
-import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
-import org.liuyehcf.compile.engine.hua.semantic.attr.AttrFilter;
-import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
+import org.liuyehcf.compile.engine.hua.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.semantic.condition.*;
 import org.liuyehcf.compile.engine.hua.semantic.load.RemoveRedundantLoadByteCode;
 import org.liuyehcf.compile.engine.hua.semantic.node.AddFutureSyntaxNode;
@@ -63,6 +61,7 @@ abstract class BlockProductions {
     private static final String MARK_LOOP_OFFSET = "<mark loop offset>";
     private static final String MARK_TRUE_BLOCK = "<mark true block>";
     private static final String MARK_FALSE_BLOCK = "<mark false block>";
+    private static final String MARK_AFTER_UPDATE = "<mark after update>";
     private static final String MARK_192_1_1 = "<mark 192_1_1>";
     private static final String MARK_192_2_1 = "<mark 192_2_1>";
 
@@ -484,8 +483,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ASSIGNMENT)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.ASSIGNMENT),
-                            new AttrFilter(AttrName.STATEMTNT_TYPE)
+                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.ASSIGNMENT),
+                            new AttrFilter(AttrName.STATEMENT_TYPE)
                     ),
                     /*
                      * <statement expression> → <preincrement expression>
@@ -495,8 +494,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREINCREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.PRE_INCREMENT),
-                            new AttrFilter(AttrName.STATEMTNT_TYPE)
+                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.PRE_INCREMENT),
+                            new AttrFilter(AttrName.STATEMENT_TYPE)
                     ),
                     /*
                      * <statement expression> → <postincrement expression>
@@ -506,8 +505,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTINCREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.POST_INCREMENT),
-                            new AttrFilter(AttrName.STATEMTNT_TYPE)
+                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.POST_INCREMENT),
+                            new AttrFilter(AttrName.STATEMENT_TYPE)
                     ),
                     /*
                      * <statement expression> → <predecrement expression>
@@ -517,8 +516,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREDECREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.PRE_DECREMENT),
-                            new AttrFilter(AttrName.STATEMTNT_TYPE)
+                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.PRE_DECREMENT),
+                            new AttrFilter(AttrName.STATEMENT_TYPE)
                     ),
                     /*
                      * <statement expression> → <postdecrement expression>
@@ -528,8 +527,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTDECREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.POST_DECREMENT),
-                            new AttrFilter(AttrName.STATEMTNT_TYPE)
+                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.POST_DECREMENT),
+                            new AttrFilter(AttrName.STATEMENT_TYPE)
                     ),
                     /*
                      * <statement expression> → <method invocation>
@@ -539,8 +538,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_INVOCATION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMTNT_TYPE, StatementType.METHOD_INVOCATION),
-                            new AttrFilter(AttrName.STATEMTNT_TYPE)
+                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.METHOD_INVOCATION),
+                            new AttrFilter(AttrName.STATEMENT_TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -764,12 +763,32 @@ abstract class BlockProductions {
 
 
             /*
+            * <mark after update>
+            */
+            Production.create(
+                    /*
+                     * <mark after update> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_AFTER_UPDATE),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new SetCodeOffsetAttr(0),
+                            new ControlTransferByteCodeWhenNecessary(-3, -3, BackFillType.FALSE, false, -3),
+                            new BackFill(-3, BackFillType.TRUE),
+                            new AttrFilter()
+                    )
+            ),
+
+
+            /*
              * <for statement> 188
              * SAME
              */
             Production.create(
                     /*
-                     * (1) <for statement> → for ( <for init>? ; <mark loop offset> <expression>? ; <for update>? ) <mark true block> <statement>
+                     * (1) <for statement> → for ( <for init>? ; <mark loop offset> <expression>? ; <for update>? ) <mark after update> <statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_STATEMENT),
@@ -783,9 +802,12 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
-                                    Symbol.createNonTerminator(MARK_TRUE_BLOCK),
+                                    Symbol.createNonTerminator(MARK_AFTER_UPDATE),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
+                            new MoveUpdateByteCodes(-5, -2),
+                            new GotoLoop(-7),
+                            new BackFill(-5, BackFillType.FALSE),
                             new ExitNamespace(),
                             new AttrFilter()
                     )
@@ -834,7 +856,9 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AttrFilter()
+                            new SetCodeOffsetAttrToLeftNode(),
+                            new SetAttrToLeftNode(AttrName.IS_EMPTY_CONDITION_EXPRESSION, new Object()),
+                            new AttrFilter(AttrName.CODE_OFFSET, AttrName.IS_EMPTY_CONDITION_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <epsilon or expression> → <expression>
@@ -844,7 +868,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new AttrFilter()
+                            new SetCodeOffsetAttr(0),
+                            new AttrFilter(AttrName.CODE_OFFSET, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )
             ),
 
@@ -883,7 +908,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * (1) <for statement no short if> → for ( <for init>? ; <mark loop offset> <expression>? ; <for update>? ) <mark true block> <statement no short if>
+                     * (1) <for statement no short if> → for ( <for init>? ; <mark loop offset> <expression>? ; <for update>? ) <mark after update> <statement no short if>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_STATEMENT_NO_SHORT_IF),
@@ -897,9 +922,12 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
-                                    Symbol.createNonTerminator(MARK_TRUE_BLOCK),
+                                    Symbol.createNonTerminator(MARK_AFTER_UPDATE),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
+                            new MoveUpdateByteCodes(-5, -2),
+                            new GotoLoop(-7),
+                            new BackFill(-5, BackFillType.FALSE),
                             new ExitNamespace(),
                             new AttrFilter()
                     )

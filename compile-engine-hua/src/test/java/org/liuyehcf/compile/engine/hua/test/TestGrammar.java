@@ -1464,4 +1464,22 @@ public class TestGrammar {
                 result.getResult().getMethodInfoTable().toString()
         );
     }
+
+    @Test
+    public void testSimpleFor1() {
+        String text = "void func(int i) {\n" +
+                "\tfor(;;){\n" +
+                "\t\ti++;\n" +
+                "\t}\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int)\":{\"byteCodes\":[{\"increment\":1,\"name\":\"_iinc\",\"offset\":0},{\"codeOffset\":0,\"name\":\"_goto\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
 }

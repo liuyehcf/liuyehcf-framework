@@ -53,6 +53,11 @@ public enum AttrName {
     IS_COMPLEX_BOOLEAN_EXPRESSION,
 
     /**
+     * 是否为空的条件表达式
+     */
+    IS_EMPTY_CONDITION_EXPRESSION,
+
+    /**
      * 布尔表达式为true时的字节码
      */
     TRUE_BYTE_CODE,
@@ -80,5 +85,10 @@ public enum AttrName {
     /**
      * 语句类型
      */
-    STATEMTNT_TYPE
+    STATEMENT_TYPE,
+
+    /**
+     * 代码偏移量
+     */
+    CODE_OFFSET,
 }

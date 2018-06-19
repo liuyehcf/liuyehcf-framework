@@ -33,12 +33,12 @@ public class BooleanAssignment extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Object obj = context.getStack().get(booleanExpressionStackOffset).get(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name());
+        Object conditionObject = context.getStack().get(booleanExpressionStackOffset).get(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name());
 
         /*
          * 对于普通的boolean字面值，或者boolean类型的变量，直接赋值即可
          */
-        if (obj == null) {
+        if (conditionObject == null) {
             return;
         }
 
