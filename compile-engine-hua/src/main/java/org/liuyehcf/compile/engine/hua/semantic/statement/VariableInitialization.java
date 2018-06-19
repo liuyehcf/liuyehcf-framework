@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.semantic.operator;
+package org.liuyehcf.compile.engine.hua.semantic.statement;
 
 import org.liuyehcf.compile.engine.hua.bytecode.sl._istore;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;

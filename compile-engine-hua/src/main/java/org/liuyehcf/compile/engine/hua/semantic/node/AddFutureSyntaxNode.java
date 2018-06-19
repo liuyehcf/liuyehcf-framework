@@ -1,6 +1,7 @@
-package org.liuyehcf.compile.engine.hua.semantic;
+package org.liuyehcf.compile.engine.hua.semantic.node;
 
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
+import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
 /**
  * 创建一个Future语法树节点，仅用于标记非终结符
