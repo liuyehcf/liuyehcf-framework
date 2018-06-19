@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic.operator;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cp._iinc;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
@@ -42,7 +42,7 @@ public class IncrementBackFill extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         _iinc code = context.getStack().get(backFillStackOffset).get(AttrName.IINC_BYTE_CODE.name());
 
         String identifierName = context.getStack().get(expressionStackOffset).get(AttrName.IDENTIFIER_NAME.name());

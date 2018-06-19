@@ -30,20 +30,6 @@ public class HuaCompiler extends LALR<HuaResult> {
         return new HuaEngine(input);
     }
 
-    public static final class HuaContext extends Context {
-
-        private final HuaEngine huaEngine;
-
-        public HuaContext(Context context, HuaEngine huaEngine) {
-            super(context.getRawPrimaryProduction(), context.getStack(), context.getLeftNode());
-            this.huaEngine = huaEngine;
-        }
-
-        public HuaEngine getHuaEngine() {
-            return huaEngine;
-        }
-    }
-
     public class HuaEngine extends Engine {
 
         /**

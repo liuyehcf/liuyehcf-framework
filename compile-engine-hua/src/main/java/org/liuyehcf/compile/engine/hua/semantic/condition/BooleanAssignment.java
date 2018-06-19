@@ -4,7 +4,7 @@ import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._goto;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._ifeq;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._iconst;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
@@ -32,7 +32,7 @@ public class BooleanAssignment extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         Object obj = context.getStack().get(booleanExpressionStackOffset).get(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name());
 
         /*

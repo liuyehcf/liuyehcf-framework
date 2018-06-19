@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic.variable;
 
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
@@ -26,7 +26,7 @@ public class ArrayTypeDimDecrease extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         Type type = context.getStack().get(expressionNameStackOffset).get(AttrName.TYPE.name());
 
         if (!type.isArrayType()) {

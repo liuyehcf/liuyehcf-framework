@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.hua.semantic.condition;
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._ifeq;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._ifne;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
@@ -36,7 +36,7 @@ public class ControlTransferByteCodeByType extends AbstractControlTransferByteCo
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         ControlTransferType type = context.getStack().get(typeStackOffset).get(AttrName.BOOLEAN_EXPRESSION_TYPE.name());
 
         ControlTransfer code;

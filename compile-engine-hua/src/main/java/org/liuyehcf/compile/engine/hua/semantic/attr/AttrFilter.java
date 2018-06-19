@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic.attr;
 
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
@@ -30,7 +30,7 @@ public class AttrFilter extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         Map<String, Object> attrs = context.getLeftNode().getAttrs();
 
         Set<String> removedAttrNames = new HashSet<>();

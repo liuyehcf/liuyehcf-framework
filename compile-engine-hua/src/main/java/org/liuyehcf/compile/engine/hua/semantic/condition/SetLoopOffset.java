@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic.condition;
 
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
@@ -25,7 +25,7 @@ public class SetLoopOffset extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         int codeOffset = context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size();
         context.getStack().get(loopStackOffset).put(AttrName.LOOP_CODE_OFFSET.name(), codeOffset);
     }

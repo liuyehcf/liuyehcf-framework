@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic.operator;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cp.*;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BinaryOperator;
 import org.liuyehcf.compile.engine.hua.model.Type;
@@ -46,7 +46,7 @@ public class BinaryOperation extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         Type leftType = context.getStack().get(leftStackOffset).get(AttrName.TYPE.name());
         Type rightType = context.getStack().get(rightStackOffset).get(AttrName.TYPE.name());
 

@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic.condition;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
@@ -43,7 +43,7 @@ public class BackToLoop extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         List<ControlTransfer> codes;
 
         switch (backFillType) {

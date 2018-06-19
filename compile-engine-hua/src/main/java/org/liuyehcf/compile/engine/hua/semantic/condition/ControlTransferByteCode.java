@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic.condition;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.*;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 
@@ -25,7 +25,7 @@ public class ControlTransferByteCode extends AbstractControlTransferByteCode {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         ControlTransfer code;
         switch (controlTransferType) {
             case IFEQ:

@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic.attr;
 
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
@@ -42,7 +42,7 @@ public class AssignAttrs extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         for (AttrName attrName : attrNames) {
             Object value = context.getStack().get(fromStackOffset).get(attrName.name());
             if (value == null) {

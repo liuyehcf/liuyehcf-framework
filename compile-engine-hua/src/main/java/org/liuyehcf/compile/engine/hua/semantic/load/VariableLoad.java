@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.hua.semantic.load;
 
 import org.liuyehcf.compile.engine.hua.bytecode.sl._aload;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._iload;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
@@ -32,7 +32,7 @@ public class VariableLoad extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         String identifierName = context.getStack().get(identifierNameStackOffset).get(AttrName.IDENTIFIER_NAME.name());
         VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
         if (variableSymbol == null) {

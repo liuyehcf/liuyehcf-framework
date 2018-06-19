@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic.method;
 
 import org.liuyehcf.compile.engine.hua.bytecode.rt._return;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
@@ -13,7 +13,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
  */
 public class ExitMethod extends AbstractSemanticAction {
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         if (Type.TYPE_VOID.equals(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getResultType())) {
             context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _return());
         }

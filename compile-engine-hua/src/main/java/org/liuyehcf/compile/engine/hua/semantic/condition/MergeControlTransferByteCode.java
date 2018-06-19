@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic.condition;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
@@ -38,13 +38,13 @@ public class MergeControlTransferByteCode extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         doMerge(context, AttrName.TRUE_BYTE_CODE.name());
         doMerge(context, AttrName.FALSE_BYTE_CODE.name());
         doMerge(context, AttrName.NEXT_BYTE_CODE.name());
     }
 
-    private void doMerge(HuaCompiler.HuaContext context, String attrName) {
+    private void doMerge(HuaContext context, String attrName) {
         List<ControlTransfer> fromCodes = context.getStack().get(fromStackOffset).get(attrName);
         List<ControlTransfer> toCodes = context.getStack().get(toStackOffset).get(attrName);
 

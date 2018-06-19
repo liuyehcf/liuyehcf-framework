@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic.operator;
 
 import org.liuyehcf.compile.engine.hua.bytecode.sl._istore;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
@@ -41,7 +41,7 @@ public class VariableInitialization extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         Type expressionType = context.getStack().get(initializationExpressionStackOffset).get(AttrName.TYPE.name());
         String identifierName = context.getStack().get(identifierStackOffset).get(AttrName.IDENTIFIER_NAME.name());
         VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);

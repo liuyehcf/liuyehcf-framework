@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.hua.semantic.condition;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._goto;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
@@ -27,7 +27,7 @@ public class GotoLoop extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         ControlTransfer __goto = new _goto();
         __goto.setCodeOffset(context.getStack().get(loopStackOffset).get(AttrName.LOOP_CODE_OFFSET.name()));
         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(__goto);

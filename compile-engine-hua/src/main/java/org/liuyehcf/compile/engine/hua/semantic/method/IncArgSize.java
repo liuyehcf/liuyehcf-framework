@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic.method;
 
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
@@ -25,7 +25,7 @@ public class IncArgSize extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         Integer argumentSize = context.getStack().get(argumentListStackOffset).get(AttrName.ARGUMENT_SIZE.name());
         context.getStack().get(argumentListStackOffset).put(AttrName.ARGUMENT_SIZE.name(), argumentSize + 1);
     }

@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic.method;
 
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
@@ -38,7 +38,7 @@ public class RecordMethodDescription extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         Type resultType = context.getStack().get(resultTypeStackOffset).get(AttrName.TYPE.name());
         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().setResultType(resultType);
 

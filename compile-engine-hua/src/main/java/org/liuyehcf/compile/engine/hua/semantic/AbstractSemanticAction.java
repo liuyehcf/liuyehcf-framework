@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.SemanticAction;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 
 /**
  * 语义动作抽象基类
@@ -9,9 +9,9 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
  * @author hechenfeng
  * @date 2018/6/11
  */
-public abstract class AbstractSemanticAction implements SemanticAction<HuaCompiler.HuaContext> {
+public abstract class AbstractSemanticAction implements SemanticAction<HuaContext> {
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
 
     }
 }

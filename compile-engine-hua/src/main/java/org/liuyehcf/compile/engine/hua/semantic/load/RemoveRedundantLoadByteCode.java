@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.hua.semantic.load;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._iload;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.StatementType;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
@@ -32,7 +32,7 @@ public class RemoveRedundantLoadByteCode extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaCompiler.HuaContext context) {
+    public void onAction(HuaContext context) {
         StatementType type = context.getStack().get(statementStackOffset).get(AttrName.STATEMTNT_TYPE.name());
 
         assertNotNull(type);
