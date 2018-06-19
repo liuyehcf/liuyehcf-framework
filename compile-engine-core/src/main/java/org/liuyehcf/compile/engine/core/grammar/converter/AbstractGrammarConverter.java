@@ -29,21 +29,6 @@ public abstract class AbstractGrammarConverter implements GrammarConverter {
         this.originalGrammar = originalGrammar;
     }
 
-    @Override
-    public final Grammar getConvertedGrammar() {
-        if (convertedGrammar == null) {
-            convertedGrammar = doConvert();
-        }
-        return convertedGrammar;
-    }
-
-    /**
-     * 文法转换的具体操作，交由子类实现
-     *
-     * @return 转换后的文法
-     */
-    protected abstract Grammar doConvert();
-
     static void traverseDirectedGraph(Map<Symbol, List<Symbol>> edges, Map<Symbol, Integer> degrees, List<Symbol> visitedSymbol) {
         Queue<Symbol> queue = new LinkedList<>();
 
@@ -69,4 +54,19 @@ public abstract class AbstractGrammarConverter implements GrammarConverter {
             }
         }
     }
+
+    @Override
+    public final Grammar getConvertedGrammar() {
+        if (convertedGrammar == null) {
+            convertedGrammar = doConvert();
+        }
+        return convertedGrammar;
+    }
+
+    /**
+     * 文法转换的具体操作，交由子类实现
+     *
+     * @return 转换后的文法
+     */
+    protected abstract Grammar doConvert();
 }
