@@ -8,8 +8,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
-import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_ASSIGN;
 
 /**
@@ -21,12 +20,12 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMA
 public class Assignment extends AbstractSemanticAction {
 
     /**
-     * 表达式-偏移量，相对于语法树栈
+     * 赋值左侧-偏移量，相对于语法树栈
      * '0'  表示栈顶
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
      */
-    private final int expressionStackOffset;
+    private final int leftHandStackOffset;
 
     /**
      * 赋值运算符-偏移量，相对于语法树栈
@@ -37,17 +36,17 @@ public class Assignment extends AbstractSemanticAction {
     private final int operatorStackOffset;
 
     /**
-     * 赋值左侧-偏移量，相对于语法树栈
+     * 表达式-偏移量，相对于语法树栈
      * '0'  表示栈顶
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
      */
-    private final int leftHandStackOffset;
+    private final int expressionStackOffset;
 
-    public Assignment(int expressionStackOffset, int operatorStackOffset, int leftHandStackOffset) {
-        this.expressionStackOffset = expressionStackOffset;
-        this.operatorStackOffset = operatorStackOffset;
+    public Assignment(int leftHandStackOffset, int operatorStackOffset, int expressionStackOffset) {
         this.leftHandStackOffset = leftHandStackOffset;
+        this.operatorStackOffset = operatorStackOffset;
+        this.expressionStackOffset = expressionStackOffset;
     }
 
     @Override
@@ -63,10 +62,12 @@ public class Assignment extends AbstractSemanticAction {
             throw new RuntimeException("赋值运算符左右侧类型不匹配");
         }
 
-        if (variableSymbol.getType().isArrayType()) {
+        Type type = variableSymbol.getType();
+
+        if (type.isArrayType()) {
             switch (operator) {
                 case NORMAL_ASSIGN:
-                    switch (variableSymbol.getType().getTypeName()) {
+                    switch (type.getTypeName()) {
                         case NORMAL_INT:
                             context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iastore());
                             break;
@@ -81,9 +82,10 @@ public class Assignment extends AbstractSemanticAction {
         } else {
             switch (operator) {
                 case NORMAL_ASSIGN:
-                    switch (variableSymbol.getType().getTypeName()) {
+                    switch (type.getTypeName()) {
                         case NORMAL_INT:
                             context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                            context.getLeftNode().put(AttrName.TYPE.name(), type);
                             break;
                         case NORMAL_BOOLEAN:
                             context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
@@ -91,6 +93,28 @@ public class Assignment extends AbstractSemanticAction {
                         default:
                             throw new UnsupportedOperationException();
                     }
+                    break;
+                case NORMAL_MUL_ASSIGN:
+                    break;
+                case NORMAL_DIV_ASSIGN:
+                    break;
+                case NORMAL_MOD_ASSIGN:
+                    break;
+                case NORMAL_ADD_ASSIGN:
+                    break;
+                case NORMAL_MINUS_ASSIGN:
+                    break;
+                case NORMAL_SHIFT_LEFT_ASSIGN:
+                    break;
+                case NORMAL_SHIFT_RIGHT_ASSIGN:
+                    break;
+                case NORMAL_UNSIGNED_SHIFT_RIGHT_ASSIGN:
+                    break;
+                case NORMAL_BIT_AND_ASSIGN:
+                    break;
+                case NORMAL_BIT_EXCLUSIVE_OR_ASSIGN:
+                    break;
+                case NORMAL_BIT_OR_ASSIGN:
                     break;
                 default:
                     throw new RuntimeException("尚不支持赋值运算符 \'" + operator + "\'");

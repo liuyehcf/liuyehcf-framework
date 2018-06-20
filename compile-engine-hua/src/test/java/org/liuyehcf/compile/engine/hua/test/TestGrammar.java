@@ -448,6 +448,22 @@ public class TestGrammar {
     }
 
     @Test
+    public void testMulAssign() {
+        String text = "void func(int i,int j) {\n" +
+                "\ti *= j;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
     public void testMethodInvocation() {
         String text = "void func(int a, int b, int c) {\n" +
                 "\tfunc1();\n" +
