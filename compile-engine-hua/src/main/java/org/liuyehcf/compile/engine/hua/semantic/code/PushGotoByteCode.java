@@ -29,7 +29,7 @@ public class PushGotoByteCode extends AbstractSemanticAction {
     @Override
     public void onAction(HuaContext context) {
         ControlTransfer __goto = new _goto();
-        __goto.setCodeOffset(context.getStack().get(loopStackOffset).get(AttrName.LOOP_CODE_OFFSET.name()));
+        __goto.setCodeOffset(context.getStack().get(loopStackOffset).get(AttrName.CODE_OFFSET.name()));
         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(__goto);
     }
 }

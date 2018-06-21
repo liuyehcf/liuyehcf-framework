@@ -27,6 +27,6 @@ public class SetLoopOffset extends AbstractSemanticAction {
     @Override
     public void onAction(HuaContext context) {
         int codeOffset = context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size();
-        context.getStack().get(loopStackOffset).put(AttrName.LOOP_CODE_OFFSET.name(), codeOffset);
+        context.getStack().get(loopStackOffset).put(AttrName.CODE_OFFSET.name(), codeOffset);
     }
 }

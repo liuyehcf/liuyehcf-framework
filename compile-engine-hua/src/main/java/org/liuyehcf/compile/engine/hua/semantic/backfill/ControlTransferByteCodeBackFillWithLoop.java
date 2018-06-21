@@ -54,7 +54,7 @@ public class ControlTransferByteCodeBackFillWithLoop extends AbstractSemanticAct
                 throw new UnsupportedOperationException();
         }
 
-        int codeOffset = context.getStack().get(loopStackOffset).get(AttrName.LOOP_CODE_OFFSET.name());
+        int codeOffset = context.getStack().get(loopStackOffset).get(AttrName.CODE_OFFSET.name());
 
         for (ControlTransfer code : codes) {
             code.setCodeOffset(codeOffset);

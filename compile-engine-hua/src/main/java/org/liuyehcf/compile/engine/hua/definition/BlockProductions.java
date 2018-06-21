@@ -62,6 +62,7 @@ abstract class BlockProductions {
     private static final String MARK_LOOP_OFFSET = "<mark loop offset>";
     private static final String MARK_TRUE_BLOCK = "<mark true block>";
     private static final String MARK_FALSE_BLOCK = "<mark false block>";
+    private static final String MARK_BEFORE_UPDATE = "<mark before update>";
     private static final String MARK_AFTER_UPDATE = "<mark after update>";
     private static final String MARK_192_1_1 = "<mark 192_1_1>";
     private static final String MARK_192_2_1 = "<mark 192_2_1>";
@@ -677,8 +678,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetLoopOffset(0),
-                            new AttrFilter()
+                            new SetCodeOffsetAttrToLeftNode(),
+                            new AttrFilter(AttrName.CODE_OFFSET)
                     )
             ),
 
@@ -702,7 +703,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new PushGotoByteCode(-5),
+                            new PushGotoByteCode(-4),
                             new ControlTransferByteCodeBackFill(-3, BackFillType.FALSE),
                             new AttrFilter()
                     )
@@ -728,7 +729,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            new PushGotoByteCode(-5),
+                            new PushGotoByteCode(-4),
                             new ControlTransferByteCodeBackFill(-3, BackFillType.FALSE),
                             new AttrFilter()
                     )
@@ -756,9 +757,27 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
                             new PushControlTransferByteCodeByType(-2, -2, BackFillType.TRUE, true),
-                            new ControlTransferByteCodeBackFillWithLoop(-2, -7, BackFillType.TRUE),
+                            new ControlTransferByteCodeBackFillWithLoop(-2, -6, BackFillType.TRUE),
                             new ControlTransferByteCodeBackFill(-2, BackFillType.FALSE),
                             new AttrFilter()
+                    )
+            ),
+
+
+            /*
+            * <mark before update>
+            */
+            Production.create(
+                    /*
+                     * <mark before update> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_BEFORE_UPDATE),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new SetCodeOffsetAttrToLeftNode(),
+                            new AttrFilter(AttrName.CODE_OFFSET)
                     )
             ),
 
@@ -775,10 +794,10 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetCodeOffsetAttr(0),
-                            new PushControlTransferByteCodeWhenNecessary(-3, -3, BackFillType.FALSE, false, -3),
-                            new ControlTransferByteCodeBackFill(-3, BackFillType.TRUE),
-                            new AttrFilter()
+                            new SetCodeOffsetAttrToLeftNode(),
+                            new PushControlTransferByteCodeWhenNecessary(-4, -4, BackFillType.FALSE, false, -4),
+                            new ControlTransferByteCodeBackFill(-4, BackFillType.TRUE),
+                            new AttrFilter(AttrName.CODE_OFFSET)
                     )
             ),
 
@@ -789,7 +808,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * (1) <for statement> → for ( <for init>? ; <mark loop offset> <expression>? ; <for update>? ) <mark after update> <statement>
+                     * (1) <for statement> → for ( <for init>? ; <mark loop offset> <expression>? ; <mark before update> <for update>? ) <mark after update> <statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_STATEMENT),
@@ -801,14 +820,15 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_LOOP_OFFSET),
                                     Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
+                                    Symbol.createNonTerminator(MARK_BEFORE_UPDATE),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(MARK_AFTER_UPDATE),
                                     Symbol.createNonTerminator(STATEMENT)
                             ),
-                            new MoveUpdateByteCodes(-5, -2),
+                            new MoveUpdateByteCodes(-4, -1),
                             new PushGotoByteCode(-7),
-                            new ControlTransferByteCodeBackFill(-5, BackFillType.FALSE),
+                            new ControlTransferByteCodeBackFill(-6, BackFillType.FALSE),
                             new ExitNamespace(),
                             new AttrFilter()
                     )
@@ -857,9 +877,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetCodeOffsetAttrToLeftNode(),
                             new SetAttrToLeftNode(AttrName.IS_EMPTY_CONDITION_EXPRESSION, new Object()),
-                            new AttrFilter(AttrName.CODE_OFFSET, AttrName.IS_EMPTY_CONDITION_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.IS_EMPTY_CONDITION_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <epsilon or expression> → <expression>
@@ -869,8 +888,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new SetCodeOffsetAttr(0),
-                            new AttrFilter(AttrName.CODE_OFFSET, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )
             ),
 
@@ -909,7 +927,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * (1) <for statement no short if> → for ( <for init>? ; <mark loop offset> <expression>? ; <for update>? ) <mark after update> <statement no short if>
+                     * (1) <for statement no short if> → for ( <for init>? ; <mark loop offset> <expression>? ; <mark before update> <for update>? ) <mark after update> <statement no short if>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_STATEMENT_NO_SHORT_IF),
@@ -921,14 +939,15 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_LOOP_OFFSET),
                                     Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
+                                    Symbol.createNonTerminator(MARK_BEFORE_UPDATE),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_UPDATE),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
                                     Symbol.createNonTerminator(MARK_AFTER_UPDATE),
                                     Symbol.createNonTerminator(STATEMENT_NO_SHORT_IF)
                             ),
-                            new MoveUpdateByteCodes(-5, -2),
+                            new MoveUpdateByteCodes(-4, -1),
                             new PushGotoByteCode(-7),
-                            new ControlTransferByteCodeBackFill(-5, BackFillType.FALSE),
+                            new ControlTransferByteCodeBackFill(-6, BackFillType.FALSE),
                             new ExitNamespace(),
                             new AttrFilter()
                     )
