@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class TestLL1 {
     @Test
     public void testLL1Status1() {
-        LLCompiler compiler = new LL1(GrammarCase.GRAMMAR_1.GRAMMAR, GrammarCase.GRAMMAR_1.LEXICAL_ANALYZER);
+        LLCompiler compiler = new LL1(GrammarCase.LL1_1.GRAMMAR, GrammarCase.LL1_1.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -54,7 +54,7 @@ public class TestLL1 {
 
     @Test
     public void testLL1Status2() {
-        LLCompiler compiler = new LL1(GrammarCase.GRAMMAR_2.GRAMMAR, GrammarCase.GRAMMAR_2.LEXICAL_ANALYZER);
+        LLCompiler compiler = new LL1(GrammarCase.LL1_2.GRAMMAR, GrammarCase.LL1_2.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
@@ -104,45 +104,45 @@ public class TestLL1 {
 
     @Test
     public void testLL1Case1() {
-        LLCompiler compiler = new LL1(GrammarCase.GRAMMAR_1.GRAMMAR, GrammarCase.GRAMMAR_1.LEXICAL_ANALYZER);
+        LLCompiler compiler = new LL1(GrammarCase.LL1_1.GRAMMAR, GrammarCase.LL1_1.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
-        for (String input : GrammarCase.GRAMMAR_1.TRUE_CASES) {
+        for (String input : GrammarCase.LL1_1.TRUE_CASES) {
             assertTrue(compiler.compile(input).isSuccess());
         }
 
-        for (String input : GrammarCase.GRAMMAR_1.FALSE_CASES) {
+        for (String input : GrammarCase.LL1_1.FALSE_CASES) {
             assertFalse(compiler.compile(input).isSuccess());
         }
     }
 
     @Test
     public void testLL1Case2() {
-        LLCompiler compiler = new LL1(GrammarCase.GRAMMAR_2.GRAMMAR, GrammarCase.GRAMMAR_2.LEXICAL_ANALYZER);
+        LLCompiler compiler = new LL1(GrammarCase.LL1_2.GRAMMAR, GrammarCase.LL1_2.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
-        for (String input : GrammarCase.GRAMMAR_2.TRUE_CASES) {
+        for (String input : GrammarCase.LL1_2.TRUE_CASES) {
             assertTrue(compiler.compile(input).isSuccess());
         }
 
-        for (String input : GrammarCase.GRAMMAR_2.FALSE_CASES) {
+        for (String input : GrammarCase.LL1_2.FALSE_CASES) {
             assertFalse(compiler.compile(input).isSuccess());
         }
     }
 
     @Test
     public void testLL1Case3() {
-        LLCompiler compiler = new LL1(GrammarCase.GRAMMAR_3.GRAMMAR, GrammarCase.GRAMMAR_3.LEXICAL_ANALYZER);
+        LLCompiler compiler = new LL1(GrammarCase.LL1_3.GRAMMAR, GrammarCase.LL1_3.LEXICAL_ANALYZER);
 
         assertTrue(compiler.isLegal());
 
-        for (String input : GrammarCase.GRAMMAR_3.TRUE_CASES) {
+        for (String input : GrammarCase.LL1_3.TRUE_CASES) {
             assertTrue(compiler.compile(input).isSuccess());
         }
 
-        for (String input : GrammarCase.GRAMMAR_3.FALSE_CASES) {
+        for (String input : GrammarCase.LL1_3.FALSE_CASES) {
             assertFalse(compiler.compile(input).isSuccess());
         }
     }

@@ -14,7 +14,7 @@ public class TestLreElfGrammarConverter {
     @Test
     public void convertCase1() {
 
-        Grammar convertedGrammar = getGrammarConverterPipeline().convert(GrammarCase.GRAMMAR_8.GRAMMAR);
+        Grammar convertedGrammar = getGrammarConverterPipeline().convert(GrammarCase.Ambiguity_1.GRAMMAR);
 
         assertEquals(
                 "{\"productions\":[\"E → ( E ) (E)′ | id (E)′\",\"(E)′ → * E (E)′ | + E (E)′ | __ε__\"]}",

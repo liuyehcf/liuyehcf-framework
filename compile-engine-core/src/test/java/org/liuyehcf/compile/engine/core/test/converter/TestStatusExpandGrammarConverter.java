@@ -40,7 +40,7 @@ public class TestStatusExpandGrammarConverter {
     @Test
     public void convertCase2() {
 
-        Grammar convertedGrammar = getGrammarConverterPipeline().convert(GrammarCase.GRAMMAR_8.GRAMMAR);
+        Grammar convertedGrammar = getGrammarConverterPipeline().convert(GrammarCase.Ambiguity_1.GRAMMAR);
 
         assertEquals(
                 "{\"productions\":[\"E → · ( E )\",\"E → ( · E )\",\"E → ( E · )\",\"E → ( E ) ·\",\"E → · id\",\"E → id "

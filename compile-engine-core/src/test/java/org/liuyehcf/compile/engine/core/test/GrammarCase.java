@@ -10,7 +10,7 @@ public abstract class GrammarCase {
     /**
      * LL1文法
      */
-    public static abstract class GRAMMAR_1 {
+    public static abstract class LL1_1 {
 
         public static Grammar GRAMMAR = Grammar.create(
                 Symbol.createNonTerminator("E"),
@@ -125,7 +125,7 @@ public abstract class GrammarCase {
     /**
      * LL1文法
      */
-    public static abstract class GRAMMAR_2 {
+    public static abstract class LL1_2 {
 
         public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
                 .addNormalMorpheme(Symbol.createTerminator("program "), "program ")
@@ -263,7 +263,7 @@ public abstract class GrammarCase {
     /**
      * LL1文法
      */
-    public static abstract class GRAMMAR_3 {
+    public static abstract class LL1_3 {
 
         public static Grammar GRAMMAR = Grammar.create(
                 Symbol.createNonTerminator("A"),
@@ -407,7 +407,7 @@ public abstract class GrammarCase {
     /**
      * LR0文法
      */
-    public static abstract class GRAMMAR_4 {
+    public static abstract class LR0_1 {
 
         public static Grammar GRAMMAR = Grammar.create(
                 Symbol.createNonTerminator("S"),
@@ -464,7 +464,7 @@ public abstract class GrammarCase {
     /**
      * SLR文法
      */
-    public static abstract class GRAMMAR_5 {
+    public static abstract class SLR_1 {
 
         public static Grammar GRAMMAR = Grammar.create(
                 Symbol.createNonTerminator("E"),
@@ -560,7 +560,7 @@ public abstract class GrammarCase {
     /**
      * SLR文法
      */
-    public static abstract class GRAMMAR_6 {
+    public static abstract class SLR_2 {
 
         public static Grammar GRAMMAR = Grammar.create(
                 Symbol.createNonTerminator("T"),
@@ -627,7 +627,7 @@ public abstract class GrammarCase {
     /**
      * LR1文法
      */
-    public static abstract class GRAMMAR_7 {
+    public static abstract class LR1_1 {
 
         public static Grammar GRAMMAR = Grammar.create(
                 Symbol.createNonTerminator("S"),
@@ -708,63 +708,9 @@ public abstract class GrammarCase {
     }
 
     /**
-     * 二义性文法
+     * LR1文法
      */
-    public static abstract class GRAMMAR_8 {
-
-        public static Grammar GRAMMAR = Grammar.create(
-                Symbol.createNonTerminator("E"),
-                Production.create(
-                        PrimaryProduction.create(
-                                Symbol.createNonTerminator("E"),
-                                SymbolString.create(
-                                        Symbol.createNonTerminator("E"),
-                                        Symbol.createTerminator("+"),
-                                        Symbol.createNonTerminator("E")
-                                ),
-                                null
-                        )
-                ),
-                Production.create(
-                        PrimaryProduction.create(
-                                Symbol.createNonTerminator("E"),
-                                SymbolString.create(
-                                        Symbol.createNonTerminator("E"),
-                                        Symbol.createTerminator("*"),
-                                        Symbol.createNonTerminator("E")
-                                ),
-                                null
-                        )
-                ),
-                Production.create(
-                        PrimaryProduction.create(
-                                Symbol.createNonTerminator("E"),
-                                SymbolString.create(
-                                        Symbol.createTerminator("("),
-                                        Symbol.createNonTerminator("E"),
-                                        Symbol.createTerminator(")")
-                                ),
-                                null
-                        )
-                ),
-                Production.create(
-                        PrimaryProduction.create(
-                                Symbol.createNonTerminator("E"),
-                                SymbolString.create(
-                                        Symbol.createRegexTerminator("id")
-                                ),
-                                null
-                        )
-                )
-        );
-        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
-                .addNormalMorpheme(Symbol.createTerminator("*"), "*")
-                .addNormalMorpheme(Symbol.createTerminator("="), "=")
-                .addRegexMorpheme(Symbol.createRegexTerminator("id"), TestLexicalAnalyzer.getIdRegex())
-                .build();
-    }
-
-    public static abstract class GRAMMAR_9 {
+    public static abstract class LR1_2 {
 
         private static final String SYNTAX = "syntax";
         private static final String EXPRESSION = "expression";
@@ -1025,20 +971,22 @@ public abstract class GrammarCase {
         };
     }
 
+    /**
+     * LR1文法
+     */
+    public static abstract class LR1_3 {
 
-    public static abstract class GRAMMAR_10 {
-
-        public static final String EXPRESSION_NAME = "<expression name>"; // 294
-        public static final String EXPRESSION = "<expression>"; // 218
-        public static final String ASSIGNMENT = "<assignment>"; // 222
-        public static final String LEFT_HAND_SIDE = "<left hand side>"; // 224
-        public static final String ASSIGNMENT_OPERATOR = "<assignment operator>"; // 226
-        public static final String PRIMARY_NO_NEW_ARRAY = "<primary no new array>"; // 272
-        public static final String NORMAL_ASSIGN = "=";
-        public static final String NORMAL_MUL_ASSIGN = "*=";
-        public static final String NORMAL_SMALL_LEFT_PARENTHESES = "(";
-        public static final String NORMAL_SMALL_RIGHT_PARENTHESES = ")";
-        public static final String REGEX_IDENTIFIER = "@identifier";
+        private static final String EXPRESSION_NAME = "<expression name>"; // 294
+        private static final String EXPRESSION = "<expression>"; // 218
+        private static final String ASSIGNMENT = "<assignment>"; // 222
+        private static final String LEFT_HAND_SIDE = "<left hand side>"; // 224
+        private static final String ASSIGNMENT_OPERATOR = "<assignment operator>"; // 226
+        private static final String PRIMARY_NO_NEW_ARRAY = "<primary no new array>"; // 272
+        private static final String NORMAL_ASSIGN = "=";
+        private static final String NORMAL_MUL_ASSIGN = "*=";
+        private static final String NORMAL_SMALL_LEFT_PARENTHESES = "(";
+        private static final String NORMAL_SMALL_RIGHT_PARENTHESES = ")";
+        private static final String REGEX_IDENTIFIER = "@identifier";
         private static final String MARK_222_1_1 = "<mark 222_1_1>";
         public static Grammar GRAMMAR = Grammar.create(
                 Symbol.createNonTerminator(EXPRESSION),
@@ -1209,6 +1157,70 @@ public abstract class GrammarCase {
                 .addNormalMorpheme(Symbol.createTerminator(NORMAL_MUL_ASSIGN), "*=")
                 .addNormalMorpheme(Symbol.createTerminator(NORMAL_ASSIGN), "=")
                 .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
+                .build();
+
+        public static String[] TRUE_CASES = new String[]{
+                "a *= b"
+        };
+
+        public static String[] FALSE_CASES = new String[]{
+        };
+    }
+
+    /**
+     * 二义性文法
+     */
+    public static abstract class Ambiguity_1 {
+
+        public static Grammar GRAMMAR = Grammar.create(
+                Symbol.createNonTerminator("E"),
+                Production.create(
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator("E"),
+                                SymbolString.create(
+                                        Symbol.createNonTerminator("E"),
+                                        Symbol.createTerminator("+"),
+                                        Symbol.createNonTerminator("E")
+                                ),
+                                null
+                        )
+                ),
+                Production.create(
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator("E"),
+                                SymbolString.create(
+                                        Symbol.createNonTerminator("E"),
+                                        Symbol.createTerminator("*"),
+                                        Symbol.createNonTerminator("E")
+                                ),
+                                null
+                        )
+                ),
+                Production.create(
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator("E"),
+                                SymbolString.create(
+                                        Symbol.createTerminator("("),
+                                        Symbol.createNonTerminator("E"),
+                                        Symbol.createTerminator(")")
+                                ),
+                                null
+                        )
+                ),
+                Production.create(
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator("E"),
+                                SymbolString.create(
+                                        Symbol.createRegexTerminator("id")
+                                ),
+                                null
+                        )
+                )
+        );
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+                .addNormalMorpheme(Symbol.createTerminator("*"), "*")
+                .addNormalMorpheme(Symbol.createTerminator("="), "=")
+                .addRegexMorpheme(Symbol.createRegexTerminator("id"), TestLexicalAnalyzer.getIdRegex())
                 .build();
     }
 }

@@ -36,7 +36,7 @@ public class TestAugmentedGrammarConverter {
     @Test
     public void convertCase2() {
 
-        Grammar convertedGrammar = new AugmentedGrammarConverter(GrammarCase.GRAMMAR_8.GRAMMAR)
+        Grammar convertedGrammar = new AugmentedGrammarConverter(GrammarCase.Ambiguity_1.GRAMMAR)
                 .getConvertedGrammar();
 
         assertEquals(
