@@ -1024,5 +1024,250 @@ public abstract class GrammarCase {
                 "func(,)"
         };
     }
+
+
+    public static abstract class GRAMMAR_10 {
+
+        public static final String EXPRESSION_NAME = "<expression name>"; // 294
+        public static final String EXPRESSION = "<expression>"; // 218
+        public static final String ASSIGNMENT_EXPRESSION = "<assignment expression>"; // 220
+        public static final String ASSIGNMENT = "<assignment>"; // 222
+        public static final String LEFT_HAND_SIDE = "<left hand side>"; // 224
+        public static final String ASSIGNMENT_OPERATOR = "<assignment operator>"; // 226
+        public static final String POSTFIX_EXPRESSION = "<postfix expression>"; // 264
+        public static final String PRIMARY = "<primary>"; // 270
+        public static final String PRIMARY_NO_NEW_ARRAY = "<primary no new array>"; // 272
+        public static final String NORMAL_ASSIGN = "=";
+        public static final String NORMAL_MUL_ASSIGN = "*=";
+        public static final String NORMAL_SMALL_LEFT_PARENTHESES = "(";
+        public static final String NORMAL_SMALL_RIGHT_PARENTHESES = ")";
+        public static final String REGEX_IDENTIFIER = "@identifier";
+        private static final String MARK_222_1_1 = "<mark 222_1_1>";
+        public static Grammar GRAMMAR = Grammar.create(
+                Symbol.createNonTerminator(EXPRESSION),
+                /*
+                 * <expression> 218
+                 * SAME
+                 */
+                Production.create(
+                        /*
+                         * <expression> → <assignment expression>
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(EXPRESSION),
+                                SymbolString.create(
+                                        Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
+                                ),
+                                null
+                        )
+                ),
+
+
+                /*
+                 * <assignment expression> 220
+                 * SAME
+                 */
+                Production.create(
+                        /*
+                         * <assignment expression> → <postfix expression>
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION),
+                                SymbolString.create(
+                                        Symbol.createNonTerminator(POSTFIX_EXPRESSION)
+                                ),
+                                null
+                        ),
+                        /*
+                         * <assignment expression> → <assignment>
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION),
+                                SymbolString.create(
+                                        Symbol.createNonTerminator(ASSIGNMENT)
+                                ),
+                                null
+                        )
+
+                ),
+
+
+                /*
+                 * <assignment> 222
+                 * SAME
+                 */
+                Production.create(
+                        /*
+                         * <assignment> → <left hand side> <assignment operator> <mark 222_1_1> <assignment expression>
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(ASSIGNMENT),
+                                SymbolString.create(
+                                        Symbol.createNonTerminator(LEFT_HAND_SIDE),
+                                        Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
+                                        Symbol.createNonTerminator(MARK_222_1_1),
+                                        Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
+                                ),
+                                null
+                        )
+                ),
+
+
+                /*
+                 * <mark 222_1_1>
+                 */
+                Production.create(
+                        /*
+                         * <mark 222_1_1> → ε
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(MARK_222_1_1),
+                                SymbolString.create(
+                                        Symbol.EPSILON
+                                ),
+                                null
+                        )
+                ),
+
+
+                /*
+                 * <left hand side> 224
+                 * LACK
+                 */
+                Production.create(
+                        /*
+                         * <left hand side> → <expression name>
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(LEFT_HAND_SIDE),
+                                SymbolString.create(
+                                        Symbol.createNonTerminator(EXPRESSION_NAME)
+                                ),
+                                null
+                        )
+                ),
+
+
+                /*
+                 * <assignment operator> 226
+                 * SAME
+                 */
+                Production.create(
+                        /*
+                         * <assignment operator> → =
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
+                                SymbolString.create(
+                                        Symbol.createTerminator(NORMAL_ASSIGN)
+                                ),
+                                null
+                        ),
+                        /*
+                         * <assignment operator> → *=
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
+                                SymbolString.create(
+                                        Symbol.createTerminator(NORMAL_MUL_ASSIGN)
+                                ),
+                                null
+                        )
+                ),
+
+
+                /*
+                 * <postfix expression> 264
+                 * SAME
+                 */
+                Production.create(
+                        /*
+                         * (1) <postfix expression> → <primary>
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(POSTFIX_EXPRESSION),
+                                SymbolString.create(
+                                        Symbol.createNonTerminator(PRIMARY)
+                                ),
+                                null
+                        ),
+                        /*
+                         * (2) <postfix expression> → <expression name>
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(POSTFIX_EXPRESSION),
+                                SymbolString.create(
+                                        Symbol.createNonTerminator(EXPRESSION_NAME)
+                                ),
+                                null
+                        )
+                ),
+
+
+                /*
+                 * <primary> 270
+                 * SAME
+                 */
+                Production.create(
+                        /*
+                         * <primary> → <primary no new array>
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(PRIMARY),
+                                SymbolString.create(
+                                        Symbol.createNonTerminator(PRIMARY_NO_NEW_ARRAY)
+                                ),
+                                null
+                        )
+                ),
+
+
+                /*
+                 * <primary no new array> 272
+                 * LACK
+                 */
+                Production.create(
+                        /*
+                         * <primary no new array> → ( <expression> )
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(PRIMARY_NO_NEW_ARRAY),
+                                SymbolString.create(
+                                        Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                        Symbol.createNonTerminator(EXPRESSION),
+                                        Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
+                                ),
+                                null
+                        )
+                ),
+
+
+                /*
+                 * <expression name> 294
+                 * LACK
+                 */
+                Production.create(
+                        /*
+                         * <expression name> → @identifier
+                         */
+                        PrimaryProduction.create(
+                                Symbol.createNonTerminator(EXPRESSION_NAME),
+                                SymbolString.create(
+                                        Symbol.createRegexTerminator(REGEX_IDENTIFIER)
+                                ),
+                                null
+                        )
+                )
+
+        );
+
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+                .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")
+                .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES), ")")
+                .addNormalMorpheme(Symbol.createTerminator(NORMAL_MUL_ASSIGN), "*=")
+                .addNormalMorpheme(Symbol.createTerminator(NORMAL_ASSIGN), "=")
+                .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
+                .build();
+    }
 }
 

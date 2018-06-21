@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.core.test.cfg.lr;
 
 import org.junit.Test;
+import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.core.cfg.lr.LALR;
 import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.core.test.GrammarCase;
@@ -184,4 +185,13 @@ public class TestLALR {
         }
     }
 
+    @Test
+    public void testSLRCase4() {
+        LRCompiler compiler = new LALR(GrammarCase.GRAMMAR_10.GRAMMAR, GrammarCase.GRAMMAR_10.LEXICAL_ANALYZER);
+
+        assertTrue(compiler.isLegal());
+
+        CompileResult compile = compiler.compile("a *= b");
+        assertTrue(compile.isSuccess());
+    }
 }

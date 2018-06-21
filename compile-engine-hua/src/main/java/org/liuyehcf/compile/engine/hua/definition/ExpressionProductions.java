@@ -73,6 +73,7 @@ abstract class ExpressionProductions {
     public static final String ARRAY_ACCESS = "<array access>"; // 286
 
     private static final String MARK_230_2_1 = "<mark 230_2_1>";
+    private static final String MARK_222_1_1 = "<mark 222_1_1>";
     private static final String MARK_232_2_1 = "<mark 232_2_1>";
     private static final String MARK_PREFIX_EXPRESSION = "<mark prefix expression>";
     private static final String MARK_286_1_1 = "<mark 286_1_1>";
@@ -131,20 +132,40 @@ abstract class ExpressionProductions {
              */
             Production.create(
                     /*
-                     * <assignment> → <left hand side> <assignment operator> <assignment expression>
+                     * <assignment> → <left hand side> <assignment operator> <mark 222_1_1> <assignment expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(ASSIGNMENT),
                             SymbolString.create(
                                     Symbol.createNonTerminator(LEFT_HAND_SIDE),
                                     Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
+//                                    Symbol.createNonTerminator(MARK_222_1_1),
                                     Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
                             ),
                             new BooleanAssignment(0),
                             new Assignment(-2, -1, 0),
+//                            new Assignment(-3, -2, 0),
                             new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE)
                     )
             ),
+
+
+//            /*
+//             * <mark 222_1_1>
+//             */
+//            Production.create(
+//                    /*
+//                     * <mark 222_1_1> → ε
+//                     */
+//                    PrimaryProduction.create(
+//                            Symbol.createNonTerminator(MARK_222_1_1),
+//                            SymbolString.create(
+//                                    Symbol.EPSILON
+//                            ),
+//                            new VariableLoadIfNecessary(-1, 0),
+//                            new AttrFilter()
+//                    )
+//            ),
 
 
             /*
