@@ -143,22 +143,26 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
 
                 AssertUtils.assertNotNull(px);
 
-                // 如果X是一个非终结符，且X→Y1...Yk∈P(k≥1)
-                // 那么如果对于某个i，a在FIRST(Yi)中且ε在所有的FIRST(Y1),...,FIRST(Yi−1)中(即Y1...Yi−1⇒∗ε)，就把a加入到FIRST(X)中
-                // 如果对于所有的j=1,2,...,k，ε在FIRST(Yj)中，那么将ε加入到FIRST(X)
-
-                // 这里需要遍历每个子产生式
+                /*
+                 * 如果X是一个非终结符，且X→Y1...Yk∈P(k≥1)
+                 * 那么如果对于某个i，a在FIRST(Yi)中且ε在所有的FIRST(Y1),...,FIRST(Yi−1)中(即Y1...Yi−1⇒∗ε)，就把a加入到FIRST(X)中
+                 * 如果对于所有的j=1,2,...,k，ε在FIRST(Yj)中，那么将ε加入到FIRST(X)
+                 */
                 for (PrimaryProduction ppx : px.getPrimaryProductions()) {
                     boolean canReachEpsilon = true;
 
                     for (int i = 0; i < ppx.getRight().getSymbols().size(); i++) {
                         Symbol yi = ppx.getRight().getSymbols().get(i);
                         if (!newFirsts.containsKey(yi)) {
-                            // 说明该符号的first集尚未计算，因此跳过当前子表达式
+                            /*
+                             * 说明该符号的first集尚未计算，因此跳过当前子表达式
+                             */
                             canReachEpsilon = false;
                             break;
                         } else {
-                            // 首先，将_Y的first集(除了ε)添加到_X的first集中
+                            /*
+                             * 首先，将_Y的first集(除了ε)添加到_X的first集中
+                             */
                             if (!newFirsts.containsKey(x)) {
                                 newFirsts.put(x, new HashSet<>());
                             }

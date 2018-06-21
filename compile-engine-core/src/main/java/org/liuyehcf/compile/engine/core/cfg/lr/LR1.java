@@ -56,7 +56,7 @@ public class LR1<T> extends AbstractLRCompiler<T> {
         AssertUtils.assertNotNull(nextSymbol);
         AssertUtils.assertNotNull(nextItem);
 
-        Symbol secondNextSymbol = nextSymbol(nextItem);
+        SymbolString beta = nextSymbolString(nextItem);
 
         Set<Symbol> lookAHeadsA = item.getLookAHeads();
         AssertUtils.assertFalse(lookAHeadsA.isEmpty());
@@ -64,19 +64,19 @@ public class LR1<T> extends AbstractLRCompiler<T> {
         Set<Symbol> lookAHeadsB;
 
         // 此时展望符包含A，"β -*> ε"
-        if (secondNextSymbol == null
-                || getFirsts().get(secondNextSymbol).contains(Symbol.EPSILON)) {
+        if (beta == null
+                || firstContainsEpsilon(beta)) {
             // 此时展望符就是 "FIRST(β) + a - ε"
             lookAHeadsB = SetUtils.extract(
                     SetUtils.of(
                             lookAHeadsA,
-                            secondNextSymbol == null ? new HashSet<>() : getFirsts().get(secondNextSymbol)
+                            beta == null ? new HashSet<>() : firstOfSymbolString(beta)
                     )
                     , Symbol.EPSILON
             );
         } else {
             // 此时展望符就是 "FIRST(β)"
-            lookAHeadsB = new HashSet<>(getFirsts().get(secondNextSymbol));
+            lookAHeadsB = firstOfSymbolString(beta);
         }
 
         Production p = getProductionMap().get(nextSymbol);

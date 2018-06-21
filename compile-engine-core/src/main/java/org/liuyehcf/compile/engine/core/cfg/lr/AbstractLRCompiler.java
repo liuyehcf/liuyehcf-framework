@@ -118,6 +118,18 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         return pp.getRight().getSymbols().get(pp.getRight().getIndexOfDot());
     }
 
+    static SymbolString nextSymbolString(Item preItem) {
+        PrimaryProduction pp = preItem.getPrimaryProduction();
+
+        AssertUtils.assertTrue(pp.getRight().getIndexOfDot() != -1);
+
+        if (pp.getRight().getIndexOfDot() == pp.getRight().getSymbols().size()) {
+            return null;
+        }
+
+        return pp.getRight().getSubSymbolString(pp.getRight().getIndexOfDot());
+    }
+
     static PrimaryProduction removeDot(PrimaryProduction pp) {
         AssertUtils.assertTrue(pp.getRight().getIndexOfDot() != -1);
 
