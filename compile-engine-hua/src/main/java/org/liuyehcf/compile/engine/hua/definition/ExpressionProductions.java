@@ -76,8 +76,8 @@ abstract class ExpressionProductions {
     public static final String DIMS = "<dims>"; // 284
     public static final String ARRAY_ACCESS = "<array access>"; // 286
 
-    private static final String MARK_230_2_1 = "<mark 230_2_1>";
     private static final String MARK_222_1_1 = "<mark 222_1_1>";
+    private static final String MARK_230_2_1 = "<mark 230_2_1>";
     private static final String MARK_232_2_1 = "<mark 232_2_1>";
     private static final String MARK_PREFIX_EXPRESSION = "<mark prefix expression>";
     private static final String MARK_286_1_1 = "<mark 286_1_1>";
