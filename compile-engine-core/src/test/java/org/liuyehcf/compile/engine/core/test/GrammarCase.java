@@ -1080,16 +1080,6 @@ public abstract class GrammarCase {
                  */
                 Production.create(
                         /*
-                         * <assignment operator> → =
-                         */
-                        PrimaryProduction.create(
-                                Symbol.createNonTerminator(ASSIGNMENT_OPERATOR),
-                                SymbolString.create(
-                                        Symbol.createTerminator(NORMAL_ASSIGN)
-                                ),
-                                null
-                        ),
-                        /*
                          * <assignment operator> → *=
                          */
                         PrimaryProduction.create(

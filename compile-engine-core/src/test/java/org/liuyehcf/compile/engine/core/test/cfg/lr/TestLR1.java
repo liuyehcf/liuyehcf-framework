@@ -239,6 +239,16 @@ public class TestLR1 {
     public void testLR1Case3() {
         LRCompiler compiler = new LR1(GrammarCase.LR1_3.GRAMMAR, GrammarCase.LR1_3.LEXICAL_ANALYZER);
 
+        System.out.println(compiler.getFirstJSONString());
+
+        System.out.println(compiler.getFollowJSONString());
+
+        System.out.println(compiler.getClosureJSONString());
+
+        System.out.println(compiler.getClosureTransferTableJSONString());
+
+        System.out.println(compiler.getAnalysisTableMarkdownString());
+
         assertTrue(compiler.isLegal());
 
         for (String input : GrammarCase.LR1_3.TRUE_CASES) {
