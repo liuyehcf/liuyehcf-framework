@@ -73,8 +73,8 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
         return productionMap;
     }
 
-    protected Map<Symbol, Set<Symbol>> getFollows() {
-        return follows;
+    protected Set<Symbol> getFollowsOf(Symbol symbol) {
+        return follows.get(symbol);
     }
 
     @Override
@@ -234,7 +234,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
                                 newFollows.put(b, new HashSet<>());
                             }
 
-                            Set<Symbol> firstsOfBeta = firstOfSymbolString(beta);
+                            Set<Symbol> firstsOfBeta = getFirstsOf(beta);
                             AssertUtils.assertNotNull(firstsOfBeta);
 
                             newFollows.get(b).addAll(
@@ -246,7 +246,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
 
                         // 如果存在一个产生式A→αB，或存在产生式A→αBβ且FIRST(β)包含ε，那么FOLLOW(A)中的所有符号都在FOLLOW(B)中
                         if (beta == null
-                                || firstContainsEpsilon(beta)) {
+                                || epsilonInvolvedInFirstsOf(beta)) {
                             if (newFollows.containsKey(a)) {
 
                                 if (!newFollows.containsKey(b)) {
@@ -292,7 +292,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
 
     @Override
     public final String getFollowJSONString() {
-        return getJSONStringFor(this.getFollows(), false);
+        return getJSONStringFor(this.follows, false);
     }
 
     private String getJSONStringFor(Map<Symbol, Set<Symbol>> map, boolean containsTerminator) {
@@ -357,7 +357,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
         this.isLegal = isLegal;
     }
 
-    protected boolean firstContainsEpsilon(SymbolString symbolString) {
+    protected boolean epsilonInvolvedInFirstsOf(SymbolString symbolString) {
         for (Symbol symbol : symbolString.getSymbols()) {
             if (!this.firsts.get(symbol).contains(Symbol.EPSILON)) {
                 return false;
@@ -366,7 +366,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
         return true;
     }
 
-    protected Set<Symbol> firstOfSymbolString(SymbolString symbolString) {
+    protected Set<Symbol> getFirstsOf(SymbolString symbolString) {
         Set<Symbol> firstList = new HashSet<>();
         for (Symbol symbol : symbolString.getSymbols()) {
             /*

@@ -65,18 +65,18 @@ public class LR1<T> extends AbstractLRCompiler<T> {
 
         // 此时展望符包含A，"β -*> ε"
         if (beta == null
-                || firstContainsEpsilon(beta)) {
+                || epsilonInvolvedInFirstsOf(beta)) {
             // 此时展望符就是 "FIRST(β) + a - ε"
             lookAHeadsB = SetUtils.extract(
                     SetUtils.of(
                             lookAHeadsA,
-                            beta == null ? new HashSet<>() : firstOfSymbolString(beta)
+                            beta == null ? new HashSet<>() : getFirstsOf(beta)
                     )
                     , Symbol.EPSILON
             );
         } else {
             // 此时展望符就是 "FIRST(β)"
-            lookAHeadsB = firstOfSymbolString(beta);
+            lookAHeadsB = getFirstsOf(beta);
         }
 
         Production p = getProductionMap().get(nextSymbol);

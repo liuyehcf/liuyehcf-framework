@@ -33,7 +33,7 @@ public class SLR<T> extends LR0<T> {
             );
         } else {
             for (Symbol terminator : getAnalysisTerminators()) {
-                if (getFollows().get(ppRaw.getLeft()).contains(terminator)) {
+                if (getFollowsOf(ppRaw.getLeft()).contains(terminator)) {
                     addOperationToAnalysisTable(
                             closure.getId(),
                             terminator,

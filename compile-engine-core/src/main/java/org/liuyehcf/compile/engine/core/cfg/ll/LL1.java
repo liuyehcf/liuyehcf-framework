@@ -66,17 +66,17 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
                 selects.get(a).put(ppa, new HashSet<>());
 
                 // 如果ε∉FIRST(α)，那么SELECT(A→α)=FIRST(α)
-                if (!firstContainsEpsilon(alpha)) {
+                if (!epsilonInvolvedInFirstsOf(alpha)) {
                     selects.get(a).get(ppa).addAll(
-                            firstOfSymbolString(alpha)
+                            getFirstsOf(alpha)
                     );
                 }
                 // 如果ε∈FIRST(α)，那么SELECT(A→α)=(FIRST(α)−{ε})∪FOLLOW(A)
                 else {
                     selects.get(a).get(ppa).addAll(
                             SetUtils.of(
-                                    SetUtils.extract(firstOfSymbolString(alpha), Symbol.EPSILON),
-                                    getFollows().get(a)
+                                    SetUtils.extract(getFirstsOf(alpha), Symbol.EPSILON),
+                                    getFollowsOf(a)
                             )
                     );
                 }
