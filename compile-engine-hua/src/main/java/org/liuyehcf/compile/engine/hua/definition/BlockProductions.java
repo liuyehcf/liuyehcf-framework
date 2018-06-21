@@ -62,10 +62,9 @@ abstract class BlockProductions {
     private static final String MARK_LOOP_OFFSET = "<mark loop offset>";
     private static final String MARK_TRUE_BLOCK = "<mark true block>";
     private static final String MARK_FALSE_BLOCK = "<mark false block>";
+    private static final String MARK_BEFORE_INIT = "<mark before init>";
     private static final String MARK_BEFORE_UPDATE = "<mark before update>";
     private static final String MARK_AFTER_UPDATE = "<mark after update>";
-    private static final String MARK_192_1_1 = "<mark 192_1_1>";
-    private static final String MARK_192_2_1 = "<mark 192_2_1>";
 
     public static final Production[] PRODUCTIONS = {
 
@@ -678,7 +677,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetCodeOffsetAttrToLeftNode(),
+                            new SetCodeOffsetAttr(),
                             new AttrFilter(AttrName.CODE_OFFSET)
                     )
             ),
@@ -765,6 +764,24 @@ abstract class BlockProductions {
 
 
             /*
+            * <mark before init>
+            */
+            Production.create(
+                    /*
+                     * <mark before init> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_BEFORE_INIT),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new EnterNamespace(),
+                            new AttrFilter()
+                    )
+            ),
+
+
+            /*
             * <mark before update>
             */
             Production.create(
@@ -776,7 +793,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetCodeOffsetAttrToLeftNode(),
+                            new SetCodeOffsetAttr(),
                             new AttrFilter(AttrName.CODE_OFFSET)
                     )
             ),
@@ -794,7 +811,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetCodeOffsetAttrToLeftNode(),
+                            new SetCodeOffsetAttr(),
                             new PushControlTransferByteCodeWhenNecessary(-4, -4, BackFillType.FALSE, false, -4),
                             new ControlTransferByteCodeBackFill(-4, BackFillType.TRUE),
                             new AttrFilter(AttrName.CODE_OFFSET)
@@ -808,13 +825,14 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * (1) <for statement> → for ( <for init>? ; <mark loop offset> <expression>? ; <mark before update> <for update>? ) <mark after update> <statement>
+                     * (1) <for statement> → for ( <mark before init> <for init>? ; <mark loop offset> <expression>? ; <mark before update> <for update>? ) <mark after update> <statement>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_FOR),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_BEFORE_INIT),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
                                     Symbol.createNonTerminator(MARK_LOOP_OFFSET),
@@ -927,13 +945,14 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * (1) <for statement no short if> → for ( <for init>? ; <mark loop offset> <expression>? ; <mark before update> <for update>? ) <mark after update> <statement no short if>
+                     * (1) <for statement no short if> → for ( <mark before init> <for init>? ; <mark loop offset> <expression>? ; <mark before update> <for update>? ) <mark after update> <statement no short if>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_STATEMENT_NO_SHORT_IF),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_FOR),
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_BEFORE_INIT),
                                     Symbol.createNonTerminator(EPSILON_OR_FOR_INIT),
                                     Symbol.createTerminator(NORMAL_SEMICOLON),
                                     Symbol.createNonTerminator(MARK_LOOP_OFFSET),
@@ -960,65 +979,25 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * (1) <for init> → <mark 192_1_1> <statement expression list>
+                     * (1) <for init> → <statement expression list>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_INIT),
                             SymbolString.create(
-                                    Symbol.createNonTerminator(MARK_192_1_1),
                                     Symbol.createNonTerminator(STATEMENT_EXPRESSION_LIST)
                             ),
                             new AttrFilter()
                     ),
                     /*
-                     * (1) <for init> → <mark 192_2_1> <local variable declaration>
+                     * (2) <for init> → <local variable declaration>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FOR_INIT),
                             SymbolString.create(
-                                    Symbol.createNonTerminator(MARK_192_2_1),
                                     Symbol.createNonTerminator(LOCAL_VARIABLE_DECLARATION)
                             ),
                             new AttrFilter()
                     )
-            ),
-
-
-            /*
-             * <mark 192_1_1>
-             */
-            Production.create(
-                    /*
-                     * <mark 192_1_1> → ε
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_192_1_1),
-                            SymbolString.create(
-                                    Symbol.EPSILON
-                            ),
-                            new EnterNamespace(),
-                            new AttrFilter()
-                    )
-
-            ),
-
-
-            /*
-             * <mark 192_2_1>
-             */
-            Production.create(
-                    /*
-                     * <mark 192_2_1> → ε
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_192_2_1),
-                            SymbolString.create(
-                                    Symbol.EPSILON
-                            ),
-                            new EnterNamespace(),
-                            new AttrFilter()
-                    )
-
             ),
 
 
