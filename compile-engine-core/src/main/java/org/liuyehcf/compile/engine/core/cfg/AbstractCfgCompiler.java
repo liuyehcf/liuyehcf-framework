@@ -73,10 +73,6 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
         return productionMap;
     }
 
-    protected Map<Symbol, Set<Symbol>> getFirsts() {
-        return firsts;
-    }
-
     protected Map<Symbol, Set<Symbol>> getFollows() {
         return follows;
     }
@@ -291,7 +287,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
 
     @Override
     public final String getFirstJSONString() {
-        return getJSONStringFor(this.getFirsts(), true);
+        return getJSONStringFor(this.firsts, true);
     }
 
     @Override

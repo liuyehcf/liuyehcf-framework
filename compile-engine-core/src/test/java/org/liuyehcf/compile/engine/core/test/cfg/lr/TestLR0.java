@@ -82,53 +82,10 @@ public class TestLR0 {
         );
     }
 
-//    @Test
-//    public void testLL1Case1() {
-//
-//        LRCompiler compiler = new LR0(GrammarCase.LL1_1.GRAMMAR, GrammarCase.LL1_1.LEXICAL_ANALYZER);
-//
-//        assertTrue(compiler.isLegal());
-//
-//        for (String input : GrammarCase.LL1_1.TRUE_CASES) {
-//            assertTrue(compiler.compile(input).isSuccess());
-//        }
-//
-//        for (String input : GrammarCase.LL1_1.FALSE_CASES) {
-//            assertFalse(compiler.compile(input).isSuccess());
-//        }
-//    }
-//
-//    @Test
-//    public void testLL1Case2() {
-//
-//        LRCompiler compiler = new LR0(GrammarCase.LL1_2.GRAMMAR, GrammarCase.LL1_2.LEXICAL_ANALYZER);
-//
-//        assertTrue(compiler.isLegal());
-//
-//        for (String input : GrammarCase.LL1_2.TRUE_CASES) {
-//            assertTrue(compiler.compile(input).isSuccess());
-//        }
-//
-//        for (String input : GrammarCase.LL1_2.FALSE_CASES) {
-//            assertFalse(compiler.compile(input).isSuccess());
-//        }
-//    }
-//
-//    @Test
-//    public void testLL1Case3() {
-//
-//        LRCompiler compiler = new LR0(GrammarCase.LL1_3.GRAMMAR, GrammarCase.LL1_3.LEXICAL_ANALYZER);
-//
-//        assertTrue(compiler.isLegal());
-//
-//        for (String input : GrammarCase.LL1_3.TRUE_CASES) {
-//            assertTrue(compiler.compile(input).isSuccess());
-//        }
-//
-//        for (String input : GrammarCase.LL1_3.FALSE_CASES) {
-//            assertFalse(compiler.compile(input).isSuccess());
-//        }
-//    }
+    /*
+     * 已经验证LL1_1、LL1_2不可以用LR0分析法，LL1_3尚未验证
+     * 如果存在 `A → aβ | ε `这样的产生式，那么必定存在移入规约冲突
+     */
 
     @Test
     public void testLR0Case1() {
