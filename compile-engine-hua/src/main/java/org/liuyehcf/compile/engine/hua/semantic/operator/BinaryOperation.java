@@ -3,12 +3,10 @@ package org.liuyehcf.compile.engine.hua.semantic.operator;
 import org.liuyehcf.compile.engine.hua.bytecode.cp.*;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
-import org.liuyehcf.compile.engine.hua.model.BinaryOperator;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
-import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
-import static org.liuyehcf.compile.engine.hua.model.BinaryOperator.*;
+import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 
 /**
  * 双目运算
@@ -27,6 +25,14 @@ public class BinaryOperation extends AbstractSemanticAction {
     private final int leftStackOffset;
 
     /**
+     * 操作符-偏移量，相对于语法树栈
+     * '0'  表示栈顶
+     * '-1' 表示栈次顶，以此类推
+     * '1' 表示未来入栈的元素，以此类推
+     */
+    private final int operatorStackOffset;
+
+    /**
      * 右运算子-偏移量，相对于语法树栈
      * '0'  表示栈顶
      * '-1' 表示栈次顶，以此类推
@@ -34,25 +40,22 @@ public class BinaryOperation extends AbstractSemanticAction {
      */
     private final int rightStackOffset;
 
-    /**
-     * 操作符
-     */
-    private final BinaryOperator operator;
 
-    public BinaryOperation(int leftStackOffset, int rightStackOffset, BinaryOperator operator) {
+    public BinaryOperation(int leftStackOffset, int operatorStackOffset, int rightStackOffset) {
         this.leftStackOffset = leftStackOffset;
+        this.operatorStackOffset = operatorStackOffset;
         this.rightStackOffset = rightStackOffset;
-        this.operator = operator;
     }
 
     @Override
     public void onAction(HuaContext context) {
         Type leftType = context.getStack().get(leftStackOffset).get(AttrName.TYPE.name());
         Type rightType = context.getStack().get(rightStackOffset).get(AttrName.TYPE.name());
+        String operator = context.getStack().get(operatorStackOffset).getValue();
 
         switch (operator) {
-            case BIT_OR:
-                checkEqualType(leftType, rightType, BIT_OR);
+            case NORMAL_BIT_OR:
+                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
@@ -60,12 +63,12 @@ public class BinaryOperation extends AbstractSemanticAction {
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + BIT_OR.getSign() + "\' 运算");
+                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
                 }
 
                 break;
-            case BIT_XOR:
-                checkEqualType(leftType, rightType, BIT_XOR);
+            case NORMAL_BIT_XOR:
+                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
@@ -73,12 +76,12 @@ public class BinaryOperation extends AbstractSemanticAction {
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + BIT_XOR.getSign() + "\' 运算");
+                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
                 }
 
                 break;
-            case BIT_AND:
-                checkEqualType(leftType, rightType, BIT_AND);
+            case NORMAL_BIT_AND:
+                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
@@ -86,12 +89,12 @@ public class BinaryOperation extends AbstractSemanticAction {
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + BIT_AND.getSign() + "\' 运算");
+                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
                 }
 
                 break;
-            case SHIFT_LEFT:
-                checkIntegralType(rightType, SHIFT_LEFT);
+            case NORMAL_SHL:
+                checkIntegralType(rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
@@ -99,12 +102,12 @@ public class BinaryOperation extends AbstractSemanticAction {
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + SHIFT_LEFT.getSign() + "\' 运算");
+                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
                 }
 
                 break;
-            case SHIFT_RIGHT:
-                checkIntegralType(rightType, SHIFT_RIGHT);
+            case NORMAL_SHR:
+                checkIntegralType(rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
@@ -112,12 +115,12 @@ public class BinaryOperation extends AbstractSemanticAction {
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + SHIFT_RIGHT.getSign() + "\' 运算");
+                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
                 }
 
                 break;
-            case UNSIGNED_SHIFT_RIGHT:
-                checkIntegralType(rightType, UNSIGNED_SHIFT_RIGHT);
+            case NORMAL_USHR:
+                checkIntegralType(rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
@@ -125,12 +128,12 @@ public class BinaryOperation extends AbstractSemanticAction {
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + UNSIGNED_SHIFT_RIGHT.getSign() + "\' 运算");
+                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
                 }
 
                 break;
-            case ADDITION:
-                checkEqualType(leftType, rightType, ADDITION);
+            case NORMAL_ADD:
+                checkEqualType(leftType, rightType, operator);
 
 
                 switch (leftType.getTypeName()) {
@@ -139,12 +142,12 @@ public class BinaryOperation extends AbstractSemanticAction {
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + ADDITION.getSign() + "\' 运算");
+                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
                 }
 
                 break;
-            case SUBTRACTION:
-                checkEqualType(leftType, rightType, SUBTRACTION);
+            case NORMAL_SUB:
+                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
@@ -152,12 +155,12 @@ public class BinaryOperation extends AbstractSemanticAction {
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + SUBTRACTION.getSign() + "\' 运算");
+                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
                 }
 
                 break;
-            case MULTIPLICATION:
-                checkEqualType(leftType, rightType, MULTIPLICATION);
+            case NORMAL_MUL:
+                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
@@ -165,12 +168,12 @@ public class BinaryOperation extends AbstractSemanticAction {
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + MULTIPLICATION.getSign() + "\' 运算");
+                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
                 }
 
                 break;
-            case DIVISION:
-                checkEqualType(leftType, rightType, DIVISION);
+            case NORMAL_DIV:
+                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
@@ -178,12 +181,12 @@ public class BinaryOperation extends AbstractSemanticAction {
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + DIVISION.getSign() + "\' 运算");
+                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
                 }
 
                 break;
-            case REMAINDER:
-                checkEqualType(leftType, rightType, REMAINDER);
+            case NORMAL_REM:
+                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
@@ -191,7 +194,7 @@ public class BinaryOperation extends AbstractSemanticAction {
                         context.getLeftNode().put(AttrName.TYPE.name(), leftType);
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + REMAINDER.getSign() + "\' 运算");
+                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
                 }
 
                 break;
@@ -200,15 +203,15 @@ public class BinaryOperation extends AbstractSemanticAction {
         }
     }
 
-    private void checkEqualType(Type type1, Type type2, BinaryOperator operator) {
+    private void checkEqualType(Type type1, Type type2, String operator) {
         if (!type1.equals(type2)) {
-            throw new RuntimeException(" \'" + operator.getSign() + "\' 运算符两侧运算子类型不一致");
+            throw new RuntimeException(" \'" + operator + "\' 运算符两侧运算子类型不一致");
         }
     }
 
-    private void checkIntegralType(Type type, BinaryOperator operator) {
+    private void checkIntegralType(Type type, String operator) {
         if (!NORMAL_INT.equals(type.getTypeName())) {
-            throw new RuntimeException(" \'" + operator.getSign() + "\' 运算符右侧必须是整型");
+            throw new RuntimeException(" \'" + operator + "\' 运算符右侧必须是整型");
         }
     }
 }

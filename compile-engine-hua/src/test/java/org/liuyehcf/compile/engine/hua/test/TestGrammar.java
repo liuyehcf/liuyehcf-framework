@@ -458,7 +458,7 @@ public class TestGrammar {
         CompileResult<HuaResult> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "",
+                "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_imul\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
                 result.getResult().getMethodInfoTable().toString()
         );
     }

@@ -48,11 +48,8 @@ public class VariableLoad extends AbstractSemanticAction {
 
         } else {
             switch (type.getTypeName()) {
-                case NORMAL_INT:
-                    context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
-                    context.getLeftNode().put(AttrName.TYPE.name(), type);
-                    break;
                 case NORMAL_BOOLEAN:
+                case NORMAL_INT:
                     context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
                     context.getLeftNode().put(AttrName.TYPE.name(), type);
                     break;

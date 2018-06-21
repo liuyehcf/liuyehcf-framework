@@ -53,14 +53,14 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction {
                 break;
             case NORMAL_MUL_ASSIGN:
             case NORMAL_DIV_ASSIGN:
-            case NORMAL_MOD_ASSIGN:
+            case NORMAL_REM_ASSIGN:
             case NORMAL_ADD_ASSIGN:
-            case NORMAL_MINUS_ASSIGN:
-            case NORMAL_SHIFT_LEFT_ASSIGN:
-            case NORMAL_SHIFT_RIGHT_ASSIGN:
-            case NORMAL_UNSIGNED_SHIFT_RIGHT_ASSIGN:
+            case NORMAL_SUB_ASSIGN:
+            case NORMAL_SHL_ASSIGN:
+            case NORMAL_SHR_ASSIGN:
+            case NORMAL_USHR_ASSIGN:
             case NORMAL_BIT_AND_ASSIGN:
-            case NORMAL_BIT_EXCLUSIVE_OR_ASSIGN:
+            case NORMAL_BIT_XOR_ASSIGN:
             case NORMAL_BIT_OR_ASSIGN:
                 switch (type.getTypeName()) {
                     case NORMAL_INT:

@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic.statement;
 
+import org.liuyehcf.compile.engine.hua.bytecode.cp.*;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._iastore;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._istore;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
@@ -80,45 +81,137 @@ public class Assignment extends AbstractSemanticAction {
             }
 
         } else {
-            switch (operator) {
-                case NORMAL_ASSIGN:
-                    switch (type.getTypeName()) {
-                        case NORMAL_INT:
-                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
-                            context.getLeftNode().put(AttrName.TYPE.name(), type);
-                            break;
-                        case NORMAL_BOOLEAN:
-                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
-                            break;
-                        default:
-                            throw new UnsupportedOperationException();
-                    }
-                    break;
-                case NORMAL_MUL_ASSIGN:
-                    break;
-                case NORMAL_DIV_ASSIGN:
-                    break;
-                case NORMAL_MOD_ASSIGN:
-                    break;
-                case NORMAL_ADD_ASSIGN:
-                    break;
-                case NORMAL_MINUS_ASSIGN:
-                    break;
-                case NORMAL_SHIFT_LEFT_ASSIGN:
-                    break;
-                case NORMAL_SHIFT_RIGHT_ASSIGN:
-                    break;
-                case NORMAL_UNSIGNED_SHIFT_RIGHT_ASSIGN:
-                    break;
-                case NORMAL_BIT_AND_ASSIGN:
-                    break;
-                case NORMAL_BIT_EXCLUSIVE_OR_ASSIGN:
-                    break;
-                case NORMAL_BIT_OR_ASSIGN:
-                    break;
-                default:
-                    throw new RuntimeException("尚不支持赋值运算符 \'" + operator + "\'");
+            if (NORMAL_ASSIGN.equals(operator)) {
+                switch (type.getTypeName()) {
+                    case NORMAL_BOOLEAN:
+                    case NORMAL_INT:
+                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                        context.getLeftNode().put(AttrName.TYPE.name(), type);
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+            } else {
+                addComputeByteCode(context, type.getTypeName(), operator);
+
+                switch (type.getTypeName()) {
+                    case NORMAL_INT:
+                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+
+                context.getLeftNode().put(AttrName.TYPE.name(), type);
             }
         }
+    }
+
+    private void addComputeByteCode(HuaContext context, String typeName, String operator) {
+        Compute code;
+        switch (operator) {
+            case NORMAL_MUL_ASSIGN:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        code = new _imul();
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            case NORMAL_DIV_ASSIGN:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        code = new _idiv();
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            case NORMAL_REM_ASSIGN:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        code = new _irem();
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            case NORMAL_ADD_ASSIGN:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        code = new _iadd();
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            case NORMAL_SUB_ASSIGN:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        code = new _isub();
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            case NORMAL_SHL_ASSIGN:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        code = new _ishl();
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            case NORMAL_SHR_ASSIGN:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        code = new _ishr();
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            case NORMAL_USHR_ASSIGN:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        code = new _iushr();
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            case NORMAL_BIT_AND_ASSIGN:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        code = new _iand();
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            case NORMAL_BIT_XOR_ASSIGN:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        code = new _ixor();
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            case NORMAL_BIT_OR_ASSIGN:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        code = new _ior();
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            default:
+                throw new RuntimeException("尚不支持赋值运算符 \'" + operator + "\'");
+        }
+        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(code);
     }
 }
