@@ -237,6 +237,9 @@ public class TestLR1 {
 
     @Test
     public void testLR1Case3() {
+
+        System.out.println(GrammarCase.LR1_3.GRAMMAR.getProductions());
+
         LRCompiler compiler = new LR1(GrammarCase.LR1_3.GRAMMAR, GrammarCase.LR1_3.LEXICAL_ANALYZER);
 
         System.out.println(compiler.getFirstJSONString());

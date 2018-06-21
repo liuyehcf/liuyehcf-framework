@@ -2,10 +2,7 @@ package org.liuyehcf.compile.engine.core.cfg;
 
 import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.core.grammar.converter.GrammarConverterPipeline;
-import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
-import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
-import org.liuyehcf.compile.engine.core.grammar.definition.Production;
-import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
+import org.liuyehcf.compile.engine.core.grammar.definition.*;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 import org.liuyehcf.compile.engine.core.utils.SetUtils;
 
@@ -221,35 +218,35 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
                 for (PrimaryProduction ppa : pa.getPrimaryProductions()) {
                     for (int i = 0; i < ppa.getRight().getSymbols().size(); i++) {
                         Symbol b = ppa.getRight().getSymbols().get(i);
-                        Symbol betaFirst = null;
+                        SymbolString beta = null;
 
                         if (b.isTerminator()) {
                             continue;
                         }
 
                         if (i < ppa.getRight().getSymbols().size() - 1) {
-                            betaFirst = ppa.getRight().getSymbols().get(i + 1);
+                            beta = ppa.getRight().getSubSymbolString(i + 1);
                         }
 
                         // 如果存在一个产生式A→αBβ，那么FIRST(β)中除ε之外的所有符号都在FOLLOW(B)中
-                        if (betaFirst != null) {
+                        if (beta != null) {
                             if (!newFollows.containsKey(b)) {
                                 newFollows.put(b, new HashSet<>());
                             }
 
-                            AssertUtils.assertNotNull(this.firsts.get(betaFirst));
+                            Set<Symbol> firstsOfBeta = firstOfSymbolString(beta);
+                            AssertUtils.assertNotNull(firstsOfBeta);
 
                             newFollows.get(b).addAll(
                                     SetUtils.extract(
-                                            this.firsts.get(betaFirst),
+                                            firstsOfBeta,
                                             Symbol.EPSILON)
                             );
                         }
 
                         // 如果存在一个产生式A→αB，或存在产生式A→αBβ且FIRST(β)包含ε，那么FOLLOW(A)中的所有符号都在FOLLOW(B)中
-                        if (betaFirst == null
-                                || this.firsts.get(betaFirst).contains(Symbol.EPSILON)) {
-
+                        if (beta == null
+                                || firstContainsEpsilon(beta)) {
                             if (newFollows.containsKey(a)) {
 
                                 if (!newFollows.containsKey(b)) {
@@ -358,5 +355,41 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
 
     protected void setLegal(boolean isLegal) {
         this.isLegal = isLegal;
+    }
+
+    protected boolean firstContainsEpsilon(SymbolString symbolString) {
+        for (Symbol symbol : symbolString.getSymbols()) {
+            if (!this.firsts.get(symbol).contains(Symbol.EPSILON)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected Set<Symbol> firstOfSymbolString(SymbolString symbolString) {
+        Set<Symbol> firstList = new HashSet<>();
+        for (Symbol symbol : symbolString.getSymbols()) {
+            /*
+             * 非ε的符号都在first集合中
+             */
+            firstList.addAll(
+                    SetUtils.extract(
+                            this.firsts.get(symbol),
+                            Symbol.EPSILON)
+            );
+
+            /*
+             * 如果当前符号不包含ε，那么first集合计算到此结束
+             */
+            if (!this.firsts.get(symbol).contains(Symbol.EPSILON)) {
+                return firstList;
+            }
+        }
+
+        /*
+         * 所有符号的first集合都包含ε，则整个符号串的first集合包含ε
+         */
+        firstList.add(Symbol.EPSILON);
+        return firstList;
     }
 }

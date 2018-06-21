@@ -53,6 +53,13 @@ public class SymbolString implements Comparable<SymbolString> {
         return symbols;
     }
 
+    public SymbolString getSubSymbolString(int start) {
+        if (start < 0 || start >= symbols.size()) {
+            throw new IllegalArgumentException();
+        }
+        return SymbolString.create(symbols.subList(start, symbols.size()));
+    }
+
     public int getIndexOfDot() {
         return indexOfDot;
     }

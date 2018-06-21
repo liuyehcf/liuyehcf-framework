@@ -8,10 +8,7 @@ import org.liuyehcf.compile.engine.core.grammar.CompilerException;
 import org.liuyehcf.compile.engine.core.grammar.converter.GrammarConverterPipelineImpl;
 import org.liuyehcf.compile.engine.core.grammar.converter.LreElfGrammarConverter;
 import org.liuyehcf.compile.engine.core.grammar.converter.MergeGrammarConverter;
-import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
-import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
-import org.liuyehcf.compile.engine.core.grammar.definition.Production;
-import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
+import org.liuyehcf.compile.engine.core.grammar.definition.*;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 import org.liuyehcf.compile.engine.core.utils.SetUtils;
 
@@ -59,7 +56,7 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
             Production pa = getProductionMap().get(a);
 
             for (PrimaryProduction ppa : pa.getPrimaryProductions()) {
-                Symbol firstAlpha = ppa.getRight().getSymbols().get(0);
+                SymbolString alpha = ppa.getRight();
 
                 if (!selects.containsKey(a)) {
                     selects.put(a, new HashMap<>(16));
@@ -69,17 +66,16 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
                 selects.get(a).put(ppa, new HashSet<>());
 
                 // 如果ε∉FIRST(α)，那么SELECT(A→α)=FIRST(α)
-                if (!getFirsts().get(firstAlpha).contains(Symbol.EPSILON)) {
-
+                if (!firstContainsEpsilon(alpha)) {
                     selects.get(a).get(ppa).addAll(
-                            getFirsts().get(firstAlpha)
+                            firstOfSymbolString(alpha)
                     );
                 }
                 // 如果ε∈FIRST(α)，那么SELECT(A→α)=(FIRST(α)−{ε})∪FOLLOW(A)
                 else {
                     selects.get(a).get(ppa).addAll(
                             SetUtils.of(
-                                    SetUtils.extract(getFirsts().get(firstAlpha), Symbol.EPSILON),
+                                    SetUtils.extract(firstOfSymbolString(alpha), Symbol.EPSILON),
                                     getFollows().get(a)
                             )
                     );
