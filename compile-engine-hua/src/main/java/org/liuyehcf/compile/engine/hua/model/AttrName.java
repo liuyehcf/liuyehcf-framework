@@ -86,4 +86,14 @@ public enum AttrName {
      * 代码偏移量
      */
     CODE_OFFSET,
+
+    /**
+     * 维度表达式大小
+     */
+    EXPRESSION_DIM_SIZE,
+
+    /**
+     * 空维度大小
+     */
+    EMPTY_DIM_SIZE
 }

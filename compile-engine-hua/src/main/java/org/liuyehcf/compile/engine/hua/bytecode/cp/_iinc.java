@@ -8,8 +8,14 @@ package org.liuyehcf.compile.engine.hua.bytecode.cp;
  */
 public class _iinc extends Compute {
 
+    /**
+     * 偏移量
+     */
     private int offset;
 
+    /**
+     * 增量
+     */
     private int increment;
 
 
@@ -33,5 +39,4 @@ public class _iinc extends Compute {
     public void operate() {
 
     }
-
 }

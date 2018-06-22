@@ -8,6 +8,9 @@ package org.liuyehcf.compile.engine.hua.bytecode.sl;
  */
 public class _iload extends StoreLoad {
 
+    /**
+     * 偏移量
+     */
     private final int offset;
 
     public _iload(int offset) {

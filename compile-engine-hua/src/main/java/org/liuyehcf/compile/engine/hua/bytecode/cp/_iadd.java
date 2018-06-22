@@ -7,10 +7,8 @@ package org.liuyehcf.compile.engine.hua.bytecode.cp;
  * @date 2018/6/7
  */
 public class _iadd extends Compute {
-
     @Override
     public void operate() {
 
     }
-
 }

@@ -8,10 +8,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.model.Type;
-import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
-import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttrs;
-import org.liuyehcf.compile.engine.hua.semantic.attr.AttrFilter;
-import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
+import org.liuyehcf.compile.engine.hua.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.semantic.backfill.ControlTransferByteCodeBackFill;
 import org.liuyehcf.compile.engine.hua.semantic.backfill.IncrementBackFill;
 import org.liuyehcf.compile.engine.hua.semantic.code.MergeControlTransferByteCode;
@@ -27,6 +24,8 @@ import org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperation;
 import org.liuyehcf.compile.engine.hua.semantic.statement.Assignment;
 import org.liuyehcf.compile.engine.hua.semantic.statement.BooleanAssignment;
 import org.liuyehcf.compile.engine.hua.semantic.variable.ArrayTypeDimDecrease;
+import org.liuyehcf.compile.engine.hua.semantic.variable.CheckExpressionDimType;
+import org.liuyehcf.compile.engine.hua.semantic.variable.NewPrimaryArray;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
@@ -1234,7 +1233,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ARRAY_CREATION_EXPRESSION)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
@@ -1345,7 +1344,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(DIM_EXPRS),
                                     Symbol.createNonTerminator(EPSILON_OR_DIMS)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new NewPrimaryArray(-2, -1, 0),
+                            new AttrFilter(AttrName.TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -1367,7 +1367,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new SetAttrToLeftNode(AttrName.EMPTY_DIM_SIZE, 0),
+                            new AttrFilter(AttrName.EMPTY_DIM_SIZE)
                     ),
                     /*
                      * <epsilon or dims> → <dims>
@@ -1377,7 +1378,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(DIMS)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new AttrFilter(AttrName.EMPTY_DIM_SIZE)
                     )
             ),
 
@@ -1395,7 +1396,9 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(DIM_EXPR)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new CheckExpressionDimType(0),
+                            new SetAttrToLeftNode(AttrName.EXPRESSION_DIM_SIZE, 1),
+                            new AttrFilter(AttrName.EXPRESSION_DIM_SIZE)
                     ),
                     /*
                      * <dim exprs> → <dim exprs> <dim expr>
@@ -1406,7 +1409,9 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(DIM_EXPRS),
                                     Symbol.createNonTerminator(DIM_EXPR)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new CheckExpressionDimType(0),
+                            new IncreaseIntAttr(-1, AttrName.EXPRESSION_DIM_SIZE),
+                            new AttrFilter(AttrName.EXPRESSION_DIM_SIZE)
                     )
             ),
 
@@ -1426,7 +1431,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new AssignAttr(-1, -2, AttrName.TYPE),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 
@@ -1445,7 +1451,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new SetAttrToLeftNode(AttrName.EMPTY_DIM_SIZE, 1),
+                            new AttrFilter(AttrName.EMPTY_DIM_SIZE)
                     ),
                     /*
                      * <dims> → <dims> [ ]
@@ -1457,7 +1464,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new IncreaseIntAttr(-2, AttrName.EMPTY_DIM_SIZE),
+                            new AttrFilter(AttrName.EMPTY_DIM_SIZE)
                     )
             ),
 

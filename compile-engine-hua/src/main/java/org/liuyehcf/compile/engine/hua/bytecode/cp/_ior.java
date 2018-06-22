@@ -7,10 +7,8 @@ package org.liuyehcf.compile.engine.hua.bytecode.cp;
  * @date 2018/6/10
  */
 public class _ior extends Compute {
-
     @Override
     public void operate() {
 
     }
-
 }

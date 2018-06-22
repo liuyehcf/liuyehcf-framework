@@ -7,6 +7,10 @@ package org.liuyehcf.compile.engine.hua.bytecode.sl;
  * @date 2018/6/15
  */
 public class _iconst extends StoreLoad {
+
+    /**
+     * 常量值
+     */
     private final int value;
 
     public _iconst(int value) {

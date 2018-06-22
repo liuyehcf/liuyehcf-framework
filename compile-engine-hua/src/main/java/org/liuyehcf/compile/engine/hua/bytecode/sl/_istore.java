@@ -8,6 +8,9 @@ package org.liuyehcf.compile.engine.hua.bytecode.sl;
  */
 public class _istore extends StoreLoad {
 
+    /**
+     * 偏移量
+     */
     private final int offset;
 
     public _istore(int offset) {
@@ -22,5 +25,4 @@ public class _istore extends StoreLoad {
     public void operate() {
 
     }
-
 }

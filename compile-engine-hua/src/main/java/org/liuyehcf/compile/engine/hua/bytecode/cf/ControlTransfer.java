@@ -12,6 +12,9 @@ public abstract class ControlTransfer implements ByteCode {
 
     private static final int UNINITIALIZED = -1;
 
+    /**
+     * 代码偏移量
+     */
     private int codeOffset = UNINITIALIZED;
 
     public int getCodeOffset() {
