@@ -2,6 +2,8 @@ package org.liuyehcf.compile.engine.hua.bytecode.sl;
 
 /**
  * 加载整型常量
+ * < before → after >
+ * < → value >
  *
  * @author hechenfeng
  * @date 2018/6/15

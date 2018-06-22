@@ -9,6 +9,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_ASSIGN;
 
@@ -68,6 +69,11 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction {
             case NORMAL_BIT_AND_ASSIGN:
             case NORMAL_BIT_XOR_ASSIGN:
             case NORMAL_BIT_OR_ASSIGN:
+                assertFalse(leftHandType.isArrayType());
+
+                /*
+                 * 标志符为数组类型
+                 */
                 if (identifierType.isArrayType()) {
 
                     context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _dup2());
@@ -80,7 +86,11 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction {
                         default:
                             throw new UnsupportedOperationException();
                     }
-                } else {
+                }
+                /*
+                 * 标志符为非数组类型
+                 */
+                else {
                     switch (leftHandType.getTypeName()) {
                         case NORMAL_INT:
                             context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));

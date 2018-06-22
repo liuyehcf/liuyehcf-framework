@@ -2,6 +2,8 @@ package org.liuyehcf.compile.engine.hua.bytecode.sl;
 
 /**
  * int 存储
+ * < before → after >
+ * < value → >
  *
  * @author hechenfeng
  * @date 2018/6/8

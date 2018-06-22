@@ -2,6 +2,8 @@ package org.liuyehcf.compile.engine.hua.bytecode.oc;
 
 /**
  * 一维数组创建指令
+ * < before → after >
+ * < count → arrayref >
  *
  * @author hechenfeng
  * @date 2018/6/22

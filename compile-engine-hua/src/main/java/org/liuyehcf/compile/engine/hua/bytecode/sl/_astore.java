@@ -2,6 +2,8 @@ package org.liuyehcf.compile.engine.hua.bytecode.sl;
 
 /**
  * 存储对象（包括数组）
+ * < before → after >
+ * < objectref → >
  *
  * @author hechenfeng
  * @date 2018/6/22

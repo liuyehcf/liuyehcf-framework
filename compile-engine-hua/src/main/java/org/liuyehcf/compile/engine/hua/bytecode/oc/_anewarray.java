@@ -2,6 +2,8 @@ package org.liuyehcf.compile.engine.hua.bytecode.oc;
 
 /**
  * 多维数组创建指令，指定的维度是第一维
+ * < before → after >
+ * < count → arrayref >
  *
  * @author hechenfeng
  * @date 2018/6/22

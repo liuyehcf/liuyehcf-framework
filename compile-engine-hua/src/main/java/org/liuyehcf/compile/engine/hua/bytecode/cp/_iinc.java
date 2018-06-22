@@ -2,6 +2,8 @@ package org.liuyehcf.compile.engine.hua.bytecode.cp;
 
 /**
  * int 自增
+ * < before → after >
+ * <  →  >
  *
  * @author hechenfeng
  * @date 2018/6/6

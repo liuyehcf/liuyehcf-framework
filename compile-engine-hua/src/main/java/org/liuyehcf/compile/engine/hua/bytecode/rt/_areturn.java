@@ -2,6 +2,8 @@ package org.liuyehcf.compile.engine.hua.bytecode.rt;
 
 /**
  * 返回对象类型
+ * < before → after >
+ * < objectref → [empty] >
  *
  * @author hechenfeng
  * @date 2018/6/22

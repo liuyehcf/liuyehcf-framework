@@ -55,9 +55,16 @@ public class VariableInitialization extends AbstractSemanticAction {
 
         Type identifierType = variableSymbol.getType();
 
+        /*
+         * 数组类型
+         */
         if (identifierType.isArrayType()) {
             context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _astore(variableSymbol.getOffset()));
-        } else {
+        }
+        /*
+         * 非数组类型
+         */
+        else {
             switch (identifierType.getTypeName()) {
                 case NORMAL_BOOLEAN:
                 case NORMAL_INT:
