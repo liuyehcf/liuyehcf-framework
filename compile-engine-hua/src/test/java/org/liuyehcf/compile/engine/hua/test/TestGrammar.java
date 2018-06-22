@@ -9,10 +9,12 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaResult;
 import org.liuyehcf.compile.engine.hua.definition.GrammarDefinition;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.liuyehcf.compile.engine.hua.test.TestCases.*;
 
 
 /**
@@ -25,12 +27,6 @@ public class TestGrammar {
     private static LRCompiler<HuaResult> compiler;
 
     static {
-//        RIGHT_CASES.addAll(Arrays.asList(WHILE_CASES));
-//        RIGHT_CASES.addAll(Arrays.asList(FOR_CASES));
-//        RIGHT_CASES.addAll(Arrays.asList(DO_CASES));
-//        RIGHT_CASES.addAll(Arrays.asList(IF_CASES));
-//        RIGHT_CASES.addAll(Arrays.asList(VARIABLE_DECLARATION_CASES));
-//        RIGHT_CASES.addAll(Arrays.asList(OPERATOR_CASES));
 //        RIGHT_CASES.addAll(Arrays.asList(CLASSIC_CASES));
     }
 
@@ -48,7 +44,6 @@ public class TestGrammar {
     @Test
     public void testRightCases() {
         for (String rightCase : RIGHT_CASES) {
-            System.out.println(rightCase);
             assertTrue(compiler.compile(rightCase).isSuccess());
         }
     }

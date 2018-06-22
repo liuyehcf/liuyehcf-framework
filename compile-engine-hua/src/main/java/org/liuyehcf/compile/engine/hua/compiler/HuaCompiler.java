@@ -161,25 +161,50 @@ public class HuaCompiler extends LALR<HuaResult> {
             Collections.sort(unvisitedCodeOffsets);
 
             List<ControlTransfer> controlTransferCodes = new ArrayList<>();
-            for (ByteCode code : byteCodes) {
+            Map<ControlTransfer, Integer> controlTransferCodeOffsetMap = new HashMap<>();
+            for (int offset = 0; offset < byteCodes.size(); offset++) {
+                ByteCode code = byteCodes.get(offset);
                 if (code instanceof ControlTransfer) {
                     controlTransferCodes.add((ControlTransfer) code);
+                    controlTransferCodeOffsetMap.put((ControlTransfer) code, offset);
                 }
             }
 
-            for (int codeOffset : unvisitedCodeOffsets) {
+            for (int unvisitedCodeOffset : unvisitedCodeOffsets) {
                 /*
                  * 如果转移指令跳转目标代码的序号大于codeOffset，由于codeOffset处的指令会被删除
                  * 因此该跳转指令的目标代码序号需要-1
                  */
                 for (ControlTransfer controlTransferCode : controlTransferCodes) {
-                    assertFalse(controlTransferCode.getCodeOffset() == codeOffset);
-                    if (controlTransferCode.getCodeOffset() > codeOffset) {
+                    int controlTransferCodeOffset = controlTransferCodeOffsetMap.get(controlTransferCode);
+
+                    /*
+                     * 这个跳转指令也不可达，跳过不处理
+                     */
+                    if (unvisitedCodeOffsets.contains(controlTransferCodeOffset)) {
+                        continue;
+                    }
+
+                    /*
+                     * 若跳转偏移量比当前不可达指令的偏移量要大，那么跳转偏移量-1
+                     */
+                    if (controlTransferCode.getCodeOffset() > unvisitedCodeOffset) {
+                        assertFalse(controlTransferCode.getCodeOffset() == unvisitedCodeOffset);
                         controlTransferCode.setCodeOffset(controlTransferCode.getCodeOffset() - 1);
                     }
                 }
+            }
 
-                byteCodes.remove(codeOffset);
+            /*
+             * 清理不可达指令
+             */
+            List<ByteCode> copyByteCodes = new ArrayList<>(byteCodes);
+            byteCodes.clear();
+
+            for (int i = 0; i < copyByteCodes.size(); i++) {
+                if (!unvisitedCodeOffsets.contains(i)) {
+                    byteCodes.add(copyByteCodes.get(i));
+                }
             }
         }
 
