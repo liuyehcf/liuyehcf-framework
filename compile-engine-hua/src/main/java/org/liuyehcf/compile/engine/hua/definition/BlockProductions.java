@@ -895,8 +895,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.IS_EMPTY_CONDITION_EXPRESSION, new Object()),
-                            new AttrFilter(AttrName.IS_EMPTY_CONDITION_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new SetAttrToLeftNode(AttrName.IS_EMPTY_EXPRESSION, new Object()),
+                            new AttrFilter(AttrName.IS_EMPTY_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <epsilon or expression> → <expression>
@@ -906,7 +906,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )
             ),
 
@@ -1066,6 +1066,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(EPSILON_OR_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
+                            new PushReturnByteCode(-1),
                             new AttrFilter()
                     )
             )

@@ -55,7 +55,7 @@ public enum AttrName {
     /**
      * 是否为空的条件表达式
      */
-    IS_EMPTY_CONDITION_EXPRESSION,
+    IS_EMPTY_EXPRESSION,
 
     /**
      * 布尔表达式为true时的字节码

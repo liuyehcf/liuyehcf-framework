@@ -27,9 +27,9 @@ public class PushControlTransferByteCodeWhenNecessary extends PushControlTransfe
 
     @Override
     public void onAction(HuaContext context) {
-        Object conditionObject = context.getStack().get(expressionStackOffset).get(AttrName.IS_EMPTY_CONDITION_EXPRESSION.name());
+        Object object = context.getStack().get(expressionStackOffset).get(AttrName.IS_EMPTY_EXPRESSION.name());
 
-        if (conditionObject != null) {
+        if (object != null) {
             return;
         }
 
