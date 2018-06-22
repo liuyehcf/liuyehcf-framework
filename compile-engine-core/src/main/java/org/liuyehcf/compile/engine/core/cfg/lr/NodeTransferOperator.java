@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.core.cfg.lr;
 /**
  * LR自动机-转移码
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/04/16
  */
 enum NodeTransferOperator {

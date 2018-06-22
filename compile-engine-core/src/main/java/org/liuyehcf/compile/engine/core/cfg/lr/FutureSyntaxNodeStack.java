@@ -10,7 +10,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 /**
  * Future 语法树栈
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/04/16
  */
 public class FutureSyntaxNodeStack {

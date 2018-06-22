@@ -5,7 +5,9 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 
 /**
- * @author chenlu
+ * 必要时添加控制转移指令
+ *
+ * @author hechenfeng
  * @date 2018/6/19
  */
 public class PushControlTransferByteCodeWhenNecessary extends PushControlTransferByteCodeByType {

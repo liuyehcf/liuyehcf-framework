@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 将for-update中的语句移动到尾部
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/19
  */
 public class MoveUpdateByteCodes extends AbstractSemanticAction {

@@ -7,7 +7,7 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 /**
  * 设置代码偏移量
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/19
  */
 public class SetCodeOffsetAttr extends AbstractSemanticAction {

@@ -7,21 +7,14 @@ package org.liuyehcf.compile.engine.hua.bytecode.ik;
  * @date 2018/6/10
  */
 public class _invokestatic extends Invoke {
-    private final String methodName;
+    private final String methodDescription;
 
-    private final int argumentSize;
-
-    public _invokestatic(String methodName, int argumentSize) {
-        this.methodName = methodName;
-        this.argumentSize = argumentSize;
+    public _invokestatic(String methodDescription) {
+        this.methodDescription = methodDescription;
     }
 
-    public String getMethodName() {
-        return methodName;
-    }
-
-    public int getArgumentSize() {
-        return argumentSize;
+    public String getMethodDescription() {
+        return methodDescription;
     }
 
     @Override

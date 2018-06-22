@@ -13,7 +13,9 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_ASSIGN;
 
 /**
- * @author chenlu
+ * 必要时添加load指令
+ *
+ * @author hechenfeng
  * @date 2018/6/20
  */
 public class VariableLoadIfNecessary extends AbstractSemanticAction {
@@ -67,7 +69,7 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction {
             case NORMAL_BIT_XOR_ASSIGN:
             case NORMAL_BIT_OR_ASSIGN:
                 if (identifierType.isArrayType()) {
-                    
+
                     context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _dup2());
 
                     switch (leftHandType.getTypeName()) {

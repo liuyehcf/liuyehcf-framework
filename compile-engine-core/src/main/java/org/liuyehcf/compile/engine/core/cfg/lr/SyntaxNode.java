@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * 语法树节点
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/04/16
  */
 public class SyntaxNode {
