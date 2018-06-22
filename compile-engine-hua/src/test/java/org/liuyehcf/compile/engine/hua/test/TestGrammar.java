@@ -899,6 +899,25 @@ public class TestGrammar {
     }
 
     @Test
+    public void testArrayStore3() {
+        String text = "void func(int[][][][] a) {\n" +
+                "\ta[1][2][3][4] = 5;\n" +
+                "\ta[1][2][3] = new int[2];\n" +
+                "\ta[1][2] = new int[2][3];\n" +
+                "\ta[1] = new int[2][3][4];\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int[][][][])\":{\"byteCodes\":[{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"int[][]\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"int[][][]\"},{\"name\":\"_aastore\"},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":true,\"dim\":4,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
     public void testSingleConditionIf() {
         String text = "void func1(boolean a,int b){\n" +
                 "\tif(a){\n" +
@@ -1738,7 +1757,7 @@ public class TestGrammar {
         CompileResult<HuaResult> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"jSONTable\":{\"func(int)\":{\"byteCodes\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":100},{\"codeOffset\":13,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"offset\":0},{\"increment\":1,\"name\":\"_iinc\",\"offset\":8},{\"increment\":1,\"name\":\"_iinc\",\"offset\":8},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":8},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_astore\",\"offset\":0},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_anewarray\",\"type\":\"int[][][][]\"},{\"name\":\"_astore\",\"offset\":8},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":6},{\"name\":\"_iconst\",\"value\":7},{\"expressionDimSize\":5,\"name\":\"_multianewarray\",\"type\":\"int[][][][][]\"},{\"name\":\"_astore\",\"offset\":16},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":0,\"paramTypeList\":[],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
                 result.getResult().getMethodInfoTable().toString()
         );
     }

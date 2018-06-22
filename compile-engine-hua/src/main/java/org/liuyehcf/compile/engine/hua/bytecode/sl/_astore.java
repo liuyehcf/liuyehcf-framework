@@ -1,19 +1,19 @@
 package org.liuyehcf.compile.engine.hua.bytecode.sl;
 
 /**
- * 加载对象（包括数组）
+ * 存储对象（包括数组）
  *
  * @author hechenfeng
- * @date 2018/6/12
+ * @date 2018/6/22
  */
-public class _aload extends StoreLoad {
+public class _astore extends StoreLoad {
 
     /**
      * 标志符偏移量
      */
     private final int offset;
 
-    public _aload(int offset) {
+    public _astore(int offset) {
         this.offset = offset;
     }
 

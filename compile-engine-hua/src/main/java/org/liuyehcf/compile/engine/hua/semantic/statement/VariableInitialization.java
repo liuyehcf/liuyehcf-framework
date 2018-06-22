@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic.statement;
 
+import org.liuyehcf.compile.engine.hua.bytecode.sl._astore;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._istore;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
@@ -52,15 +53,19 @@ public class VariableInitialization extends AbstractSemanticAction {
             throw new RuntimeException("变量初始化语句两侧类型不匹配");
         }
 
-        switch (variableSymbol.getType().getTypeName()) {
-            case NORMAL_INT:
-                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
-                break;
-            case NORMAL_BOOLEAN:
-                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
-                break;
-            default:
-                throw new RuntimeException("尚不支持类型 \'" + variableSymbol.getType() + "\'");
+        Type identifierType = variableSymbol.getType();
+
+        if (identifierType.isArrayType()) {
+            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _astore(variableSymbol.getOffset()));
+        } else {
+            switch (identifierType.getTypeName()) {
+                case NORMAL_BOOLEAN:
+                case NORMAL_INT:
+                    context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                    break;
+                default:
+                    throw new RuntimeException("尚不支持类型 \'" + identifierType + "\'");
+            }
         }
     }
 }

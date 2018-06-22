@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.semantic.statement;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cp.*;
+import org.liuyehcf.compile.engine.hua.bytecode.sl._aastore;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._iastore;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._istore;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
@@ -71,54 +72,88 @@ public class Assignment extends AbstractSemanticAction {
          */
         assertEquals(leftHandType.getTypeName(), identifierType.getTypeName());
 
-        if (identifierType.isArrayType()) {
-            if (NORMAL_ASSIGN.equals(operator)) {
-                switch (identifierType.getTypeName()) {
-                    case NORMAL_BOOLEAN:
-                    case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iastore());
-                        break;
-                    default:
-                        throw new UnsupportedOperationException();
-                }
-            } else {
-                addComputeByteCode(context, identifierType.getTypeName(), operator);
-
-                switch (identifierType.getTypeName()) {
-                    case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iastore());
-                        break;
-                    default:
-                        throw new UnsupportedOperationException();
-                }
-
-                context.getLeftNode().put(AttrName.TYPE.name(), leftHandType);
+        /*
+         * 当左侧表达式类型是数组
+         */
+        if (leftHandType.isArrayType()) {
+            if (!NORMAL_ASSIGN.equals(operator)) {
+                throw new RuntimeException("复合赋值运算符不支持数组类型");
             }
-        } else {
-            if (NORMAL_ASSIGN.equals(operator)) {
-                switch (identifierType.getTypeName()) {
-                    case NORMAL_BOOLEAN:
-                    case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftHandType);
-                        break;
-                    default:
-                        throw new UnsupportedOperationException();
-                }
-            } else {
-                addComputeByteCode(context, identifierType.getTypeName(), operator);
 
-                switch (identifierType.getTypeName()) {
-                    case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
-                        break;
-                    default:
-                        throw new UnsupportedOperationException();
-                }
+            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _aastore());
+        }
+        /*
+         * 当左侧表达式类型不是数组
+         */
+        else {
+            /*
+             * 当标志符是数组
+             */
+            if (identifierType.isArrayType()) {
+                /*
+                 * 普通赋值语句
+                 */
+                if (NORMAL_ASSIGN.equals(operator)) {
+                    switch (identifierType.getTypeName()) {
+                        case NORMAL_BOOLEAN:
+                        case NORMAL_INT:
+                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iastore());
 
-                context.getLeftNode().put(AttrName.TYPE.name(), leftHandType);
+                            break;
+                        default:
+                            throw new UnsupportedOperationException();
+                    }
+                }
+                /*
+                 * 复合赋值语句
+                 */
+                else {
+                    addComputeByteCode(context, identifierType.getTypeName(), operator);
+
+                    switch (identifierType.getTypeName()) {
+                        case NORMAL_INT:
+                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iastore());
+                            break;
+                        default:
+                            throw new UnsupportedOperationException();
+                    }
+                }
+            }
+            /*
+             * 当标志符不是数组
+             */
+            else {
+                /*
+                 * 普通赋值语句
+                 */
+                if (NORMAL_ASSIGN.equals(operator)) {
+                    switch (identifierType.getTypeName()) {
+                        case NORMAL_BOOLEAN:
+                        case NORMAL_INT:
+                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                            break;
+                        default:
+                            throw new UnsupportedOperationException();
+                    }
+                }
+                /*
+                 * 复合赋值语句
+                 */
+                else {
+                    addComputeByteCode(context, identifierType.getTypeName(), operator);
+
+                    switch (identifierType.getTypeName()) {
+                        case NORMAL_INT:
+                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                            break;
+                        default:
+                            throw new UnsupportedOperationException();
+                    }
+                }
             }
         }
+
+        context.getLeftNode().put(AttrName.TYPE.name(), leftHandType);
     }
 
     private void addComputeByteCode(HuaContext context, String typeName, String operator) {
