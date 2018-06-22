@@ -40,13 +40,13 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction {
     public void onAction(HuaContext context) {
         String operator = context.getStack().get(operatorStackOffset).get(AttrName.ASSIGN_OPERATOR.name());
         String identifierName = context.getStack().get(leftHandStackOffset).get(AttrName.IDENTIFIER_NAME.name());
+        Type type = context.getStack().get(leftHandStackOffset).get(AttrName.TYPE.name());
+
         VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
 
         if (variableSymbol == null) {
             throw new RuntimeException("非变量不能进行赋值操作");
         }
-
-        Type type = variableSymbol.getType();
 
         switch (operator) {
             case NORMAL_ASSIGN:

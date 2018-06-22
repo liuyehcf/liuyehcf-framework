@@ -814,7 +814,7 @@ public class TestGrammar {
     }
 
     @Test
-    public void testArrayLoad() {
+    public void testArrayLoad1() {
         String text = "void func(int[] a) {\n" +
                 "\tint b=a[1];\n" +
                 "}";
@@ -830,7 +830,23 @@ public class TestGrammar {
     }
 
     @Test
-    public void testArrayStore() {
+    public void testArrayLoad2() {
+        String text = "void func(int[][] a,int j) {\n" +
+                "\tj=a[5][6];\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int[][],int)\":{\"byteCodes\":[{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":6},{\"name\":\"_iaload\"},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":true,\"dim\":2,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testArrayStore1() {
         String text = "void func1(int[] c) {\n" +
                 "\tc[5] = 10000;\n" +
                 "}\n" +
@@ -846,6 +862,22 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"jSONTable\":{\"func1(int[])\":{\"byteCodes\":[{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":10000},{\"name\":\"_iastore\"},{\"name\":\"_return\"}],\"methodName\":\"func1\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func2(int[])\":{\"byteCodes\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":16},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"offset\":24},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":100},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iload\",\"offset\":16},{\"name\":\"_iload\",\"offset\":24},{\"name\":\"_isub\"},{\"name\":\"_imul\"},{\"name\":\"_iaload\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}],\"methodName\":\"func2\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
+
+    @Test
+    public void testArrayStore2() {
+        String text = "void func(int[][] a,int j) {\n" +
+                "\ta[4][5]=5;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int[][],int)\":{\"byteCodes\":[{\"name\":\"_aload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iastore\"},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":true,\"dim\":2,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
                 result.getResult().getMethodInfoTable().toString()
         );
     }

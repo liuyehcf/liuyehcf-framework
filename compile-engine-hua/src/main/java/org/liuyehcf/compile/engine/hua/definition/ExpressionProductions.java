@@ -1284,8 +1284,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ARRAY_ACCESS)
                             ),
-                            new ArrayLoad(),
-                            new AttrFilter(AttrName.TYPE)
+                            new ArrayLoad(0),
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -1482,7 +1482,7 @@ abstract class ExpressionProductions {
                             new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE)
                     ),
                     /*
-                     * (2) <array access> → <primary no new array> [ <expression>]
+                     * (2) <array access> → <primary no new array> [ <expression> ]
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(ARRAY_ACCESS),
@@ -1492,7 +1492,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new ArrayTypeDimDecrease(-3),
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE)
                     )
             ),
 

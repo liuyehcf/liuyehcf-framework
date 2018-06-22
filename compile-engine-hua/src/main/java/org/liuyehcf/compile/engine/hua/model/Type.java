@@ -92,4 +92,13 @@ public class Type {
         }
         return sb.toString();
     }
+
+    @Override
+    public String toString() {
+        return "Type{" +
+                "typeName='" + typeName + '\'' +
+                ", typeWidth=" + typeWidth +
+                ", dim=" + dim +
+                '}';
+    }
 }
