@@ -2,8 +2,16 @@ package org.liuyehcf.compile.engine.hua.semantic.method;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ik._invokestatic;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
+import org.liuyehcf.compile.engine.hua.compiler.MethodDescription;
+import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
+import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
+
+import java.util.List;
+
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.hua.compiler.MethodInfo.buildMethodDescription;
 
 /**
  * 方法调用
@@ -37,8 +45,18 @@ public class MethodInvocation extends AbstractSemanticAction {
     @Override
     public void onAction(HuaContext context) {
         String methodName = context.getStack().get(methodNameStackOffset).get(AttrName.METHOD_NAME.name());
-        Integer argumentSize = context.getStack().get(argumentListStackOffset).get(AttrName.ARGUMENT_SIZE.name());
+        List<Type> argumentTypeList = context.getStack().get(argumentListStackOffset).get(AttrName.ARGUMENT_TYPE_LIST.name());
 
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _invokestatic(methodName, argumentSize));
+        MethodDescription methodDescription = buildMethodDescription(methodName, argumentTypeList);
+
+        if (!context.getHuaEngine().getMethodInfoTable().containsMethod(methodDescription)) {
+            throw new RuntimeException("方法' " + methodDescription.getDescription() + " '尚未定义");
+        }
+
+        MethodInfo methodInfo = context.getHuaEngine().getMethodInfoTable().getMethodByMethodDescription(methodDescription);
+        assertNotNull(methodInfo);
+
+        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _invokestatic(methodDescription.getDescription()));
+        context.getLeftNode().put(AttrName.TYPE.name(), methodInfo.getResultType());
     }
 }

@@ -20,6 +20,17 @@ public class MethodInfo {
     private Type resultType;
     private List<Type> paramTypeList;
 
+    public static MethodDescription buildMethodDescription(String methodName, List<Type> types) {
+        if (types == null || types.isEmpty()) {
+            return new MethodDescription(methodName, null);
+        }
+        String[] typeStrings = new String[types.size()];
+        for (int i = 0; i < typeStrings.length; i++) {
+            typeStrings[i] = types.get(i).toTypeDescription();
+        }
+        return new MethodDescription(methodName, typeStrings);
+    }
+
     public String getMethodName() {
         return methodName;
     }
@@ -65,10 +76,7 @@ public class MethodInfo {
     }
 
     public MethodDescription buildMethodDescription() {
-        String[] types = new String[paramTypeList.size()];
-        for (int i = 0; i < types.length; i++) {
-            types[i] = paramTypeList.get(i).toTypeDescription();
-        }
-        return new MethodDescription(methodName, types);
+        return buildMethodDescription(this.methodName, this.paramTypeList);
     }
+
 }

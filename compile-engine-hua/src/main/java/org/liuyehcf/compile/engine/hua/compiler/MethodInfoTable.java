@@ -29,6 +29,14 @@ public class MethodInfoTable {
         return table;
     }
 
+    public boolean containsMethod(MethodDescription methodDescription) {
+        return table.containsKey(methodDescription);
+    }
+
+    public MethodInfo getMethodByMethodDescription(MethodDescription methodDescription) {
+        return table.get(methodDescription);
+    }
+
     public MethodInfo getCurMethodInfo() {
         return curMethodInfo;
     }

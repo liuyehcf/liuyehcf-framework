@@ -9,12 +9,10 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaResult;
 import org.liuyehcf.compile.engine.hua.definition.GrammarDefinition;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.liuyehcf.compile.engine.hua.test.TestCases.*;
 
 
 /**
@@ -54,20 +52,20 @@ public class TestGrammar {
 
     @Test
     public void testNameWithKeyWord() {
-        String text = "void func() {\n" +
+        String text = "void doSomething() {\n" +
+                "\n" +
+                "}" +
+                "void func() {\n" +
                 "\tdoSomething();\n" +
                 "}\n" +
-                "\n" +
-                "void doSomething() {\n" +
-                "\n" +
-                "}";
+                "\n";
 
         System.out.println(text);
 
         CompileResult<HuaResult> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"jSONTable\":{\"func()\":{\"byteCodes\":[{\"argumentSize\":0,\"methodName\":\"doSomething\",\"name\":\"_invokestatic\"},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":0,\"paramTypeList\":[],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"doSomething()\":{\"byteCodes\":[{\"name\":\"_return\"}],\"methodName\":\"doSomething\",\"offset\":0,\"paramSize\":0,\"paramTypeList\":[],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                "{\"jSONTable\":{\"doSomething()\":{\"byteCodes\":[{\"name\":\"_return\"}],\"methodName\":\"doSomething\",\"offset\":0,\"paramSize\":0,\"paramTypeList\":[],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func()\":{\"byteCodes\":[{\"methodDescription\":\"doSomething()\",\"name\":\"_invokestatic\"},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":0,\"paramTypeList\":[],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
                 result.getResult().getMethodInfoTable().toString()
         );
     }
@@ -653,19 +651,19 @@ public class TestGrammar {
 
     @Test
     public void testMethodInvocation() {
-        String text = "void func(int a, int b, int c) {\n" +
+        String text = "void func1(){}\n" +
+                "void func2(int a, int b){}\n" +
+                "void func(int a, int b, int c) {\n" +
                 "\tfunc1();\n" +
                 "\tfunc2(a+b,c);\n" +
-                "}\n" +
-                "void func1(){}\n" +
-                "void func2(int a, int b){}";
+                "}\n";
 
         System.out.println(text);
 
         CompileResult<HuaResult> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"jSONTable\":{\"func(int,int,int)\":{\"byteCodes\":[{\"argumentSize\":0,\"methodName\":\"func1\",\"name\":\"_invokestatic\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"offset\":16},{\"argumentSize\":2,\"methodName\":\"func2\",\"name\":\"_invokestatic\"},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":3,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func1()\":{\"byteCodes\":[{\"name\":\"_return\"}],\"methodName\":\"func1\",\"offset\":0,\"paramSize\":0,\"paramTypeList\":[],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func2(int,int)\":{\"byteCodes\":[{\"name\":\"_return\"}],\"methodName\":\"func2\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                "{\"jSONTable\":{\"func1()\":{\"byteCodes\":[{\"name\":\"_return\"}],\"methodName\":\"func1\",\"offset\":0,\"paramSize\":0,\"paramTypeList\":[],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func2(int,int)\":{\"byteCodes\":[{\"name\":\"_return\"}],\"methodName\":\"func2\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}},\"func(int,int,int)\":{\"byteCodes\":[{\"methodDescription\":\"func1()\",\"name\":\"_invokestatic\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"offset\":16},{\"methodDescription\":\"func2(int,int)\",\"name\":\"_invokestatic\"},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":3,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
                 result.getResult().getMethodInfoTable().toString()
         );
     }

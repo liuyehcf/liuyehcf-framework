@@ -28,9 +28,9 @@ public enum AttrName {
     PARAMETER_LIST,
 
     /**
-     * 参数长度
+     * 参数类型列表
      */
-    ARGUMENT_SIZE,
+    ARGUMENT_TYPE_LIST,
 
     /**
      * 赋值符号

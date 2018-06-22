@@ -8,7 +8,10 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.model.Type;
-import org.liuyehcf.compile.engine.hua.semantic.attr.*;
+import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttr;
+import org.liuyehcf.compile.engine.hua.semantic.attr.AssignAttrs;
+import org.liuyehcf.compile.engine.hua.semantic.attr.AttrFilter;
+import org.liuyehcf.compile.engine.hua.semantic.attr.SetAttrFromSystem;
 import org.liuyehcf.compile.engine.hua.semantic.backfill.ControlTransferByteCodeBackFill;
 import org.liuyehcf.compile.engine.hua.semantic.backfill.IncrementBackFill;
 import org.liuyehcf.compile.engine.hua.semantic.code.MergeControlTransferByteCode;
@@ -18,9 +21,8 @@ import org.liuyehcf.compile.engine.hua.semantic.code.PushPreIINCByteCode;
 import org.liuyehcf.compile.engine.hua.semantic.load.ArrayLoad;
 import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoad;
 import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoadIfNecessary;
-import org.liuyehcf.compile.engine.hua.semantic.method.IncArgSize;
-import org.liuyehcf.compile.engine.hua.semantic.method.InitArgSize;
 import org.liuyehcf.compile.engine.hua.semantic.method.MethodInvocation;
+import org.liuyehcf.compile.engine.hua.semantic.method.RecordArgumentType;
 import org.liuyehcf.compile.engine.hua.semantic.operator.BinaryOperation;
 import org.liuyehcf.compile.engine.hua.semantic.statement.Assignment;
 import org.liuyehcf.compile.engine.hua.semantic.statement.BooleanAssignment;
@@ -1171,7 +1173,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
                             new MethodInvocation(-3, -1),
-                            new AttrFilter()
+                            new AttrFilter(AttrName.TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -1194,8 +1196,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.ARGUMENT_SIZE, 0),
-                            new AttrFilter(AttrName.ARGUMENT_SIZE)
+                            new AttrFilter(AttrName.ARGUMENT_TYPE_LIST)
                     ),
                     /*
                      * <epsilon or argument list> → <argument list>
@@ -1205,7 +1206,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ARGUMENT_LIST)
                             ),
-                            new AttrFilter(AttrName.ARGUMENT_SIZE)
+                            new AttrFilter(AttrName.ARGUMENT_TYPE_LIST)
                     )
             ),
 
@@ -1274,7 +1275,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_INVOCATION)
                             ),
-                            new AttrFilter()
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <primary no new array> → <array access>
@@ -1309,8 +1310,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new InitArgSize(0),
-                            new AttrFilter(AttrName.ARGUMENT_SIZE)
+                            new RecordArgumentType(0, 0),
+                            new AttrFilter(AttrName.ARGUMENT_TYPE_LIST)
                     ),
                     /*
                      * <argument list> → <argument list> , <expression>
@@ -1322,8 +1323,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_COMMA),
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new IncArgSize(-2),
-                            new AttrFilter(AttrName.ARGUMENT_SIZE)
+                            new RecordArgumentType(-2, 0),
+                            new AttrFilter(AttrName.ARGUMENT_TYPE_LIST)
                     )
             ),
 
