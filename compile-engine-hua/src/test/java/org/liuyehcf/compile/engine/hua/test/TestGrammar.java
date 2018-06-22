@@ -1752,4 +1752,48 @@ public class TestGrammar {
                 result.getResult().getMethodInfoTable().toString()
         );
     }
+
+    @Test
+    public void testQuickSort() {
+        String text = "\tvoid exchange(int[] nums, int i, int j) {\n" +
+                "\t\tint temp = nums[i];\n" +
+                "\t\tnums[i] = nums[j];\n" +
+                "\t\tnums[j] = temp;\n" +
+                "\t}\n" +
+                "\tint partition(int[] nums, int lo, int hi) {\n" +
+                "\t\tint i = lo - 1;\n" +
+                "\t\tint pivot = nums[hi];\n" +
+                "\t\t\n" +
+                "\t\tfor (int j = lo; j < hi; j++) {\n" +
+                "\t\t\tif (nums[j] < pivot) {\n" +
+                "\t\t\t\texchange(nums, ++i, j);\n" +
+                "\t\t\t}\n" +
+                "\t\t}\n" +
+                "\t\t\n" +
+                "\t\texchange(nums, ++i, hi);\n" +
+                "\t\t\n" +
+                "\t\treturn i;\n" +
+                "\t}\n" +
+                "\t\n" +
+                "\tvoid sort(int[] nums, int lo, int hi) {\n" +
+                "\t\tif (lo < hi) {\n" +
+                "\t\t\tint mid = partition(nums, lo, hi);\n" +
+                "\t\t\tsort(nums, lo, mid - 1);\n" +
+                "\t\t\tsort(nums, mid + 1, hi);\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\t\n" +
+                "\tvoid sort(int[] nums, int size) {\n" +
+                "\t\tsort(nums, 0, size-1);\n" +
+                "\t}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"jSONTable\":{\"func(int)\":{\"byteCodes\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"offset\":8},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":100},{\"codeOffset\":13,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"offset\":0},{\"increment\":1,\"name\":\"_iinc\",\"offset\":8},{\"increment\":1,\"name\":\"_iinc\",\"offset\":8},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"offset\":8},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":1,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                result.getResult().getMethodInfoTable().toString()
+        );
+    }
 }

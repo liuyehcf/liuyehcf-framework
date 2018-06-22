@@ -45,9 +45,12 @@ public class MethodInfoTable {
         curMethodInfo = new MethodInfo();
     }
 
-    public void exitMethod() {
+    public void finishMethodDeclarator() {
         MethodDescription methodDescription = curMethodInfo.buildMethodDescription();
         table.put(methodDescription, curMethodInfo);
+    }
+
+    public void exitMethod() {
         curMethodInfo = null;
     }
 
