@@ -449,8 +449,11 @@ public class TestGrammar {
 
     @Test
     public void testMulAssign() {
-        String text = "void func(int i,int j) {\n" +
-                "\ti *= j;\n" +
+        String text = "void func(int i, int[] a, int[][][] b) {\n" +
+                "\ti *= 3;\n" +
+                "\ta[1] *= 5;\n" +
+                "\tb[1][2][3] *= i;\n" +
+                "\tb[1][2][3] *= a[5];\n" +
                 "}";
 
         System.out.println(text);
@@ -458,7 +461,7 @@ public class TestGrammar {
         CompileResult<HuaResult> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"jSONTable\":{\"func(int,int)\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iload\",\"offset\":8},{\"name\":\"_imul\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":2,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
+                "{\"jSONTable\":{\"func(int,int[],int[][][])\":{\"byteCodes\":[{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_imul\"},{\"name\":\"_istore\",\"offset\":0},{\"name\":\"_aload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_imul\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"offset\":16},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"offset\":0},{\"name\":\"_imul\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"offset\":16},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"offset\":8},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_imul\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}],\"methodName\":\"func\",\"offset\":0,\"paramSize\":3,\"paramTypeList\":[{\"arrayType\":false,\"dim\":0,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":true,\"dim\":1,\"typeName\":\"int\",\"typeWidth\":8},{\"arrayType\":true,\"dim\":3,\"typeName\":\"int\",\"typeWidth\":8}],\"resultType\":{\"arrayType\":false,\"dim\":0,\"typeName\":\"void\",\"typeWidth\":0}}}}",
                 result.getResult().getMethodInfoTable().toString()
         );
     }

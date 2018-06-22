@@ -9,6 +9,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_ASSIGN;
 
@@ -63,38 +64,51 @@ public class Assignment extends AbstractSemanticAction {
             throw new RuntimeException("赋值运算符左右侧类型不匹配");
         }
 
-        Type type = variableSymbol.getType();
+        Type identifierType = variableSymbol.getType();
 
-        if (type.isArrayType()) {
-            switch (operator) {
-                case NORMAL_ASSIGN:
-                    switch (type.getTypeName()) {
-                        case NORMAL_INT:
-                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iastore());
-                            break;
-                        default:
-                            throw new UnsupportedOperationException();
-                    }
-                    break;
-                default:
-                    throw new RuntimeException("尚不支持赋值运算符 \'" + operator + "\'");
-            }
+        /*
+         * 标志符的类型可能是数组类型，但是其类型名必须与赋值运算符左侧一致
+         */
+        assertEquals(leftHandType.getTypeName(), identifierType.getTypeName());
 
-        } else {
+        if (identifierType.isArrayType()) {
             if (NORMAL_ASSIGN.equals(operator)) {
-                switch (type.getTypeName()) {
+                switch (identifierType.getTypeName()) {
                     case NORMAL_BOOLEAN:
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
-                        context.getLeftNode().put(AttrName.TYPE.name(), type);
+                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iastore());
                         break;
                     default:
                         throw new UnsupportedOperationException();
                 }
             } else {
-                addComputeByteCode(context, type.getTypeName(), operator);
+                addComputeByteCode(context, identifierType.getTypeName(), operator);
 
-                switch (type.getTypeName()) {
+                switch (identifierType.getTypeName()) {
+                    case NORMAL_INT:
+                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iastore());
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+
+                context.getLeftNode().put(AttrName.TYPE.name(), leftHandType);
+            }
+        } else {
+            if (NORMAL_ASSIGN.equals(operator)) {
+                switch (identifierType.getTypeName()) {
+                    case NORMAL_BOOLEAN:
+                    case NORMAL_INT:
+                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                        context.getLeftNode().put(AttrName.TYPE.name(), leftHandType);
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+            } else {
+                addComputeByteCode(context, identifierType.getTypeName(), operator);
+
+                switch (identifierType.getTypeName()) {
                     case NORMAL_INT:
                         context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
                         break;
@@ -102,7 +116,7 @@ public class Assignment extends AbstractSemanticAction {
                         throw new UnsupportedOperationException();
                 }
 
-                context.getLeftNode().put(AttrName.TYPE.name(), type);
+                context.getLeftNode().put(AttrName.TYPE.name(), leftHandType);
             }
         }
     }

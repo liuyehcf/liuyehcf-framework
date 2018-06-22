@@ -1,6 +1,8 @@
 package org.liuyehcf.compile.engine.hua.semantic.load;
 
+import org.liuyehcf.compile.engine.hua.bytecode.sl._iaload;
 import org.liuyehcf.compile.engine.hua.bytecode.sl._iload;
+import org.liuyehcf.compile.engine.hua.bytecode.sm._dup2;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
@@ -40,13 +42,15 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction {
     public void onAction(HuaContext context) {
         String operator = context.getStack().get(operatorStackOffset).get(AttrName.ASSIGN_OPERATOR.name());
         String identifierName = context.getStack().get(leftHandStackOffset).get(AttrName.IDENTIFIER_NAME.name());
-        Type type = context.getStack().get(leftHandStackOffset).get(AttrName.TYPE.name());
+        Type leftHandType = context.getStack().get(leftHandStackOffset).get(AttrName.TYPE.name());
 
         VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
 
         if (variableSymbol == null) {
             throw new RuntimeException("非变量不能进行赋值操作");
         }
+
+        Type identifierType = variableSymbol.getType();
 
         switch (operator) {
             case NORMAL_ASSIGN:
@@ -62,13 +66,27 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction {
             case NORMAL_BIT_AND_ASSIGN:
             case NORMAL_BIT_XOR_ASSIGN:
             case NORMAL_BIT_OR_ASSIGN:
-                switch (type.getTypeName()) {
-                    case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
-                        context.getStack().get(leftHandStackOffset).put(AttrName.TYPE.name(), type);
-                        break;
-                    default:
-                        throw new UnsupportedOperationException();
+                if (identifierType.isArrayType()) {
+                    
+                    context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _dup2());
+
+                    switch (leftHandType.getTypeName()) {
+                        case NORMAL_INT:
+                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iaload());
+                            context.getStack().get(leftHandStackOffset).put(AttrName.TYPE.name(), leftHandType);
+                            break;
+                        default:
+                            throw new UnsupportedOperationException();
+                    }
+                } else {
+                    switch (leftHandType.getTypeName()) {
+                        case NORMAL_INT:
+                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
+                            context.getStack().get(leftHandStackOffset).put(AttrName.TYPE.name(), leftHandType);
+                            break;
+                        default:
+                            throw new UnsupportedOperationException();
+                    }
                 }
                 break;
             default:
