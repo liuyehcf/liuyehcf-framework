@@ -8,9 +8,6 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.HuaResult;
 import org.liuyehcf.compile.engine.hua.definition.GrammarDefinition;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -21,12 +18,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestGrammar {
 
-    private static final List<String> RIGHT_CASES = new ArrayList<>();
     private static LRCompiler<HuaResult> compiler;
-
-    static {
-//        RIGHT_CASES.addAll(Arrays.asList(CLASSIC_CASES));
-    }
 
     @BeforeClass
     public static void init() {
@@ -40,13 +32,11 @@ public class TestGrammar {
     }
 
     @Test
-    public void testRightCases() {
-        for (String rightCase : RIGHT_CASES) {
-            assertTrue(compiler.compile(rightCase).isSuccess());
-        }
-    }
-
     public void printMarkdown() {
+        System.out.println(compiler.getFirstJSONString());
+        System.out.println(compiler.getFollowJSONString());
+        System.out.println(compiler.getClosureJSONString());
+        System.out.println(compiler.getClosureTransferTableJSONString());
         System.out.println(compiler.getAnalysisTableMarkdownString());
     }
 
