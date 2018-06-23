@@ -33,11 +33,6 @@ public class HuaCompiler extends LALR<HuaResult> {
     public class HuaEngine extends Engine {
 
         /**
-         * 地址偏移量，初始化为0
-         */
-        private int offset = 0;
-
-        /**
          * 变量符号表
          */
         private VariableSymbolTable variableSymbolTable = new VariableSymbolTable();
@@ -51,24 +46,12 @@ public class HuaCompiler extends LALR<HuaResult> {
             super(input);
         }
 
-        int getOffset() {
-            return offset;
-        }
-
         VariableSymbolTable getVariableSymbolTable() {
             return variableSymbolTable;
         }
 
         MethodInfoTable getMethodInfoTable() {
             return methodInfoTable;
-        }
-
-        void increaseOffset(int step) {
-            offset += step;
-        }
-
-        void resetOffset() {
-            offset = 0;
         }
 
         @Override

@@ -19,6 +19,5 @@ public class ExitMethod extends AbstractSemanticAction {
         }
 
         context.exitMethod();
-        context.resetOffset();
     }
 }

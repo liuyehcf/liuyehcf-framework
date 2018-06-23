@@ -14,6 +14,10 @@ import java.util.List;
  * @date 2018/6/19
  */
 public class HuaContext extends Context {
+
+    /**
+     * hua引擎
+     */
     private final HuaCompiler.HuaEngine huaEngine;
 
     public HuaContext(Context context, HuaCompiler.HuaEngine huaEngine) {
@@ -77,15 +81,6 @@ public class HuaContext extends Context {
     }
 
     /**
-     * 为当前方法设置返回类型
-     *
-     * @param resultType 返回类型
-     */
-    public void setResultTypeOfCurrentMethod(Type resultType) {
-        huaEngine.getMethodInfoTable().getCurMethodInfo().setResultType(resultType);
-    }
-
-    /**
      * 为当前方法设置参数类型列表
      *
      * @param paramTypeList 参数类型列表
@@ -101,6 +96,15 @@ public class HuaContext extends Context {
      */
     public Type getResultTypeOfCurrentMethod() {
         return huaEngine.getMethodInfoTable().getCurMethodInfo().getResultType();
+    }
+
+    /**
+     * 为当前方法设置返回类型
+     *
+     * @param resultType 返回类型
+     */
+    public void setResultTypeOfCurrentMethod(Type resultType) {
+        huaEngine.getMethodInfoTable().getCurMethodInfo().setResultType(resultType);
     }
 
     /**
@@ -208,17 +212,10 @@ public class HuaContext extends Context {
     }
 
     /**
-     * 重置偏移量
-     */
-    public void resetOffset() {
-        huaEngine.resetOffset();
-    }
-
-    /**
      * 递增偏移量
      */
     public void increaseOffset(int step) {
-        huaEngine.increaseOffset(step);
+        huaEngine.getMethodInfoTable().getCurMethodInfo().increaseOffset(step);
     }
 
     /**
@@ -227,6 +224,6 @@ public class HuaContext extends Context {
      * @return 偏移量
      */
     public int getOffset() {
-        return huaEngine.getOffset();
+        return huaEngine.getMethodInfoTable().getCurMethodInfo().getOffset();
     }
 }

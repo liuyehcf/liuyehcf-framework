@@ -1,7 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.liuyehcf.compile.engine.hua.model.Type;
 
 import java.util.LinkedHashMap;
@@ -42,7 +41,7 @@ public class VariableSymbolTable {
      */
     private Namespace currentNamespace;
 
-    public VariableSymbolTable() {
+    VariableSymbolTable() {
         namespaceCnt = 0;
         currentNamespace = new Namespace(namespaceCnt++, Namespace.NO_PARENT_NAMESPACE);
         namespaceMap = new LinkedHashMap<>(16);
@@ -55,7 +54,10 @@ public class VariableSymbolTable {
         offsetMap.put(currentNamespace, new LinkedHashMap<>());
     }
 
-    public void enterNamespace() {
+    /**
+     * 进入新的命名空间
+     */
+    void enterNamespace() {
         currentNamespace = new Namespace(namespaceCnt++, currentNamespace.getId());
 
         assertFalse(table.containsKey(currentNamespace));
@@ -67,7 +69,10 @@ public class VariableSymbolTable {
         namespaceMap.put(currentNamespace.getId(), currentNamespace);
     }
 
-    public void exitNamespace() {
+    /**
+     * 退出当前命名空间
+     */
+    void exitNamespace() {
         int pid = currentNamespace.getPid();
 
         assertTrue(pid != Namespace.NO_PARENT_NAMESPACE);
@@ -96,14 +101,14 @@ public class VariableSymbolTable {
     }
 
     /**
-     * 创建新标志符
+     * 创建新符号
      *
      * @param offset 偏移量
      * @param name   标志符名称
      * @param type   标志符类型
-     * @return
+     * @return 新创建的符号
      */
-    public VariableSymbol createVariableSymbol(int offset, String name, Type type) {
+    VariableSymbol createVariableSymbol(int offset, String name, Type type) {
         if (exists(name)) {
             return null;
         }
@@ -115,12 +120,18 @@ public class VariableSymbolTable {
         return newVariableSymbol;
     }
 
-    public VariableSymbol getVariableSymbolByName(String name) {
+    /**
+     * 根据标志符名称获取符号
+     *
+     * @param identifierName 标志符名称
+     * @return 符号
+     */
+    VariableSymbol getVariableSymbolByName(String identifierName) {
         Namespace namespace = currentNamespace;
 
         while (namespace != null) {
-            if (table.get(namespace).containsKey(name)) {
-                return table.get(namespace).get(name);
+            if (table.get(namespace).containsKey(identifierName)) {
+                return table.get(namespace).get(identifierName);
             }
             namespace = namespaceMap.get(namespace.getPid());
         }
@@ -128,7 +139,13 @@ public class VariableSymbolTable {
         return null;
     }
 
-    public VariableSymbol getVariableSymbolByOffset(int offset) {
+    /**
+     * 根据符号偏移量获取符号
+     *
+     * @param offset 符号偏移量
+     * @return 符号
+     */
+    VariableSymbol getVariableSymbolByOffset(int offset) {
         Namespace namespace = currentNamespace;
 
         while (namespace != null) {
@@ -141,14 +158,10 @@ public class VariableSymbolTable {
         return null;
     }
 
-    public Map<String, Map<String, VariableSymbol>> getJSONTable() {
-        Map<String, Map<String, VariableSymbol>> tableJSONMap = new LinkedHashMap<>(16);
-        table.forEach((key, value) -> tableJSONMap.put("[" + key.getId() + ", " + key.getPid() + "]", value));
-        return tableJSONMap;
-    }
-
     @Override
     public String toString() {
-        return JSON.toJSONString(this, SerializerFeature.DisableCircularReferenceDetect);
+        Map<String, Map<String, VariableSymbol>> tableJSONMap = new LinkedHashMap<>(16);
+        table.forEach((key, value) -> tableJSONMap.put("[" + key.getId() + ", " + key.getPid() + "]", value));
+        return JSON.toJSONString(tableJSONMap);
     }
 }

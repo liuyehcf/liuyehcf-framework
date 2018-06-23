@@ -18,19 +18,34 @@ public class MethodInfo {
      * 字节码
      */
     private final List<ByteCode> byteCodes = new ArrayList<>();
+
     /**
      * 方法名称
      */
     private String methodName;
+
     /**
      * 返回类型
      */
     private Type resultType;
+
     /**
      * 参数类型
      */
     private List<Type> paramTypeList;
 
+    /**
+     * 符号偏移量
+     */
+    private int offset = 0;
+
+    /**
+     * 创建方法描述符
+     *
+     * @param methodName 方法名字
+     * @param types      参数类型列表
+     * @return 方法描述符
+     */
     public static MethodDescription buildMethodDescription(String methodName, List<Type> types) {
         if (types == null || types.isEmpty()) {
             return new MethodDescription(methodName, null);
@@ -42,11 +57,15 @@ public class MethodInfo {
         return new MethodDescription(methodName, typeStrings);
     }
 
+    public List<ByteCode> getByteCodes() {
+        return byteCodes;
+    }
+
     public String getMethodName() {
         return methodName;
     }
 
-    public void setMethodName(String methodName) {
+    void setMethodName(String methodName) {
         this.methodName = methodName;
     }
 
@@ -54,32 +73,40 @@ public class MethodInfo {
         return resultType;
     }
 
-    public void setResultType(Type resultType) {
+    void setResultType(Type resultType) {
         this.resultType = resultType;
-    }
-
-    public int getParamSize() {
-        return paramTypeList.size();
     }
 
     public List<Type> getParamTypeList() {
         return paramTypeList;
     }
 
-    public void setParamTypeList(List<Type> paramTypeList) {
+    void setParamTypeList(List<Type> paramTypeList) {
         this.paramTypeList = paramTypeList;
     }
 
-    public List<ByteCode> getByteCodes() {
-        return byteCodes;
+    public int getParamSize() {
+        return paramTypeList.size();
     }
 
-    public void addByteCode(ByteCode byteCode) {
+    void addByteCode(ByteCode byteCode) {
         byteCodes.add(byteCode);
     }
 
-    public MethodDescription buildMethodDescription() {
-        return buildMethodDescription(this.methodName, this.paramTypeList);
+    void increaseOffset(int step) {
+        offset += step;
     }
 
+    int getOffset() {
+        return offset;
+    }
+
+    /**
+     * 创建方法描述符
+     *
+     * @return 方法描述符
+     */
+    MethodDescription buildMethodDescription() {
+        return buildMethodDescription(this.methodName, this.paramTypeList);
+    }
 }

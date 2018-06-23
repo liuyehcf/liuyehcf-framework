@@ -7,8 +7,15 @@ package org.liuyehcf.compile.engine.hua.compiler;
  * @date 2018/6/12
  */
 public class HuaResult {
+
+    /**
+     * 符号表
+     */
     private final VariableSymbolTable variableSymbolTable;
 
+    /**
+     * 方法表
+     */
     private final MethodInfoTable methodInfoTable;
 
     public HuaResult(VariableSymbolTable variableSymbolTable, MethodInfoTable methodInfoTable) {
