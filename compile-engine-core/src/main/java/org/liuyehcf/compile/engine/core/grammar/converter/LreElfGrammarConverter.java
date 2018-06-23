@@ -44,13 +44,19 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
             Symbol ai = sortedNonTerminators.get(i);
             for (int j = 0; j < i; j++) {
                 Symbol aj = sortedNonTerminators.get(j);
-                // 如果非终结符I的产生式里第一个非终结符是J，那么用J的产生式替换掉非终结符J
+                /*
+                 * 如果非终结符I的产生式里第一个非终结符是J，那么用J的产生式替换掉非终结符J
+                 */
                 substitutionNonTerminator(ai, aj);
             }
-            // 消除非终结符I的直接左递归
+            /*
+             * 消除非终结符I的直接左递归
+             */
             eliminateDirectLeftRecursion(ai);
 
-            // 提取左公因子
+            /*
+             * 提取左公因子
+             */
             extractLeftCommonFactor(ai);
         }
 
@@ -74,7 +80,9 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
                 Symbol nonTerminator = p.getLeft();
                 assertFalse(nonTerminator.isTerminator());
 
-                // 必然不包含相同左部的产生式（在Grammar构造时已经合并过了）
+                /*
+                 * 必然不包含相同左部的产生式（在Grammar构造时已经合并过了）
+                 */
                 assertFalse(productionMap.containsKey(nonTerminator));
                 productionMap.put(nonTerminator, p);
             }
@@ -84,13 +92,19 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
     }
 
     private void initSortedNonTerminators() {
-        // 有向边，从key指向value
+        /*
+         * 有向边，从key指向value
+         */
         Map<Symbol, List<Symbol>> edges = new HashMap<>(16);
 
-        // 顶点的度，度为0的顶点才能访问
+        /*
+         * 顶点的度，度为0的顶点才能访问
+         */
         Map<Symbol, Integer> degrees = new HashMap<>(16);
 
-        // 初始化edges以及degrees
+        /*
+         * 初始化edges以及degrees
+         */
         for (Symbol symbol : productionMap.keySet()) {
             edges.put(symbol, new ArrayList<>());
             degrees.put(symbol, 0);
@@ -137,22 +151,30 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
         Production pa = productionMap.get(a);
         Production pb = productionMap.get(b);
 
-        // 标记是否发生替换
+        /*
+         * 标记是否发生替换
+         */
         boolean isSubstituted = false;
 
         List<PrimaryProduction> ppaModified = new ArrayList<>();
 
-        // 遍历产生式I的每一个子产生式
+        /*
+         * 遍历产生式I的每一个子产生式
+         */
         for (PrimaryProduction ppa : pa.getPrimaryProductions()) {
             List<Symbol> symbolsOfPPA = ppa.getRight().getSymbols();
 
             assertFalse(symbolsOfPPA.isEmpty());
 
-            // 如果子产生式第一个符号是symbolJ，那么进行替换
+            /*
+             * 如果子产生式第一个符号是symbolJ，那么进行替换
+             */
             if (symbolsOfPPA.get(0).equals(b)) {
                 isSubstituted = true;
 
-                // 遍历终结符J的每个子产生式
+                /*
+                 * 遍历终结符J的每个子产生式
+                 */
                 for (PrimaryProduction ppb : pb.getPrimaryProductions()) {
 
                     ppaModified.add(
@@ -192,10 +214,14 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
     private void eliminateDirectLeftRecursion(Symbol a) {
         Production p1 = productionMap.get(a);
 
-        // β1|β2|...|βm
+        /*
+         * β1|β2|...|βm
+         */
         List<PrimaryProduction> betas = new ArrayList<>();
 
-        // Aα1|Aα2|...|Aαn
+        /*
+         * Aα1|Aα2|...|Aαn
+         */
         List<PrimaryProduction> alphas = new ArrayList<>();
 
         for (PrimaryProduction pp1 : p1.getPrimaryProductions()) {
@@ -221,14 +247,20 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
         for (PrimaryProduction ppAlpha : alphas) {
 
             pp3.add(
-                    // αiA′
+                    /*
+                     * αiA′
+                     */
                     PrimaryProduction.create(
                             aPrimed,
                             SymbolString.create(
                                     ListUtils.of(
-                                            // αi
+                                            /*
+                                             * αi
+                                             */
                                             ListUtils.subListExceptFirstElement(ppAlpha.getRight().getSymbols()),
-                                            // A′
+                                            /*
+                                             * A′
+                                             */
                                             aPrimed
                                     )
                             ),
@@ -238,7 +270,9 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
             );
         }
 
-        // ε
+        /*
+         * ε
+         */
         pp3.add(
                 PrimaryProduction.create(
                         aPrimed,
@@ -256,15 +290,21 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
 
         for (PrimaryProduction ppBeta : betas) {
 
-            // 构造βmA′
+            /*
+             * 构造βmA′
+             */
             pp2.add(
                     PrimaryProduction.create(
                             a,
                             SymbolString.create(
                                     ListUtils.of(
-                                            // βm
+                                            /*
+                                             * βm
+                                             */
                                             ppBeta.getRight().getSymbols(),
-                                            // A′
+                                            /*
+                                             * A′
+                                             */
                                             aPrimed
                                     )
                             ),
@@ -293,10 +333,14 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
 
         Production p1 = productionMap.get(a);
 
-        // 所有平凡前缀计数
+        /*
+         * 所有平凡前缀计数
+         */
         Map<Symbol, Integer> commonPrefixes = new HashMap<>(16);
 
-        // 初始化commonPrefixes
+        /*
+         * 初始化commonPrefixes
+         */
         for (PrimaryProduction pp1 : p1.getPrimaryProductions()) {
             List<Symbol> symbols = pp1.getRight().getSymbols();
 
@@ -304,7 +348,9 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
 
             Symbol firstSymbol = symbols.get(0);
 
-            // 跳过非平凡前缀
+            /*
+             * 跳过非平凡前缀
+             */
             if (Symbol.EPSILON.equals(firstSymbol)) {
                 continue;
             }
@@ -318,10 +364,14 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
 
         filterPrefixWithSingleCount(commonPrefixes);
 
-        // 循环提取左公因子
+        /*
+         * 循环提取左公因子
+         */
         if (!commonPrefixes.isEmpty()) {
 
-            // 产生一个异变符号（例如，A′），同时需要保证是没被使用过的
+            /*
+             * 产生一个异变符号（例如，A′），同时需要保证是没被使用过的
+             */
             Symbol aPrimed = createPrimedSymbolFor(a);
 
             Symbol prefixSymbol = commonPrefixes.keySet().iterator().next();
@@ -334,7 +384,9 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
                     if (pp1.getRight().getSymbols().size() > 1) {
                         betas.add(
                                 PrimaryProduction.create(
-                                        // A′
+                                        /*
+                                         * A′
+                                         */
                                         aPrimed,
                                         SymbolString.create(
                                                 ListUtils.subListExceptFirstElement(pp1.getRight().getSymbols())
@@ -346,7 +398,9 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
                     } else {
                         betas.add(
                                 PrimaryProduction.create(
-                                        // A′
+                                        /*
+                                         * A′
+                                         */
                                         aPrimed,
                                         SymbolString.create(
                                                 Symbol.EPSILON
@@ -362,7 +416,9 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
             }
 
             Production p3 = Production.create(
-                    // β1|β2|...|βn
+                    /*
+                     * β1|β2|...|βn
+                     */
                     betas
             );
 
@@ -372,9 +428,13 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
             Production p2 = Production.create(
                     ListUtils.of(
                             PrimaryProduction.create(
-                                    // A
+                                    /*
+                                     * A
+                                     */
                                     a,
-                                    // aA′
+                                    /*
+                                     * aA′
+                                     */
                                     SymbolString.create(
                                             prefixSymbol,
                                             aPrimed
@@ -382,14 +442,18 @@ public class LreElfGrammarConverter extends AbstractGrammarConverter {
                                     // todo 由于LL1分析法会改造文法，这样一来定义文法时的Operator就无效了（有位置信息）
                                     null
                             ),
-                            // γ1|γ2|...|γm
+                            /*
+                             * γ1|γ2|...|γm
+                             */
                             gammas
                     )
             );
 
             productionMap.put(a, p2);
 
-            // 递归调用
+            /*
+             * 递归调用
+             */
             extractLeftCommonFactor(a);
             extractLeftCommonFactor(aPrimed);
         }

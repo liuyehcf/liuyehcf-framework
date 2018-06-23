@@ -42,7 +42,9 @@ public class MergeGrammarConverter extends AbstractGrammarConverter {
             Symbol nonTerminator = p.getLeft();
             AssertUtils.assertFalse(nonTerminator.isTerminator());
 
-            // 合并相同左部的产生式
+            /*
+             * 合并相同左部的产生式
+             */
             if (productionMap.containsKey(nonTerminator)) {
                 productionMap.put(
                         nonTerminator,

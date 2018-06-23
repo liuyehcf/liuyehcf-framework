@@ -77,7 +77,9 @@ public class NfaState {
 
     void addInputSymbolAndNextNfaState(Symbol symbol, NfaState nextNfaState) {
         if (!nextNfaStatesMap.containsKey(symbol)) {
-            // 同理，这里也需要使用LinkedHashSet来保证同一个符号下的节点先后次序，详见"NfaBuildIterator.parallel"方法
+            /*
+             * 同理，这里也需要使用LinkedHashSet来保证同一个符号下的节点先后次序，详见"NfaBuildIterator.parallel"方法
+             */
             nextNfaStatesMap.put(symbol, new LinkedHashSet<>());
         }
         nextNfaStatesMap.get(symbol).add(nextNfaState);

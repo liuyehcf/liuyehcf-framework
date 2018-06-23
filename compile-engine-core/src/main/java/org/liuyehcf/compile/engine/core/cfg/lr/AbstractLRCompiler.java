@@ -185,8 +185,9 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
         String separator = "|";
 
-        // 第一行：表头，各个终结符符号以及非终结符号
-
+        /*
+         * 第一行：表头，各个终结符符号以及非终结符号
+         */
         sb.append(separator)
                 .append(' ')
                 .append("状态\\文法符号")
@@ -211,7 +212,9 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
         sb.append(separator).append('\n');
 
-        // 第二行：对齐格式
+        /*
+         * 第二行：对齐格式
+         */
         sb.append(separator);
 
         for (int i = 0; i < analysisSymbols.size(); i++) {
@@ -223,7 +226,9 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
         sb.append('\n');
 
-        // 其余行：转义表
+        /*
+         * 其余行：转义表
+         */
         for (Closure closure : closures.values()) {
             sb.append(separator)
                     .append(' ')
@@ -318,21 +323,31 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
     }
 
     private void init() {
-        // 初始化项目集闭包
+        /*
+         * 初始化项目集闭包
+         */
         initClosure();
 
-        // 合并同心闭包
+        /*
+         * 合并同心闭包
+         */
         mergeConcentricClosure();
 
-        // 初始化分析表
+        /*
+         * 初始化分析表
+         */
         initAnalysisTable();
 
-        // 检查正确性
+        /*
+         * 检查正确性
+         */
         checkIsLegal();
     }
 
     private void initClosure() {
-        // 初始化，添加闭包0
+        /*
+         * 初始化，添加闭包0
+         */
         Closure firstClosure = closure(ListUtils.of(createFirstItem()));
         closures.put(firstClosure.getId(), firstClosure);
 
@@ -345,15 +360,21 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
             for (Closure preClosure : closures.values()) {
 
-                // 同一个闭包下的不同项目，如果下一个符号相同，那么这些项目的后继项目作为下一个闭包的核心项目集合
-                // 这个Map就是用于保存: 输入符号 -> 后继闭包的核心项目集合 的映射关系
+                /*
+                 * 同一个闭包下的不同项目，如果下一个符号相同，那么这些项目的后继项目作为下一个闭包的核心项目集合
+                 * 这个Map就是用于保存: 输入符号 -> 后继闭包的核心项目集合 的映射关系
+                 */
                 Map<Symbol, List<Item>> successorMap = new LinkedHashMap<>();
 
-                // 遍历闭包中的产生式，初始化successorMap
+                /*
+                 * 遍历闭包中的产生式，初始化successorMap
+                 */
                 for (Item preItem : preClosure.getItems()) {
                     Item nextItem = successor(preItem);
 
-                    // 有后继
+                    /*
+                     * 有后继
+                     */
                     if (nextItem != null) {
                         Symbol nextSymbol = nextSymbol(preItem);
                         AssertUtils.assertNotNull(nextSymbol);
@@ -366,7 +387,9 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                     }
                 }
 
-                // 创建Closure，维护状态转移表
+                /*
+                 * 创建Closure，维护状态转移表
+                 */
                 for (Map.Entry<Symbol, List<Item>> entry : successorMap.entrySet()) {
                     Symbol nextSymbol = entry.getKey();
                     List<Item> coreItemsOfNextClosure = entry.getValue();
@@ -414,12 +437,16 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         while (!canBreak) {
             int preSize = items.size();
 
-            // 遍历Set的时候不能进行写操作
+            /*
+             * 遍历Set的时候不能进行写操作
+             */
             List<Item> newAddedItems = new ArrayList<>();
             for (Item item : items) {
                 Symbol nextSymbol = nextSymbol(item);
 
-                // '·'后面跟的是非终结符
+                /*
+                 * '·'后面跟的是非终结符
+                 */
                 if (nextSymbol != null
                         && !nextSymbol.isTerminator()) {
 
@@ -434,8 +461,10 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
             }
         }
 
-        // 合并具有相同产生式的Item，即合并展望符。同时保持Item的顺序，因此用LinkedHashMap
-        // 形如 "[B → · γ, b]"与"[B → · γ, c]" 合并成 "[B → · γ, b/c]"
+        /*
+         * 合并具有相同产生式的Item，即合并展望符。同时保持Item的顺序，因此用LinkedHashMap
+         * 形如 "[B → · γ, b]"与"[B → · γ, c]" 合并成 "[B → · γ, b/c]"
+         */
         Map<PrimaryProduction, Item> helpMap = new LinkedHashMap<>();
 
         for (Item item : items) {
@@ -482,7 +511,10 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
          * pair.second 删除的闭包列表
          */
         List<Pair<Closure, Set<Closure>>> concentricClosures = new ArrayList<>();
-        // 如果某个Closure需要合并（即存在同心闭包），那么将该Closure映射到该Closure位于concentricClosures中的index
+
+        /*
+         * 如果某个Closure需要合并（即存在同心闭包），那么将该Closure映射到该Closure位于concentricClosures中的index
+         */
         Map<Closure, Integer> concentricIndexes = new HashMap<>(16);
 
         List<Integer> closureIds = ListUtils.sort(new ArrayList<>(closures.keySet()));
@@ -525,19 +557,25 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         for (Closure fromClosure : closures.values()) {
             int actualFromClosureId;
 
-            // 是同心闭包
+            /*
+             * 是同心闭包
+             */
             if (concentricIndexes.containsKey(fromClosure)) {
                 int index = concentricIndexes.get(fromClosure);
                 actualFromClosureId = concentricClosures.get(index).getFirst().getId();
             }
-            // 普通闭包
+            /*
+             * 普通闭包
+             */
             else {
                 actualFromClosureId = fromClosure.getId();
             }
 
             newClosureTransferTable.putIfAbsent(actualFromClosureId, new HashMap<>(16));
 
-            // 有些状态（闭包）是没有下一跳状态的
+            /*
+             * 有些状态（闭包）是没有下一跳状态的
+             */
             if (closureTransferTable.containsKey(actualFromClosureId)) {
                 for (Map.Entry<Symbol, Integer> entry : closureTransferTable.get(actualFromClosureId).entrySet()) {
                     Symbol nextSymbol = entry.getKey();
@@ -546,7 +584,9 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
                     int actualToClosureId;
 
-                    // toClosure也可能是需要被移除的，那么找到这个toClosure所在的同心闭包集合，取出保留的closure的id作为真正的toClosureId
+                    /*
+                     * toClosure也可能是需要被移除的，那么找到这个toClosure所在的同心闭包集合，取出保留的closure的id作为真正的toClosureId
+                     */
                     if (concentricIndexes.containsKey(toClosure)) {
                         int indexOfToClosure = concentricIndexes.get(toClosure);
                         actualToClosureId = concentricClosures.get(indexOfToClosure).getFirst().getId();
@@ -568,7 +608,9 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
             }
         }
 
-        // 合并同心闭包的展望符集合
+        /*
+         * 合并同心闭包的展望符集合
+         */
         for (Pair<Closure, Set<Closure>> pair : concentricClosures) {
             Closure savedClosure = pair.getFirst();
             for (Closure removedClosure : pair.getSecond()) {
@@ -609,20 +651,26 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                     );
                 }
 
-                // 更新合并后的闭包
+                /*
+                 * 更新合并后的闭包
+                 */
                 savedClosure = new Closure(
                         savedClosure.getId(),
                         coreItems,
                         equalItems);
             }
 
-            // 将最终的闭包替换掉closures中原来的闭包
+            /*
+             * 将最终的闭包替换掉closures中原来的闭包
+             */
             closures.put(savedClosure.getId(), savedClosure);
         }
 
         this.closureTransferTable = newClosureTransferTable;
 
-        // 从closures中移除哪些已经被删除的闭包
+        /*
+         * 从closures中移除哪些已经被删除的闭包
+         */
         concentricClosures.forEach(
                 (pair) -> pair.getSecond().forEach(
                         (closure -> closures.remove(closure.getId()))));
@@ -632,7 +680,9 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         analysisTerminators.addAll(
                 ListUtils.sort(
                         ListUtils.of(
-                                // 除Symbol.EPSILON之外的所有终结符
+                                /*
+                                 * 除Symbol.EPSILON之外的所有终结符
+                                 */
                                 this.grammar.getTerminators().stream().filter(symbol -> !Symbol.EPSILON.equals(symbol))
                                         .collect(Collectors.toList()),
                                 Symbol.DOLLAR
@@ -643,14 +693,18 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                 ListUtils.sort(
                         ListUtils.of(
                                 analysisTerminators,
-                                // 除Symbol.START之外的所有非终结符
+                                /*
+                                 * 除Symbol.START之外的所有非终结符
+                                 */
                                 (List<Symbol>) this.grammar.getNonTerminators().stream()
                                         .filter((symbol -> !Symbol.START.equals(symbol))).collect(Collectors.toList())
                         )
                 )
         );
 
-        // 初始化
+        /*
+         * 初始化
+         */
         for (Closure closure : closures.values()) {
             analysisTable.put(closure.getId(), new HashMap<>(16));
             for (Symbol symbol : analysisSymbols) {
@@ -658,9 +712,13 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
             }
         }
 
-        // 遍历每个Closure
+        /*
+         * 遍历每个Closure
+         */
         for (Closure closure : closures.values()) {
-            // 遍历Closure中的每个项目
+            /*
+             * 遍历Closure中的每个项目
+             */
             for (Item item : closure.getItems()) {
                 Symbol nextSymbol = nextSymbol(item);
 
@@ -676,7 +734,9 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
     }
 
     private void checkIsLegal() {
-        // 检查合法性，即检查表项动作是否唯一
+        /*
+         * 检查合法性，即检查表项动作是否唯一
+         */
         for (Closure closure : closures.values()) {
             for (Symbol symbol : analysisSymbols) {
                 if (analysisTable.get(closure.getId()).get(symbol).size() > 1) {
@@ -874,7 +934,9 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
             onReduction(new Context(ppReduction, nodeStack, leftNode));
 
-            // 如果是形如 "A → ε"这样的产生式，那么特殊处理一下（不进行出栈操作）
+            /*
+             * 如果是形如 "A → ε"这样的产生式，那么特殊处理一下（不进行出栈操作）
+             */
             if (!SymbolString.EPSILON_RAW.equals(ppReduction.getRight())) {
                 for (int i = 0; i < ppReduction.getRight().getSymbols().size(); i++) {
                     statusStack.pop();

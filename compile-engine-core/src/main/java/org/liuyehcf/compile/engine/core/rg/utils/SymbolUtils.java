@@ -42,7 +42,9 @@ public class SymbolUtils {
             alphabetSymbolsMatchesAny = new ArrayList<>();
             for (char c = 0; c < 256; c++) {
                 alphabetSymbols.add(Symbol.createTerminator("" + c));
-                // jump over undefined chars
+                /*
+                 * jump over undefined chars
+                 */
                 if (isLegalCharMatchesAny(c)) {
                     alphabetSymbolsMatchesAny.add(alphabetSymbols.get(c));
                 }

@@ -100,13 +100,19 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
     }
 
     private void init() {
-        // 转换给定文法，包括消除直接/间接左递归；提取公因子
+        /*
+         * 转换给定文法，包括消除直接/间接左递归；提取公因子
+         */
         convertGrammar();
 
-        // 计算first集
+        /*
+         * 计算first集
+         */
         calculateFirst();
 
-        // 计算follow集
+        /*
+         * 计算follow集
+         */
         calculateFollow();
     }
 
@@ -124,12 +130,16 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
     private void calculateFirst() {
         firsts = new HashMap<>(16);
 
-        // 首先，处理所有的终结符
+        /*
+         * 首先，处理所有的终结符
+         */
         for (Symbol symbol : this.grammar.getTerminators()) {
             firsts.put(symbol, SetUtils.of(symbol));
         }
 
-        // 处理非终结符
+        /*
+         * 处理非终结符
+         */
         boolean canBreak = false;
         while (!canBreak) {
             Map<Symbol, Set<Symbol>> newFirsts = copyFirst();
@@ -157,7 +167,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
                             break;
                         } else {
                             /*
-                             * 首先，将_Y的first集(除了ε)添加到_X的first集中
+                             * 首先，将Yi的first集(除了ε)添加到Xi的first集中
                              */
                             if (!newFirsts.containsKey(x)) {
                                 newFirsts.put(x, new HashSet<>());
@@ -169,7 +179,9 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
                                     )
                             );
 
-                            // 若_Y的first集不包含ε，那么到子表达式循环结束
+                            /*
+                             * 若Yi的first集不包含ε，那么到子表达式循环结束
+                             */
                             if (!newFirsts.get(yi).contains(Symbol.EPSILON)) {
                                 canReachEpsilon = false;
                                 break;
@@ -203,7 +215,9 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
     private void calculateFollow() {
         follows = new HashMap<>(16);
 
-        // 将$放入FOLLOW(S)中，其中S是开始符号，$是输入右端的结束标记
+        /*
+         * 将$放入FOLLOW(S)中，其中S是开始符号，$是输入右端的结束标记
+         */
         follows.put(this.grammar.getStart(), SetUtils.of(Symbol.DOLLAR));
 
         boolean canBreak = false;
@@ -228,7 +242,9 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
                             beta = ppa.getRight().getSubSymbolString(i + 1);
                         }
 
-                        // 如果存在一个产生式A→αBβ，那么FIRST(β)中除ε之外的所有符号都在FOLLOW(B)中
+                        /*
+                         * 如果存在一个产生式A→αBβ，那么FIRST(β)中除ε之外的所有符号都在FOLLOW(B)中
+                         */
                         if (beta != null) {
                             if (!newFollows.containsKey(b)) {
                                 newFollows.put(b, new HashSet<>());
@@ -244,7 +260,9 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
                             );
                         }
 
-                        // 如果存在一个产生式A→αB，或存在产生式A→αBβ且FIRST(β)包含ε，那么FOLLOW(A)中的所有符号都在FOLLOW(B)中
+                        /*
+                         * 如果存在一个产生式A→αB，或存在产生式A→αBβ且FIRST(β)包含ε，那么FOLLOW(A)中的所有符号都在FOLLOW(B)中
+                         */
                         if (beta == null
                                 || epsilonInvolvedInFirstsOf(beta)) {
                             if (newFollows.containsKey(a)) {
@@ -270,7 +288,9 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
             }
         }
 
-        // 检查一下是否所有的非终结符都有了follow集
+        /*
+         * 检查一下是否所有的非终结符都有了follow集
+         */
         for (Symbol nonTerminator : this.grammar.getNonTerminators()) {
             AssertUtils.assertFalse(follows.get(nonTerminator) == null
                     || follows.get(nonTerminator).isEmpty());

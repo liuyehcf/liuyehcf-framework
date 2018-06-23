@@ -42,10 +42,14 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
      * 初始化方法
      */
     private void init() {
-        // 计算select集
+        /*
+         * 计算select集
+         */
         calculateSelect();
 
-        // 检查正确性
+        /*
+         * 检查正确性
+         */
         checkIsLegal();
     }
 
@@ -65,13 +69,17 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
 
                 selects.get(a).put(ppa, new HashSet<>());
 
-                // 如果ε∉FIRST(α)，那么SELECT(A→α)=FIRST(α)
+                /*
+                 * 如果ε∉FIRST(α)，那么SELECT(A→α)=FIRST(α)
+                 */
                 if (!epsilonInvolvedInFirstsOf(alpha)) {
                     selects.get(a).get(ppa).addAll(
                             getFirstsOf(alpha)
                     );
                 }
-                // 如果ε∈FIRST(α)，那么SELECT(A→α)=(FIRST(α)−{ε})∪FOLLOW(A)
+                /*
+                 * 如果ε∈FIRST(α)，那么SELECT(A→α)=(FIRST(α)−{ε})∪FOLLOW(A)
+                 */
                 else {
                     selects.get(a).get(ppa).addAll(
                             SetUtils.of(
@@ -85,7 +93,9 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
     }
 
     private void checkIsLegal() {
-        // 检查select集的唯一性：具有相同左部的产生式其SELECT集不相交
+        /*
+         * 检查select集的唯一性：具有相同左部的产生式其SELECT集不相交
+         */
         for (Symbol a : this.grammar.getNonTerminators()) {
             Map<PrimaryProduction, Set<Symbol>> map = selects.get(a);
             AssertUtils.assertNotNull(map);
@@ -184,7 +194,9 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
 
         String separator = "|";
 
-        // 第一行：表头，各个终结符符号
+        /*
+         * 第一行：表头，各个终结符符号
+         */
         sb.append(separator)
                 .append(' ')
                 .append("非终结符\\终结符")
@@ -199,7 +211,9 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
 
         sb.append(separator).append('\n');
 
-        // 第二行：对齐格式
+        /*
+         * 第二行：对齐格式
+         */
         sb.append(separator);
 
         for (int i = 0; i < this.grammar.getTerminators().size(); i++) {
@@ -211,10 +225,14 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
 
         sb.append('\n');
 
-        // 其余行：每一行代表某个非终结符在不同终结符下的产生式
-        // A → α
+        /*
+         * 其余行：每一行代表某个非终结符在不同终结符下的产生式
+         * A → α
+         */
         for (Symbol a : this.grammar.getNonTerminators()) {
-            // 第一列，产生式
+            /*
+             * 第一列，产生式
+             */
             sb.append(separator)
                     .append(' ')
                     .append(a)
@@ -278,7 +296,9 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
         private CompileResult<T> compile() {
             LexicalAnalyzer.TokenIterator tokenIterator = lexicalAnalyzer.iterator(input);
 
-            // 取出全部的TokenId
+            /*
+             * 取出全部的TokenId
+             */
             Queue<Symbol> tokenIds = new LinkedList<>();
             while (tokenIterator.hasNext()) {
                 tokenIds.offer(tokenIterator.next().getId());
@@ -288,7 +308,9 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
             }
             tokenIds.offer(Symbol.DOLLAR);
 
-            // 符号栈
+            /*
+             * 符号栈
+             */
             LinkedList<Symbol> symbolStack = new LinkedList<>();
             symbolStack.push(Symbol.DOLLAR);
             symbolStack.push(grammar.getStart());
@@ -303,10 +325,14 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
                         throw new CompilerException();
                     }
 
-                    // 每次迭代都会消耗一个symbol
+                    /*
+                     * 每次迭代都会消耗一个symbol
+                     */
                     symbol = symbolStack.pop();
 
-                    // 每次迭代未必会消耗一个token
+                    /*
+                     * 每次迭代未必会消耗一个token
+                     */
                     if (tokenId == null) {
                         if (tokenIds.isEmpty()) {
                             throw new CompilerException();
@@ -315,7 +341,9 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
                     }
 
                     if (symbol.isTerminator()) {
-                        // 若当前符号是ε则不消耗token
+                        /*
+                         * 若当前符号是ε则不消耗token
+                         */
                         if (!Symbol.EPSILON.equals(symbol)) {
 
                             if (tokenId == null) {
@@ -326,7 +354,9 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
                                 throw new CompilerException();
                             }
 
-                            // 消耗一个token
+                            /*
+                             * 消耗一个token
+                             */
                             tokenId = null;
                         }
                     } else {

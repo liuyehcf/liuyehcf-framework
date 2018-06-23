@@ -140,7 +140,9 @@ public class Symbol implements Comparable<Symbol> {
 
     @Override
     public int hashCode() {
-        // 这里不能用type.hashCode，否则会调用Object的hashCode，导致每次运行hashCode不一致（会导致Map顺序变化，以至于测试用例通不过）
+        /*
+         * 这里不能用type.hashCode，否则会调用Object的hashCode，导致每次运行hashCode不一致（会导致Map顺序变化，以至于测试用例通不过）
+         */
         return Boolean.valueOf(this.isTerminator).hashCode() +
                 this.value.hashCode() +
                 Integer.valueOf(this.primeCount).hashCode() +

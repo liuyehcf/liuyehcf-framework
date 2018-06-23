@@ -22,11 +22,13 @@ public class StatusExpandGrammarConverter extends AbstractGrammarConverter {
     protected Grammar doConvert() {
         List<Production> newProductions = new ArrayList<>();
 
-        // A → B
-        //   |
-        //   v
-        // A → ·B
-        // A → B·
+        /*
+         * A → B
+         *   |
+         *   v
+         * A → ·B
+         * A → B·
+         */
         for (Production p : originalGrammar.getProductions()) {
             Symbol a = p.getLeft();
 
@@ -34,10 +36,14 @@ public class StatusExpandGrammarConverter extends AbstractGrammarConverter {
 
                 int length = pp.getRight().getSymbols().size();
 
-                // 构造新的  length+1个 PrimaryProduction
+                /*
+                 * 构造新的  length+1个 PrimaryProduction
+                 */
                 for (int i = 0; i < length + 1; i++) {
                     if (i == 0 && SymbolString.EPSILON_RAW.equals(pp.getRight())) {
-                        // 特殊处理一下ε产生式。只保留 "A → ε ·"，丢弃"A → · ε"
+                        /*
+                         * 特殊处理一下ε产生式。只保留 "A → ε ·"，丢弃"A → · ε"
+                         */
                         continue;
                     }
                     newProductions.add(

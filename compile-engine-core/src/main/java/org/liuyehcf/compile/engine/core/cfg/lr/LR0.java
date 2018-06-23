@@ -21,11 +21,16 @@ public class LR0<T> extends AbstractLRCompiler<T> {
 
     @Override
     Item createFirstItem() {
-        PrimaryProduction ppStart; // origin production
+        /*
+         * origin production
+         */
+        PrimaryProduction ppStart;
 
         AssertUtils.assertTrue(getProductionMap().get(Symbol.START).getPrimaryProductions().size() == 2);
 
-        // 第一个子产生式
+        /*
+         * 第一个子产生式
+         */
         if (getProductionMap().get(Symbol.START).getPrimaryProductions().get(0)
                 .getRight().getIndexOfDot() == 0) {
             ppStart = getProductionMap().get(Symbol.START).getPrimaryProductions().get(0);

@@ -236,7 +236,9 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
                         }
                     }
                 }
-                // 如果所有词素的正则表达式均不匹配，且当前字符是空白符号，那么允许跳过
+                /*
+                 * 如果所有词素的正则表达式均不匹配，且当前字符是空白符号，那么允许跳过
+                 */
                 if (hasNext == null) {
                     if (isBlankChar(input.charAt(index))) {
                         index++;

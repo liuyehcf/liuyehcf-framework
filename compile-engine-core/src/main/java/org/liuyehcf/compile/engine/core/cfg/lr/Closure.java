@@ -95,7 +95,9 @@ class Closure {
 
         sb.append('{');
 
-        // id
+        /*
+         * id
+         */
         sb.append('\"')
                 .append("id")
                 .append('\"')
@@ -106,7 +108,9 @@ class Closure {
 
         sb.append(',');
 
-        // coreItems
+        /*
+         * coreItems
+         */
         sb.append('\"')
                 .append("coreItems")
                 .append('\"')
@@ -130,7 +134,9 @@ class Closure {
 
         sb.append(',');
 
-        // equalItems
+        /*
+         * equalItems
+         */
         sb.append('\"')
                 .append("equalItems")
                 .append('\"')

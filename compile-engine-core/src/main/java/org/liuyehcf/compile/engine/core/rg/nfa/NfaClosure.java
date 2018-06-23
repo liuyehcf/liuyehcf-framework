@@ -73,7 +73,9 @@ public class NfaClosure {
     }
 
     void setStartAndReceive(int group) {
-        // 设置起始节点
+        /*
+         * 设置起始节点
+         */
         startNfaState.setStart(group);
 
         for (NfaState endNfaState : endNfaStates) {
@@ -85,10 +87,14 @@ public class NfaClosure {
     public NfaClosure clone() {
         Map<NfaState, NfaState> oldAndNewNfaStateMap = new HashMap<>(16);
 
-        // 镜像创建NfaState节点，属性值先不拷贝
+        /*
+         * 镜像创建NfaState节点，属性值先不拷贝
+         */
         dfsMirrorCopy(getStartNfaState(), oldAndNewNfaStateMap);
 
-        // 这里拷贝所有NfaState的属性值，并创建NfaClosure
+        /*
+         * 这里拷贝所有NfaState的属性值，并创建NfaClosure
+         */
         return mirrorCopyStatus(oldAndNewNfaStateMap);
     }
 
@@ -111,7 +117,9 @@ public class NfaClosure {
             NfaState curNfaState = entry.getKey();
             NfaState clonedCurNfaState = entry.getValue();
 
-            // 复制 nextNfaStatesMap
+            /*
+             * 复制 nextNfaStatesMap
+             */
             for (Symbol inputSymbol : curNfaState.getAllInputSymbol()) {
                 for (NfaState nextNfaState : curNfaState.getNextNfaStatesWithInputSymbol(inputSymbol)) {
                     NfaState clonedNextNfaState = oldAndNewNfaStateMap.get(nextNfaState);
@@ -120,7 +128,9 @@ public class NfaClosure {
                 }
             }
 
-            // 复制 groupStart以及groupReceive
+            /*
+             * 复制 groupStart以及groupReceive
+             */
             for (int group : curNfaState.getGroupStart()) {
                 clonedCurNfaState.setStart(group);
             }

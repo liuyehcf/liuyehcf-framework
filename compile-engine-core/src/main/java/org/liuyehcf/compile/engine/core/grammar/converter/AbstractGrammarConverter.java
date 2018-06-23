@@ -42,12 +42,16 @@ public abstract class AbstractGrammarConverter implements GrammarConverter {
             Symbol curSymbol = queue.poll();
             visitedSymbol.add(curSymbol);
 
-            // 有向邻接节点
+            /*
+             * 有向邻接节点
+             */
             List<Symbol> adjList = edges.get(curSymbol);
 
             for (Symbol adjSymbol : adjList) {
                 degrees.put(adjSymbol, degrees.get(adjSymbol) - 1);
-                // 度为0，可以访问
+                /*
+                 * 度为0，可以访问
+                 */
                 if (degrees.get(adjSymbol) == 0) {
                     queue.offer(adjSymbol);
                 }

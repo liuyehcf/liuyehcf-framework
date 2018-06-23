@@ -28,11 +28,16 @@ public class LR1<T> extends AbstractLRCompiler<T> {
 
     @Override
     Item createFirstItem() {
-        PrimaryProduction ppStart; // origin production
+        /*
+         * origin production
+         */
+        PrimaryProduction ppStart;
 
         AssertUtils.assertTrue(getProductionMap().get(Symbol.START).getPrimaryProductions().size() == 2);
 
-        // 第一个子产生式
+        /*
+         * 第一个子产生式
+         */
         if (getProductionMap().get(Symbol.START).getPrimaryProductions().get(0)
                 .getRight().getIndexOfDot() == 0) {
             ppStart = getProductionMap().get(Symbol.START).getPrimaryProductions().get(0);
@@ -63,10 +68,14 @@ public class LR1<T> extends AbstractLRCompiler<T> {
 
         Set<Symbol> lookAHeadsB;
 
-        // 此时展望符包含A，"β -*> ε"
+        /*
+         * 此时展望符包含A，"β -*> ε"
+         */
         if (beta == null
                 || epsilonInvolvedInFirstsOf(beta)) {
-            // 此时展望符就是 "FIRST(β) + a - ε"
+            /*
+             * 此时展望符就是 "FIRST(β) + a - ε"
+             */
             lookAHeadsB = SetUtils.extract(
                     SetUtils.of(
                             lookAHeadsA,
@@ -75,7 +84,9 @@ public class LR1<T> extends AbstractLRCompiler<T> {
                     , Symbol.EPSILON
             );
         } else {
-            // 此时展望符就是 "FIRST(β)"
+            /*
+             * 此时展望符就是 "FIRST(β)"
+             */
             lookAHeadsB = getFirstsOf(beta);
         }
 

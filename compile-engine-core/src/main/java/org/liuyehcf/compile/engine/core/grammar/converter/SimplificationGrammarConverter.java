@@ -79,13 +79,19 @@ public class SimplificationGrammarConverter extends AbstractGrammarConverter {
     }
 
     private void initSortedNonTerminators() {
-        // 有向边，从key指向value
+        /*
+         * 有向边，从key指向value
+         */
         Map<Symbol, List<Symbol>> edges = new HashMap<>(16);
 
-        // 顶点的度，度为0的顶点才能访问
+        /*
+         * 顶点的度，度为0的顶点才能访问
+         */
         Map<Symbol, Integer> degrees = new HashMap<>(16);
 
-        // 初始化edges以及degrees
+        /*
+         * 初始化edges以及degrees
+         */
         for (Symbol symbol : productionMap.keySet()) {
             edges.put(symbol, new ArrayList<>());
             degrees.put(symbol, 0);
@@ -124,7 +130,9 @@ public class SimplificationGrammarConverter extends AbstractGrammarConverter {
         PrimaryProduction pp = p.getPrimaryProductions().get(0);
 
         for (Symbol symbol : pp.getRight().getSymbols()) {
-            // 正则语法第一条产生式不能包含非终结符
+            /*
+             * 正则语法第一条产生式不能包含非终结符
+             */
             assertTrue(symbol.isTerminator());
         }
     }
@@ -145,7 +153,9 @@ public class SimplificationGrammarConverter extends AbstractGrammarConverter {
                 if (!symbol.isTerminator()) {
                     modifiedSymbols.add(SymbolUtils.LEFT_SMALL_PARENTHESIS);
 
-                    // 当前产生式包含的非终结符必定在之前循环中已经出现过
+                    /*
+                     * 当前产生式包含的非终结符必定在之前循环中已经出现过
+                     */
                     assertNotNull(symbolStringMap.get(symbol));
 
                     modifiedSymbols.addAll(symbolStringMap.get(symbol).getSymbols());

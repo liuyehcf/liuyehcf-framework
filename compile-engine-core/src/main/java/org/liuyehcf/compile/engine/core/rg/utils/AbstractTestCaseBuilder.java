@@ -308,7 +308,9 @@ public abstract class AbstractTestCaseBuilder {
                 }
                 pre = -1;
             }
-            // '-'前面存在有效字符时
+            /*
+             * '-'前面存在有效字符时
+             */
             else if (pre != -1 && getCurChar() == '-') {
                 AssertUtils.assertFalse(hasTo);
                 hasTo = true;
@@ -316,7 +318,9 @@ public abstract class AbstractTestCaseBuilder {
                 if (hasTo) {
                     AssertUtils.assertTrue(pre != -1);
                     AssertUtils.assertTrue(pre <= getCurChar());
-                    // pre在上一次已经添加过了，本次从pre+1开始
+                    /*
+                     * pre在上一次已经添加过了，本次从pre+1开始
+                     */
                     for (char c = (char) (pre + 1); c <= getCurChar(); c++) {
                         optionalChars.add(c);
                     }
@@ -331,7 +335,9 @@ public abstract class AbstractTestCaseBuilder {
             index++;
         } while (getCurChar() != ']');
 
-        // 最后一个'-'当做普通字符
+        /*
+         * 最后一个'-'当做普通字符
+         */
         if (hasTo) {
             optionalChars.add('-');
         }

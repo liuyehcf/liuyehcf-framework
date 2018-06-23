@@ -119,9 +119,13 @@ public class NfaMatcher implements Matcher {
     private NfaState isMatchDfs(NfaState curNfaState, int index, Set<String> visitedNfaState) {
         Tuple<int[], int[], Pair<Integer, Integer>[]> tuple = dfsStatusMark(curNfaState, index);
 
-        // 首先走非ε边，贪婪模式
+        /*
+         * 首先走非ε边，贪婪模式
+         */
         if (index != subInput.length()) {
-            // 从当前节点出发，经过非ε边的next节点集合
+            /*
+             * 从当前节点出发，经过非ε边的next节点集合
+             */
             Set<NfaState> nextStates = curNfaState.getNextNfaStatesWithInputSymbol(
                     SymbolUtils.getAlphabetSymbolWithChar(subInput.charAt(index)));
 
@@ -138,13 +142,17 @@ public class NfaMatcher implements Matcher {
             return curNfaState;
         } else {
 
-            // 从当前节点出发，经过ε边的后继节点集合
+            /*
+             * 从当前节点出发，经过ε边的后继节点集合
+             */
             Set<NfaState> epsilonNextStates = curNfaState.getNextNfaStatesWithInputSymbol(
                     Symbol.EPSILON
             );
             for (NfaState nextState : epsilonNextStates) {
-                // 为了避免重复经过相同的 ε边，每次访问ε边，给一个标记
-                // 在匹配目标字符串的不同位置时，允许经过相同的ε边
+                /*
+                 * 为了避免重复经过相同的 ε边，每次访问ε边，给一个标记
+                 * 在匹配目标字符串的不同位置时，允许经过相同的ε边
+                 */
                 String curStateString = statusInfo(nextState, index);
 
                 if (visitedNfaState.add(curStateString)) {
@@ -156,14 +164,18 @@ public class NfaMatcher implements Matcher {
                 }
             }
 
-            // 仅仅失败时需要回溯
+            /*
+             * 仅仅失败时需要回溯
+             */
             dfsStatusBackTrace(tuple);
             return null;
         }
     }
 
     private Tuple<int[], int[], Pair<Integer, Integer>[]> dfsStatusMark(NfaState curNfaState, int index) {
-        // 由于需要回溯，因此保留一下原始状态
+        /*
+         * 由于需要回溯，因此保留一下原始状态
+         */
         Tuple<int[], int[], Pair<Integer, Integer>[]> tuple = new Tuple<>(
                 groupStartIndexes.clone(),
                 groupEndIndexes.clone(),
@@ -205,8 +217,9 @@ public class NfaMatcher implements Matcher {
     private String statusInfo(NfaState nfaState, int index) {
         StringBuilder sb = new StringBuilder();
 
-        // 这里构造的节点状态信息包含了当前所在的NfaState，目标串的位置，当前所在的group以及其起始和终止索引
-
+        /*
+         * 这里构造的节点状态信息包含了当前所在的NfaState，目标串的位置，当前所在的group以及其起始和终止索引
+         */
         sb.append(nfaState.toString())
                 .append(',')
                 .append(index)
@@ -293,8 +306,10 @@ public class NfaMatcher implements Matcher {
             return;
         }
 
-        // 目前仅支持以贪婪模式查询匹配的子串
-        // 首先排序
+        /*
+         * 目前仅支持以贪婪模式查询匹配的子串
+         * 首先排序
+         */
         matchIntervals.sort((o1, o2) -> {
             if (o1.getFirst() < o2.getFirst()) {
                 return -1;
@@ -311,7 +326,9 @@ public class NfaMatcher implements Matcher {
             }
         });
 
-        // 然后合并包含的区间，例如[1,6)包含着[1,2] [3,5)，那么删去[1,2] [3,5)两个区间
+        /*
+         * 然后合并包含的区间，例如[1,6)包含着[1,2] [3,5)，那么删去[1,2] [3,5)两个区间
+         */
         List<Pair<Integer, Integer>> filteredMatchIntervals = new ArrayList<>();
 
         Pair<Integer, Integer> preInterval = matchIntervals.get(0);
@@ -319,16 +336,22 @@ public class NfaMatcher implements Matcher {
         for (int i = 1; i < matchIntervals.size(); i++) {
             Pair<Integer, Integer> nextInterval = matchIntervals.get(i);
 
-            // 当区间包含时
+            /*
+             * 当区间包含时
+             */
             if (preInterval.getFirst() >= nextInterval.getFirst()
                     && preInterval.getSecond() <= nextInterval.getSecond()) {
-                // 如果终止状态不同，说明不是*或者+之类，可能是"(a)|(b)|(ab)"匹配"ab"这种情况，那么需要保留小的区间；否则就是"a*"，匹配aa，保留大的区间
+                /*
+                 * 如果终止状态不同，说明不是*或者+之类，可能是"(a)|(b)|(ab)"匹配"ab"这种情况，那么需要保留小的区间；否则就是"a*"，匹配aa，保留大的区间
+                 */
                 if (intervalNfaStateMap.get(preInterval).equals(intervalNfaStateMap.get(nextInterval))) {
                     preInterval = nextInterval;
                 }
             }
 
-            // 若区间完全分离
+            /*
+             * 若区间完全分离
+             */
             if (nextInterval.getFirst() >= preInterval.getSecond()) {
                 filteredMatchIntervals.add(preInterval);
                 preInterval = nextInterval;

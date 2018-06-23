@@ -178,7 +178,9 @@ public class NfaBuildIterator {
     private void processWhenEncounteredAny() {
         pushCurNfaClosure();
 
-        // 创建一个新的NfaClosure
+        /*
+         * 创建一个新的NfaClosure
+         */
         buildNfaClosureForAnyAsCurNfaClosure();
 
         moveForward();
@@ -189,19 +191,25 @@ public class NfaBuildIterator {
     }
 
     private void processWhenEncounteredOr() {
-        // 合并左侧的NfaClosure
+        /*
+         * 合并左侧的NfaClosure
+         */
         combineNfaClosuresOfCurGroup();
 
         pushCurNfaClosure();
 
-        // 插入一个parallel操作的占位符
+        /*
+         * 插入一个parallel操作的占位符
+         */
         pushParallel();
 
         moveForward();
     }
 
     private void processWhenEncounteredUnKnow() {
-        // 用一个新的NfaClosure封装当前NfaClosure
+        /*
+         * 用一个新的NfaClosure封装当前NfaClosure
+         */
         wrapCurNfaClosureForUnKnow();
 
         pushCurNfaClosure();
@@ -252,7 +260,9 @@ public class NfaBuildIterator {
 
         NfaClosure wrapNfaClosure = buildWrapNfaClosure();
 
-        // 必须保证wrapNfaClosure单入单出，否则group匹配会出现边界问题（ "(a)?" 与 "(a?)" ）
+        /*
+         * 必须保证wrapNfaClosure单入单出，否则group匹配会出现边界问题（ "(a)?" 与 "(a?)" ）
+         */
         NfaState outerS = wrapNfaClosure.getStartNfaState();
         NfaState outerQ = new NfaState();
         NfaState outerE = wrapNfaClosure.getEndNfaStates().get(0);
@@ -260,17 +270,25 @@ public class NfaBuildIterator {
         assertNotNull(inner);
         NfaState innerS = inner.getStartNfaState();
 
-        // (1)
+        /*
+         * (1)
+         */
         outerS.addInputSymbolAndNextNfaState(Symbol.EPSILON, innerS);
 
-        // (2)
+        /*
+         * (2)
+         */
         outerS.addInputSymbolAndNextNfaState(Symbol.EPSILON, outerE);
 
-        // (3)
+        /*
+         * (3)
+         */
         outerQ.addInputSymbolAndNextNfaState(Symbol.EPSILON, outerE);
 
         for (NfaState innerE : inner.getEndNfaStates()) {
-            // (4)
+            /*
+             * (4)
+             */
             innerE.addInputSymbolAndNextNfaState(Symbol.EPSILON, outerQ);
         }
 
@@ -285,7 +303,9 @@ public class NfaBuildIterator {
     }
 
     private void processWhenEncounteredStar() {
-        // 用一个新的NfaClosure封装当前NfaClosure
+        /*
+         * 用一个新的NfaClosure封装当前NfaClosure
+         */
         wrapCurNfaClosureForStar();
 
         pushCurNfaClosure();
@@ -339,7 +359,9 @@ public class NfaBuildIterator {
 
         NfaClosure outer = buildWrapNfaClosure();
 
-        // 必须保证wrapNfaClosure单入单出，否则group匹配会出现边界问题（ "(a)*" 与 "(a*)" ）
+        /*
+         * 必须保证wrapNfaClosure单入单出，否则group匹配会出现边界问题（ "(a)*" 与 "(a*)" ）
+         */
         NfaState outerS = outer.getStartNfaState();
         NfaState outerE = outer.getEndNfaStates().get(0);
         NfaState outerP = new NfaState();
@@ -347,17 +369,25 @@ public class NfaBuildIterator {
         assertNotNull(inner);
         NfaState innerS = inner.getStartNfaState();
 
-        // (1)
+        /*
+         * (1)
+         */
         outerS.addInputSymbolAndNextNfaState(Symbol.EPSILON, outerP);
 
-        // (2)
+        /*
+         * (2)
+         */
         outerP.addInputSymbolAndNextNfaState(Symbol.EPSILON, innerS);
 
-        // (3)
+        /*
+         * (3)
+         */
         outerP.addInputSymbolAndNextNfaState(Symbol.EPSILON, outerE);
 
         for (NfaState innerE : inner.getEndNfaStates()) {
-            // (4)
+            /*
+             * (4)
+             */
             innerE.addInputSymbolAndNextNfaState(Symbol.EPSILON, outerP);
         }
 
@@ -365,7 +395,9 @@ public class NfaBuildIterator {
     }
 
     private void processWhenEncounteredAdd() {
-        // 用一个新的NfaClosure封装当前NfaClosure
+        /*
+         * 用一个新的NfaClosure封装当前NfaClosure
+         */
         wrapCurNfaClosureForAdd();
 
         pushCurNfaClosure();
@@ -421,7 +453,9 @@ public class NfaBuildIterator {
 
         NfaClosure wrapNfaClosure = buildWrapNfaClosure();
 
-        // 必须保证wrapNfaClosure单入单出，否则group匹配会出现边界问题（ "(a)+" 与 "(a+)" ）
+        /*
+         * 必须保证wrapNfaClosure单入单出，否则group匹配会出现边界问题（ "(a)+" 与 "(a+)" ）
+         */
         NfaState outerS = wrapNfaClosure.getStartNfaState();
         NfaState outerP = new NfaState();
         NfaState outerQ = new NfaState();
@@ -430,20 +464,30 @@ public class NfaBuildIterator {
         assertNotNull(inner);
         NfaState innerS = inner.getStartNfaState();
 
-        // (1)
+        /*
+         * (1)
+         */
         outerS.addInputSymbolAndNextNfaState(Symbol.EPSILON, outerP);
 
-        // (2)
+        /*
+         * (2)
+         */
         outerP.addInputSymbolAndNextNfaState(Symbol.EPSILON, innerS);
 
-        // (3)
+        /*
+         * (3)
+         */
         outerQ.addInputSymbolAndNextNfaState(Symbol.EPSILON, outerE);
 
         for (NfaState innerE : inner.getEndNfaStates()) {
-            // (4)
+            /*
+             * (4)
+             */
             innerE.addInputSymbolAndNextNfaState(Symbol.EPSILON, outerP);
 
-            // (5)
+            /*
+             * (5)
+             */
             innerE.addInputSymbolAndNextNfaState(Symbol.EPSILON, outerQ);
         }
 
@@ -451,7 +495,9 @@ public class NfaBuildIterator {
     }
 
     private void processWhenEncounteredLeftBigParenthesis() {
-        // 用一个新的NfaClosure封装当前NfaClosure
+        /*
+         * 用一个新的NfaClosure封装当前NfaClosure
+         */
         wrapCurNfaClosureForLeftBigParenthesis();
 
         pushCurNfaClosure();
@@ -462,7 +508,9 @@ public class NfaBuildIterator {
     }
 
     private NfaClosure createLeftBigParenthesisWrappedNfaClosureFor(Pair<Integer, Integer> repeatInterval) {
-        // 依据指定的重复区间，构建NfaClosure
+        /*
+         * 依据指定的重复区间，构建NfaClosure
+         */
         return buildNfaClosureForRepeatInterval(repeatInterval);
     }
 
@@ -471,7 +519,9 @@ public class NfaBuildIterator {
 
         NfaClosure newNfaClosure;
 
-        // a{1,}
+        /*
+         * a{1,}
+         */
         if (repeatInterval.getSecond() == null) {
             newNfaClosure = buildRepeatedNfaClosureFor(curNfaClosure, repeatInterval.getFirst());
 
@@ -548,7 +598,9 @@ public class NfaBuildIterator {
     private void processWhenEncounteredEscaped() {
         pushCurNfaClosure();
 
-        // 创建一个新的NfaClosure
+        /*
+         * 创建一个新的NfaClosure
+         */
         buildNfaClosureForEscapedAsCurNfaClosure();
 
         moveForward();
@@ -565,7 +617,9 @@ public class NfaBuildIterator {
     private void processWhenEncounteredLeftMiddleParenthesis() {
         pushCurNfaClosure();
 
-        // 创建一个新的NfaClosure
+        /*
+         * 创建一个新的NfaClosure
+         */
         buildNfaClosureForMiddleParenthesisAsCurNfaClosure();
     }
 
@@ -593,7 +647,9 @@ public class NfaBuildIterator {
                                 SymbolUtils.getChar(getCurSymbol())));
                 pre = -1;
             }
-            // '-'前面存在有效字符时
+            /*
+             * '-'前面存在有效字符时
+             */
             else if (pre != -1 && SymbolUtils.TO.equals(getCurSymbol())) {
                 AssertUtils.assertFalse(hasTo);
                 hasTo = true;
@@ -601,7 +657,9 @@ public class NfaBuildIterator {
                 if (hasTo) {
                     AssertUtils.assertTrue(pre != -1);
                     AssertUtils.assertTrue(pre <= SymbolUtils.getChar(getCurSymbol()));
-                    // pre在上一次已经添加过了，本次从pre+1开始
+                    /*
+                     * pre在上一次已经添加过了，本次从pre+1开始
+                     */
                     for (char c = (char) (pre + 1); c <= SymbolUtils.getChar(getCurSymbol()); c++) {
                         optionalSymbols.add(SymbolUtils.getAlphabetSymbolWithChar(c));
                     }
@@ -615,7 +673,9 @@ public class NfaBuildIterator {
             moveForward();
         } while (!SymbolUtils.RIGHT_MIDDLE_PARENTHESIS.equals(getCurSymbol()));
 
-        // 最后一个'-'当做普通字符
+        /*
+         * 最后一个'-'当做普通字符
+         */
         if (hasTo) {
             optionalSymbols.add(SymbolUtils.TO);
         }
@@ -632,7 +692,9 @@ public class NfaBuildIterator {
     private void processWhenEncounteredLeftSmallParenthesis() {
         enterGroup();
 
-        // 如果出现了()这种情况，那么才特殊处理一下。不加这个条件将会出现多余的ε边
+        /*
+         * 如果出现了()这种情况，那么才特殊处理一下。不加这个条件将会出现多余的ε边
+         */
         if (SymbolUtils.RIGHT_SMALL_PARENTHESIS.equals(getNextSymbol())) {
             pushCurNfaClosure();
             buildNonOrdinaryNfaClosure();
@@ -642,15 +704,21 @@ public class NfaBuildIterator {
     }
 
     private void processWhenEncounteredRightSmallParenthesis() {
-        // 合并NfaClosure
+        /*
+         * 合并NfaClosure
+         */
         combineNfaClosuresOfCurGroup();
 
-        // 为当前组设置接受以及起始状态标记
+        /*
+         * 为当前组设置接受以及起始状态标记
+         */
         setStartAndReceiveOfCurNfaClosure();
 
         exitGroup();
 
-        // 修改当前NfaClosure的组
+        /*
+         * 修改当前NfaClosure的组
+         */
         changeGroupOfCurNfaClosure();
 
         moveForward();
@@ -670,7 +738,9 @@ public class NfaBuildIterator {
             if (secondTopStackUnion.isNfaClosure()) {
                 if (secondTopStackUnion.getNfaClosure().getGroup()
                         != topStackUnion.getNfaClosure().getGroup()) {
-                    // case "a(b)"
+                    /*
+                     * case "a(b)"
+                     */
                     unions.push(secondTopStackUnion);
                     break;
                 }
@@ -684,7 +754,9 @@ public class NfaBuildIterator {
                 AssertUtils.assertTrue(thirdTopStackUnion.isNfaClosure());
                 if (thirdTopStackUnion.getNfaClosure().getGroup()
                         != topStackUnion.getNfaClosure().getGroup()) {
-                    // case "((a)|(b))"，将parallel操作滞后到group变更后
+                    /*
+                     * case "((a)|(b))"，将parallel操作滞后到group变更后
+                     */
                     unions.push(thirdTopStackUnion);
                     unions.push(secondTopStackUnion);
                     break;
@@ -698,7 +770,9 @@ public class NfaBuildIterator {
         }
 
         if (topStackUnion == null) {
-            // when "()"
+            /*
+             * when "()"
+             */
             topStackUnion = createStackUnitWithNfaClosure(
                     NfaClosure.getEmptyClosureForGroup(getCurGroup()));
         }
@@ -719,7 +793,9 @@ public class NfaBuildIterator {
     private void processWhenEncounteredNormalSymbol() {
         pushCurNfaClosure();
 
-        // 创建一个新的NfaClosure
+        /*
+         * 创建一个新的NfaClosure
+         */
         buildNfaClosureForNormalSymbol();
 
         moveForward();
@@ -733,7 +809,9 @@ public class NfaBuildIterator {
         NfaState startNfaState = new NfaState();
         List<NfaState> endNfaStates = new ArrayList<>();
 
-        // todo 这里创建了一个多余的EPSILON边
+        /*
+         * todo 这里创建了一个多余的EPSILON边
+         */
         startNfaState.addInputSymbolAndNextNfaState(Symbol.EPSILON, startNfaState);
         endNfaStates.add(startNfaState);
 
@@ -791,7 +869,9 @@ public class NfaBuildIterator {
         NfaState nextS = next.getStartNfaState();
 
         for (NfaState preE : pre.getEndNfaStates()) {
-            // (1)
+            /*
+             * (1)
+             */
             preE.addInputSymbolAndNextNfaState(Symbol.EPSILON, nextS);
         }
 
@@ -847,7 +927,9 @@ public class NfaBuildIterator {
          */
         preS.addInputSymbolAndNextNfaState(Symbol.EPSILON, nextS);
 
-        // 更新Pre的终止节点
+        /*
+         * 更新Pre的终止节点
+         */
         pre.getEndNfaStates().addAll(next.getEndNfaStates());
     }
 
