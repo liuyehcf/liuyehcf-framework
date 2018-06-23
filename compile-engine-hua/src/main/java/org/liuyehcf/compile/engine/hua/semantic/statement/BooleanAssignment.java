@@ -33,7 +33,7 @@ public class BooleanAssignment extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Object conditionObject = context.getStack().get(booleanExpressionStackOffset).get(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION.name());
+        Object conditionObject = context.getAttr(booleanExpressionStackOffset, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION);
 
         /*
          * 对于普通的boolean字面值，或者boolean类型的变量，直接赋值即可
@@ -42,7 +42,7 @@ public class BooleanAssignment extends AbstractSemanticAction {
             return;
         }
 
-        ControlTransferType type = context.getStack().get(booleanExpressionStackOffset).get(AttrName.BOOLEAN_EXPRESSION_TYPE.name());
+        ControlTransferType type = context.getAttr(booleanExpressionStackOffset, AttrName.BOOLEAN_EXPRESSION_TYPE);
 
         ControlTransfer __code;
 
@@ -57,16 +57,16 @@ public class BooleanAssignment extends AbstractSemanticAction {
         /*
          * 插入一个__code
          */
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(__code);
+        context.addByteCodeToCurrentMethod(__code);
 
         /*
          * TRUE回填
          */
         List<ControlTransfer> codes;
-        codes = context.getStack().get(booleanExpressionStackOffset).get(AttrName.TRUE_BYTE_CODE.name());
+        codes = context.getAttr(booleanExpressionStackOffset, AttrName.TRUE_BYTE_CODE);
         if (codes != null) {
             for (ControlTransfer code : codes) {
-                code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+                code.setCodeOffset(context.getByteCodeSizeOfCurrentMethod());
             }
             codes.clear();
         }
@@ -74,25 +74,25 @@ public class BooleanAssignment extends AbstractSemanticAction {
         /*
          * 压入1，代表true
          */
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iconst(1));
+        context.addByteCodeToCurrentMethod(new _iconst(1));
 
         /*
          * 压入goto
          */
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(__goto);
+        context.addByteCodeToCurrentMethod(__goto);
 
         /*
          * 回填__code
          */
-        __code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+        __code.setCodeOffset(context.getByteCodeSizeOfCurrentMethod());
 
         /*
          * FALSE回填
          */
-        codes = context.getStack().get(booleanExpressionStackOffset).get(AttrName.FALSE_BYTE_CODE.name());
+        codes = context.getAttr(booleanExpressionStackOffset, AttrName.FALSE_BYTE_CODE);
         if (codes != null) {
             for (ControlTransfer code : codes) {
-                code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+                code.setCodeOffset(context.getByteCodeSizeOfCurrentMethod());
             }
             codes.clear();
         }
@@ -100,11 +100,11 @@ public class BooleanAssignment extends AbstractSemanticAction {
         /*
          * 压入0，代表false
          */
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iconst(0));
+        context.addByteCodeToCurrentMethod(new _iconst(0));
 
         /*
          * 回填__goto
          */
-        __goto.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+        __goto.setCodeOffset(context.getByteCodeSizeOfCurrentMethod());
     }
 }

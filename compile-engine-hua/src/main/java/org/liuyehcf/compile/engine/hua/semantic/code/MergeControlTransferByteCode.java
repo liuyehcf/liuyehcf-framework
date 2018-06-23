@@ -39,14 +39,14 @@ public class MergeControlTransferByteCode extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        doMerge(context, AttrName.TRUE_BYTE_CODE.name());
-        doMerge(context, AttrName.FALSE_BYTE_CODE.name());
-        doMerge(context, AttrName.NEXT_BYTE_CODE.name());
+        doMerge(context, AttrName.TRUE_BYTE_CODE);
+        doMerge(context, AttrName.FALSE_BYTE_CODE);
+        doMerge(context, AttrName.NEXT_BYTE_CODE);
     }
 
-    private void doMerge(HuaContext context, String attrName) {
-        List<ControlTransfer> fromCodes = context.getStack().get(fromStackOffset).get(attrName);
-        List<ControlTransfer> toCodes = context.getStack().get(toStackOffset).get(attrName);
+    private void doMerge(HuaContext context, AttrName attrName) {
+        List<ControlTransfer> fromCodes = context.getAttr(fromStackOffset, attrName);
+        List<ControlTransfer> toCodes = context.getAttr(toStackOffset, attrName);
 
         if (fromCodes == null) {
             return;
@@ -54,7 +54,7 @@ public class MergeControlTransferByteCode extends AbstractSemanticAction {
 
         if (toCodes == null) {
             toCodes = new ArrayList<>();
-            context.getStack().get(toStackOffset).put(attrName, toCodes);
+            context.setAttr(toStackOffset, attrName, toCodes);
         }
 
         toCodes.addAll(fromCodes);

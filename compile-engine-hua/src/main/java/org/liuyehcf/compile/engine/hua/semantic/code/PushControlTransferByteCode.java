@@ -28,7 +28,7 @@ public class PushControlTransferByteCode extends AbstractControlTransferByteCode
     public void onAction(HuaContext context) {
         ControlTransfer code = ControlTransferType.getControlTransferByType(controlTransferType);
 
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(code);
+        context.addByteCodeToCurrentMethod(code);
 
         doAddCode(context, code);
     }

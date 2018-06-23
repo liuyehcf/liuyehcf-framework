@@ -12,6 +12,6 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 public class EnterMethod extends AbstractSemanticAction {
     @Override
     public void onAction(HuaContext context) {
-        context.getHuaEngine().getMethodInfoTable().enterMethod();
+        context.enterMethod();
     }
 }

@@ -34,21 +34,21 @@ public class PushReturnByteCode extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Object object = context.getStack().get(expressionStackOffset).get(AttrName.IS_EMPTY_EXPRESSION.name());
-        Type type = context.getStack().get(expressionStackOffset).get(AttrName.TYPE.name());
+        Object object = context.getAttr(expressionStackOffset, AttrName.IS_EMPTY_EXPRESSION);
+        Type type = context.getAttr(expressionStackOffset, AttrName.TYPE);
 
         if (object != null) {
-            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _return());
+            context.addByteCodeToCurrentMethod(new _return());
         } else {
             assertNotNull(type);
 
             if (type.isArrayType()) {
-                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _areturn());
+                context.addByteCodeToCurrentMethod(new _areturn());
             } else {
                 switch (type.getTypeName()) {
                     case NORMAL_BOOLEAN:
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ireturn());
+                        context.addByteCodeToCurrentMethod(new _ireturn());
                         break;
                     default:
                         throw new UnsupportedOperationException();

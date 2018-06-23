@@ -33,12 +33,12 @@ public class RemoveRedundantLoadByteCode extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        StatementType type = context.getStack().get(statementStackOffset).get(AttrName.STATEMENT_TYPE.name());
+        StatementType type = context.getAttr(statementStackOffset, AttrName.STATEMENT_TYPE);
 
         assertNotNull(type);
 
 
-        List<ByteCode> byteCodes = context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes();
+        List<ByteCode> byteCodes = context.getByteCodesOfOfCurrentMethod();
         ByteCode code;
 
         switch (type) {

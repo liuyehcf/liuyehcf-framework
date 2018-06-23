@@ -27,12 +27,12 @@ public class ArrayTypeDimDecrease extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Type type = context.getStack().get(expressionNameStackOffset).get(AttrName.TYPE.name());
+        Type type = context.getAttr(expressionNameStackOffset, AttrName.TYPE);
 
         if (!type.isArrayType()) {
             throw new RuntimeException("数组维度不足");
         }
 
-        context.getLeftNode().put(AttrName.TYPE.name(), type.toDimDecreasedType());
+        context.setAttrToLeftNode(AttrName.TYPE, type.toDimDecreasedType());
     }
 }

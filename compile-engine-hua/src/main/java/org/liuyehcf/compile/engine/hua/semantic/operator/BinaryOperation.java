@@ -49,9 +49,9 @@ public class BinaryOperation extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Type leftType = context.getStack().get(leftStackOffset).get(AttrName.TYPE.name());
-        Type rightType = context.getStack().get(rightStackOffset).get(AttrName.TYPE.name());
-        String operator = context.getStack().get(operatorStackOffset).getValue();
+        Type leftType = context.getAttr(leftStackOffset, AttrName.TYPE);
+        Type rightType = context.getAttr(rightStackOffset, AttrName.TYPE);
+        String operator = context.getValue(operatorStackOffset);
 
         switch (operator) {
             case NORMAL_BIT_OR:
@@ -59,8 +59,7 @@ public class BinaryOperation extends AbstractSemanticAction {
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ior());
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftType);
+                        context.addByteCodeToCurrentMethod(new _ior());
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
@@ -72,8 +71,7 @@ public class BinaryOperation extends AbstractSemanticAction {
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ixor());
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftType);
+                        context.addByteCodeToCurrentMethod(new _ixor());
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
@@ -85,8 +83,7 @@ public class BinaryOperation extends AbstractSemanticAction {
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iand());
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftType);
+                        context.addByteCodeToCurrentMethod(new _iand());
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
@@ -98,8 +95,7 @@ public class BinaryOperation extends AbstractSemanticAction {
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ishl());
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftType);
+                        context.addByteCodeToCurrentMethod(new _ishl());
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
@@ -111,8 +107,7 @@ public class BinaryOperation extends AbstractSemanticAction {
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _ishr());
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftType);
+                        context.addByteCodeToCurrentMethod(new _ishr());
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
@@ -124,8 +119,7 @@ public class BinaryOperation extends AbstractSemanticAction {
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iushr());
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftType);
+                        context.addByteCodeToCurrentMethod(new _iushr());
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
@@ -138,8 +132,7 @@ public class BinaryOperation extends AbstractSemanticAction {
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iadd());
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftType);
+                        context.addByteCodeToCurrentMethod(new _iadd());
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
@@ -151,8 +144,7 @@ public class BinaryOperation extends AbstractSemanticAction {
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _isub());
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftType);
+                        context.addByteCodeToCurrentMethod(new _isub());
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
@@ -164,8 +156,7 @@ public class BinaryOperation extends AbstractSemanticAction {
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _imul());
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftType);
+                        context.addByteCodeToCurrentMethod(new _imul());
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
@@ -177,8 +168,7 @@ public class BinaryOperation extends AbstractSemanticAction {
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _idiv());
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftType);
+                        context.addByteCodeToCurrentMethod(new _idiv());
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
@@ -190,8 +180,7 @@ public class BinaryOperation extends AbstractSemanticAction {
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
-                        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _irem());
-                        context.getLeftNode().put(AttrName.TYPE.name(), leftType);
+                        context.addByteCodeToCurrentMethod(new _irem());
                         break;
                     default:
                         throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
@@ -201,6 +190,8 @@ public class BinaryOperation extends AbstractSemanticAction {
             default:
                 throw new UnsupportedOperationException();
         }
+
+        context.setAttrToLeftNode(AttrName.TYPE, leftType);
     }
 
     private void checkEqualType(Type type1, Type type2, String operator) {

@@ -27,10 +27,11 @@ public class PushPreIINCByteCode extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
+        // TODO
         _iinc code = new _iinc();
 
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(code);
+        context.addByteCodeToCurrentMethod(code);
 
-        context.getStack().get(backFillStackOffset).put(AttrName.IINC_BYTE_CODE.name(), code);
+        context.setAttr(backFillStackOffset, AttrName.IINC_BYTE_CODE, code);
     }
 }

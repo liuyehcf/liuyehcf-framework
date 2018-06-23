@@ -39,13 +39,13 @@ public class RecordArgumentType extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        List<Type> argumentTypeList = context.getStack().get(argumentListStackOffset).get(AttrName.ARGUMENT_TYPE_LIST.name());
+        List<Type> argumentTypeList = context.getAttr(argumentListStackOffset, AttrName.ARGUMENT_TYPE_LIST);
         if (argumentTypeList == null) {
             argumentTypeList = new ArrayList<>();
-            context.getStack().get(argumentListStackOffset).put(AttrName.ARGUMENT_TYPE_LIST.name(), argumentTypeList);
+            context.setAttr(argumentListStackOffset, AttrName.ARGUMENT_TYPE_LIST, argumentTypeList);
         }
 
-        Type type = context.getStack().get(expressionStackOffset).get(AttrName.TYPE.name());
+        Type type = context.getAttr(expressionStackOffset, AttrName.TYPE);
         argumentTypeList.add(type);
     }
 }

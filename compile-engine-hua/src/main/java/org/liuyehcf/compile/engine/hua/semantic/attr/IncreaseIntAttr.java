@@ -32,8 +32,8 @@ public class IncreaseIntAttr extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        int cnt = context.getStack().get(stackOffset).get(attrName.name());
+        int cnt = context.getAttr(stackOffset, attrName);
 
-        context.getStack().get(stackOffset).put(attrName.name(), cnt + 1);
+        context.setAttr(stackOffset, attrName, cnt + 1);
     }
 }

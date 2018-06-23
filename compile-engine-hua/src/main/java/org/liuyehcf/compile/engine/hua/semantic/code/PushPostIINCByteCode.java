@@ -34,8 +34,8 @@ public class PushPostIINCByteCode extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        String identifierName = context.getStack().get(expressionStackOffset).get(AttrName.IDENTIFIER_NAME.name());
-        VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
+        String identifierName = context.getAttr(expressionStackOffset, AttrName.IDENTIFIER_NAME);
+        VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
 
         if (variableSymbol == null) {
             throw new RuntimeException("前置递增/递减运算符不能作用于 '值'");
@@ -50,6 +50,6 @@ public class PushPostIINCByteCode extends AbstractSemanticAction {
         code.setOffset(variableSymbol.getOffset());
         code.setIncrement(increment);
 
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(code);
+        context.addByteCodeToCurrentMethod(code);
     }
 }

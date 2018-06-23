@@ -28,7 +28,7 @@ public class IncreaseArrayTypeDim extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Type originType = context.getStack().get(typeStackOffset).get(AttrName.TYPE.name());
-        context.getStack().get(typeStackOffset).put(AttrName.TYPE.name(), originType.toDimIncreasedType());
+        Type originType = context.getAttr(typeStackOffset, AttrName.TYPE);
+        context.setAttr(typeStackOffset, AttrName.TYPE, originType.toDimIncreasedType());
     }
 }

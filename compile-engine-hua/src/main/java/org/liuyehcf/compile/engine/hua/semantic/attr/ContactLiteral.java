@@ -41,11 +41,11 @@ public class ContactLiteral extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        String main = context.getStack().get(mainStackOffset).get(attrName.name());
-        String sub = context.getStack().get(subStackOffset).get(attrName.name());
+        String main = context.getAttr(mainStackOffset, attrName);
+        String sub = context.getAttr(subStackOffset, attrName);
 
         main = main + sub;
 
-        context.getStack().get(mainStackOffset).put(attrName.name(), main);
+        context.setAttr(mainStackOffset, attrName, main);
     }
 }

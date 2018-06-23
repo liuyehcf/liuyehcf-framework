@@ -47,36 +47,27 @@ public class HuaCompiler extends LALR<HuaResult> {
          */
         private MethodInfoTable methodInfoTable = new MethodInfoTable();
 
-        /**
-         * 状态信息
-         */
-        private StatusInfo statusInfo = new StatusInfo();
-
         HuaEngine(String input) {
             super(input);
         }
 
-        public int getOffset() {
+        int getOffset() {
             return offset;
         }
 
-        public VariableSymbolTable getVariableSymbolTable() {
+        VariableSymbolTable getVariableSymbolTable() {
             return variableSymbolTable;
         }
 
-        public MethodInfoTable getMethodInfoTable() {
+        MethodInfoTable getMethodInfoTable() {
             return methodInfoTable;
         }
 
-        public StatusInfo getStatusInfo() {
-            return statusInfo;
-        }
-
-        public void increaseOffset(int step) {
+        void increaseOffset(int step) {
             offset += step;
         }
 
-        public void resetOffset() {
+        void resetOffset() {
             offset = 0;
         }
 

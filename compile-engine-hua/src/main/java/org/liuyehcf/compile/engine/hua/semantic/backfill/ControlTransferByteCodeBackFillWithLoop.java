@@ -48,13 +48,13 @@ public class ControlTransferByteCodeBackFillWithLoop extends AbstractSemanticAct
 
         switch (backFillType) {
             case TRUE:
-                codes = context.getStack().get(backFillStackOffset).get(AttrName.TRUE_BYTE_CODE.name());
+                codes = context.getAttr(backFillStackOffset, AttrName.TRUE_BYTE_CODE);
                 break;
             default:
                 throw new UnsupportedOperationException();
         }
 
-        int codeOffset = context.getStack().get(loopStackOffset).get(AttrName.CODE_OFFSET.name());
+        int codeOffset = context.getAttr(loopStackOffset, AttrName.CODE_OFFSET);
 
         for (ControlTransfer code : codes) {
             code.setCodeOffset(codeOffset);

@@ -1,6 +1,5 @@
 package org.liuyehcf.compile.engine.hua.semantic.attr;
 
-import org.liuyehcf.compile.engine.core.cfg.lr.SyntaxNode;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
@@ -44,10 +43,9 @@ public class SetAttrFromLexical extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        SyntaxNode fromNode = context.getStack().get(fromStackOffset);
-        SyntaxNode toNode = context.getStack().get(toStackOffset);
+        Object fromValue = context.getValue(fromStackOffset);
 
-        assertNotNull(fromNode.getValue());
-        toNode.put(toAttrName.name(), fromNode.getValue());
+        assertNotNull(fromValue);
+        context.setAttr(toStackOffset, toAttrName, fromValue);
     }
 }

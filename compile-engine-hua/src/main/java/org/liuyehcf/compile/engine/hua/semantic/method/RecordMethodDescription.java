@@ -39,17 +39,17 @@ public class RecordMethodDescription extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Type resultType = context.getStack().get(resultTypeStackOffset).get(AttrName.TYPE.name());
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().setResultType(resultType);
+        Type resultType = context.getAttr(resultTypeStackOffset, AttrName.TYPE);
+        context.setResultTypeOfCurrentMethod(resultType);
 
-        String methodName = context.getStack().get(methodDeclaratorStackOffset).get(AttrName.METHOD_NAME.name());
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().setMethodName(methodName);
+        String methodName = context.getAttr(methodDeclaratorStackOffset, AttrName.METHOD_NAME);
+        context.setMethodNameOfCurrentMethod(methodName);
 
-        List<Type> paramTypeList = context.getStack().get(methodDeclaratorStackOffset).get(AttrName.PARAMETER_LIST.name());
+        List<Type> paramTypeList = context.getAttr(methodDeclaratorStackOffset, AttrName.PARAMETER_LIST);
         if (paramTypeList == null) {
             paramTypeList = new ArrayList<>();
-            context.getStack().get(methodDeclaratorStackOffset).put(AttrName.PARAMETER_LIST.name(), paramTypeList);
+            context.setAttr(methodDeclaratorStackOffset, AttrName.PARAMETER_LIST, paramTypeList);
         }
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().setParamTypeList(paramTypeList);
+        context.setParamTypeListOfCurrentMethod(paramTypeList);
     }
 }

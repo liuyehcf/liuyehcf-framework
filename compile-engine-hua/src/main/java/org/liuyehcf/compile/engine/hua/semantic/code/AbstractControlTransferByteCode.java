@@ -37,25 +37,25 @@ public abstract class AbstractControlTransferByteCode extends AbstractSemanticAc
     void doAddCode(HuaContext context, ControlTransfer code) {
         switch (backFillType) {
             case TRUE:
-                doAddCode(context, AttrName.TRUE_BYTE_CODE.name(), code);
+                doAddCode(context, AttrName.TRUE_BYTE_CODE, code);
                 break;
             case FALSE:
-                doAddCode(context, AttrName.FALSE_BYTE_CODE.name(), code);
+                doAddCode(context, AttrName.FALSE_BYTE_CODE, code);
                 break;
             case NEXT:
-                doAddCode(context, AttrName.NEXT_BYTE_CODE.name(), code);
+                doAddCode(context, AttrName.NEXT_BYTE_CODE, code);
                 break;
             default:
                 throw new UnsupportedOperationException();
         }
     }
 
-    private void doAddCode(HuaContext context, String attrName, ControlTransfer code) {
-        List<ControlTransfer> codes = context.getStack().get(backFillStackOffset).get(attrName);
+    private void doAddCode(HuaContext context, AttrName attrName, ControlTransfer code) {
+        List<ControlTransfer> codes = context.getAttr(backFillStackOffset, attrName);
 
         if (codes == null) {
             codes = new ArrayList<>();
-            context.getStack().get(backFillStackOffset).put(attrName, codes);
+            context.setAttr(backFillStackOffset, attrName, codes);
         }
 
         codes.add(code);

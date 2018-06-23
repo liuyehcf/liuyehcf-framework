@@ -32,15 +32,15 @@ public class ArrayLoad extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Type type = context.getStack().get(arrayExpressionStackOffset).get(AttrName.TYPE.name());
+        Type type = context.getAttr(arrayExpressionStackOffset, AttrName.TYPE);
 
         if (type.isArrayType()) {
-            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _aaload());
+            context.addByteCodeToCurrentMethod(new _aaload());
         } else {
             switch (type.getTypeName()) {
                 case NORMAL_BOOLEAN:
                 case NORMAL_INT:
-                    context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iaload());
+                    context.addByteCodeToCurrentMethod(new _iaload());
                     break;
                 default:
                     throw new UnsupportedOperationException();

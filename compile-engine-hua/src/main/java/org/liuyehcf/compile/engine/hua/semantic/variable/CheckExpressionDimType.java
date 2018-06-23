@@ -29,7 +29,7 @@ public class CheckExpressionDimType extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Type type = context.getStack().get(expressionDimStackOffset).get(AttrName.TYPE.name());
+        Type type = context.getAttr(expressionDimStackOffset, AttrName.TYPE);
         if (!TYPE_INT.equals(type)) {
             throw new RuntimeException("数组维度表达式的类型必须是整型");
         }

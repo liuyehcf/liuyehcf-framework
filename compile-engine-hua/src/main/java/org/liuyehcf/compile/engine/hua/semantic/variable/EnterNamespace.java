@@ -12,6 +12,6 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 public class EnterNamespace extends AbstractSemanticAction {
     @Override
     public void onAction(HuaContext context) {
-        context.getHuaEngine().getVariableSymbolTable().enterNamespace();
+        context.enterNamespace();
     }
 }

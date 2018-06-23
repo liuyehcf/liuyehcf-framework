@@ -33,8 +33,8 @@ public class VariableLoad extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        String identifierName = context.getStack().get(identifierNameStackOffset).get(AttrName.IDENTIFIER_NAME.name());
-        VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
+        String identifierName = context.getAttr(identifierNameStackOffset, AttrName.IDENTIFIER_NAME);
+        VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
         if (variableSymbol == null) {
             throw new RuntimeException("标志符 " + identifierName + " 尚未定义");
         }
@@ -43,15 +43,15 @@ public class VariableLoad extends AbstractSemanticAction {
 
         if (type.isArrayType()) {
 
-            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _aload(variableSymbol.getOffset()));
-            context.getLeftNode().put(AttrName.TYPE.name(), type);
+            context.addByteCodeToCurrentMethod(new _aload(variableSymbol.getOffset()));
+            context.setAttrToLeftNode(AttrName.TYPE, type);
 
         } else {
             switch (type.getTypeName()) {
                 case NORMAL_BOOLEAN:
                 case NORMAL_INT:
-                    context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
-                    context.getLeftNode().put(AttrName.TYPE.name(), type);
+                    context.addByteCodeToCurrentMethod(new _iload(variableSymbol.getOffset()));
+                    context.setAttrToLeftNode(AttrName.TYPE, type);
                     break;
                 default:
                     throw new UnsupportedOperationException();

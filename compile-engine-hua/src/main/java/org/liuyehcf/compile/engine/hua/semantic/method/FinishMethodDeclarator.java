@@ -12,6 +12,6 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 public class FinishMethodDeclarator extends AbstractSemanticAction {
     @Override
     public void onAction(HuaContext context) {
-        context.getHuaEngine().getMethodInfoTable().finishMethodDeclarator();
+        context.finishMethodDeclarator();
     }
 }

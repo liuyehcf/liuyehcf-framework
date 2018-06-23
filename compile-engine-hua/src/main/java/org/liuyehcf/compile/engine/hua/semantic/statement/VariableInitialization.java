@@ -43,9 +43,9 @@ public class VariableInitialization extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Type expressionType = context.getStack().get(initializationExpressionStackOffset).get(AttrName.TYPE.name());
-        String identifierName = context.getStack().get(identifierStackOffset).get(AttrName.IDENTIFIER_NAME.name());
-        VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
+        Type expressionType = context.getAttr(initializationExpressionStackOffset, AttrName.TYPE);
+        String identifierName = context.getAttr(identifierStackOffset, AttrName.IDENTIFIER_NAME);
+        VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
 
         assertNotNull(expressionType);
         assertNotNull(variableSymbol);
@@ -59,7 +59,7 @@ public class VariableInitialization extends AbstractSemanticAction {
          * 数组类型
          */
         if (identifierType.isArrayType()) {
-            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _astore(variableSymbol.getOffset()));
+            context.addByteCodeToCurrentMethod(new _astore(variableSymbol.getOffset()));
         }
         /*
          * 非数组类型
@@ -68,7 +68,7 @@ public class VariableInitialization extends AbstractSemanticAction {
             switch (identifierType.getTypeName()) {
                 case NORMAL_BOOLEAN:
                 case NORMAL_INT:
-                    context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                    context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOffset()));
                     break;
                 default:
                     throw new RuntimeException("尚不支持类型 \'" + identifierType + "\'");

@@ -37,7 +37,7 @@ public class PushControlTransferByteCodeByType extends AbstractControlTransferBy
 
     @Override
     public void onAction(HuaContext context) {
-        ControlTransferType type = context.getStack().get(typeStackOffset).get(AttrName.BOOLEAN_EXPRESSION_TYPE.name());
+        ControlTransferType type = context.getAttr(typeStackOffset, AttrName.BOOLEAN_EXPRESSION_TYPE);
 
         ControlTransfer code;
 
@@ -58,7 +58,7 @@ public class PushControlTransferByteCodeByType extends AbstractControlTransferBy
             }
         }
 
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(code);
+        context.addByteCodeToCurrentMethod(code);
 
         doAddCode(context, code);
     }

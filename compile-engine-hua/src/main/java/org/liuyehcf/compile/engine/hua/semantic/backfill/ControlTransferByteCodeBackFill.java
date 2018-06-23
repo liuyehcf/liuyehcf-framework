@@ -40,13 +40,13 @@ public class ControlTransferByteCodeBackFill extends AbstractSemanticAction {
 
         switch (backFillType) {
             case TRUE:
-                codes = context.getStack().get(backFillStackOffset).get(AttrName.TRUE_BYTE_CODE.name());
+                codes = context.getAttr(backFillStackOffset, AttrName.TRUE_BYTE_CODE);
                 break;
             case FALSE:
-                codes = context.getStack().get(backFillStackOffset).get(AttrName.FALSE_BYTE_CODE.name());
+                codes = context.getAttr(backFillStackOffset, AttrName.FALSE_BYTE_CODE);
                 break;
             case NEXT:
-                codes = context.getStack().get(backFillStackOffset).get(AttrName.NEXT_BYTE_CODE.name());
+                codes = context.getAttr(backFillStackOffset, AttrName.NEXT_BYTE_CODE);
                 break;
             default:
                 throw new UnsupportedOperationException();
@@ -59,7 +59,7 @@ public class ControlTransferByteCodeBackFill extends AbstractSemanticAction {
          */
         if (codes != null) {
             for (ControlTransfer code : codes) {
-                code.setCodeOffset(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+                code.setCodeOffset(context.getByteCodeSizeOfCurrentMethod());
             }
 
             /*

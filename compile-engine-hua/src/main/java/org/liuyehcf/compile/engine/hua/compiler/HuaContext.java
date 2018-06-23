@@ -1,6 +1,11 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
 import org.liuyehcf.compile.engine.core.cfg.lr.Context;
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+import org.liuyehcf.compile.engine.hua.model.AttrName;
+import org.liuyehcf.compile.engine.hua.model.Type;
+
+import java.util.List;
 
 /**
  * Hua上下文
@@ -16,7 +21,212 @@ public class HuaContext extends Context {
         this.huaEngine = huaEngine;
     }
 
-    public HuaCompiler.HuaEngine getHuaEngine() {
-        return huaEngine;
+    /**
+     * 设置属性
+     *
+     * @param stackOffset 偏移量，相对于语法树栈
+     * @param attrName    属性名
+     * @param value       属性值
+     */
+    public void setAttr(int stackOffset, AttrName attrName, Object value) {
+        if (attrName == null) {
+            throw new NullPointerException();
+        }
+        getStack().get(stackOffset).put(attrName.name(), value);
+    }
+
+    /**
+     * 为产生之左部的语法树节点设置属性
+     *
+     * @param attrName 属性名
+     * @param value    属性值
+     */
+    public void setAttrToLeftNode(AttrName attrName, Object value) {
+        getLeftNode().put(attrName.name(), value);
+    }
+
+    /**
+     * 获取属性值
+     *
+     * @param stackOffset 偏移量，相对于语法树栈
+     * @param attrName    属性名
+     * @param <T>         属性值类型
+     * @return 属性值
+     */
+    public <T> T getAttr(int stackOffset, AttrName attrName) {
+        return getStack().get(stackOffset).get(attrName.name());
+    }
+
+    /**
+     * 获取语法树节点的词法值，该值由词法分析器提供
+     *
+     * @param stackOffset 偏移量，相对于语法树栈
+     * @return 词法值
+     */
+    public String getValue(int stackOffset) {
+        return getStack().get(stackOffset).getValue();
+    }
+
+    /**
+     * 为当前方法设置方法名
+     *
+     * @param methodName 方法名
+     */
+    public void setMethodNameOfCurrentMethod(String methodName) {
+        huaEngine.getMethodInfoTable().getCurMethodInfo().setMethodName(methodName);
+    }
+
+    /**
+     * 为当前方法设置返回类型
+     *
+     * @param resultType 返回类型
+     */
+    public void setResultTypeOfCurrentMethod(Type resultType) {
+        huaEngine.getMethodInfoTable().getCurMethodInfo().setResultType(resultType);
+    }
+
+    /**
+     * 为当前方法设置参数类型列表
+     *
+     * @param paramTypeList 参数类型列表
+     */
+    public void setParamTypeListOfCurrentMethod(List<Type> paramTypeList) {
+        huaEngine.getMethodInfoTable().getCurMethodInfo().setParamTypeList(paramTypeList);
+    }
+
+    /**
+     * 获取当前方法的返回类型
+     *
+     * @return 返回类型
+     */
+    public Type getResultTypeOfCurrentMethod() {
+        return huaEngine.getMethodInfoTable().getCurMethodInfo().getResultType();
+    }
+
+    /**
+     * 为当前方法增加指令
+     *
+     * @param code 指令
+     */
+    public void addByteCodeToCurrentMethod(ByteCode code) {
+        huaEngine.getMethodInfoTable().getCurMethodInfo().addByteCode(code);
+    }
+
+    /**
+     * 获取当前方法的指令偏移量
+     *
+     * @return 指令偏移量
+     */
+    public int getByteCodeSizeOfCurrentMethod() {
+        return huaEngine.getMethodInfoTable().getCurMethodInfo().getByteCodes().size();
+    }
+
+    /**
+     * 获取当前方法的所有指令
+     *
+     * @return 指令序列
+     */
+    public List<ByteCode> getByteCodesOfOfCurrentMethod() {
+        return huaEngine.getMethodInfoTable().getCurMethodInfo().getByteCodes();
+    }
+
+    /**
+     * 是否包含给定的方法
+     *
+     * @param methodDescription 方法描述符
+     * @return 是否包含
+     */
+    public boolean containsMethod(MethodDescription methodDescription) {
+        return huaEngine.getMethodInfoTable().containsMethod(methodDescription);
+    }
+
+    /**
+     * 根据方法描述符查找方法信息
+     *
+     * @param methodDescription 方法描述符
+     * @return 方法信息
+     */
+    public MethodInfo getMethodByMethodDescription(MethodDescription methodDescription) {
+        return huaEngine.getMethodInfoTable().getMethodByMethodDescription(methodDescription);
+    }
+
+    /**
+     * 进入方法
+     */
+    public void enterMethod() {
+        huaEngine.getMethodInfoTable().enterMethod();
+    }
+
+    /**
+     * 完成方法描述符的扫描
+     */
+    public void finishMethodDeclarator() {
+        huaEngine.getMethodInfoTable().finishMethodDeclarator();
+    }
+
+    /**
+     * 退出方法
+     */
+    public void exitMethod() {
+        huaEngine.getMethodInfoTable().exitMethod();
+    }
+
+    /**
+     * 进入命名空间
+     */
+    public void enterNamespace() {
+        huaEngine.getVariableSymbolTable().enterNamespace();
+    }
+
+    /**
+     * 退出命名空间
+     */
+    public void exitNamespace() {
+        huaEngine.getVariableSymbolTable().exitNamespace();
+    }
+
+    /**
+     * 创建一个符号
+     *
+     * @param offset 偏移量
+     * @param name   标志符名称
+     * @param type   标志符类型
+     * @return 新创建的符号
+     */
+    public VariableSymbol createVariableSymbol(int offset, String name, Type type) {
+        return huaEngine.getVariableSymbolTable().createVariableSymbol(offset, name, type);
+    }
+
+    /**
+     * 根据标志符名称获取符号
+     *
+     * @param identifierName 标志符名称
+     * @return 符号
+     */
+    public VariableSymbol getVariableSymbolByName(String identifierName) {
+        return huaEngine.getVariableSymbolTable().getVariableSymbolByName(identifierName);
+    }
+
+    /**
+     * 重置偏移量
+     */
+    public void resetOffset() {
+        huaEngine.resetOffset();
+    }
+
+    /**
+     * 递增偏移量
+     */
+    public void increaseOffset(int step) {
+        huaEngine.increaseOffset(step);
+    }
+
+    /**
+     * 获取偏移量
+     *
+     * @return 偏移量
+     */
+    public int getOffset() {
+        return huaEngine.getOffset();
     }
 }

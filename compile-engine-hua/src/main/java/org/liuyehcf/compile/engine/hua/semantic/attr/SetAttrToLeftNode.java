@@ -29,6 +29,6 @@ public class SetAttrToLeftNode extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        context.getLeftNode().put(attrName.name(), value);
+        context.setAttrToLeftNode(attrName, value);
     }
 }

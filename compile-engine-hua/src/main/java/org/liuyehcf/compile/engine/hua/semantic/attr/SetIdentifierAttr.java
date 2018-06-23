@@ -27,10 +27,10 @@ public class SetIdentifierAttr extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        String identifierName = context.getStack().get(identifierStackOffset).getValue();
-        VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
+        String identifierName = context.getValue(identifierStackOffset);
+        VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
 
-        context.getLeftNode().put(AttrName.IDENTIFIER_NAME.name(), identifierName);
-        context.getLeftNode().put(AttrName.TYPE.name(), variableSymbol.getType());
+        context.setAttrToLeftNode(AttrName.IDENTIFIER_NAME, identifierName);
+        context.setAttrToLeftNode(AttrName.TYPE, variableSymbol.getType());
     }
 }

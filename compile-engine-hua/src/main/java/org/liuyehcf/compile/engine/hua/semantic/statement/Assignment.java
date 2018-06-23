@@ -54,12 +54,12 @@ public class Assignment extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        String operator = context.getStack().get(operatorStackOffset).get(AttrName.ASSIGN_OPERATOR.name());
-        String identifierName = context.getStack().get(leftHandStackOffset).get(AttrName.IDENTIFIER_NAME.name());
-        VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
+        String operator = context.getAttr(operatorStackOffset, AttrName.ASSIGN_OPERATOR);
+        String identifierName = context.getAttr(leftHandStackOffset, AttrName.IDENTIFIER_NAME);
+        VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
 
-        Type expressionType = context.getStack().get(expressionStackOffset).get(AttrName.TYPE.name());
-        Type leftHandType = context.getStack().get(leftHandStackOffset).get(AttrName.TYPE.name());
+        Type expressionType = context.getAttr(expressionStackOffset, AttrName.TYPE);
+        Type leftHandType = context.getAttr(leftHandStackOffset, AttrName.TYPE);
 
         if (!expressionType.equals(leftHandType)) {
             throw new RuntimeException("赋值运算符左右侧类型不匹配");
@@ -80,7 +80,7 @@ public class Assignment extends AbstractSemanticAction {
                 throw new RuntimeException("复合赋值运算符不支持数组类型");
             }
 
-            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _aastore());
+            context.addByteCodeToCurrentMethod(new _aastore());
         }
         /*
          * 当左侧表达式类型不是数组
@@ -97,7 +97,7 @@ public class Assignment extends AbstractSemanticAction {
                     switch (identifierType.getTypeName()) {
                         case NORMAL_BOOLEAN:
                         case NORMAL_INT:
-                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iastore());
+                            context.addByteCodeToCurrentMethod(new _iastore());
 
                             break;
                         default:
@@ -112,7 +112,7 @@ public class Assignment extends AbstractSemanticAction {
 
                     switch (identifierType.getTypeName()) {
                         case NORMAL_INT:
-                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iastore());
+                            context.addByteCodeToCurrentMethod(new _iastore());
                             break;
                         default:
                             throw new UnsupportedOperationException();
@@ -130,7 +130,7 @@ public class Assignment extends AbstractSemanticAction {
                     switch (identifierType.getTypeName()) {
                         case NORMAL_BOOLEAN:
                         case NORMAL_INT:
-                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                            context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOffset()));
                             break;
                         default:
                             throw new UnsupportedOperationException();
@@ -144,7 +144,7 @@ public class Assignment extends AbstractSemanticAction {
 
                     switch (identifierType.getTypeName()) {
                         case NORMAL_INT:
-                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _istore(variableSymbol.getOffset()));
+                            context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOffset()));
                             break;
                         default:
                             throw new UnsupportedOperationException();
@@ -153,7 +153,7 @@ public class Assignment extends AbstractSemanticAction {
             }
         }
 
-        context.getLeftNode().put(AttrName.TYPE.name(), leftHandType);
+        context.setAttrToLeftNode(AttrName.TYPE, leftHandType);
     }
 
     private void addComputeByteCode(HuaContext context, String typeName, String operator) {
@@ -261,6 +261,6 @@ public class Assignment extends AbstractSemanticAction {
             default:
                 throw new RuntimeException("尚不支持赋值运算符 \'" + operator + "\'");
         }
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(code);
+        context.addByteCodeToCurrentMethod(code);
     }
 }

@@ -14,11 +14,11 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 public class ExitMethod extends AbstractSemanticAction {
     @Override
     public void onAction(HuaContext context) {
-        if (Type.TYPE_VOID.equals(context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getResultType())) {
-            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _return());
+        if (Type.TYPE_VOID.equals(context.getResultTypeOfCurrentMethod())) {
+            context.addByteCodeToCurrentMethod(new _return());
         }
 
-        context.getHuaEngine().getMethodInfoTable().exitMethod();
-        context.getHuaEngine().resetOffset();
+        context.exitMethod();
+        context.resetOffset();
     }
 }

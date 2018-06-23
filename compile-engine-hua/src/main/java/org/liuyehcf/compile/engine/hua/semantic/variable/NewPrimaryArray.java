@@ -51,9 +51,9 @@ public class NewPrimaryArray extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Type type = context.getStack().get(typeStackOffset).get(AttrName.TYPE.name());
-        int expressionDimSize = context.getStack().get(expressionDimStackOffset).get(AttrName.EXPRESSION_DIM_SIZE.name());
-        int emptyDimSize = context.getStack().get(emptyDimStackOffset).get(AttrName.EMPTY_DIM_SIZE.name());
+        Type type = context.getAttr(typeStackOffset, AttrName.TYPE);
+        int expressionDimSize = context.getAttr(expressionDimStackOffset, AttrName.EXPRESSION_DIM_SIZE);
+        int emptyDimSize = context.getAttr(emptyDimStackOffset, AttrName.EMPTY_DIM_SIZE);
 
         if (expressionDimSize <= 0) {
             throw new RuntimeException("创建数组必须指定第一维的大小");
@@ -77,17 +77,17 @@ public class NewPrimaryArray extends AbstractSemanticAction {
                 /*
                  * 一维数组
                  */
-                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _newarray(arrayType.toDimDecreasedType().toTypeDescription()));
+                context.addByteCodeToCurrentMethod(new _newarray(arrayType.toDimDecreasedType().toTypeDescription()));
             } else {
                 /*
                  * 多维数组，但是只指定了第一维度
                  */
-                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _anewarray(arrayType.toDimDecreasedType().toTypeDescription()));
+                context.addByteCodeToCurrentMethod(new _anewarray(arrayType.toDimDecreasedType().toTypeDescription()));
             }
         } else {
-            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _multianewarray(arrayType.toTypeDescription(), expressionDimSize));
+            context.addByteCodeToCurrentMethod(new _multianewarray(arrayType.toTypeDescription(), expressionDimSize));
         }
 
-        context.getLeftNode().put(AttrName.TYPE.name(), arrayType);
+        context.setAttrToLeftNode(AttrName.TYPE, arrayType);
     }
 }

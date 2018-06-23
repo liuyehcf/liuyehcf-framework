@@ -13,7 +13,6 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 public class SetCodeOffsetAttr extends AbstractSemanticAction {
     @Override
     public void onAction(HuaContext context) {
-        context.getLeftNode().put(AttrName.CODE_OFFSET.name(),
-                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes().size());
+        context.setAttrToLeftNode(AttrName.CODE_OFFSET, context.getByteCodeSizeOfCurrentMethod());
     }
 }

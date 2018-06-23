@@ -39,10 +39,10 @@ public class MoveUpdateByteCodes extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        int start = context.getStack().get(startCodeOffsetStackOffset).get(AttrName.CODE_OFFSET.name());
-        int end = context.getStack().get(endCodeOffsetStackOffset).get(AttrName.CODE_OFFSET.name());
+        int start = context.getAttr(startCodeOffsetStackOffset, AttrName.CODE_OFFSET);
+        int end = context.getAttr(endCodeOffsetStackOffset, AttrName.CODE_OFFSET);
 
-        List<ByteCode> codes = context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().getByteCodes();
+        List<ByteCode> codes = context.getByteCodesOfOfCurrentMethod();
 
         /*
          * update部分为空

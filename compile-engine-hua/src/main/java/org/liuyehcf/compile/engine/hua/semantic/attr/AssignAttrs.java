@@ -44,12 +44,14 @@ public class AssignAttrs extends AbstractSemanticAction {
     @Override
     public void onAction(HuaContext context) {
         for (AttrName attrName : attrNames) {
-            Object value = context.getStack().get(fromStackOffset).get(attrName.name());
+            Object value = context.getAttr(fromStackOffset, attrName);
             if (value == null) {
                 continue;
             }
-            Object origin = context.getStack().get(toStackOffset).putIfAbsent(attrName.name(), value);
+
+            Object origin = context.getAttr(toStackOffset, attrName);
             assertNull(origin);
+            context.setAttr(toStackOffset, attrName, value);
         }
     }
 }

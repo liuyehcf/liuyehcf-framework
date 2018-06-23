@@ -43,10 +43,10 @@ public class IncrementBackFill extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        _iinc code = context.getStack().get(backFillStackOffset).get(AttrName.IINC_BYTE_CODE.name());
+        _iinc code = context.getAttr(backFillStackOffset, AttrName.IINC_BYTE_CODE);
 
-        String identifierName = context.getStack().get(expressionStackOffset).get(AttrName.IDENTIFIER_NAME.name());
-        VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
+        String identifierName = context.getAttr(expressionStackOffset, AttrName.IDENTIFIER_NAME);
+        VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
 
         if (variableSymbol == null) {
             throw new RuntimeException("前置递增/递减运算符不能作用于 '值'");
@@ -59,6 +59,6 @@ public class IncrementBackFill extends AbstractSemanticAction {
         code.setOffset(variableSymbol.getOffset());
         code.setIncrement(increment);
 
-        context.getStack().get(backFillStackOffset).put(AttrName.IINC_BYTE_CODE.name(), null);
+        context.setAttr(backFillStackOffset, AttrName.IINC_BYTE_CODE, null);
     }
 }

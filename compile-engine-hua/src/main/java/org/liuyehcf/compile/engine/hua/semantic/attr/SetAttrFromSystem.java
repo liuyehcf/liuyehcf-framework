@@ -37,6 +37,6 @@ public class SetAttrFromSystem extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        context.getStack().get(stackOffset).put(attrName.name(), attrValue);
+        context.setAttr(stackOffset, attrName, attrValue);
     }
 }

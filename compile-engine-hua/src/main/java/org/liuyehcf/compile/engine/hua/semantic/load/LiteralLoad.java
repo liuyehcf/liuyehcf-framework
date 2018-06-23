@@ -39,16 +39,16 @@ public class LiteralLoad extends AbstractSemanticAction {
         String literal;
         switch (type) {
             case NORMAL_INT:
-                literal = context.getStack().get(literalStackOffset).get(AttrName.LITERAL_VALUE.name());
-                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iconst(Integer.parseInt(literal)));
+                literal = context.getAttr(literalStackOffset, AttrName.LITERAL_VALUE);
+                context.addByteCodeToCurrentMethod(new _iconst(Integer.parseInt(literal)));
                 break;
             case NORMAL_BOOLEAN:
                 /*
                  * 布尔字面值也作为int处理
                  */
-                literal = context.getStack().get(literalStackOffset).get(AttrName.LITERAL_VALUE.name());
+                literal = context.getAttr(literalStackOffset, AttrName.LITERAL_VALUE);
                 assertTrue(NORMAL_BOOLEAN_TRUE.equals(literal) || NORMAL_BOOLEAN_FALSE.equals(literal));
-                context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iconst(NORMAL_BOOLEAN_TRUE.equals(literal) ? 1 : 0));
+                context.addByteCodeToCurrentMethod(new _iconst(NORMAL_BOOLEAN_TRUE.equals(literal) ? 1 : 0));
                 break;
             default:
                 throw new UnsupportedOperationException();

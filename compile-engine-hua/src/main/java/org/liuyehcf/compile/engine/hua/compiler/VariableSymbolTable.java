@@ -95,7 +95,15 @@ public class VariableSymbolTable {
         return false;
     }
 
-    public VariableSymbol enter(int offset, String name, Type type) {
+    /**
+     * 创建新标志符
+     *
+     * @param offset 偏移量
+     * @param name   标志符名称
+     * @param type   标志符类型
+     * @return
+     */
+    public VariableSymbol createVariableSymbol(int offset, String name, Type type) {
         if (exists(name)) {
             return null;
         }

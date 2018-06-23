@@ -44,19 +44,19 @@ public class MethodInvocation extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        String methodName = context.getStack().get(methodNameStackOffset).get(AttrName.METHOD_NAME.name());
-        List<Type> argumentTypeList = context.getStack().get(argumentListStackOffset).get(AttrName.ARGUMENT_TYPE_LIST.name());
+        String methodName = context.getAttr(methodNameStackOffset, AttrName.METHOD_NAME);
+        List<Type> argumentTypeList = context.getAttr(argumentListStackOffset, AttrName.ARGUMENT_TYPE_LIST);
 
         MethodDescription methodDescription = buildMethodDescription(methodName, argumentTypeList);
 
-        if (!context.getHuaEngine().getMethodInfoTable().containsMethod(methodDescription)) {
+        if (!context.containsMethod(methodDescription)) {
             throw new RuntimeException("方法' " + methodDescription.getDescription() + " '尚未定义");
         }
 
-        MethodInfo methodInfo = context.getHuaEngine().getMethodInfoTable().getMethodByMethodDescription(methodDescription);
+        MethodInfo methodInfo = context.getMethodByMethodDescription(methodDescription);
         assertNotNull(methodInfo);
 
-        context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _invokestatic(methodDescription.getDescription()));
-        context.getLeftNode().put(AttrName.TYPE.name(), methodInfo.getResultType());
+        context.addByteCodeToCurrentMethod(new _invokestatic(methodDescription.getDescription()));
+        context.setAttrToLeftNode(AttrName.TYPE, methodInfo.getResultType());
     }
 }

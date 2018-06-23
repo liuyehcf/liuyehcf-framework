@@ -39,12 +39,12 @@ public class RecordParamTypeInfo extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        Type type = context.getStack().get(paramStackOffset).get(AttrName.TYPE.name());
+        Type type = context.getAttr(paramStackOffset, AttrName.TYPE);
 
-        List<Type> paramTypeList = context.getStack().get(paramListStackOffset).get(AttrName.PARAMETER_LIST.name());
+        List<Type> paramTypeList = context.getAttr(paramListStackOffset, AttrName.PARAMETER_LIST);
         if (paramTypeList == null) {
             paramTypeList = new ArrayList<>();
-            context.getStack().get(paramListStackOffset).put(AttrName.PARAMETER_LIST.name(), paramTypeList);
+            context.setAttr(paramListStackOffset, AttrName.PARAMETER_LIST, paramTypeList);
         }
         paramTypeList.add(type);
     }

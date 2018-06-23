@@ -43,11 +43,11 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction {
 
     @Override
     public void onAction(HuaContext context) {
-        String operator = context.getStack().get(operatorStackOffset).get(AttrName.ASSIGN_OPERATOR.name());
-        String identifierName = context.getStack().get(leftHandStackOffset).get(AttrName.IDENTIFIER_NAME.name());
-        Type leftHandType = context.getStack().get(leftHandStackOffset).get(AttrName.TYPE.name());
+        String operator = context.getAttr(operatorStackOffset, AttrName.ASSIGN_OPERATOR);
+        String identifierName = context.getAttr(leftHandStackOffset, AttrName.IDENTIFIER_NAME);
+        Type leftHandType = context.getAttr(leftHandStackOffset, AttrName.TYPE);
 
-        VariableSymbol variableSymbol = context.getHuaEngine().getVariableSymbolTable().getVariableSymbolByName(identifierName);
+        VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
 
         if (variableSymbol == null) {
             throw new RuntimeException("非变量不能进行赋值操作");
@@ -76,12 +76,12 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction {
                  */
                 if (identifierType.isArrayType()) {
 
-                    context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _dup2());
+                    context.addByteCodeToCurrentMethod(new _dup2());
 
                     switch (leftHandType.getTypeName()) {
                         case NORMAL_INT:
-                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iaload());
-                            context.getStack().get(leftHandStackOffset).put(AttrName.TYPE.name(), leftHandType);
+                            context.addByteCodeToCurrentMethod(new _iaload());
+                            context.setAttr(leftHandStackOffset, AttrName.TYPE, leftHandType);
                             break;
                         default:
                             throw new UnsupportedOperationException();
@@ -93,8 +93,8 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction {
                 else {
                     switch (leftHandType.getTypeName()) {
                         case NORMAL_INT:
-                            context.getHuaEngine().getMethodInfoTable().getCurMethodInfo().addByteCode(new _iload(variableSymbol.getOffset()));
-                            context.getStack().get(leftHandStackOffset).put(AttrName.TYPE.name(), leftHandType);
+                            context.addByteCodeToCurrentMethod(new _iload(variableSymbol.getOffset()));
+                            context.setAttr(leftHandStackOffset, AttrName.TYPE, leftHandType);
                             break;
                         default:
                             throw new UnsupportedOperationException();
