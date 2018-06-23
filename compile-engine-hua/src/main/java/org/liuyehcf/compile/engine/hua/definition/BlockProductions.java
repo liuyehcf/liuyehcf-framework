@@ -60,8 +60,8 @@ abstract class BlockProductions {
     private static final String MARK_139_1_1 = "<mark 139_1_1>";
     private static final String MARK_146_1_1 = "<mark 146_1_1>";
     private static final String MARK_LOOP_OFFSET = "<mark loop offset>";
-    private static final String MARK_TRUE_BLOCK = "<mark true block>";
-    private static final String MARK_FALSE_BLOCK = "<mark false block>";
+    public static final String MARK_TRUE_BLOCK = "<mark true block>";
+    public static final String MARK_FALSE_BLOCK = "<mark false block>";
     private static final String MARK_BEFORE_INIT = "<mark before init>";
     private static final String MARK_BEFORE_UPDATE = "<mark before update>";
     private static final String MARK_AFTER_UPDATE = "<mark after update>";

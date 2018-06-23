@@ -14,6 +14,7 @@ import org.liuyehcf.compile.engine.hua.semantic.backfill.IncrementBackFill;
 import org.liuyehcf.compile.engine.hua.semantic.code.MergeControlTransferByteCode;
 import org.liuyehcf.compile.engine.hua.semantic.code.PushControlTransferByteCodeByType;
 import org.liuyehcf.compile.engine.hua.semantic.code.PushPostIINCByteCode;
+import org.liuyehcf.compile.engine.hua.semantic.expression.ConditionalExpression;
 import org.liuyehcf.compile.engine.hua.semantic.load.ArrayLoad;
 import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoad;
 import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoadIfNecessary;
@@ -26,6 +27,8 @@ import org.liuyehcf.compile.engine.hua.semantic.variable.ArrayTypeDimDecrease;
 import org.liuyehcf.compile.engine.hua.semantic.variable.CheckExpressionDimType;
 import org.liuyehcf.compile.engine.hua.semantic.variable.NewPrimaryArray;
 
+import static org.liuyehcf.compile.engine.hua.definition.BlockProductions.MARK_FALSE_BLOCK;
+import static org.liuyehcf.compile.engine.hua.definition.BlockProductions.MARK_TRUE_BLOCK;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.definition.TokenProductions.*;
@@ -359,18 +362,22 @@ abstract class ExpressionProductions {
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
-                     * <conditional expression> → <conditional or expression> ? <expression> : <conditional expression>
+                     * <conditional expression> → <conditional or expression> ? <mark true block> <expression> : <mark false block> <conditional expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(CONDITIONAL_EXPRESSION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_OR_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_QUESTION_MARK),
+                                    Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_COLON),
+                                    Symbol.createNonTerminator(MARK_FALSE_BLOCK),
                                     Symbol.createNonTerminator(CONDITIONAL_EXPRESSION)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new ControlTransferByteCodeBackFill(-6, BackFillType.NEXT),
+                            new ConditionalExpression(-3, 0),
+                            new AttrFilter(AttrName.TYPE)
                     )
             ),
 

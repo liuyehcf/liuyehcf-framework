@@ -368,6 +368,22 @@ public class TestGrammar {
     }
 
     @Test
+    public void testConditionExpression() {
+        String text = "void func(boolean a, int i, int j) {\n" +
+                "\tint k= (a||i<j&&j>=3) ? i++:--j;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<HuaResult> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,int,int)\":[{\"name\":\"_iload\",\"offset\":0},{\"codeOffset\":8,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"offset\":4},{\"name\":\"_iload\",\"offset\":12},{\"codeOffset\":11,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"offset\":12},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":11,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"offset\":4},{\"increment\":1,\"name\":\"_iinc\",\"offset\":4},{\"codeOffset\":13,\"name\":\"_goto\"},{\"increment\":-1,\"name\":\"_iinc\",\"offset\":12},{\"name\":\"_iload\",\"offset\":12},{\"name\":\"_istore\",\"offset\":20},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleString()
+        );
+    }
+
+    @Test
     public void testComplexCompareOperator1() {
         String text = "void func1(boolean a, boolean b, int i, int j) {\n" +
                 "\tif(i>=j&&i<j||i>3&&j>=5||a&&b)\n" +
