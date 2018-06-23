@@ -6,7 +6,6 @@ import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.HuaResult;
-import org.liuyehcf.compile.engine.hua.definition.GrammarDefinition;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -24,7 +23,7 @@ public class TestGrammar {
     public static void init() {
         long start, end;
         start = System.currentTimeMillis();
-        compiler = new HuaCompiler(GrammarDefinition.GRAMMAR, GrammarDefinition.LEXICAL_ANALYZER);
+        compiler = new HuaCompiler();
         end = System.currentTimeMillis();
         System.out.println("build HuaCompiler consume " + (end - start) / 1000 + "s");
 

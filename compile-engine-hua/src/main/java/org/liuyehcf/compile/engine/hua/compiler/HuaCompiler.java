@@ -1,9 +1,7 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
-import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.cfg.lr.Context;
 import org.liuyehcf.compile.engine.core.cfg.lr.LALR;
-import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.SemanticAction;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
@@ -13,6 +11,8 @@ import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 import java.util.*;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
+import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.GRAMMAR;
+import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.LEXICAL_ANALYZER;
 
 /**
  * Hua编译器
@@ -21,8 +21,8 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
  * @date 2018/6/2
  */
 public class HuaCompiler extends LALR<HuaResult> {
-    public HuaCompiler(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
-        super(originalGrammar, lexicalAnalyzer);
+    public HuaCompiler() {
+        super(GRAMMAR, LEXICAL_ANALYZER);
     }
 
     @Override
