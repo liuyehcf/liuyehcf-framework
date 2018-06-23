@@ -60,6 +60,14 @@ public class MethodInfoTable {
         return tableJSONMap;
     }
 
+    public String toSimpleString() {
+        Map<String, Object> jsonMap = new LinkedHashMap<>();
+
+        table.forEach((key, value) -> jsonMap.put(key.getDescription(), value.getByteCodes()));
+
+        return JSON.toJSONString(jsonMap);
+    }
+
     @Override
     public String toString() {
         return JSON.toJSONString(this, SerializerFeature.DisableCircularReferenceDetect);

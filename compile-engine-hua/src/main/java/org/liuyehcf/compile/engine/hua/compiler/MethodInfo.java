@@ -14,11 +14,25 @@ import java.util.List;
  */
 public class MethodInfo {
 
-    private final List<ByteCode> byteCodes = new ArrayList<>();
-    private int offset;
+    /**
+     * 方法名称
+     */
     private String methodName;
+
+    /**
+     * 返回类型
+     */
     private Type resultType;
+
+    /**
+     * 参数类型
+     */
     private List<Type> paramTypeList;
+
+    /**
+     * 字节码
+     */
+    private final List<ByteCode> byteCodes = new ArrayList<>();
 
     public static MethodDescription buildMethodDescription(String methodName, List<Type> types) {
         if (types == null || types.isEmpty()) {
@@ -49,14 +63,6 @@ public class MethodInfo {
 
     public int getParamSize() {
         return paramTypeList.size();
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
     }
 
     public List<Type> getParamTypeList() {
