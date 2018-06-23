@@ -14,7 +14,6 @@ import org.liuyehcf.compile.engine.hua.semantic.backfill.IncrementBackFill;
 import org.liuyehcf.compile.engine.hua.semantic.code.MergeControlTransferByteCode;
 import org.liuyehcf.compile.engine.hua.semantic.code.PushControlTransferByteCodeByType;
 import org.liuyehcf.compile.engine.hua.semantic.code.PushPostIINCByteCode;
-import org.liuyehcf.compile.engine.hua.semantic.code.PushPreIINCByteCode;
 import org.liuyehcf.compile.engine.hua.semantic.load.ArrayLoad;
 import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoad;
 import org.liuyehcf.compile.engine.hua.semantic.load.VariableLoadIfNecessary;
@@ -964,8 +963,8 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new PushPreIINCByteCode(0),
-                            new AttrFilter()
+                            new SetIINCAttr(),
+                            new AttrFilter(AttrName.IINC_BYTE_CODE)
                     )
             ),
 
@@ -985,7 +984,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_PREFIX_EXPRESSION),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new IncrementBackFill(-2, 0, -1),
+                            new IncrementBackFill(-1, 0, -1),
                             new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )
@@ -1007,7 +1006,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_PREFIX_EXPRESSION),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new IncrementBackFill(-2, 0, 1),
+                            new IncrementBackFill(-1, 0, 1),
                             new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )

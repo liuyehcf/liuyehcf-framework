@@ -15,7 +15,7 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
 /**
  * 基本类型的数组创建
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/22
  */
 public class NewPrimaryArray extends AbstractSemanticAction {
