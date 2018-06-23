@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._goto;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
-import java.io.*;
+import java.io.Serializable;
 import java.util.*;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
@@ -211,21 +211,6 @@ public class HuaCompiler extends LALR<HuaResult> implements Serializable {
             for (SemanticAction semanticAction : semanticActions) {
                 ((AbstractSemanticAction) semanticAction).onAction(new HuaContext(context, this));
             }
-        }
-    }
-
-    public static void main(String[] args) {
-        try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("/Users/hechenfeng/Desktop/hua.obj"));
-            objectOutputStream.writeObject(new HuaCompiler());
-
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("/Users/hechenfeng/Desktop/hua.obj"));
-            HuaCompiler compiler = (HuaCompiler) objectInputStream.readObject();
-
-            System.out.println("here");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // ignore
         }
     }
 }
