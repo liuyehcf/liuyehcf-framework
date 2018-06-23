@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.core.grammar.definition;
 
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.Objects;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class PrimaryProduction implements Comparable<PrimaryProduction> {
+public class PrimaryProduction implements Comparable<PrimaryProduction>, Serializable {
     /**
      * 产生式左侧非终结符
      */

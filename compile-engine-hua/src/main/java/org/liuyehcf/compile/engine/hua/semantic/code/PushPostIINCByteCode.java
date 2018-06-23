@@ -7,13 +7,15 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 /**
  * 后置 递增/递减
  *
  * @author hechenfeng
  * @date 2018/6/18
  */
-public class PushPostIINCByteCode extends AbstractSemanticAction {
+public class PushPostIINCByteCode extends AbstractSemanticAction implements Serializable {
     /**
      * 表达式-偏移量，相对于语法树栈
      * '0'  表示栈顶

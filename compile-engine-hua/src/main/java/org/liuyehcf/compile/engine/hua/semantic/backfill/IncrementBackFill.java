@@ -7,13 +7,15 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 /**
  * 自增字节码回填
  *
  * @author hechenfeng
  * @date 2018/6/18
  */
-public class IncrementBackFill extends AbstractSemanticAction {
+public class IncrementBackFill extends AbstractSemanticAction implements Serializable {
     /**
      * 用于存放回填iinc字节码的节点-偏移量，相对于语法树栈
      * '0'  表示栈顶

@@ -6,6 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.*;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 import org.liuyehcf.compile.engine.core.utils.SetUtils;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,7 +19,7 @@ import java.util.Set;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T> {
+public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T>, Serializable {
 
     /**
      * 原始文法

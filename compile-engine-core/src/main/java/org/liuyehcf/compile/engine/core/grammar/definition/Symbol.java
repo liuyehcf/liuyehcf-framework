@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.core.grammar.definition;
 
+import java.io.Serializable;
+
 /**
  * <p>文法符号，包括终结符和非终结符</p>
  * <p>特殊符号用"__"作为前后缀，且全部字母大写，同时禁止普通Symbol带有"__"前后缀</p>
@@ -8,7 +10,7 @@ package org.liuyehcf.compile.engine.core.grammar.definition;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class Symbol implements Comparable<Symbol> {
+public class Symbol implements Comparable<Symbol>, Serializable {
 
     public static final Symbol START = new Symbol(false, "__S__", 0, MorphemeType.NORMAL);
     public static final Symbol EPSILON = new Symbol(true, "__ε__", 0, MorphemeType.NORMAL);

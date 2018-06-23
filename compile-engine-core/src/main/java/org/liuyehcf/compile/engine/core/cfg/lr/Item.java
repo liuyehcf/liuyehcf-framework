@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -12,7 +13,7 @@ import java.util.*;
  * @author hechenfeng
  * @date 2018/04/16
  */
-class Item implements Comparable<Item> {
+class Item implements Comparable<Item>, Serializable {
     /**
      * 产生式
      */

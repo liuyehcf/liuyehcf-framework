@@ -4,13 +4,15 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 
+import java.io.Serializable;
+
 /**
  * 必要时添加控制转移指令
  *
  * @author hechenfeng
  * @date 2018/6/19
  */
-public class PushControlTransferByteCodeWhenNecessary extends PushControlTransferByteCodeByType {
+public class PushControlTransferByteCodeWhenNecessary extends PushControlTransferByteCodeByType implements Serializable {
 
     /**
      * 包含 expression是否为空 的语法树节点-栈偏移量，相对于语法树栈

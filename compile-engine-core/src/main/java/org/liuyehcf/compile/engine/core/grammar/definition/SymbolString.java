@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.core.grammar.definition;
 
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class SymbolString implements Comparable<SymbolString> {
+public class SymbolString implements Comparable<SymbolString>, Serializable {
     /**
      * 仅包含ε的文法符号串
      */

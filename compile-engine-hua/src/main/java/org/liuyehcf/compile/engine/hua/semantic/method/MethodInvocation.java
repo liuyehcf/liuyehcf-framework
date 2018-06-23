@@ -8,6 +8,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
 import java.util.List;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
@@ -19,7 +20,7 @@ import static org.liuyehcf.compile.engine.hua.compiler.MethodInfo.buildMethodDes
  * @author hechenfeng
  * @date 2018/6/10
  */
-public class MethodInvocation extends AbstractSemanticAction {
+public class MethodInvocation extends AbstractSemanticAction implements Serializable {
 
     /**
      * 方法名称-偏移量，相对于语法树栈

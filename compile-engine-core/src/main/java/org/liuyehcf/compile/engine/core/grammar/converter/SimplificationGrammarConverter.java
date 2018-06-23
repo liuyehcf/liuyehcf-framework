@@ -3,6 +3,7 @@ package org.liuyehcf.compile.engine.core.grammar.converter;
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
 import org.liuyehcf.compile.engine.core.rg.utils.SymbolUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.*;
  * @date 2018/04/16
  */
 
-public class SimplificationGrammarConverter extends AbstractGrammarConverter {
+public class SimplificationGrammarConverter extends AbstractGrammarConverter implements Serializable {
 
     /**
      * 从非终结符 -> PrimaryProduction 的映射表

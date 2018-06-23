@@ -5,13 +5,15 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 /**
  * 创建一个变量，记录类型、宽度、偏移量等信息
  *
  * @author hechenfeng
  * @date 2018/6/2
  */
-public class CreateVariable extends AbstractSemanticAction {
+public class CreateVariable extends AbstractSemanticAction implements Serializable {
     /**
      * 标志符-偏移量，相对于语法树栈
      * '0'  表示栈顶

@@ -5,6 +5,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Objects;
  * @author chenlu
  * @date 2018/6/23
  */
-public class ConditionalExpression extends AbstractSemanticAction {
+public class ConditionalExpression extends AbstractSemanticAction implements Serializable {
 
     /**
      * true执行的表达式-偏移量，相对于语法树栈

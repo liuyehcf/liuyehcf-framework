@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
@@ -10,7 +11,7 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
  * @author hechenfeng
  * @date 2018/6/12
  */
-public class Type {
+public class Type implements Serializable {
 
     private final static int NORMAL_TYPE_DIM = 0;
     public final static Type TYPE_INT = createNormalType(NORMAL_INT, 8);

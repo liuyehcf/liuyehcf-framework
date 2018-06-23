@@ -8,6 +8,8 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_BOOLEAN;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
 
@@ -17,7 +19,7 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
  * @author hechenfeng
  * @date 2018/6/4
  */
-public class VariableLoad extends AbstractSemanticAction {
+public class VariableLoad extends AbstractSemanticAction implements Serializable {
 
     /**
      * 标志符-偏移量，相对于语法树栈

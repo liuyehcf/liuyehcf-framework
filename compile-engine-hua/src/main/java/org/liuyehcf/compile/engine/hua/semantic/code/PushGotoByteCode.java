@@ -6,13 +6,15 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 /**
  * 添加goto指令，跳转到指定的代码偏移量
  *
  * @author hechenfeng
  * @date 2018/6/16
  */
-public class PushGotoByteCode extends AbstractSemanticAction {
+public class PushGotoByteCode extends AbstractSemanticAction implements Serializable {
 
     /**
      * 存储循环起始代码偏移量的节点-栈偏移量，相对于语法树栈

@@ -4,13 +4,15 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 /**
  * 属性赋值
  *
  * @author hechenfeng
  * @date 2018/6/2
  */
-public class AssignAttr extends AbstractSemanticAction {
+public class AssignAttr extends AbstractSemanticAction implements Serializable {
     /**
      * 源属性-偏移量，相对于语法树栈
      * '0'  表示栈顶

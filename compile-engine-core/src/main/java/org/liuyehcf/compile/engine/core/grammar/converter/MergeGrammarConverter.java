@@ -6,6 +6,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class MergeGrammarConverter extends AbstractGrammarConverter {
+public class MergeGrammarConverter extends AbstractGrammarConverter implements Serializable {
     public MergeGrammarConverter(Grammar originalGrammar) {
         super(originalGrammar);
     }

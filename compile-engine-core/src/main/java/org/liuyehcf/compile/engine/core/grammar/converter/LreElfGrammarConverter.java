@@ -3,6 +3,7 @@ package org.liuyehcf.compile.engine.core.grammar.converter;
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class LreElfGrammarConverter extends AbstractGrammarConverter {
+public class LreElfGrammarConverter extends AbstractGrammarConverter implements Serializable {
 
     /**
      * 非终结符 -> 产生式 的映射表

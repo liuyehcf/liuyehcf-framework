@@ -8,13 +8,15 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 
+import java.io.Serializable;
+
 /**
  * 按类型添加跳转指令
  *
  * @author hechenfeng
  * @date 2018/6/16
  */
-public class PushControlTransferByteCodeByType extends AbstractControlTransferByteCode {
+public class PushControlTransferByteCodeByType extends AbstractControlTransferByteCode implements Serializable {
 
     /**
      * 布尔表达式类型-栈偏移量，相对于语法树栈

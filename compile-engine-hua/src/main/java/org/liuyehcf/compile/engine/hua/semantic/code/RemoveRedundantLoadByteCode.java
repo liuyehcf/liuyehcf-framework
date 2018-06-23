@@ -7,6 +7,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.StatementType;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
 import java.util.List;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
@@ -18,7 +19,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
  * @author hechenfeng
  * @date 2018/6/18
  */
-public class RemoveRedundantLoadByteCode extends AbstractSemanticAction {
+public class RemoveRedundantLoadByteCode extends AbstractSemanticAction implements Serializable {
     /**
      * 语句-偏移量，相对于语法树栈
      * '0'  表示栈顶

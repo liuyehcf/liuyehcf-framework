@@ -5,13 +5,15 @@ import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 /**
  * 根据标志符名称，设置IDENTIFIER_NAME、TYPE属性
  *
  * @author hechenfeng
  * @date 2018/6/11
  */
-public class SetIdentifierAttr extends AbstractSemanticAction {
+public class SetIdentifierAttr extends AbstractSemanticAction implements Serializable {
 
     /**
      * 标志符-偏移量，相对于语法树栈

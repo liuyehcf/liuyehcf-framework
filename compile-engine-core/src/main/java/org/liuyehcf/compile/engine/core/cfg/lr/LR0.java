@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class LR0<T> extends AbstractLRCompiler<T> {
+public class LR0<T> extends AbstractLRCompiler<T> implements Serializable {
 
     public LR0(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
         super(originalGrammar, lexicalAnalyzer, false);

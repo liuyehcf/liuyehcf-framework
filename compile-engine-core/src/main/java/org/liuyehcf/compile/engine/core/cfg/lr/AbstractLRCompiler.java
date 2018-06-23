@@ -17,6 +17,7 @@ import org.liuyehcf.compile.engine.core.utils.ListUtils;
 import org.liuyehcf.compile.engine.core.utils.Pair;
 import org.liuyehcf.compile.engine.core.utils.SetUtils;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> implements LRCompiler<T> {
+public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> implements LRCompiler<T>, Serializable {
 
     /**
      * 是否合并同心闭包（只有LALR才是true）

@@ -5,6 +5,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.*;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 import org.liuyehcf.compile.engine.core.utils.SetUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.Set;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class LR1<T> extends AbstractLRCompiler<T> {
+public class LR1<T> extends AbstractLRCompiler<T> implements Serializable {
 
     protected LR1(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer, boolean needMerge) {
         super(originalGrammar, lexicalAnalyzer, needMerge);

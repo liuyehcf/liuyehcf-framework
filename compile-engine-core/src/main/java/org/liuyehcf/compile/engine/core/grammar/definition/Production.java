@@ -3,6 +3,7 @@ package org.liuyehcf.compile.engine.core.grammar.definition;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.Objects;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class Production implements Comparable<Production> {
+public class Production implements Comparable<Production>, Serializable {
     private static final String OR = "|";
 
     /**

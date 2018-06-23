@@ -3,6 +3,7 @@ package org.liuyehcf.compile.engine.core.grammar.converter;
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Queue;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public abstract class AbstractGrammarConverter implements GrammarConverter {
+public abstract class AbstractGrammarConverter implements GrammarConverter, Serializable {
     /**
      * 待转换的文法
      */

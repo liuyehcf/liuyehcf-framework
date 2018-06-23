@@ -9,6 +9,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/6/15
  */
-public class BooleanAssignment extends AbstractSemanticAction {
+public class BooleanAssignment extends AbstractSemanticAction implements Serializable {
 
     /**
      * 布尔表达式-栈偏移量，相对于语法树栈

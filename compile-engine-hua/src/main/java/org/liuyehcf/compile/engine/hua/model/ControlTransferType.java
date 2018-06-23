@@ -2,13 +2,15 @@ package org.liuyehcf.compile.engine.hua.model;
 
 import org.liuyehcf.compile.engine.hua.bytecode.cf.*;
 
+import java.io.Serializable;
+
 /**
  * 跳转指令的类型
  *
  * @author hechenfeng
  * @date 2018/6/14
  */
-public enum ControlTransferType {
+public enum ControlTransferType implements Serializable {
     /**
      * 等于0时跳转
      */

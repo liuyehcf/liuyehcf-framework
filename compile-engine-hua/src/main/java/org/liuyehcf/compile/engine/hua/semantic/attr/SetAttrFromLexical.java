@@ -4,6 +4,8 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 
 /**
@@ -12,7 +14,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
  * @author hechenfeng
  * @date 2018/6/2
  */
-public class SetAttrFromLexical extends AbstractSemanticAction {
+public class SetAttrFromLexical extends AbstractSemanticAction implements Serializable {
     /**
      * 源属性-偏移量，相对于语法树栈
      * '0'  表示栈顶

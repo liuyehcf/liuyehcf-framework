@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.core.cfg.lr;
 
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/04/16
  */
-class Closure {
+class Closure implements Serializable {
     /**
      * 项目集闭包id
      */

@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.core.grammar.converter;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class StatusExpandGrammarConverter extends AbstractGrammarConverter {
+public class StatusExpandGrammarConverter extends AbstractGrammarConverter implements Serializable {
 
     public StatusExpandGrammarConverter(Grammar originalGrammar) {
         super(originalGrammar);

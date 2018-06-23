@@ -5,13 +5,15 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 /**
  * 设置 递增/递减 属性
  *
  * @author hechenfeng
  * @date 2018/6/18
  */
-public class SetIINCAttr extends AbstractSemanticAction {
+public class SetIINCAttr extends AbstractSemanticAction implements Serializable {
 
     @Override
     public void onAction(HuaContext context) {

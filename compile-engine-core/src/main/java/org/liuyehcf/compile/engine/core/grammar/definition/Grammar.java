@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.core.grammar.definition;
 
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
@@ -12,7 +13,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class Grammar {
+public class Grammar implements Serializable {
 
     /**
      * 文法开始符号

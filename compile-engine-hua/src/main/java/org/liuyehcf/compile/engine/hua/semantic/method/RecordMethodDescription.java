@@ -5,6 +5,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/6/10
  */
-public class RecordMethodDescription extends AbstractSemanticAction {
+public class RecordMethodDescription extends AbstractSemanticAction implements Serializable {
 
     /**
      * 返回类型-偏移量，相对于语法树栈

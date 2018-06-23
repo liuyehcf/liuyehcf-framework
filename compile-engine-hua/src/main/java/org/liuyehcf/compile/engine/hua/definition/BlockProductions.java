@@ -21,6 +21,7 @@ import static org.liuyehcf.compile.engine.hua.definition.ExpressionProductions.*
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.definition.ProgramProductions.VARIABLE_DECLARATORS;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.TYPE;
+import static org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction.NOT_NULL;
 
 /**
  * Block相关的产生式
@@ -894,7 +895,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new SetAttrToLeftNode(AttrName.IS_EMPTY_EXPRESSION, new Object()),
+                            new SetAttrToLeftNode(AttrName.IS_EMPTY_EXPRESSION, NOT_NULL),
                             new AttrFilter(AttrName.IS_EMPTY_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*

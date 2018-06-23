@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.core.cfg.lr;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Objects;
  * @author hechenfeng
  * @date 2018/04/16
  */
-class NodeTransferOperation {
+class NodeTransferOperation implements Serializable {
     /**
      * 下一跳项目集闭包id
      */

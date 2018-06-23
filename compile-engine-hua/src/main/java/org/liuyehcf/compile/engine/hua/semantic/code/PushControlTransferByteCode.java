@@ -5,18 +5,20 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
 
+import java.io.Serializable;
+
 /**
  * 跳转跳转指令
  *
  * @author hechenfeng
  * @date 2018/6/13
  */
-public class PushControlTransferByteCode extends AbstractControlTransferByteCode {
+public class PushControlTransferByteCode extends AbstractControlTransferByteCode implements Serializable {
 
     /**
      * 跳转指令类型
      */
-    final ControlTransferType controlTransferType;
+    private final ControlTransferType controlTransferType;
 
 
     public PushControlTransferByteCode(int backFillStackOffset, ControlTransferType controlTransferType, BackFillType backFillType) {

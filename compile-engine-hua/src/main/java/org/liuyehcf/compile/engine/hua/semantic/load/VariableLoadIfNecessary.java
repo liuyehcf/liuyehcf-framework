@@ -9,6 +9,8 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMAL_ASSIGN;
@@ -19,7 +21,7 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.NORMA
  * @author hechenfeng
  * @date 2018/6/20
  */
-public class VariableLoadIfNecessary extends AbstractSemanticAction {
+public class VariableLoadIfNecessary extends AbstractSemanticAction implements Serializable {
     /**
      * 赋值左侧-偏移量，相对于语法树栈
      * '0'  表示栈顶

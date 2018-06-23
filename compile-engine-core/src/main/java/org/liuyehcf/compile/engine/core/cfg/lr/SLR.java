@@ -5,13 +5,15 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 
+import java.io.Serializable;
+
 /**
  * SLR文法编译器
  *
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class SLR<T> extends LR0<T> {
+public class SLR<T> extends LR0<T> implements Serializable {
 
     public SLR(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
         super(originalGrammar, lexicalAnalyzer);

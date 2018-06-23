@@ -5,13 +5,15 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 /**
  * 数组类型降维
  *
  * @author hechenfeng
  * @date 2018/6/12
  */
-public class ArrayTypeDimDecrease extends AbstractSemanticAction {
+public class ArrayTypeDimDecrease extends AbstractSemanticAction implements Serializable {
 
     /**
      * 表达式名称-偏移量，相对于语法树栈

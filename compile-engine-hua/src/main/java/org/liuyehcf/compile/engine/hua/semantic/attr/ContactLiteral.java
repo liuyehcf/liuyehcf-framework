@@ -4,13 +4,15 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 /**
  * 拼接字面值
  *
  * @author hechenfeng
  * @date 2018/6/11
  */
-public class ContactLiteral extends AbstractSemanticAction {
+public class ContactLiteral extends AbstractSemanticAction implements Serializable {
 
     /**
      * 主值-偏移量，相对于语法树栈

@@ -6,6 +6,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/6/16
  */
-public abstract class AbstractControlTransferByteCode extends AbstractSemanticAction {
+public abstract class AbstractControlTransferByteCode extends AbstractSemanticAction implements Serializable {
     /**
      * 待回填字节码所处的语法树节点-栈偏移量，相对于语法树栈
      * '0'  表示栈顶

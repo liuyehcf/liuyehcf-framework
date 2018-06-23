@@ -3,6 +3,7 @@ package org.liuyehcf.compile.engine.core.cfg;
 import org.liuyehcf.compile.engine.core.grammar.definition.MorphemeType;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
+public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializable {
     /**
      * Token对应的词素说明
      */
@@ -88,7 +89,7 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
     /**
      * 词素
      */
-    private static final class Morpheme {
+    private static final class Morpheme implements Serializable {
         /**
          * 当前词素对应的Symbol，与文法中的符号一一对应
          */

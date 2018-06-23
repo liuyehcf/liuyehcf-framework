@@ -6,6 +6,7 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/6/17
  */
-public class ControlTransferByteCodeBackFillWithLoop extends AbstractSemanticAction {
+public class ControlTransferByteCodeBackFillWithLoop extends AbstractSemanticAction implements Serializable {
     /**
      * 存储待回填字节码的节点-栈偏移量，相对于语法树栈
      * '0'  表示栈顶

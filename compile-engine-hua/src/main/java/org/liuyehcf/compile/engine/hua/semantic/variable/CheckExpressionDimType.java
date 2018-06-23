@@ -5,6 +5,8 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_INT;
 
 /**
@@ -13,7 +15,7 @@ import static org.liuyehcf.compile.engine.hua.model.Type.TYPE_INT;
  * @author hechenfeng
  * @date 2018/6/22
  */
-public class CheckExpressionDimType extends AbstractSemanticAction {
+public class CheckExpressionDimType extends AbstractSemanticAction implements Serializable {
 
     /**
      * 维度表达式-偏移量，相对于语法树栈

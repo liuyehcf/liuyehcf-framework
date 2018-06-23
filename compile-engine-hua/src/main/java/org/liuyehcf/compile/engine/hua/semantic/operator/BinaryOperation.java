@@ -6,6 +6,8 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 
 /**
@@ -14,7 +16,7 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
  * @author hechenfeng
  * @date 2018/6/7
  */
-public class BinaryOperation extends AbstractSemanticAction {
+public class BinaryOperation extends AbstractSemanticAction implements Serializable {
 
     /**
      * 左运算子-偏移量，相对于语法树栈

@@ -8,6 +8,8 @@ import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_BOOLEAN;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
@@ -18,7 +20,7 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.NORMAL_INT;
  * @author hechenfeng
  * @date 2018/6/22
  */
-public class NewPrimaryArray extends AbstractSemanticAction {
+public class NewPrimaryArray extends AbstractSemanticAction implements Serializable {
     /**
      * 类型-偏移量，相对于语法树栈
      * '0'  表示栈顶

@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.core.grammar.converter;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class GrammarConverterPipelineImpl implements GrammarConverterPipeline {
+public class GrammarConverterPipelineImpl implements GrammarConverterPipeline, Serializable {
     /**
      * 注册的文法转换器集合
      */

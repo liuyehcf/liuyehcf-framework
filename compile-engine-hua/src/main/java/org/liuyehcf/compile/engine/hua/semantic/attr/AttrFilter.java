@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +15,7 @@ import java.util.Set;
  * @author hechenfeng
  * @date 2018/6/18
  */
-public class AttrFilter extends AbstractSemanticAction {
+public class AttrFilter extends AbstractSemanticAction implements Serializable {
 
     /**
      * 保留的属性名集合

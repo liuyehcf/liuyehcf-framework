@@ -34,6 +34,7 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.definition.TokenProductions.*;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.PRIMITIVE_TYPE;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.REFERENCE_TYPE;
+import static org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction.NOT_NULL;
 
 /**
  * Expression相关的产生式
@@ -409,7 +410,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
                             new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE),
-                            new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, new Object()),
+                            new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new MergeControlTransferByteCode(0, -3),
                             new SetAttrFromSystem(-3, AttrName.TYPE, Type.TYPE_BOOLEAN),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
@@ -463,7 +464,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
                             new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE),
-                            new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, new Object()),
+                            new SetAttrFromSystem(-3, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new MergeControlTransferByteCode(0, -3),
                             new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )

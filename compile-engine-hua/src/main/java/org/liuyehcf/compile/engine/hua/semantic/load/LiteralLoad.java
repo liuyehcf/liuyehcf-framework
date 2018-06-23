@@ -5,6 +5,8 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 
@@ -14,7 +16,7 @@ import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
  * @author hechenfeng
  * @date 2018/6/11
  */
-public class LiteralLoad extends AbstractSemanticAction {
+public class LiteralLoad extends AbstractSemanticAction implements Serializable {
 
     /**
      * 字面值-偏移量，相对于语法树栈

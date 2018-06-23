@@ -4,13 +4,15 @@ import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.Serializable;
+
 /**
  * 为产生式左部的语法树节点设定属性值
  *
  * @author hechenfeng
  * @date 2018/6/11
  */
-public class SetAttrToLeftNode extends AbstractSemanticAction {
+public class SetAttrToLeftNode extends AbstractSemanticAction implements Serializable {
 
     /**
      * 属性-名称
