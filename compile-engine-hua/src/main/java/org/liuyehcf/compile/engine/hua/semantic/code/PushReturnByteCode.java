@@ -1,8 +1,8 @@
 package org.liuyehcf.compile.engine.hua.semantic.code;
 
-import org.liuyehcf.compile.engine.hua.bytecode.rt._areturn;
-import org.liuyehcf.compile.engine.hua.bytecode.rt._ireturn;
-import org.liuyehcf.compile.engine.hua.bytecode.rt._return;
+import org.liuyehcf.compile.engine.hua.bytecode.ir._areturn;
+import org.liuyehcf.compile.engine.hua.bytecode.ir._ireturn;
+import org.liuyehcf.compile.engine.hua.bytecode.ir._return;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;

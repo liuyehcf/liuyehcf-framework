@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.bytecode.rt;
+package org.liuyehcf.compile.engine.hua.bytecode.ir;
 
 /**
  * 返回类型为void的方法的返回指令
@@ -8,7 +8,7 @@ package org.liuyehcf.compile.engine.hua.bytecode.rt;
  * @author hechenfeng
  * @date 2018/6/17
  */
-public class _return extends Return {
+public class _return extends InvokeAndReturn {
     @Override
     public void operate() {
 

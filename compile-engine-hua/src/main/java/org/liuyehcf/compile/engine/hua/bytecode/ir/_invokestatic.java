@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.bytecode.ik;
+package org.liuyehcf.compile.engine.hua.bytecode.ir;
 
 /**
  * 方法调用指令
@@ -6,7 +6,7 @@ package org.liuyehcf.compile.engine.hua.bytecode.ik;
  * @author hechenfeng
  * @date 2018/6/10
  */
-public class _invokestatic extends Invoke {
+public class _invokestatic extends InvokeAndReturn {
     private final String methodDescription;
 
     public _invokestatic(String methodDescription) {

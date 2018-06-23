@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic.method;
 
-import org.liuyehcf.compile.engine.hua.bytecode.rt._return;
+import org.liuyehcf.compile.engine.hua.bytecode.ir._return;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.model.Type;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;

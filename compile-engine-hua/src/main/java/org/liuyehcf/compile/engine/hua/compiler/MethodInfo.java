@@ -15,24 +15,21 @@ import java.util.List;
 public class MethodInfo {
 
     /**
+     * 字节码
+     */
+    private final List<ByteCode> byteCodes = new ArrayList<>();
+    /**
      * 方法名称
      */
     private String methodName;
-
     /**
      * 返回类型
      */
     private Type resultType;
-
     /**
      * 参数类型
      */
     private List<Type> paramTypeList;
-
-    /**
-     * 字节码
-     */
-    private final List<ByteCode> byteCodes = new ArrayList<>();
 
     public static MethodDescription buildMethodDescription(String methodName, List<Type> types) {
         if (types == null || types.isEmpty()) {

@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.semantic.method;
 
-import org.liuyehcf.compile.engine.hua.bytecode.ik._invokestatic;
+import org.liuyehcf.compile.engine.hua.bytecode.ir._invokestatic;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
 import org.liuyehcf.compile.engine.hua.compiler.MethodDescription;
 import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
