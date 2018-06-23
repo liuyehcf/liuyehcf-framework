@@ -56,12 +56,11 @@ abstract class BlockProductions {
     public static final String FOR_UPDATE = "<for update>"; // 194
     public static final String STATEMENT_EXPRESSION_LIST = "<statement expression list>"; // 196
     public static final String RETURN_STATEMENT = "<return statement>"; // 202
-
+    public static final String MARK_TRUE_BLOCK = "<mark true block>";
+    public static final String MARK_FALSE_BLOCK = "<mark false block>";
     private static final String MARK_139_1_1 = "<mark 139_1_1>";
     private static final String MARK_146_1_1 = "<mark 146_1_1>";
     private static final String MARK_LOOP_OFFSET = "<mark loop offset>";
-    public static final String MARK_TRUE_BLOCK = "<mark true block>";
-    public static final String MARK_FALSE_BLOCK = "<mark false block>";
     private static final String MARK_BEFORE_INIT = "<mark before init>";
     private static final String MARK_BEFORE_UPDATE = "<mark before update>";
     private static final String MARK_AFTER_UPDATE = "<mark after update>";
