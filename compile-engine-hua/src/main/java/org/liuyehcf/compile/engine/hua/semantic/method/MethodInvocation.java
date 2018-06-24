@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compiler.MethodInfo.buildMethodSignature;
 
 /**
@@ -57,7 +58,9 @@ public class MethodInvocation extends AbstractSemanticAction implements Serializ
         MethodInfo methodInfo = context.getMethodByMethodSignature(methodSignature);
         assertNotNull(methodInfo);
 
-        context.addByteCodeToCurrentMethod(new _invokestatic(methodSignature.getSignature()));
+        int constantOffset = context.getConstantOffset(methodSignature.getSignature());
+        assertTrue(constantOffset >= 0);
+        context.addByteCodeToCurrentMethod(new _invokestatic(constantOffset));
         context.setAttrToLeftNode(AttrName.TYPE, methodInfo.getResultType());
     }
 }

@@ -7,14 +7,18 @@ package org.liuyehcf.compile.engine.hua.bytecode.ir;
  * @date 2018/6/10
  */
 public class _invokestatic extends InvokeAndReturn {
-    private final String methodSignature;
 
-    public _invokestatic(String methodSignature) {
-        this.methodSignature = methodSignature;
+    /**
+     * 常量池偏移量
+     */
+    private final int constantPoolOffset;
+
+    public _invokestatic(int constantPoolOffset) {
+        this.constantPoolOffset = constantPoolOffset;
     }
 
-    public String getMethodSignature() {
-        return methodSignature;
+    public int getConstantPoolOffset() {
+        return constantPoolOffset;
     }
 
     @Override

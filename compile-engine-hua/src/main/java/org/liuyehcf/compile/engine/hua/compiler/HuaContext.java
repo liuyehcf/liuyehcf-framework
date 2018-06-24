@@ -71,6 +71,14 @@ public class HuaContext extends Context {
         return getStack().get(stackOffset).getValue();
     }
 
+    public void addConstant(String constant) {
+        huaEngine.getConstantPool().addConstant(constant);
+    }
+
+    public int getConstantOffset(String constant) {
+        return huaEngine.getConstantPool().getConstantOffset(constant);
+    }
+
     /**
      * 为当前方法设置方法名
      *
@@ -165,7 +173,8 @@ public class HuaContext extends Context {
      * 完成方法签名的扫描
      */
     public void finishMethodDeclarator() {
-        huaEngine.getMethodInfoTable().finishMethodDeclarator();
+        MethodSignature methodSignature = huaEngine.getMethodInfoTable().finishMethodDeclarator();
+        addConstant(methodSignature.getSignature());
     }
 
     /**

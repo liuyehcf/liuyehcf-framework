@@ -9,6 +9,11 @@ package org.liuyehcf.compile.engine.hua.compiler;
 public class HuaResult {
 
     /**
+     * 常量池
+     */
+    private final ConstantPool constantPool;
+
+    /**
      * 符号表
      */
     private final VariableSymbolTable variableSymbolTable;
@@ -18,9 +23,14 @@ public class HuaResult {
      */
     private final MethodInfoTable methodInfoTable;
 
-    public HuaResult(VariableSymbolTable variableSymbolTable, MethodInfoTable methodInfoTable) {
+    HuaResult(ConstantPool constantPool, VariableSymbolTable variableSymbolTable, MethodInfoTable methodInfoTable) {
+        this.constantPool = constantPool;
         this.variableSymbolTable = variableSymbolTable;
         this.methodInfoTable = methodInfoTable;
+    }
+
+    public ConstantPool getConstantPool() {
+        return constantPool;
     }
 
     public VariableSymbolTable getVariableSymbolTable() {

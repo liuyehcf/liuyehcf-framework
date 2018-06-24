@@ -99,6 +99,11 @@ public class HuaCompiler extends LALR<HuaResult> implements Serializable {
     public class HuaEngine extends Engine {
 
         /**
+         * 常量池
+         */
+        private ConstantPool constantPool = new ConstantPool();
+
+        /**
          * 变量符号表
          */
         private VariableSymbolTable variableSymbolTable = new VariableSymbolTable();
@@ -110,6 +115,10 @@ public class HuaCompiler extends LALR<HuaResult> implements Serializable {
 
         HuaEngine(String input) {
             super(input);
+        }
+
+        ConstantPool getConstantPool() {
+            return constantPool;
         }
 
         VariableSymbolTable getVariableSymbolTable() {
@@ -135,7 +144,7 @@ public class HuaCompiler extends LALR<HuaResult> implements Serializable {
             /*
              * 设置编译结果
              */
-            setResult(new HuaResult(variableSymbolTable, methodInfoTable));
+            setResult(new HuaResult(constantPool, variableSymbolTable, methodInfoTable));
         }
 
         private void optimize() {

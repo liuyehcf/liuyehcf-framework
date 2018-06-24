@@ -76,9 +76,10 @@ public class MethodInfoTable {
     /**
      * 完成方法签名的扫描
      */
-    void finishMethodDeclarator() {
+    MethodSignature finishMethodDeclarator() {
         MethodSignature methodSignature = curMethodInfo.buildMethodSignature();
         table.put(methodSignature, curMethodInfo);
+        return methodSignature;
     }
 
     /**

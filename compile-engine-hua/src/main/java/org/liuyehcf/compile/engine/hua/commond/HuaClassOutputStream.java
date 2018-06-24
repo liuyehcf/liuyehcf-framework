@@ -38,6 +38,7 @@ class HuaClassOutputStream extends BufferedOutputStream {
      * @param methodInfoTable 方法表
      */
     void writeMethodInfoTable(MethodInfoTable methodInfoTable) throws IOException {
+
         for (MethodInfo methodInfo : methodInfoTable.getMethodInfoList()) {
 
         }
