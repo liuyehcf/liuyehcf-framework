@@ -12,6 +12,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.*;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 import org.liuyehcf.compile.engine.core.utils.SetUtils;
 
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -21,7 +22,7 @@ import java.util.*;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T> {
+public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T>, Serializable {
 
     /**
      * select集
