@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * 常量池
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/24
  */
 public class ConstantPool {
@@ -28,11 +28,11 @@ public class ConstantPool {
      */
     private int offsetCnt;
 
-    ConstantPool() {
+    public ConstantPool() {
         this.offsetCnt = 0;
     }
 
-    void addConstant(String constant) {
+    public void addConstant(String constant) {
         if (constantPool.containsKey(constant)) {
             return;
         }

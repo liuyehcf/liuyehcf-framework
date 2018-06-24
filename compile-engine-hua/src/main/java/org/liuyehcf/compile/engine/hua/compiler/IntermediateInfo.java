@@ -1,12 +1,12 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
 /**
- * Hua编译后的结果
+ * Hua编译后的中间形式
  *
  * @author hechenfeng
  * @date 2018/6/12
  */
-public class HuaResult {
+public class IntermediateInfo {
 
     /**
      * 常量池
@@ -23,7 +23,7 @@ public class HuaResult {
      */
     private final MethodInfoTable methodInfoTable;
 
-    HuaResult(ConstantPool constantPool, VariableSymbolTable variableSymbolTable, MethodInfoTable methodInfoTable) {
+    public IntermediateInfo(ConstantPool constantPool, VariableSymbolTable variableSymbolTable, MethodInfoTable methodInfoTable) {
         this.constantPool = constantPool;
         this.variableSymbolTable = variableSymbolTable;
         this.methodInfoTable = methodInfoTable;

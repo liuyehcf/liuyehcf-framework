@@ -22,7 +22,7 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.LEXIC
  * @author hechenfeng
  * @date 2018/6/2
  */
-public class HuaCompiler extends LALR<HuaResult> implements Serializable {
+public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable {
 
     /**
      * HuaCompiler序列化文件路径
@@ -144,7 +144,7 @@ public class HuaCompiler extends LALR<HuaResult> implements Serializable {
             /*
              * 设置编译结果
              */
-            setResult(new HuaResult(constantPool, variableSymbolTable, methodInfoTable));
+            setResult(new IntermediateInfo(constantPool, variableSymbolTable, methodInfoTable));
         }
 
         private void optimize() {

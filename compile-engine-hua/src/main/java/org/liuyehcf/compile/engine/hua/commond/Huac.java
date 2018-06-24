@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.hua.commond;
 
 import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
-import org.liuyehcf.compile.engine.hua.compiler.HuaResult;
+import org.liuyehcf.compile.engine.hua.compiler.IntermediateInfo;
 
 import java.io.*;
 
@@ -80,13 +80,13 @@ public class Huac {
     private void compile() {
         String fileContent = loadContent();
 
-        CompileResult<HuaResult> result = huaCompiler.compile(fileContent);
+        CompileResult<IntermediateInfo> result = huaCompiler.compile(fileContent);
 
         if (!result.isSuccess()) {
             throw new RuntimeException("存在语法错误！");
         }
 
-        storeCode(result.getResult());
+        store(result.getResult());
     }
 
     private String loadContent() {
@@ -103,18 +103,11 @@ public class Huac {
         }
     }
 
-    private void storeCode(HuaResult result) {
+    private void store(IntermediateInfo intermediateInfo) {
 
         try (HuaClassOutputStream outputStream = new HuaClassOutputStream(new FileOutputStream(targetPath + File.separator + fileName + HCLASS_SUFFIX))) {
-            /*
-             * 1. 写魔数
-             */
-            outputStream.writeMagic();
 
-            /*
-             * 2. 写方法表
-             */
-            outputStream.writeMethodInfoTable(result.getMethodInfoTable());
+            outputStream.writeHClass(intermediateInfo);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
