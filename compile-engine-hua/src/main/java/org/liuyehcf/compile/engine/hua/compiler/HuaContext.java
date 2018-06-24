@@ -137,21 +137,21 @@ public class HuaContext extends Context {
     /**
      * 是否包含给定的方法
      *
-     * @param methodDescription 方法描述符
+     * @param methodSignature 方法签名
      * @return 是否包含
      */
-    public boolean containsMethod(MethodDescription methodDescription) {
-        return huaEngine.getMethodInfoTable().containsMethod(methodDescription);
+    public boolean containsMethod(MethodSignature methodSignature) {
+        return huaEngine.getMethodInfoTable().containsMethod(methodSignature);
     }
 
     /**
-     * 根据方法描述符查找方法信息
+     * 根据方法签名查找方法信息
      *
-     * @param methodDescription 方法描述符
+     * @param methodSignature 方法签名
      * @return 方法信息
      */
-    public MethodInfo getMethodByMethodDescription(MethodDescription methodDescription) {
-        return huaEngine.getMethodInfoTable().getMethodByMethodDescription(methodDescription);
+    public MethodInfo getMethodByMethodSignature(MethodSignature methodSignature) {
+        return huaEngine.getMethodInfoTable().getMethodByMethodSignature(methodSignature);
     }
 
     /**
@@ -162,7 +162,7 @@ public class HuaContext extends Context {
     }
 
     /**
-     * 完成方法描述符的扫描
+     * 完成方法签名的扫描
      */
     public void finishMethodDeclarator() {
         huaEngine.getMethodInfoTable().finishMethodDeclarator();

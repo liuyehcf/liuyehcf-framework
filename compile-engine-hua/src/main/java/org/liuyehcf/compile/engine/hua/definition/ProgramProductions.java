@@ -383,7 +383,7 @@ abstract class ProgramProductions {
                                     Symbol.createNonTerminator(RESULT_TYPE),
                                     Symbol.createNonTerminator(METHOD_DECLARATOR)
                             ),
-                            new RecordMethodDescription(-1, 0),
+                            new RecordMethodSignature(-1, 0),
                             new AttrFilter()
                     )
             ),

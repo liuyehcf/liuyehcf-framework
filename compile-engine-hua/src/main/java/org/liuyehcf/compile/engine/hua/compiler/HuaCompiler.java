@@ -46,7 +46,7 @@ public class HuaCompiler extends LALR<HuaResult> implements Serializable {
 
             huaCompiler = (HuaCompiler) inputStream.readObject();
             return huaCompiler;
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             /*
              * 1. 文件找不到
              * 2. 序列化版本号发生变动（类文件发生了修改，序列化文件失效，此时需要重新编译然后序列化）
@@ -139,7 +139,7 @@ public class HuaCompiler extends LALR<HuaResult> implements Serializable {
         }
 
         private void optimize() {
-            Map<MethodDescription, MethodInfo> table = methodInfoTable.getTable();
+            Map<MethodSignature, MethodInfo> table = methodInfoTable.getTable();
 
             for (MethodInfo methodInfo : table.values()) {
                 optimize(methodInfo);

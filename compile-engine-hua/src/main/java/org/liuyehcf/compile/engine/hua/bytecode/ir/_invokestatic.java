@@ -7,14 +7,14 @@ package org.liuyehcf.compile.engine.hua.bytecode.ir;
  * @date 2018/6/10
  */
 public class _invokestatic extends InvokeAndReturn {
-    private final String methodDescription;
+    private final String methodSignature;
 
-    public _invokestatic(String methodDescription) {
-        this.methodDescription = methodDescription;
+    public _invokestatic(String methodSignature) {
+        this.methodSignature = methodSignature;
     }
 
-    public String getMethodDescription() {
-        return methodDescription;
+    public String getMethodSignature() {
+        return methodSignature;
     }
 
     @Override

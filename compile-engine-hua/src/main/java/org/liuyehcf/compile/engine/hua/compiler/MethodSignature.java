@@ -8,10 +8,14 @@ import java.util.Objects;
  * @author hechenfeng
  * @date 2018/6/6
  */
-public class MethodDescription {
-    private final String description;
+public class MethodSignature {
 
-    public MethodDescription(String name, String[] types) {
+    /**
+     * 方法签名
+     */
+    private final String signature;
+
+    public MethodSignature(String name, String[] types) {
         StringBuilder sb = new StringBuilder();
         sb.append(name)
                 .append('(');
@@ -23,23 +27,23 @@ public class MethodDescription {
             }
         }
         sb.append(')');
-        description = sb.toString();
+        signature = sb.toString();
     }
 
-    public String getDescription() {
-        return description;
+    public String getSignature() {
+        return signature;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MethodDescription that = (MethodDescription) o;
-        return Objects.equals(description, that.description);
+        MethodSignature that = (MethodSignature) o;
+        return Objects.equals(signature, that.signature);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description);
+        return Objects.hash(signature);
     }
 }

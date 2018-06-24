@@ -22,20 +22,24 @@ public class VariableSymbolTable {
      * id -> Namespace
      */
     private final Map<Integer, Namespace> namespaceMap;
+
     /**
      * 符号表
      * [命名空间,标志符名字] -> 符号详细信息
      */
     private final Map<Namespace, Map<String, VariableSymbol>> nameMap;
+
     /**
      * 符号表
      * [命名空间,标志符偏移量] -> 符号详细信息
      */
     private final Map<Namespace, Map<Integer, VariableSymbol>> offsetMap;
+
     /**
      * 命名空间计数值
      */
     private int namespaceCnt;
+    
     /**
      * 当前命名空间，初始化为最大的全局命名空间
      */

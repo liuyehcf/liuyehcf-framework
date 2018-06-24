@@ -40,21 +40,21 @@ public class MethodInfo {
     private int offset = 0;
 
     /**
-     * 创建方法描述符
+     * 创建方法签名
      *
      * @param methodName 方法名字
      * @param types      参数类型列表
-     * @return 方法描述符
+     * @return 方法签名
      */
-    public static MethodDescription buildMethodDescription(String methodName, List<Type> types) {
+    public static MethodSignature buildMethodSignature(String methodName, List<Type> types) {
         if (types == null || types.isEmpty()) {
-            return new MethodDescription(methodName, null);
+            return new MethodSignature(methodName, null);
         }
         String[] typeStrings = new String[types.size()];
         for (int i = 0; i < typeStrings.length; i++) {
             typeStrings[i] = types.get(i).toTypeDescription();
         }
-        return new MethodDescription(methodName, typeStrings);
+        return new MethodSignature(methodName, typeStrings);
     }
 
     public List<ByteCode> getByteCodes() {
@@ -102,11 +102,11 @@ public class MethodInfo {
     }
 
     /**
-     * 创建方法描述符
+     * 创建方法签名
      *
-     * @return 方法描述符
+     * @return 方法签名
      */
-    MethodDescription buildMethodDescription() {
-        return buildMethodDescription(this.methodName, this.paramTypeList);
+    MethodSignature buildMethodSignature() {
+        return buildMethodSignature(this.methodName, this.paramTypeList);
     }
 }

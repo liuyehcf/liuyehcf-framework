@@ -15,7 +15,7 @@ import java.util.Map;
 public class MethodInfoTable {
 
     @JSONField(serialize = false)
-    private final Map<MethodDescription, MethodInfo> table;
+    private final Map<MethodSignature, MethodInfo> table;
 
     @JSONField(serialize = false)
     private MethodInfo curMethodInfo;
@@ -24,28 +24,28 @@ public class MethodInfoTable {
         table = new LinkedHashMap<>(16);
     }
 
-    Map<MethodDescription, MethodInfo> getTable() {
+    Map<MethodSignature, MethodInfo> getTable() {
         return table;
     }
 
     /**
      * 是否包含给定的方法
      *
-     * @param methodDescription 方法描述符
+     * @param methodSignature 方法签名
      * @return 是否包含
      */
-    boolean containsMethod(MethodDescription methodDescription) {
-        return table.containsKey(methodDescription);
+    boolean containsMethod(MethodSignature methodSignature) {
+        return table.containsKey(methodSignature);
     }
 
     /**
-     * 根据方法描述符查找方法信息
+     * 根据方法签名查找方法信息
      *
-     * @param methodDescription 方法描述符
+     * @param methodSignature 方法签名
      * @return 方法信息
      */
-    MethodInfo getMethodByMethodDescription(MethodDescription methodDescription) {
-        return table.get(methodDescription);
+    MethodInfo getMethodByMethodSignature(MethodSignature methodSignature) {
+        return table.get(methodSignature);
     }
 
     /**
@@ -65,11 +65,11 @@ public class MethodInfoTable {
     }
 
     /**
-     * 完成方法描述符的扫描
+     * 完成方法签名的扫描
      */
     void finishMethodDeclarator() {
-        MethodDescription methodDescription = curMethodInfo.buildMethodDescription();
-        table.put(methodDescription, curMethodInfo);
+        MethodSignature methodSignature = curMethodInfo.buildMethodSignature();
+        table.put(methodSignature, curMethodInfo);
     }
 
     /**
@@ -82,7 +82,7 @@ public class MethodInfoTable {
     public String toSimpleString() {
         Map<String, Object> jsonMap = new LinkedHashMap<>();
 
-        table.forEach((key, value) -> jsonMap.put(key.getDescription(), value.getByteCodes()));
+        table.forEach((key, value) -> jsonMap.put(key.getSignature(), value.getByteCodes()));
 
         return JSON.toJSONString(jsonMap);
     }
@@ -90,7 +90,7 @@ public class MethodInfoTable {
     @Override
     public String toString() {
         Map<String, MethodInfo> tableJSONMap = new LinkedHashMap<>(16);
-        table.forEach((key, value) -> tableJSONMap.put(key.getDescription(), value));
+        table.forEach((key, value) -> tableJSONMap.put(key.getSignature(), value));
         return JSON.toJSONString(tableJSONMap);
     }
 }

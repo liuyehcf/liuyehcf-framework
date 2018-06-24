@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.hua.semantic.method;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ir._invokestatic;
 import org.liuyehcf.compile.engine.hua.compiler.HuaContext;
-import org.liuyehcf.compile.engine.hua.compiler.MethodDescription;
+import org.liuyehcf.compile.engine.hua.compiler.MethodSignature;
 import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
 import org.liuyehcf.compile.engine.hua.model.AttrName;
 import org.liuyehcf.compile.engine.hua.model.Type;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
-import static org.liuyehcf.compile.engine.hua.compiler.MethodInfo.buildMethodDescription;
+import static org.liuyehcf.compile.engine.hua.compiler.MethodInfo.buildMethodSignature;
 
 /**
  * 方法调用
@@ -48,16 +48,16 @@ public class MethodInvocation extends AbstractSemanticAction implements Serializ
         String methodName = context.getAttr(methodNameStackOffset, AttrName.METHOD_NAME);
         List<Type> argumentTypeList = context.getAttr(argumentListStackOffset, AttrName.ARGUMENT_TYPE_LIST);
 
-        MethodDescription methodDescription = buildMethodDescription(methodName, argumentTypeList);
+        MethodSignature methodSignature = buildMethodSignature(methodName, argumentTypeList);
 
-        if (!context.containsMethod(methodDescription)) {
-            throw new RuntimeException("方法' " + methodDescription.getDescription() + " '尚未定义");
+        if (!context.containsMethod(methodSignature)) {
+            throw new RuntimeException("方法' " + methodSignature.getSignature() + " '尚未定义");
         }
 
-        MethodInfo methodInfo = context.getMethodByMethodDescription(methodDescription);
+        MethodInfo methodInfo = context.getMethodByMethodSignature(methodSignature);
         assertNotNull(methodInfo);
 
-        context.addByteCodeToCurrentMethod(new _invokestatic(methodDescription.getDescription()));
+        context.addByteCodeToCurrentMethod(new _invokestatic(methodSignature.getSignature()));
         context.setAttrToLeftNode(AttrName.TYPE, methodInfo.getResultType());
     }
 }

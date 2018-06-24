@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 记录方法描述符
+ * 记录方法签名
  *
  * @author hechenfeng
  * @date 2018/6/10
  */
-public class RecordMethodDescription extends AbstractSemanticAction implements Serializable {
+public class RecordMethodSignature extends AbstractSemanticAction implements Serializable {
 
     /**
      * 返回类型-偏移量，相对于语法树栈
@@ -33,7 +33,7 @@ public class RecordMethodDescription extends AbstractSemanticAction implements S
      */
     private final int methodDeclaratorStackOffset;
 
-    public RecordMethodDescription(int resultTypeStackOffset, int methodDeclaratorStackOffset) {
+    public RecordMethodSignature(int resultTypeStackOffset, int methodDeclaratorStackOffset) {
         this.resultTypeStackOffset = resultTypeStackOffset;
         this.methodDeclaratorStackOffset = methodDeclaratorStackOffset;
     }
