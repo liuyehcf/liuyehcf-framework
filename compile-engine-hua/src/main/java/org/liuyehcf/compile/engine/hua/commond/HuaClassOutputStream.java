@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.commond;
 
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.compiler.ConstantPool;
 import org.liuyehcf.compile.engine.hua.compiler.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
@@ -117,6 +118,10 @@ class HuaClassOutputStream extends DataOutputStream {
         /*
          * 5. 写字节码
          */
+        writeInt(methodInfo.getByteCodes().size());
+        for (int i = 0; i < methodInfo.getByteCodes().size(); i++) {
+            writeByteCode(methodInfo.getByteCodes().get(i));
+        }
     }
 
     private void writeString(String s) throws IOException {
@@ -139,5 +144,15 @@ class HuaClassOutputStream extends DataOutputStream {
          * 3. 写维度
          */
         writeInt(type.getDim());
+    }
+
+    private void writeByteCode(ByteCode code) throws IOException {
+        int operatorCode = code.getOperatorCode();
+        int operatorNum = code.getOperatorNum();
+        Class<?>[] operatorClasses = code.getOperatorClasses();
+
+        writeInt(operatorCode);
+        writeInt(operatorNum);
+
     }
 }

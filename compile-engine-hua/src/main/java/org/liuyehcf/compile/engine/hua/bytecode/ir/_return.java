@@ -10,10 +10,23 @@ package org.liuyehcf.compile.engine.hua.bytecode.ir;
  */
 public class _return extends InvokeAndReturn {
 
+    /**
+     * 唯一操作码
+     */
     public static final int OPERATOR_CODE = 0xb1;
 
+    /**
+     * 操作数数量
+     */
+    private static final int OPERATOR_NUM = 0;
+
+    /**
+     * 操作数类型
+     */
+    private static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{};
+
     public _return() {
-        super(OPERATOR_CODE, 0, null);
+        super(OPERATOR_CODE, OPERATOR_NUM, OPERATOR_CLASSES);
     }
 
     @Override

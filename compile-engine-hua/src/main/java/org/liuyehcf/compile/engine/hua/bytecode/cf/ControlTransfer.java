@@ -10,7 +10,20 @@ import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
  */
 public abstract class ControlTransfer extends ByteCode {
 
+    /**
+     * 偏移量初始值
+     */
     private static final int UNINITIALIZED = -1;
+
+    /**
+     * 操作数数量
+     */
+    private static final int OPERATOR_NUM = 1;
+
+    /**
+     * 操作数类型
+     */
+    private static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
 
     /**
      * 代码偏移量
@@ -18,7 +31,7 @@ public abstract class ControlTransfer extends ByteCode {
     private int codeOffset = UNINITIALIZED;
 
     public ControlTransfer(int operatorCode) {
-        super(operatorCode, 1, new int[]{4});
+        super(operatorCode, OPERATOR_NUM, OPERATOR_CLASSES);
     }
 
     public int getCodeOffset() {

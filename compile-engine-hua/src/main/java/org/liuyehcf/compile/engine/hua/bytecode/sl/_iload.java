@@ -10,14 +10,28 @@ package org.liuyehcf.compile.engine.hua.bytecode.sl;
  */
 public class _iload extends StoreLoad {
 
+    /**
+     * 唯一操作码
+     */
     public static final int OPERATOR_CODE = 0x15;
+
+    /**
+     * 操作数数量
+     */
+    private static final int OPERATOR_NUM = 1;
+
+    /**
+     * 操作数类型
+     */
+    private static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
+
     /**
      * 偏移量
      */
     private final int offset;
 
     public _iload(int offset) {
-        super(OPERATOR_CODE, 1, new int[]{4});
+        super(OPERATOR_CODE, OPERATOR_NUM, OPERATOR_CLASSES);
         this.offset = offset;
     }
 

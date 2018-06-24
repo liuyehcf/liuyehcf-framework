@@ -9,7 +9,7 @@ import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
  * @date 2018/6/22
  */
 public abstract class ObjectCreate extends ByteCode {
-    public ObjectCreate(int operatorCode, int operatorNum, int[] operatorByteSize) {
-        super(operatorCode, operatorNum, operatorByteSize);
+    public ObjectCreate(int operatorCode, int operatorNum, Class<?>[] operatorClasses) {
+        super(operatorCode, operatorNum, operatorClasses);
     }
 }

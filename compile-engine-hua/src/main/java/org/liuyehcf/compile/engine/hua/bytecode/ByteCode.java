@@ -2,6 +2,8 @@ package org.liuyehcf.compile.engine.hua.bytecode;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
+
 /**
  * 字节码抽象基类
  *
@@ -17,21 +19,26 @@ public abstract class ByteCode {
     private final int operatorCode;
 
     /**
-     * 操作数的数量
+     * 操作数数量
      */
     @JSONField(serialize = false)
     private final int operatorNum;
 
     /**
-     * 每个操作数的字节数量
+     * 操作数类型
      */
     @JSONField(serialize = false)
-    private final int[] operatorByteSize;
+    private final Class<?>[] operatorClasses;
 
-    public ByteCode(int operatorCode, int operatorNum, int[] operatorByteSize) {
+    public ByteCode(int operatorCode, int operatorNum, Class<?>[] operatorClasses) {
+        if (operatorClasses == null) {
+            throw new NullPointerException();
+        }
         this.operatorCode = operatorCode;
         this.operatorNum = operatorNum;
-        this.operatorByteSize = operatorByteSize;
+        this.operatorClasses = operatorClasses;
+
+        assertEquals(this.operatorNum, this.operatorClasses.length);
     }
 
     public final String getName() {
@@ -48,7 +55,7 @@ public abstract class ByteCode {
         return operatorNum;
     }
 
-    public int[] getOperatorByteSize() {
-        return operatorByteSize;
+    public Class<?>[] getOperatorClasses() {
+        return operatorClasses;
     }
 }

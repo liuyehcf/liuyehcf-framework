@@ -10,6 +10,9 @@ package org.liuyehcf.compile.engine.hua.bytecode.sl;
  */
 public class _aaload extends StoreLoad {
 
+    /**
+     * 唯一操作码
+     */
     public static final int OPERATOR_CODE = 0x32;
 
     public _aaload() {

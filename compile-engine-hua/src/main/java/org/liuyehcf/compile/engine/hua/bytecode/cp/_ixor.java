@@ -10,6 +10,9 @@ package org.liuyehcf.compile.engine.hua.bytecode.cp;
  */
 public class _ixor extends Compute {
 
+    /**
+     * 唯一操作码
+     */
     public static final int OPERATOR_CODE = 0x82;
 
     public _ixor() {

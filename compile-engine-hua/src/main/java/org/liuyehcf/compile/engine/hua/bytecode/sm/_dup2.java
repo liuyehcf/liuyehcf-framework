@@ -10,6 +10,9 @@ package org.liuyehcf.compile.engine.hua.bytecode.sm;
  */
 public class _dup2 extends OperatorStackManagement {
 
+    /**
+     * 唯一操作码
+     */
     public static final int OPERATOR_CODE = 0x5c;
 
     public _dup2() {

@@ -10,6 +10,9 @@ package org.liuyehcf.compile.engine.hua.bytecode.cf;
  */
 public class _if_icmpne extends ControlTransfer {
 
+    /**
+     * 唯一操作码
+     */
     public static final int OPERATOR_CODE = 0xa0;
 
     public _if_icmpne() {

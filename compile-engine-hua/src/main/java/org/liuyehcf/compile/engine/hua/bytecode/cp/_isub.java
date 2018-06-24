@@ -10,6 +10,9 @@ package org.liuyehcf.compile.engine.hua.bytecode.cp;
  */
 public class _isub extends Compute {
 
+    /**
+     * 唯一操作码
+     */
     public static final int OPERATOR_CODE = 0x64;
 
     public _isub() {
