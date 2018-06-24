@@ -87,6 +87,7 @@ public class Huac {
     }
 
     private void storeCode(HuaResult result) {
-
+        VariableSymbolTable variableSymbolTable = result.getVariableSymbolTable();
+        MethodInfoTable methodInfoTable = result.getMethodInfoTable();
     }
 }

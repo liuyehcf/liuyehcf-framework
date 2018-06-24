@@ -24,12 +24,12 @@ public class VariableSymbolTable {
     private final Map<Integer, Namespace> namespaceMap;
     /**
      * 符号表
-     * 标志符名字 -> 符号详细信息
+     * [命名空间,标志符名字] -> 符号详细信息
      */
-    private final Map<Namespace, Map<String, VariableSymbol>> table;
+    private final Map<Namespace, Map<String, VariableSymbol>> nameMap;
     /**
      * 符号表
-     * 标志符偏移量 -> 符号详细信息
+     * [命名空间,标志符偏移量] -> 符号详细信息
      */
     private final Map<Namespace, Map<Integer, VariableSymbol>> offsetMap;
     /**
@@ -45,12 +45,12 @@ public class VariableSymbolTable {
         namespaceCnt = 0;
         currentNamespace = new Namespace(namespaceCnt++, Namespace.NO_PARENT_NAMESPACE);
         namespaceMap = new LinkedHashMap<>(16);
-        table = new LinkedHashMap<>(16);
+        nameMap = new LinkedHashMap<>(16);
         offsetMap = new LinkedHashMap<>(16);
 
         assertFalse(namespaceMap.containsKey(currentNamespace.getId()));
         namespaceMap.put(currentNamespace.getId(), currentNamespace);
-        table.put(currentNamespace, new LinkedHashMap<>());
+        nameMap.put(currentNamespace, new LinkedHashMap<>());
         offsetMap.put(currentNamespace, new LinkedHashMap<>());
     }
 
@@ -60,9 +60,9 @@ public class VariableSymbolTable {
     void enterNamespace() {
         currentNamespace = new Namespace(namespaceCnt++, currentNamespace.getId());
 
-        assertFalse(table.containsKey(currentNamespace));
+        assertFalse(nameMap.containsKey(currentNamespace));
         assertFalse(offsetMap.containsKey(currentNamespace));
-        table.put(currentNamespace, new LinkedHashMap<>(16));
+        nameMap.put(currentNamespace, new LinkedHashMap<>(16));
         offsetMap.put(currentNamespace, new LinkedHashMap<>(16));
 
         assertFalse(namespaceMap.containsKey(currentNamespace.getId()));
@@ -91,7 +91,7 @@ public class VariableSymbolTable {
         Namespace namespace = currentNamespace;
 
         while (namespace != null) {
-            if (table.get(namespace).containsKey(name)) {
+            if (nameMap.get(namespace).containsKey(name)) {
                 return true;
             }
             namespace = namespaceMap.get(namespace.getPid());
@@ -114,7 +114,7 @@ public class VariableSymbolTable {
         }
 
         VariableSymbol newVariableSymbol = new VariableSymbol(offset, currentNamespace, name, type);
-        table.get(currentNamespace).put(name, newVariableSymbol);
+        nameMap.get(currentNamespace).put(name, newVariableSymbol);
         offsetMap.get(currentNamespace).put(offset, newVariableSymbol);
 
         return newVariableSymbol;
@@ -130,8 +130,8 @@ public class VariableSymbolTable {
         Namespace namespace = currentNamespace;
 
         while (namespace != null) {
-            if (table.get(namespace).containsKey(identifierName)) {
-                return table.get(namespace).get(identifierName);
+            if (nameMap.get(namespace).containsKey(identifierName)) {
+                return nameMap.get(namespace).get(identifierName);
             }
             namespace = namespaceMap.get(namespace.getPid());
         }
@@ -161,7 +161,7 @@ public class VariableSymbolTable {
     @Override
     public String toString() {
         Map<String, Map<String, VariableSymbol>> tableJSONMap = new LinkedHashMap<>(16);
-        table.forEach((key, value) -> tableJSONMap.put("[" + key.getId() + ", " + key.getPid() + "]", value));
+        nameMap.forEach((key, value) -> tableJSONMap.put("[" + key.getId() + ", " + key.getPid() + "]", value));
         return JSON.toJSONString(tableJSONMap);
     }
 }
