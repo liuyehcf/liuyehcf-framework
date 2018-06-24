@@ -11,10 +11,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class ListUtils {
-    private ListUtils() {
-
-    }
+public abstract class ListUtils {
 
     public static <T> List<T> subListExceptFirstElement(List<T> list) {
         return list.subList(1, list.size());

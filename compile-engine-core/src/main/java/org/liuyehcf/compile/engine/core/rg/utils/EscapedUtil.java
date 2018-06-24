@@ -11,7 +11,7 @@ import java.util.*;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class EscapedUtil {
+public abstract class EscapedUtil {
     private static List<Symbol> escaped_any;
     private static List<Symbol> escaped_or;
     private static List<Symbol> escaped_star;
@@ -44,9 +44,6 @@ public class EscapedUtil {
         initializeEscapedBigW();
         initializeEscapedSmallS();
         initializeEscapedBigS();
-    }
-
-    private EscapedUtil() {
     }
 
     public static List<Symbol> getSymbolsOfEscapedChar(char c) {

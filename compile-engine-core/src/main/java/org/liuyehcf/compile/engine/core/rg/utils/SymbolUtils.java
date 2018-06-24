@@ -14,7 +14,7 @@ import java.util.Set;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class SymbolUtils {
+public abstract class SymbolUtils {
 
     private static List<Symbol> alphabetSymbols = null;
     private static List<Symbol> alphabetSymbolsMatchesAny = null;
@@ -32,9 +32,6 @@ public class SymbolUtils {
     public static final Symbol LEFT_BIG_PARENTHESIS = getAlphabetSymbolWithChar('{');
     public static final Symbol RIGHT_BIG_PARENTHESIS = getAlphabetSymbolWithChar('}');
     public static final Symbol TO = getAlphabetSymbolWithChar('-');
-
-    private SymbolUtils() {
-    }
 
     public static Symbol getAlphabetSymbolWithChar(char symbol) {
         if (alphabetSymbols == null) {

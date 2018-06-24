@@ -39,7 +39,7 @@ public class VariableSymbolTable {
      * 命名空间计数值
      */
     private int namespaceCnt;
-    
+
     /**
      * 当前命名空间，初始化为最大的全局命名空间
      */

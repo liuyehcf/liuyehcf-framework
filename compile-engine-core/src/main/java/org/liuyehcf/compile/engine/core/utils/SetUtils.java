@@ -10,9 +10,7 @@ import java.util.Set;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class SetUtils {
-    private SetUtils() {
-    }
+public abstract class SetUtils {
 
     @SafeVarargs
     public static <T> Set<T> of(T... elements) {

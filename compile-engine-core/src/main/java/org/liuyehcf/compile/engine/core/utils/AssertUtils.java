@@ -8,9 +8,7 @@ import java.util.Objects;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public class AssertUtils {
-    private AssertUtils() {
-    }
+public abstract class AssertUtils {
 
     public static void assertTrue(Boolean condition) {
         if (!condition) {
