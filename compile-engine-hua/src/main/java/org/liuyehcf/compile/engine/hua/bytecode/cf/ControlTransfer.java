@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
  * @author hechenfeng
  * @date 2018/6/13
  */
-public abstract class ControlTransfer implements ByteCode {
+public abstract class ControlTransfer extends ByteCode {
 
     private static final int UNINITIALIZED = -1;
 

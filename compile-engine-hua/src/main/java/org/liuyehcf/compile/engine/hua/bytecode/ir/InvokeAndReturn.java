@@ -8,5 +8,5 @@ import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
  * @author hechenfeng
  * @date 2018/6/13
  */
-public abstract class InvokeAndReturn implements ByteCode {
+public abstract class InvokeAndReturn extends ByteCode {
 }

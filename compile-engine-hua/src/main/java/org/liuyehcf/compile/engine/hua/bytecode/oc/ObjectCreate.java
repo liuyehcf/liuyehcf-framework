@@ -8,5 +8,5 @@ import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
  * @author hechenfeng
  * @date 2018/6/22
  */
-public abstract class ObjectCreate implements ByteCode {
+public abstract class ObjectCreate extends ByteCode {
 }

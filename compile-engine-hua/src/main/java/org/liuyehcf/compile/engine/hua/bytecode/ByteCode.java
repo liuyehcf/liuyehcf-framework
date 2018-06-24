@@ -1,16 +1,16 @@
 package org.liuyehcf.compile.engine.hua.bytecode;
 
 /**
- * 字节码接口
+ * 字节码抽象基类
  *
  * @author hechenfeng
  * @date 2018/6/2
  */
-public interface ByteCode {
+public abstract class ByteCode {
 
-    default String getName() {
+    public final String getName() {
         return getClass().getSimpleName();
     }
 
-    void operate();
+    public abstract void operate();
 }
