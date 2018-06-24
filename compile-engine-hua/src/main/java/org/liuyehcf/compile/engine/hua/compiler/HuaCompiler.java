@@ -60,7 +60,7 @@ public class HuaCompiler extends LALR<HuaResult> implements Serializable {
 
         /*
          * 若文件存在，就删除
-         * deleteOnExit方法是个大坑！先调用这个方法，后创建文件，也会被删除！
+         * deleteOnExit 方法的含义是程序退出时删除，而不是存在时删除
          */
         if (compilerFile.exists()) {
             boolean isDelete = compilerFile.delete();

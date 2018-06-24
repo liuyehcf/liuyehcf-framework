@@ -1,9 +1,12 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.liuyehcf.compile.engine.hua.model.Type;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
@@ -16,6 +19,16 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
  * @date 2018/6/3
  */
 public class VariableSymbolTable {
+
+    /**
+     * 命名空间
+     */
+    private final List<Namespace> namespaces = new ArrayList<>();
+
+    /**
+     * 符号
+     */
+    private final List<VariableSymbol> variableSymbols = new ArrayList<>();
 
     /**
      * 命名空间映射
@@ -48,6 +61,8 @@ public class VariableSymbolTable {
     VariableSymbolTable() {
         namespaceCnt = 0;
         currentNamespace = new Namespace(namespaceCnt++, Namespace.NO_PARENT_NAMESPACE);
+
+        namespaces.add(currentNamespace);
         namespaceMap = new LinkedHashMap<>(16);
         nameMap = new LinkedHashMap<>(16);
         offsetMap = new LinkedHashMap<>(16);
@@ -64,6 +79,7 @@ public class VariableSymbolTable {
     void enterNamespace() {
         currentNamespace = new Namespace(namespaceCnt++, currentNamespace.getId());
 
+        namespaces.add(currentNamespace);
         assertFalse(nameMap.containsKey(currentNamespace));
         assertFalse(offsetMap.containsKey(currentNamespace));
         nameMap.put(currentNamespace, new LinkedHashMap<>(16));
@@ -117,7 +133,8 @@ public class VariableSymbolTable {
             return null;
         }
 
-        VariableSymbol newVariableSymbol = new VariableSymbol(offset, currentNamespace, name, type);
+        VariableSymbol newVariableSymbol = new VariableSymbol(offset, currentNamespace.getId(), name, type);
+        variableSymbols.add(newVariableSymbol);
         nameMap.get(currentNamespace).put(name, newVariableSymbol);
         offsetMap.get(currentNamespace).put(offset, newVariableSymbol);
 
@@ -162,10 +179,18 @@ public class VariableSymbolTable {
         return null;
     }
 
+    public List<Namespace> getNamespaces() {
+        return namespaces;
+    }
+
+    public List<VariableSymbol> getVariableSymbols() {
+        return variableSymbols;
+    }
+
     @Override
     public String toString() {
         Map<String, Map<String, VariableSymbol>> tableJSONMap = new LinkedHashMap<>(16);
         nameMap.forEach((key, value) -> tableJSONMap.put("[" + key.getId() + ", " + key.getPid() + "]", value));
-        return JSON.toJSONString(tableJSONMap);
+        return JSON.toJSONString(tableJSONMap, SerializerFeature.DisableCircularReferenceDetect);
     }
 }

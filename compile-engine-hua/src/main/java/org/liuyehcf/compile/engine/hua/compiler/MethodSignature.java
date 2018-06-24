@@ -15,7 +15,7 @@ public class MethodSignature {
      */
     private final String signature;
 
-    public MethodSignature(String name, String[] types) {
+    MethodSignature(String name, String[] types) {
         StringBuilder sb = new StringBuilder();
         sb.append(name)
                 .append('(');

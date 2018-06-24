@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.hua.compiler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -84,13 +85,13 @@ public class MethodInfoTable {
 
         table.forEach((key, value) -> jsonMap.put(key.getSignature(), value.getByteCodes()));
 
-        return JSON.toJSONString(jsonMap);
+        return JSON.toJSONString(jsonMap, SerializerFeature.DisableCircularReferenceDetect);
     }
 
     @Override
     public String toString() {
         Map<String, MethodInfo> tableJSONMap = new LinkedHashMap<>(16);
         table.forEach((key, value) -> tableJSONMap.put(key.getSignature(), value));
-        return JSON.toJSONString(tableJSONMap);
+        return JSON.toJSONString(tableJSONMap, SerializerFeature.DisableCircularReferenceDetect);
     }
 }

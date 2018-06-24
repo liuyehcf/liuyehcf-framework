@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.runtime;
+package org.liuyehcf.compile.engine.hua.commond;
 
 /**
  * Hua反编译命令行工具

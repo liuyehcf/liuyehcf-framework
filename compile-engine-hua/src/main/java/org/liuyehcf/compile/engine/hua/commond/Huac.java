@@ -1,11 +1,14 @@
-package org.liuyehcf.compile.engine.hua.compiler;
+package org.liuyehcf.compile.engine.hua.commond;
 
 import org.liuyehcf.compile.engine.core.CompileResult;
+import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compiler.HuaResult;
+import org.liuyehcf.compile.engine.hua.compiler.MethodInfoTable;
+import org.liuyehcf.compile.engine.hua.compiler.VariableSymbolTable;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+
+import static org.liuyehcf.compile.engine.hua.commond.HClassConstant.HCLASS_SUFFIX;
 
 /**
  * Hua编译命令行工具
@@ -15,16 +18,32 @@ import java.io.IOException;
  */
 public class Huac {
 
+    /**
+     * 源文件路径
+     */
     private final String filePath;
 
+    /**
+     * 文件名
+     */
+    private final String fileName;
+
+    /**
+     * 输出目录
+     */
     private final String targetPath;
 
+    /**
+     * 编译器
+     */
     private final HuaCompiler huaCompiler;
 
     private Huac(String filePath, String targetPath) {
         check(filePath, targetPath);
 
         this.filePath = filePath;
+        String[] segments = filePath.split(java.io.File.separator);
+        this.fileName = segments[segments.length - 1].substring(0, segments[segments.length - 1].length() - 4);
         this.targetPath = targetPath;
 
         huaCompiler = HuaCompiler.getHuaCompiler();
@@ -89,6 +108,14 @@ public class Huac {
     private void storeCode(HuaResult result) {
         VariableSymbolTable variableSymbolTable = result.getVariableSymbolTable();
         MethodInfoTable methodInfoTable = result.getMethodInfoTable();
+
+        HuaClassOutputStream outputStrem;
+
+        try {
+            outputStrem = new HuaClassOutputStream(new FileOutputStream(targetPath + File.separator + fileName + HCLASS_SUFFIX));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }

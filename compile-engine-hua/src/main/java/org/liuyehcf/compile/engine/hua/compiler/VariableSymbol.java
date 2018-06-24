@@ -1,6 +1,5 @@
 package org.liuyehcf.compile.engine.hua.compiler;
 
-import com.alibaba.fastjson.JSON;
 import org.liuyehcf.compile.engine.hua.model.Type;
 
 /**
@@ -16,9 +15,9 @@ public class VariableSymbol {
     private final int offset;
 
     /**
-     * 命名空间
+     * 命名空间id
      */
-    private final Namespace namespace;
+    private final int namespaceId;
 
     /**
      * 符号名字
@@ -35,9 +34,9 @@ public class VariableSymbol {
      */
     private Object value;
 
-    public VariableSymbol(int offset, Namespace namespace, String name, Type type) {
+    public VariableSymbol(int offset, int namespaceId, String name, Type type) {
         this.offset = offset;
-        this.namespace = namespace;
+        this.namespaceId = namespaceId;
         this.name = name;
         this.type = type;
     }
@@ -46,8 +45,8 @@ public class VariableSymbol {
         return offset;
     }
 
-    public Namespace getNamespace() {
-        return namespace;
+    public int getNamespaceId() {
+        return namespaceId;
     }
 
     public String getName() {
@@ -60,10 +59,5 @@ public class VariableSymbol {
 
     public Object getValue() {
         return value;
-    }
-
-    @Override
-    public String toString() {
-        return JSON.toJSONString(this);
     }
 }
