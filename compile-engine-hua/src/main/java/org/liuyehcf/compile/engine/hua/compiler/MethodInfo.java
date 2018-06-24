@@ -65,7 +65,7 @@ public class MethodInfo {
         return methodName;
     }
 
-    void setMethodName(String methodName) {
+    public void setMethodName(String methodName) {
         this.methodName = methodName;
     }
 
@@ -73,7 +73,7 @@ public class MethodInfo {
         return resultType;
     }
 
-    void setResultType(Type resultType) {
+    public void setResultType(Type resultType) {
         this.resultType = resultType;
     }
 
@@ -81,7 +81,7 @@ public class MethodInfo {
         return paramTypeList;
     }
 
-    void setParamTypeList(List<Type> paramTypeList) {
+    public void setParamTypeList(List<Type> paramTypeList) {
         this.paramTypeList = paramTypeList;
     }
 
@@ -97,8 +97,12 @@ public class MethodInfo {
         offset += step;
     }
 
-    int getOffset() {
+    public int getOffset() {
         return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     /**

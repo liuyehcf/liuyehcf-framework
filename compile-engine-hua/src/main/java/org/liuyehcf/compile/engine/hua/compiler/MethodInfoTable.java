@@ -33,6 +33,14 @@ public class MethodInfoTable {
         table = new LinkedHashMap<>(16);
     }
 
+    public MethodInfoTable(List<MethodInfo> methodInfoList) {
+        table = new LinkedHashMap<>(16);
+
+        for (MethodInfo methodInfo : methodInfoList) {
+            table.put(methodInfo.buildMethodSignature(), methodInfo);
+        }
+    }
+
     Map<MethodSignature, MethodInfo> getTable() {
         return table;
     }

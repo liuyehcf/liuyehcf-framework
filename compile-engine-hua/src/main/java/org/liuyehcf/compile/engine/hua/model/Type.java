@@ -47,6 +47,10 @@ public class Type implements Serializable {
         return new Type(typeName, ARRAY_TYPE_WIDTH, dim);
     }
 
+    public static Type createType(String typeName, int typeWidth, int dim) {
+        return new Type(typeName, typeWidth, dim);
+    }
+
     public String getTypeName() {
         return typeName;
     }

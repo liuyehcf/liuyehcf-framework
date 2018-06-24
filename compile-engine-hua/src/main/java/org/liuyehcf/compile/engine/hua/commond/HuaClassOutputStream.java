@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.hua.compiler.ConstantPool;
 import org.liuyehcf.compile.engine.hua.compiler.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
 import org.liuyehcf.compile.engine.hua.compiler.MethodInfoTable;
+import org.liuyehcf.compile.engine.hua.model.Type;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -28,7 +29,7 @@ class HuaClassOutputStream extends DataOutputStream {
         /*
          * 1. 写魔数
          */
-        writeMagic();
+        writeString(MAGIC);
 
         /*
          * 2. 写常量池
@@ -39,23 +40,6 @@ class HuaClassOutputStream extends DataOutputStream {
          * 3. 写方法表
          */
         writeMethodInfoTable(intermediateInfo.getMethodInfoTable());
-    }
-
-    /**
-     * 写魔数
-     */
-    private void writeMagic() throws IOException {
-        byte[] bytes = MAGIC.getBytes();
-
-        /*
-         * 写魔数长度
-         */
-        writeInt(bytes.length);
-
-        /*
-         * 写魔术
-         */
-        write(bytes);
     }
 
     /**
@@ -70,17 +54,12 @@ class HuaClassOutputStream extends DataOutputStream {
         writeInt(constantPool.getConstants().size());
 
         for (String constant : constantPool.getConstants()) {
-            byte[] bytes = constant.getBytes();
-
-            /*
-             * 写常量的长度
-             */
-            writeInt(bytes.length);
 
             /*
              * 写常量
              */
-            write(bytes);
+            writeString(constant);
+
         }
     }
 
@@ -97,7 +76,12 @@ class HuaClassOutputStream extends DataOutputStream {
         writeInt(methodInfoTable.getMethodInfoList().size());
 
         for (MethodInfo methodInfo : methodInfoTable.getMethodInfoList()) {
+
+            /*
+             * 写方法信息
+             */
             writeMethodInfo(methodInfo);
+
         }
     }
 
@@ -107,6 +91,53 @@ class HuaClassOutputStream extends DataOutputStream {
      * @param methodInfo 方法信息
      */
     private void writeMethodInfo(MethodInfo methodInfo) throws IOException {
+        /*
+         * 1. 写方法名字
+         */
+        writeString(methodInfo.getMethodName());
 
+        /*
+         * 2. 写返回类型
+         */
+        writeType(methodInfo.getResultType());
+
+        /*
+         * 3. 写方法参数类型列表
+         */
+        writeInt(methodInfo.getParamTypeList().size());
+        for (int i = 0; i < methodInfo.getParamTypeList().size(); i++) {
+            writeType(methodInfo.getParamTypeList().get(i));
+        }
+
+        /*
+         * 4. 写偏移量
+         */
+        writeInt(methodInfo.getOffset());
+
+        /*
+         * 5. 写字节码
+         */
+    }
+
+    private void writeString(String s) throws IOException {
+        writeInt(s.length());
+        write(s.getBytes());
+    }
+
+    private void writeType(Type type) throws IOException {
+        /*
+         * 1. 写类型名
+         */
+        writeString(type.getTypeName());
+
+        /*
+         * 2. 写类型宽度
+         */
+        writeInt(type.getTypeWidth());
+
+        /*
+         * 3. 写维度
+         */
+        writeInt(type.getDim());
     }
 }
