@@ -7,6 +7,9 @@ import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.HuaResult;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -20,10 +23,13 @@ public class TestGrammar {
     private static LRCompiler<HuaResult> compiler;
 
     @BeforeClass
-    public static void init() {
+    public static void init() throws Exception {
         long start, end;
         start = System.currentTimeMillis();
-        compiler = new HuaCompiler();
+
+        ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("./src/main/resources/hua.obj"));
+        compiler = (HuaCompiler) inputStream.readObject();
+
         end = System.currentTimeMillis();
         System.out.println("build HuaCompiler consume " + (end - start) / 1000 + "s");
 

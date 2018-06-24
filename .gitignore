@@ -54,6 +54,9 @@ crashlytics-build.properties
 # log
 *.log
 
+# serialize
+
+*.obj
 
 # special pom file
 

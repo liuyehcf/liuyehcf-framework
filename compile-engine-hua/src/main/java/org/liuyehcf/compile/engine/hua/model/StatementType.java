@@ -1,14 +1,12 @@
 package org.liuyehcf.compile.engine.hua.model;
 
-import java.io.Serializable;
-
 /**
  * 语句类型
  *
  * @author hechenfeng
  * @date 2018/6/18
  */
-public enum StatementType implements Serializable {
+public enum StatementType {
     /**
      * 赋值
      */

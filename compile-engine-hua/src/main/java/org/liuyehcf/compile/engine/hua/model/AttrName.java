@@ -1,14 +1,12 @@
 package org.liuyehcf.compile.engine.hua.model;
 
-import java.io.Serializable;
-
 /**
  * 属性名称
  *
  * @author hechenfeng
  * @date 2018/6/2
  */
-public enum AttrName implements Serializable {
+public enum AttrName {
     /**
      * 标志符名称
      */

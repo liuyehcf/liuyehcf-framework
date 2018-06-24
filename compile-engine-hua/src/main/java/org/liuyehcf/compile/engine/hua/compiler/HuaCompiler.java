@@ -8,6 +8,9 @@ import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._goto;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 
@@ -22,8 +25,24 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.LEXIC
  * @date 2018/6/2
  */
 public class HuaCompiler extends LALR<HuaResult> implements Serializable {
+
+    public static final String SAVE_PATH = "./compile-engine-hua/src/main/resources/hua.obj";
+
     public HuaCompiler() {
         super(GRAMMAR, LEXICAL_ANALYZER);
+    }
+
+    public static void main(String[] args) {
+        new HuaCompiler().save();
+    }
+
+    public void save() {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(new File(SAVE_PATH)));
+            outputStream.writeObject(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
