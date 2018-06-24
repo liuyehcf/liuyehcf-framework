@@ -37,11 +37,27 @@ public class TestGrammar {
     }
 
     @Test
-    public void printMarkdown() {
+    public void testFirstJSONString() {
         System.out.println(compiler.getFirstJSONString());
+    }
+
+    @Test
+    public void testFollowJSONString() {
         System.out.println(compiler.getFollowJSONString());
+    }
+
+    @Test
+    public void testClosureJSONString() {
         System.out.println(compiler.getClosureJSONString());
+    }
+
+    @Test
+    public void testClosureTransferTableJSONString() {
         System.out.println(compiler.getClosureTransferTableJSONString());
+    }
+
+    @Test
+    public void testMarkDownString() {
         System.out.println(compiler.getAnalysisTableMarkdownString());
     }
 
