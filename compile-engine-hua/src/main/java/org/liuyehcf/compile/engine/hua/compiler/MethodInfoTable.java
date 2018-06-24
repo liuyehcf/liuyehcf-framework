@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,9 +17,15 @@ import java.util.Map;
  */
 public class MethodInfoTable {
 
+    /**
+     * 方法签名 -> 方法信息
+     */
     @JSONField(serialize = false)
     private final Map<MethodSignature, MethodInfo> table;
 
+    /**
+     * 当前方法信息
+     */
     @JSONField(serialize = false)
     private MethodInfo curMethodInfo;
 
@@ -78,6 +86,10 @@ public class MethodInfoTable {
      */
     void exitMethod() {
         curMethodInfo = null;
+    }
+
+    public List<MethodInfo> getMethodInfoList() {
+        return new ArrayList<>(table.values());
     }
 
     public String toSimpleString() {

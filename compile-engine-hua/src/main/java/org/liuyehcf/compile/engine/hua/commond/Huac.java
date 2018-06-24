@@ -3,8 +3,6 @@ package org.liuyehcf.compile.engine.hua.commond;
 import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.compiler.HuaResult;
-import org.liuyehcf.compile.engine.hua.compiler.MethodInfoTable;
-import org.liuyehcf.compile.engine.hua.compiler.VariableSymbolTable;
 
 import java.io.*;
 
@@ -106,17 +104,21 @@ public class Huac {
     }
 
     private void storeCode(HuaResult result) {
-        VariableSymbolTable variableSymbolTable = result.getVariableSymbolTable();
-        MethodInfoTable methodInfoTable = result.getMethodInfoTable();
 
-        HuaClassOutputStream outputStrem;
+        try (HuaClassOutputStream outputStream = new HuaClassOutputStream(new FileOutputStream(targetPath + File.separator + fileName + HCLASS_SUFFIX))) {
+            /*
+             * 1. 写魔数
+             */
+            outputStream.writeMagic();
 
-        try {
-            outputStrem = new HuaClassOutputStream(new FileOutputStream(targetPath + File.separator + fileName + HCLASS_SUFFIX));
+            /*
+             * 2. 写方法表
+             */
+            outputStream.writeMethodInfoTable(result.getMethodInfoTable());
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
 
     }
 }

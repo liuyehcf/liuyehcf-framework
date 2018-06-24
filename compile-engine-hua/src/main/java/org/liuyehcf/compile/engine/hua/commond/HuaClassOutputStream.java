@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.commond;
 
-import org.liuyehcf.compile.engine.hua.compiler.Namespace;
-import org.liuyehcf.compile.engine.hua.compiler.VariableSymbol;
+import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
+import org.liuyehcf.compile.engine.hua.compiler.MethodInfoTable;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -14,15 +14,16 @@ import static org.liuyehcf.compile.engine.hua.commond.HClassConstant.MAGIC_LENGH
  * @author hechenfeng
  * @date 2018/6/24
  */
-public class HuaClassOutputStream extends BufferedOutputStream {
-    public HuaClassOutputStream(OutputStream out) {
+class HuaClassOutputStream extends BufferedOutputStream {
+
+    HuaClassOutputStream(OutputStream out) {
         super(out);
     }
 
     /**
      * 写魔数
      */
-    public void writeMagic() throws IOException {
+    void writeMagic() throws IOException {
         byte[] bytes = new byte[MAGIC_LENGHT];
         byte[] magicBytes = MAGIC.getBytes();
 
@@ -32,20 +33,13 @@ public class HuaClassOutputStream extends BufferedOutputStream {
     }
 
     /**
-     * 写入VariableSymbol
+     * 写入MethodInfoTable
      *
-     * @param variableSymbol 符号
+     * @param methodInfoTable 方法表
      */
-    public void writeVariableSymbol(VariableSymbol variableSymbol) throws IOException {
+    void writeMethodInfoTable(MethodInfoTable methodInfoTable) throws IOException {
+        for (MethodInfo methodInfo : methodInfoTable.getMethodInfoList()) {
 
-    }
-
-    /**
-     * 写入Namespace
-     *
-     * @param namespace 命名空间
-     */
-    public void writeNamespace(Namespace namespace) throws IOException {
-
+        }
     }
 }

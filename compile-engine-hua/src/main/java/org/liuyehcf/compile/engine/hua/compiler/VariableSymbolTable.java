@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.liuyehcf.compile.engine.hua.model.Type;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
@@ -21,32 +19,14 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 public class VariableSymbolTable {
 
     /**
-     * 命名空间
-     */
-    private final List<Namespace> namespaces = new ArrayList<>();
-
-    /**
-     * 符号
-     */
-    private final List<VariableSymbol> variableSymbols = new ArrayList<>();
-
-    /**
-     * 命名空间映射
-     * id -> Namespace
+     * 命名空间id -> 命名空间
      */
     private final Map<Integer, Namespace> namespaceMap;
 
     /**
-     * 符号表
-     * [命名空间,标志符名字] -> 符号详细信息
+     * [命名空间, 标志符名字] -> 符号详细信息
      */
     private final Map<Namespace, Map<String, VariableSymbol>> nameMap;
-
-    /**
-     * 符号表
-     * [命名空间,标志符偏移量] -> 符号详细信息
-     */
-    private final Map<Namespace, Map<Integer, VariableSymbol>> offsetMap;
 
     /**
      * 命名空间计数值
@@ -62,15 +42,12 @@ public class VariableSymbolTable {
         namespaceCnt = 0;
         currentNamespace = new Namespace(namespaceCnt++, Namespace.NO_PARENT_NAMESPACE);
 
-        namespaces.add(currentNamespace);
         namespaceMap = new LinkedHashMap<>(16);
         nameMap = new LinkedHashMap<>(16);
-        offsetMap = new LinkedHashMap<>(16);
 
         assertFalse(namespaceMap.containsKey(currentNamespace.getId()));
         namespaceMap.put(currentNamespace.getId(), currentNamespace);
         nameMap.put(currentNamespace, new LinkedHashMap<>());
-        offsetMap.put(currentNamespace, new LinkedHashMap<>());
     }
 
     /**
@@ -79,11 +56,8 @@ public class VariableSymbolTable {
     void enterNamespace() {
         currentNamespace = new Namespace(namespaceCnt++, currentNamespace.getId());
 
-        namespaces.add(currentNamespace);
         assertFalse(nameMap.containsKey(currentNamespace));
-        assertFalse(offsetMap.containsKey(currentNamespace));
         nameMap.put(currentNamespace, new LinkedHashMap<>(16));
-        offsetMap.put(currentNamespace, new LinkedHashMap<>(16));
 
         assertFalse(namespaceMap.containsKey(currentNamespace.getId()));
         namespaceMap.put(currentNamespace.getId(), currentNamespace);
@@ -134,9 +108,7 @@ public class VariableSymbolTable {
         }
 
         VariableSymbol newVariableSymbol = new VariableSymbol(offset, currentNamespace.getId(), name, type);
-        variableSymbols.add(newVariableSymbol);
         nameMap.get(currentNamespace).put(name, newVariableSymbol);
-        offsetMap.get(currentNamespace).put(offset, newVariableSymbol);
 
         return newVariableSymbol;
     }
@@ -158,33 +130,6 @@ public class VariableSymbolTable {
         }
 
         return null;
-    }
-
-    /**
-     * 根据符号偏移量获取符号
-     *
-     * @param offset 符号偏移量
-     * @return 符号
-     */
-    VariableSymbol getVariableSymbolByOffset(int offset) {
-        Namespace namespace = currentNamespace;
-
-        while (namespace != null) {
-            if (offsetMap.get(namespace).containsKey(offset)) {
-                return offsetMap.get(namespace).get(offset);
-            }
-            namespace = namespaceMap.get(namespace.getPid());
-        }
-
-        return null;
-    }
-
-    public List<Namespace> getNamespaces() {
-        return namespaces;
-    }
-
-    public List<VariableSymbol> getVariableSymbols() {
-        return variableSymbols;
     }
 
     @Override
