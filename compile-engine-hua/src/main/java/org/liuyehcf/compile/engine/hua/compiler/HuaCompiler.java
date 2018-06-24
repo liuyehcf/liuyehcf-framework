@@ -8,13 +8,11 @@ import org.liuyehcf.compile.engine.hua.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.bytecode.cf._goto;
 import org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.GRAMMAR;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.LEXICAL_ANALYZER;
 
@@ -26,22 +24,70 @@ import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.LEXIC
  */
 public class HuaCompiler extends LALR<HuaResult> implements Serializable {
 
-    public static final String SAVE_PATH = "./compile-engine-hua/src/main/resources/hua.obj";
+    /**
+     * HuaCompiler序列化文件路径
+     */
+    private static final String COMPILER_SERIALIZATION_STORE_PATH = "/Users/hechenfeng/workspace/compile-engine/compile-engine-hua/src/main/resources/hua.obj";
 
-    public HuaCompiler() {
+    private HuaCompiler() {
         super(GRAMMAR, LEXICAL_ANALYZER);
     }
 
-    public static void main(String[] args) {
-        new HuaCompiler().save();
+    public static HuaCompiler getHuaCompiler() {
+        HuaCompiler huaCompiler;
+        File compilerFile = null;
+
+        /*
+         * 首先从序列化文件中加载编译器
+         */
+        try {
+            compilerFile = new File(COMPILER_SERIALIZATION_STORE_PATH);
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(compilerFile));
+
+            huaCompiler = (HuaCompiler) inputStream.readObject();
+            return huaCompiler;
+        } catch (IOException e) {
+            /*
+             * 1. 文件找不到
+             * 2. 序列化版本号发生变动（类文件发生了修改，序列化文件失效，此时需要重新编译然后序列化）
+             * 注意
+             *      不要自己定义序列化版本号'serialVersionUID'，让Java自动生成序列化版本号
+             *      这样一来，一旦文件发生更改，序列化版本号就会变更，序列化版本号不一致时，反序列化就会失败，这里就能捕获到InvalidClassException异常
+             */
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        /*
+         * 若文件存在，就删除
+         * deleteOnExit方法是个大坑！先调用这个方法，后创建文件，也会被删除！
+         */
+        if (compilerFile.exists()) {
+            boolean isDelete = compilerFile.delete();
+            assertTrue(isDelete);
+        }
+
+        /*
+         * 重新构建编译器，并持久化
+         */
+        huaCompiler = new HuaCompiler();
+        huaCompiler.serialize();
+
+        return huaCompiler;
     }
 
-    public void save() {
+    /**
+     * 持久化
+     * 直接利用Java序列化
+     */
+    private void serialize() {
         try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(new File(SAVE_PATH)));
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(COMPILER_SERIALIZATION_STORE_PATH));
             outputStream.writeObject(this);
+            outputStream.flush();
+            outputStream.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
