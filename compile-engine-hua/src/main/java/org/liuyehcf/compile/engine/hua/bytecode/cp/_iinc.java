@@ -10,16 +10,19 @@ package org.liuyehcf.compile.engine.hua.bytecode.cp;
  */
 public class _iinc extends Compute {
 
+    public static final int OPERATOR_CODE = 0x84;
     /**
      * 偏移量
      */
     private int offset;
-
     /**
      * 增量
      */
     private int increment;
 
+    public _iinc() {
+        super(OPERATOR_CODE, 2, new int[]{4, 4});
+    }
 
     public int getOffset() {
         return offset;

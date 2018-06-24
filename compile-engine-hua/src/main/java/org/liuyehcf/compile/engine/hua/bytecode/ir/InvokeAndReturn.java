@@ -9,4 +9,7 @@ import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
  * @date 2018/6/13
  */
 public abstract class InvokeAndReturn extends ByteCode {
+    public InvokeAndReturn(int operatorCode, int operatorNum, int[] operatorByteSize) {
+        super(operatorCode, operatorNum, operatorByteSize);
+    }
 }

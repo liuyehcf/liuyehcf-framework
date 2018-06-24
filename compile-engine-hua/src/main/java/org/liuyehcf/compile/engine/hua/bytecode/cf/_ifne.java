@@ -9,6 +9,13 @@ package org.liuyehcf.compile.engine.hua.bytecode.cf;
  * @date 2018/6/13
  */
 public class _ifne extends ControlTransfer {
+
+    public static final int OPERATOR_CODE = 0x9a;
+
+    public _ifne() {
+        super(OPERATOR_CODE);
+    }
+
     @Override
     public void operate() {
 

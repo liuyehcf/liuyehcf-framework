@@ -9,6 +9,13 @@ package org.liuyehcf.compile.engine.hua.bytecode.cp;
  * @date 2018/6/7
  */
 public class _iadd extends Compute {
+
+    public static final int OPERATOR_CODE = 0x60;
+
+    public _iadd() {
+        super(OPERATOR_CODE);
+    }
+
     @Override
     public void operate() {
 

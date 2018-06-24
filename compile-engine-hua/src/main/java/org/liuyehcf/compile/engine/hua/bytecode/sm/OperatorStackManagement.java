@@ -9,4 +9,7 @@ import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
  * @date 2018/6/22
  */
 public abstract class OperatorStackManagement extends ByteCode {
+    public OperatorStackManagement(int operatorCode) {
+        super(operatorCode, 0, null);
+    }
 }

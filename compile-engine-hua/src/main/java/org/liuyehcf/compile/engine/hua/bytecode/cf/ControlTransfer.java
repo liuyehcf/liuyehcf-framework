@@ -17,6 +17,10 @@ public abstract class ControlTransfer extends ByteCode {
      */
     private int codeOffset = UNINITIALIZED;
 
+    public ControlTransfer(int operatorCode) {
+        super(operatorCode, 1, new int[]{4});
+    }
+
     public int getCodeOffset() {
         return codeOffset;
     }

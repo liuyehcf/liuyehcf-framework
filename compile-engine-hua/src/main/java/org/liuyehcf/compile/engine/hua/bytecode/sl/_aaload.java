@@ -9,6 +9,13 @@ package org.liuyehcf.compile.engine.hua.bytecode.sl;
  * @date 2018/6/22
  */
 public class _aaload extends StoreLoad {
+
+    public static final int OPERATOR_CODE = 0x32;
+
+    public _aaload() {
+        super(OPERATOR_CODE);
+    }
+
     @Override
     public void operate() {
 

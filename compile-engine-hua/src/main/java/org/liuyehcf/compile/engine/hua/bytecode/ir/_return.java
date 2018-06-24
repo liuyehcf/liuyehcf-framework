@@ -9,6 +9,13 @@ package org.liuyehcf.compile.engine.hua.bytecode.ir;
  * @date 2018/6/17
  */
 public class _return extends InvokeAndReturn {
+
+    public static final int OPERATOR_CODE = 0xb1;
+
+    public _return() {
+        super(OPERATOR_CODE, 0, null);
+    }
+
     @Override
     public void operate() {
 
