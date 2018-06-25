@@ -44,4 +44,9 @@ public class _iconst extends StoreLoad {
     public void operate() {
 
     }
+
+    @Override
+    public Object[] getOperators() {
+        return new Object[]{value};
+    }
 }

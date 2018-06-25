@@ -8,7 +8,7 @@ package org.liuyehcf.compile.engine.hua.bytecode.sl;
  * @author hechenfeng
  * @date 2018/6/12
  */
-public class _iastore extends StoreLoad {
+public class _iastore extends ArrayStoreLoad {
 
     /**
      * 唯一操作码

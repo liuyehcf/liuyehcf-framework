@@ -18,13 +18,19 @@ public abstract class Compute extends ByteCode {
     /**
      * 操作数类型
      */
-    private static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{};
+    private static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
+
+    /**
+     * 操作数
+     */
+    private static final Object[] OPERATORS = new Object[0];
 
     public Compute(int operatorCode) {
         super(operatorCode, OPERATOR_NUM, OPERATOR_CLASSES);
     }
 
-    public Compute(int operatorCode, int operatorNum, Class<?>[] operatorClasses) {
-        super(operatorCode, operatorNum, operatorClasses);
+    @Override
+    public Object[] getOperators() {
+        return OPERATORS;
     }
 }

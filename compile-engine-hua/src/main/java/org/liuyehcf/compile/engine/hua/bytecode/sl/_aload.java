@@ -43,4 +43,9 @@ public class _aload extends StoreLoad {
     public void operate() {
 
     }
+
+    @Override
+    public Object[] getOperators() {
+        return new Object[]{offset};
+    }
 }

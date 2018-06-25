@@ -44,4 +44,9 @@ public class _anewarray extends ObjectCreate {
     public void operate() {
 
     }
+
+    @Override
+    public Object[] getOperators() {
+        return new Object[]{type};
+    }
 }

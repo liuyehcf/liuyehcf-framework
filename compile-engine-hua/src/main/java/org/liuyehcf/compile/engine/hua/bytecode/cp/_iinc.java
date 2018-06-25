@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.bytecode.cp;
 
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+
 /**
  * int 自增
  * < before → after >
@@ -8,7 +10,7 @@ package org.liuyehcf.compile.engine.hua.bytecode.cp;
  * @author hechenfeng
  * @date 2018/6/6
  */
-public class _iinc extends Compute {
+public class _iinc extends ByteCode {
 
     /**
      * 唯一操作码
@@ -58,5 +60,10 @@ public class _iinc extends Compute {
     @Override
     public void operate() {
 
+    }
+
+    @Override
+    public Object[] getOperators() {
+        return new Object[]{offset, increment};
     }
 }

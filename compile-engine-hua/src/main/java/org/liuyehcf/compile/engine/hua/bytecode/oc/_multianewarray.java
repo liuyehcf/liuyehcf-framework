@@ -55,4 +55,9 @@ public class _multianewarray extends ObjectCreate {
     public void operate() {
 
     }
+
+    @Override
+    public Object[] getOperators() {
+        return new Object[]{type, expressionDimSize};
+    }
 }

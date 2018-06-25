@@ -1,14 +1,12 @@
-package org.liuyehcf.compile.engine.hua.bytecode.sm;
+package org.liuyehcf.compile.engine.hua.bytecode.sl;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
- * 操作数栈管理指令基类
- *
- * @author hechenfeng
- * @date 2018/6/22
+ * @author chenlu
+ * @date 2018/6/25
  */
-public abstract class OperatorStackManagement extends ByteCode {
+public abstract class ArrayStoreLoad extends ByteCode {
 
     /**
      * 操作数数量
@@ -25,7 +23,7 @@ public abstract class OperatorStackManagement extends ByteCode {
      */
     private static final Object[] OPERATORS = new Object[0];
 
-    public OperatorStackManagement(int operatorCode) {
+    public ArrayStoreLoad(int operatorCode) {
         super(operatorCode, OPERATOR_NUM, OPERATOR_CLASSES);
     }
 

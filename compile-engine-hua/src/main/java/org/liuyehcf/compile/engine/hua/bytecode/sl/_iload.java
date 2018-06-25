@@ -44,4 +44,8 @@ public class _iload extends StoreLoad {
 
     }
 
+    @Override
+    public Object[] getOperators() {
+        return new Object[]{offset};
+    }
 }

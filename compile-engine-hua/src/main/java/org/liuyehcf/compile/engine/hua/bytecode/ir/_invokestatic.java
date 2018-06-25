@@ -6,7 +6,7 @@ package org.liuyehcf.compile.engine.hua.bytecode.ir;
  * @author hechenfeng
  * @date 2018/6/10
  */
-public class _invokestatic extends InvokeAndReturn {
+public class _invokestatic extends Invoke {
 
     /**
      * 唯一操作码
@@ -41,4 +41,10 @@ public class _invokestatic extends InvokeAndReturn {
     public void operate() {
 
     }
+
+    @Override
+    public Object[] getOperators() {
+        return new Object[]{constantPoolOffset};
+    }
+
 }
