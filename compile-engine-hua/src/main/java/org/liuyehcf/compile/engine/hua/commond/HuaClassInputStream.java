@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.commond;
 
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.compiler.ConstantPool;
 import org.liuyehcf.compile.engine.hua.compiler.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
@@ -119,12 +120,18 @@ class HuaClassInputStream extends DataInputStream {
         /*
          * 5. 读字节码
          */
+        int byteCodeNum = readInt();
+        List<ByteCode> byteCodeList = new ArrayList<>();
+        for (int i = 0; i < byteCodeNum; i++) {
+            byteCodeList.add(readByteCode());
+        }
 
         MethodInfo methodInfo = new MethodInfo();
         methodInfo.setMethodName(methodName);
         methodInfo.setResultType(resultType);
-        methodInfo.setParamTypeList(null);
+        methodInfo.setParamTypeList(paramTypeList);
         methodInfo.setOffset(offset);
+        methodInfo.setByteCodes(byteCodeList);
 
         return methodInfo;
     }
@@ -154,5 +161,15 @@ class HuaClassInputStream extends DataInputStream {
         int dim = readInt();
 
         return Type.createType(typeName, typeWidth, dim);
+    }
+
+    private ByteCode readByteCode() throws IOException {
+        /*
+         * 1. 读操作码
+         */
+        int operatorCode = readInt();
+
+        return null;
+
     }
 }

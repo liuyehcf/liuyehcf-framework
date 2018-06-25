@@ -10,6 +10,7 @@ import org.liuyehcf.compile.engine.hua.model.Type;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 import static org.liuyehcf.compile.engine.hua.commond.HClassConstant.MAGIC;
 
@@ -150,9 +151,26 @@ class HuaClassOutputStream extends DataOutputStream {
         int operatorCode = code.getOperatorCode();
         int operatorNum = code.getOperatorNum();
         Class<?>[] operatorClasses = code.getOperatorClasses();
+        Object[] operators = code.getOperators();
 
+        /*
+         * 1. 写操作码
+         */
         writeInt(operatorCode);
-        writeInt(operatorNum);
 
+        /*
+         * 2. 写操作数
+         */
+        for (int i = 0; i < operatorNum; i++) {
+            Class<?> clazz = operatorClasses[i];
+
+            if (String.class.equals(clazz)) {
+                writeString((String) operators[i]);
+            } else if (int.class.equals(clazz) || Integer.class.equals(clazz)) {
+                writeInt((int) operators[i]);
+            } else {
+                throw new UnsupportedEncodingException();
+            }
+        }
     }
 }

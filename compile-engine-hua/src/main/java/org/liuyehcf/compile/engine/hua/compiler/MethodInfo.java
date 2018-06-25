@@ -17,7 +17,7 @@ public class MethodInfo {
     /**
      * 字节码
      */
-    private final List<ByteCode> byteCodes = new ArrayList<>();
+    private List<ByteCode> byteCodes = new ArrayList<>();
 
     /**
      * 方法名称
@@ -55,6 +55,10 @@ public class MethodInfo {
             typeStrings[i] = types.get(i).toTypeDescription();
         }
         return new MethodSignature(methodName, typeStrings);
+    }
+
+    public void setByteCodes(List<ByteCode> byteCodes) {
+        this.byteCodes = byteCodes;
     }
 
     public List<ByteCode> getByteCodes() {
