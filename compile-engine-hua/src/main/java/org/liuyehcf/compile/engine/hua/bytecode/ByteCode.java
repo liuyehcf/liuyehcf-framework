@@ -30,9 +30,6 @@ public abstract class ByteCode {
     @JSONField(serialize = false)
     private final Class<?>[] operatorClasses;
 
-    @JSONField(serialize = false)
-    private final Object[] operators = null;
-
     public ByteCode(int operatorCode, int operatorNum, Class<?>[] operatorClasses) {
         if (operatorClasses == null) {
             throw new NullPointerException();

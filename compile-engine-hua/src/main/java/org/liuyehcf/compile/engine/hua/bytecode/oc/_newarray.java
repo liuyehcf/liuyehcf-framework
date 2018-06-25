@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.bytecode.oc;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 一维数组创建指令
  * < before → after >
@@ -46,6 +48,7 @@ public class _newarray extends ObjectCreate {
     }
 
     @Override
+    @JSONField(serialize = false)
     public Object[] getOperators() {
         return new Object[]{type};
     }

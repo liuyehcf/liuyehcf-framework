@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.bytecode.oc;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 多维数组创建指令，指定的维度是第一维
  * < before → after >
@@ -46,6 +48,7 @@ public class _anewarray extends ObjectCreate {
     }
 
     @Override
+    @JSONField(serialize = false)
     public Object[] getOperators() {
         return new Object[]{type};
     }

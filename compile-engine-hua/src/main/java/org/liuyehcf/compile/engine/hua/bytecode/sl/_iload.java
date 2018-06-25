@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.bytecode.sl;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * int 加载
  * < before → after >
@@ -45,6 +47,7 @@ public class _iload extends StoreLoad {
     }
 
     @Override
+    @JSONField(serialize = false)
     public Object[] getOperators() {
         return new Object[]{offset};
     }

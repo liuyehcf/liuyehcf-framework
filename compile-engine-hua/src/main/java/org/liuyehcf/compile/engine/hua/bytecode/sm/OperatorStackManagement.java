@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.bytecode.sm;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
@@ -30,6 +31,7 @@ public abstract class OperatorStackManagement extends ByteCode {
     }
 
     @Override
+    @JSONField(serialize = false)
     public Object[] getOperators() {
         return OPERATORS;
     }

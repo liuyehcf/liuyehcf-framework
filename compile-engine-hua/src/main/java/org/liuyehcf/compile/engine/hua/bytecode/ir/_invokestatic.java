@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.bytecode.ir;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 方法调用指令
  *
@@ -43,6 +45,7 @@ public class _invokestatic extends Invoke {
     }
 
     @Override
+    @JSONField(serialize = false)
     public Object[] getOperators() {
         return new Object[]{constantPoolOffset};
     }

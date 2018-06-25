@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.bytecode.cp;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
@@ -63,6 +64,7 @@ public class _iinc extends ByteCode {
     }
 
     @Override
+    @JSONField(serialize = false)
     public Object[] getOperators() {
         return new Object[]{offset, increment};
     }

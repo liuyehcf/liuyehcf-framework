@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.bytecode.ir;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
@@ -28,6 +29,7 @@ public abstract class Return extends ByteCode {
     }
 
     @Override
+    @JSONField(serialize = false)
     public Object[] getOperators() {
         return OPERATORS;
     }
