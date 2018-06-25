@@ -16,14 +16,9 @@ public class _invokestatic extends Invoke {
     public static final int OPERATOR_CODE = 0xb8;
 
     /**
-     * 操作数数量
-     */
-    private static final int OPERATOR_NUM = 1;
-
-    /**
      * 操作数类型
      */
-    private static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
 
     /**
      * 常量池偏移量
@@ -31,7 +26,6 @@ public class _invokestatic extends Invoke {
     private final int constantPoolOffset;
 
     public _invokestatic(int constantPoolOffset) {
-        super(OPERATOR_CODE, OPERATOR_NUM, OPERATOR_CLASSES);
         this.constantPoolOffset = constantPoolOffset;
     }
 

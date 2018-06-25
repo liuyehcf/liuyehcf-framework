@@ -9,7 +9,5 @@ import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
  * @date 2018/6/13
  */
 public abstract class StoreLoad extends ByteCode {
-    StoreLoad(int operatorCode, int operatorNum, Class<?>[] operatorClasses) {
-        super(operatorCode, operatorNum, operatorClasses);
-    }
+
 }

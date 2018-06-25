@@ -15,9 +15,10 @@ public class _iaload extends ArrayStoreLoad {
      */
     public static final int OPERATOR_CODE = 0x2e;
 
-    public _iaload() {
-        super(OPERATOR_CODE);
-    }
+    /**
+     * 操作数类型
+     */
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
 
     @Override
     public void operate() {

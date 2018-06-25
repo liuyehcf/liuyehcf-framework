@@ -1,8 +1,6 @@
 package org.liuyehcf.compile.engine.hua.bytecode;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
+import java.lang.reflect.Field;
 
 /**
  * 字节码抽象基类
@@ -12,33 +10,25 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
  */
 public abstract class ByteCode {
 
-    /**
-     * 操作码，每个字节码对应唯一操作码
-     */
-    @JSONField(serialize = false)
-    private final int operatorCode;
+    private static final String FILED_NAME_OPERATOR_CODE = "OPERATOR_CODE";
+    private static final String FILED_NAME_OPERATOR_CLASSES = "OPERATOR_CLASSES";
 
-    /**
-     * 操作数数量
-     */
-    @JSONField(serialize = false)
-    private final int operatorNum;
+    public static int getOperatorCode(ByteCode code) {
+        return (int) getStaticField(code, FILED_NAME_OPERATOR_CODE);
+    }
 
-    /**
-     * 操作数类型
-     */
-    @JSONField(serialize = false)
-    private final Class<?>[] operatorClasses;
+    public static Class<?>[] getOperatorClasses(ByteCode code) {
+        return (Class<?>[]) getStaticField(code, FILED_NAME_OPERATOR_CLASSES);
+    }
 
-    public ByteCode(int operatorCode, int operatorNum, Class<?>[] operatorClasses) {
-        if (operatorClasses == null) {
-            throw new NullPointerException();
+    private static Object getStaticField(ByteCode code, String fieldName) {
+        try {
+            Class clazz = code.getClass();
+            Field field = clazz.getDeclaredField(fieldName);
+            return field.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
-        this.operatorCode = operatorCode;
-        this.operatorNum = operatorNum;
-        this.operatorClasses = operatorClasses;
-
-        assertEquals(this.operatorNum, this.operatorClasses.length);
     }
 
     public final String getName() {
@@ -46,18 +36,6 @@ public abstract class ByteCode {
     }
 
     public abstract void operate();
-
-    public int getOperatorCode() {
-        return operatorCode;
-    }
-
-    public int getOperatorNum() {
-        return operatorNum;
-    }
-
-    public Class<?>[] getOperatorClasses() {
-        return operatorClasses;
-    }
 
     public abstract Object[] getOperators();
 }

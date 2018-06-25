@@ -17,23 +17,9 @@ public abstract class ControlTransfer extends ByteCode {
     private static final int UNINITIALIZED = -1;
 
     /**
-     * 操作数数量
-     */
-    private static final int OPERATOR_NUM = 1;
-
-    /**
-     * 操作数类型
-     */
-    private static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
-
-    /**
      * 代码偏移量
      */
     private int codeOffset = UNINITIALIZED;
-
-    ControlTransfer(int operatorCode) {
-        super(operatorCode, OPERATOR_NUM, OPERATOR_CLASSES);
-    }
 
     public int getCodeOffset() {
         return codeOffset;

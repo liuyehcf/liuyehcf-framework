@@ -15,9 +15,10 @@ public class _goto extends ControlTransfer {
      */
     public static final int OPERATOR_CODE = 0xa7;
 
-    public _goto() {
-        super(OPERATOR_CODE);
-    }
+    /**
+     * 操作数类型
+     */
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
 
     @Override
     public void operate() {

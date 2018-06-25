@@ -15,9 +15,10 @@ public class _isub extends Compute {
      */
     public static final int OPERATOR_CODE = 0x64;
 
-    public _isub() {
-        super(OPERATOR_CODE);
-    }
+    /**
+     * 操作数类型
+     */
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
 
     @Override
     public void operate() {

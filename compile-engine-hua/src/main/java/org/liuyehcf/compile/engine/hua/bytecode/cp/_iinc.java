@@ -19,14 +19,9 @@ public class _iinc extends ByteCode {
     public static final int OPERATOR_CODE = 0x84;
 
     /**
-     * 操作数数量
-     */
-    private static final int OPERATOR_NUM = 2;
-
-    /**
      * 操作数类型
      */
-    private static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class, int.class};
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class, int.class};
 
     /**
      * 偏移量
@@ -37,10 +32,6 @@ public class _iinc extends ByteCode {
      * 增量
      */
     private int increment;
-
-    public _iinc() {
-        super(OPERATOR_CODE, OPERATOR_NUM, OPERATOR_CLASSES);
-    }
 
     public int getOffset() {
         return offset;

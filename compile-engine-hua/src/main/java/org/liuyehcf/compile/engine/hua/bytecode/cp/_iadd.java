@@ -15,9 +15,10 @@ public class _iadd extends Compute {
      */
     public static final int OPERATOR_CODE = 0x60;
 
-    public _iadd() {
-        super(OPERATOR_CODE);
-    }
+    /**
+     * 操作数类型
+     */
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
 
     @Override
     public void operate() {

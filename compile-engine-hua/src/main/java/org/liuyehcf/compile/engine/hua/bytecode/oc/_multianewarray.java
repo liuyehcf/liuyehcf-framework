@@ -18,14 +18,9 @@ public class _multianewarray extends ObjectCreate {
     public static final int OPERATOR_CODE = 0xc5;
 
     /**
-     * 操作数数量
-     */
-    private static final int OPERATOR_NUM = 2;
-
-    /**
      * 操作数类型
      */
-    private static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{String.class, int.class};
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{String.class, int.class};
 
     /**
      * 类型
@@ -40,7 +35,6 @@ public class _multianewarray extends ObjectCreate {
 
 
     public _multianewarray(String type, int expressionDimSize) {
-        super(OPERATOR_CODE, OPERATOR_NUM, OPERATOR_CLASSES);
         this.type = type;
         this.expressionDimSize = expressionDimSize;
     }

@@ -15,9 +15,10 @@ public class _if_icmpgt extends ControlTransfer {
      */
     public static final int OPERATOR_CODE = 0xa3;
 
-    public _if_icmpgt() {
-        super(OPERATOR_CODE);
-    }
+    /**
+     * 操作数类型
+     */
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
 
     @Override
     public void operate() {

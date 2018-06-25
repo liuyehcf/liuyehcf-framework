@@ -57,12 +57,12 @@ public class MethodInfo {
         return new MethodSignature(methodName, typeStrings);
     }
 
-    public void setByteCodes(List<ByteCode> byteCodes) {
-        this.byteCodes = byteCodes;
-    }
-
     public List<ByteCode> getByteCodes() {
         return byteCodes;
+    }
+
+    public void setByteCodes(List<ByteCode> byteCodes) {
+        this.byteCodes = byteCodes;
     }
 
     public String getMethodName() {

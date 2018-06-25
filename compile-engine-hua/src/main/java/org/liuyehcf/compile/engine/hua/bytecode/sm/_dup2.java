@@ -15,9 +15,10 @@ public class _dup2 extends OperatorStackManagement {
      */
     public static final int OPERATOR_CODE = 0x5c;
 
-    public _dup2() {
-        super(OPERATOR_CODE);
-    }
+    /**
+     * 操作数类型
+     */
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
 
     @Override
     public void operate() {

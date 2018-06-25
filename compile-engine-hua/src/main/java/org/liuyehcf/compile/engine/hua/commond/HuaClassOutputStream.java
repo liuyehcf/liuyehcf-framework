@@ -148,9 +148,9 @@ class HuaClassOutputStream extends DataOutputStream {
     }
 
     private void writeByteCode(ByteCode code) throws IOException {
-        int operatorCode = code.getOperatorCode();
-        int operatorNum = code.getOperatorNum();
-        Class<?>[] operatorClasses = code.getOperatorClasses();
+        int operatorCode = ByteCode.getOperatorCode(code);
+        Class<?>[] operatorClasses = ByteCode.getOperatorClasses(code);
+        int operatorNum = operatorClasses.length;
         Object[] operators = code.getOperators();
 
         /*

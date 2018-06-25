@@ -18,14 +18,9 @@ public class _newarray extends ObjectCreate {
     public static final int OPERATOR_CODE = 0xbc;
 
     /**
-     * 操作数数量
-     */
-    private static final int OPERATOR_NUM = 1;
-
-    /**
      * 操作数类型
      */
-    private static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{String.class};
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{String.class};
 
     /**
      * 类型
@@ -34,7 +29,6 @@ public class _newarray extends ObjectCreate {
     private final String type;
 
     public _newarray(String type) {
-        super(OPERATOR_CODE, OPERATOR_NUM, OPERATOR_CLASSES);
         this.type = type;
     }
 
