@@ -1,7 +1,6 @@
 package org.liuyehcf.compile.engine.hua.bytecode.ir;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
  * 方法调用指令
@@ -20,10 +19,6 @@ public class _invokestatic extends Invoke {
      * 操作数类型
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
-
-    static {
-        ByteCode.register(OPERATOR_CODE, _invokestatic.class);
-    }
 
     /**
      * 常量池偏移量

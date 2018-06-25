@@ -1,7 +1,6 @@
 package org.liuyehcf.compile.engine.hua.bytecode.oc;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
  * 多维数组创建指令，指定的维度有多个
@@ -22,10 +21,6 @@ public class _multianewarray extends ObjectCreate {
      * 操作数类型
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{String.class, int.class};
-
-    static {
-        ByteCode.register(OPERATOR_CODE, _multianewarray.class);
-    }
 
     /**
      * 类型

@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.commond;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCodeUtil;
 import org.liuyehcf.compile.engine.hua.compiler.ConstantPool;
 import org.liuyehcf.compile.engine.hua.compiler.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
@@ -10,7 +11,6 @@ import org.liuyehcf.compile.engine.hua.model.Type;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 import static org.liuyehcf.compile.engine.hua.commond.HClassConstant.MAGIC;
 
@@ -148,8 +148,8 @@ class HuaClassOutputStream extends DataOutputStream {
     }
 
     private void writeByteCode(ByteCode code) throws IOException {
-        int operatorCode = ByteCode.getOperatorCode(code);
-        Class<?>[] operatorClasses = ByteCode.getOperatorClasses(code);
+        int operatorCode = ByteCodeUtil.getOperatorCode(code.getClass());
+        Class<?>[] operatorClasses = ByteCodeUtil.getOperatorClasses(code.getClass());
         int operatorNum = operatorClasses.length;
         Object[] operators = code.getOperators();
 
@@ -168,7 +168,7 @@ class HuaClassOutputStream extends DataOutputStream {
             } else if (int.class.equals(clazz) || Integer.class.equals(clazz)) {
                 writeInt((int) operators[i]);
             } else {
-                throw new UnsupportedEncodingException();
+                throw new IOException();
             }
         }
     }

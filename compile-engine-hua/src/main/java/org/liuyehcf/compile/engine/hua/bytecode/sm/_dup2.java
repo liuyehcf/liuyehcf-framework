@@ -1,7 +1,5 @@
 package org.liuyehcf.compile.engine.hua.bytecode.sm;
 
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
-
 /**
  * 赋值栈顶两个操作数
  * < before → after >
@@ -21,10 +19,6 @@ public class _dup2 extends OperatorStackManagement {
      * 操作数类型
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
-
-    static {
-        ByteCode.register(OPERATOR_CODE, _dup2.class);
-    }
 
     @Override
     public void operate() {

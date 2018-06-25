@@ -1,7 +1,5 @@
 package org.liuyehcf.compile.engine.hua.bytecode.cp;
 
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
-
 /**
  * int 相加
  * < before → after >
@@ -21,10 +19,6 @@ public class _iadd extends Compute {
      * 操作数类型
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
-
-    static {
-        ByteCode.register(OPERATOR_CODE, _iadd.class);
-    }
 
     @Override
     public void operate() {

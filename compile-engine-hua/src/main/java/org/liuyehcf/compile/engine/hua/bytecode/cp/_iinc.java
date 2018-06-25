@@ -1,7 +1,6 @@
 package org.liuyehcf.compile.engine.hua.bytecode.cp;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
  * int 自增
@@ -11,7 +10,7 @@ import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
  * @author hechenfeng
  * @date 2018/6/6
  */
-public class _iinc extends ByteCode {
+public class _iinc extends Compute {
 
     /**
      * 唯一操作码
@@ -23,10 +22,6 @@ public class _iinc extends ByteCode {
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class, int.class};
 
-    static {
-        ByteCode.register(OPERATOR_CODE, _iinc.class);
-    }
-
     /**
      * 偏移量
      */
@@ -35,6 +30,14 @@ public class _iinc extends ByteCode {
      * 增量
      */
     private int increment;
+
+    public _iinc() {
+    }
+
+    public _iinc(int offset, int increment) {
+        this.offset = offset;
+        this.increment = increment;
+    }
 
     public int getOffset() {
         return offset;

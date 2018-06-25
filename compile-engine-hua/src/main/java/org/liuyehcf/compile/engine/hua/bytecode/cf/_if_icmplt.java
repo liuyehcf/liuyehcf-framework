@@ -1,7 +1,5 @@
 package org.liuyehcf.compile.engine.hua.bytecode.cf;
 
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
-
 /**
  * 跳转指令，小于时跳转
  * < before → after >
@@ -22,8 +20,11 @@ public class _if_icmplt extends ControlTransfer {
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
 
-    static {
-        ByteCode.register(OPERATOR_CODE, _if_icmplt.class);
+    public _if_icmplt() {
+    }
+
+    public _if_icmplt(int codeOffset) {
+        super(codeOffset);
     }
 
     @Override

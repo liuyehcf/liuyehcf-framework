@@ -1,7 +1,5 @@
 package org.liuyehcf.compile.engine.hua.bytecode.cf;
 
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
-
 /**
  * 跳转指令，无条件跳转
  * < before → after >
@@ -22,8 +20,11 @@ public class _goto extends ControlTransfer {
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
 
-    static {
-        ByteCode.register(OPERATOR_CODE, _goto.class);
+    public _goto() {
+    }
+
+    public _goto(int codeOffset) {
+        super(codeOffset);
     }
 
     @Override

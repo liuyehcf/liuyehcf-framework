@@ -1,7 +1,6 @@
 package org.liuyehcf.compile.engine.hua.bytecode.sl;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
  * 存储对象（包括数组）
@@ -22,10 +21,6 @@ public class _astore extends StoreLoad {
      * 操作数类型
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
-
-    static {
-        ByteCode.register(OPERATOR_CODE, _astore.class);
-    }
 
     /**
      * 标志符偏移量

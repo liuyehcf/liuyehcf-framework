@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.commond;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCodeUtil;
 import org.liuyehcf.compile.engine.hua.compiler.ConstantPool;
 import org.liuyehcf.compile.engine.hua.compiler.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
@@ -10,10 +11,10 @@ import org.liuyehcf.compile.engine.hua.model.Type;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
 
 /**
  * @author hechenfeng
@@ -33,7 +34,9 @@ class HuaClassInputStream extends DataInputStream {
          * 1. 读魔数
          */
         String magic = readString();
-        assertEquals(magic, HClassConstant.MAGIC);
+        if (!HClassConstant.MAGIC.equals(magic)) {
+            throw new IOException();
+        }
 
         /*
          * 2. 读魔数
@@ -140,7 +143,9 @@ class HuaClassInputStream extends DataInputStream {
         int len = readInt();
         byte[] bytes = new byte[len];
         int cnt = read(bytes);
-        assertEquals(cnt, len);
+        if (cnt != len) {
+            throw new IOException();
+        }
         return new String(bytes);
     }
 
@@ -169,8 +174,27 @@ class HuaClassInputStream extends DataInputStream {
          */
         int operatorCode = readInt();
 
-        Class<? extends ByteCode> clazz = ByteCode.getByteCodeByOperatorCode(operatorCode);
+        Class<? extends ByteCode> byteCodeClass = ByteCodeUtil.getByteCodeByOperatorCode(operatorCode);
 
-        return null;
+        Class<?>[] operatorClasses = ByteCodeUtil.getOperatorClasses(byteCodeClass);
+        Object[] operators = new Object[operatorClasses.length];
+        for (int i = 0; i < operatorClasses.length; i++) {
+            Class<?> clazz = operatorClasses[i];
+
+            if (String.class.equals(clazz)) {
+                operators[i] = readString();
+            } else if (int.class.equals(clazz) || Integer.class.equals(clazz)) {
+                operators[i] = readInt();
+            } else {
+                throw new IOException();
+            }
+        }
+
+        try {
+            Constructor<? extends ByteCode> constructor = byteCodeClass.getConstructor(operatorClasses);
+            return constructor.newInstance(operators);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new IOException(e);
+        }
     }
 }
