@@ -26,7 +26,7 @@ public abstract class Compute extends ByteCode {
      */
     private static final Object[] OPERATORS = new Object[0];
 
-    public Compute(int operatorCode) {
+    Compute(int operatorCode) {
         super(operatorCode, OPERATOR_NUM, OPERATOR_CLASSES);
     }
 

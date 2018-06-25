@@ -31,7 +31,7 @@ public abstract class ControlTransfer extends ByteCode {
      */
     private int codeOffset = UNINITIALIZED;
 
-    public ControlTransfer(int operatorCode) {
+    ControlTransfer(int operatorCode) {
         super(operatorCode, OPERATOR_NUM, OPERATOR_CLASSES);
     }
 

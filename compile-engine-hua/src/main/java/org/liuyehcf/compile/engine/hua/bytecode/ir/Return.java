@@ -24,7 +24,7 @@ public abstract class Return extends ByteCode {
      */
     private static final Object[] OPERATORS = new Object[0];
 
-    public Return(int operatorCode) {
+    Return(int operatorCode) {
         super(operatorCode, OPERATOR_NUM, OPERATOR_CLASSES);
     }
 

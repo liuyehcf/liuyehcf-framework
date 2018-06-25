@@ -26,7 +26,7 @@ public abstract class OperatorStackManagement extends ByteCode {
      */
     private static final Object[] OPERATORS = new Object[0];
 
-    public OperatorStackManagement(int operatorCode) {
+    OperatorStackManagement(int operatorCode) {
         super(operatorCode, OPERATOR_NUM, OPERATOR_CLASSES);
     }
 

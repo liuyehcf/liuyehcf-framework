@@ -24,7 +24,7 @@ public abstract class ArrayStoreLoad extends ByteCode {
      */
     private static final Object[] OPERATORS = new Object[0];
 
-    public ArrayStoreLoad(int operatorCode) {
+    ArrayStoreLoad(int operatorCode) {
         super(operatorCode, OPERATOR_NUM, OPERATOR_CLASSES);
     }
 
