@@ -19,7 +19,7 @@ import java.util.Map;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/25
  */
 public class ByteCodeUtil {
@@ -108,7 +108,7 @@ public class ByteCodeUtil {
         }
     }
 
-    public static void register(Class<? extends ByteCode> clazz) {
+    private static void register(Class<? extends ByteCode> clazz) {
         int operatorCode = getOperatorCode(clazz);
         assertFalse(operatorCodePool.containsKey(operatorCode));
         operatorCodePool.put(operatorCode, clazz);

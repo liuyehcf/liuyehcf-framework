@@ -1,9 +1,15 @@
 package org.liuyehcf.compile.engine.hua.commond;
 
+import org.liuyehcf.compile.engine.hua.commond.io.HuaClassInputStream;
+import org.liuyehcf.compile.engine.hua.commond.runtime.MethodRuntimeInfo;
+import org.liuyehcf.compile.engine.hua.commond.runtime.MethodStack;
 import org.liuyehcf.compile.engine.hua.compiler.IntermediateInfo;
+import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+
+import static org.liuyehcf.compile.engine.hua.compiler.MethodInfo.buildMethodSignature;
 
 /**
  * Hua执行器
@@ -38,12 +44,6 @@ public class Hua {
         hua.execute();
     }
 
-    private void execute() {
-
-        load();
-
-    }
-
     private void load() {
 
         try (HuaClassInputStream inputStream = new HuaClassInputStream(new FileInputStream(filePath))) {
@@ -55,4 +55,29 @@ public class Hua {
         }
 
     }
+
+    private void execute() {
+
+        load();
+
+        run();
+
+    }
+
+    private void run() {
+        MethodStack methodStack = new MethodStack();
+
+        MethodInfo mainMethod = getMainMethod();
+
+        methodStack.push(new MethodRuntimeInfo());
+    }
+
+    private MethodInfo getMainMethod() {
+        MethodInfo mainMethod = intermediateInfo.getMethodInfoTable().getMethodByMethodSignature(buildMethodSignature("main", null));
+        if (mainMethod == null) {
+            throw new RuntimeException("源文件没有定义main方法");
+        }
+        return mainMethod;
+    }
+
 }

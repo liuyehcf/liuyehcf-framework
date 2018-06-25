@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.commond;
+package org.liuyehcf.compile.engine.hua.commond.io;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCodeUtil;
@@ -12,22 +12,23 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import static org.liuyehcf.compile.engine.hua.commond.HClassConstant.MAGIC;
+import static org.liuyehcf.compile.engine.hua.commond.io.HClassConstant.MAGIC;
+
 
 /**
  * @author hechenfeng
  * @date 2018/6/24
  */
-class HuaClassOutputStream extends DataOutputStream {
+public class HuaClassOutputStream extends DataOutputStream {
 
-    HuaClassOutputStream(OutputStream out) {
+    public HuaClassOutputStream(OutputStream out) {
         super(out);
     }
 
     /**
      * 写入中间代码
      */
-    void writeHClass(IntermediateInfo intermediateInfo) throws IOException {
+    public void writeHClass(IntermediateInfo intermediateInfo) throws IOException {
         /*
          * 1. 写魔数
          */

@@ -61,7 +61,7 @@ public class MethodInfoTable {
      * @param methodSignature 方法签名
      * @return 方法信息
      */
-    MethodInfo getMethodByMethodSignature(MethodSignature methodSignature) {
+    public MethodInfo getMethodByMethodSignature(MethodSignature methodSignature) {
         return table.get(methodSignature);
     }
 

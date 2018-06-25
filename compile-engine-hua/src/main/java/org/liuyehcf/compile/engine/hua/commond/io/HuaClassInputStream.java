@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.commond;
+package org.liuyehcf.compile.engine.hua.commond.io;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCodeUtil;
@@ -20,16 +20,16 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/6/24
  */
-class HuaClassInputStream extends DataInputStream {
+public class HuaClassInputStream extends DataInputStream {
 
-    HuaClassInputStream(InputStream in) {
+    public HuaClassInputStream(InputStream in) {
         super(in);
     }
 
     /**
      * 读出中间代码相关数据结构
      */
-    IntermediateInfo readHClass() throws IOException {
+    public IntermediateInfo readHClass() throws IOException {
         /*
          * 1. 读魔数
          */
