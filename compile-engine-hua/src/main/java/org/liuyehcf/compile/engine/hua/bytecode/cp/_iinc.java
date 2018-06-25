@@ -23,11 +23,14 @@ public class _iinc extends ByteCode {
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class, int.class};
 
+    static {
+        ByteCode.register(OPERATOR_CODE, _iinc.class);
+    }
+
     /**
      * 偏移量
      */
     private int offset;
-
     /**
      * 增量
      */

@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.bytecode.oc;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 
 /**
  * 多维数组创建指令，指定的维度有多个
@@ -22,17 +23,19 @@ public class _multianewarray extends ObjectCreate {
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{String.class, int.class};
 
+    static {
+        ByteCode.register(OPERATOR_CODE, _multianewarray.class);
+    }
+
     /**
      * 类型
      * todo 这里应该是一个常量池引用
      */
     private final String type;
-
     /**
      * 维度表达式大小
      */
     private final int expressionDimSize;
-
 
     public _multianewarray(String type, int expressionDimSize) {
         this.type = type;

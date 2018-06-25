@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.bytecode.sl;
 
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+
 /**
  * 数组元素存储
  * < before → after >
@@ -19,6 +21,10 @@ public class _iastore extends ArrayStoreLoad {
      * 操作数类型
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
+
+    static {
+        ByteCode.register(OPERATOR_CODE, _iastore.class);
+    }
 
     @Override
     public void operate() {

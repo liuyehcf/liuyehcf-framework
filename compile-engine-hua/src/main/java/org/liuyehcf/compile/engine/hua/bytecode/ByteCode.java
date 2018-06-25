@@ -1,6 +1,10 @@
 package org.liuyehcf.compile.engine.hua.bytecode;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 
 /**
  * 字节码抽象基类
@@ -10,6 +14,7 @@ import java.lang.reflect.Field;
  */
 public abstract class ByteCode {
 
+    private static final Map<Integer, Class<? extends ByteCode>> operatorCodePool = new HashMap<>();
     private static final String FILED_NAME_OPERATOR_CODE = "OPERATOR_CODE";
     private static final String FILED_NAME_OPERATOR_CLASSES = "OPERATOR_CLASSES";
 
@@ -29,6 +34,15 @@ public abstract class ByteCode {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void register(int operatorCode, Class<? extends ByteCode> clazz) {
+        assertFalse(operatorCodePool.containsKey(operatorCode));
+        operatorCodePool.put(operatorCode, clazz);
+    }
+
+    public static Class<? extends ByteCode> getByteCodeByOperatorCode(int operatorCode) {
+        return operatorCodePool.get(operatorCode);
     }
 
     public final String getName() {

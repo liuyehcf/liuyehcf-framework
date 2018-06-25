@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.bytecode.cp;
 
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+
 /**
  * int 无符号右移
  * < before → after >
@@ -19,6 +21,10 @@ public class _iushr extends Compute {
      * 操作数类型
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
+
+    static {
+        ByteCode.register(OPERATOR_CODE, _iushr.class);
+    }
 
     @Override
     public void operate() {

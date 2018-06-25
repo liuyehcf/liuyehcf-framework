@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.bytecode.ir;
 
+import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
+
 /**
  * 返回整型
  * < before → after >
@@ -19,6 +21,10 @@ public class _ireturn extends Return {
      * 操作数类型
      */
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
+
+    static {
+        ByteCode.register(OPERATOR_CODE, _ireturn.class);
+    }
 
     @Override
     public void operate() {

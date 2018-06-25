@@ -169,7 +169,8 @@ class HuaClassInputStream extends DataInputStream {
          */
         int operatorCode = readInt();
 
-        return null;
+        Class<? extends ByteCode> clazz = ByteCode.getByteCodeByOperatorCode(operatorCode);
 
+        return null;
     }
 }

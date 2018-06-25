@@ -163,7 +163,6 @@ class HuaClassOutputStream extends DataOutputStream {
          */
         for (int i = 0; i < operatorNum; i++) {
             Class<?> clazz = operatorClasses[i];
-
             if (String.class.equals(clazz)) {
                 writeString((String) operators[i]);
             } else if (int.class.equals(clazz) || Integer.class.equals(clazz)) {
