@@ -1,0 +1,40 @@
+package org.liuyehcf.compile.engine.hua.definition.semantic.code;
+
+import org.liuyehcf.compile.engine.hua.core.HuaContext;
+import org.liuyehcf.compile.engine.hua.definition.model.AttrName;
+import org.liuyehcf.compile.engine.hua.definition.model.BackFillType;
+
+import java.io.Serializable;
+
+/**
+ * 必要时添加控制转移指令
+ *
+ * @author hechenfeng
+ * @date 2018/6/19
+ */
+public class PushControlTransferByteCodeWhenNecessary extends PushControlTransferByteCodeByType implements Serializable {
+
+    /**
+     * 包含 expression是否为空 的语法树节点-栈偏移量，相对于语法树栈
+     * '0'  表示栈顶
+     * '-1' 表示栈次顶，以此类推
+     * '1' 表示未来入栈的元素，以此类推
+     */
+    private final int expressionStackOffset;
+
+    public PushControlTransferByteCodeWhenNecessary(int backFillStackOffset, int typeStackOffset, BackFillType backFillType, boolean isOpposite, int expressionStackOffset) {
+        super(backFillStackOffset, typeStackOffset, backFillType, isOpposite);
+        this.expressionStackOffset = expressionStackOffset;
+    }
+
+    @Override
+    public void onAction(HuaContext context) {
+        Object object = context.getAttr(expressionStackOffset, AttrName.IS_EMPTY_EXPRESSION);
+
+        if (object != null) {
+            return;
+        }
+
+        super.onAction(context);
+    }
+}

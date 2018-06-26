@@ -3,13 +3,13 @@ package org.liuyehcf.compile.engine.hua.commond;
 import org.liuyehcf.compile.engine.hua.commond.io.HuaClassInputStream;
 import org.liuyehcf.compile.engine.hua.commond.runtime.MethodRuntimeInfo;
 import org.liuyehcf.compile.engine.hua.commond.runtime.MethodStack;
-import org.liuyehcf.compile.engine.hua.compiler.IntermediateInfo;
-import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
+import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
+import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import static org.liuyehcf.compile.engine.hua.compiler.MethodInfo.buildMethodSignature;
+import static org.liuyehcf.compile.engine.hua.core.MethodInfo.buildMethodSignature;
 
 /**
  * Hua执行器

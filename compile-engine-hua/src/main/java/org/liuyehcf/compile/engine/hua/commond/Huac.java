@@ -2,8 +2,8 @@ package org.liuyehcf.compile.engine.hua.commond;
 
 import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.hua.commond.io.HuaClassOutputStream;
-import org.liuyehcf.compile.engine.hua.compiler.HuaCompiler;
-import org.liuyehcf.compile.engine.hua.compiler.IntermediateInfo;
+import org.liuyehcf.compile.engine.hua.core.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 
 import java.io.*;
 

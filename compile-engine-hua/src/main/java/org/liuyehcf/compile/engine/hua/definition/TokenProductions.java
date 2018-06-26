@@ -4,10 +4,10 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.model.AttrName;
-import org.liuyehcf.compile.engine.hua.model.Type;
-import org.liuyehcf.compile.engine.hua.semantic.attr.*;
-import org.liuyehcf.compile.engine.hua.semantic.load.LiteralLoad;
+import org.liuyehcf.compile.engine.hua.definition.model.AttrName;
+import org.liuyehcf.compile.engine.hua.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.definition.semantic.attr.*;
+import org.liuyehcf.compile.engine.hua.definition.semantic.load.LiteralLoad;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.REGEX_IDENTIFIER;

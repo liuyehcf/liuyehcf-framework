@@ -4,24 +4,24 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.model.AttrName;
-import org.liuyehcf.compile.engine.hua.model.BackFillType;
-import org.liuyehcf.compile.engine.hua.model.ControlTransferType;
-import org.liuyehcf.compile.engine.hua.model.StatementType;
-import org.liuyehcf.compile.engine.hua.semantic.attr.*;
-import org.liuyehcf.compile.engine.hua.semantic.backfill.ControlTransferByteCodeBackFill;
-import org.liuyehcf.compile.engine.hua.semantic.backfill.ControlTransferByteCodeBackFillWithLoop;
-import org.liuyehcf.compile.engine.hua.semantic.code.*;
-import org.liuyehcf.compile.engine.hua.semantic.node.AddFutureSyntaxNode;
-import org.liuyehcf.compile.engine.hua.semantic.variable.EnterNamespace;
-import org.liuyehcf.compile.engine.hua.semantic.variable.ExitNamespace;
+import org.liuyehcf.compile.engine.hua.definition.model.AttrName;
+import org.liuyehcf.compile.engine.hua.definition.model.BackFillType;
+import org.liuyehcf.compile.engine.hua.definition.model.ControlTransferType;
+import org.liuyehcf.compile.engine.hua.definition.model.StatementType;
+import org.liuyehcf.compile.engine.hua.definition.semantic.attr.*;
+import org.liuyehcf.compile.engine.hua.definition.semantic.backfill.ControlTransferByteCodeBackFill;
+import org.liuyehcf.compile.engine.hua.definition.semantic.backfill.ControlTransferByteCodeBackFillWithLoop;
+import org.liuyehcf.compile.engine.hua.definition.semantic.code.*;
+import org.liuyehcf.compile.engine.hua.definition.semantic.node.AddFutureSyntaxNode;
+import org.liuyehcf.compile.engine.hua.definition.semantic.variable.EnterNamespace;
+import org.liuyehcf.compile.engine.hua.definition.semantic.variable.ExitNamespace;
 
 import static org.liuyehcf.compile.engine.hua.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.definition.ExpressionProductions.*;
 import static org.liuyehcf.compile.engine.hua.definition.GrammarDefinition.*;
 import static org.liuyehcf.compile.engine.hua.definition.ProgramProductions.VARIABLE_DECLARATORS;
 import static org.liuyehcf.compile.engine.hua.definition.TypeProductions.TYPE;
-import static org.liuyehcf.compile.engine.hua.semantic.AbstractSemanticAction.NOT_NULL;
+import static org.liuyehcf.compile.engine.hua.definition.semantic.AbstractSemanticAction.NOT_NULL;
 
 /**
  * Block相关的产生式

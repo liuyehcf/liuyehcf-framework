@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.commond.runtime;
 
-import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
+import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 
 /**
  * @author chenlu

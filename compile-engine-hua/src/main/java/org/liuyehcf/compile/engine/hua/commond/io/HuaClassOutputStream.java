@@ -2,11 +2,11 @@ package org.liuyehcf.compile.engine.hua.commond.io;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCodeUtil;
-import org.liuyehcf.compile.engine.hua.compiler.ConstantPool;
-import org.liuyehcf.compile.engine.hua.compiler.IntermediateInfo;
-import org.liuyehcf.compile.engine.hua.compiler.MethodInfo;
-import org.liuyehcf.compile.engine.hua.compiler.MethodInfoTable;
-import org.liuyehcf.compile.engine.hua.model.Type;
+import org.liuyehcf.compile.engine.hua.core.ConstantPool;
+import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
+import org.liuyehcf.compile.engine.hua.core.MethodInfo;
+import org.liuyehcf.compile.engine.hua.core.MethodInfoTable;
+import org.liuyehcf.compile.engine.hua.definition.model.Type;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
