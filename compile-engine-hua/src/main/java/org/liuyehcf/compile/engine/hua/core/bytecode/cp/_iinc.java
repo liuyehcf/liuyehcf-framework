@@ -42,8 +42,9 @@ public class _iinc extends Compute {
     public _iinc() {
     }
 
-    public _iinc(int order, int increment) {
+    public _iinc(int order, int offset, int increment) {
         this.order = order;
+        this.offset = offset;
         this.increment = increment;
     }
 
@@ -55,20 +56,20 @@ public class _iinc extends Compute {
         this.order = order;
     }
 
-    public int getIncrement() {
-        return increment;
-    }
-
-    public void setIncrement(int increment) {
-        this.increment = increment;
-    }
-
     public int getOffset() {
         return offset;
     }
 
     public void setOffset(int offset) {
         this.offset = offset;
+    }
+
+    public int getIncrement() {
+        return increment;
+    }
+
+    public void setIncrement(int increment) {
+        this.increment = increment;
     }
 
     @Override
@@ -79,6 +80,6 @@ public class _iinc extends Compute {
     @Override
     @JSONField(serialize = false)
     public Object[] getOperators() {
-        return new Object[]{order, increment};
+        return new Object[]{order, offset, increment};
     }
 }

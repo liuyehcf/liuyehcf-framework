@@ -39,12 +39,12 @@ public class _iload extends StoreLoad {
         this.offset = offset;
     }
 
-    public int getOffset() {
-        return offset;
-    }
-
     public int getOrder() {
         return order;
+    }
+
+    public int getOffset() {
+        return offset;
     }
 
     @Override
@@ -55,6 +55,6 @@ public class _iload extends StoreLoad {
     @Override
     @JSONField(serialize = false)
     public Object[] getOperators() {
-        return new Object[]{order};
+        return new Object[]{order, offset};
     }
 }

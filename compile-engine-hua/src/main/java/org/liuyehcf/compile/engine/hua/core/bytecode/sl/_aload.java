@@ -55,6 +55,6 @@ public class _aload extends StoreLoad {
     @Override
     @JSONField(serialize = false)
     public Object[] getOperators() {
-        return new Object[]{order};
+        return new Object[]{order, offset};
     }
 }
