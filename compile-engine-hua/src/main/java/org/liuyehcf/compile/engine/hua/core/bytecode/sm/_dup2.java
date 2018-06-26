@@ -24,6 +24,14 @@ public class _dup2 extends OperatorStackManagement {
 
     @Override
     public void operate(RuntimeContext context) {
+        Object value1 = context.pop();
+        Object value2 = context.pop();
 
+        context.push(value2);
+        context.push(value1);
+        context.push(value2);
+        context.push(value1);
+
+        context.increaseCodeOffset();
     }
 }

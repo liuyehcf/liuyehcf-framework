@@ -2,7 +2,6 @@ package org.liuyehcf.compile.engine.hua.core.bytecode.sl;
 
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
-import org.liuyehcf.compile.engine.hua.runtime.OperatorStack;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
@@ -27,23 +26,14 @@ public class _aastore extends ArrayStoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
-        OperatorStack operatorStack = context.getOperatorStack();
+        int value = context.pop();
+        int index = context.pop();
+        int arrayReference = context.pop();
 
-        /*
-         * 读取操作数栈中的操作数
-         */
-        int value = operatorStack.pop();
-        int index = operatorStack.pop();
-        int arrayOffset = operatorStack.pop();
+        int elementReference = arrayReference + index * Type.REFERENCE_TYPE_WIDTH;
 
-        /*
-         * 数组元素的地址
-         */
-        int elementOffset = arrayOffset + index * Type.ARRAY_TYPE_WIDTH;
+        HeapMemoryManagement.storeInt(elementReference, value);
 
-        /*
-         * 写入指定内存
-         */
-        HeapMemoryManagement.storeInt(elementOffset, value);
+        context.increaseCodeOffset();
     }
 }

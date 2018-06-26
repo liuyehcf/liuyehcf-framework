@@ -39,7 +39,9 @@ public class _iconst extends StoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
+        context.push(this.value);
 
+        context.increaseCodeOffset();
     }
 
     @Override

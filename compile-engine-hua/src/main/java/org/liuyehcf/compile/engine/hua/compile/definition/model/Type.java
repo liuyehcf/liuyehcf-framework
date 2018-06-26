@@ -13,7 +13,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
  */
 public class Type implements Serializable {
 
-    public final static int ARRAY_TYPE_WIDTH = 8;
+    public final static int REFERENCE_TYPE_WIDTH = 4;
     private final static int NORMAL_TYPE_DIM = 0;
     public final static Type TYPE_INT = createNormalType(NORMAL_INT, 4);
     public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, 1);
@@ -44,7 +44,7 @@ public class Type implements Serializable {
     }
 
     public static Type createArrayType(String typeName, int dim) {
-        return new Type(typeName, ARRAY_TYPE_WIDTH, dim);
+        return new Type(typeName, REFERENCE_TYPE_WIDTH, dim);
     }
 
     public static Type createType(String typeName, int typeWidth, int dim) {

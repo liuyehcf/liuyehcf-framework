@@ -1,7 +1,5 @@
 package org.liuyehcf.compile.engine.hua.runtime;
 
-import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
-
 /**
  * 堆内存管理
  *
@@ -61,11 +59,7 @@ public class HeapMemoryManagement {
      * @return int值
      */
     public static int loadInt(int offset) {
-        int res = 0;
-        for (int i = 0; i < Type.TYPE_INT.getTypeWidth(); i++) {
-            res |= (heapMemory[offset + i] & 0xff) << (8 * i);
-        }
-        return res;
+        return ByteUtil.loadInt(heapMemory, offset);
     }
 
     /**
@@ -75,9 +69,7 @@ public class HeapMemoryManagement {
      * @param value  int值
      */
     public static void storeInt(int offset, int value) {
-        for (int i = 0; i < Type.TYPE_INT.getTypeWidth(); i++) {
-            heapMemory[offset + i] = (byte) (value >> (8 * i) & 0xff);
-        }
+        ByteUtil.storeInt(heapMemory, offset, value);
     }
 
     /**
@@ -87,11 +79,7 @@ public class HeapMemoryManagement {
      * @return boolean值
      */
     public static int loadBoolean(int offset) {
-        int res = 0;
-        for (int i = 0; i < Type.TYPE_BOOLEAN.getTypeWidth(); i++) {
-            res |= (heapMemory[offset + i] & 0xff) << (8 * i);
-        }
-        return res;
+        return ByteUtil.loadBoolean(heapMemory, offset);
     }
 
     /**
@@ -101,9 +89,6 @@ public class HeapMemoryManagement {
      * @param value  boolean值
      */
     public static void storeBoolean(int offset, int value) {
-        for (int i = 0; i < Type.TYPE_BOOLEAN.getTypeWidth(); i++) {
-            System.out.println((value >> (8 * i) & 0xff));
-            heapMemory[offset + i] = (byte) (value >> (8 * i) & 0xff);
-        }
+        ByteUtil.storeBoolean(heapMemory, offset, value);
     }
 }

@@ -21,19 +21,43 @@ public class RuntimeContext {
         this.currentMethod = methodStack.peek();
     }
 
-    public MethodStack getMethodStack() {
-        return methodStack;
+    public void push(Object obj) {
+        currentMethod.getOperatorStack().push(obj);
     }
 
-    public MethodRuntimeInfo getCurrentMethod() {
-        return currentMethod;
+    public <T> T pop() {
+        return currentMethod.getOperatorStack().pop();
     }
 
-    public OperatorStack getOperatorStack() {
-        return currentMethod.getOperatorStack();
+    public void increaseCodeOffset() {
+        currentMethod.increaseCodeOffset();
     }
 
-    public int loadIntByOrder(int order) {
-        return 0;//todo
+    public void setCodeOffset(int codeOffset) {
+        currentMethod.setCodeOffset(codeOffset);
+    }
+
+    public int loadInt(int offset) {
+        return currentMethod.loadInt(offset);
+    }
+
+    public void storeInt(int offset, int value) {
+        currentMethod.storeInt(offset, value);
+    }
+
+    public int loadBoolean(int offset) {
+        return currentMethod.loadBoolean(offset);
+    }
+
+    public void storeBoolean(int offset, int value) {
+        currentMethod.storeBoolean(offset, value);
+    }
+
+    public int loadReference(int offset) {
+        return currentMethod.loadReference(offset);
+    }
+
+    public void storeReference(int offset, int value) {
+        currentMethod.storeReference(offset, value);
     }
 }

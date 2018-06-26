@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.sl;
 
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
@@ -24,6 +26,15 @@ public class _iaload extends ArrayStoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
+        int index = context.pop();
+        int arrayOffset = context.pop();
 
+        int elementOffset = arrayOffset + index * Type.TYPE_INT.getTypeWidth();
+
+        int value = HeapMemoryManagement.loadInt(elementOffset);
+
+        context.push(value);
+
+        context.increaseCodeOffset();
     }
 }

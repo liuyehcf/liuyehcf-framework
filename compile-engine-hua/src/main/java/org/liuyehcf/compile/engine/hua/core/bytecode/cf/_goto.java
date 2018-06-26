@@ -31,6 +31,6 @@ public class _goto extends ControlTransfer {
 
     @Override
     public void operate(RuntimeContext context) {
-        context.getCurrentMethod().setCodeOffset(getCodeOffset());
+        context.setCodeOffset(getCodeOffset());
     }
 }

@@ -49,7 +49,11 @@ public class _astore extends StoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
+        int reference = context.pop();
 
+        context.storeReference(offset, reference);
+
+        context.increaseCodeOffset();
     }
 
     @Override

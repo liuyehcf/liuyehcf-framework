@@ -46,6 +46,10 @@ public class MethodRuntimeInfo {
         }
     }
 
+    public OperatorStack getOperatorStack() {
+        return operatorStack;
+    }
+
     public void increaseCodeOffset() {
         codeOffset++;
     }
@@ -58,7 +62,28 @@ public class MethodRuntimeInfo {
         isFinished = true;
     }
 
-    public OperatorStack getOperatorStack() {
-        return operatorStack;
+    public int loadInt(int offset) {
+        return ByteUtil.loadInt(stackMemory, offset);
     }
+
+    public void storeInt(int offset, int value) {
+        ByteUtil.storeInt(stackMemory, offset, value);
+    }
+
+    public int loadBoolean(int offset) {
+        return ByteUtil.loadBoolean(stackMemory, offset);
+    }
+
+    public void storeBoolean(int offset, int value) {
+        ByteUtil.storeBoolean(stackMemory, offset, value);
+    }
+
+    public int loadReference(int offset) {
+        return ByteUtil.loadReference(stackMemory, offset);
+    }
+
+    public void storeReference(int offset, int value) {
+        ByteUtil.storeReference(stackMemory, offset, value);
+    }
+
 }

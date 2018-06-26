@@ -49,7 +49,11 @@ public class _iload extends StoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
+        int value = context.loadInt(offset);
 
+        context.push(value);
+
+        context.increaseCodeOffset();
     }
 
     @Override

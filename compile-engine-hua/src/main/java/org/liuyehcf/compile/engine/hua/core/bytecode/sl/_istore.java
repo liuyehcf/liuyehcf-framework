@@ -49,7 +49,11 @@ public class _istore extends StoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
+        int value = context.pop();
 
+        context.storeInt(offset, value);
+
+        context.increaseCodeOffset();
     }
 
     @Override

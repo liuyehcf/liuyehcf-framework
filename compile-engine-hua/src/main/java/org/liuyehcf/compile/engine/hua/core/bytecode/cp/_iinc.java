@@ -74,7 +74,11 @@ public class _iinc extends Compute {
 
     @Override
     public void operate(RuntimeContext context) {
+        int value = context.loadInt(offset);
 
+        context.storeInt(offset, value + increment);
+
+        context.increaseCodeOffset();
     }
 
     @Override

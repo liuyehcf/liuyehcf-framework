@@ -1,6 +1,5 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.cf;
 
-import org.liuyehcf.compile.engine.hua.runtime.OperatorStack;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
@@ -32,14 +31,12 @@ public class _ifne extends ControlTransfer {
 
     @Override
     public void operate(RuntimeContext context) {
-        OperatorStack operatorStack = context.getOperatorStack();
-
-        int value = operatorStack.pop();
+        int value = context.pop();
 
         if (value != 0) {
-            context.getCurrentMethod().setCodeOffset(getCodeOffset());
+            context.setCodeOffset(getCodeOffset());
         } else {
-            context.getCurrentMethod().increaseCodeOffset();
+            context.increaseCodeOffset();
         }
     }
 }
