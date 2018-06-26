@@ -21,15 +21,25 @@ public class _astore extends StoreLoad {
     /**
      * 操作数类型
      */
-    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class, int.class};
 
     /**
      * 标志符序号
      */
     private final int order;
 
-    public _astore(int order) {
+    /**
+     * 标志符偏移量
+     */
+    private final int offset;
+
+    public _astore(int order, int offset) {
         this.order = order;
+        this.offset = offset;
+    }
+
+    public int getOffset() {
+        return offset;
     }
 
     public int getOrder() {

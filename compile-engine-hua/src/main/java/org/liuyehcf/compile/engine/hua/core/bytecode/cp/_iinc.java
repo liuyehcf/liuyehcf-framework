@@ -21,12 +21,18 @@ public class _iinc extends Compute {
     /**
      * 操作数类型
      */
-    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class, int.class};
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class, int.class, int.class};
 
     /**
      * 标志符序号
      */
     private int order;
+
+    /**
+     * 标志符偏移量
+     */
+    private int offset;
+
     /**
      * 增量
      */
@@ -54,6 +60,14 @@ public class _iinc extends Compute {
 
     public void setIncrement(int increment) {
         this.increment = increment;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     @Override

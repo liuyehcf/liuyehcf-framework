@@ -132,7 +132,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                     switch (identifierType.getTypeName()) {
                         case NORMAL_BOOLEAN:
                         case NORMAL_INT:
-                            context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOrder()));
+                            context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOrder(), variableSymbol.getOffset()));
                             break;
                         default:
                             throw new UnsupportedOperationException();
@@ -146,7 +146,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
 
                     switch (identifierType.getTypeName()) {
                         case NORMAL_INT:
-                            context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOrder()));
+                            context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOrder(), variableSymbol.getOffset()));
                             break;
                         default:
                             throw new UnsupportedOperationException();
