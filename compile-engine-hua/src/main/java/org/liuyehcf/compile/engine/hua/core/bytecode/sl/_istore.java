@@ -31,6 +31,7 @@ public class _istore extends StoreLoad {
     /**
      * 标志符偏移量
      */
+    @JSONField(serialize = false)
     private final int offset;
 
     public _istore(int order, int offset) {

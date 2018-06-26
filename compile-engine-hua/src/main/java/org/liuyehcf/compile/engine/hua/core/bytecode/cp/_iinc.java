@@ -31,6 +31,7 @@ public class _iinc extends Compute {
     /**
      * 标志符偏移量
      */
+    @JSONField(serialize = false)
     private int offset;
 
     /**

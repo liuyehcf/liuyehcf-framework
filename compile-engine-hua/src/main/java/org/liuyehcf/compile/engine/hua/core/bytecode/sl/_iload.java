@@ -31,6 +31,7 @@ public class _iload extends StoreLoad {
     /**
      * 标志符偏移量
      */
+    @JSONField(serialize = false)
     private final int offset;
 
     public _iload(int order, int offset) {
