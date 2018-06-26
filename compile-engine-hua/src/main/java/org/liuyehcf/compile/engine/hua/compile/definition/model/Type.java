@@ -17,7 +17,8 @@ public class Type implements Serializable {
     public final static Type TYPE_INT = createNormalType(NORMAL_INT, 4);
     public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, 1);
     public final static Type TYPE_VOID = createNormalType(NORMAL_VOID, 0);
-    private final static int ARRAY_TYPE_WIDTH = 8;// TODO 数组的宽度要区别于普通类型
+    public final static int ARRAY_TYPE_WIDTH = 8;
+    
     /**
      * 类型名称
      */

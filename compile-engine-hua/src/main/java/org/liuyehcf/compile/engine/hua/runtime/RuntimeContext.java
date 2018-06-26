@@ -11,7 +11,6 @@ public class RuntimeContext {
      */
     private final MethodStack methodStack;
 
-
     /**
      * 当前执行的方法
      */
@@ -32,5 +31,9 @@ public class RuntimeContext {
 
     public OperatorStack getOperatorStack() {
         return currentMethod.getOperatorStack();
+    }
+
+    public int loadIntByOrder(int order) {
+        return 0;//todo
     }
 }

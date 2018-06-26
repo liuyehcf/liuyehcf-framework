@@ -33,18 +33,15 @@ public class HeapMemoryManagement {
      * 分配内存
      *
      * @param width 类型宽度
-     * @param dims  维度
+     * @param dim   维度
      * @return 起始地址
      */
-    public static int allocate(int width, int... dims) {
-        int total = width;
-
-        for (int dim : dims) {
-            total *= dim;
-        }
+    public static int allocate(int width, int dim) {
+        int total = width * dim;
 
         /*
          * 宽度为0时，分配一个byte
+         * 例如new int[0]时
          */
         if (total == 0) {
             int address = unAllocatedOffset;
