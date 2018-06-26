@@ -191,7 +191,6 @@ public class HuaContext extends Context {
      * 进入命名空间
      */
     public void enterNamespace() {
-        huaEngine.getVariableSymbolTable().enterNamespace();
         huaEngine.getMethodInfoTable().getCurMethodInfo().enterNamespace();
     }
 
@@ -199,7 +198,6 @@ public class HuaContext extends Context {
      * 退出命名空间
      */
     public void exitNamespace() {
-        huaEngine.getVariableSymbolTable().exitNamespace();
         huaEngine.getMethodInfoTable().getCurMethodInfo().exitNamespace();
     }
 
@@ -214,11 +212,7 @@ public class HuaContext extends Context {
         int order = huaEngine.getMethodInfoTable().getCurMethodInfo().getOrder();
         int offset = huaEngine.getMethodInfoTable().getCurMethodInfo().getOffset();
 
-        VariableSymbol variableSymbol = huaEngine.getVariableSymbolTable().createVariableSymbol(order, offset, name, type);
-
-        huaEngine.getMethodInfoTable().getCurMethodInfo().increaseOffset(variableSymbol.getType().getTypeWidth());
-        huaEngine.getMethodInfoTable().getCurMethodInfo().increaseOrder();
-        return variableSymbol;
+        return huaEngine.getMethodInfoTable().getCurMethodInfo().createVariableSymbol(order, offset, name, type);
     }
 
     /**
@@ -228,6 +222,6 @@ public class HuaContext extends Context {
      * @return 符号
      */
     public VariableSymbol getVariableSymbolByName(String identifierName) {
-        return huaEngine.getVariableSymbolTable().getVariableSymbolByName(identifierName);
+        return huaEngine.getMethodInfoTable().getCurMethodInfo().getVariableSymbolByName(identifierName);
     }
 }

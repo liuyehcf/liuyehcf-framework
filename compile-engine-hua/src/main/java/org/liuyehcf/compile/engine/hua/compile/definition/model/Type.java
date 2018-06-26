@@ -13,12 +13,11 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
  */
 public class Type implements Serializable {
 
+    public final static int ARRAY_TYPE_WIDTH = 8;
     private final static int NORMAL_TYPE_DIM = 0;
     public final static Type TYPE_INT = createNormalType(NORMAL_INT, 4);
     public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, 1);
     public final static Type TYPE_VOID = createNormalType(NORMAL_VOID, 0);
-    public final static int ARRAY_TYPE_WIDTH = 8;
-    
     /**
      * 类型名称
      */

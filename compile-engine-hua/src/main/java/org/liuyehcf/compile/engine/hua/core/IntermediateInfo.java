@@ -14,27 +14,17 @@ public class IntermediateInfo {
     private final ConstantPool constantPool;
 
     /**
-     * 符号表
-     */
-    private final VariableSymbolTable variableSymbolTable;
-
-    /**
      * 方法表
      */
     private final MethodInfoTable methodInfoTable;
 
-    public IntermediateInfo(ConstantPool constantPool, VariableSymbolTable variableSymbolTable, MethodInfoTable methodInfoTable) {
+    public IntermediateInfo(ConstantPool constantPool, MethodInfoTable methodInfoTable) {
         this.constantPool = constantPool;
-        this.variableSymbolTable = variableSymbolTable;
         this.methodInfoTable = methodInfoTable;
     }
 
     public ConstantPool getConstantPool() {
         return constantPool;
-    }
-
-    public VariableSymbolTable getVariableSymbolTable() {
-        return variableSymbolTable;
     }
 
     public MethodInfoTable getMethodInfoTable() {

@@ -35,11 +35,6 @@ public class VariableSymbol {
      */
     private final Type type;
 
-    /**
-     * 符号值
-     */
-    private Object value;
-
     public VariableSymbol(int order, int offset, int namespaceId, String name, Type type) {
         this.order = order;
         this.offset = offset;
@@ -66,9 +61,5 @@ public class VariableSymbol {
 
     public Type getType() {
         return type;
-    }
-
-    public Object getValue() {
-        return value;
     }
 }

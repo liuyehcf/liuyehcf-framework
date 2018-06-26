@@ -44,11 +44,11 @@ public class HuaClassInputStream extends DataInputStream {
         ConstantPool constantPool = readConstantPool();
 
         /*
-         * 3. 读魔数
+         * 3. 读方法信息
          */
         MethodInfoTable methodInfoTable = readMethodInfoTable();
 
-        return new IntermediateInfo(constantPool, null, methodInfoTable);
+        return new IntermediateInfo(constantPool, methodInfoTable);
     }
 
     /**

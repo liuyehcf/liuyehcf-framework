@@ -18,35 +18,33 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.*;
 public class MethodInfo {
 
     /**
+     * 符号表
+     */
+    private final VariableSymbolTable variableSymbolTable = new VariableSymbolTable();
+    /**
      * 字节码
      */
     private List<ByteCode> byteCodes = new ArrayList<>();
-
     /**
      * 方法名称
      */
     private String methodName;
-
     /**
      * 返回类型
      */
     private Type resultType;
-
     /**
      * 参数类型
      */
     private List<Type> paramTypeList;
-
     /**
      * 最大偏移量（用于分配栈内存）
      */
     private int maxOffset;
-
     /**
      * 符号序号栈
      */
     private LinkedList<Integer> orderStack = new LinkedList<>();
-
     /**
      * 符号偏移量栈
      */
@@ -106,6 +104,34 @@ public class MethodInfo {
         return paramTypeList.size();
     }
 
+    /**
+     * 创建新符号
+     *
+     * @param order  符号顺序
+     * @param offset 偏移量
+     * @param name   标志符名称
+     * @param type   标志符类型
+     * @return 新创建的符号
+     */
+    public VariableSymbol createVariableSymbol(int order, int offset, String name, Type type) {
+        VariableSymbol variableSymbol = variableSymbolTable.createVariableSymbol(order, offset, name, type);
+
+        increaseOffset(variableSymbol.getType().getTypeWidth());
+        increaseOrder();
+
+        return variableSymbol;
+    }
+
+    /**
+     * 根据标志符名称获取符号
+     *
+     * @param identifierName 标志符名称
+     * @return 符号
+     */
+    public VariableSymbol getVariableSymbolByName(String identifierName) {
+        return variableSymbolTable.getVariableSymbolByName(identifierName);
+    }
+
     public void enterNamespace() {
         if (offsetStack.isEmpty()) {
             assertTrue(orderStack.isEmpty());
@@ -119,6 +145,8 @@ public class MethodInfo {
             int curOrder = getOrder();
             orderStack.push(curOrder);
         }
+
+        variableSymbolTable.enterNamespace();
     }
 
     public void exitNamespace() {
@@ -127,20 +155,22 @@ public class MethodInfo {
 
         offsetStack.pop();
         orderStack.pop();
+
+        variableSymbolTable.exitNamespace();
     }
 
     public void addByteCode(ByteCode byteCode) {
         byteCodes.add(byteCode);
     }
 
-    public void increaseOffset(int step) {
+    private void increaseOffset(int step) {
         Integer top = offsetStack.pop();
         assertNotNull(top);
         offsetStack.push(top + step);
         maxOffset = Math.max(maxOffset, top + step);
     }
 
-    public void increaseOrder() {
+    private void increaseOrder() {
         Integer top = orderStack.pop();
         assertNotNull(top);
         orderStack.push(top + 1);

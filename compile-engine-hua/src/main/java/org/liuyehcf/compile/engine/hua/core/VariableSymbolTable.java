@@ -38,7 +38,7 @@ public class VariableSymbolTable {
      */
     private Namespace currentNamespace;
 
-    public VariableSymbolTable() {
+    VariableSymbolTable() {
         namespaceCnt = 0;
         currentNamespace = new Namespace(namespaceCnt++, Namespace.NO_PARENT_NAMESPACE);
 
@@ -53,7 +53,7 @@ public class VariableSymbolTable {
     /**
      * 进入新的命名空间
      */
-    public void enterNamespace() {
+    void enterNamespace() {
         currentNamespace = new Namespace(namespaceCnt++, currentNamespace.getId());
 
         assertFalse(nameMap.containsKey(currentNamespace));
@@ -66,7 +66,7 @@ public class VariableSymbolTable {
     /**
      * 退出当前命名空间
      */
-    public void exitNamespace() {
+    void exitNamespace() {
         int pid = currentNamespace.getPid();
 
         assertTrue(pid != Namespace.NO_PARENT_NAMESPACE);
@@ -103,7 +103,7 @@ public class VariableSymbolTable {
      * @param type   标志符类型
      * @return 新创建的符号
      */
-    public VariableSymbol createVariableSymbol(int order, int offset, String name, Type type) {
+    VariableSymbol createVariableSymbol(int order, int offset, String name, Type type) {
         if (exists(name)) {
             return null;
         }

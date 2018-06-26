@@ -105,11 +105,6 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
         private ConstantPool constantPool = new ConstantPool();
 
         /**
-         * 变量符号表
-         */
-        private VariableSymbolTable variableSymbolTable = new VariableSymbolTable();
-
-        /**
          * 方法定义表
          */
         private MethodInfoTable methodInfoTable = new MethodInfoTable();
@@ -120,10 +115,6 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
 
         ConstantPool getConstantPool() {
             return constantPool;
-        }
-
-        VariableSymbolTable getVariableSymbolTable() {
-            return variableSymbolTable;
         }
 
         MethodInfoTable getMethodInfoTable() {
@@ -145,7 +136,7 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
             /*
              * 设置编译结果
              */
-            setResult(new IntermediateInfo(constantPool, variableSymbolTable, methodInfoTable));
+            setResult(new IntermediateInfo(constantPool, methodInfoTable));
         }
 
         private void optimize() {
