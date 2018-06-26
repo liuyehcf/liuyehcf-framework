@@ -8,14 +8,24 @@ import java.util.LinkedList;
  * @author hechenfeng
  * @date 2018/6/25
  */
-class MethodStack {
+public class MethodStack {
+
     private final LinkedList<MethodRuntimeInfo> stack = new LinkedList<>();
 
-    void push(MethodRuntimeInfo methodRuntimeInfo) {
+    public void push(MethodRuntimeInfo methodRuntimeInfo) {
         stack.push(methodRuntimeInfo);
     }
 
-    MethodRuntimeInfo pop() {
+    public MethodRuntimeInfo pop() {
         return stack.pop();
     }
+
+    public MethodRuntimeInfo peek() {
+        return stack.peek();
+    }
+
+    public void invoke() {
+
+    }
+
 }

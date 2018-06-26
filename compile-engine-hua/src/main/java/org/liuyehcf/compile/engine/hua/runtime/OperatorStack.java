@@ -12,4 +12,17 @@ public class OperatorStack {
 
     private final LinkedList<Object> stack = new LinkedList<>();
 
+    public void push(Object value) {
+        stack.push(value);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T pop() {
+        return (T) stack.pop();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T peek() {
+        return (T) stack.peek();
+    }
 }

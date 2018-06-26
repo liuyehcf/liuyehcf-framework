@@ -29,6 +29,6 @@ public class RuntimeDaemon {
     }
 
     public void doExecute() {
-
+        methodStack.peek().run(methodStack);
     }
 }
