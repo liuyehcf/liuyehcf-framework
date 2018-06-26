@@ -210,7 +210,12 @@ public class HuaContext extends Context {
     public VariableSymbol createVariableSymbol(String name, Type type) {
         int order = huaEngine.getMethodInfoTable().getCurMethodInfo().getOrder();
         int offset = huaEngine.getMethodInfoTable().getCurMethodInfo().getOffset();
-        return huaEngine.getVariableSymbolTable().createVariableSymbol(order, offset, name, type);
+
+        VariableSymbol variableSymbol = huaEngine.getVariableSymbolTable().createVariableSymbol(order, offset, name, type);
+
+        huaEngine.getMethodInfoTable().getCurMethodInfo().increaseOffset(variableSymbol.getType().getTypeWidth());
+        huaEngine.getMethodInfoTable().getCurMethodInfo().increaseOrder();
+        return variableSymbol;
     }
 
     /**
@@ -221,12 +226,5 @@ public class HuaContext extends Context {
      */
     public VariableSymbol getVariableSymbolByName(String identifierName) {
         return huaEngine.getVariableSymbolTable().getVariableSymbolByName(identifierName);
-    }
-
-    /**
-     * 递增偏移量
-     */
-    public void increaseOffset(int step) {
-        huaEngine.getMethodInfoTable().getCurMethodInfo().increaseOffset(step);
     }
 }

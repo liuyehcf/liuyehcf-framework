@@ -23,9 +23,9 @@ public class _iinc extends Compute {
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class, int.class};
 
     /**
-     * 偏移量
+     * 标志符序号
      */
-    private int offset;
+    private int order;
     /**
      * 增量
      */
@@ -34,17 +34,17 @@ public class _iinc extends Compute {
     public _iinc() {
     }
 
-    public _iinc(int offset, int increment) {
-        this.offset = offset;
+    public _iinc(int order, int increment) {
+        this.order = order;
         this.increment = increment;
     }
 
-    public int getOffset() {
-        return offset;
+    public int getOrder() {
+        return order;
     }
 
-    public void setOffset(int offset) {
-        this.offset = offset;
+    public void setOrder(int order) {
+        this.order = order;
     }
 
     public int getIncrement() {
@@ -63,6 +63,6 @@ public class _iinc extends Compute {
     @Override
     @JSONField(serialize = false)
     public Object[] getOperators() {
-        return new Object[]{offset, increment};
+        return new Object[]{order, increment};
     }
 }

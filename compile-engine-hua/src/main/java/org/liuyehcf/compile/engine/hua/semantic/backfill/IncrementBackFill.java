@@ -58,7 +58,7 @@ public class IncrementBackFill extends AbstractSemanticAction implements Seriali
             throw new RuntimeException("前置递增/递减运算符不能作用于 '非int类型的变量'");
         }
 
-        code.setOffset(variableSymbol.getOffset());
+        code.setOrder(variableSymbol.getOrder());
         code.setIncrement(increment);
 
         context.setAttr(backFillStackOffset, AttrName.IINC_BYTE_CODE, null);

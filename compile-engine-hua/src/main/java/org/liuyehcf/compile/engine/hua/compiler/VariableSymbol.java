@@ -48,6 +48,10 @@ public class VariableSymbol {
         this.type = type;
     }
 
+    public int getOrder() {
+        return order;
+    }
+
     public int getOffset() {
         return offset;
     }

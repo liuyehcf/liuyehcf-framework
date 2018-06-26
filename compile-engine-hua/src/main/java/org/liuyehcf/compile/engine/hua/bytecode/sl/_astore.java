@@ -23,16 +23,16 @@ public class _astore extends StoreLoad {
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
 
     /**
-     * 标志符偏移量
+     * 标志符序号
      */
-    private final int offset;
+    private final int order;
 
-    public _astore(int offset) {
-        this.offset = offset;
+    public _astore(int order) {
+        this.order = order;
     }
 
-    public int getOffset() {
-        return offset;
+    public int getOrder() {
+        return order;
     }
 
     @Override
@@ -43,6 +43,6 @@ public class _astore extends StoreLoad {
     @Override
     @JSONField(serialize = false)
     public Object[] getOperators() {
-        return new Object[]{offset};
+        return new Object[]{order};
     }
 }

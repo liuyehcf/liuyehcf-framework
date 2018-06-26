@@ -45,14 +45,14 @@ public class VariableLoad extends AbstractSemanticAction implements Serializable
 
         if (type.isArrayType()) {
 
-            context.addByteCodeToCurrentMethod(new _aload(variableSymbol.getOffset()));
+            context.addByteCodeToCurrentMethod(new _aload(variableSymbol.getOrder()));
             context.setAttrToLeftNode(AttrName.TYPE, type);
 
         } else {
             switch (type.getTypeName()) {
                 case NORMAL_BOOLEAN:
                 case NORMAL_INT:
-                    context.addByteCodeToCurrentMethod(new _iload(variableSymbol.getOffset()));
+                    context.addByteCodeToCurrentMethod(new _iload(variableSymbol.getOrder()));
                     context.setAttrToLeftNode(AttrName.TYPE, type);
                     break;
                 default:

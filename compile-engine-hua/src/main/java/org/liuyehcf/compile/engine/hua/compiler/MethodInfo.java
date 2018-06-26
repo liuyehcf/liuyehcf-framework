@@ -140,6 +140,12 @@ public class MethodInfo {
         maxOffset = Math.max(maxOffset, top + step);
     }
 
+    void increaseOrder() {
+        Integer top = orderStack.pop();
+        assertNotNull(top);
+        orderStack.push(top + 1);
+    }
+
     int getOffset() {
         Integer peek = offsetStack.peek();
         assertNotNull(peek);

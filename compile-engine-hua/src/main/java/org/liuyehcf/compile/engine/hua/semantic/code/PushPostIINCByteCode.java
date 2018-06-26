@@ -49,7 +49,7 @@ public class PushPostIINCByteCode extends AbstractSemanticAction implements Seri
 
         _iinc code = new _iinc();
 
-        code.setOffset(variableSymbol.getOffset());
+        code.setOrder(variableSymbol.getOrder());
         code.setIncrement(increment);
 
         context.addByteCodeToCurrentMethod(code);

@@ -61,7 +61,7 @@ public class VariableInitialization extends AbstractSemanticAction implements Se
          * 数组类型
          */
         if (identifierType.isArrayType()) {
-            context.addByteCodeToCurrentMethod(new _astore(variableSymbol.getOffset()));
+            context.addByteCodeToCurrentMethod(new _astore(variableSymbol.getOrder()));
         }
         /*
          * 非数组类型
@@ -70,7 +70,7 @@ public class VariableInitialization extends AbstractSemanticAction implements Se
             switch (identifierType.getTypeName()) {
                 case NORMAL_BOOLEAN:
                 case NORMAL_INT:
-                    context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOffset()));
+                    context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOrder()));
                     break;
                 default:
                     throw new RuntimeException("尚不支持类型 \'" + identifierType + "\'");
