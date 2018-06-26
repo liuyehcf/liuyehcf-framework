@@ -44,6 +44,14 @@ public class Hua {
         hua.execute();
     }
 
+    private void execute() {
+
+        load();
+
+        run();
+
+    }
+
     private void load() {
 
         try (HuaClassInputStream inputStream = new HuaClassInputStream(new FileInputStream(filePath))) {
@@ -56,20 +64,12 @@ public class Hua {
 
     }
 
-    private void execute() {
-
-        load();
-
-        run();
-
-    }
-
     private void run() {
         MethodStack methodStack = new MethodStack();
 
         MethodInfo mainMethod = getMainMethod();
 
-        methodStack.push(new MethodRuntimeInfo());
+        methodStack.push(new MethodRuntimeInfo(mainMethod));
     }
 
     private MethodInfo getMainMethod() {

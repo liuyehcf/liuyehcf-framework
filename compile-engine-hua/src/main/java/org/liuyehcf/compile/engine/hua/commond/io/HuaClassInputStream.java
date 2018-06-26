@@ -63,13 +63,11 @@ public class HuaClassInputStream extends DataInputStream {
 
         ConstantPool constantPool = new ConstantPool();
 
+        /*
+         * 2. 读常量
+         */
         for (int i = 0; i < constantSize; i++) {
-
-            /*
-             * 1. 读常量
-             */
             constantPool.addConstant(readString());
-
         }
 
         return constantPool;
@@ -80,16 +78,18 @@ public class HuaClassInputStream extends DataInputStream {
      */
     private MethodInfoTable readMethodInfoTable() throws IOException {
 
+        /*
+         * 1. 读方法数量
+         */
         int methodSize = readInt();
 
         List<MethodInfo> methodInfoList = new ArrayList<>();
+
+        /*
+         * 2. 读方法信息
+         */
         for (int i = 0; i < methodSize; i++) {
-
-            /*
-             * 读方法信息
-             */
             methodInfoList.add(readMethodInfo());
-
         }
 
         return new MethodInfoTable(methodInfoList);
@@ -176,6 +176,9 @@ public class HuaClassInputStream extends DataInputStream {
 
         Class<? extends ByteCode> byteCodeClass = ByteCodeUtil.getByteCodeByOperatorCode(operatorCode);
 
+        /*
+         * 2. 读操作数
+         */
         Class<?>[] operatorClasses = ByteCodeUtil.getOperatorClasses(byteCodeClass);
         Object[] operators = new Object[operatorClasses.length];
         for (int i = 0; i < operatorClasses.length; i++) {
@@ -190,6 +193,9 @@ public class HuaClassInputStream extends DataInputStream {
             }
         }
 
+        /*
+         * 3. 创建字节码对象
+         */
         try {
             Constructor<? extends ByteCode> constructor = byteCodeClass.getConstructor(operatorClasses);
             return constructor.newInstance(operators);

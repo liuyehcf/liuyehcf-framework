@@ -52,17 +52,15 @@ public class HuaClassOutputStream extends DataOutputStream {
      */
     private void writeConstantPoll(ConstantPool constantPool) throws IOException {
         /*
-         * 写入常量个数
+         * 1. 写入常量个数
          */
         writeInt(constantPool.getConstants().size());
 
+        /*
+         * 2. 写常量
+         */
         for (String constant : constantPool.getConstants()) {
-
-            /*
-             * 写常量
-             */
             writeString(constant);
-
         }
     }
 
@@ -74,17 +72,15 @@ public class HuaClassOutputStream extends DataOutputStream {
     private void writeMethodInfoTable(MethodInfoTable methodInfoTable) throws IOException {
 
         /*
-         * 写入方法个数
+         * 1. 写入方法个数
          */
         writeInt(methodInfoTable.getMethodInfoList().size());
 
+        /*
+         * 2. 写方法信息
+         */
         for (MethodInfo methodInfo : methodInfoTable.getMethodInfoList()) {
-
-            /*
-             * 写方法信息
-             */
             writeMethodInfo(methodInfo);
-
         }
     }
 
