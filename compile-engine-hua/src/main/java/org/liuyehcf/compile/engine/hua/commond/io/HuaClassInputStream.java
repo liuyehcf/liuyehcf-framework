@@ -118,7 +118,7 @@ public class HuaClassInputStream extends DataInputStream {
         /*
          * 4. 读偏移量
          */
-        int offset = readInt();
+        int maxOffset = readInt();
 
         /*
          * 5. 读字节码
@@ -133,7 +133,7 @@ public class HuaClassInputStream extends DataInputStream {
         methodInfo.setMethodName(methodName);
         methodInfo.setResultType(resultType);
         methodInfo.setParamTypeList(paramTypeList);
-        methodInfo.setOffset(offset);
+        methodInfo.setMaxOffset(maxOffset);
         methodInfo.setByteCodes(byteCodeList);
 
         return methodInfo;

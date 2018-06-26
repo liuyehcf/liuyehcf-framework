@@ -866,7 +866,6 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new EnterNamespace(),
                             new AttrFilter()
                     ),
                     /*

@@ -111,7 +111,7 @@ public class HuaClassOutputStream extends DataOutputStream {
         /*
          * 4. 写偏移量
          */
-        writeInt(methodInfo.getOffset());
+        writeInt(methodInfo.getMaxOffset());
 
         /*
          * 5. 写字节码

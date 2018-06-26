@@ -25,6 +25,6 @@ public class MethodRuntimeInfo {
 
     public MethodRuntimeInfo(MethodInfo methodInfo) {
         this.methodInfo = methodInfo;
-        stackMemory = new byte[this.methodInfo.getOffset()];
+        stackMemory = new byte[this.methodInfo.getMaxOffset()];
     }
 }

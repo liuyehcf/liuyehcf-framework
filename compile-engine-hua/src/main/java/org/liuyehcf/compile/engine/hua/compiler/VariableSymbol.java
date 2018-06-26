@@ -9,6 +9,12 @@ import org.liuyehcf.compile.engine.hua.model.Type;
  * @date 2018/6/3
  */
 public class VariableSymbol {
+
+    /**
+     * 顺序，即第几个符号
+     */
+    private final int order;
+
     /**
      * 偏移量
      */
@@ -34,7 +40,8 @@ public class VariableSymbol {
      */
     private Object value;
 
-    public VariableSymbol(int offset, int namespaceId, String name, Type type) {
+    public VariableSymbol(int order, int offset, int namespaceId, String name, Type type) {
+        this.order = order;
         this.offset = offset;
         this.namespaceId = namespaceId;
         this.name = name;

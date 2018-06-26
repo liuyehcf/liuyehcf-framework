@@ -4,7 +4,10 @@ import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.model.Type;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.*;
 
 /**
  * 方法信息
@@ -35,9 +38,19 @@ public class MethodInfo {
     private List<Type> paramTypeList;
 
     /**
-     * 符号偏移量
+     * 最大偏移量（用于分配栈内存）
      */
-    private int offset = 0;
+    private int maxOffset;
+
+    /**
+     * 符号序号栈
+     */
+    private LinkedList<Integer> orderStack = new LinkedList<>();
+
+    /**
+     * 符号偏移量栈
+     */
+    private LinkedList<Integer> offsetStack = new LinkedList<>();
 
     /**
      * 创建方法签名
@@ -93,20 +106,58 @@ public class MethodInfo {
         return paramTypeList.size();
     }
 
+    void enterNamespace() {
+        if (offsetStack.isEmpty()) {
+            assertTrue(orderStack.isEmpty());
+
+            offsetStack.push(0);
+            orderStack.push(0);
+        } else {
+            int curOffset = getOffset();
+            offsetStack.push(curOffset);
+
+            int curOrder = getOrder();
+            orderStack.push(curOrder);
+        }
+    }
+
+    void exitNamespace() {
+        assertFalse(offsetStack.isEmpty());
+        assertFalse(orderStack.isEmpty());
+
+        offsetStack.pop();
+        orderStack.pop();
+    }
+
     void addByteCode(ByteCode byteCode) {
         byteCodes.add(byteCode);
     }
 
     void increaseOffset(int step) {
-        offset += step;
+        Integer top = offsetStack.pop();
+        assertNotNull(top);
+        offsetStack.push(top + step);
+        maxOffset = Math.max(maxOffset, top + step);
     }
 
-    public int getOffset() {
-        return offset;
+    int getOffset() {
+        Integer peek = offsetStack.peek();
+        assertNotNull(peek);
+        return peek;
     }
 
-    public void setOffset(int offset) {
-        this.offset = offset;
+    int getOrder() {
+        Integer peek = orderStack.peek();
+        assertNotNull(peek);
+        return peek;
+    }
+
+    public int getMaxOffset() {
+        return maxOffset;
+    }
+
+    public void setMaxOffset(int maxOffset) {
+        this.maxOffset = maxOffset;
     }
 
     /**

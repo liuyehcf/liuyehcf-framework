@@ -32,8 +32,7 @@ public class CreateVariable extends AbstractSemanticAction implements Serializab
         String name = context.getValue(identifierStackOffset);
         Type type = context.getAttr(identifierStackOffset, AttrName.TYPE);
 
-        if (context.createVariableSymbol(
-                context.getOffset(), name, type) == null) {
+        if (context.createVariableSymbol(name, type) == null) {
             throw new RuntimeException("标志符 " + name + " 已存在，请勿重复定义");
         }
 

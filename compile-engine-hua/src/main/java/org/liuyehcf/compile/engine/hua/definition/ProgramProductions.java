@@ -342,8 +342,8 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new EnterNamespace(),
                             new EnterMethod(),
+                            new EnterNamespace(),
                             new AttrFilter()
                     )
 

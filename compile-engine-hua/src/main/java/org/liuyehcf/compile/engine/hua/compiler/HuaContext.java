@@ -71,7 +71,7 @@ public class HuaContext extends Context {
         return getStack().get(stackOffset).getValue();
     }
 
-    public void addConstant(String constant) {
+    private void addConstant(String constant) {
         huaEngine.getConstantPool().addConstant(constant);
     }
 
@@ -189,6 +189,7 @@ public class HuaContext extends Context {
      */
     public void enterNamespace() {
         huaEngine.getVariableSymbolTable().enterNamespace();
+        huaEngine.getMethodInfoTable().getCurMethodInfo().enterNamespace();
     }
 
     /**
@@ -196,18 +197,20 @@ public class HuaContext extends Context {
      */
     public void exitNamespace() {
         huaEngine.getVariableSymbolTable().exitNamespace();
+        huaEngine.getMethodInfoTable().getCurMethodInfo().exitNamespace();
     }
 
     /**
      * 创建一个符号
      *
-     * @param offset 偏移量
-     * @param name   标志符名称
-     * @param type   标志符类型
+     * @param name 标志符名称
+     * @param type 标志符类型
      * @return 新创建的符号
      */
-    public VariableSymbol createVariableSymbol(int offset, String name, Type type) {
-        return huaEngine.getVariableSymbolTable().createVariableSymbol(offset, name, type);
+    public VariableSymbol createVariableSymbol(String name, Type type) {
+        int order = huaEngine.getMethodInfoTable().getCurMethodInfo().getOrder();
+        int offset = huaEngine.getMethodInfoTable().getCurMethodInfo().getOffset();
+        return huaEngine.getVariableSymbolTable().createVariableSymbol(order, offset, name, type);
     }
 
     /**
@@ -225,14 +228,5 @@ public class HuaContext extends Context {
      */
     public void increaseOffset(int step) {
         huaEngine.getMethodInfoTable().getCurMethodInfo().increaseOffset(step);
-    }
-
-    /**
-     * 获取偏移量
-     *
-     * @return 偏移量
-     */
-    public int getOffset() {
-        return huaEngine.getMethodInfoTable().getCurMethodInfo().getOffset();
     }
 }
