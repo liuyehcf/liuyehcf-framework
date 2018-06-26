@@ -40,7 +40,7 @@ public class ConstantPool {
         constantPool.put(constant, offsetCnt++);
     }
 
-    int getConstantOffset(String constant) {
+    public int getConstantOffset(String constant) {
         if (!constantPool.containsKey(constant)) {
             return -1;
         }

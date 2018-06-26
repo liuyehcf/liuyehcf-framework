@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.core;
 
-import org.liuyehcf.compile.engine.hua.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 
 /**
  * 符号

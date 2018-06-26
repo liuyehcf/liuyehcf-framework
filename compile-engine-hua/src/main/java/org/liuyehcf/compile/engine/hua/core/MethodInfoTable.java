@@ -29,7 +29,7 @@ public class MethodInfoTable {
     @JSONField(serialize = false)
     private MethodInfo curMethodInfo;
 
-    MethodInfoTable() {
+    public MethodInfoTable() {
         table = new LinkedHashMap<>(16);
     }
 
@@ -41,7 +41,7 @@ public class MethodInfoTable {
         }
     }
 
-    Map<MethodSignature, MethodInfo> getTable() {
+    public Map<MethodSignature, MethodInfo> getTable() {
         return table;
     }
 
@@ -51,7 +51,7 @@ public class MethodInfoTable {
      * @param methodSignature 方法签名
      * @return 是否包含
      */
-    boolean containsMethod(MethodSignature methodSignature) {
+    public boolean containsMethod(MethodSignature methodSignature) {
         return table.containsKey(methodSignature);
     }
 
@@ -70,21 +70,21 @@ public class MethodInfoTable {
      *
      * @return 方法信息
      */
-    MethodInfo getCurMethodInfo() {
+    public MethodInfo getCurMethodInfo() {
         return curMethodInfo;
     }
 
     /**
      * 进入方法
      */
-    void enterMethod() {
+    public void enterMethod() {
         curMethodInfo = new MethodInfo();
     }
 
     /**
      * 完成方法签名的扫描
      */
-    MethodSignature finishMethodDeclarator() {
+    public MethodSignature finishMethodDeclarator() {
         MethodSignature methodSignature = curMethodInfo.buildMethodSignature();
         table.put(methodSignature, curMethodInfo);
         return methodSignature;
@@ -93,7 +93,7 @@ public class MethodInfoTable {
     /**
      * 退出方法
      */
-    void exitMethod() {
+    public void exitMethod() {
         curMethodInfo = null;
     }
 

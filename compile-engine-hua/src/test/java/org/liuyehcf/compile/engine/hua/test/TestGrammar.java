@@ -4,7 +4,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
-import org.liuyehcf.compile.engine.hua.core.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compile.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 
 import static org.junit.Assert.assertEquals;

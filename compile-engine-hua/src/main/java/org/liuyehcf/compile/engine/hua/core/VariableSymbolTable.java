@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.hua.core;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import org.liuyehcf.compile.engine.hua.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -38,7 +38,7 @@ public class VariableSymbolTable {
      */
     private Namespace currentNamespace;
 
-    VariableSymbolTable() {
+    public VariableSymbolTable() {
         namespaceCnt = 0;
         currentNamespace = new Namespace(namespaceCnt++, Namespace.NO_PARENT_NAMESPACE);
 
@@ -53,7 +53,7 @@ public class VariableSymbolTable {
     /**
      * 进入新的命名空间
      */
-    void enterNamespace() {
+    public void enterNamespace() {
         currentNamespace = new Namespace(namespaceCnt++, currentNamespace.getId());
 
         assertFalse(nameMap.containsKey(currentNamespace));
@@ -66,7 +66,7 @@ public class VariableSymbolTable {
     /**
      * 退出当前命名空间
      */
-    void exitNamespace() {
+    public void exitNamespace() {
         int pid = currentNamespace.getPid();
 
         assertTrue(pid != Namespace.NO_PARENT_NAMESPACE);
@@ -103,7 +103,7 @@ public class VariableSymbolTable {
      * @param type   标志符类型
      * @return 新创建的符号
      */
-    VariableSymbol createVariableSymbol(int order, int offset, String name, Type type) {
+    public VariableSymbol createVariableSymbol(int order, int offset, String name, Type type) {
         if (exists(name)) {
             return null;
         }
@@ -120,7 +120,7 @@ public class VariableSymbolTable {
      * @param identifierName 标志符名称
      * @return 符号
      */
-    VariableSymbol getVariableSymbolByName(String identifierName) {
+    public VariableSymbol getVariableSymbolByName(String identifierName) {
         Namespace namespace = currentNamespace;
 
         while (namespace != null) {

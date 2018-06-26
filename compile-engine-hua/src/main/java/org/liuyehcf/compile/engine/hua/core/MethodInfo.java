@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core;
 
-import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
-import org.liuyehcf.compile.engine.hua.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -106,7 +106,7 @@ public class MethodInfo {
         return paramTypeList.size();
     }
 
-    void enterNamespace() {
+    public void enterNamespace() {
         if (offsetStack.isEmpty()) {
             assertTrue(orderStack.isEmpty());
 
@@ -121,7 +121,7 @@ public class MethodInfo {
         }
     }
 
-    void exitNamespace() {
+    public void exitNamespace() {
         assertFalse(offsetStack.isEmpty());
         assertFalse(orderStack.isEmpty());
 
@@ -129,30 +129,30 @@ public class MethodInfo {
         orderStack.pop();
     }
 
-    void addByteCode(ByteCode byteCode) {
+    public void addByteCode(ByteCode byteCode) {
         byteCodes.add(byteCode);
     }
 
-    void increaseOffset(int step) {
+    public void increaseOffset(int step) {
         Integer top = offsetStack.pop();
         assertNotNull(top);
         offsetStack.push(top + step);
         maxOffset = Math.max(maxOffset, top + step);
     }
 
-    void increaseOrder() {
+    public void increaseOrder() {
         Integer top = orderStack.pop();
         assertNotNull(top);
         orderStack.push(top + 1);
     }
 
-    int getOffset() {
+    public int getOffset() {
         Integer peek = offsetStack.peek();
         assertNotNull(peek);
         return peek;
     }
 
-    int getOrder() {
+    public int getOrder() {
         Integer peek = orderStack.peek();
         assertNotNull(peek);
         return peek;
