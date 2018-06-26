@@ -14,10 +14,10 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 public class Type implements Serializable {
 
     private final static int NORMAL_TYPE_DIM = 0;
-    public final static Type TYPE_INT = createNormalType(NORMAL_INT, 8);
-    public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, 4);
+    public final static Type TYPE_INT = createNormalType(NORMAL_INT, 4);
+    public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, 1);
     public final static Type TYPE_VOID = createNormalType(NORMAL_VOID, 0);
-    private final static int ARRAY_TYPE_WIDTH = 8;
+    private final static int ARRAY_TYPE_WIDTH = 8;// TODO 数组的宽度要区别于普通类型
     /**
      * 类型名称
      */
@@ -72,10 +72,23 @@ public class Type implements Serializable {
             throw new RuntimeException("非数组类型无法获取降维类型");
         }
 
+        if (this.dim == 1) {
+            switch (this.typeName) {
+                case NORMAL_INT:
+                    return TYPE_INT;
+                case NORMAL_BOOLEAN:
+                    return TYPE_BOOLEAN;
+                default:
+                    throw new UnsupportedOperationException();
+            }
+        }
         return new Type(this.typeName, this.typeWidth, this.dim - 1);
     }
 
     public Type toDimIncreasedType() {
+        if (this.dim == 0) {
+            return createArrayType(this.typeName, this.dim + 1);
+        }
         return new Type(this.typeName, this.typeWidth, this.dim + 1);
     }
 

@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.hua.cmd;
 
 import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.core.io.HuaClassInputStream;
+import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeDaemon;
 
 import java.io.FileInputStream;
@@ -43,6 +44,8 @@ public class Hua {
     private void run() {
 
         load();
+
+        HeapMemoryManagement.init();
 
         execute();
 

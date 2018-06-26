@@ -24,6 +24,6 @@ public class _aastore extends ArrayStoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
-
+        throw new UnsupportedOperationException();
     }
 }

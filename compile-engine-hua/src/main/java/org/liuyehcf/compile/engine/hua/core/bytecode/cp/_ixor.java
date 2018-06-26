@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.cp;
 
+import org.liuyehcf.compile.engine.hua.runtime.OperatorStack;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
@@ -24,6 +25,11 @@ public class _ixor extends Compute {
 
     @Override
     public void operate(RuntimeContext context) {
+        OperatorStack operatorStack = context.getOperatorStack();
 
+        int value2 = operatorStack.pop();
+        int value1 = operatorStack.pop();
+
+        operatorStack.push(value1 ^ value2);
     }
 }
