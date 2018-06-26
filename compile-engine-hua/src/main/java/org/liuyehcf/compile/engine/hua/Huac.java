@@ -1,13 +1,13 @@
-package org.liuyehcf.compile.engine.hua.commond;
+package org.liuyehcf.compile.engine.hua;
 
 import org.liuyehcf.compile.engine.core.CompileResult;
-import org.liuyehcf.compile.engine.hua.commond.io.HuaClassOutputStream;
 import org.liuyehcf.compile.engine.hua.core.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
+import org.liuyehcf.compile.engine.hua.io.HuaClassOutputStream;
 
 import java.io.*;
 
-import static org.liuyehcf.compile.engine.hua.commond.io.HClassConstant.HCLASS_SUFFIX;
+import static org.liuyehcf.compile.engine.hua.io.HClassConstant.HCLASS_SUFFIX;
 
 /**
  * Hua编译命令行工具

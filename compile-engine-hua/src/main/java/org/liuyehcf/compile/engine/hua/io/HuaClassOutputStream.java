@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.commond.io;
+package org.liuyehcf.compile.engine.hua.io;
 
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.bytecode.ByteCodeUtil;
@@ -12,7 +12,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import static org.liuyehcf.compile.engine.hua.commond.io.HClassConstant.MAGIC;
+import static org.liuyehcf.compile.engine.hua.io.HClassConstant.MAGIC;
 
 
 /**
