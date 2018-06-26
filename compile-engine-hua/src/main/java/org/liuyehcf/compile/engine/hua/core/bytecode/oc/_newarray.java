@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.oc;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
  * 一维数组创建指令
@@ -37,7 +38,7 @@ public class _newarray extends ObjectCreate {
     }
 
     @Override
-    public void operate() {
+    public void operate(RuntimeContext context) {
 
     }
 

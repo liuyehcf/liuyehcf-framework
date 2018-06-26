@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.cf;
 
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
+
 /**
  * 跳转指令，不等时跳转
  * < before → after >
@@ -28,7 +30,7 @@ public class _if_icmpne extends ControlTransfer {
     }
 
     @Override
-    public void operate() {
+    public void operate(RuntimeContext context) {
 
     }
 }

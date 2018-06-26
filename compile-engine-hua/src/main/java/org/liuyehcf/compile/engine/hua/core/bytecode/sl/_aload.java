@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.sl;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
  * 加载对象（包括数组）
@@ -36,7 +37,7 @@ public class _aload extends StoreLoad {
     }
 
     @Override
-    public void operate() {
+    public void operate(RuntimeContext context) {
 
     }
 

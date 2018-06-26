@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.oc;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
  * 多维数组创建指令，指定的维度有多个
@@ -46,7 +47,7 @@ public class _multianewarray extends ObjectCreate {
     }
 
     @Override
-    public void operate() {
+    public void operate(RuntimeContext context) {
 
     }
 

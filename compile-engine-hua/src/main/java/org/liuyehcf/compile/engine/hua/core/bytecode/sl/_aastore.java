@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.sl;
 
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
+
 /**
  * 存储数组元素，元素类型是对象类型
  * < before → after >
@@ -21,7 +23,7 @@ public class _aastore extends ArrayStoreLoad {
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
 
     @Override
-    public void operate() {
+    public void operate(RuntimeContext context) {
 
     }
 }

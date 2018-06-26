@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.cp;
 
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
+
 /**
  * int 无符号右移
  * < before → after >
@@ -21,7 +23,7 @@ public class _iushr extends Compute {
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
 
     @Override
-    public void operate() {
+    public void operate(RuntimeContext context) {
 
     }
 }

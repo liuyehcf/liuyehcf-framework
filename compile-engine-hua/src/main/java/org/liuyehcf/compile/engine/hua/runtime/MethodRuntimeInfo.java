@@ -3,10 +3,12 @@ package org.liuyehcf.compile.engine.hua.runtime;
 import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 
 /**
- * @author chenlu
+ * 方法运行时信息，方法栈的元素
+ *
+ * @author hechenfeng
  * @date 2018/6/25
  */
-public class MethodRuntimeInfo {
+class MethodRuntimeInfo {
 
     /**
      * 方法信息
@@ -23,7 +25,7 @@ public class MethodRuntimeInfo {
      */
     private final byte[] stackMemory;
 
-    public MethodRuntimeInfo(MethodInfo methodInfo) {
+    MethodRuntimeInfo(MethodInfo methodInfo) {
         this.methodInfo = methodInfo;
         stackMemory = new byte[this.methodInfo.getMaxOffset()];
     }

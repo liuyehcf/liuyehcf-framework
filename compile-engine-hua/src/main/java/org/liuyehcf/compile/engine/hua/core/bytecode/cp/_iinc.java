@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.cp;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
  * int 自增
@@ -56,7 +57,7 @@ public class _iinc extends Compute {
     }
 
     @Override
-    public void operate() {
+    public void operate(RuntimeContext context) {
 
     }
 

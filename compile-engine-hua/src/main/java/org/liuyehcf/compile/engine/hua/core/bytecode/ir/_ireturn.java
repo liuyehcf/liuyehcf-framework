@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.ir;
 
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
+
 /**
  * 返回整型
  * < before → after >
@@ -21,7 +23,7 @@ public class _ireturn extends Return {
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
 
     @Override
-    public void operate() {
+    public void operate(RuntimeContext context) {
 
     }
 }

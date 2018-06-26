@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode;
 
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
+
 /**
  * 字节码抽象基类
  *
@@ -12,7 +14,7 @@ public abstract class ByteCode {
         return getClass().getSimpleName();
     }
 
-    public abstract void operate();
+    public abstract void operate(RuntimeContext context);
 
     public abstract Object[] getOperators();
 

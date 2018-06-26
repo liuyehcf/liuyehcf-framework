@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.sm;
 
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
+
 /**
  * 赋值栈顶两个操作数
  * < before → after >
@@ -21,7 +23,7 @@ public class _dup2 extends OperatorStackManagement {
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[0];
 
     @Override
-    public void operate() {
+    public void operate(RuntimeContext context) {
 
     }
 }

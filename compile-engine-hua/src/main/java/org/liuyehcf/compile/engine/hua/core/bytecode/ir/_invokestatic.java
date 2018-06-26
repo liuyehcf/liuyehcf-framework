@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.ir;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
  * 方法调用指令
@@ -34,7 +35,7 @@ public class _invokestatic extends Invoke {
     }
 
     @Override
-    public void operate() {
+    public void operate(RuntimeContext context) {
 
     }
 

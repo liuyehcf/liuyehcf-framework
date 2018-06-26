@@ -1,5 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.cf;
 
+import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
+
 /**
  * 跳转指令，无条件跳转
  * < before → after >
@@ -28,7 +30,7 @@ public class _goto extends ControlTransfer {
     }
 
     @Override
-    public void operate() {
+    public void operate(RuntimeContext context) {
 
     }
 }
