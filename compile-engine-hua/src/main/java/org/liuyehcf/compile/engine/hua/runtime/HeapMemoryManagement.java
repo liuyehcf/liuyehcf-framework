@@ -53,7 +53,7 @@ public class HeapMemoryManagement {
     }
 
     /**
-     * 加载byte数组
+     * 加载int
      *
      * @param offset 地址偏移量
      * @return int值
@@ -73,22 +73,22 @@ public class HeapMemoryManagement {
     }
 
     /**
-     * 加载Boolean
+     * 加载reference
      *
      * @param offset 地址偏移量
-     * @return boolean值
+     * @return int值
      */
-    public static int loadBoolean(int offset) {
-        return ByteUtil.loadBoolean(heapMemory, offset);
+    public static int loadReference(int offset) {
+        return ByteUtil.loadReference(heapMemory, offset);
     }
 
     /**
-     * 存储Boolean
+     * 存储reference
      *
      * @param offset 地址偏移量
-     * @param value  boolean值
+     * @param value  int值
      */
-    public static void storeBoolean(int offset, int value) {
-        ByteUtil.storeBoolean(heapMemory, offset, value);
+    public static void storeReference(int offset, int value) {
+        ByteUtil.storeReference(heapMemory, offset, value);
     }
 }

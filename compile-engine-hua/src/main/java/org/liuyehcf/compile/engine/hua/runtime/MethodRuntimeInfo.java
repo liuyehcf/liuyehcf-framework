@@ -91,7 +91,7 @@ class MethodRuntimeInfo {
             } else if (Type.TYPE_INT.equals(paramType)) {
                 storeInt(i, (int) args[i]);
             } else if (Type.TYPE_BOOLEAN.equals(paramType)) {
-                storeBoolean(i, (int) args[i]);
+                storeInt(i, (int) args[i]);
             }
         }
     }
@@ -122,14 +122,6 @@ class MethodRuntimeInfo {
 
     void storeInt(int order, int value) {
         ByteUtil.storeInt(stackMemory[order], 0, value);
-    }
-
-    int loadBoolean(int order) {
-        return ByteUtil.loadBoolean(stackMemory[order], 0);
-    }
-
-    void storeBoolean(int order, int value) {
-        ByteUtil.storeBoolean(stackMemory[order], 0, value);
     }
 
     int loadReference(int order) {

@@ -81,14 +81,6 @@ public class RuntimeContext {
         currentMethod.storeInt(offset, value);
     }
 
-    public int loadBoolean(int offset) {
-        return currentMethod.loadBoolean(offset);
-    }
-
-    public void storeBoolean(int offset, int value) {
-        currentMethod.storeBoolean(offset, value);
-    }
-
     public int loadReference(int offset) {
         return currentMethod.loadReference(offset);
     }

@@ -1,6 +1,8 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.oc;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
@@ -47,7 +49,30 @@ public class _multianewarray extends ObjectCreate {
 
     @Override
     public void operate(RuntimeContext context) {
-        throw new UnsupportedOperationException();
+        int[] counts = new int[expressionDimSize];
+
+        for (int i = expressionDimSize - 1; i >= 0; i--) {
+            counts[i] = context.pop();
+        }
+
+        Type t = Type.parse(type);
+
+        int reference = doCreate(counts, 0, t);
+        context.push(reference);
+
+        context.increaseCodeOffset();
+    }
+
+    private int doCreate(int[] counts, int index, Type t) {
+        int reference = HeapMemoryManagement.allocate(t.getTypeWidth(), counts[index]);
+        Type nextType = t.toDimDecreasedType();
+        if (!nextType.isArrayType()) {
+            return reference;
+        }
+        for (int i = 0; i < counts[index]; i++) {
+            HeapMemoryManagement.storeReference(reference + i * t.getTypeWidth(), doCreate(counts, index + 1, t.toDimDecreasedType()));
+        }
+        return reference;
     }
 
     @Override

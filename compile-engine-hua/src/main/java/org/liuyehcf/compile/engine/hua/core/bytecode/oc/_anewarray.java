@@ -1,7 +1,11 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.oc;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
+
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 
 /**
  * 多维数组创建指令，指定的维度是第一维
@@ -38,7 +42,16 @@ public class _anewarray extends ObjectCreate {
 
     @Override
     public void operate(RuntimeContext context) {
-        throw new UnsupportedOperationException();
+        int count = context.pop();
+
+        Type t = Type.parse(type);
+        assertTrue(t.isArrayType());
+        int width = t.getTypeWidth();
+
+        int reference = HeapMemoryManagement.allocate(width, count);
+        context.push(reference);
+
+        context.increaseCodeOffset();
     }
 
     @Override
