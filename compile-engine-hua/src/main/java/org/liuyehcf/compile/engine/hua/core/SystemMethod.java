@@ -4,13 +4,13 @@ import org.liuyehcf.compile.engine.core.utils.ListUtils;
 import org.liuyehcf.compile.engine.core.utils.Pair;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
  * @author hechenfeng
@@ -20,7 +20,17 @@ public class SystemMethod {
 
     static final Map<MethodSignature, Pair<MethodInfo, ProxyInvoke>> SYSTEM_METHOD_POOL;
     private static final MethodSignature PRINT_INT = new MethodSignature("print", new String[]{NORMAL_INT});
+    private static final MethodSignature PRINT_CHAR = new MethodSignature("print", new String[]{NORMAL_CHAR});
     private static final MethodSignature PRINT_BOOLEAN = new MethodSignature("print", new String[]{NORMAL_BOOLEAN});
+
+    private static final MethodSignature PRINTLN_INT = new MethodSignature("println", new String[]{NORMAL_INT});
+    private static final MethodSignature PRINTLN_CHAR = new MethodSignature("println", new String[]{NORMAL_CHAR});
+    private static final MethodSignature PRINTLN_BOOLEAN = new MethodSignature("println", new String[]{NORMAL_BOOLEAN});
+
+    private static final MethodSignature PRINTLN_INT_ARRAY = new MethodSignature("println", new String[]{Type.TYPE_INT_ARRAY.toTypeDescription()});
+    private static final MethodSignature PRINTLN_CHAR_ARRAY = new MethodSignature("println", new String[]{Type.TYPE_CHAR_ARRAY.toTypeDescription()});
+    private static final MethodSignature PRINTLN_BOOLEAN_ARRAY = new MethodSignature("println", new String[]{Type.TYPE_BOOLEAN_ARRAY.toTypeDescription()});
+
     private static final MethodSignature RANDOM_NEXT = new MethodSignature("nextInt", new String[]{NORMAL_INT, NORMAL_INT});
     private static final MethodSignature RANDOM_NEXT_INT = new MethodSignature("nextInt", new String[]{});
     private static final MethodSignature RANDOM_NEXT_BOOLEAN = new MethodSignature("nextBoolean", new String[]{});
@@ -29,12 +39,25 @@ public class SystemMethod {
 
     static {
         SYSTEM_METHOD_POOL = new LinkedHashMap<>();
+
+        /*
+         * print
+         */
         SYSTEM_METHOD_POOL.put(PRINT_INT,
                 new Pair<>(
                         createFakeMethodInfo(PRINT_INT, Type.TYPE_VOID),
                         (args) -> {
                             int intArg = (int) args[0];
-                            System.out.println(intArg);
+                            System.out.print(intArg);
+                            return null;
+                        }
+                ));
+        SYSTEM_METHOD_POOL.put(PRINT_CHAR,
+                new Pair<>(
+                        createFakeMethodInfo(PRINT_CHAR, Type.TYPE_VOID),
+                        (args) -> {
+                            char charArg = (char) args[0];
+                            System.out.print(charArg);
                             return null;
                         }
                 ));
@@ -43,10 +66,85 @@ public class SystemMethod {
                         createFakeMethodInfo(PRINT_BOOLEAN, Type.TYPE_VOID),
                         (args) -> {
                             boolean booleanArg = (int) args[0] == 1;
+                            System.out.print(booleanArg);
+                            return null;
+                        }
+                ));
+
+
+        /*
+         * println
+         */
+        SYSTEM_METHOD_POOL.put(PRINTLN_INT,
+                new Pair<>(
+                        createFakeMethodInfo(PRINTLN_INT, Type.TYPE_VOID),
+                        (args) -> {
+                            int intArg = (int) args[0];
+                            System.out.println(intArg);
+                            return null;
+                        }
+                ));
+        SYSTEM_METHOD_POOL.put(PRINTLN_CHAR,
+                new Pair<>(
+                        createFakeMethodInfo(PRINTLN_CHAR, Type.TYPE_VOID),
+                        (args) -> {
+                            char charArg = (char) args[0];
+                            System.out.println(charArg);
+                            return null;
+                        }
+                ));
+        SYSTEM_METHOD_POOL.put(PRINTLN_BOOLEAN,
+                new Pair<>(
+                        createFakeMethodInfo(PRINTLN_BOOLEAN, Type.TYPE_VOID),
+                        (args) -> {
+                            boolean booleanArg = (int) args[0] == 1;
                             System.out.println(booleanArg);
                             return null;
                         }
                 ));
+
+
+        /*
+         * println array
+         */
+        SYSTEM_METHOD_POOL.put(PRINTLN_INT_ARRAY,
+                new Pair<>(
+                        createFakeMethodInfo(PRINTLN_INT_ARRAY, Type.TYPE_VOID),
+                        (args) -> {
+                            int[] intArray = new int[args.length];
+                            for (int i = 0; i < args.length; i++) {
+                                intArray[i] = (int) args[i];
+                            }
+                            System.out.println(Arrays.toString(intArray));
+                            return null;
+                        }
+                ));
+        SYSTEM_METHOD_POOL.put(PRINTLN_CHAR_ARRAY,
+                new Pair<>(
+                        createFakeMethodInfo(PRINTLN_CHAR_ARRAY, Type.TYPE_VOID),
+                        (args) -> {
+                            char[] charArray = new char[args.length];
+                            for (int i = 0; i < args.length; i++) {
+                                charArray[i] = (char) args[i];
+                            }
+                            System.out.println(Arrays.toString(charArray));
+                            return null;
+                        }
+                ));
+        SYSTEM_METHOD_POOL.put(PRINTLN_BOOLEAN_ARRAY,
+                new Pair<>(
+                        createFakeMethodInfo(PRINTLN_BOOLEAN_ARRAY, Type.TYPE_VOID),
+                        (args) -> {
+                            boolean[] booleanArray = new boolean[args.length];
+                            for (int i = 0; i < args.length; i++) {
+                                booleanArray[i] = (int) args[i] == 1;
+                            }
+                            System.out.println(Arrays.toString(booleanArray));
+                            return null;
+                        }
+                ));
+
+
         SYSTEM_METHOD_POOL.put(RANDOM_NEXT,
                 new Pair<>(
                         createFakeMethodInfo(RANDOM_NEXT, Type.TYPE_INT),

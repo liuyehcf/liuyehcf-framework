@@ -15,8 +15,8 @@ public class Type implements Serializable {
 
     public final static int REFERENCE_TYPE_WIDTH = 4;
     public final static Type TYPE_INT_ARRAY = createArrayType(NORMAL_INT, 1);
-    public final static Type TYPE_INT_BOOLEAN = createArrayType(NORMAL_BOOLEAN, 1);
     public final static Type TYPE_CHAR_ARRAY = createArrayType(NORMAL_CHAR, 1);
+    public final static Type TYPE_BOOLEAN_ARRAY = createArrayType(NORMAL_BOOLEAN, 1);
     private final static int NORMAL_TYPE_DIM = 0;
     public final static Type TYPE_INT = createNormalType(NORMAL_INT, 4);
     public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, 1);
@@ -72,11 +72,17 @@ public class Type implements Serializable {
                 } else {
                     return createArrayType(NORMAL_INT, dim);
                 }
+            case NORMAL_CHAR:
+                if (dim == 0) {
+                    return TYPE_CHAR;
+                } else {
+                    return createArrayType(NORMAL_CHAR, dim);
+                }
             case NORMAL_BOOLEAN:
                 if (dim == 0) {
                     return TYPE_BOOLEAN;
                 } else {
-                    createArrayType(NORMAL_BOOLEAN, dim);
+                    return createArrayType(NORMAL_BOOLEAN, dim);
                 }
             default:
                 throw new UnsupportedOperationException();
