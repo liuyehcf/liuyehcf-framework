@@ -21,7 +21,7 @@ public class SystemMethod {
     static final Map<MethodSignature, Pair<MethodInfo, ProxyInvoke>> SYSTEM_METHOD_POOL;
     private static final MethodSignature PRINT_INT = new MethodSignature("print", new String[]{NORMAL_INT});
     private static final MethodSignature PRINT_BOOLEAN = new MethodSignature("print", new String[]{NORMAL_BOOLEAN});
-    private static final MethodSignature RANDOM_NEXT = new MethodSignature("next", new String[]{NORMAL_INT, NORMAL_INT});
+    private static final MethodSignature RANDOM_NEXT = new MethodSignature("nextInt", new String[]{NORMAL_INT, NORMAL_INT});
     private static final MethodSignature RANDOM_NEXT_INT = new MethodSignature("nextInt", new String[]{});
     private static final MethodSignature RANDOM_NEXT_BOOLEAN = new MethodSignature("nextBoolean", new String[]{});
 

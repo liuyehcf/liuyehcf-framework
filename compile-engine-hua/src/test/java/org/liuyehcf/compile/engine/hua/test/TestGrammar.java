@@ -72,7 +72,7 @@ public class TestGrammar {
         CompileResult<IntermediateInfo> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"doSomething()\":[{\"name\":\"_return\"}],\"func()\":[{\"constantPoolOffset\":2,\"name\":\"_invokestatic\"},{\"name\":\"_return\"}]}",
+                "{\"doSomething()\":[{\"name\":\"_return\"}],\"func()\":[{\"constantPoolOffset\":5,\"name\":\"_invokestatic\"},{\"name\":\"_return\"}]}",
                 result.getResult().getMethodInfoTable().toSimpleString()
         );
     }
@@ -686,7 +686,7 @@ public class TestGrammar {
         CompileResult<IntermediateInfo> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"func1()\":[{\"name\":\"_return\"}],\"func2(int,int)\":[{\"name\":\"_return\"}],\"func(int,int,int)\":[{\"constantPoolOffset\":2,\"name\":\"_invokestatic\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"order\":2},{\"constantPoolOffset\":3,\"name\":\"_invokestatic\"},{\"name\":\"_return\"}]}",
+                "{\"func1()\":[{\"name\":\"_return\"}],\"func2(int,int)\":[{\"name\":\"_return\"}],\"func(int,int,int)\":[{\"constantPoolOffset\":5,\"name\":\"_invokestatic\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"order\":2},{\"constantPoolOffset\":6,\"name\":\"_invokestatic\"},{\"name\":\"_return\"}]}",
                 result.getResult().getMethodInfoTable().toSimpleString()
         );
     }
@@ -1846,6 +1846,24 @@ public class TestGrammar {
                 "\n" +
                 "void sort(int[] nums, int size) {\n" +
                 "\tsort(nums, 0, size-1);\n" +
+                "}\n" +
+                "\n" +
+                "void main(){\n" +
+                "\tint[] nums=new int[200];\n" +
+                "\n" +
+                "\tfor(int i=0;i<200;i++){\n" +
+                "\t\tnums[i]=nextInt(0,25);\n" +
+                "\t}\n" +
+                "\n" +
+                "\tfor(int i=0;i<200;i++){\n" +
+                "\t\tprint(nums[i]);\n" +
+                "\t}\n" +
+                "\n" +
+                "\tsort(nums,200);\n" +
+                "\n" +
+                "\tfor(int i=0;i<200;i++){\n" +
+                "\t\tprint(nums[i]);\n" +
+                "\t}\n" +
                 "}";
 
         System.out.println(text);
@@ -1853,7 +1871,7 @@ public class TestGrammar {
         CompileResult<IntermediateInfo> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"exchange(int[],int,int)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iaload\"},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iaload\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iastore\"},{\"name\":\"_return\"}],\"partition(int[],int,int)\":[{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iaload\"},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_iload\",\"order\":5},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":25,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":5},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":4},{\"codeOffset\":23,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":3},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iload\",\"order\":5},{\"constantPoolOffset\":2,\"name\":\"_invokestatic\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":5},{\"codeOffset\":10,\"name\":\"_goto\"},{\"name\":\"_aload\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":3},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iload\",\"order\":2},{\"constantPoolOffset\":2,\"name\":\"_invokestatic\"},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_ireturn\"}],\"sort(int[],int,int)\":[{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":20,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":2},{\"constantPoolOffset\":3,\"name\":\"_invokestatic\"},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"constantPoolOffset\":4,\"name\":\"_invokestatic\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"order\":2},{\"constantPoolOffset\":4,\"name\":\"_invokestatic\"},{\"name\":\"_return\"}],\"sort(int[],int)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"constantPoolOffset\":4,\"name\":\"_invokestatic\"},{\"name\":\"_return\"}]}",
+                "{\"exchange(int[],int,int)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iaload\"},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iaload\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iastore\"},{\"name\":\"_return\"}],\"partition(int[],int,int)\":[{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iaload\"},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_iload\",\"order\":5},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":25,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":5},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":4},{\"codeOffset\":23,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":3},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iload\",\"order\":5},{\"constantPoolOffset\":5,\"name\":\"_invokestatic\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":5},{\"codeOffset\":10,\"name\":\"_goto\"},{\"name\":\"_aload\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":3},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iload\",\"order\":2},{\"constantPoolOffset\":5,\"name\":\"_invokestatic\"},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_ireturn\"}],\"sort(int[],int,int)\":[{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":20,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":2},{\"constantPoolOffset\":6,\"name\":\"_invokestatic\"},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"constantPoolOffset\":7,\"name\":\"_invokestatic\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"order\":2},{\"constantPoolOffset\":7,\"name\":\"_invokestatic\"},{\"name\":\"_return\"}],\"sort(int[],int)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"constantPoolOffset\":7,\"name\":\"_invokestatic\"},{\"name\":\"_return\"}],\"main()\":[{\"name\":\"_iconst\",\"value\":200},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":200},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_iconst\",\"value\":25},{\"constantPoolOffset\":0,\"name\":\"_invokestatic\"},{\"name\":\"_iastore\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":5,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":200},{\"codeOffset\":27,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iaload\"},{\"constantPoolOffset\":4,\"name\":\"_invokestatic\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":18,\"name\":\"_goto\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":200},{\"constantPoolOffset\":8,\"name\":\"_invokestatic\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":200},{\"codeOffset\":41,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iaload\"},{\"constantPoolOffset\":4,\"name\":\"_invokestatic\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":32,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
                 result.getResult().getMethodInfoTable().toSimpleString()
         );
     }
