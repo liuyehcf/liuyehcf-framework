@@ -79,7 +79,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
          */
         if (leftHandType.isArrayType()) {
             if (!NORMAL_ASSIGN.equals(operator)) {
-                throw new RuntimeException("复合赋值运算符不支持数组类型");
+                throw new RuntimeException("Compound assignment operator does not support array types");
             }
 
             context.addByteCodeToCurrentMethod(new _aastore());
@@ -261,7 +261,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 }
                 break;
             default:
-                throw new RuntimeException("尚不支持赋值运算符 \'" + operator + "\'");
+                throw new RuntimeException("Does not support assignment operator '" + operator + "' yet");
         }
         context.addByteCodeToCurrentMethod(code);
     }

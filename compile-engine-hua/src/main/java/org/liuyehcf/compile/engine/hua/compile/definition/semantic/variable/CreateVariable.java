@@ -33,7 +33,7 @@ public class CreateVariable extends AbstractSemanticAction implements Serializab
         Type type = context.getAttr(identifierStackOffset, AttrName.TYPE);
 
         if (context.createVariableSymbol(name, type) == null) {
-            throw new RuntimeException("标志符 " + name + " 已存在，请勿重复定义");
+            throw new RuntimeException("Identifier '" + name + "' already exist, do not repeat definitions");
         }
     }
 }

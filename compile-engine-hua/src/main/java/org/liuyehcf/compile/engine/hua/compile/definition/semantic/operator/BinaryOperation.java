@@ -64,7 +64,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                         context.addByteCodeToCurrentMethod(new _ior());
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
+                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
                 }
 
                 break;
@@ -76,7 +76,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                         context.addByteCodeToCurrentMethod(new _ixor());
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
+                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
                 }
 
                 break;
@@ -88,7 +88,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                         context.addByteCodeToCurrentMethod(new _iand());
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
+                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
                 }
 
                 break;
@@ -100,7 +100,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                         context.addByteCodeToCurrentMethod(new _ishl());
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
+                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
                 }
 
                 break;
@@ -112,7 +112,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                         context.addByteCodeToCurrentMethod(new _ishr());
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
+                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
                 }
 
                 break;
@@ -124,7 +124,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                         context.addByteCodeToCurrentMethod(new _iushr());
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
+                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
                 }
 
                 break;
@@ -137,7 +137,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                         context.addByteCodeToCurrentMethod(new _iadd());
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
+                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
                 }
 
                 break;
@@ -149,7 +149,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                         context.addByteCodeToCurrentMethod(new _isub());
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
+                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
                 }
 
                 break;
@@ -161,7 +161,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                         context.addByteCodeToCurrentMethod(new _imul());
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
+                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
                 }
 
                 break;
@@ -173,7 +173,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                         context.addByteCodeToCurrentMethod(new _idiv());
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
+                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
                 }
 
                 break;
@@ -185,7 +185,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                         context.addByteCodeToCurrentMethod(new _irem());
                         break;
                     default:
-                        throw new RuntimeException(leftType + "类型不支持 \'" + operator + "\' 运算");
+                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
                 }
 
                 break;
@@ -198,13 +198,13 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
 
     private void checkEqualType(Type type1, Type type2, String operator) {
         if (!type1.equals(type2)) {
-            throw new RuntimeException(" \'" + operator + "\' 运算符两侧运算子类型不一致");
+            throw new RuntimeException("'" + operator + "' has inconsistent operator subtypes on both sides");
         }
     }
 
     private void checkIntegralType(Type type, String operator) {
         if (!NORMAL_INT.equals(type.getTypeName())) {
-            throw new RuntimeException(" \'" + operator + "\' 运算符右侧必须是整型");
+            throw new RuntimeException("The right side of the '" + operator + "' operator must be an integer");
         }
     }
 }

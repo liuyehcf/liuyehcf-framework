@@ -23,7 +23,7 @@ public class RuntimeDaemon {
     private MethodInfo getMainMethod() {
         MethodInfo mainMethod = intermediateInfo.getMethodInfoTable().getMethodByMethodSignature(buildMethodSignature("main", null));
         if (mainMethod == null) {
-            throw new RuntimeException("源文件没有定义main方法");
+            throw new RuntimeException("The source file does not define the main method");
         }
         return mainMethod;
     }

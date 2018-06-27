@@ -58,7 +58,7 @@ public class NewPrimaryArray extends AbstractSemanticAction implements Serializa
         int emptyDimSize = context.getAttr(emptyDimStackOffset, AttrName.EMPTY_DIM_SIZE);
 
         if (expressionDimSize <= 0) {
-            throw new RuntimeException("创建数组必须指定第一维的大小");
+            throw new RuntimeException("Create an array must specify the size of the first dimension");
         }
 
 

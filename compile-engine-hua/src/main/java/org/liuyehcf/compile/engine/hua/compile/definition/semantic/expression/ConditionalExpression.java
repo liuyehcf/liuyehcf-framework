@@ -43,7 +43,7 @@ public class ConditionalExpression extends AbstractSemanticAction implements Ser
         Type falseExpressionType = context.getAttr(falseExpressionStackOffset, AttrName.TYPE);
 
         if (!Objects.equals(trueExpressionType, falseExpressionType)) {
-            throw new RuntimeException("条件表达式不同分支类型不同");
+            throw new RuntimeException("Conditional expressions vary by branch type");
         }
 
         context.setAttrToLeftNode(AttrName.TYPE, trueExpressionType);

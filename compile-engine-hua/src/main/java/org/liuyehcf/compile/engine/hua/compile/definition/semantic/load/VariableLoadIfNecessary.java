@@ -52,7 +52,7 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction implements S
         VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
 
         if (variableSymbol == null) {
-            throw new RuntimeException("非变量不能进行赋值操作");
+            throw new RuntimeException("Non-variables cannot be assigned");
         }
 
         Type identifierType = variableSymbol.getType();
@@ -104,7 +104,7 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction implements S
                 }
                 break;
             default:
-                throw new RuntimeException("尚不支持赋值运算符 \'" + operator + "\'");
+                throw new UnsupportedOperationException();
         }
     }
 }

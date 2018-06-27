@@ -33,7 +33,7 @@ public class CheckExpressionDimType extends AbstractSemanticAction implements Se
     public void onAction(HuaContext context) {
         Type type = context.getAttr(expressionDimStackOffset, AttrName.TYPE);
         if (!TYPE_INT.equals(type)) {
-            throw new RuntimeException("数组维度表达式的类型必须是整型");
+            throw new RuntimeException("The array dimension expression type must be an integer");
         }
     }
 }

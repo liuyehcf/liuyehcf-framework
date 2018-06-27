@@ -52,7 +52,7 @@ public class VariableInitialization extends AbstractSemanticAction implements Se
         assertNotNull(expressionType);
         assertNotNull(variableSymbol);
         if (!expressionType.equals(variableSymbol.getType())) {
-            throw new RuntimeException("变量初始化语句两侧类型不匹配");
+            throw new RuntimeException("Variable initialization statement on both sides of the type does not match");
         }
 
         Type identifierType = variableSymbol.getType();
@@ -73,7 +73,7 @@ public class VariableInitialization extends AbstractSemanticAction implements Se
                     context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOrder()));
                     break;
                 default:
-                    throw new RuntimeException("尚不支持类型 \'" + identifierType + "\'");
+                    throw new RuntimeException("Not yet support type '" + identifierType + "'");
             }
         }
     }

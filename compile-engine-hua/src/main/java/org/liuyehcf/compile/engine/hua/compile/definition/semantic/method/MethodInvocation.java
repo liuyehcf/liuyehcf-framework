@@ -52,7 +52,7 @@ public class MethodInvocation extends AbstractSemanticAction implements Serializ
         MethodSignature methodSignature = buildMethodSignature(methodName, argumentTypeList);
 
         if (!context.containsMethod(methodSignature)) {
-            throw new RuntimeException("方法' " + methodSignature.getSignature() + " '尚未定义");
+            throw new RuntimeException("Method' " + methodSignature.getSignature() + " 'undefined");
         }
 
         MethodInfo methodInfo = context.getMethodByMethodSignature(methodSignature);

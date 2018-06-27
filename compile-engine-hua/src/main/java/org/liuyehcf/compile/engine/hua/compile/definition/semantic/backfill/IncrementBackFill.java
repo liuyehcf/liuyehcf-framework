@@ -51,11 +51,11 @@ public class IncrementBackFill extends AbstractSemanticAction implements Seriali
         VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
 
         if (variableSymbol == null) {
-            throw new RuntimeException("前置递增/递减运算符不能作用于 '值'");
+            throw new RuntimeException("Pre-increment/decrement operator cannot act on 'value'");
         }
 
         if (!Type.TYPE_INT.equals(variableSymbol.getType())) {
-            throw new RuntimeException("前置递增/递减运算符不能作用于 '非int类型的变量'");
+            throw new RuntimeException("Pre-increment/decrement operator does not work on 'non-int variables'");
         }
 
         code.setOrder(variableSymbol.getOrder());

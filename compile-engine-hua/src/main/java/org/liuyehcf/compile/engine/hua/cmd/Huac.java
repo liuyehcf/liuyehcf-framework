@@ -70,11 +70,11 @@ public class Huac {
         }
 
         if (!file.exists() || !file.isFile()) {
-            throw new RuntimeException("非法文件: " + filePath);
+            throw new RuntimeException("Illegal file: " + filePath);
         }
 
         if (!target.exists() && !target.isDirectory()) {
-            throw new RuntimeException("非法目录: " + targetPath);
+            throw new RuntimeException("Illegal directory: " + targetPath);
         }
     }
 
@@ -84,7 +84,7 @@ public class Huac {
         CompileResult<IntermediateInfo> result = huaCompiler.compile(fileContent);
 
         if (!result.isSuccess()) {
-            throw new RuntimeException("存在语法错误！");
+            throw new RuntimeException("There exists syntax error");
         }
 
         store(result.getResult());

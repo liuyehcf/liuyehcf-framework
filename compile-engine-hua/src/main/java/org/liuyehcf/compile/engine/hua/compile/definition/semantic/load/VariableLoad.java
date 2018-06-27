@@ -38,7 +38,7 @@ public class VariableLoad extends AbstractSemanticAction implements Serializable
         String identifierName = context.getAttr(identifierNameStackOffset, AttrName.IDENTIFIER_NAME);
         VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
         if (variableSymbol == null) {
-            throw new RuntimeException("标志符 " + identifierName + " 尚未定义");
+            throw new RuntimeException("Identifier " + identifierName + " undefined");
         }
 
         Type type = variableSymbol.getType();

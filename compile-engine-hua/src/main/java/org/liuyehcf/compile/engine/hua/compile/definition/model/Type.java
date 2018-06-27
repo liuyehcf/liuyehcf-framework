@@ -99,7 +99,7 @@ public class Type implements Serializable {
 
     public Type toDimDecreasedType() {
         if (!isArrayType()) {
-            throw new RuntimeException("非数组类型无法获取降维类型");
+            throw new RuntimeException("Non-array type cannot perform dimensionality reduction");
         }
 
         if (this.dim == 1) {

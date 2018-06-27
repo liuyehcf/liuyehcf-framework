@@ -29,6 +29,7 @@ public class _multianewarray extends ObjectCreate {
      * 类型
      */
     private final String type;
+
     /**
      * 维度表达式大小
      */

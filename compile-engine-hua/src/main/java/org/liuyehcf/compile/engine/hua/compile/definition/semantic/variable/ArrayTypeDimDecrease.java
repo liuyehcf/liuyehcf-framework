@@ -32,7 +32,7 @@ public class ArrayTypeDimDecrease extends AbstractSemanticAction implements Seri
         Type type = context.getAttr(expressionNameStackOffset, AttrName.TYPE);
 
         if (!type.isArrayType()) {
-            throw new RuntimeException("数组维度不足");
+            throw new RuntimeException("Non-array can not be reduced dimension operation\n");
         }
 
         context.setAttrToLeftNode(AttrName.TYPE, type.toDimDecreasedType());
