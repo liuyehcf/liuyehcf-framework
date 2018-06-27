@@ -14,10 +14,14 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 public class Type implements Serializable {
 
     public final static int REFERENCE_TYPE_WIDTH = 4;
+    public final static Type TYPE_INT_ARRAY = createArrayType(NORMAL_INT, 1);
+    public final static Type TYPE_INT_BOOLEAN = createArrayType(NORMAL_BOOLEAN, 1);
     private final static int NORMAL_TYPE_DIM = 0;
     public final static Type TYPE_INT = createNormalType(NORMAL_INT, 4);
     public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, 1);
     public final static Type TYPE_VOID = createNormalType(NORMAL_VOID, 0);
+    private static final String ARRAY_DIM_DESCRIPTION = "[]";
+
     /**
      * 类型名称
      */
@@ -49,6 +53,32 @@ public class Type implements Serializable {
 
     public static Type createType(String typeName, int typeWidth, int dim) {
         return new Type(typeName, typeWidth, dim);
+    }
+
+    public static Type parse(String typeDescription) {
+        int dim = 0;
+        String remain = typeDescription;
+        while (remain.endsWith(ARRAY_DIM_DESCRIPTION)) {
+            dim++;
+            remain = remain.substring(0, remain.length() - ARRAY_DIM_DESCRIPTION.length());
+        }
+
+        switch (remain) {
+            case NORMAL_INT:
+                if (dim == 0) {
+                    return TYPE_INT;
+                } else {
+                    return createArrayType(NORMAL_INT, dim);
+                }
+            case NORMAL_BOOLEAN:
+                if (dim == 0) {
+                    return TYPE_BOOLEAN;
+                } else {
+                    createArrayType(NORMAL_BOOLEAN, dim);
+                }
+            default:
+                throw new UnsupportedOperationException();
+        }
     }
 
     public String getTypeName() {
@@ -106,7 +136,7 @@ public class Type implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append(typeName);
         for (int i = 0; i < dim; i++) {
-            sb.append("[]");
+            sb.append(ARRAY_DIM_DESCRIPTION);
         }
         return sb.toString();
     }

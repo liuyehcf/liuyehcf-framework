@@ -1,10 +1,19 @@
 package org.liuyehcf.compile.engine.hua.runtime;
 
+import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
+import org.liuyehcf.compile.engine.hua.core.MethodSignature;
+import org.liuyehcf.compile.engine.hua.core.SystemMethod;
+
 /**
  * @author chenlu
  * @date 2018/6/26
  */
 public class RuntimeContext {
+
+    /**
+     * Hua编译后的中间形式
+     */
+    private final IntermediateInfo intermediateInfo;
 
     /**
      * 方法栈
@@ -16,7 +25,8 @@ public class RuntimeContext {
      */
     private final MethodRuntimeInfo currentMethod;
 
-    public RuntimeContext(MethodStack methodStack) {
+    public RuntimeContext(IntermediateInfo intermediateInfo, MethodStack methodStack) {
+        this.intermediateInfo = intermediateInfo;
         this.methodStack = methodStack;
         this.currentMethod = methodStack.peek();
     }
@@ -27,6 +37,18 @@ public class RuntimeContext {
 
     public <T> T pop() {
         return currentMethod.getOperatorStack().pop();
+    }
+
+    public void invoke(MethodSignature methodSignature, Object[] args) {
+        if (intermediateInfo.getMethodInfoTable().isSystemMethod(methodSignature)) {
+            SystemMethod.invoke(methodSignature, args);
+        } else {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    public String getConstant(int constantOffset) {
+        return intermediateInfo.getConstantPool().getConstant(constantOffset);
     }
 
     public void increaseCodeOffset() {

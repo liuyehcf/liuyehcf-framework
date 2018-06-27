@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.runtime;
 
+import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 
 /**
@@ -9,6 +10,11 @@ import org.liuyehcf.compile.engine.hua.core.MethodInfo;
  * @date 2018/6/25
  */
 public class MethodRuntimeInfo {
+
+    /**
+     * Hua编译后的中间形式
+     */
+    private final IntermediateInfo intermediateInfo;
 
     /**
      * 方法信息
@@ -35,14 +41,15 @@ public class MethodRuntimeInfo {
      */
     private boolean isFinished = false;
 
-    MethodRuntimeInfo(MethodInfo methodInfo) {
+    MethodRuntimeInfo(IntermediateInfo intermediateInfo, MethodInfo methodInfo) {
+        this.intermediateInfo = intermediateInfo;
         this.methodInfo = methodInfo;
         stackMemory = new byte[this.methodInfo.getMaxOffset()];
     }
 
     void run(MethodStack methodStack) {
         while (!isFinished) {
-            methodInfo.getByteCodes().get(codeOffset).operate(new RuntimeContext(methodStack));
+            methodInfo.getByteCodes().get(codeOffset).operate(new RuntimeContext(intermediateInfo, methodStack));
         }
     }
 

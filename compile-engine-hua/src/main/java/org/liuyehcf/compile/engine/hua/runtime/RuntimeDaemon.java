@@ -11,13 +11,16 @@ import static org.liuyehcf.compile.engine.hua.core.MethodInfo.buildMethodSignatu
  */
 public class RuntimeDaemon {
 
+    /**
+     * Hua编译后的中间形式
+     */
     private final IntermediateInfo intermediateInfo;
 
     private final MethodStack methodStack = new MethodStack();
 
     public RuntimeDaemon(IntermediateInfo intermediateInfo) {
         this.intermediateInfo = intermediateInfo;
-        methodStack.push(new MethodRuntimeInfo(getMainMethod()));
+        methodStack.push(new MethodRuntimeInfo(intermediateInfo, getMainMethod()));
     }
 
     private MethodInfo getMainMethod() {

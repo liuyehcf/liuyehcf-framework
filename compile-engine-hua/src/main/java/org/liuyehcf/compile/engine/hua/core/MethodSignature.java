@@ -11,23 +11,55 @@ import java.util.Objects;
 public class MethodSignature {
 
     /**
+     * 方法名
+     */
+    private final String methodName;
+
+    /**
+     * 类型描述
+     */
+    private final String[] typeDescriptions;
+
+    /**
      * 方法签名
      */
     private final String signature;
 
-    MethodSignature(String name, String[] types) {
+    MethodSignature(String methodName, String[] typeDescriptions) {
+        this.methodName = methodName;
+        this.typeDescriptions = typeDescriptions;
+
         StringBuilder sb = new StringBuilder();
-        sb.append(name)
+        sb.append(methodName)
                 .append('(');
-        if (types != null && types.length != 0) {
-            sb.append(types[0]);
-            for (int i = 1; i < types.length; i++) {
+        if (typeDescriptions != null && typeDescriptions.length != 0) {
+            sb.append(typeDescriptions[0]);
+            for (int i = 1; i < typeDescriptions.length; i++) {
                 sb.append(',')
-                        .append(types[i]);
+                        .append(typeDescriptions[i]);
             }
         }
         sb.append(')');
+
         signature = sb.toString();
+    }
+
+    public static MethodSignature parse(String methodSignature) {
+        int indexOfLeftSmallParenthesis = methodSignature.indexOf('(');
+        int indexOfRightSmallParenthesis = methodSignature.indexOf(')');
+
+        String methodName = methodSignature.substring(0, indexOfLeftSmallParenthesis);
+        String[] typeDescriptions = methodSignature.substring(indexOfLeftSmallParenthesis + 1, indexOfRightSmallParenthesis).split(",");
+
+        return new MethodSignature(methodName, typeDescriptions);
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public String[] getTypeDescriptions() {
+        return typeDescriptions;
     }
 
     public String getSignature() {

@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.liuyehcf.compile.engine.hua.core.SystemMethod.SYSTEM_METHOD_POOL;
+
 /**
  * 方法表
  *
@@ -52,7 +54,7 @@ public class MethodInfoTable {
      * @return 是否包含
      */
     public boolean containsMethod(MethodSignature methodSignature) {
-        return table.containsKey(methodSignature);
+        return SYSTEM_METHOD_POOL.containsKey(methodSignature) || table.containsKey(methodSignature);
     }
 
     /**
@@ -62,6 +64,9 @@ public class MethodInfoTable {
      * @return 方法信息
      */
     public MethodInfo getMethodByMethodSignature(MethodSignature methodSignature) {
+        if (SYSTEM_METHOD_POOL.containsKey(methodSignature)) {
+            return SYSTEM_METHOD_POOL.get(methodSignature).getFirst();
+        }
         return table.get(methodSignature);
     }
 
@@ -86,8 +91,18 @@ public class MethodInfoTable {
      */
     public MethodSignature finishMethodDeclarator() {
         MethodSignature methodSignature = curMethodInfo.buildMethodSignature();
+        checkIfExists(methodSignature);
         table.put(methodSignature, curMethodInfo);
         return methodSignature;
+    }
+
+    private void checkIfExists(MethodSignature methodSignature) {
+        if (SYSTEM_METHOD_POOL.containsKey(methodSignature)) {
+            throw new RuntimeException(methodSignature.getSignature() + " is System method");
+        }
+        if (table.containsKey(methodSignature)) {
+            throw new RuntimeException(methodSignature.getSignature() + " has been already defined");
+        }
     }
 
     /**
@@ -99,6 +114,10 @@ public class MethodInfoTable {
 
     public List<MethodInfo> getMethodInfoList() {
         return new ArrayList<>(table.values());
+    }
+
+    public boolean isSystemMethod(MethodSignature signature) {
+        return SYSTEM_METHOD_POOL.containsKey(signature);
     }
 
     public String toSimpleString() {

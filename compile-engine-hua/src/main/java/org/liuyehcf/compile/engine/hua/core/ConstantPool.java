@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.liuyehcf.compile.engine.hua.core.SystemMethod.SYSTEM_METHOD_POOL;
+
 /**
  * 常量池
  *
@@ -30,6 +32,7 @@ public class ConstantPool {
 
     public ConstantPool() {
         this.offsetCnt = 0;
+        SYSTEM_METHOD_POOL.keySet().stream().map(MethodSignature::getSignature).forEach(this::addConstant);
     }
 
     public void addConstant(String constant) {
@@ -45,6 +48,10 @@ public class ConstantPool {
             return -1;
         }
         return constantPool.get(constant);
+    }
+
+    public String getConstant(int constantOffset) {
+        return constants.get(constantOffset);
     }
 
     public List<String> getConstants() {
