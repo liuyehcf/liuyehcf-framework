@@ -45,7 +45,7 @@ public class RuntimeContext {
         } else {
             methodStack.push(new MethodRuntimeInfo(intermediateInfo, intermediateInfo.getMethodInfoTable().getMethodByMethodSignature(methodSignature)));
             currentMethod = methodStack.peek();
-            currentMethod.run(methodStack);
+            currentMethod.run(methodStack, null);//todo
         }
     }
 

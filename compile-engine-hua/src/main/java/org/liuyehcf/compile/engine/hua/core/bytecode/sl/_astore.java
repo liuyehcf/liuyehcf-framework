@@ -21,37 +21,26 @@ public class _astore extends StoreLoad {
     /**
      * 操作数类型
      */
-    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class, int.class};
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
 
     /**
      * 标志符序号
      */
     private final int order;
 
-    /**
-     * 标志符偏移量
-     */
-    @JSONField(serialize = false)
-    private final int offset;
-
-    public _astore(int order, int offset) {
+    public _astore(int order) {
         this.order = order;
-        this.offset = offset;
     }
 
     public int getOrder() {
         return order;
     }
 
-    public int getOffset() {
-        return offset;
-    }
-
     @Override
     public void operate(RuntimeContext context) {
         int reference = context.pop();
 
-        context.storeReference(offset, reference);
+        context.storeReference(order, reference);
 
         context.increaseCodeOffset();
     }
@@ -59,6 +48,6 @@ public class _astore extends StoreLoad {
     @Override
     @JSONField(serialize = false)
     public Object[] getOperators() {
-        return new Object[]{order, offset};
+        return new Object[]{order};
     }
 }

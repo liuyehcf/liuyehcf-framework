@@ -28,8 +28,20 @@ public class MethodRuntimeInfo {
 
     /**
      * 栈内存
+     * 第一维度：方法中有效符号的最大个数
+     * 第二维度：固定是8，即允许任意类型的数值
+     * 为什么要这样做，而不用一维数组？因为根据标志符序号来获取内存偏移量比较难，因为同一个标志符序号，在不同时刻，偏移量是不同的。例如如下代码
+     * {
+     * int i;
+     * int j;
+     * }
+     * {
+     * boolean i;
+     * int j;
+     * }
+     * 在上述代码中，标志符i、j分别位于两个block中，j的序号都是2，但是j的offset却是不同的
      */
-    private final byte[] stackMemory;
+    private final byte[][] stackMemory;
 
     /**
      * 代码偏移量
@@ -44,13 +56,17 @@ public class MethodRuntimeInfo {
     MethodRuntimeInfo(IntermediateInfo intermediateInfo, MethodInfo methodInfo) {
         this.intermediateInfo = intermediateInfo;
         this.methodInfo = methodInfo;
-        stackMemory = new byte[this.methodInfo.getMaxOffset()];
+        stackMemory = new byte[this.methodInfo.getOrder()][8];
     }
 
-    void run(MethodStack methodStack) {
+    Object run(MethodStack methodStack, Object[] args) {
+
+
         while (!isFinished) {
             methodInfo.getByteCodes().get(codeOffset).operate(new RuntimeContext(intermediateInfo, methodStack));
         }
+
+        return null;
     }
 
     public OperatorStack getOperatorStack() {
@@ -69,28 +85,28 @@ public class MethodRuntimeInfo {
         isFinished = true;
     }
 
-    public int loadInt(int offset) {
-        return ByteUtil.loadInt(stackMemory, offset);
+    public int loadInt(int order) {
+        return ByteUtil.loadInt(stackMemory[order], 0);
     }
 
-    public void storeInt(int offset, int value) {
-        ByteUtil.storeInt(stackMemory, offset, value);
+    public void storeInt(int order, int value) {
+        ByteUtil.storeInt(stackMemory[order], 0, value);
     }
 
-    public int loadBoolean(int offset) {
-        return ByteUtil.loadBoolean(stackMemory, offset);
+    public int loadBoolean(int order) {
+        return ByteUtil.loadBoolean(stackMemory[order], 0);
     }
 
-    public void storeBoolean(int offset, int value) {
-        ByteUtil.storeBoolean(stackMemory, offset, value);
+    public void storeBoolean(int order, int value) {
+        ByteUtil.storeBoolean(stackMemory[order], 0, value);
     }
 
-    public int loadReference(int offset) {
-        return ByteUtil.loadReference(stackMemory, offset);
+    public int loadReference(int order) {
+        return ByteUtil.loadReference(stackMemory[order], 0);
     }
 
-    public void storeReference(int offset, int value) {
-        ByteUtil.storeReference(stackMemory, offset, value);
+    public void storeReference(int order, int value) {
+        ByteUtil.storeReference(stackMemory[order], 0, value);
     }
 
 }

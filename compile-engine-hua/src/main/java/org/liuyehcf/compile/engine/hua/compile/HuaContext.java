@@ -210,9 +210,8 @@ public class HuaContext extends Context {
      */
     public VariableSymbol createVariableSymbol(String name, Type type) {
         int order = huaEngine.getMethodInfoTable().getCurMethodInfo().getOrder();
-        int offset = huaEngine.getMethodInfoTable().getCurMethodInfo().getOffset();
 
-        return huaEngine.getMethodInfoTable().getCurMethodInfo().createVariableSymbol(order, offset, name, type);
+        return huaEngine.getMethodInfoTable().getCurMethodInfo().createVariableSymbol(order, name, type);
     }
 
     /**

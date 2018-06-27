@@ -16,11 +16,6 @@ public class VariableSymbol {
     private final int order;
 
     /**
-     * 偏移量
-     */
-    private final int offset;
-
-    /**
      * 命名空间id
      */
     private final int namespaceId;
@@ -35,9 +30,8 @@ public class VariableSymbol {
      */
     private final Type type;
 
-    public VariableSymbol(int order, int offset, int namespaceId, String name, Type type) {
+    public VariableSymbol(int order, int namespaceId, String name, Type type) {
         this.order = order;
-        this.offset = offset;
         this.namespaceId = namespaceId;
         this.name = name;
         this.type = type;
@@ -45,10 +39,6 @@ public class VariableSymbol {
 
     public int getOrder() {
         return order;
-    }
-
-    public int getOffset() {
-        return offset;
     }
 
     public int getNamespaceId() {

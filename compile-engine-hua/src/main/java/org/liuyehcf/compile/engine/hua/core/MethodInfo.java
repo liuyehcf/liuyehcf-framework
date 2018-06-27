@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.*;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 
 /**
  * 方法信息
@@ -38,17 +39,13 @@ public class MethodInfo {
      */
     private List<Type> paramTypeList;
     /**
-     * 最大偏移量（用于分配栈内存）
+     * 最大序号（用于分配栈内存）
      */
-    private int maxOffset;
+    private int maxOrder;
     /**
      * 符号序号栈
      */
     private LinkedList<Integer> orderStack = new LinkedList<>();
-    /**
-     * 符号偏移量栈
-     */
-    private LinkedList<Integer> offsetStack = new LinkedList<>();
 
     /**
      * 创建方法签名
@@ -104,19 +101,25 @@ public class MethodInfo {
         return paramTypeList.size();
     }
 
+    public void setMaxOrder(int maxOrder) {
+        this.maxOrder = maxOrder;
+    }
+
+    public int getMaxOrder() {
+        return maxOrder;
+    }
+
     /**
      * 创建新符号
      *
-     * @param order  符号顺序
-     * @param offset 偏移量
-     * @param name   标志符名称
-     * @param type   标志符类型
+     * @param order 符号顺序
+     * @param name  标志符名称
+     * @param type  标志符类型
      * @return 新创建的符号
      */
-    public VariableSymbol createVariableSymbol(int order, int offset, String name, Type type) {
-        VariableSymbol variableSymbol = variableSymbolTable.createVariableSymbol(order, offset, name, type);
+    public VariableSymbol createVariableSymbol(int order, String name, Type type) {
+        VariableSymbol variableSymbol = variableSymbolTable.createVariableSymbol(order, name, type);
 
-        increaseOffset(variableSymbol.getType().getTypeWidth());
         increaseOrder();
 
         return variableSymbol;
@@ -133,15 +136,9 @@ public class MethodInfo {
     }
 
     public void enterNamespace() {
-        if (offsetStack.isEmpty()) {
-            assertTrue(orderStack.isEmpty());
-
-            offsetStack.push(0);
+        if (orderStack.isEmpty()) {
             orderStack.push(0);
         } else {
-            int curOffset = getOffset();
-            offsetStack.push(curOffset);
-
             int curOrder = getOrder();
             orderStack.push(curOrder);
         }
@@ -150,10 +147,8 @@ public class MethodInfo {
     }
 
     public void exitNamespace() {
-        assertFalse(offsetStack.isEmpty());
         assertFalse(orderStack.isEmpty());
 
-        offsetStack.pop();
         orderStack.pop();
 
         variableSymbolTable.exitNamespace();
@@ -163,37 +158,17 @@ public class MethodInfo {
         byteCodes.add(byteCode);
     }
 
-    private void increaseOffset(int step) {
-        Integer top = offsetStack.pop();
-        assertNotNull(top);
-        offsetStack.push(top + step);
-        maxOffset = Math.max(maxOffset, top + step);
-    }
-
     private void increaseOrder() {
         Integer top = orderStack.pop();
         assertNotNull(top);
         orderStack.push(top + 1);
-    }
-
-    public int getOffset() {
-        Integer peek = offsetStack.peek();
-        assertNotNull(peek);
-        return peek;
+        maxOrder = Math.max(maxOrder, top + 1);
     }
 
     public int getOrder() {
         Integer peek = orderStack.peek();
         assertNotNull(peek);
         return peek;
-    }
-
-    public int getMaxOffset() {
-        return maxOffset;
-    }
-
-    public void setMaxOffset(int maxOffset) {
-        this.maxOffset = maxOffset;
     }
 
     /**

@@ -21,18 +21,12 @@ public class _iinc extends Compute {
     /**
      * 操作数类型
      */
-    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class, int.class, int.class};
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class, int.class};
 
     /**
      * 标志符序号
      */
     private int order;
-
-    /**
-     * 标志符偏移量
-     */
-    @JSONField(serialize = false)
-    private int offset;
 
     /**
      * 增量
@@ -42,9 +36,8 @@ public class _iinc extends Compute {
     public _iinc() {
     }
 
-    public _iinc(int order, int offset, int increment) {
+    public _iinc(int order, int increment) {
         this.order = order;
-        this.offset = offset;
         this.increment = increment;
     }
 
@@ -54,14 +47,6 @@ public class _iinc extends Compute {
 
     public void setOrder(int order) {
         this.order = order;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
     }
 
     public int getIncrement() {
@@ -74,9 +59,9 @@ public class _iinc extends Compute {
 
     @Override
     public void operate(RuntimeContext context) {
-        int value = context.loadInt(offset);
+        int value = context.loadInt(order);
 
-        context.storeInt(offset, value + increment);
+        context.storeInt(order, value + increment);
 
         context.increaseCodeOffset();
     }
@@ -84,6 +69,6 @@ public class _iinc extends Compute {
     @Override
     @JSONField(serialize = false)
     public Object[] getOperators() {
-        return new Object[]{order, offset, increment};
+        return new Object[]{order, increment};
     }
 }

@@ -59,7 +59,6 @@ public class IncrementBackFill extends AbstractSemanticAction implements Seriali
         }
 
         code.setOrder(variableSymbol.getOrder());
-        code.setOffset(variableSymbol.getOffset());
         code.setIncrement(increment);
 
         context.setAttr(backFillStackOffset, AttrName.IINC_BYTE_CODE, null);

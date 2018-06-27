@@ -97,18 +97,17 @@ public class VariableSymbolTable {
     /**
      * 创建新符号
      *
-     * @param order  符号顺序
-     * @param offset 偏移量
-     * @param name   标志符名称
-     * @param type   标志符类型
+     * @param order 符号顺序
+     * @param name  标志符名称
+     * @param type  标志符类型
      * @return 新创建的符号
      */
-    VariableSymbol createVariableSymbol(int order, int offset, String name, Type type) {
+    VariableSymbol createVariableSymbol(int order, String name, Type type) {
         if (exists(name)) {
             return null;
         }
 
-        VariableSymbol newVariableSymbol = new VariableSymbol(order, offset, currentNamespace.getId(), name, type);
+        VariableSymbol newVariableSymbol = new VariableSymbol(order, currentNamespace.getId(), name, type);
         nameMap.get(currentNamespace).put(name, newVariableSymbol);
 
         return newVariableSymbol;
