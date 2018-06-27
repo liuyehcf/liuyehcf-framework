@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.hua.runtime;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/26
  */
 public abstract class ByteUtil {

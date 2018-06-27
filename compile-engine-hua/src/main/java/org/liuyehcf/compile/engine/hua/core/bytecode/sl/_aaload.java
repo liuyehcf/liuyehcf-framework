@@ -31,7 +31,7 @@ public class _aaload extends ArrayStoreLoad {
 
         int elementReference = arrayReference + index * Type.REFERENCE_TYPE_WIDTH;
 
-        int value = HeapMemoryManagement.loadInt(elementReference);
+        int value = HeapMemoryManagement.loadReference(elementReference);
 
         context.push(value);
 

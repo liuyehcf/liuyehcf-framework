@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.hua.runtime;
 /**
  * 堆内存管理
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/26
  */
 public class HeapMemoryManagement {

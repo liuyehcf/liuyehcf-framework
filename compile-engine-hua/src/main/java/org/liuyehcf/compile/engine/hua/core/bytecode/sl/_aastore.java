@@ -32,7 +32,7 @@ public class _aastore extends ArrayStoreLoad {
 
         int elementReference = arrayReference + index * Type.REFERENCE_TYPE_WIDTH;
 
-        HeapMemoryManagement.storeInt(elementReference, value);
+        HeapMemoryManagement.storeReference(elementReference, value);
 
         context.increaseCodeOffset();
     }
