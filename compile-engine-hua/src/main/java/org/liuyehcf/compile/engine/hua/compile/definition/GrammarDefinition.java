@@ -95,7 +95,7 @@ public abstract class GrammarDefinition {
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_NON_ZERO_DIGIT), "[1-9]")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_CHARACTER_LITERAL), "\'[^'\\\\]\'")
-            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_STRING_LITERAL), "\"[^\"\\\\]\"")
+            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_STRING_LITERAL), "\"[^\"\\\\]*\"")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_IF), "if")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_ELSE), "else")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_WHILE), "while")

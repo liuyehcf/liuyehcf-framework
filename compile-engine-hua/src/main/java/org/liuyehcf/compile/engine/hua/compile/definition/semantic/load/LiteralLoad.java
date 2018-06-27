@@ -61,7 +61,7 @@ public class LiteralLoad extends AbstractSemanticAction implements Serializable 
             /*
              * string，也就是char数组
              */
-            assertTrue(literal.length() >= 2 && literal.charAt(0) == '\"' && literal.charAt(2) == '\"');
+            assertTrue(literal.length() >= 2 && literal.charAt(0) == '\"' && literal.charAt(literal.length() - 1) == '\"');
             String content = literal.substring(1, literal.length() - 1);
             int constantOffset = context.addConstant(content);
             context.addByteCodeToCurrentMethod(new _ldc(constantOffset));

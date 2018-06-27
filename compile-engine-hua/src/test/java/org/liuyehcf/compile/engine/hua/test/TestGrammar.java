@@ -850,6 +850,22 @@ public class TestGrammar {
     }
 
     @Test
+    public void testStringLiteral() {
+        String text = "void func() {\n" +
+                "\tchar[] c=\"abcdefg\";\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func()\":[{\"constantPoolOffset\":13,\"name\":\"_ldc\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleString()
+        );
+    }
+
+    @Test
     public void testArrayLoad1() {
         String text = "void func(int[] a) {\n" +
                 "\tint b=a[1];\n" +
