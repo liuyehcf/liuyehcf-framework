@@ -41,4 +41,9 @@ public abstract class ControlTransfer extends ByteCode {
     public Object[] getOperators() {
         return new Object[]{codeOffset};
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " " + getCodeOffset();
+    }
 }

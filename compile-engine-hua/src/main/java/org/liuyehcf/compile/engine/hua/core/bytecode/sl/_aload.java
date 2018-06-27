@@ -50,4 +50,9 @@ public class _aload extends StoreLoad {
     public Object[] getOperators() {
         return new Object[]{order};
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " " + order;
+    }
 }

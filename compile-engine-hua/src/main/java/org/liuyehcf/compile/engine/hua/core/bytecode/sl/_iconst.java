@@ -49,4 +49,9 @@ public class _iconst extends StoreLoad {
     public Object[] getOperators() {
         return new Object[]{value};
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " " + value;
+    }
 }

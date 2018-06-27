@@ -41,25 +41,25 @@ public class Hua {
         hua.run();
     }
 
-    private void run() {
-
-        load();
-
-        HeapMemoryManagement.init();
-
-        execute();
-
-    }
-
-    private void load() {
+    static IntermediateInfo load(String filePath) {
 
         try (HuaClassInputStream inputStream = new HuaClassInputStream(new FileInputStream(filePath))) {
 
-            intermediateInfo = inputStream.readHClass();
+            return inputStream.readHClass();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+    private void run() {
+
+        intermediateInfo = load(filePath);
+
+        HeapMemoryManagement.init();
+
+        execute();
 
     }
 

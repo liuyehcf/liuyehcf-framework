@@ -40,6 +40,21 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
      */
     private static final String COMPILER_SERIALIZATION_FILE;
 
+    static {
+        String value1 = System.getProperty(HUA_PATH_PROPERTY);
+        String value2 = System.getenv(HUA_PATH_PROPERTY);
+
+        if (value1 != null) {
+            COMPILER_SERIALIZATION_DIRECTORY = value1;
+        } else if (value2 != null) {
+            COMPILER_SERIALIZATION_DIRECTORY = value2;
+        } else {
+            throw new Error("Must set env or property '" + HUA_PATH_PROPERTY + "'");
+        }
+
+        COMPILER_SERIALIZATION_FILE = COMPILER_SERIALIZATION_DIRECTORY + "/compiler.obj";
+    }
+
     private HuaCompiler() {
         super(GRAMMAR, LEXICAL_ANALYZER);
     }
@@ -293,20 +308,5 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
                 ((AbstractSemanticAction) semanticAction).onAction(new HuaContext(context, this));
             }
         }
-    }
-
-    static {
-        String value1 = System.getProperty(HUA_PATH_PROPERTY);
-        String value2 = System.getenv(HUA_PATH_PROPERTY);
-
-        if (value1 != null) {
-            COMPILER_SERIALIZATION_DIRECTORY = value1;
-        } else if (value2 != null) {
-            COMPILER_SERIALIZATION_DIRECTORY = value2;
-        } else {
-            throw new Error("Must set env or property '" + HUA_PATH_PROPERTY + "'");
-        }
-
-        COMPILER_SERIALIZATION_FILE = COMPILER_SERIALIZATION_DIRECTORY + "/compiler.obj";
     }
 }

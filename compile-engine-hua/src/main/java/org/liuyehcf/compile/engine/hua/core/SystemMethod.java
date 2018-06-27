@@ -4,7 +4,7 @@ import org.liuyehcf.compile.engine.core.utils.ListUtils;
 import org.liuyehcf.compile.engine.core.utils.Pair;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -28,7 +28,7 @@ public class SystemMethod {
     private static final Random random = new Random();
 
     static {
-        SYSTEM_METHOD_POOL = new HashMap<>();
+        SYSTEM_METHOD_POOL = new LinkedHashMap<>();
         SYSTEM_METHOD_POOL.put(PRINT_INT,
                 new Pair<>(
                         createFakeMethodInfo(PRINT_INT, Type.TYPE_VOID),

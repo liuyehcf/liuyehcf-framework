@@ -81,4 +81,9 @@ public class _multianewarray extends ObjectCreate {
     public Object[] getOperators() {
         return new Object[]{type, expressionDimSize};
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " " + type + ", " + expressionDimSize;
+    }
 }

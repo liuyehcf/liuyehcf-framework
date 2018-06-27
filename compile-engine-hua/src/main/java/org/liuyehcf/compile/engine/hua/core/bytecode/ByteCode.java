@@ -18,4 +18,8 @@ public abstract class ByteCode {
 
     public abstract Object[] getOperators();
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }

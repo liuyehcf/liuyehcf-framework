@@ -176,7 +176,7 @@ public class MethodInfo {
      *
      * @return 方法签名
      */
-    MethodSignature buildMethodSignature() {
+    public MethodSignature buildMethodSignature() {
         return buildMethodSignature(this.methodName, this.paramTypeList);
     }
 }

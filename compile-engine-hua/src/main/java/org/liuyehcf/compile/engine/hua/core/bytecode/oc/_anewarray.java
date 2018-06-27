@@ -59,4 +59,9 @@ public class _anewarray extends ObjectCreate {
     public Object[] getOperators() {
         return new Object[]{type};
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " " + type;
+    }
 }

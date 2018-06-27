@@ -59,4 +59,9 @@ public class _newarray extends ObjectCreate {
     public Object[] getOperators() {
         return new Object[]{type};
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " " + type;
+    }
 }

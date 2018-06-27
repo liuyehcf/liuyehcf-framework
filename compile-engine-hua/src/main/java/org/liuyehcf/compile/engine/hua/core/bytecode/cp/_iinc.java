@@ -71,4 +71,9 @@ public class _iinc extends Compute {
     public Object[] getOperators() {
         return new Object[]{order, increment};
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " " + order + ", " + increment;
+    }
 }

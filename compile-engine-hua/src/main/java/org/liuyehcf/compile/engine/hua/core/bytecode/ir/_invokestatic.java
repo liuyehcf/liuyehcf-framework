@@ -64,4 +64,9 @@ public class _invokestatic extends Invoke {
     public Object[] getOperators() {
         return new Object[]{constantPoolOffset};
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " #" + constantPoolOffset;
+    }
 }
