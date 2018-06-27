@@ -1,7 +1,10 @@
 package org.liuyehcf.compile.engine.hua.runtime;
 
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodInfo;
+
+import java.util.List;
 
 import static org.liuyehcf.compile.engine.hua.core.MethodInfo.buildMethodSignature;
 
@@ -31,6 +34,22 @@ public class RuntimeDaemon {
     }
 
     public void doExecute() {
+        storeConstant();
+
         new MethodRuntimeInfo(intermediateInfo, getMainMethod()).run(new Object[0]);
+    }
+
+    private void storeConstant() {
+        List<String> constants = intermediateInfo.getConstantPool().getConstants();
+
+        for (String constant : constants) {
+            Reference reference = HeapMemoryManagement.allocate(Type.CHAR_TYPE_WIDTH, constant.length());
+
+            for (int i = 0; i < constant.length(); i++) {
+                HeapMemoryManagement.storeChar(reference.getAddress() + Type.CHAR_TYPE_WIDTH * i, constant.charAt(i));
+            }
+
+            HeapMemoryManagement.registerConstant(constant, reference);
+        }
     }
 }

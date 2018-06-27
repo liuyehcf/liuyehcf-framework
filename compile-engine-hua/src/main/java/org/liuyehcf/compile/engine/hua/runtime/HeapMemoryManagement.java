@@ -1,5 +1,8 @@
 package org.liuyehcf.compile.engine.hua.runtime;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 堆内存管理
  *
@@ -9,10 +12,13 @@ package org.liuyehcf.compile.engine.hua.runtime;
 public class HeapMemoryManagement {
 
     /**
+     * 常量引用
+     */
+    private static final Map<String, Reference> constantReferences = new HashMap<>();
+    /**
      * 堆内存
      */
     private static byte[] heapMemory = null;
-
     /**
      * 未分配内存起始地址
      */
@@ -41,6 +47,26 @@ public class HeapMemoryManagement {
         unAllocatedOffset += total;
 
         return new Reference(address, size);
+    }
+
+    /**
+     * 注册常量引用
+     *
+     * @param constant  常量内容
+     * @param reference 常量引用
+     */
+    static void registerConstant(String constant, Reference reference) {
+        constantReferences.put(constant, reference);
+    }
+
+    /**
+     * 获取常量引用
+     *
+     * @param constant 常量
+     * @return 常量引用
+     */
+    public static Reference getConstantReference(String constant) {
+        return constantReferences.get(constant);
     }
 
     /**

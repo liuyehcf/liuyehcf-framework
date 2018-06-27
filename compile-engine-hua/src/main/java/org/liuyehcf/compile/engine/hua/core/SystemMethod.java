@@ -128,11 +128,11 @@ public class SystemMethod {
                         createFakeMethodInfo(PRINTLN_CHAR_ARRAY, Type.TYPE_VOID),
                         (args) -> {
                             Reference reference = (Reference) args[0];
-                            char[] charArray = new char[reference.getSize()];
+                            StringBuilder sb = new StringBuilder();
                             for (int i = 0; i < reference.getSize(); i++) {
-                                charArray[i] = (char) HeapMemoryManagement.loadChar(reference.getAddress() + Type.CHAR_TYPE_WIDTH * i);
+                                sb.append((char) HeapMemoryManagement.loadChar(reference.getAddress() + Type.CHAR_TYPE_WIDTH * i));
                             }
-                            System.out.println(Arrays.toString(charArray));
+                            System.out.println(sb.toString());
                             return null;
                         }
                 ));
