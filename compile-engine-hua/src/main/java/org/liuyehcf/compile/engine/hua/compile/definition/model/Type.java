@@ -16,11 +16,11 @@ public class Type implements Serializable {
     public final static int REFERENCE_TYPE_WIDTH = 4;
     public final static Type TYPE_INT_ARRAY = createArrayType(NORMAL_INT, 1);
     public final static Type TYPE_INT_BOOLEAN = createArrayType(NORMAL_BOOLEAN, 1);
+    public final static Type TYPE_CHAR_ARRAY = createArrayType(NORMAL_CHAR, 1);
     private final static int NORMAL_TYPE_DIM = 0;
     public final static Type TYPE_INT = createNormalType(NORMAL_INT, 4);
     public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, 1);
     public final static Type TYPE_CHAR = createNormalType(NORMAL_CHAR, 2);
-    public final static Type TYPE_CHAR_ARRAY = createArrayType(NORMAL_CHAR, 1);
     public final static Type TYPE_VOID = createNormalType(NORMAL_VOID, 0);
     private static final String ARRAY_DIM_DESCRIPTION = "[]";
 
