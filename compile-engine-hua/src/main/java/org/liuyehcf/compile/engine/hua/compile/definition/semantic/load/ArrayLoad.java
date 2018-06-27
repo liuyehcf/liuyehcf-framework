@@ -5,12 +5,13 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._aaload;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl._baload;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl._caload;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iaload;
 
 import java.io.Serializable;
 
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
  * 加载数组
@@ -41,6 +42,11 @@ public class ArrayLoad extends AbstractSemanticAction implements Serializable {
         } else {
             switch (type.getTypeName()) {
                 case NORMAL_BOOLEAN:
+                    context.addByteCodeToCurrentMethod(new _baload());
+                    break;
+                case NORMAL_CHAR:
+                    context.addByteCodeToCurrentMethod(new _caload());
+                    break;
                 case NORMAL_INT:
                     context.addByteCodeToCurrentMethod(new _iaload());
                     break;

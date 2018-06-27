@@ -19,6 +19,8 @@ public class Type implements Serializable {
     private final static int NORMAL_TYPE_DIM = 0;
     public final static Type TYPE_INT = createNormalType(NORMAL_INT, 4);
     public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, 1);
+    public final static Type TYPE_CHAR = createNormalType(NORMAL_CHAR, 2);
+    public final static Type TYPE_CHAR_ARRAY = createArrayType(NORMAL_CHAR, 1);
     public final static Type TYPE_VOID = createNormalType(NORMAL_VOID, 0);
     private static final String ARRAY_DIM_DESCRIPTION = "[]";
 
@@ -104,10 +106,12 @@ public class Type implements Serializable {
 
         if (this.dim == 1) {
             switch (this.typeName) {
-                case NORMAL_INT:
-                    return TYPE_INT;
                 case NORMAL_BOOLEAN:
                     return TYPE_BOOLEAN;
+                case NORMAL_CHAR:
+                    return TYPE_CHAR;
+                case NORMAL_INT:
+                    return TYPE_INT;
                 default:
                     throw new UnsupportedOperationException();
             }

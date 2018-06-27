@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.core.cfg.lr.LRCompiler;
 import org.liuyehcf.compile.engine.hua.compile.HuaCompiler;
+import org.liuyehcf.compile.engine.hua.compile.definition.GrammarDefinition;
 import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 
 import static org.junit.Assert.assertEquals;
@@ -33,6 +34,11 @@ public class TestGrammar {
         System.out.println("build HuaCompiler consume " + (end - start) / 1000 + "s");
 
         assertTrue(compiler.isLegal());
+    }
+
+    @Test
+    public void testProductions() {
+        System.out.println(GrammarDefinition.GRAMMAR);
     }
 
     @Test
@@ -866,6 +872,23 @@ public class TestGrammar {
     }
 
     @Test
+    public void testCharLiteral() {
+        String text = "void func() {\n" +
+                "\tchar c='1';\n" +
+                "\tc='a';\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func()\":[{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":97},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleString()
+        );
+    }
+
+    @Test
     public void testArrayLoad1() {
         String text = "void func(int[] a) {\n" +
                 "\tint b=a[1];\n" +
@@ -893,6 +916,38 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int[][],int)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":6},{\"name\":\"_iaload\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleString()
+        );
+    }
+
+    @Test
+    public void testArrayLoad3() {
+        String text = "void func(char[][] a,char j) {\n" +
+                "\tj=a[5][6];\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(char[][],char)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":6},{\"name\":\"_caload\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleString()
+        );
+    }
+
+    @Test
+    public void testArrayLoad4() {
+        String text = "void func(boolean[][] a,boolean j) {\n" +
+                "\tj=a[5][6];\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean[][],boolean)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":6},{\"name\":\"_baload\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
                 result.getResult().getMethodInfoTable().toSimpleString()
         );
     }
@@ -949,6 +1004,38 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int[][][][])\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"int[][]\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"int[][][]\"},{\"name\":\"_aastore\"},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleString()
+        );
+    }
+
+    @Test
+    public void testArrayStore4() {
+        String text = "void func(char[][] a) {\n" +
+                "\ta[1][2] = 'b';\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(char[][])\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":98},{\"name\":\"_castore\"},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleString()
+        );
+    }
+
+    @Test
+    public void testArrayStore5() {
+        String text = "void func(boolean[][] a) {\n" +
+                "\ta[1][2] = true;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean[][])\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_bastore\"},{\"name\":\"_return\"}]}",
                 result.getResult().getMethodInfoTable().toSimpleString()
         );
     }

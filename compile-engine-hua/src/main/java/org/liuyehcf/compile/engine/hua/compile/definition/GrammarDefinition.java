@@ -7,7 +7,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.compile.definition.ProgramProductions.PROGRAMS;
-import static org.liuyehcf.compile.engine.hua.compile.definition.TokenProductions.REGEX_NON_ZERO_DIGIT;
+import static org.liuyehcf.compile.engine.hua.compile.definition.TokenProductions.*;
 
 /**
  * 文法定义
@@ -94,6 +94,8 @@ public abstract class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_NUMBER_0), "0")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_NON_ZERO_DIGIT), "[1-9]")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
+            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_CHARACTER_LITERAL), "\'[^'\\\\]\'")
+            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_STRING_LITERAL), "\"[^\"\\\\]\"")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_IF), "if")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_ELSE), "else")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_WHILE), "while")
@@ -103,6 +105,7 @@ public abstract class GrammarDefinition {
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_INT), "int")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_FLOAT), "float")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN), "boolean")
+            .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_CHAR), "char")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_NEW), "new")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_RETURN), "return")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_TRUE), "true")

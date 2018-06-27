@@ -122,7 +122,6 @@ abstract class TypeProductions {
              */
             Production.create(
                     /*
-                     *
                      * (3) <integral type> → int
                      */
                     PrimaryProduction.create(
@@ -132,13 +131,23 @@ abstract class TypeProductions {
                             ),
                             new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
+                    ),
+                    /*
+                     * (5) <integral type> → char
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(INTEGRAL_TYPE),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_CHAR)
+                            ),
+                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_CHAR),
+                            new AttrFilter(AttrName.TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
                      * (1) <integral type> → byte
                      * (2) <integral type> → short
                      * (4) <integral type> → long
-                     * (5) <integral type> → char
                      */
             ),
 

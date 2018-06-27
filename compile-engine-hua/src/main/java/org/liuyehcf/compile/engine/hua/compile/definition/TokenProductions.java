@@ -52,6 +52,8 @@ abstract class TokenProductions {
 
     public static final String REGEX_NON_ZERO_DIGIT = "@nonZeroDigit";
     public static final String REGEX_INTEGER_TYPE_SUFFIX = "@integerTypeSuffix";
+    public static final String REGEX_CHARACTER_LITERAL = "@regexCharacterLiteral";
+    public static final String REGEX_STRING_LITERAL = "@regexStringLiteral";
 
     public static final Production[] PRODUCTIONS = {
             /*
@@ -106,35 +108,57 @@ abstract class TokenProductions {
              */
             Production.create(
                     /*
-                     * <literal> → <integer literal>
+                     * (1) <literal> → <integer literal>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(LITERAL),
                             SymbolString.create(
                                     Symbol.createNonTerminator(INTEGER_LITERAL)
                             ),
-                            new LiteralLoad(0, NORMAL_INT),
+                            new LiteralLoad(0, Type.TYPE_INT),
                             new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
-                     * <literal> → <boolean literal>
+                     * (3) <literal> → <boolean literal>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(LITERAL),
                             SymbolString.create(
                                     Symbol.createNonTerminator(BOOLEAN_LITERAL)
                             ),
-                            new LiteralLoad(0, NORMAL_BOOLEAN),
+                            new LiteralLoad(0, Type.TYPE_BOOLEAN),
                             new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_BOOLEAN),
+                            new AttrFilter(AttrName.TYPE)
+                    ),
+                    /*
+                     * (4) <literal> → <character literal>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(LITERAL),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(CHARACTER_LITERAL)
+                            ),
+                            new LiteralLoad(0, Type.TYPE_CHAR),
+                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_CHAR),
+                            new AttrFilter(AttrName.TYPE)
+                    ),
+                    /*
+                     * (5) <literal> → <string literal>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(LITERAL),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(STRING_LITERAL)
+                            ),
+                            new LiteralLoad(0, Type.TYPE_CHAR_ARRAY),
+                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_CHAR_ARRAY),
                             new AttrFilter(AttrName.TYPE)
                     )
                     /*
                      * TODO 缺少以下产生式
-                     * <literal> → <floating-point literal>
-                     * <literal> → <character literal>
-                     * <literal> → <string literal>
-                     * <literal> → <null literal>
+                     * (2) <literal> → <floating-point literal>
+                     * (6) <literal> → <null literal>
                      */
 
             ),
@@ -387,6 +411,38 @@ abstract class TokenProductions {
                             Symbol.createNonTerminator(BOOLEAN_LITERAL),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN_FALSE)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
+                    )
+            ),
+
+
+            /*
+             * <character literal> 344
+             * DIFFERENT
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(CHARACTER_LITERAL),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_CHARACTER_LITERAL)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
+                    )
+            ),
+
+
+            /*
+             * <string literal> 348
+             * DIFFERENT
+             */
+            Production.create(
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(STRING_LITERAL),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_STRING_LITERAL)
                             ),
                             new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)

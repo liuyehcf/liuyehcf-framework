@@ -11,8 +11,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.sl._istore;
 import java.io.Serializable;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
  * 变量初始化
@@ -69,11 +68,12 @@ public class VariableInitialization extends AbstractSemanticAction implements Se
         else {
             switch (identifierType.getTypeName()) {
                 case NORMAL_BOOLEAN:
+                case NORMAL_CHAR:
                 case NORMAL_INT:
                     context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOrder()));
                     break;
                 default:
-                    throw new RuntimeException("Not yet support type '" + identifierType + "'");
+                    throw new UnsupportedOperationException();
             }
         }
     }

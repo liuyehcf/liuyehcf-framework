@@ -74,10 +74,22 @@ public class HuaContext extends Context {
         return getStack().get(stackOffset).getValue();
     }
 
-    private void addConstant(String constant) {
-        huaEngine.getConstantPool().addConstant(constant);
+    /**
+     * 添加常量
+     *
+     * @param constant 常量
+     * @return 偏移量
+     */
+    public int addConstant(String constant) {
+        return huaEngine.getConstantPool().addConstant(constant);
     }
 
+    /**
+     * 获取常量的偏移量
+     *
+     * @param constant 常量
+     * @return 偏移量
+     */
     public int getConstantOffset(String constant) {
         return huaEngine.getConstantPool().getConstantOffset(constant);
     }

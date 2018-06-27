@@ -6,9 +6,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp.*;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._aastore;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iastore;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._istore;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 
 import java.io.Serializable;
 
@@ -98,9 +96,13 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 if (NORMAL_ASSIGN.equals(operator)) {
                     switch (identifierType.getTypeName()) {
                         case NORMAL_BOOLEAN:
+                            context.addByteCodeToCurrentMethod(new _bastore());
+                            break;
+                        case NORMAL_CHAR:
+                            context.addByteCodeToCurrentMethod(new _castore());
+                            break;
                         case NORMAL_INT:
                             context.addByteCodeToCurrentMethod(new _iastore());
-
                             break;
                         default:
                             throw new UnsupportedOperationException();
@@ -131,6 +133,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 if (NORMAL_ASSIGN.equals(operator)) {
                     switch (identifierType.getTypeName()) {
                         case NORMAL_BOOLEAN:
+                        case NORMAL_CHAR:
                         case NORMAL_INT:
                             context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOrder()));
                             break;

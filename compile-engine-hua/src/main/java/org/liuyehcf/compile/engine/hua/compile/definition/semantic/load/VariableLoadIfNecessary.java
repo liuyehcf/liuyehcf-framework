@@ -5,6 +5,8 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl._baload;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl._caload;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iaload;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iload;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sm._dup2;
@@ -81,13 +83,19 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction implements S
                     context.addByteCodeToCurrentMethod(new _dup2());
 
                     switch (leftHandType.getTypeName()) {
+                        case NORMAL_BOOLEAN:
+                            context.addByteCodeToCurrentMethod(new _baload());
+                            break;
+                        case NORMAL_CHAR:
+                            context.addByteCodeToCurrentMethod(new _caload());
+                            break;
                         case NORMAL_INT:
                             context.addByteCodeToCurrentMethod(new _iaload());
-                            context.setAttr(leftHandStackOffset, AttrName.TYPE, leftHandType);
                             break;
                         default:
                             throw new UnsupportedOperationException();
                     }
+                    context.setAttr(leftHandStackOffset, AttrName.TYPE, leftHandType);
                 }
                 /*
                  * 标志符为非数组类型

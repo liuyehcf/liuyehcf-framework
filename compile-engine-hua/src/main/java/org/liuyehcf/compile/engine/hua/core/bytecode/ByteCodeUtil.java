@@ -79,11 +79,16 @@ public class ByteCodeUtil {
         register(_aastore.class);
         register(_aload.class);
         register(_astore.class);
+        register(_baload.class);
+        register(_bastore.class);
+        register(_caload.class);
+        register(_castore.class);
         register(_iaload.class);
         register(_iastore.class);
         register(_iconst.class);
         register(_iload.class);
         register(_istore.class);
+        register(_ldc.class);
 
         /*
          * OperatorStackManagement

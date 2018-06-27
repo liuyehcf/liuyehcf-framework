@@ -35,12 +35,13 @@ public class ConstantPool {
         SYSTEM_METHOD_POOL.keySet().stream().map(MethodSignature::getSignature).forEach(this::addConstant);
     }
 
-    public void addConstant(String constant) {
+    public int addConstant(String constant) {
         if (constantPool.containsKey(constant)) {
-            return;
+            return constantPool.get(constant);
         }
         constants.add(constant);
         constantPool.put(constant, offsetCnt++);
+        return offsetCnt - 1;
     }
 
     public int getConstantOffset(String constant) {
