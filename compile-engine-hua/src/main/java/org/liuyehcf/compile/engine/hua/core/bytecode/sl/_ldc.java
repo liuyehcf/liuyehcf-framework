@@ -1,9 +1,9 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.sl;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
-import sun.rmi.rmic.iiop.Type;
 
 /**
  * 加载常量
@@ -38,10 +38,10 @@ public class _ldc extends StoreLoad {
     public void operate(RuntimeContext context) {
         String constant = context.getConstant(constantPoolOffset);
 
-        int reference = HeapMemoryManagement.allocate(Type.TYPE_CHAR, constant.length());
+        int reference = HeapMemoryManagement.allocate(Type.TYPE_CHAR.getTypeWidth(), constant.length());
 
         context.push(reference);
-        
+
         context.increaseCodeOffset();
     }
 

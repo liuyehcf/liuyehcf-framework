@@ -1,5 +1,8 @@
 package org.liuyehcf.compile.engine.hua.runtime;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 堆内存管理
  *
@@ -12,6 +15,11 @@ public class HeapMemoryManagement {
      * 堆内存
      */
     private static byte[] heapMemory = null;
+
+    /**
+     * offset -> size
+     */
+    private static final Map<Integer, Integer> offsetMap = new HashMap<>();
 
     /**
      * 未分配内存起始地址
@@ -31,25 +39,28 @@ public class HeapMemoryManagement {
      * 分配内存
      *
      * @param width 类型宽度
-     * @param count 连续元素的个数
+     * @param size  连续元素的个数
      * @return 起始地址
      */
-    public static int allocate(int width, int count) {
-        int total = width * count;
+    public static int allocate(int width, int size) {
+        int total = width * size;
 
-        /*
-         * 宽度为0时，分配一个byte
-         * 例如new int[0]时
-         */
-        if (total == 0) {
-            int address = unAllocatedOffset;
-            unAllocatedOffset += 1;
-            return address;
-        } else {
-            int address = unAllocatedOffset;
-            unAllocatedOffset += total;
-            return address;
-        }
+        int address = unAllocatedOffset;
+        unAllocatedOffset += total;
+
+        offsetMap.put(address, size);
+
+        return address;
+    }
+
+    /**
+     * 返回地址对应的size
+     *
+     * @param address 地址
+     * @return size
+     */
+    public static int sizeOf(int address) {
+        return offsetMap.get(address);
     }
 
     /**

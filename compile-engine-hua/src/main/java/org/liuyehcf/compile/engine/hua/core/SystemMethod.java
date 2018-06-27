@@ -3,6 +3,7 @@ package org.liuyehcf.compile.engine.hua.core;
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 import org.liuyehcf.compile.engine.core.utils.Pair;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -19,6 +20,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 public class SystemMethod {
 
     static final Map<MethodSignature, Pair<MethodInfo, ProxyInvoke>> SYSTEM_METHOD_POOL;
+
     private static final MethodSignature PRINT_INT = new MethodSignature("print", new String[]{NORMAL_INT});
     private static final MethodSignature PRINT_CHAR = new MethodSignature("print", new String[]{NORMAL_CHAR});
     private static final MethodSignature PRINT_BOOLEAN = new MethodSignature("print", new String[]{NORMAL_BOOLEAN});
@@ -111,9 +113,11 @@ public class SystemMethod {
                 new Pair<>(
                         createFakeMethodInfo(PRINTLN_INT_ARRAY, Type.TYPE_VOID),
                         (args) -> {
-                            int[] intArray = new int[args.length];
-                            for (int i = 0; i < args.length; i++) {
-                                intArray[i] = (int) args[i];
+                            int address = (int) args[0];
+                            int size = HeapMemoryManagement.sizeOf(address);
+                            int[] intArray = new int[size];
+                            for (int i = 0; i < size; i++) {
+                                intArray[i] = HeapMemoryManagement.loadInt(address + Type.TYPE_INT.getTypeWidth() * i);
                             }
                             System.out.println(Arrays.toString(intArray));
                             return null;
@@ -123,9 +127,11 @@ public class SystemMethod {
                 new Pair<>(
                         createFakeMethodInfo(PRINTLN_CHAR_ARRAY, Type.TYPE_VOID),
                         (args) -> {
-                            char[] charArray = new char[args.length];
-                            for (int i = 0; i < args.length; i++) {
-                                charArray[i] = (char) args[i];
+                            int address = (int) args[0];
+                            int size = HeapMemoryManagement.sizeOf(address);
+                            char[] charArray = new char[size];
+                            for (int i = 0; i < size; i++) {
+                                charArray[i] = (char) HeapMemoryManagement.loadChar(address + Type.TYPE_CHAR.getTypeWidth() * i);
                             }
                             System.out.println(Arrays.toString(charArray));
                             return null;
@@ -135,9 +141,11 @@ public class SystemMethod {
                 new Pair<>(
                         createFakeMethodInfo(PRINTLN_BOOLEAN_ARRAY, Type.TYPE_VOID),
                         (args) -> {
-                            boolean[] booleanArray = new boolean[args.length];
-                            for (int i = 0; i < args.length; i++) {
-                                booleanArray[i] = (int) args[i] == 1;
+                            int address = (int) args[0];
+                            int size = HeapMemoryManagement.sizeOf(address);
+                            boolean[] booleanArray = new boolean[size];
+                            for (int i = 0; i < size; i++) {
+                                booleanArray[i] = HeapMemoryManagement.loadBoolean(address + Type.TYPE_BOOLEAN.getTypeWidth() * i) == 1;
                             }
                             System.out.println(Arrays.toString(booleanArray));
                             return null;
