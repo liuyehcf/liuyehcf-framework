@@ -4,6 +4,8 @@ import com.alibaba.fastjson.annotation.JSONField;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
 
 /**
+ * 数组存储加载字节码的基类
+ *
  * @author hechenfeng
  * @date 2018/6/25
  */

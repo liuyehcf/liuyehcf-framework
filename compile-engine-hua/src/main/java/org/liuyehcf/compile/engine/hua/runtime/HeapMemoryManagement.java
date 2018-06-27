@@ -12,15 +12,13 @@ import java.util.Map;
 public class HeapMemoryManagement {
 
     /**
-     * 堆内存
-     */
-    private static byte[] heapMemory = null;
-
-    /**
      * offset -> size
      */
     private static final Map<Integer, Integer> offsetMap = new HashMap<>();
-
+    /**
+     * 堆内存
+     */
+    private static byte[] heapMemory = null;
     /**
      * 未分配内存起始地址
      */

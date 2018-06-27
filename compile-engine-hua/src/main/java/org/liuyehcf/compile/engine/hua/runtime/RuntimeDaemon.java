@@ -6,6 +6,8 @@ import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 import static org.liuyehcf.compile.engine.hua.core.MethodInfo.buildMethodSignature;
 
 /**
+ * 运行Deamon
+ *
  * @author hechenfeng
  * @date 2018/6/26
  */

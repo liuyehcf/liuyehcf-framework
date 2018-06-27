@@ -4,6 +4,8 @@ import com.alibaba.fastjson.annotation.JSONField;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
 
 /**
+ * 返回字节码的基类
+ *
  * @author hechenfeng
  * @date 2018/6/25
  */

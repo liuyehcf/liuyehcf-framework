@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * .hclass输入流
+ *
  * @author hechenfeng
  * @date 2018/6/24
  */

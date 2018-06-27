@@ -16,6 +16,8 @@ import static org.liuyehcf.compile.engine.hua.core.io.HClassConstant.MAGIC;
 
 
 /**
+ * .hclass输出流
+ *
  * @author hechenfeng
  * @date 2018/6/24
  */
