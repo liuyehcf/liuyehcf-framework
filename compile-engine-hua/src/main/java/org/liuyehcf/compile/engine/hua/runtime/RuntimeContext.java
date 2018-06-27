@@ -23,7 +23,7 @@ public class RuntimeContext {
     /**
      * 当前执行的方法
      */
-    private final MethodRuntimeInfo currentMethod;
+    private MethodRuntimeInfo currentMethod;
 
     public RuntimeContext(IntermediateInfo intermediateInfo, MethodStack methodStack) {
         this.intermediateInfo = intermediateInfo;
@@ -43,8 +43,17 @@ public class RuntimeContext {
         if (intermediateInfo.getMethodInfoTable().isSystemMethod(methodSignature)) {
             SystemMethod.invoke(methodSignature, args);
         } else {
-            throw new UnsupportedOperationException();
+            methodStack.push(new MethodRuntimeInfo(intermediateInfo, intermediateInfo.getMethodInfoTable().getMethodByMethodSignature(methodSignature)));
+            currentMethod = methodStack.peek();
+            currentMethod.run(methodStack);
         }
+    }
+
+    public void exitMethod() {
+        methodStack.pop();
+        currentMethod.finishMethod();
+        // TODO 取出函数执行的结果
+        currentMethod = methodStack.peek();
     }
 
     public String getConstant(int constantOffset) {

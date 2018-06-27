@@ -24,6 +24,6 @@ public class _return extends Return {
 
     @Override
     public void operate(RuntimeContext context) {
-
+        context.exitMethod();
     }
 }
