@@ -9,6 +9,7 @@ import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.liuyehcf.compile.engine.hua.compile.HuaCompiler.HUA_PATH_PROPERTY;
 
 
 /**
@@ -21,6 +22,8 @@ public class TestGrammar {
 
     @BeforeClass
     public static void init() {
+        System.setProperty(HUA_PATH_PROPERTY, "./src/main/resources/");
+
         long start, end;
         start = System.currentTimeMillis();
 

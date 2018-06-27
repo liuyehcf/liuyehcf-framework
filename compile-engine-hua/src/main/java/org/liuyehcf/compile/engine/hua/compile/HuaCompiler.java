@@ -26,9 +26,19 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.GrammarDefiniti
 public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable {
 
     /**
-     * HuaCompiler序列化文件路径
+     * 环境变量名
      */
-    private static final String COMPILER_SERIALIZATION_STORE_PATH = "/Users/hechenfeng/workspace/compile-engine/compile-engine-hua/src/main/resources/hua.obj";
+    public static final String HUA_PATH_PROPERTY = "HUA_PATH";
+
+    /**
+     * HuaCompiler序列化目录
+     */
+    private static final String COMPILER_SERIALIZATION_DIRECTORY;
+
+    /**
+     * HuaCompiler序列化文件
+     */
+    private static final String COMPILER_SERIALIZATION_FILE;
 
     private HuaCompiler() {
         super(GRAMMAR, LEXICAL_ANALYZER);
@@ -36,13 +46,20 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
 
     public static HuaCompiler getHuaCompiler() {
         HuaCompiler huaCompiler;
+        File compilerDirectory;
         File compilerFile = null;
 
         /*
          * 首先从序列化文件中加载编译器
          */
         try {
-            compilerFile = new File(COMPILER_SERIALIZATION_STORE_PATH);
+            compilerDirectory = new File(COMPILER_SERIALIZATION_DIRECTORY);
+            if (!compilerDirectory.exists()) {
+                if (!compilerDirectory.mkdirs()) {
+                    throw new RuntimeException("Create directory '" + compilerDirectory.getAbsolutePath() + "' error");
+                }
+            }
+            compilerFile = new File(COMPILER_SERIALIZATION_FILE);
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(compilerFile));
 
             huaCompiler = (HuaCompiler) inputStream.readObject();
@@ -82,11 +99,9 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
      * 直接利用Java序列化
      */
     private void serialize() {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(COMPILER_SERIALIZATION_STORE_PATH));
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(COMPILER_SERIALIZATION_FILE))) {
             outputStream.writeObject(this);
             outputStream.flush();
-            outputStream.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -278,5 +293,20 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
                 ((AbstractSemanticAction) semanticAction).onAction(new HuaContext(context, this));
             }
         }
+    }
+
+    static {
+        String value1 = System.getProperty(HUA_PATH_PROPERTY);
+        String value2 = System.getenv(HUA_PATH_PROPERTY);
+
+        if (value1 != null) {
+            COMPILER_SERIALIZATION_DIRECTORY = value1;
+        } else if (value2 != null) {
+            COMPILER_SERIALIZATION_DIRECTORY = value2;
+        } else {
+            throw new Error("Must set env or property '" + HUA_PATH_PROPERTY + "'");
+        }
+
+        COMPILER_SERIALIZATION_FILE = COMPILER_SERIALIZATION_DIRECTORY + "/compiler.obj";
     }
 }
