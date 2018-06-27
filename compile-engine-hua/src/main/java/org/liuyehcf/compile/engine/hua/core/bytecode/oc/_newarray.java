@@ -3,6 +3,7 @@ package org.liuyehcf.compile.engine.hua.core.bytecode.oc;
 import com.alibaba.fastjson.annotation.JSONField;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
+import org.liuyehcf.compile.engine.hua.runtime.Reference;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
@@ -48,7 +49,7 @@ public class _newarray extends ObjectCreate {
         assertFalse(t.isArrayType());
         int width = t.getTypeWidth();
 
-        int reference = HeapMemoryManagement.allocate(width, count);
+        Reference reference = HeapMemoryManagement.allocate(width, count);
         context.push(reference);
 
         context.increaseCodeOffset();

@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.hua.core.bytecode.sl;
 
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
+import org.liuyehcf.compile.engine.hua.runtime.Reference;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
@@ -28,9 +29,9 @@ public class _castore extends ArrayStoreLoad {
     public void operate(RuntimeContext context) {
         int value = context.pop();
         int index = context.pop();
-        int arrayOffset = context.pop();
+        Reference arrayReference = context.pop();
 
-        int elementOffset = arrayOffset + index * Type.TYPE_CHAR.getTypeWidth();
+        int elementOffset = arrayReference.getAddress() + index * Type.CHAR_TYPE_WIDTH;
 
         HeapMemoryManagement.storeChar(elementOffset, value);
 

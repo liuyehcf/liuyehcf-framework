@@ -2,6 +2,7 @@ package org.liuyehcf.compile.engine.hua.core.bytecode.sl;
 
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
+import org.liuyehcf.compile.engine.hua.runtime.Reference;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
@@ -26,11 +27,11 @@ public class _aastore extends ArrayStoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
-        int value = context.pop();
+        Reference value = context.pop();
         int index = context.pop();
-        int arrayReference = context.pop();
+        Reference arrayReference = context.pop();
 
-        int elementReference = arrayReference + index * Type.REFERENCE_TYPE_WIDTH;
+        int elementReference = arrayReference.getAddress() + index * Type.REFERENCE_TYPE_WIDTH;
 
         HeapMemoryManagement.storeReference(elementReference, value);
 

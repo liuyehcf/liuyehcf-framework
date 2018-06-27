@@ -83,12 +83,12 @@ public class RuntimeContext {
         currentMethod.storeInt(offset, value);
     }
 
-    public int loadReference(int offset) {
+    public Reference loadReference(int offset) {
         return currentMethod.loadReference(offset);
     }
 
-    public void storeReference(int offset, int value) {
-        currentMethod.storeReference(offset, value);
+    public void storeReference(int offset, Reference reference) {
+        currentMethod.storeReference(offset, reference);
     }
 
     public void setResult(Object result) {

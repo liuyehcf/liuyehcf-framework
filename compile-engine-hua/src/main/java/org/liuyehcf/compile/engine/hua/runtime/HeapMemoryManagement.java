@@ -1,8 +1,5 @@
 package org.liuyehcf.compile.engine.hua.runtime;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 堆内存管理
  *
@@ -12,13 +9,10 @@ import java.util.Map;
 public class HeapMemoryManagement {
 
     /**
-     * offset -> size
-     */
-    private static final Map<Integer, Integer> offsetMap = new HashMap<>();
-    /**
      * 堆内存
      */
     private static byte[] heapMemory = null;
+
     /**
      * 未分配内存起始地址
      */
@@ -40,25 +34,13 @@ public class HeapMemoryManagement {
      * @param size  连续元素的个数
      * @return 起始地址
      */
-    public static int allocate(int width, int size) {
+    public static Reference allocate(int width, int size) {
         int total = width * size;
 
         int address = unAllocatedOffset;
         unAllocatedOffset += total;
 
-        offsetMap.put(address, size);
-
-        return address;
-    }
-
-    /**
-     * 返回地址对应的size
-     *
-     * @param address 地址
-     * @return size
-     */
-    public static int sizeOf(int address) {
-        return offsetMap.get(address);
+        return new Reference(address, size);
     }
 
     /**
@@ -122,22 +104,22 @@ public class HeapMemoryManagement {
     }
 
     /**
-     * 加载reference值
+     * 加载引用
      *
      * @param offset 地址偏移量
-     * @return reference值
+     * @return 引用
      */
-    public static int loadReference(int offset) {
+    public static Reference loadReference(int offset) {
         return ByteUtil.loadReference(heapMemory, offset);
     }
 
     /**
-     * 存储reference值
+     * 存储引用
      *
-     * @param offset 地址偏移量
-     * @param value  reference值
+     * @param offset    地址偏移量
+     * @param reference 引用
      */
-    public static void storeReference(int offset, int value) {
-        ByteUtil.storeReference(heapMemory, offset, value);
+    public static void storeReference(int offset, Reference reference) {
+        ByteUtil.storeReference(heapMemory, offset, reference);
     }
 }

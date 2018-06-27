@@ -67,7 +67,7 @@ class MethodRuntimeInfo {
     MethodRuntimeInfo(IntermediateInfo intermediateInfo, MethodInfo methodInfo) {
         this.intermediateInfo = intermediateInfo;
         this.methodInfo = methodInfo;
-        stackMemory = new byte[this.methodInfo.getMaxOrder()][8];
+        stackMemory = new byte[this.methodInfo.getMaxOrder()][Type.REFERENCE_TYPE_WIDTH];
     }
 
     Object run(Object[] args) {
@@ -87,7 +87,7 @@ class MethodRuntimeInfo {
         for (int i = 0; i < args.length; i++) {
             Type paramType = paramTypeList.get(i);
             if (paramType.isArrayType()) {
-                storeReference(i, (int) args[i]);
+                storeReference(i, (Reference) args[i]);
             } else if (Type.TYPE_INT.equals(paramType)) {
                 storeInt(i, (int) args[i]);
             } else if (Type.TYPE_BOOLEAN.equals(paramType)) {
@@ -124,11 +124,11 @@ class MethodRuntimeInfo {
         ByteUtil.storeInt(stackMemory[order], 0, value);
     }
 
-    int loadReference(int order) {
+    Reference loadReference(int order) {
         return ByteUtil.loadReference(stackMemory[order], 0);
     }
 
-    void storeReference(int order, int value) {
-        ByteUtil.storeReference(stackMemory[order], 0, value);
+    void storeReference(int order, Reference reference) {
+        ByteUtil.storeReference(stackMemory[order], 0, reference);
     }
 }

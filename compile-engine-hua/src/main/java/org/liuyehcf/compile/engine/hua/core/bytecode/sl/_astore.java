@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.sl;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.runtime.Reference;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
@@ -38,7 +39,7 @@ public class _astore extends StoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
-        int reference = context.pop();
+        Reference reference = context.pop();
 
         context.storeReference(order, reference);
 

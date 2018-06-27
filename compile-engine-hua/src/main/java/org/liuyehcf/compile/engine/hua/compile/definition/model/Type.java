@@ -13,15 +13,19 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
  */
 public class Type implements Serializable {
 
-    public final static int REFERENCE_TYPE_WIDTH = 4;
+    public final static int REFERENCE_TYPE_WIDTH = 8;
+    public final static int INT_TYPE_WIDTH = 4;
+    public static final int CHAR_TYPE_WIDTH = 2;
+    public static final int BOOLEAN_TYPE_WIDTH = 1;
+    public static final int VOID_TYPE_WIDTH = 0;
     public final static Type TYPE_INT_ARRAY = createArrayType(NORMAL_INT, 1);
     public final static Type TYPE_CHAR_ARRAY = createArrayType(NORMAL_CHAR, 1);
     public final static Type TYPE_BOOLEAN_ARRAY = createArrayType(NORMAL_BOOLEAN, 1);
     private final static int NORMAL_TYPE_DIM = 0;
-    public final static Type TYPE_INT = createNormalType(NORMAL_INT, 4);
-    public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, 1);
-    public final static Type TYPE_CHAR = createNormalType(NORMAL_CHAR, 2);
-    public final static Type TYPE_VOID = createNormalType(NORMAL_VOID, 0);
+    public final static Type TYPE_INT = createNormalType(NORMAL_INT, INT_TYPE_WIDTH);
+    public final static Type TYPE_CHAR = createNormalType(NORMAL_CHAR, CHAR_TYPE_WIDTH);
+    public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, BOOLEAN_TYPE_WIDTH);
+    public final static Type TYPE_VOID = createNormalType(NORMAL_VOID, VOID_TYPE_WIDTH);
     private static final String ARRAY_DIM_DESCRIPTION = "[]";
 
     /**
