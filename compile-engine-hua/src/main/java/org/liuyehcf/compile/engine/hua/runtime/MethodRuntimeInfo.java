@@ -1,7 +1,12 @@
 package org.liuyehcf.compile.engine.hua.runtime;
 
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodInfo;
+
+import java.util.List;
+
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
 
 /**
  * 方法运行时信息，方法栈的元素
@@ -49,24 +54,46 @@ public class MethodRuntimeInfo {
     private int codeOffset = 0;
 
     /**
+     * 返回值
+     */
+    private Object result;
+
+    /**
      * 是否执行完毕
      */
     private boolean isFinished = false;
 
+
     MethodRuntimeInfo(IntermediateInfo intermediateInfo, MethodInfo methodInfo) {
         this.intermediateInfo = intermediateInfo;
         this.methodInfo = methodInfo;
-        stackMemory = new byte[this.methodInfo.getOrder()][8];
+        stackMemory = new byte[this.methodInfo.getMaxOrder()][8];
     }
 
-    Object run(MethodStack methodStack, Object[] args) {
-
+    Object run(Object[] args) {
+        setArgs(args);
 
         while (!isFinished) {
-            methodInfo.getByteCodes().get(codeOffset).operate(new RuntimeContext(intermediateInfo, methodStack));
+            methodInfo.getByteCodes().get(codeOffset).operate(new RuntimeContext(intermediateInfo, this));
         }
 
-        return null;
+        return result;
+    }
+
+    private void setArgs(Object[] args) {
+        List<Type> paramTypeList = methodInfo.getParamTypeList();
+        assertEquals(args.length, paramTypeList.size());
+
+        for (int i = 0; i < args.length; i++) {
+            Type paramType = paramTypeList.get(i);
+            if (paramType.isArrayType()) {
+                storeReference(i, (int) args[i]);
+            } else if (Type.TYPE_INT.equals(paramType)) {
+                storeInt(i, (int) args[i]);
+            } else if (Type.TYPE_BOOLEAN.equals(paramType)) {
+                storeBoolean(i, (int) args[i]);
+            }
+        }
     }
 
     public OperatorStack getOperatorStack() {
@@ -109,4 +136,7 @@ public class MethodRuntimeInfo {
         ByteUtil.storeReference(stackMemory[order], 0, value);
     }
 
+    public void setResult(Object result) {
+        this.result = result;
+    }
 }

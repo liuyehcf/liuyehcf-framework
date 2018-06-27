@@ -101,12 +101,12 @@ public class MethodInfo {
         return paramTypeList.size();
     }
 
-    public void setMaxOrder(int maxOrder) {
-        this.maxOrder = maxOrder;
-    }
-
     public int getMaxOrder() {
         return maxOrder;
+    }
+
+    public void setMaxOrder(int maxOrder) {
+        this.maxOrder = maxOrder;
     }
 
     /**

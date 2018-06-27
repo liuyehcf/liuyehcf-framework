@@ -16,19 +16,13 @@ public class RuntimeContext {
     private final IntermediateInfo intermediateInfo;
 
     /**
-     * 方法栈
-     */
-    private final MethodStack methodStack;
-
-    /**
      * 当前执行的方法
      */
     private MethodRuntimeInfo currentMethod;
 
-    public RuntimeContext(IntermediateInfo intermediateInfo, MethodStack methodStack) {
+    public RuntimeContext(IntermediateInfo intermediateInfo, MethodRuntimeInfo currentMethod) {
         this.intermediateInfo = intermediateInfo;
-        this.methodStack = methodStack;
-        this.currentMethod = methodStack.peek();
+        this.currentMethod = currentMethod;
     }
 
     public void push(Object obj) {
@@ -39,21 +33,17 @@ public class RuntimeContext {
         return currentMethod.getOperatorStack().pop();
     }
 
-    public void invoke(MethodSignature methodSignature, Object[] args) {
+    public Object invoke(MethodSignature methodSignature, Object[] args) {
         if (intermediateInfo.getMethodInfoTable().isSystemMethod(methodSignature)) {
-            SystemMethod.invoke(methodSignature, args);
+            return SystemMethod.invoke(methodSignature, args);
         } else {
-            methodStack.push(new MethodRuntimeInfo(intermediateInfo, intermediateInfo.getMethodInfoTable().getMethodByMethodSignature(methodSignature)));
-            currentMethod = methodStack.peek();
-            currentMethod.run(methodStack, null);//todo
+            return new MethodRuntimeInfo(intermediateInfo, intermediateInfo.getMethodInfoTable().getMethodByMethodSignature(methodSignature))
+                    .run(args);
         }
     }
 
     public void exitMethod() {
-        methodStack.pop();
         currentMethod.finishMethod();
-        // TODO 取出函数执行的结果
-        currentMethod = methodStack.peek();
     }
 
     public String getConstant(int constantOffset) {
@@ -90,5 +80,9 @@ public class RuntimeContext {
 
     public void storeReference(int offset, int value) {
         currentMethod.storeReference(offset, value);
+    }
+
+    public void setResult(Object result) {
+        currentMethod.setResult(result);
     }
 }

@@ -16,11 +16,8 @@ public class RuntimeDaemon {
      */
     private final IntermediateInfo intermediateInfo;
 
-    private final MethodStack methodStack = new MethodStack();
-
     public RuntimeDaemon(IntermediateInfo intermediateInfo) {
         this.intermediateInfo = intermediateInfo;
-        methodStack.push(new MethodRuntimeInfo(intermediateInfo, getMainMethod()));
     }
 
     private MethodInfo getMainMethod() {
@@ -32,6 +29,6 @@ public class RuntimeDaemon {
     }
 
     public void doExecute() {
-        methodStack.peek().run(methodStack, new Object[0]);
+        new MethodRuntimeInfo(intermediateInfo, getMainMethod()).run(new Object[0]);
     }
 }
