@@ -11,8 +11,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.oc._newarray;
 import java.io.Serializable;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
  * 基本类型的数组创建
@@ -66,6 +65,7 @@ public class NewPrimaryArray extends AbstractSemanticAction implements Serializa
 
         switch (type.getTypeName()) {
             case NORMAL_BOOLEAN:
+            case NORMAL_CHAR:
             case NORMAL_INT:
                 break;
             default:

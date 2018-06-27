@@ -56,7 +56,7 @@ public class SystemMethod {
                 new Pair<>(
                         createFakeMethodInfo(PRINT_CHAR, Type.TYPE_VOID),
                         (args) -> {
-                            char charArg = (char) args[0];
+                            char charArg = (char) ((int) args[0]);
                             System.out.print(charArg);
                             return null;
                         }
@@ -88,7 +88,7 @@ public class SystemMethod {
                 new Pair<>(
                         createFakeMethodInfo(PRINTLN_CHAR, Type.TYPE_VOID),
                         (args) -> {
-                            char charArg = (char) args[0];
+                            char charArg = (char) ((int) args[0]);
                             System.out.println(charArg);
                             return null;
                         }
