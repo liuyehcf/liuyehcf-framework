@@ -25,7 +25,6 @@ public class _anewarray extends ObjectCreate {
 
     /**
      * 类型
-     * todo 这里应该是一个常量池引用
      */
     private final String type;
 
@@ -39,7 +38,7 @@ public class _anewarray extends ObjectCreate {
 
     @Override
     public void operate(RuntimeContext context) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override

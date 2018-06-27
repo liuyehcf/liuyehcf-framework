@@ -9,6 +9,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.ir._ireturn;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ir._return;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_BOOLEAN;
@@ -38,6 +39,11 @@ public class PushReturnByteCode extends AbstractSemanticAction implements Serial
     public void onAction(HuaContext context) {
         Object object = context.getAttr(expressionStackOffset, AttrName.IS_EMPTY_EXPRESSION);
         Type type = context.getAttr(expressionStackOffset, AttrName.TYPE);
+        Type resultType = context.getResultTypeOfCurrentMethod();
+
+        if (!Objects.equals(type, resultType)) {
+            throw new RuntimeException("The return type returned by the return statement does not match the return type of the method declaration");
+        }
 
         if (object != null) {
             context.addByteCodeToCurrentMethod(new _return());

@@ -1815,37 +1815,38 @@ public class TestGrammar {
 
     @Test
     public void testQuickSort() {
-        String text = "\tvoid exchange(int[] nums, int i, int j) {\n" +
-                "\t\tint temp = nums[i];\n" +
-                "\t\tnums[i] = nums[j];\n" +
-                "\t\tnums[j] = temp;\n" +
-                "\t}\n" +
-                "\tint partition(int[] nums, int lo, int hi) {\n" +
-                "\t\tint i = lo - 1;\n" +
-                "\t\tint pivot = nums[hi];\n" +
-                "\t\t\n" +
-                "\t\tfor (int j = lo; j < hi; j++) {\n" +
-                "\t\t\tif (nums[j] < pivot) {\n" +
-                "\t\t\t\texchange(nums, ++i, j);\n" +
-                "\t\t\t}\n" +
-                "\t\t}\n" +
-                "\t\t\n" +
-                "\t\texchange(nums, ++i, hi);\n" +
-                "\t\t\n" +
-                "\t\treturn i;\n" +
-                "\t}\n" +
+        String text = "void exchange(int[] nums, int i, int j) {\n" +
+                "\tint temp = nums[i];\n" +
+                "\tnums[i] = nums[j];\n" +
+                "\tnums[j] = temp;\n" +
+                "}\n" +
+                "\n" +
+                "int partition(int[] nums, int lo, int hi) {\n" +
+                "\tint i = lo - 1;\n" +
+                "\tint pivot = nums[hi];\n" +
                 "\t\n" +
-                "\tvoid sort(int[] nums, int lo, int hi) {\n" +
-                "\t\tif (lo < hi) {\n" +
-                "\t\t\tint mid = partition(nums, lo, hi);\n" +
-                "\t\t\tsort(nums, lo, mid - 1);\n" +
-                "\t\t\tsort(nums, mid + 1, hi);\n" +
+                "\tfor (int j = lo; j < hi; j++) {\n" +
+                "\t\tif (nums[j] < pivot) {\n" +
+                "\t\t\texchange(nums, ++i, j);\n" +
                 "\t\t}\n" +
                 "\t}\n" +
+                "\n" +
+                "\texchange(nums, ++i, hi);\n" +
                 "\t\n" +
-                "\tvoid sort(int[] nums, int size) {\n" +
-                "\t\tsort(nums, 0, size-1);\n" +
-                "\t}";
+                "\treturn i;\n" +
+                "}\n" +
+                "\n" +
+                "void sort(int[] nums, int lo, int hi) {\n" +
+                "\tif (lo < hi) {\n" +
+                "\t\tint mid = partition(nums, lo, hi);\n" +
+                "\t\tsort(nums, lo, mid - 1);\n" +
+                "\t\tsort(nums, mid + 1, hi);\n" +
+                "\t}\n" +
+                "}\n" +
+                "\n" +
+                "void sort(int[] nums, int size) {\n" +
+                "\tsort(nums, 0, size-1);\n" +
+                "}";
 
         System.out.println(text);
 

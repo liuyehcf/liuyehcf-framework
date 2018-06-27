@@ -1,7 +1,11 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.oc;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
+
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 
 /**
  * 一维数组创建指令
@@ -25,7 +29,6 @@ public class _newarray extends ObjectCreate {
 
     /**
      * 类型
-     * todo 这里应该是一个常量池引用
      */
     private final String type;
 
@@ -39,7 +42,16 @@ public class _newarray extends ObjectCreate {
 
     @Override
     public void operate(RuntimeContext context) {
+        int count = context.pop();
 
+        Type t = Type.parse(type);
+        assertFalse(t.isArrayType());
+        int width = t.getTypeWidth();
+
+        int reference = HeapMemoryManagement.allocate(width, count);
+        context.push(reference);
+
+        context.increaseCodeOffset();
     }
 
     @Override

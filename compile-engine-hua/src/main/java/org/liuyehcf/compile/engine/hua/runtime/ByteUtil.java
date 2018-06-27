@@ -14,7 +14,7 @@ public abstract class ByteUtil {
      * @param offset 地址偏移量
      * @return int值
      */
-    public static int loadInt(byte[] memory, int offset) {
+    static int loadInt(byte[] memory, int offset) {
         int res = 0;
         for (int i = 0; i < Type.TYPE_INT.getTypeWidth(); i++) {
             res |= (memory[offset + i] & 0xff) << (8 * i);
@@ -29,7 +29,7 @@ public abstract class ByteUtil {
      * @param offset 地址偏移量
      * @param value  int值
      */
-    public static void storeInt(byte[] memory, int offset, int value) {
+    static void storeInt(byte[] memory, int offset, int value) {
         for (int i = 0; i < Type.TYPE_INT.getTypeWidth(); i++) {
             memory[offset + i] = (byte) (value >> (8 * i) & 0xff);
         }
@@ -42,7 +42,7 @@ public abstract class ByteUtil {
      * @param offset 地址偏移量
      * @return boolean值
      */
-    public static int loadBoolean(byte[] memory, int offset) {
+    static int loadBoolean(byte[] memory, int offset) {
         int res = 0;
         for (int i = 0; i < Type.TYPE_BOOLEAN.getTypeWidth(); i++) {
             res |= (memory[offset + i] & 0xff) << (8 * i);
@@ -57,7 +57,7 @@ public abstract class ByteUtil {
      * @param offset 地址偏移量
      * @param value  boolean值
      */
-    public static void storeBoolean(byte[] memory, int offset, int value) {
+    static void storeBoolean(byte[] memory, int offset, int value) {
         for (int i = 0; i < Type.TYPE_BOOLEAN.getTypeWidth(); i++) {
             System.out.println((value >> (8 * i) & 0xff));
             memory[offset + i] = (byte) (value >> (8 * i) & 0xff);
@@ -71,7 +71,7 @@ public abstract class ByteUtil {
      * @param offset 地址偏移量
      * @return int值
      */
-    public static int loadReference(byte[] memory, int offset) {
+    static int loadReference(byte[] memory, int offset) {
         int res = 0;
         for (int i = 0; i < Type.REFERENCE_TYPE_WIDTH; i++) {
             res |= (memory[offset + i] & 0xff) << (8 * i);
@@ -86,7 +86,7 @@ public abstract class ByteUtil {
      * @param offset 地址偏移量
      * @param value  int值
      */
-    public static void storeReference(byte[] memory, int offset, int value) {
+    static void storeReference(byte[] memory, int offset, int value) {
         for (int i = 0; i < Type.REFERENCE_TYPE_WIDTH; i++) {
             memory[offset + i] = (byte) (value >> (8 * i) & 0xff);
         }

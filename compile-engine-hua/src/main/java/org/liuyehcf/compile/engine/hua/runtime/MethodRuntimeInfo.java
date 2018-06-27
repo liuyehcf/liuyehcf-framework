@@ -14,7 +14,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
  * @author hechenfeng
  * @date 2018/6/25
  */
-public class MethodRuntimeInfo {
+class MethodRuntimeInfo {
 
     /**
      * Hua编译后的中间形式
@@ -96,47 +96,47 @@ public class MethodRuntimeInfo {
         }
     }
 
-    public OperatorStack getOperatorStack() {
+    void setResult(Object result) {
+        this.result = result;
+    }
+
+    OperatorStack getOperatorStack() {
         return operatorStack;
     }
 
-    public void increaseCodeOffset() {
+    void increaseCodeOffset() {
         codeOffset++;
     }
 
-    public void setCodeOffset(int codeOffset) {
+    void setCodeOffset(int codeOffset) {
         this.codeOffset = codeOffset;
     }
 
-    public void finishMethod() {
+    void finishMethod() {
         isFinished = true;
     }
 
-    public int loadInt(int order) {
+    int loadInt(int order) {
         return ByteUtil.loadInt(stackMemory[order], 0);
     }
 
-    public void storeInt(int order, int value) {
+    void storeInt(int order, int value) {
         ByteUtil.storeInt(stackMemory[order], 0, value);
     }
 
-    public int loadBoolean(int order) {
+    int loadBoolean(int order) {
         return ByteUtil.loadBoolean(stackMemory[order], 0);
     }
 
-    public void storeBoolean(int order, int value) {
+    void storeBoolean(int order, int value) {
         ByteUtil.storeBoolean(stackMemory[order], 0, value);
     }
 
-    public int loadReference(int order) {
+    int loadReference(int order) {
         return ByteUtil.loadReference(stackMemory[order], 0);
     }
 
-    public void storeReference(int order, int value) {
+    void storeReference(int order, int value) {
         ByteUtil.storeReference(stackMemory[order], 0, value);
-    }
-
-    public void setResult(Object result) {
-        this.result = result;
     }
 }

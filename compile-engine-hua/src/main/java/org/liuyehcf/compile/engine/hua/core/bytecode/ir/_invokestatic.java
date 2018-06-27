@@ -1,6 +1,8 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.ir;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodSignature;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
@@ -38,6 +40,7 @@ public class _invokestatic extends Invoke {
     @Override
     public void operate(RuntimeContext context) {
         MethodSignature methodSignature = MethodSignature.parse(context.getConstant(constantPoolOffset));
+        MethodInfo methodInfo = context.getMethodInfoByMethodSignature(methodSignature);
 
         int paramSize = methodSignature.getTypeDescriptions().length;
 
@@ -46,7 +49,12 @@ public class _invokestatic extends Invoke {
             args[i] = context.pop();
         }
 
-        context.invoke(methodSignature, args);
+        Object result = context.invoke(methodSignature, args);
+        Type resultType = methodInfo.getResultType();
+
+        if (!Type.TYPE_VOID.equals(resultType)) {
+            context.push(result);
+        }
 
         context.increaseCodeOffset();
     }

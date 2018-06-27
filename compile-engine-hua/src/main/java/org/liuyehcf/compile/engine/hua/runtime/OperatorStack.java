@@ -20,9 +20,4 @@ public class OperatorStack {
     public <T> T pop() {
         return (T) stack.pop();
     }
-
-    @SuppressWarnings("unchecked")
-    public <T> T peek() {
-        return (T) stack.peek();
-    }
 }

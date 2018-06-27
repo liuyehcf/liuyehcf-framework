@@ -1,6 +1,7 @@
 package org.liuyehcf.compile.engine.hua.runtime;
 
 import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
+import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodSignature;
 import org.liuyehcf.compile.engine.hua.core.SystemMethod;
 
@@ -42,7 +43,21 @@ public class RuntimeContext {
         }
     }
 
-    public void exitMethod() {
+    public MethodInfo getMethodInfoByMethodSignature(MethodSignature methodSignature) {
+        return intermediateInfo.getMethodInfoTable().getMethodByMethodSignature(methodSignature);
+    }
+
+    public void normalReturn() {
+        currentMethod.finishMethod();
+    }
+
+    public void intReturn(int value) {
+        setResult(value);
+        currentMethod.finishMethod();
+    }
+
+    public void referenceReturn(int reference) {
+        setResult(reference);
         currentMethod.finishMethod();
     }
 

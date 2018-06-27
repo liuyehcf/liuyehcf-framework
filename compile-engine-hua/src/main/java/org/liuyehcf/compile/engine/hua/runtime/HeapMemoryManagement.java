@@ -31,11 +31,11 @@ public class HeapMemoryManagement {
      * 分配内存
      *
      * @param width 类型宽度
-     * @param dim   维度
+     * @param count 连续元素的个数
      * @return 起始地址
      */
-    public static int allocate(int width, int dim) {
-        int total = width * dim;
+    public static int allocate(int width, int count) {
+        int total = width * count;
 
         /*
          * 宽度为0时，分配一个byte

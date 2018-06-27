@@ -26,13 +26,16 @@ public class MethodSignature {
     private final String signature;
 
     MethodSignature(String methodName, String[] typeDescriptions) {
+        if (typeDescriptions == null) {
+            typeDescriptions = new String[]{};
+        }
         this.methodName = methodName;
         this.typeDescriptions = typeDescriptions;
 
         StringBuilder sb = new StringBuilder();
         sb.append(methodName)
                 .append('(');
-        if (typeDescriptions != null && typeDescriptions.length != 0) {
+        if (typeDescriptions.length != 0) {
             sb.append(typeDescriptions[0]);
             for (int i = 1; i < typeDescriptions.length; i++) {
                 sb.append(',')
@@ -49,8 +52,12 @@ public class MethodSignature {
         int indexOfRightSmallParenthesis = methodSignature.indexOf(')');
 
         String methodName = methodSignature.substring(0, indexOfLeftSmallParenthesis);
-        String[] typeDescriptions = methodSignature.substring(indexOfLeftSmallParenthesis + 1, indexOfRightSmallParenthesis).split(",");
 
+        if (methodSignature.endsWith("()")) {
+            return new MethodSignature(methodName, null);
+        }
+
+        String[] typeDescriptions = methodSignature.substring(indexOfLeftSmallParenthesis + 1, indexOfRightSmallParenthesis).split(",");
         return new MethodSignature(methodName, typeDescriptions);
     }
 

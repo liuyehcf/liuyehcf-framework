@@ -24,6 +24,7 @@ public class _ireturn extends Return {
 
     @Override
     public void operate(RuntimeContext context) {
-
+        int value = context.pop();
+        context.intReturn(value);
     }
 }

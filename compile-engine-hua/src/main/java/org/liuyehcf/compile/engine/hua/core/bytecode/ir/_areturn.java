@@ -24,6 +24,7 @@ public class _areturn extends Return {
 
     @Override
     public void operate(RuntimeContext context) {
-
+        int reference = context.pop();
+        context.referenceReturn(reference);
     }
 }
