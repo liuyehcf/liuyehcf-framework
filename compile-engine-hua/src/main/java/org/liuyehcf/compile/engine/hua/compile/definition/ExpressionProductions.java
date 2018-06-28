@@ -1162,7 +1162,7 @@ abstract class ExpressionProductions {
                     ),
                     /*
                      * (5) <postfix expression> → sizeof <expression name>
-                     * 新增
+                     * NEW
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(POSTFIX_EXPRESSION),
