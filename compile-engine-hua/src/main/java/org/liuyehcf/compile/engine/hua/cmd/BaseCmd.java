@@ -20,6 +20,8 @@ class BaseCmd {
 
     private final List<OptInfo> optInfoList = new ArrayList<>();
 
+    private int argIndex = 0;
+
     BaseCmd(String[] args) {
         this.args = args;
         registerOption("h", "help", false, false, "help", (optValue) -> {
@@ -47,11 +49,25 @@ class BaseCmd {
         optInfoList.forEach(
                 (optInfo -> {
                     if (cmd.hasOption(optInfo.opt)) {
-                        String optValue = cmd.getOptionValue(optInfo.opt);
-                        optInfo.optAction.execute(optValue);
+                        if (optInfo.hasArg) {
+                            String optValue = cmd.getOptionValue(optInfo.opt);
+                            optInfo.optAction.execute(optValue);
+                            argIndex++;
+                        }
+                        argIndex++;
                     }
                 })
         );
+    }
+
+    String[] getRemainArgs() {
+        String[] remainArgs = new String[args.length - argIndex];
+
+        for (int i = 0; i < remainArgs.length; i++) {
+            remainArgs[i] = args[argIndex + i];
+        }
+
+        return remainArgs;
     }
 
     /**

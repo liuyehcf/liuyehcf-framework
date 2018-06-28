@@ -57,6 +57,7 @@ crashlytics-build.properties
 # serialize
 
 *.obj
+*.jar
 
 # special pom file
 

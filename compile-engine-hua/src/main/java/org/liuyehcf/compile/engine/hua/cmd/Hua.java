@@ -89,7 +89,7 @@ public class Hua extends BaseCmd {
     private void execute() {
         RuntimeDaemon daemon = new RuntimeDaemon(intermediateInfo);
 
-        daemon.doExecute();
+        daemon.doExecute(getRemainArgs());
     }
 
 }
