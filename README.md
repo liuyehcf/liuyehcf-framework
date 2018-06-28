@@ -64,7 +64,7 @@ __[编译原理请移步博客](https://liuyehcf.github.io/categories/%E7%BC%96%
 
 ## 编译引擎介绍
 
-`compile-engine-core`主要包含以下几个部分
+`compile-engine-core`模块主要包含以下几个部分
 
 1. 文法定义（仅针对2-型文法以及3-型文法）
     * `Symbol`：文法符号，包括终结符和非终结符
@@ -92,6 +92,25 @@ __[编译原理请移步博客](https://liuyehcf.github.io/categories/%E7%BC%96%
 ## hua语言
 
 HuaCompiler继承了LALR分析器，其文法定义参照[Java BNF定义](http://www.daimi.au.dk/dRegAut/JavaBNF.html)
+1. hua属于面向过程的语言，不支持类的定义
+1. 基本语法与java十分相似
+1. 由于面向过程，因此增加一个运算符`sizeof`用于计算数组大小
+
+`compile-engine-hua`模块主要分为以下几个部分
+1. 文法定义，包路径为`org.liuyehcf.compile.engine.hua.compile.definition`
+1. 与文法定义相关的语义动作，包路径为`org.liuyehcf.compile.engine.hua.compile.definition.semantic`
+1. 字节码定义，这里的字节码大部分与java对标，且含义完全一致。部分有区别的指令如下
+    * 加载int、boolean、char类型的常量，统一用iconst指令，与java有所区别
+    * invokestatic指令
+    * sizeof指令，新增的
+1. 运行环境，这部分比较简单，主要就是能够执行编译后的指令序列即可
+    * 内存管理，一开始分配一定大小的内存空间（byte数组），没有垃圾回收机制
+    * 系统方法，封装了Java的部分能力，主要是标准输STD OUT
+    * 与Java类似，每个方法执行过程中，会有一个操作数栈
+    * 数组的内存在堆中分配，其他变量在栈中分配
+    * 对数组的地址进行封装，记录数组的大小
+1. 命令行
+    * 利用三方库`commons-cli`
 
 # 示例
 
@@ -227,7 +246,7 @@ void main(char[][] args){
 }
 ```
 
-执行`huac -f test.hua`，在当前路径下生成`test.hclass`
+执行`huac -f test.hua`，在当前路径下生成`test.hclass`。（第一次编译时需要生成状态自动机，会比较慢，大约10s左右）
 
 执行`huap -f test.hclass`，得到如下输出
 

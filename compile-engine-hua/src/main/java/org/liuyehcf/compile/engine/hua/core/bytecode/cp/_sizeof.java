@@ -48,4 +48,9 @@ public class _sizeof extends Compute {
     public Object[] getOperators() {
         return new Object[]{order};
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " " + order;
+    }
 }
