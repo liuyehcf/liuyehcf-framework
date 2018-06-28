@@ -69,7 +69,7 @@ public class TestLexicalAnalyzer {
         assertTrue(iterator.hasNext());
         assertEquals("'1'", iterator.next().getValue());
         assertTrue(iterator.hasNext());
-        assertEquals("'\\''", iterator.next().getValue());
+        assertEquals("'\''", iterator.next().getValue());
         assertFalse(iterator.hasNext());
     }
 
@@ -86,10 +86,6 @@ public class TestLexicalAnalyzer {
         assertTrue(iterator.hasNext());
         assertEquals("\"asdfasdf\"", iterator.next().getValue());
         assertTrue(iterator.hasNext());
-        assertEquals("\"\\n\"", iterator.next().getValue());
-        assertTrue(iterator.hasNext());
-        assertEquals("\"\\\"\"", iterator.next().getValue());
-        assertFalse(iterator.hasNext());
     }
 
 }

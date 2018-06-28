@@ -2,10 +2,12 @@ package org.liuyehcf.compile.engine.core.cfg;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.MorphemeType;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
-import org.liuyehcf.compile.engine.core.utils.SetUtils;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +22,7 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
     /**
      * 允许转义的字符
      */
-    private static final Set<Character> ESCAPE_CHARS = SetUtils.of('a', 'b', 'f', 'n', 'r', 't', 'v', '\\', '\'', '"', '0');
+    private static final Map<Character, Integer> ESCAPE_CHARS;
 
     /**
      * Token对应的词素说明
@@ -245,10 +247,10 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
                      * 如果是'\n'这种转义字符
                      */
                     if (1 < remainInput.length() && remainInput.charAt(1) == '\\') {
-                        if (3 < remainInput.length() && ESCAPE_CHARS.contains(remainInput.charAt(2)) && remainInput.charAt(3) == '\'') {
+                        if (3 < remainInput.length() && ESCAPE_CHARS.containsKey(remainInput.charAt(2)) && remainInput.charAt(3) == '\'') {
                             canBreak = true;
                             hasNext = true;
-                            nextToken = new Token(charId, remainInput.substring(0, 4));
+                            nextToken = new Token(charId, "\'" + (char) (int) ESCAPE_CHARS.get(remainInput.charAt(2)) + "\'");
                             index += 4;
                         } else {
                             canBreak = true;
@@ -277,16 +279,19 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
                 if (stringId != null && 0 < remainInput.length() && remainInput.charAt(0) == '"') {
                     int i = 1;
                     boolean reachRight = false;
+                    StringBuilder sb = new StringBuilder();
+                    sb.append('"');
                     while (!reachRight && i < remainInput.length()) {
                         /*
                          * 转义字符
                          */
                         if (remainInput.charAt(i) == '\\') {
-                            if (i + 1 >= remainInput.length() || !ESCAPE_CHARS.contains(remainInput.charAt(i + 1))) {
+                            if (i + 1 >= remainInput.length() || !ESCAPE_CHARS.containsKey(remainInput.charAt(i + 1))) {
                                 canBreak = true;
                                 hasNext = false;
                                 break;
                             }
+                            sb.append(ESCAPE_CHARS.get(remainInput.charAt(i + 1)));
                             i += 2;
                         }
                         /*
@@ -296,13 +301,15 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
                             reachRight = true;
                             canBreak = true;
                             hasNext = true;
-                            nextToken = new Token(stringId, remainInput.substring(0, i + 1));
+                            sb.append('"');
+                            nextToken = new Token(stringId, sb.toString());
                             index += i + 1;
                         }
                         /*
                          * 普通字符
                          */
                         else {
+                            sb.append(remainInput.charAt(i));
                             i++;
                         }
                     }
@@ -364,5 +371,18 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
 
             return hasNext;
         }
+    }
+
+    static {
+        ESCAPE_CHARS = new HashMap<>();
+        ESCAPE_CHARS.put('b', 8);
+        ESCAPE_CHARS.put('f', 12);
+        ESCAPE_CHARS.put('n', 10);
+        ESCAPE_CHARS.put('r', 13);
+        ESCAPE_CHARS.put('t', 9);
+        ESCAPE_CHARS.put('\\', 92);
+        ESCAPE_CHARS.put('\'', 39);
+        ESCAPE_CHARS.put('\"', 34);
+        ESCAPE_CHARS.put('0', 0);
     }
 }
