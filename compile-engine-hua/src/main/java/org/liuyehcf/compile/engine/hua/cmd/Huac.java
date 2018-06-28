@@ -19,11 +19,6 @@ import static org.liuyehcf.compile.engine.hua.core.io.HClassConstant.HCLASS_SUFF
 public class Huac extends BaseCmd {
 
     /**
-     * 命令行参数
-     */
-    private String[] args;
-
-    /**
      * 源文件路径
      */
     private String filePath;
@@ -44,20 +39,9 @@ public class Huac extends BaseCmd {
     private HuaCompiler huaCompiler;
 
     private Huac(String[] args) {
-        this.args = args;
+        super(args);
         registerOption("f", "source", false, true, "Source file path", (optValue) -> filePath = optValue);
         registerOption("d", "target", false, true, "Target directory path", (optValue) -> targetPath = optValue);
-    }
-
-    private void init() throws ParseException {
-        parse(args);
-
-        check();
-
-        String[] segments = filePath.split(java.io.File.separator);
-        this.fileName = segments[segments.length - 1].substring(0, segments[segments.length - 1].length() - 4);
-
-        huaCompiler = HuaCompiler.getHuaCompiler();
     }
 
     public static void main(String[] args) {
@@ -70,6 +54,17 @@ public class Huac extends BaseCmd {
             System.err.println(e.getMessage());
             System.exit(0);
         }
+    }
+
+    private void init() throws ParseException {
+        parseCmd();
+
+        check();
+
+        String[] segments = filePath.split(java.io.File.separator);
+        this.fileName = segments[segments.length - 1].substring(0, segments[segments.length - 1].length() - 4);
+
+        huaCompiler = HuaCompiler.getHuaCompiler();
     }
 
     private void check() {

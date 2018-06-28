@@ -8,5 +8,10 @@ package org.liuyehcf.compile.engine.hua.cmd;
  */
 @FunctionalInterface
 public interface OptAction {
+    /**
+     * 选项执行的动作
+     *
+     * @param optValue 选项参数值
+     */
     void execute(String optValue);
 }

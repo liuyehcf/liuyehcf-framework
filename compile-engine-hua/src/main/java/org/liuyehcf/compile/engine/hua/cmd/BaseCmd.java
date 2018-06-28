@@ -13,9 +13,23 @@ import java.util.List;
  */
 class BaseCmd {
 
+    /**
+     * 命令行参数
+     */
+    private final String[] args;
+
     private final List<OptInfo> optInfoList = new ArrayList<>();
 
-    void parse(String[] args) throws ParseException {
+    BaseCmd(String[] args) {
+        this.args = args;
+        registerOption("h", "help", false, false, "help", (optValue) -> {
+            System.out.println("Options:");
+            optInfoList.forEach((optInfo -> System.out.format("\t%-1s,%-10s%-20s\n", optInfo.opt, optInfo.longOpt, optInfo.description)));
+            System.exit(0);
+        });
+    }
+
+    void parseCmd() throws ParseException {
         Options options = new Options();
 
         optInfoList.forEach((optInfo -> {
@@ -28,11 +42,7 @@ class BaseCmd {
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
-        try {
-            cmd = parser.parse(options, args);
-        } catch (ParseException e) {
-            throw e;
-        }
+        cmd = parser.parse(options, args);
 
         optInfoList.forEach(
                 (optInfo -> {
@@ -56,14 +66,6 @@ class BaseCmd {
      */
     void registerOption(String opt, String longOpt, boolean isRequired, boolean hasArg, String description, OptAction optAction) {
         optInfoList.add(new OptInfo(opt, longOpt, isRequired, hasArg, description, optAction));
-    }
-
-    BaseCmd() {
-        registerOption("h", "help", false, false, "help", (optValue) -> {
-            System.out.println("Options:");
-            optInfoList.forEach((optInfo -> System.out.format("\t%-1s,%-10s%-20s\n", optInfo.opt, optInfo.longOpt, optInfo.description)));
-            System.exit(0);
-        });
     }
 
     private static final class OptInfo {

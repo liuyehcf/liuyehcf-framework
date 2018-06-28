@@ -1,10 +1,12 @@
 package org.liuyehcf.compile.engine.hua.cmd;
 
+import org.apache.commons.cli.ParseException;
 import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.core.io.HuaClassInputStream;
 import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeDaemon;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -14,31 +16,34 @@ import java.io.IOException;
  * @author hechenfeng
  * @date 2018/6/24
  */
-public class Hua {
+public class Hua extends BaseCmd {
 
     /**
      * 字节码文件路径
      */
-    private final String filePath;
+    private String filePath;
 
     /**
      * Hua编译后的中间形式
      */
     private IntermediateInfo intermediateInfo;
 
-    private Hua(String filePath) {
-        this.filePath = filePath;
+    private Hua(String[] args) {
+        super(args);
+        registerOption("f", "source", false, true, "Source(.hclass) file path", (optValue) -> filePath = optValue);
     }
 
     public static void main(String[] args) {
-        if (args == null || args.length != 1 || args[0] == null) {
-            System.err.println("请输入 '.hclass' 文件的路径");
-            return;
+        Hua hua = new Hua(args);
+
+        try {
+            hua.init();
+            hua.run();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            System.exit(0);
         }
 
-        Hua hua = new Hua(args[0]);
-
-        hua.run();
     }
 
     static IntermediateInfo load(String filePath) {
@@ -51,6 +56,24 @@ public class Hua {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private void init() throws ParseException {
+        parseCmd();
+
+        check();
+    }
+
+    private void check() {
+        if (filePath == null) {
+            throw new RuntimeException("Please input the source file path by -f option, use -help see more options");
+        }
+
+        File file = new File(filePath);
+
+        if (!file.exists() || !file.isFile()) {
+            throw new RuntimeException("Please input the source file path by -f option, use -help see more options");
+        }
     }
 
     private void run() {

@@ -20,11 +20,6 @@ import static org.liuyehcf.compile.engine.hua.cmd.Hua.load;
 public class Huap extends BaseCmd {
 
     /**
-     * 命令行参数
-     */
-    private String[] args;
-
-    /**
      * 字节码文件路径
      */
     private String filePath;
@@ -35,7 +30,7 @@ public class Huap extends BaseCmd {
     private IntermediateInfo intermediateInfo;
 
     private Huap(String[] args) {
-        this.args = args;
+        super(args);
         registerOption("f", "source", false, true, "Source(.hclass) file path", (optValue) -> filePath = optValue);
     }
 
@@ -53,8 +48,12 @@ public class Huap extends BaseCmd {
     }
 
     private void init() throws ParseException {
-        super.parse(args);
+        parseCmd();
 
+        check();
+    }
+
+    private void check() {
         if (filePath == null) {
             throw new RuntimeException("Please input the source file path by -f option, use -help see more options");
         }
