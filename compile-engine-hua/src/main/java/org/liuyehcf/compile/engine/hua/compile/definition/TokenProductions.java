@@ -52,8 +52,8 @@ abstract class TokenProductions {
 
     public static final String REGEX_NON_ZERO_DIGIT = "@nonZeroDigit";
     public static final String REGEX_INTEGER_TYPE_SUFFIX = "@integerTypeSuffix";
-    public static final String REGEX_CHARACTER_LITERAL = "@regexCharacterLiteral";
-    public static final String REGEX_STRING_LITERAL = "@regexStringLiteral";
+    public static final String SPECIAL_CHARACTER_LITERAL = "#CharacterLiteral";
+    public static final String SPECIAL_STRING_LITERAL = "#StringLiteral";
 
     public static final Production[] PRODUCTIONS = {
             /*
@@ -426,7 +426,7 @@ abstract class TokenProductions {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(CHARACTER_LITERAL),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_CHARACTER_LITERAL)
+                                    Symbol.createTerminator(SPECIAL_CHARACTER_LITERAL)
                             ),
                             new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)
@@ -442,7 +442,7 @@ abstract class TokenProductions {
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STRING_LITERAL),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_STRING_LITERAL)
+                                    Symbol.createTerminator(SPECIAL_STRING_LITERAL)
                             ),
                             new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)

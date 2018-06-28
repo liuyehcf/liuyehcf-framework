@@ -94,8 +94,6 @@ public abstract class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_NUMBER_0), "0")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_NON_ZERO_DIGIT), "[1-9]")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
-            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_CHARACTER_LITERAL), "\'[^'\\\\]\'")
-            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_STRING_LITERAL), "\"[^\"\\\\]*\"")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_IF), "if")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_ELSE), "else")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_WHILE), "while")
@@ -110,5 +108,7 @@ public abstract class GrammarDefinition {
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_RETURN), "return")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_TRUE), "true")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_FALSE), "false")
+            .addCharMorpheme(Symbol.createTerminator(SPECIAL_CHARACTER_LITERAL))
+            .addStringMorpheme(Symbol.createTerminator(SPECIAL_STRING_LITERAL))
             .build();
 }
