@@ -132,8 +132,7 @@ public class VariableSymbolTable {
         return null;
     }
 
-    @Override
-    public String toString() {
+    public String toJSONString() {
         Map<String, Map<String, VariableSymbol>> tableJSONMap = new LinkedHashMap<>(16);
         nameMap.forEach((key, value) -> tableJSONMap.put("[" + key.getId() + ", " + key.getPid() + "]", value));
         return JSON.toJSONString(tableJSONMap, SerializerFeature.DisableCircularReferenceDetect);

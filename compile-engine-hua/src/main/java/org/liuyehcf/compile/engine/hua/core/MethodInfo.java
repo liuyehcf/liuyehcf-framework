@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.core;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
 
@@ -21,30 +22,39 @@ public class MethodInfo {
     /**
      * 符号表
      */
+    @JSONField(serialize = false)
     private final VariableSymbolTable variableSymbolTable = new VariableSymbolTable();
+
     /**
      * 字节码
      */
     private List<ByteCode> byteCodes = new ArrayList<>();
+
     /**
      * 方法名称
      */
     private String methodName;
+
     /**
      * 返回类型
      */
     private Type resultType;
+
     /**
      * 参数类型
      */
     private List<Type> paramTypeList;
+
     /**
      * 最大序号（用于分配栈内存）
      */
+    @JSONField(serialize = false)
     private int maxOrder;
+
     /**
      * 符号序号栈
      */
+    @JSONField(serialize = false)
     private LinkedList<Integer> orderStack = new LinkedList<>();
 
     /**
@@ -165,6 +175,7 @@ public class MethodInfo {
         maxOrder = Math.max(maxOrder, top + 1);
     }
 
+    @JSONField(serialize = false)
     public int getOrder() {
         Integer peek = orderStack.peek();
         assertNotNull(peek);

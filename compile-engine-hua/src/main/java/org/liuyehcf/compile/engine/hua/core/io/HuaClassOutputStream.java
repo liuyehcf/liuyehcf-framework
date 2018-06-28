@@ -125,8 +125,9 @@ public class HuaClassOutputStream extends DataOutputStream {
     }
 
     private void writeString(String s) throws IOException {
-        writeInt(s.length());
-        write(s.getBytes());
+        byte[] bytes = s.getBytes();
+        writeInt(bytes.length);
+        write(bytes);
     }
 
     private void writeType(Type type) throws IOException {

@@ -41,7 +41,7 @@ public class HuaClassInputStream extends DataInputStream {
         }
 
         /*
-         * 2. 读魔数
+         * 2. 读常量池
          */
         ConstantPool constantPool = readConstantPool();
 

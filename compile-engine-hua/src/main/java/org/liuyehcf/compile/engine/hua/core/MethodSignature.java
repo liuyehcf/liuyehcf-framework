@@ -85,4 +85,11 @@ public class MethodSignature {
     public int hashCode() {
         return Objects.hash(signature);
     }
+
+    @Override
+    public String toString() {
+        return "MethodSignature{" +
+                "signature='" + signature + '\'' +
+                '}';
+    }
 }

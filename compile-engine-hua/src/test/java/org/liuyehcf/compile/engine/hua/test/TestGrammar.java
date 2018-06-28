@@ -80,7 +80,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -97,7 +97,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -114,7 +114,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -131,7 +131,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_imul\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -148,7 +148,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_idiv\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -165,7 +165,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_irem\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -182,7 +182,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ishl\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -199,7 +199,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ishr\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -216,7 +216,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iushr\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -233,7 +233,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iand\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -250,7 +250,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ior\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -267,7 +267,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ixor\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -284,7 +284,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":5,\"name\":\"_if_icmpne\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -301,7 +301,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":5,\"name\":\"_if_icmpeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -318,7 +318,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":5,\"name\":\"_if_icmpge\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -335,7 +335,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":5,\"name\":\"_if_icmple\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -352,7 +352,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":5,\"name\":\"_if_icmpgt\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -369,7 +369,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":5,\"name\":\"_if_icmplt\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -385,7 +385,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":8,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":11,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":11,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":1},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":13,\"name\":\"_goto\"},{\"increment\":-1,\"name\":\"_iinc\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -407,7 +407,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":6,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":16,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":12,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}],\"func2(boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":18,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":9,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":18,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -428,7 +428,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":6,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":16,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":12,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func2(boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":18,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":9,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":18,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -448,7 +448,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -467,7 +467,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int[],int[][][])\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_imul\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_imul\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_imul\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_imul\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -486,7 +486,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int[],int[][][])\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_idiv\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_idiv\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_idiv\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_idiv\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -505,7 +505,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int[],int[][][])\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_irem\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_irem\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_irem\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_irem\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -524,7 +524,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int[],int[][][])\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iadd\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iadd\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_iadd\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -543,7 +543,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int[],int[][][])\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_isub\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_isub\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_isub\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -562,7 +562,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int[],int[][][])\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_ishl\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_ishl\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_ishl\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_ishl\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -581,7 +581,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int[],int[][][])\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_ishr\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_ishr\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_ishr\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_ishr\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -600,7 +600,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int[],int[][][])\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iushr\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iushr\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iushr\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_iushr\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -619,7 +619,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int[],int[][][])\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iand\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iand\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iand\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_iand\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -638,7 +638,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int[],int[][][])\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_ixor\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_ixor\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_ixor\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_ixor\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -657,7 +657,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int[],int[][][])\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_ior\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_ior\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_ior\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iaload\"},{\"name\":\"_ior\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -673,7 +673,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -689,7 +689,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int,int,int,int,int,int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_imul\"},{\"name\":\"_iload\",\"order\":4},{\"name\":\"_idiv\"},{\"name\":\"_iload\",\"order\":5},{\"name\":\"_irem\"},{\"name\":\"_isub\"},{\"name\":\"_iload\",\"order\":6},{\"name\":\"_iand\"},{\"name\":\"_iload\",\"order\":7},{\"name\":\"_ixor\"},{\"name\":\"_iload\",\"order\":8},{\"name\":\"_ior\"},{\"name\":\"_istore\",\"order\":9},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -705,7 +705,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int,int,int,int,int,int,int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_imul\"},{\"name\":\"_isub\"},{\"name\":\"_iload\",\"order\":4},{\"name\":\"_idiv\"},{\"name\":\"_iload\",\"order\":5},{\"name\":\"_iload\",\"order\":6},{\"name\":\"_iand\"},{\"name\":\"_irem\"},{\"name\":\"_iload\",\"order\":7},{\"name\":\"_ixor\"},{\"name\":\"_iload\",\"order\":8},{\"name\":\"_ior\"},{\"name\":\"_istore\",\"order\":9},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -724,7 +724,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int)\":[{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":-1,\"name\":\"_iinc\",\"order\":0},{\"increment\":-1,\"name\":\"_iinc\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -742,7 +742,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int)\":[{\"increment\":-1,\"name\":\"_iinc\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"increment\":-1,\"name\":\"_iinc\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iadd\"},{\"increment\":-1,\"name\":\"_iinc\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iadd\"},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -760,7 +760,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int)\":[{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_istore\",\"order\":1},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iadd\"},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -778,7 +778,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int)\":[{\"name\":\"_iload\",\"order\":0},{\"increment\":-1,\"name\":\"_iinc\",\"order\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iload\",\"order\":0},{\"increment\":-1,\"name\":\"_iinc\",\"order\":0},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"order\":1},{\"increment\":-1,\"name\":\"_iinc\",\"order\":1},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iadd\"},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -796,7 +796,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int)\":[{\"name\":\"_iload\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iload\",\"order\":1},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -812,7 +812,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func()\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":100000},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -828,7 +828,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -845,7 +845,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func()\":[{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":97},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -861,7 +861,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func()\":[{\"constantPoolOffset\":13,\"name\":\"_ldc\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -877,7 +877,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int[])\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iaload\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -893,7 +893,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int[][],int)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":6},{\"name\":\"_iaload\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -909,7 +909,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(char[][],char)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":6},{\"name\":\"_caload\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -925,7 +925,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean[][],boolean)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":6},{\"name\":\"_baload\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -946,7 +946,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(int[])\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":10000},{\"name\":\"_iastore\"},{\"name\":\"_return\"}],\"func2(int[])\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":100},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_isub\"},{\"name\":\"_imul\"},{\"name\":\"_iaload\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -962,7 +962,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int[][],int)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -981,7 +981,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int[][][][])\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"int[][]\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"int[][][]\"},{\"name\":\"_aastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -997,7 +997,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(char[][])\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":98},{\"name\":\"_castore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1013,7 +1013,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean[][])\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_bastore\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1038,7 +1038,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":4,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}],\"func2(boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":5,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":1},{\"codeOffset\":7,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1079,7 +1079,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":4,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}],\"func2(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}],\"func3(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":4,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}],\"func4(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1099,7 +1099,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,boolean,boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":6,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":11,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1119,7 +1119,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,boolean,boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":4,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":8,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":11,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":13,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1135,7 +1135,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,boolean,boolean,boolean)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":4,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":8,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1158,7 +1158,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,boolean,boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1178,7 +1178,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,boolean,boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1200,7 +1200,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,boolean,boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1280,7 +1280,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func2(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}],\"func3(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"codeOffset\":11,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func4(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func5(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":12,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func6(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1328,7 +1328,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":8,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}],\"func2(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func3(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func4(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":11,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1470,7 +1470,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":5,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func2(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":5,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}],\"func3(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":5,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}],\"func4(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":6},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":15,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":17,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}],\"func5(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":17,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":19,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":7},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":8},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":9},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}],\"func6(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":19,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":16,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":7},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":16,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":8},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":16,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":9},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":5},{\"codeOffset\":21,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func7(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":16,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":16,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":11,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":16,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":16,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}],\"func8(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":16,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":13,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":13,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":11,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":13,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"codeOffset\":18,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1500,7 +1500,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":15,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":8,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":10,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":12,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":13,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"codeOffset\":17,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}],\"func2(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":17,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":8,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":10,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":12,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":13,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1516,7 +1516,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,boolean,boolean,boolean)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":8,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":8,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":11,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1532,7 +1532,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,boolean,boolean,boolean)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":4,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":8,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":11,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1549,7 +1549,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,boolean,boolean,boolean)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":11,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":20,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":20,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":20,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":22,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":23,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1566,7 +1566,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,boolean,boolean,boolean)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":4,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":8,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":11,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1583,7 +1583,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,boolean,boolean,boolean)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":4,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":12,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":8,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":10,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":15,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1601,7 +1601,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1667,7 +1667,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}],\"func2(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}],\"func3(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func4(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":12,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":4,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func5(boolean,boolean,boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":12,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":2,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":4},{\"codeOffset\":4,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":5},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1685,7 +1685,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":0,\"name\":\"_if_icmplt\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1763,7 +1763,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":11,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_return\"}],\"func2(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":15,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_return\"}],\"func3(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":11,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}],\"func4(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":10,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}],\"func5(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":14,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}],\"func6(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":11,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"codeOffset\":13,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}],\"func7(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":13,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmplt\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":1},{\"codeOffset\":15,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1804,7 +1804,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func1(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":20,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":36,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":6,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":3,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":20},{\"codeOffset\":6,\"name\":\"_if_icmplt\"},{\"codeOffset\":3,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":100},{\"codeOffset\":36,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1000},{\"codeOffset\":36,\"name\":\"_if_icmpgt\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":23,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":23,\"name\":\"_if_icmpgt\"},{\"name\":\"_return\"}],\"func2(int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":23,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":20,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":6,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":0,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":20},{\"codeOffset\":6,\"name\":\"_if_icmplt\"},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":1},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1822,7 +1822,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int)\":[{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":0,\"name\":\"_goto\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1840,7 +1840,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":100},{\"codeOffset\":8,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1858,7 +1858,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_anewarray\",\"type\":\"int[][][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":6},{\"name\":\"_iconst\",\"value\":7},{\"expressionDimSize\":5,\"name\":\"_multianewarray\",\"type\":\"int[][][][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1876,7 +1876,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":100},{\"codeOffset\":13,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 
@@ -1939,7 +1939,7 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"exchange(int[],int,int)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iaload\"},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iaload\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iastore\"},{\"name\":\"_return\"}],\"partition(int[],int,int)\":[{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iaload\"},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_iload\",\"order\":5},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":25,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":5},{\"name\":\"_iaload\"},{\"name\":\"_iload\",\"order\":4},{\"codeOffset\":23,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":3},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iload\",\"order\":5},{\"constantPoolOffset\":12,\"name\":\"_invokestatic\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":5},{\"codeOffset\":10,\"name\":\"_goto\"},{\"name\":\"_aload\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":3},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iload\",\"order\":2},{\"constantPoolOffset\":12,\"name\":\"_invokestatic\"},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_ireturn\"}],\"sort(int[],int,int)\":[{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":20,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":2},{\"constantPoolOffset\":13,\"name\":\"_invokestatic\"},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"constantPoolOffset\":14,\"name\":\"_invokestatic\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_iload\",\"order\":2},{\"constantPoolOffset\":14,\"name\":\"_invokestatic\"},{\"name\":\"_return\"}],\"sort(int[],int)\":[{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"constantPoolOffset\":14,\"name\":\"_invokestatic\"},{\"name\":\"_return\"}],\"main()\":[{\"name\":\"_iconst\",\"value\":200},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":200},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_iconst\",\"value\":25},{\"constantPoolOffset\":9,\"name\":\"_invokestatic\"},{\"name\":\"_iastore\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":5,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":200},{\"codeOffset\":27,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iaload\"},{\"constantPoolOffset\":0,\"name\":\"_invokestatic\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":18,\"name\":\"_goto\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":200},{\"constantPoolOffset\":15,\"name\":\"_invokestatic\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":200},{\"codeOffset\":41,\"name\":\"_if_icmpge\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iaload\"},{\"constantPoolOffset\":0,\"name\":\"_invokestatic\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":32,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleString()
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
 }

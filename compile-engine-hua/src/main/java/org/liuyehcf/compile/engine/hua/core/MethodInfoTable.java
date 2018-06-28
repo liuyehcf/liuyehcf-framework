@@ -120,16 +120,13 @@ public class MethodInfoTable {
         return SYSTEM_METHOD_POOL.containsKey(signature);
     }
 
-    public String toSimpleString() {
+    public String toSimpleJSONString() {
         Map<String, Object> jsonMap = new LinkedHashMap<>();
-
         table.forEach((key, value) -> jsonMap.put(key.getSignature(), value.getByteCodes()));
-
         return JSON.toJSONString(jsonMap, SerializerFeature.DisableCircularReferenceDetect);
     }
 
-    @Override
-    public String toString() {
+    public String toDetailJSONString() {
         Map<String, MethodInfo> tableJSONMap = new LinkedHashMap<>(16);
         table.forEach((key, value) -> tableJSONMap.put(key.getSignature(), value));
         return JSON.toJSONString(tableJSONMap, SerializerFeature.DisableCircularReferenceDetect);
