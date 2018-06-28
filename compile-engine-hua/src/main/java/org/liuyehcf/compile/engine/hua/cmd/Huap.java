@@ -1,10 +1,12 @@
 package org.liuyehcf.compile.engine.hua.cmd;
 
+import org.apache.commons.cli.ParseException;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
 
+import java.io.File;
 import java.util.List;
 
 import static org.liuyehcf.compile.engine.hua.cmd.Hua.load;
@@ -15,31 +17,53 @@ import static org.liuyehcf.compile.engine.hua.cmd.Hua.load;
  * @author hechenfeng
  * @date 2018/6/24
  */
-public class Huap {
+public class Huap extends BaseCmd {
+
+    /**
+     * 命令行参数
+     */
+    private String[] args;
 
     /**
      * 字节码文件路径
      */
-    private final String filePath;
+    private String filePath;
 
     /**
      * Hua编译后的中间形式
      */
     private IntermediateInfo intermediateInfo;
 
-    public Huap(String filePath) {
-        this.filePath = filePath;
+    private Huap(String[] args) {
+        this.args = args;
+        registerOption("f", "source", false, true, "Source(.hclass) file path", (optValue) -> filePath = optValue);
     }
 
     public static void main(String[] args) {
-        if (args == null || args.length != 1 || args[0] == null) {
-            System.err.println("请输入 '.hclass' 文件的路径");
-            return;
+        Huap Huap = new Huap(args);
+
+        try {
+            Huap.init();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            System.exit(0);
         }
 
-        Huap Huap = new Huap(args[0]);
-
         Huap.parse();
+    }
+
+    private void init() throws ParseException {
+        super.parse(args);
+
+        if (filePath == null) {
+            throw new RuntimeException("Please input the source file path by -f option, use -help see more options");
+        }
+
+        File file = new File(filePath);
+
+        if (!file.exists() || !file.isFile()) {
+            throw new RuntimeException("Please input the source file path by -f option, use -help see more options");
+        }
     }
 
     private void parse() {

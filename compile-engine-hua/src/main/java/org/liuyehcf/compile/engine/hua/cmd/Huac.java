@@ -70,7 +70,6 @@ public class Huac extends BaseCmd {
             System.err.println(e.getMessage());
             System.exit(0);
         }
-
     }
 
     private void check() {
