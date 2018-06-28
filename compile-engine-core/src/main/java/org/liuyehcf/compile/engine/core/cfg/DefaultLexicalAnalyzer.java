@@ -261,7 +261,7 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
                     else if (2 < remainInput.length() && remainInput.charAt(1) != '\'' && remainInput.charAt(2) == '\'') {
                         canBreak = true;
                         hasNext = true;
-                        nextToken = new Token(charId, remainInput.substring(1, 2));
+                        nextToken = new Token(charId, remainInput.substring(0, 3));
                         index += 3;
                     }
                     /*
