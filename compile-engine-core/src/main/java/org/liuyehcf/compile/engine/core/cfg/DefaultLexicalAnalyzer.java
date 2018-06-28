@@ -291,7 +291,7 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
                                 hasNext = false;
                                 break;
                             }
-                            sb.append(ESCAPE_CHARS.get(remainInput.charAt(i + 1)));
+                            sb.append((char) (int) ESCAPE_CHARS.get(remainInput.charAt(i + 1)));
                             i += 2;
                         }
                         /*
