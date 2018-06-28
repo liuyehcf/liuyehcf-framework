@@ -15,6 +15,8 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
+ * 系统方法
+ *
  * @author hechenfeng
  * @date 2018/6/27
  */

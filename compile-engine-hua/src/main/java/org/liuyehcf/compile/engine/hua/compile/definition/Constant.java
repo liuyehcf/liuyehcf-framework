@@ -8,24 +8,21 @@ package org.liuyehcf.compile.engine.hua.compile.definition;
  */
 public abstract class Constant {
     /**
-     * type
+     * key words
      */
     public static final String NORMAL_BOOLEAN = "boolean";
     public static final String NORMAL_INT = "int";
     public static final String NORMAL_FLOAT = "float";
     public static final String NORMAL_CHAR = "char";
     public static final String NORMAL_VOID = "void";
-    public static final String COMPLEX_BOOLEAN_EXPRESSION = "complex_boolean_expression";
-
-    /**
-     * control
-     */
     public static final String NORMAL_IF = "if";
     public static final String NORMAL_ELSE = "else";
     public static final String NORMAL_WHILE = "while";
     public static final String NORMAL_FOR = "for";
     public static final String NORMAL_DO = "do";
     public static final String NORMAL_RETURN = "return";
+    public static final String NORMAL_NEW = "new";
+    public static final String NORMAL_LENGTH_OF = "lengthOf";
 
     /**
      * expression
@@ -66,7 +63,6 @@ public abstract class Constant {
     public static final String NORMAL_DOUBLE_MINUS = "--";
     public static final String NORMAL_LOGICAL_NOT = "!";
     public static final String NORMAL_BIT_REVERSED = "~";
-    public static final String NORMAL_NEW = "new";
 
     /**
      * literal

@@ -443,7 +443,7 @@ abstract class ProgramProductions {
 
             /*
              * <epsilon or formal parameter list>
-             * DIFFERENCE
+             * DIFFERENT
              */
             Production.create(
                     /*
