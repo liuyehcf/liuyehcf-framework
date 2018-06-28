@@ -2,12 +2,10 @@ package org.liuyehcf.compile.engine.core.cfg;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.MorphemeType;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
+import org.liuyehcf.compile.engine.core.utils.SetUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +16,12 @@ import java.util.regex.Pattern;
  * @date 2018/04/16
  */
 public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializable {
+
+    /**
+     * 允许转义的字符
+     */
+    private static final Set<Character> ESCAPE_CHARS = SetUtils.of('a', 'b', 'f', 'n', 'r', 't', 'v', '\\', '\'', '"', '0');
+
     /**
      * Token对应的词素说明
      */
@@ -28,9 +32,21 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
      */
     private final Map<String, Symbol> keyWords;
 
-    private DefaultLexicalAnalyzer(List<Morpheme> morphemes, Map<String, Symbol> keyWords) {
+    /**
+     * String对应的Symbol
+     */
+    private final Symbol stringId;
+
+    /**
+     * char对应的Symbol
+     */
+    private final Symbol charId;
+
+    private DefaultLexicalAnalyzer(List<Morpheme> morphemes, Map<String, Symbol> keyWords, Symbol stringId, Symbol charId) {
         this.morphemes = morphemes;
         this.keyWords = keyWords;
+        this.stringId = stringId;
+        this.charId = charId;
     }
 
     @Override
@@ -54,6 +70,16 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
          */
         private Map<String, Symbol> keyWords = new HashMap<>();
 
+        /**
+         * String对应的Symbol
+         */
+        private Symbol stringId;
+
+        /**
+         * char对应的Symbol
+         */
+        private Symbol charId;
+
         private Builder() {
 
         }
@@ -75,13 +101,23 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
             return addMorpheme(id, morpheme, MorphemeType.REGEX);
         }
 
+        public Builder addStringMorpheme(Symbol id) {
+            stringId = id;
+            return this;
+        }
+
+        public Builder addCharMorpheme(Symbol id) {
+            charId = id;
+            return this;
+        }
+
         private Builder addMorpheme(Symbol id, String morpheme, MorphemeType type) {
             tokenRegex.add(new Morpheme(id, morpheme, type));
             return this;
         }
 
         public DefaultLexicalAnalyzer build() {
-            return new DefaultLexicalAnalyzer(tokenRegex, keyWords);
+            return new DefaultLexicalAnalyzer(tokenRegex, keyWords, stringId, charId);
         }
 
     }
@@ -204,6 +240,75 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
 
             while (!canBreak) {
                 String remainInput = input.substring(index);
+                if (charId != null && 0 < remainInput.length() && remainInput.charAt(0) == '\'') {
+                    /*
+                     * 如果是'\n'这种转义字符
+                     */
+                    if (1 < remainInput.length() && remainInput.charAt(1) == '\\') {
+                        if (3 < remainInput.length() && ESCAPE_CHARS.contains(remainInput.charAt(2)) && remainInput.charAt(3) == '\'') {
+                            canBreak = true;
+                            hasNext = true;
+                            nextToken = new Token(charId, remainInput.substring(0, 4));
+                            index += 4;
+                        } else {
+                            canBreak = true;
+                            hasNext = false;
+                        }
+                    }
+                    /*
+                     * 普通非'的字符
+                     */
+                    else if (2 < remainInput.length() && remainInput.charAt(1) != '\'' && remainInput.charAt(2) == '\'') {
+                        canBreak = true;
+                        hasNext = true;
+                        nextToken = new Token(charId, remainInput.substring(1, 2));
+                        index += 3;
+                    }
+                    /*
+                     * 非法的字符
+                     */
+                    else {
+                        canBreak = true;
+                        hasNext = false;
+                    }
+                    continue;
+                }
+
+                if (stringId != null && 0 < remainInput.length() && remainInput.charAt(0) == '"') {
+                    int i = 1;
+                    boolean reachRight = false;
+                    while (!reachRight && i < remainInput.length()) {
+                        /*
+                         * 转义字符
+                         */
+                        if (remainInput.charAt(i) == '\\') {
+                            if (i + 1 >= remainInput.length() || !ESCAPE_CHARS.contains(remainInput.charAt(i + 1))) {
+                                canBreak = true;
+                                hasNext = false;
+                                break;
+                            }
+                            i += 2;
+                        }
+                        /*
+                         * "
+                         */
+                        else if (remainInput.charAt(i) == '"') {
+                            reachRight = true;
+                            canBreak = true;
+                            hasNext = true;
+                            nextToken = new Token(stringId, remainInput.substring(0, i + 1));
+                            index += i + 1;
+                        }
+                        /*
+                         * 普通字符
+                         */
+                        else {
+                            i++;
+                        }
+                    }
+                    continue;
+                }
+
                 for (Morpheme morpheme : morphemes) {
 
                     if (morpheme.getMorphemeType() == MorphemeType.REGEX) {
@@ -217,9 +322,9 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
                              * 如果仅为keyword，那么按照keyword处理
                              */
                             if (keyWords.containsKey(s)) {
-                                nextToken = new Token(keyWords.get(s), s, MorphemeType.NORMAL);
+                                nextToken = new Token(keyWords.get(s), s);
                             } else {
-                                nextToken = new Token(morpheme.getId(), s, morpheme.getMorphemeType());
+                                nextToken = new Token(morpheme.getId(), s);
                             }
                             index += s.length();
 
@@ -229,7 +334,7 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
                     } else {
                         if (remainInput.startsWith(morpheme.getValue())) {
                             hasNext = true;
-                            nextToken = new Token(morpheme.getId(), morpheme.getValue(), morpheme.getMorphemeType());
+                            nextToken = new Token(morpheme.getId(), morpheme.getValue());
                             index += morpheme.getValue().length();
 
                             canBreak = true;

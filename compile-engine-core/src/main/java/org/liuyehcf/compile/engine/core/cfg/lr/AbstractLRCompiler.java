@@ -922,15 +922,15 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
             if (tokenIterator.hasNext()) {
                 return tokenIterator.next();
             }
-            if (!tokenIterator.reachesEof()) {
-                throw new CompilerException("Cannot reach EOF");
-            } else {
+            if (tokenIterator.reachesEof()) {
                 if (!hasReachDollar) {
                     hasReachDollar = true;
                     return Token.DOLLAR;
                 } else {
                     throw new CompilerException("Reach EOF second time");
                 }
+            } else {
+                throw new CompilerException("Cannot reach EOF");
             }
         }
 
