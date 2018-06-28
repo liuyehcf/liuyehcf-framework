@@ -46,7 +46,7 @@ public class HuaClassInputStream extends DataInputStream {
         ConstantPool constantPool = readConstantPool();
 
         /*
-         * 3. 读方法信息
+         * 3. 读方法表
          */
         MethodInfoTable methodInfoTable = readMethodInfoTable();
 
@@ -59,7 +59,7 @@ public class HuaClassInputStream extends DataInputStream {
     private ConstantPool readConstantPool() throws IOException {
 
         /*
-         * 1. 读常量池大小
+         * 1. 读常量个数
          */
         int constantSize = readInt();
 

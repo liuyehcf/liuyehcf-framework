@@ -54,7 +54,7 @@ public class HuaClassOutputStream extends DataOutputStream {
      */
     private void writeConstantPoll(ConstantPool constantPool) throws IOException {
         /*
-         * 1. 写入常量个数
+         * 1. 写常量个数
          */
         writeInt(constantPool.getConstants().size());
 
@@ -74,7 +74,7 @@ public class HuaClassOutputStream extends DataOutputStream {
     private void writeMethodInfoTable(MethodInfoTable methodInfoTable) throws IOException {
 
         /*
-         * 1. 写入方法个数
+         * 1. 写方法数量
          */
         writeInt(methodInfoTable.getMethodInfoList().size());
 
