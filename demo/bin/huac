@@ -1,2 +1,1 @@
-
 java -classpath ${HUA_PATH}/compile-engine-hua-1.0-SNAPSHOT.jar org.liuyehcf.compile.engine.hua.cmd.Huac $*
