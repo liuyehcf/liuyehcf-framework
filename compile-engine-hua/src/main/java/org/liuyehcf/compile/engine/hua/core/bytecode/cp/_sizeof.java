@@ -4,14 +4,14 @@ import org.liuyehcf.compile.engine.hua.runtime.Reference;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
- * 计算引用的长度
+ * 计算数组大小
  * < before → after >
  * < arrayref → value >
  *
  * @author hechenfeng
  * @date 2018/6/28
  */
-public class _lengthof extends Compute {
+public class _sizeof extends Compute {
     /**
      * 唯一操作码
      */
@@ -27,7 +27,7 @@ public class _lengthof extends Compute {
      */
     private final int order;
 
-    public _lengthof(int order) {
+    public _sizeof(int order) {
         this.order = order;
     }
 

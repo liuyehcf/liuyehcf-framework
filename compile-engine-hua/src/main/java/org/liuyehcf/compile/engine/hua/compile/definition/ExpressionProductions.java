@@ -23,7 +23,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.method.Record
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.operator.BinaryOperation;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.Assignment;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.BooleanAssignment;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.LengthOfStatement;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.SizeofStatement;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable.ArrayTypeDimDecrease;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable.CheckExpressionDimType;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable.NewPrimaryArray;
@@ -1161,16 +1161,16 @@ abstract class ExpressionProductions {
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
-                     * (5) <postfix expression> → lengthOf <expression name>
+                     * (5) <postfix expression> → sizeof <expression name>
                      * 新增
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(POSTFIX_EXPRESSION),
                             SymbolString.create(
-                                    Symbol.createTerminator(NORMAL_LENGTH_OF),
+                                    Symbol.createTerminator(NORMAL_SIZEOF),
                                     Symbol.createNonTerminator(EXPRESSION_NAME)
                             ),
-                            new LengthOfStatement(0),
+                            new SizeofStatement(0),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),

@@ -58,7 +58,7 @@ public class ByteCodeUtils {
         register(_isub.class);
         register(_iushr.class);
         register(_ixor.class);
-        register(_lengthof.class);
+        register(_sizeof.class);
 
         /*
          * InvokeAndReturn

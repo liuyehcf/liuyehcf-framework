@@ -22,7 +22,7 @@ public abstract class Constant {
     public static final String NORMAL_DO = "do";
     public static final String NORMAL_RETURN = "return";
     public static final String NORMAL_NEW = "new";
-    public static final String NORMAL_LENGTH_OF = "lengthOf";
+    public static final String NORMAL_SIZEOF = "sizeof";
 
     /**
      * expression

@@ -108,7 +108,7 @@ public abstract class GrammarDefinition {
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_RETURN), "return")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_TRUE), "true")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_FALSE), "false")
-            .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_LENGTH_OF), "lengthOf")
+            .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_SIZEOF), "sizeof")
             .addCharMorpheme(Symbol.createTerminator(SPECIAL_CHARACTER_LITERAL))
             .addStringMorpheme(Symbol.createTerminator(SPECIAL_STRING_LITERAL))
             .build();

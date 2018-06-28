@@ -5,15 +5,15 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
-import org.liuyehcf.compile.engine.hua.core.bytecode.cp._lengthof;
+import org.liuyehcf.compile.engine.hua.core.bytecode.cp._sizeof;
 
 /**
- * lengthOf
+ * sizeof语句
  *
  * @author hechenfeng
  * @date 2018/6/28
  */
-public class LengthOfStatement extends AbstractSemanticAction {
+public class SizeofStatement extends AbstractSemanticAction {
 
     /**
      * 标志符名称-偏移量，相对于语法树栈
@@ -23,7 +23,7 @@ public class LengthOfStatement extends AbstractSemanticAction {
      */
     private final int identifierNameStackOffset;
 
-    public LengthOfStatement(int identifierNameStackOffset) {
+    public SizeofStatement(int identifierNameStackOffset) {
         this.identifierNameStackOffset = identifierNameStackOffset;
     }
 
@@ -35,10 +35,10 @@ public class LengthOfStatement extends AbstractSemanticAction {
         Type type = variableSymbol.getType();
 
         if (!type.isArrayType()) {
-            throw new RuntimeException("Operator 'lengthOf' cannot work on non-array type");
+            throw new RuntimeException("Operator 'sizeof' cannot work on non-array type");
         }
 
-        context.addByteCodeToCurrentMethod(new _lengthof(variableSymbol.getOrder()));
+        context.addByteCodeToCurrentMethod(new _sizeof(variableSymbol.getOrder()));
 
         context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_INT);
     }
