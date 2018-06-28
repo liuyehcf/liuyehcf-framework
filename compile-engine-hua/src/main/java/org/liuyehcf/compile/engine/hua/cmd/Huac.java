@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.cmd;
 
+import org.apache.commons.cli.ParseException;
 import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.hua.compile.HuaCompiler;
 import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
@@ -15,59 +16,73 @@ import static org.liuyehcf.compile.engine.hua.core.io.HClassConstant.HCLASS_SUFF
  * @author hechenfeng
  * @date 2018/6/24
  */
-public class Huac {
+public class Huac extends BaseCmd {
+
+    /**
+     * 命令行参数
+     */
+    private String[] args;
 
     /**
      * 源文件路径
      */
-    private final String filePath;
+    private String filePath;
 
     /**
      * 文件名
      */
-    private final String fileName;
+    private String fileName;
 
     /**
-     * 输出目录
+     * 输出目录，默认当前路径
      */
-    private final String targetPath;
+    private String targetPath = ".";
 
     /**
      * 编译器
      */
-    private final HuaCompiler huaCompiler;
+    private HuaCompiler huaCompiler;
 
-    private Huac(String filePath, String targetPath) {
-        check(filePath, targetPath);
+    private Huac(String[] args) {
+        this.args = args;
+        registerOption("f", "source", false, true, "Source file path", (optValue) -> filePath = optValue);
+        registerOption("d", "target", false, true, "Target directory path", (optValue) -> targetPath = optValue);
+    }
 
-        this.filePath = filePath;
+    private void init() throws ParseException {
+        parse(args);
+
+        check();
+
         String[] segments = filePath.split(java.io.File.separator);
         this.fileName = segments[segments.length - 1].substring(0, segments[segments.length - 1].length() - 4);
-        this.targetPath = targetPath;
 
         huaCompiler = HuaCompiler.getHuaCompiler();
     }
 
     public static void main(String[] args) {
-        if (args == null || args.length != 2 || args[0] == null || args[1] == null) {
-            System.err.println("请输入 '.hua' 文件的路径 以及 输出目录");
-            return;
-        }
-
-        Huac huac = new Huac(args[0], args[1]);
-
-        huac.compile();
-    }
-
-    private void check(String filePath, String targetPath) {
-        File file, target;
+        Huac huac = new Huac(args);
 
         try {
-            file = new File(filePath);
-            target = new File(targetPath);
+            huac.init();
+            huac.compile();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
+            System.exit(0);
         }
+
+    }
+
+    private void check() {
+        File file, target;
+
+        if (filePath == null) {
+            throw new RuntimeException("Please input the source file path by -f option, use -help see more options");
+        }
+
+        file = new File(filePath);
+        target = new File(targetPath);
+
 
         if (!file.exists() || !file.isFile()) {
             throw new RuntimeException("Illegal file: " + filePath);
