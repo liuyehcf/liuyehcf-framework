@@ -11,7 +11,7 @@ import java.util.*;
  * @author hechenfeng
  * @date 2018/04/16
  */
-public abstract class EscapedUtil {
+public abstract class EscapedUtils {
     private static List<Symbol> escaped_any;
     private static List<Symbol> escaped_or;
     private static List<Symbol> escaped_star;

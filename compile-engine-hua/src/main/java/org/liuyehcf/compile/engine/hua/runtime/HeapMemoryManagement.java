@@ -76,7 +76,7 @@ public class HeapMemoryManagement {
      * @return int值
      */
     public static int loadInt(int offset) {
-        return ByteUtil.loadInt(heapMemory, offset);
+        return ByteUtils.loadInt(heapMemory, offset);
     }
 
     /**
@@ -86,7 +86,7 @@ public class HeapMemoryManagement {
      * @param value  int值
      */
     public static void storeInt(int offset, int value) {
-        ByteUtil.storeInt(heapMemory, offset, value);
+        ByteUtils.storeInt(heapMemory, offset, value);
     }
 
     /**
@@ -96,7 +96,7 @@ public class HeapMemoryManagement {
      * @return boolean值
      */
     public static int loadBoolean(int offset) {
-        return ByteUtil.loadBoolean(heapMemory, offset);
+        return ByteUtils.loadBoolean(heapMemory, offset);
     }
 
     /**
@@ -106,7 +106,7 @@ public class HeapMemoryManagement {
      * @param value  char值
      */
     public static void storeBoolean(int offset, int value) {
-        ByteUtil.storeBoolean(heapMemory, offset, value);
+        ByteUtils.storeBoolean(heapMemory, offset, value);
     }
 
     /**
@@ -116,7 +116,7 @@ public class HeapMemoryManagement {
      * @return char值
      */
     public static int loadChar(int offset) {
-        return ByteUtil.loadChar(heapMemory, offset);
+        return ByteUtils.loadChar(heapMemory, offset);
     }
 
     /**
@@ -126,7 +126,7 @@ public class HeapMemoryManagement {
      * @param value  char值
      */
     public static void storeChar(int offset, int value) {
-        ByteUtil.storeChar(heapMemory, offset, value);
+        ByteUtils.storeChar(heapMemory, offset, value);
     }
 
     /**
@@ -136,7 +136,7 @@ public class HeapMemoryManagement {
      * @return 引用
      */
     public static Reference loadReference(int offset) {
-        return ByteUtil.loadReference(heapMemory, offset);
+        return ByteUtils.loadReference(heapMemory, offset);
     }
 
     /**
@@ -146,6 +146,6 @@ public class HeapMemoryManagement {
      * @param reference 引用
      */
     public static void storeReference(int offset, Reference reference) {
-        ByteUtil.storeReference(heapMemory, offset, reference);
+        ByteUtils.storeReference(heapMemory, offset, reference);
     }
 }

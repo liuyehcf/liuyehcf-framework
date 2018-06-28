@@ -24,7 +24,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
  * @author hechenfeng
  * @date 2018/6/25
  */
-public class ByteCodeUtil {
+public class ByteCodeUtils {
     private static final Map<Integer, Class<? extends ByteCode>> operatorCodePool = new HashMap<>();
     private static final String FILED_NAME_OPERATOR_CODE = "OPERATOR_CODE";
     private static final String FILED_NAME_OPERATOR_CLASSES = "OPERATOR_CLASSES";

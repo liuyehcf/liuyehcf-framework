@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodInfoTable;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
-import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCodeUtil;
+import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCodeUtils;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -176,12 +176,12 @@ public class HuaClassInputStream extends DataInputStream {
          */
         int operatorCode = readInt();
 
-        Class<? extends ByteCode> byteCodeClass = ByteCodeUtil.getByteCodeByOperatorCode(operatorCode);
+        Class<? extends ByteCode> byteCodeClass = ByteCodeUtils.getByteCodeByOperatorCode(operatorCode);
 
         /*
          * 2. 读操作数
          */
-        Class<?>[] operatorClasses = ByteCodeUtil.getOperatorClasses(byteCodeClass);
+        Class<?>[] operatorClasses = ByteCodeUtils.getOperatorClasses(byteCodeClass);
         Object[] operators = new Object[operatorClasses.length];
         for (int i = 0; i < operatorClasses.length; i++) {
             Class<?> clazz = operatorClasses[i];

@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodInfoTable;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
-import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCodeUtil;
+import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCodeUtils;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -148,8 +148,8 @@ public class HuaClassOutputStream extends DataOutputStream {
     }
 
     private void writeByteCode(ByteCode code) throws IOException {
-        int operatorCode = ByteCodeUtil.getOperatorCode(code.getClass());
-        Class<?>[] operatorClasses = ByteCodeUtil.getOperatorClasses(code.getClass());
+        int operatorCode = ByteCodeUtils.getOperatorCode(code.getClass());
+        Class<?>[] operatorClasses = ByteCodeUtils.getOperatorClasses(code.getClass());
         int operatorNum = operatorClasses.length;
         Object[] operators = code.getOperators();
 

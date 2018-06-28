@@ -10,7 +10,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.model.Type.INT_
  * @author hechenfeng
  * @date 2018/6/26
  */
-abstract class ByteUtil {
+abstract class ByteUtils {
     /**
      * 加载int
      *

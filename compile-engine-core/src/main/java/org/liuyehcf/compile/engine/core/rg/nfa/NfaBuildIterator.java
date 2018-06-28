@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.core.rg.nfa;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
-import org.liuyehcf.compile.engine.core.rg.utils.EscapedUtil;
+import org.liuyehcf.compile.engine.core.rg.utils.EscapedUtils;
 import org.liuyehcf.compile.engine.core.rg.utils.SymbolUtils;
 import org.liuyehcf.compile.engine.core.utils.AssertUtils;
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
@@ -49,14 +49,14 @@ public class NfaBuildIterator {
     /**
      * group辅助工具
      */
-    private GroupUtil groupUtil;
+    private GroupUtils groupUtils;
 
     private NfaBuildIterator(List<Symbol> symbols) {
         this.symbols = symbols;
         index = 0;
         unions = new LinkedList<>();
         curNfaClosure = null;
-        groupUtil = new GroupUtil();
+        groupUtils = new GroupUtils();
     }
 
     static Pair<NfaClosure, Integer> createNfaClosure(List<Symbol> symbols) {
@@ -68,7 +68,7 @@ public class NfaBuildIterator {
 
         buildIterator.finishWork();
 
-        return new Pair<>(buildIterator.nfaClosure, buildIterator.groupUtil.getMaxGroup());
+        return new Pair<>(buildIterator.nfaClosure, buildIterator.groupUtils.getMaxGroup());
     }
 
     private StackUnion createStackUnitWithNfaClosure(NfaClosure nfaClosure) {
@@ -99,15 +99,15 @@ public class NfaBuildIterator {
     }
 
     private int getCurGroup() {
-        return groupUtil.getCurGroup();
+        return groupUtils.getCurGroup();
     }
 
     private void enterGroup() {
-        groupUtil.enterGroup();
+        groupUtils.enterGroup();
     }
 
     private void exitGroup() {
-        groupUtil.exitGroup();
+        groupUtils.exitGroup();
     }
 
     private void pushNfaClosure(NfaClosure nfaClosure) {
@@ -610,7 +610,7 @@ public class NfaBuildIterator {
         moveForward();
 
         curNfaClosure = buildNfaClosureWithSymbols(
-                EscapedUtil.getSymbolsOfEscapedChar(
+                EscapedUtils.getSymbolsOfEscapedChar(
                         SymbolUtils.getChar(getCurSymbol())));
     }
 
@@ -643,7 +643,7 @@ public class NfaBuildIterator {
             if (SymbolUtils.ESCAPED.equals(getCurSymbol())) {
                 moveForward();
                 optionalSymbols.addAll(
-                        EscapedUtil.getSymbolsOfEscapedCharInMiddleParenthesis(
+                        EscapedUtils.getSymbolsOfEscapedCharInMiddleParenthesis(
                                 SymbolUtils.getChar(getCurSymbol())));
                 pre = -1;
             }
@@ -933,12 +933,12 @@ public class NfaBuildIterator {
         pre.getEndNfaStates().addAll(next.getEndNfaStates());
     }
 
-    private static class GroupUtil {
+    private static class GroupUtils {
         private int groupCount = 0;
         private int maxGroup = 0;
         private LinkedList<Integer> groupStack;
 
-        private GroupUtil() {
+        private GroupUtils() {
             groupStack = new LinkedList<>();
             groupStack.push(0);
         }

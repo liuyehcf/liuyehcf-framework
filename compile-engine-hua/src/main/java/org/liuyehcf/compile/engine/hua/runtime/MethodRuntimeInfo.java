@@ -117,18 +117,18 @@ class MethodRuntimeInfo {
     }
 
     int loadInt(int order) {
-        return ByteUtil.loadInt(stackMemory[order], 0);
+        return ByteUtils.loadInt(stackMemory[order], 0);
     }
 
     void storeInt(int order, int value) {
-        ByteUtil.storeInt(stackMemory[order], 0, value);
+        ByteUtils.storeInt(stackMemory[order], 0, value);
     }
 
     Reference loadReference(int order) {
-        return ByteUtil.loadReference(stackMemory[order], 0);
+        return ByteUtils.loadReference(stackMemory[order], 0);
     }
 
     void storeReference(int order, Reference reference) {
-        ByteUtil.storeReference(stackMemory[order], 0, reference);
+        ByteUtils.storeReference(stackMemory[order], 0, reference);
     }
 }
