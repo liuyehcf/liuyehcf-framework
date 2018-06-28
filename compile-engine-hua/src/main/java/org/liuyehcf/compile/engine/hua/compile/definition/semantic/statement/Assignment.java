@@ -62,7 +62,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
         Type leftHandType = context.getAttr(leftHandStackOffset, AttrName.TYPE);
 
         if (!expressionType.equals(leftHandType)) {
-            throw new RuntimeException("赋值运算符左右侧类型不匹配");
+            throw new RuntimeException("Assign operator left and right types do not match");
         }
 
         Type identifierType = variableSymbol.getType();

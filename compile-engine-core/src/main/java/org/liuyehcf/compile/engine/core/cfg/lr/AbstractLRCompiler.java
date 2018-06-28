@@ -4,6 +4,7 @@ import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.core.cfg.AbstractCfgCompiler;
 import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.cfg.Token;
+import org.liuyehcf.compile.engine.core.grammar.CompilerException;
 import org.liuyehcf.compile.engine.core.grammar.converter.AugmentedGrammarConverter;
 import org.liuyehcf.compile.engine.core.grammar.converter.GrammarConverterPipelineImpl;
 import org.liuyehcf.compile.engine.core.grammar.converter.MergeGrammarConverter;
@@ -792,26 +793,47 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
          * 输入
          */
         private final String input;
+
         /**
          * 编译返回参数
          */
         private T result = null;
+
         /**
          * 状态栈，状态即项目集闭包的id
          */
         private LinkedList<Integer> statusStack;
+
         /**
          * 语法树节点栈，语法树节点包括文法符号，实际值，各种属性
          */
         private FutureSyntaxNodeStack nodeStack;
+
         /**
-         * 剩余输入符号（词法分析器解析到的Symbol）
+         * Token迭代器
          */
-        private Queue<Token> remainTokens;
+        private LexicalAnalyzer.TokenIterator tokenIterator;
+
+        /**
+         * 当前Token
+         */
+        private Token currentToken;
+
+        /**
+         * 是否获取了Token.DOLLAR;
+         */
+        private boolean hasReachDollar = false;
+
         /**
          * 是否是成功接收
          */
         private boolean canReceive = false;
+
+        /**
+         * errorMsg
+         */
+        private String errorMsg = "";
+
         /**
          * 语法树节点转移动作
          */
@@ -826,13 +848,17 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         }
 
         private CompileResult<T> compile() {
-            before();
+            try {
+                before();
 
-            doCompile();
+                doCompile();
 
-            after();
-
-            return new CompileResult<>(canReceive, result);
+                after();
+            } catch (Throwable e) {
+                canReceive = false;
+                errorMsg += e.getMessage();
+            }
+            return new CompileResult<>(canReceive, errorMsg, result);
         }
 
         /**
@@ -850,38 +876,26 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         }
 
         private void doCompile() {
-            LexicalAnalyzer.TokenIterator tokenIterator = lexicalAnalyzer.iterator(input);
+            tokenIterator = lexicalAnalyzer.iterator(input);
 
             statusStack = new LinkedList<>();
             nodeStack = new FutureSyntaxNodeStack();
-            remainTokens = new LinkedList<>();
 
             statusStack.push(0);
             nodeStack.addNormalSyntaxNode(Symbol.DOLLAR, null);
 
-            while (tokenIterator.hasNext()) {
-                remainTokens.offer(tokenIterator.next());
-            }
-
-            if (!tokenIterator.reachesEof()) {
-                canReceive = false;
-                return;
-            }
-
-            remainTokens.offer(Token.DOLLAR);
+            currentToken = nextToken();
 
             boolean canBreak = false;
             while (!canBreak) {
                 Integer peekStatus = statusStack.peek();
-                Token peekToken = remainTokens.peek();
                 assertNotNull(peekStatus);
-                assertNotNull(peekToken);
+                assertNotNull(currentToken);
 
-                nodeTransferOperation = getOperationFromAnalysisTable(peekStatus, peekToken.getId());
+                nodeTransferOperation = getOperationFromAnalysisTable(peekStatus, currentToken.getId());
 
                 if (nodeTransferOperation == null) {
-                    error();
-                    canBreak = true;
+                    throw new CompilerException("Error LR status");
                 } else {
                     switch (nodeTransferOperation.getOperator()) {
                         case MOVE_IN:
@@ -892,17 +906,30 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                             jump();
                             break;
                         case JUMP:
-                            error();
-                            break;
+                            throw new CompilerException("Error transferOperation");
                         case ACCEPT:
                             accept();
                             canBreak = true;
                             break;
                         default:
-                            error();
-                            canBreak = true;
-                            break;
+                            throw new CompilerException("Unknown transferOperation");
                     }
+                }
+            }
+        }
+
+        private Token nextToken() {
+            if (tokenIterator.hasNext()) {
+                return tokenIterator.next();
+            }
+            if (!tokenIterator.reachesEof()) {
+                throw new CompilerException("Cannot reach EOF");
+            } else {
+                if (!hasReachDollar) {
+                    hasReachDollar = true;
+                    return Token.DOLLAR;
+                } else {
+                    throw new CompilerException("Reach EOF second time");
                 }
             }
         }
@@ -913,10 +940,10 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
             statusStack.push(nodeTransferOperation.getNextClosureId());
 
-            Token token = remainTokens.poll();
+            assertNotNull(currentToken);
+            nodeStack.addNormalSyntaxNode(currentToken.getId(), currentToken.getValue());
 
-            assertNotNull(token);
-            nodeStack.addNormalSyntaxNode(token.getId(), token.getValue());
+            currentToken = nextToken();
         }
 
         private void reduction() {
@@ -979,10 +1006,5 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         private void accept() {
             canReceive = true;
         }
-
-        private void error() {
-            canReceive = false;
-        }
-
     }
 }

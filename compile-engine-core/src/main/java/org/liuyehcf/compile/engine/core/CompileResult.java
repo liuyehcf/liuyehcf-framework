@@ -13,17 +13,27 @@ public class CompileResult<T> {
     private final boolean success;
 
     /**
+     * 错误信息
+     */
+    private final String errorMsg;
+
+    /**
      * 编译结果
      */
     private final T result;
 
-    public CompileResult(boolean success, T result) {
+    public CompileResult(boolean success, String errorMsg, T result) {
         this.success = success;
+        this.errorMsg = errorMsg;
         this.result = result;
     }
 
     public boolean isSuccess() {
         return success;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
     }
 
     public T getResult() {
