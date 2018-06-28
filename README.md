@@ -5,7 +5,7 @@
 1. 编写.hua源文件，例如test.hua
 1. 编译，执行命令`huac -f test.hua`，会在当前路径下生成同名的`.hclass`文件
 1. 运行，执行命令`hua -f test.hclass`
-1. 查看代码信息，执行命令`hua -f test.hclass`
+1. 查看代码信息，执行命令`huap -f test.hclass`
 
 ## 语法
 
@@ -58,9 +58,44 @@
     * nextBoolean()
 1. 一个可执行的.hclass文件必须包含`main(char[][])`方法，这是整个程序执行的入口
 
-## 示例
+# 编译原理
 
-例如编写源文件`test.hua`，内容如下
+__[编译原理请移步博客](https://liuyehcf.github.io/categories/%E7%BC%96%E8%AF%91/)__
+
+## 编译引擎介绍
+
+`compile-engine-core`主要包含以下几个部分
+
+1. 文法定义（仅针对2-型文法以及3-型文法）
+    * `Symbol`：文法符号，包括终结符和非终结符
+    * `SymbolString`：文法符号串
+    * `PrimaryProduction`：产生式
+    * `Production`：具有相同左部的产生式集合
+    * `Grammar`：文法，包含了文法开始符号，以及一系列产生式
+1. regex grammar（rg），即正则表达式的实现
+    * 实现了NFA自动机（Nfa）与DFA（Dfa）自动机
+    * 其中NFA自动机支持捕获组，DFA自动机尚不支持捕获组
+1. context-free grammar（cfg），即上下文无关文法
+    * LL1自动机
+    * LR0自动机
+    * SLR自动机
+    * LR1自动机
+    * LALR自动机
+    * 就解析能力而言，LR1=LALR>SLR>LL1，SLR>LR0
+    * 就状态数量而言，LALR<LR1
+    * 就错误分析能力，LALR<LR1
+1. 词法分析器（DefaultLexicalAnalyzer）
+    * 该词法分析器实现比较简单
+
+编译引擎主要封装了词法分析、语法分析的过程，可以为任意无二义性CFG语言生成状态自动机
+
+## hua语言
+
+HuaCompiler继承了LALR分析器，其文法定义参照[Java BNF定义](http://www.daimi.au.dk/dRegAut/JavaBNF.html)
+
+# 示例
+
+例如编写源文件`test.hua`，源文件的内容是冒泡排序、插入排序以及快速排序，源码内容如下：
 
 ```
 void printSplit(){
@@ -580,7 +615,3 @@ after quickSort:
 -----------------------------
 
 ```
-
-# 编译原理
-
-__[编译原理请移步博客](https://liuyehcf.github.io/categories/%E7%BC%96%E8%AF%91/)__
