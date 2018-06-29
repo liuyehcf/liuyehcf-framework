@@ -23,6 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.CharacterUtil.isBlankChar;
 
 /**
  * LR文法编辑器抽象基类
@@ -835,9 +836,9 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         private boolean canReceive = false;
 
         /**
-         * errorMsg
+         * message
          */
-        private String errorMsg = "";
+        private String message = "";
 
         /**
          * 语法树节点转移动作
@@ -862,9 +863,9 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
             } catch (Throwable e) {
                 error = e;
                 canReceive = false;
-                errorMsg += e.getMessage() + ";";
+                message = getFriendlyPrompt(e.getMessage());
             }
-            return new CompileResult<>(canReceive, errorMsg, error, result);
+            return new CompileResult<>(canReceive, message, error, result);
         }
 
         /**
@@ -914,7 +915,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                         case JUMP:
                             throw new CompilerException("Error transferOperation");
                         case ACCEPT:
-                            accept();
+                            canReceive = true;
                             canBreak = true;
                             break;
                         default:
@@ -1009,8 +1010,40 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
             statusStack.push(nextNodeTransferOperation.getNextClosureId());
         }
 
-        private void accept() {
-            canReceive = true;
+        private String getFriendlyPrompt(String errorMsg) {
+            StringBuilder sb = new StringBuilder();
+
+
+            int lineIndex = 0;
+            int lineFirstPos = 0;
+            System.out.println(input.length());
+            for (int i = 0; i < tokenIterator.position(); i++) {
+                if (input.charAt(i) == '\n') {
+                    sb.append(input.substring(lineFirstPos, i + 1));
+                    lineIndex = 0;
+                    lineFirstPos = i + 1;
+                } else {
+                    lineIndex++;
+                }
+            }
+            if (lineFirstPos < tokenIterator.position()) {
+                sb.append(input.substring(lineFirstPos, tokenIterator.position() + 1))
+                        .append('\n');
+            }
+
+            int i = 0;
+            while (i < lineIndex && isBlankChar(input.charAt(i + lineFirstPos))) {
+                sb.append(' ');
+                i++;
+            }
+            for (; i <= lineIndex; i++) {
+                sb.append('~');
+            }
+
+            sb.append(" : ")
+                    .append(errorMsg);
+
+            return sb.toString();
         }
     }
 }

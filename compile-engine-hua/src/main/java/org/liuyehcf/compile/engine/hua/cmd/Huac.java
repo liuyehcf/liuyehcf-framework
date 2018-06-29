@@ -93,7 +93,8 @@ public class Huac extends BaseCmd {
         CompileResult<IntermediateInfo> result = huaCompiler.compile(fileContent);
 
         if (!result.isSuccess()) {
-            throw new RuntimeException("There exists syntax error");
+            System.err.println(result.getMessage());
+            System.exit(1);
         }
 
         store(result.getResult());
@@ -105,7 +106,8 @@ public class Huac extends BaseCmd {
             BufferedReader fileReader = new BufferedReader(new FileReader(filePath));
             String line;
             while ((line = fileReader.readLine()) != null) {
-                sb.append(line);
+                sb.append(line)
+                        .append('\n');
             }
             return sb.toString();
         } catch (IOException e) {

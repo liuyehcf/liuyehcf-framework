@@ -37,5 +37,12 @@ public interface LexicalAnalyzer {
          * @return 是否到达文末
          */
         boolean reachesEof();
+
+        /**
+         * 当前位置
+         *
+         * @return 索引
+         */
+        int position();
     }
 }

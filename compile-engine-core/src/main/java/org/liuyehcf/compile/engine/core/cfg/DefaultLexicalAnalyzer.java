@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.liuyehcf.compile.engine.core.utils.CharacterUtil.isBlankChar;
+
 /**
  * 词法分析器
  *
@@ -67,10 +69,6 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
     @Override
     public TokenIterator iterator(String input) {
         return new DefaultTokenIterator(input);
-    }
-
-    private boolean isBlankChar(char c) {
-        return 9 <= c && c <= 13 || c == 32;
     }
 
     public static class Builder {
@@ -244,6 +242,11 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
         @Override
         public boolean reachesEof() {
             return input.length() == index;
+        }
+
+        @Override
+        public int position() {
+            return index;
         }
 
         private boolean doHasNext() {

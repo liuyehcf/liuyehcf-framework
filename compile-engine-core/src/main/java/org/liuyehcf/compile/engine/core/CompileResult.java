@@ -15,7 +15,7 @@ public class CompileResult<T> {
     /**
      * 错误信息
      */
-    private final String errorMsg;
+    private final String message;
 
     /**
      * 异常
@@ -27,9 +27,9 @@ public class CompileResult<T> {
      */
     private final T result;
 
-    public CompileResult(boolean success, String errorMsg, Throwable error, T result) {
+    public CompileResult(boolean success, String message, Throwable error, T result) {
         this.success = success;
-        this.errorMsg = errorMsg;
+        this.message = message;
         this.error = error;
         this.result = result;
     }
@@ -38,8 +38,8 @@ public class CompileResult<T> {
         return success;
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
+    public String getMessage() {
+        return message;
     }
 
     public Throwable getError() {
