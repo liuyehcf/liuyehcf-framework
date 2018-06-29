@@ -17,6 +17,16 @@ import java.util.List;
  * @date 2018/6/7
  */
 public class ExitMethod extends AbstractSemanticAction implements Serializable {
+
+    /**
+     * 没有方法体
+     */
+    private final boolean hasMethodBody;
+
+    public ExitMethod(boolean hasMethodBody) {
+        this.hasMethodBody = hasMethodBody;
+    }
+
     @Override
     public void onAction(HuaContext context) {
         if (Type.TYPE_VOID.equals(context.getResultTypeOfCurrentMethod())) {
@@ -28,6 +38,6 @@ public class ExitMethod extends AbstractSemanticAction implements Serializable {
             }
         }
 
-        context.exitMethod();
+        context.exitMethod(hasMethodBody);
     }
 }

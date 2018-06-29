@@ -23,7 +23,13 @@ public class MethodInfoTable {
      * 方法签名 -> 方法信息
      */
     @JSONField(serialize = false)
-    private final Map<MethodSignature, MethodInfo> table;
+    private final Map<MethodSignature, MethodInfo> table = new LinkedHashMap<>(16);
+
+    /**
+     * 方法签名 -> 方法基本信息
+     */
+    @JSONField(serialize = false)
+    private final Map<MethodSignature, BasicMethodInfo> basicTable = new LinkedHashMap<>(16);
 
     /**
      * 当前方法信息
@@ -32,14 +38,11 @@ public class MethodInfoTable {
     private MethodInfo curMethodInfo;
 
     public MethodInfoTable() {
-        table = new LinkedHashMap<>(16);
     }
 
     public MethodInfoTable(List<MethodInfo> methodInfoList) {
-        table = new LinkedHashMap<>(16);
-
         for (MethodInfo methodInfo : methodInfoList) {
-            table.put(methodInfo.buildMethodSignature(), methodInfo);
+            table.put(methodInfo.getMethodSignature(), methodInfo);
         }
     }
 
@@ -54,7 +57,7 @@ public class MethodInfoTable {
      * @return 是否包含
      */
     public boolean containsMethod(MethodSignature methodSignature) {
-        return SYSTEM_METHOD_POOL.containsKey(methodSignature) || table.containsKey(methodSignature);
+        return SYSTEM_METHOD_POOL.containsKey(methodSignature) || basicTable.containsKey(methodSignature);
     }
 
     /**
@@ -68,6 +71,13 @@ public class MethodInfoTable {
             return SYSTEM_METHOD_POOL.get(methodSignature).getFirst();
         }
         return table.get(methodSignature);
+    }
+
+    public BasicMethodInfo getBasicMethodInfoByMethodSignature(MethodSignature methodSignature) {
+        if (SYSTEM_METHOD_POOL.containsKey(methodSignature)) {
+            return SYSTEM_METHOD_POOL.get(methodSignature).getFirst();
+        }
+        return basicTable.get(methodSignature);
     }
 
     /**
@@ -89,26 +99,33 @@ public class MethodInfoTable {
     /**
      * 完成方法签名的扫描
      */
-    public MethodSignature finishMethodDeclarator() {
-        MethodSignature methodSignature = curMethodInfo.buildMethodSignature();
-        checkIfExists(methodSignature);
-        table.put(methodSignature, curMethodInfo);
-        return methodSignature;
-    }
-
-    private void checkIfExists(MethodSignature methodSignature) {
+    public MethodSignature recordBasicMethodInfo() {
+        MethodSignature methodSignature = curMethodInfo.getMethodSignature();
         if (SYSTEM_METHOD_POOL.containsKey(methodSignature)) {
-            throw new RuntimeException(methodSignature.getSignature() + " is System method");
+            throw new RuntimeException("Method '" + methodSignature.getSignature() + "' is System method, cannot be redefined by user");
         }
-        if (table.containsKey(methodSignature)) {
-            throw new RuntimeException(methodSignature.getSignature() + " has been already defined");
+        /*
+         * 这里允许重复，因为允许方法多次声明
+         */
+        if (!basicTable.containsKey(methodSignature)) {
+            basicTable.put(methodSignature, curMethodInfo);
         }
+        return methodSignature;
     }
 
     /**
      * 退出方法
      */
-    public void exitMethod() {
+    public void exitMethod(boolean hasMethodBody) {
+        /*
+         * 对于方法声明，则跳过
+         */
+        if (hasMethodBody) {
+            if (table.containsKey(curMethodInfo.getMethodSignature())) {
+                throw new RuntimeException("Method '" + curMethodInfo.getMethodSignature().getSignature() + "' is repeatedly defined");
+            }
+            table.put(curMethodInfo.getMethodSignature(), curMethodInfo);
+        }
         curMethodInfo = null;
     }
 

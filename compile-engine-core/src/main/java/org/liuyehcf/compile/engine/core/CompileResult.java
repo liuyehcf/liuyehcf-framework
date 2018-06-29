@@ -18,13 +18,19 @@ public class CompileResult<T> {
     private final String errorMsg;
 
     /**
+     * 异常
+     */
+    private final Throwable error;
+
+    /**
      * 编译结果
      */
     private final T result;
 
-    public CompileResult(boolean success, String errorMsg, T result) {
+    public CompileResult(boolean success, String errorMsg, Throwable error, T result) {
         this.success = success;
         this.errorMsg = errorMsg;
+        this.error = error;
         this.result = result;
     }
 
@@ -34,6 +40,10 @@ public class CompileResult<T> {
 
     public String getErrorMsg() {
         return errorMsg;
+    }
+
+    public Throwable getError() {
+        return error;
     }
 
     public T getResult() {

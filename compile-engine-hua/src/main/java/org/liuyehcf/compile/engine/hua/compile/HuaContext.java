@@ -177,8 +177,8 @@ public class HuaContext extends Context {
      * @param methodSignature 方法签名
      * @return 方法信息
      */
-    public MethodInfo getMethodByMethodSignature(MethodSignature methodSignature) {
-        return methodInfoTable.getMethodByMethodSignature(methodSignature);
+    public BasicMethodInfo getBasicMethodByMethodSignature(MethodSignature methodSignature) {
+        return methodInfoTable.getBasicMethodInfoByMethodSignature(methodSignature);
     }
 
     /**
@@ -192,15 +192,15 @@ public class HuaContext extends Context {
      * 完成方法签名的扫描
      */
     public void addMethodSignatureToConstantPool() {
-        MethodSignature methodSignature = methodInfoTable.finishMethodDeclarator();
+        MethodSignature methodSignature = methodInfoTable.recordBasicMethodInfo();
         addConstant(methodSignature.getSignature());
     }
 
     /**
      * 退出方法
      */
-    public void exitMethod() {
-        methodInfoTable.exitMethod();
+    public void exitMethod(boolean hasMethodBody) {
+        methodInfoTable.exitMethod(hasMethodBody);
     }
 
     /**

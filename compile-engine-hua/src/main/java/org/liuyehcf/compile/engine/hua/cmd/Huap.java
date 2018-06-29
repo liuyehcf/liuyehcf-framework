@@ -91,7 +91,7 @@ public class Huap extends BaseCmd {
     }
 
     private void printMethodInfo(MethodInfo methodInfo) {
-        System.out.println(methodInfo.buildMethodSignature().getSignature());
+        System.out.println(methodInfo.getMethodSignature().getSignature());
         System.out.println("\tReturn type: " + methodInfo.getResultType().toTypeDescription());
 
         List<Type> paramTypeList = methodInfo.getParamTypeList();

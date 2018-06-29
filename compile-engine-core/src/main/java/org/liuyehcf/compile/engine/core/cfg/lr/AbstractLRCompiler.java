@@ -795,6 +795,11 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         private final String input;
 
         /**
+         * 异常信息
+         */
+        private Throwable error = null;
+
+        /**
          * 编译返回参数
          */
         private T result = null;
@@ -855,10 +860,11 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
                 after();
             } catch (Throwable e) {
+                error = e;
                 canReceive = false;
-                errorMsg += e.getMessage();
+                errorMsg += e.getMessage() + ";";
             }
-            return new CompileResult<>(canReceive, errorMsg, result);
+            return new CompileResult<>(canReceive, errorMsg, error, result);
         }
 
         /**

@@ -17,7 +17,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
  * @author hechenfeng
  * @date 2018/6/6
  */
-public class MethodInfo {
+public class MethodInfo extends BasicMethodInfo {
 
     /**
      * 符号表
@@ -26,24 +26,15 @@ public class MethodInfo {
     private final VariableSymbolTable variableSymbolTable = new VariableSymbolTable();
 
     /**
+     * 方法签名
+     */
+    @JSONField(serialize = false)
+    private MethodSignature methodSignature;
+
+    /**
      * 字节码
      */
     private List<ByteCode> byteCodes = new ArrayList<>();
-
-    /**
-     * 方法名称
-     */
-    private String methodName;
-
-    /**
-     * 返回类型
-     */
-    private Type resultType;
-
-    /**
-     * 参数类型
-     */
-    private List<Type> paramTypeList;
 
     /**
      * 最大序号（用于分配栈内存）
@@ -75,40 +66,16 @@ public class MethodInfo {
         return new MethodSignature(methodName, typeStrings);
     }
 
+    public int getParamSize() {
+        return getParamTypeList().size();
+    }
+
     public List<ByteCode> getByteCodes() {
         return byteCodes;
     }
 
     public void setByteCodes(List<ByteCode> byteCodes) {
         this.byteCodes = byteCodes;
-    }
-
-    public String getMethodName() {
-        return methodName;
-    }
-
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
-    }
-
-    public Type getResultType() {
-        return resultType;
-    }
-
-    public void setResultType(Type resultType) {
-        this.resultType = resultType;
-    }
-
-    public List<Type> getParamTypeList() {
-        return paramTypeList;
-    }
-
-    public void setParamTypeList(List<Type> paramTypeList) {
-        this.paramTypeList = paramTypeList;
-    }
-
-    public int getParamSize() {
-        return paramTypeList.size();
     }
 
     public int getMaxOrder() {
@@ -187,7 +154,10 @@ public class MethodInfo {
      *
      * @return 方法签名
      */
-    public MethodSignature buildMethodSignature() {
-        return buildMethodSignature(this.methodName, this.paramTypeList);
+    public MethodSignature getMethodSignature() {
+        if (methodSignature == null) {
+            methodSignature = buildMethodSignature(getMethodName(), getParamTypeList());
+        }
+        return methodSignature;
     }
 }

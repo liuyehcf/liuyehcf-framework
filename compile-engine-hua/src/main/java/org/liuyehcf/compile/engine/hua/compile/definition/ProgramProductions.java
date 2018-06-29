@@ -324,8 +324,6 @@ abstract class ProgramProductions {
                                     Symbol.createNonTerminator(METHOD_HEADER),
                                     Symbol.createNonTerminator(METHOD_BODY)
                             ),
-                            new ExitNamespace(),
-                            new ExitMethod(),
                             new AttrFilter()
                     )
             ),
@@ -465,6 +463,8 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(BLOCK)
                             ),
+                            new ExitNamespace(),
+                            new ExitMethod(true),
                             new AttrFilter()
                     ),
                     /*
@@ -475,6 +475,8 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SEMICOLON)
                             ),
+                            new ExitNamespace(),
+                            new ExitMethod(false),
                             new AttrFilter()
                     )
             ),

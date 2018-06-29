@@ -305,7 +305,7 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T>, Ser
                 tokenIds.offer(tokenIterator.next().getId());
             }
             if (!tokenIterator.reachesEof()) {
-                return new CompileResult<>(false, "Cannot reach EOF", null);
+                return new CompileResult<>(false, "Cannot reach EOF", null, null);
             }
             tokenIds.offer(Symbol.DOLLAR);
 
@@ -373,10 +373,10 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T>, Ser
                     }
                 }
             } catch (CompilerException e) {
-                return new CompileResult<>(false, e.getMessage(), null);
+                return new CompileResult<>(false, e.getMessage(), null, null);
             }
 
-            return new CompileResult<>(true, "", result);
+            return new CompileResult<>(true, "", null, result);
         }
     }
 }

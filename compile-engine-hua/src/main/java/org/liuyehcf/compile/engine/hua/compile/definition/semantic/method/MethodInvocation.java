@@ -4,7 +4,7 @@ import org.liuyehcf.compile.engine.hua.compile.HuaContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
-import org.liuyehcf.compile.engine.hua.core.MethodInfo;
+import org.liuyehcf.compile.engine.hua.core.BasicMethodInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodSignature;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ir._invokestatic;
 
@@ -55,12 +55,12 @@ public class MethodInvocation extends AbstractSemanticAction implements Serializ
             throw new RuntimeException("Method' " + methodSignature.getSignature() + " 'undefined");
         }
 
-        MethodInfo methodInfo = context.getMethodByMethodSignature(methodSignature);
-        assertNotNull(methodInfo);
+        BasicMethodInfo basicMethodInfo = context.getBasicMethodByMethodSignature(methodSignature);
+        assertNotNull(basicMethodInfo);
 
         int constantOffset = context.getConstantOffset(methodSignature.getSignature());
         assertTrue(constantOffset >= 0);
         context.addByteCodeToCurrentMethod(new _invokestatic(constantOffset));
-        context.setAttrToLeftNode(AttrName.TYPE, methodInfo.getResultType());
+        context.setAttrToLeftNode(AttrName.TYPE, basicMethodInfo.getResultType());
     }
 }
