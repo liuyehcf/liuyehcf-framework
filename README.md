@@ -1,11 +1,13 @@
 # 使用
 
-1. 下载demo文件夹
-1. 设置环境变量`HUA_PATH`，其值为`demo/lib`文件夹的绝对路径
-1. 编写.hua源文件，例如test.hua
+1. 下载demo目录
+1. 设置环境变量`HUA_PATH`，其值为`demo/lib`目录的绝对路径，即`compile-engine-hua-1.0-SNAPSHOT.jar`所在目录的绝对路径
+1. 编写.hua源文件，例如test.hua（详见下方示例）
 1. 编译，执行命令`huac -f test.hua`，会在当前路径下生成同名的`.hclass`文件
+    * 如果要指定输出目录，可以使用`-d`参数，可以使用`huac -h`命令查看支持的参数
 1. 运行，执行命令`hua -f test.hclass`
-1. 查看代码信息，执行命令`huap -f test.hclass`
+    * 后面可以跟上参数，参数将会作为main方法的入参
+1. 查看编译后的字节码，执行命令`huap -f test.hclass`
 
 ## 语法
 
@@ -26,6 +28,8 @@
     * sizeof
 1. 语法
     * 支持函数定义
+    * 支持函数声明
+    * 支持函数调用，要求被调用的函数之前必须声明或者定义过（有点像C++）
     * 支持变量声明、变量初始化。语法参考java
     * 支持任意维度的数组
     * 支持new语句创建数组。语法参考java

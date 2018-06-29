@@ -29,15 +29,19 @@ public class ExitMethod extends AbstractSemanticAction implements Serializable {
 
     @Override
     public void onAction(HuaContext context) {
-        if (Type.TYPE_VOID.equals(context.getResultTypeOfCurrentMethod())) {
-            context.addByteCodeToCurrentMethod(new _return());
-        } else {
-            List<ByteCode> byteCodes = context.getByteCodesOfOfCurrentMethod();
-            if (byteCodes.isEmpty() || !(byteCodes.get(byteCodes.size() - 1) instanceof Return)) {
-                throw new RuntimeException("Method lacks return statement");
+        /*
+         * 对于方法声明，跳过即可
+         */
+        if (hasMethodBody) {
+            if (Type.TYPE_VOID.equals(context.getResultTypeOfCurrentMethod())) {
+                context.addByteCodeToCurrentMethod(new _return());
+            } else {
+                List<ByteCode> byteCodes = context.getByteCodesOfOfCurrentMethod();
+                if (byteCodes.isEmpty() || !(byteCodes.get(byteCodes.size() - 1) instanceof Return)) {
+                    throw new RuntimeException("Method lacks return statement");
+                }
             }
         }
-
         context.exitMethod(hasMethodBody);
     }
 }

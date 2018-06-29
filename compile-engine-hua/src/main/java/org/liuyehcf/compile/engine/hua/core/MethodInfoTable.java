@@ -118,7 +118,7 @@ public class MethodInfoTable {
      */
     public void exitMethod(boolean hasMethodBody) {
         /*
-         * 对于方法声明，则跳过
+         * 对于方法声明，跳过即可
          */
         if (hasMethodBody) {
             if (table.containsKey(curMethodInfo.getMethodSignature())) {
