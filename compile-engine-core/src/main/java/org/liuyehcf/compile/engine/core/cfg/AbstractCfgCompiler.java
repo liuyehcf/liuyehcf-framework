@@ -22,15 +22,13 @@ import java.util.Set;
 public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T>, Serializable {
 
     /**
-     * 原始文法
-     */
-    private final Grammar originalGrammar;
-
-    /**
      * 词法分析器
      */
     protected final LexicalAnalyzer lexicalAnalyzer;
-
+    /**
+     * 原始文法
+     */
+    private final Grammar originalGrammar;
     /**
      * 文法转换pipeline
      */

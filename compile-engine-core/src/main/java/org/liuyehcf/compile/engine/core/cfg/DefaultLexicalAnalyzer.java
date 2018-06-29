@@ -24,6 +24,19 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
      */
     private static final Map<Character, Integer> ESCAPE_CHARS;
 
+    static {
+        ESCAPE_CHARS = new HashMap<>();
+        ESCAPE_CHARS.put('b', 8);
+        ESCAPE_CHARS.put('f', 12);
+        ESCAPE_CHARS.put('n', 10);
+        ESCAPE_CHARS.put('r', 13);
+        ESCAPE_CHARS.put('t', 9);
+        ESCAPE_CHARS.put('\\', 92);
+        ESCAPE_CHARS.put('\'', 39);
+        ESCAPE_CHARS.put('\"', 34);
+        ESCAPE_CHARS.put('0', 0);
+    }
+
     /**
      * Token对应的词素说明
      */
@@ -371,18 +384,5 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
 
             return hasNext;
         }
-    }
-
-    static {
-        ESCAPE_CHARS = new HashMap<>();
-        ESCAPE_CHARS.put('b', 8);
-        ESCAPE_CHARS.put('f', 12);
-        ESCAPE_CHARS.put('n', 10);
-        ESCAPE_CHARS.put('r', 13);
-        ESCAPE_CHARS.put('t', 9);
-        ESCAPE_CHARS.put('\\', 92);
-        ESCAPE_CHARS.put('\'', 39);
-        ESCAPE_CHARS.put('\"', 34);
-        ESCAPE_CHARS.put('0', 0);
     }
 }
