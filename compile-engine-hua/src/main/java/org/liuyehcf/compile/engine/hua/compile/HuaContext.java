@@ -3,9 +3,7 @@ package org.liuyehcf.compile.engine.hua.compile;
 import org.liuyehcf.compile.engine.core.cfg.lr.Context;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
-import org.liuyehcf.compile.engine.hua.core.MethodInfo;
-import org.liuyehcf.compile.engine.hua.core.MethodSignature;
-import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
+import org.liuyehcf.compile.engine.hua.core.*;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
 
 import java.util.List;
@@ -19,13 +17,19 @@ import java.util.List;
 public class HuaContext extends Context {
 
     /**
-     * hua引擎
+     * 常量池
      */
-    private final HuaCompiler.HuaEngine huaEngine;
+    private final ConstantPool constantPool;
 
-    public HuaContext(Context context, HuaCompiler.HuaEngine huaEngine) {
+    /**
+     * 方法表
+     */
+    private final MethodInfoTable methodInfoTable;
+
+    public HuaContext(Context context, ConstantPool constantPool, MethodInfoTable methodInfoTable) {
         super(context.getRawPrimaryProduction(), context.getStack(), context.getLeftNode());
-        this.huaEngine = huaEngine;
+        this.constantPool = constantPool;
+        this.methodInfoTable = methodInfoTable;
     }
 
     /**
@@ -81,7 +85,7 @@ public class HuaContext extends Context {
      * @return 偏移量
      */
     public int addConstant(String constant) {
-        return huaEngine.getConstantPool().addConstant(constant);
+        return constantPool.addConstant(constant);
     }
 
     /**
@@ -91,7 +95,7 @@ public class HuaContext extends Context {
      * @return 偏移量
      */
     public int getConstantOffset(String constant) {
-        return huaEngine.getConstantPool().getConstantOffset(constant);
+        return constantPool.getConstantOffset(constant);
     }
 
     /**
@@ -100,7 +104,7 @@ public class HuaContext extends Context {
      * @param methodName 方法名
      */
     public void setMethodNameOfCurrentMethod(String methodName) {
-        huaEngine.getMethodInfoTable().getCurMethodInfo().setMethodName(methodName);
+        methodInfoTable.getCurMethodInfo().setMethodName(methodName);
     }
 
     /**
@@ -109,7 +113,7 @@ public class HuaContext extends Context {
      * @param paramTypeList 参数类型列表
      */
     public void setParamTypeListOfCurrentMethod(List<Type> paramTypeList) {
-        huaEngine.getMethodInfoTable().getCurMethodInfo().setParamTypeList(paramTypeList);
+        methodInfoTable.getCurMethodInfo().setParamTypeList(paramTypeList);
     }
 
     /**
@@ -118,7 +122,7 @@ public class HuaContext extends Context {
      * @return 返回类型
      */
     public Type getResultTypeOfCurrentMethod() {
-        return huaEngine.getMethodInfoTable().getCurMethodInfo().getResultType();
+        return methodInfoTable.getCurMethodInfo().getResultType();
     }
 
     /**
@@ -127,7 +131,7 @@ public class HuaContext extends Context {
      * @param resultType 返回类型
      */
     public void setResultTypeOfCurrentMethod(Type resultType) {
-        huaEngine.getMethodInfoTable().getCurMethodInfo().setResultType(resultType);
+        methodInfoTable.getCurMethodInfo().setResultType(resultType);
     }
 
     /**
@@ -136,7 +140,7 @@ public class HuaContext extends Context {
      * @param code 指令
      */
     public void addByteCodeToCurrentMethod(ByteCode code) {
-        huaEngine.getMethodInfoTable().getCurMethodInfo().addByteCode(code);
+        methodInfoTable.getCurMethodInfo().addByteCode(code);
     }
 
     /**
@@ -145,7 +149,7 @@ public class HuaContext extends Context {
      * @return 指令偏移量
      */
     public int getByteCodeSizeOfCurrentMethod() {
-        return huaEngine.getMethodInfoTable().getCurMethodInfo().getByteCodes().size();
+        return methodInfoTable.getCurMethodInfo().getByteCodes().size();
     }
 
     /**
@@ -154,7 +158,7 @@ public class HuaContext extends Context {
      * @return 指令序列
      */
     public List<ByteCode> getByteCodesOfOfCurrentMethod() {
-        return huaEngine.getMethodInfoTable().getCurMethodInfo().getByteCodes();
+        return methodInfoTable.getCurMethodInfo().getByteCodes();
     }
 
     /**
@@ -164,7 +168,7 @@ public class HuaContext extends Context {
      * @return 是否包含
      */
     public boolean containsMethod(MethodSignature methodSignature) {
-        return huaEngine.getMethodInfoTable().containsMethod(methodSignature);
+        return methodInfoTable.containsMethod(methodSignature);
     }
 
     /**
@@ -174,21 +178,21 @@ public class HuaContext extends Context {
      * @return 方法信息
      */
     public MethodInfo getMethodByMethodSignature(MethodSignature methodSignature) {
-        return huaEngine.getMethodInfoTable().getMethodByMethodSignature(methodSignature);
+        return methodInfoTable.getMethodByMethodSignature(methodSignature);
     }
 
     /**
      * 进入方法
      */
     public void enterMethod() {
-        huaEngine.getMethodInfoTable().enterMethod();
+        methodInfoTable.enterMethod();
     }
 
     /**
      * 完成方法签名的扫描
      */
     public void addMethodSignatureToConstantPool() {
-        MethodSignature methodSignature = huaEngine.getMethodInfoTable().finishMethodDeclarator();
+        MethodSignature methodSignature = methodInfoTable.finishMethodDeclarator();
         addConstant(methodSignature.getSignature());
     }
 
@@ -196,21 +200,21 @@ public class HuaContext extends Context {
      * 退出方法
      */
     public void exitMethod() {
-        huaEngine.getMethodInfoTable().exitMethod();
+        methodInfoTable.exitMethod();
     }
 
     /**
      * 进入命名空间
      */
     public void enterNamespace() {
-        huaEngine.getMethodInfoTable().getCurMethodInfo().enterNamespace();
+        methodInfoTable.getCurMethodInfo().enterNamespace();
     }
 
     /**
      * 退出命名空间
      */
     public void exitNamespace() {
-        huaEngine.getMethodInfoTable().getCurMethodInfo().exitNamespace();
+        methodInfoTable.getCurMethodInfo().exitNamespace();
     }
 
     /**
@@ -221,9 +225,9 @@ public class HuaContext extends Context {
      * @return 新创建的符号
      */
     public VariableSymbol createVariableSymbol(String name, Type type) {
-        int order = huaEngine.getMethodInfoTable().getCurMethodInfo().getOrder();
+        int order = methodInfoTable.getCurMethodInfo().getOrder();
 
-        return huaEngine.getMethodInfoTable().getCurMethodInfo().createVariableSymbol(order, name, type);
+        return methodInfoTable.getCurMethodInfo().createVariableSymbol(order, name, type);
     }
 
     /**
@@ -233,6 +237,6 @@ public class HuaContext extends Context {
      * @return 符号
      */
     public VariableSymbol getVariableSymbolByName(String identifierName) {
-        return huaEngine.getMethodInfoTable().getCurMethodInfo().getVariableSymbolByName(identifierName);
+        return methodInfoTable.getCurMethodInfo().getVariableSymbolByName(identifierName);
     }
 }

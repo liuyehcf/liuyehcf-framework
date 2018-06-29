@@ -143,14 +143,6 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
             super(input);
         }
 
-        ConstantPool getConstantPool() {
-            return constantPool;
-        }
-
-        MethodInfoTable getMethodInfoTable() {
-            return methodInfoTable;
-        }
-
         @Override
         protected void before() {
 
@@ -305,7 +297,7 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
             }
 
             for (SemanticAction semanticAction : semanticActions) {
-                ((AbstractSemanticAction) semanticAction).onAction(new HuaContext(context, this));
+                ((AbstractSemanticAction) semanticAction).onAction(new HuaContext(context, constantPool, methodInfoTable));
             }
         }
     }
