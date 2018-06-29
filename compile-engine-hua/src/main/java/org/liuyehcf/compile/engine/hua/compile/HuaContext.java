@@ -187,7 +187,7 @@ public class HuaContext extends Context {
     /**
      * 完成方法签名的扫描
      */
-    public void finishMethodDeclarator() {
+    public void addMethodSignatureToConstantPool() {
         MethodSignature methodSignature = huaEngine.getMethodInfoTable().finishMethodDeclarator();
         addConstant(methodSignature.getSignature());
     }

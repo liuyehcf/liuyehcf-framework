@@ -52,5 +52,7 @@ public class RecordMethodSignature extends AbstractSemanticAction implements Ser
             context.setAttr(methodDeclaratorStackOffset, AttrName.PARAMETER_LIST, paramTypeList);
         }
         context.setParamTypeListOfCurrentMethod(paramTypeList);
+
+        context.addMethodSignatureToConstantPool();
     }
 }

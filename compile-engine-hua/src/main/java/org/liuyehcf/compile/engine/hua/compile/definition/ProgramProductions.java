@@ -7,7 +7,10 @@ import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.*;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.method.*;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.method.EnterMethod;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.method.ExitMethod;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.method.RecordMethodSignature;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.method.RecordParamTypeInfo;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.node.AddFutureSyntaxNode;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.BooleanAssignment;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.VariableInitialization;
@@ -49,7 +52,6 @@ abstract class ProgramProductions {
 
     private static final String MARK_50_1_1 = "<mark 50_1_1>";
     private static final String MARK_74_1_1 = "<mark 74_1_1>";
-    private static final String MARK_74_1_2 = "<mark 74_1_2>";
     private static final String MARK_66_2_1 = "<mark 66_2_1>";
     public static final Production[] PRODUCTIONS = {
             /*
@@ -313,14 +315,13 @@ abstract class ProgramProductions {
              */
             Production.create(
                     /*
-                     * <method declaration> → <mark 74_1_1> <method header> <mark 74_1_2> <method body>
+                     * <method declaration> → <mark 74_1_1> <method header> <method body>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(METHOD_DECLARATION),
                             SymbolString.create(
                                     Symbol.createNonTerminator(MARK_74_1_1),
                                     Symbol.createNonTerminator(METHOD_HEADER),
-                                    Symbol.createNonTerminator(MARK_74_1_2),
                                     Symbol.createNonTerminator(METHOD_BODY)
                             ),
                             new ExitNamespace(),
@@ -344,25 +345,6 @@ abstract class ProgramProductions {
                             ),
                             new EnterMethod(),
                             new EnterNamespace(),
-                            new AttrFilter()
-                    )
-
-            ),
-
-
-            /*
-             * <mark 74_1_2>
-             */
-            Production.create(
-                    /*
-                     * <mark 74_1_2> → ε
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_74_1_2),
-                            SymbolString.create(
-                                    Symbol.EPSILON
-                            ),
-                            new FinishMethodDeclarator(),
                             new AttrFilter()
                     )
 
