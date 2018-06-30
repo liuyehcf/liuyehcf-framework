@@ -112,10 +112,17 @@ public abstract class TokenIdentifiers {
             int i = 0;
 
             /*
-             * 第一位如果是0
+             * 第一位数字，如果是0
              */
             if (i < remainInput.length() && remainInput.charAt(i) == '0') {
                 i++;
+
+                /*
+                 * 后缀
+                 */
+                if (i < remainInput.length() && DECIMAL_INTEGER_SUFFIX.contains(remainInput.charAt(i))) {
+                    i++;
+                }
 
                 /*
                  * 检查后继是否合法
@@ -129,9 +136,11 @@ public abstract class TokenIdentifiers {
             }
 
             /*
-             * 第一位必须是非0十进制数
+             * 至少有一位数字
+             * 且第一位数字，必须是非0十进制数
              */
-            if (i >= remainInput.length() || !NON_ZERO_DECIMAL_INTEGER_DIGIT.contains(remainInput.charAt(i))) {
+            if (i >= remainInput.length()
+                    || !NON_ZERO_DECIMAL_INTEGER_DIGIT.contains(remainInput.charAt(i))) {
                 return null;
             }
 
@@ -145,16 +154,9 @@ public abstract class TokenIdentifiers {
             }
 
             /*
-             * 到了文末，那么这是一个合法的数字，至于位数，先不管
-             */
-            if (i == remainInput.length()) {
-                tokenContext.setMoveLength(i);
-                return new Token(id, remainInput.substring(0, i));
-            }
-            /*
              * 整数后缀
              */
-            else if (DECIMAL_INTEGER_SUFFIX.contains(remainInput.charAt(i))) {
+            if (i < remainInput.length() && DECIMAL_INTEGER_SUFFIX.contains(remainInput.charAt(i))) {
                 i++;
             }
 

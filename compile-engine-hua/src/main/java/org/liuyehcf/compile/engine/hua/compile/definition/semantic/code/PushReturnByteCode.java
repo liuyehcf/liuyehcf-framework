@@ -12,9 +12,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_CHAR;
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
  * 增加return语句
