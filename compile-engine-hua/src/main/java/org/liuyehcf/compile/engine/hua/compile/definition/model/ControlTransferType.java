@@ -170,4 +170,35 @@ public enum ControlTransferType {
 
         return code;
     }
+
+    public ControlTransferType getOppositeType() {
+        switch (this) {
+            case IFLT:
+                return IFGE;
+            case IFLE:
+                return IFGT;
+            case IFGT:
+                return IFLE;
+            case IFGE:
+                return IFLT;
+            case IFNE:
+                return IFEQ;
+            case IFEQ:
+                return IFNE;
+            case IF_ICMPEQ:
+                return IF_ICMPNE;
+            case IF_ICMPGE:
+                return IF_ICMPLT;
+            case IF_ICMPGT:
+                return IF_ICMPLE;
+            case IF_ICMPLE:
+                return IF_ICMPGT;
+            case IF_ICMPLT:
+                return IF_ICMPGE;
+            case IF_ICMPNE:
+                return IF_ICMPEQ;
+            default:
+                throw new UnsupportedOperationException();
+        }
+    }
 }

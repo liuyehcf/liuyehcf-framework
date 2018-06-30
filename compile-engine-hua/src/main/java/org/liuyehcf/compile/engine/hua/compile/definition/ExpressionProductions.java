@@ -1046,7 +1046,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_REVERSED),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new PushUnaryComputeByteCode(-1, 0),
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <unary expression not plus minus> → ! <unary expression>
@@ -1057,7 +1058,9 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LOGICAL_NOT),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new AssignAttrs(0, -1, AttrName.IDENTIFIER_NAME, AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE),
+                            new PushUnaryComputeByteCode(-1, 0),
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <unary expression not plus minus> → <cast expression>

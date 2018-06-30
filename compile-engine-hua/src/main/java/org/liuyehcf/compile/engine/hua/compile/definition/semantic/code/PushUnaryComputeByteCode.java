@@ -2,11 +2,17 @@ package org.liuyehcf.compile.engine.hua.compile.definition.semantic.code;
 
 import org.liuyehcf.compile.engine.hua.compile.HuaContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
+import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp._ineg;
+import org.liuyehcf.compile.engine.hua.core.bytecode.cp._ixor;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp._lneg;
+import org.liuyehcf.compile.engine.hua.core.bytecode.cp._lxor;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iconst;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl._lconst;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
@@ -57,6 +63,27 @@ public class PushUnaryComputeByteCode extends AbstractSemanticAction {
                 }
                 break;
             case NORMAL_ADD:
+                // do nothing
+                break;
+            case NORMAL_BIT_REVERSED:
+                switch (typeName) {
+                    case NORMAL_INT:
+                        context.addByteCodeToCurrentMethod(new _iconst(-1));
+                        context.addByteCodeToCurrentMethod(new _ixor());
+                        break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _lconst(-1));
+                        context.addByteCodeToCurrentMethod(new _lxor());
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+                break;
+            case NORMAL_LOGICAL_NOT:
+                assertEquals(rightType, Type.TYPE_BOOLEAN);
+                ControlTransferType controlTransferType = context.getAttr(rightStackOffset, AttrName.BOOLEAN_EXPRESSION_TYPE);
+                ControlTransferType oppositeType = controlTransferType.getOppositeType();
+                context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, oppositeType);
                 break;
             default:
                 throw new UnsupportedOperationException();
