@@ -55,9 +55,20 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
         Type rightType = context.getAttr(rightStackOffset, AttrName.TYPE);
         String operator = context.getValue(operatorStackOffset);
 
+        if (!Type.isCompatible(leftType, rightType)
+                && !Type.isCompatible(rightType, leftType)) {
+            throw new RuntimeException("'" + operator + "' has inconsistent operator subtypes on both sides");
+        }
+
+        Type finalType;
+        if (Type.isCompatible(leftType, rightType)) {
+            finalType = leftType;
+        } else {
+            finalType = rightType;
+        }
+
         switch (operator) {
             case NORMAL_BIT_OR:
-                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_CHAR:
@@ -73,7 +84,6 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
 
                 break;
             case NORMAL_BIT_XOR:
-                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_CHAR:
@@ -89,7 +99,6 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
 
                 break;
             case NORMAL_BIT_AND:
-                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_CHAR:
@@ -105,7 +114,6 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
 
                 break;
             case NORMAL_SHL:
-                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_CHAR:
@@ -121,7 +129,6 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
 
                 break;
             case NORMAL_SHR:
-                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_CHAR:
@@ -137,7 +144,6 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
 
                 break;
             case NORMAL_USHR:
-                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_CHAR:
@@ -153,7 +159,6 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
 
                 break;
             case NORMAL_ADD:
-                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_CHAR:
@@ -169,7 +174,6 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
 
                 break;
             case NORMAL_SUB:
-                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_CHAR:
@@ -185,7 +189,6 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
 
                 break;
             case NORMAL_MUL:
-                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_CHAR:
@@ -201,7 +204,6 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
 
                 break;
             case NORMAL_DIV:
-                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_CHAR:
@@ -217,7 +219,6 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
 
                 break;
             case NORMAL_REM:
-                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_CHAR:
@@ -236,12 +237,6 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                 throw new UnsupportedOperationException();
         }
 
-        context.setAttrToLeftNode(AttrName.TYPE, leftType);
-    }
-
-    private void checkEqualType(Type type1, Type type2, String operator) {
-        if (!type1.equals(type2)) {
-            throw new RuntimeException("'" + operator + "' has inconsistent operator subtypes on both sides");
-        }
+        context.setAttrToLeftNode(AttrName.TYPE, finalType);
     }
 }

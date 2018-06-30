@@ -119,6 +119,14 @@ public class Type implements Serializable {
         }
     }
 
+    public static boolean isCompatible(Type mainType, Type subType) {
+        if (TYPE_LONG.equals(mainType)) {
+            return TYPE_LONG.equals(subType)
+                    || TYPE_INT.equals(subType);
+        }
+        return mainType.equals(subType);
+    }
+
     public String getTypeName() {
         return typeName;
     }

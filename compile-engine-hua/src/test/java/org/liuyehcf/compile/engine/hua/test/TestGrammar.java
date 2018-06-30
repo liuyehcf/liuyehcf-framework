@@ -87,7 +87,7 @@ public class TestGrammar {
     }
 
     @Test
-    public void testTypeLong() {
+    public void testTypeLong1() {
         String text = "void func() {\n" +
                 "\tlong[] a=new long[5];\n" +
                 "\ta[1]=1L;\n" +
@@ -103,6 +103,25 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func()\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"long\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_laload\"},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_lconst\",\"value\":1000000},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_laload\"},{\"name\":\"_ladd\"},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_laload\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_laload\"},{\"name\":\"_lshl\"},{\"name\":\"_lastore\"},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testTypeLong2() {
+        String text = "void func() {\n" +
+                "\tlong a=1;\n" +
+                "\ta=0X999;\n" +
+                "\ta+=0777777;\n" +
+                "\ta=a-0xff1ad;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_lstore\",\"order\":0},{\"name\":\"_iconst\",\"value\":2457},{\"name\":\"_lstore\",\"order\":0},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_iconst\",\"value\":262143},{\"name\":\"_ladd\"},{\"name\":\"_lstore\",\"order\":0},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1044909},{\"name\":\"_lsub\"},{\"name\":\"_lstore\",\"order\":0},{\"name\":\"_return\"}]}",
                 result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }

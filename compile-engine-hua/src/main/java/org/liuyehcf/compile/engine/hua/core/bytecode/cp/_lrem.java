@@ -24,8 +24,8 @@ public class _lrem extends Compute {
 
     @Override
     public void operate(RuntimeContext context) {
-        long value2 = context.pop();
-        long value1 = context.pop();
+        long value2 = context.popLong();
+        long value1 = context.popLong();
 
         context.push(value1 % value2);
 

@@ -51,7 +51,7 @@ public class VariableInitialization extends AbstractSemanticAction implements Se
 
         assertNotNull(expressionType);
         assertNotNull(variableSymbol);
-        if (!expressionType.equals(variableSymbol.getType())) {
+        if (!Type.isCompatible(variableSymbol.getType(), expressionType)) {
             throw new RuntimeException("Variable initialization statement on both sides of the type does not match");
         }
 

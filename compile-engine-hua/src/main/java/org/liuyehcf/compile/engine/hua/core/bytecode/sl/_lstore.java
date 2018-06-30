@@ -37,7 +37,7 @@ public class _lstore extends StoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
-        long value = context.pop();
+        long value = context.popLong();
 
         context.storeLong(order, value);
 

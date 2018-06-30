@@ -36,6 +36,17 @@ public class RuntimeContext {
         return currentMethod.getOperatorStack().pop();
     }
 
+    public long popLong() {
+        Object obj = pop();
+        /*
+         * 做类型兼容
+         */
+        if (obj instanceof Integer) {
+            return (long) (int) obj;
+        }
+        return (long) obj;
+    }
+
     public Object invoke(MethodSignature methodSignature, Object[] args) {
         if (intermediateInfo.getMethodInfoTable().isSystemMethod(methodSignature)) {
             return SystemMethod.invoke(methodSignature, args);

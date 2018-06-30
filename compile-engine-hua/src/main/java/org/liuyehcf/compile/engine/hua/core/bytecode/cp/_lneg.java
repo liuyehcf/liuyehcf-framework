@@ -24,7 +24,7 @@ public class _lneg extends Compute {
 
     @Override
     public void operate(RuntimeContext context) {
-        long value = context.pop();
+        long value = context.popLong();
         context.push(-value);
         context.increaseCodeOffset();
     }
