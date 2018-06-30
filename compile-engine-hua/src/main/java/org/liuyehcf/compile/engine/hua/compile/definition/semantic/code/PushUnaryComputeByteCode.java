@@ -84,7 +84,6 @@ public class PushUnaryComputeByteCode extends AbstractSemanticAction {
                 break;
             case NORMAL_LOGICAL_NOT:
                 assertEquals(rightType, Type.TYPE_BOOLEAN);
-
                 /*
                  * 转换跳转指令的类型
                  */

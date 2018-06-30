@@ -8,7 +8,10 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.StatementType;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.*;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.AssignAttr;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.AttrFilter;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.SetAttrToLeftNode;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.SetCodeOffsetAttr;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.backfill.ControlTransferByteCodeBackFill;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.backfill.ControlTransferByteCodeBackFillWithLoop;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.code.*;
@@ -484,7 +487,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ASSIGNMENT)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.ASSIGNMENT),
+                            new SetAttrToLeftNode(AttrName.STATEMENT_TYPE, StatementType.ASSIGNMENT),
                             new AttrFilter(AttrName.STATEMENT_TYPE)
                     ),
                     /*
@@ -495,7 +498,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREINCREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.PRE_INCREMENT),
+                            new SetAttrToLeftNode(AttrName.STATEMENT_TYPE, StatementType.PRE_INCREMENT),
                             new AttrFilter(AttrName.STATEMENT_TYPE)
                     ),
                     /*
@@ -506,7 +509,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTINCREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.POST_INCREMENT),
+                            new SetAttrToLeftNode(AttrName.STATEMENT_TYPE, StatementType.POST_INCREMENT),
                             new AttrFilter(AttrName.STATEMENT_TYPE)
                     ),
                     /*
@@ -517,7 +520,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PREDECREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.PRE_DECREMENT),
+                            new SetAttrToLeftNode(AttrName.STATEMENT_TYPE, StatementType.PRE_DECREMENT),
                             new AttrFilter(AttrName.STATEMENT_TYPE)
                     ),
                     /*
@@ -528,7 +531,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTDECREMENT_EXPRESSION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.POST_DECREMENT),
+                            new SetAttrToLeftNode(AttrName.STATEMENT_TYPE, StatementType.POST_DECREMENT),
                             new AttrFilter(AttrName.STATEMENT_TYPE)
                     ),
                     /*
@@ -539,7 +542,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(METHOD_INVOCATION)
                             ),
-                            new SetAttrFromSystem(0, AttrName.STATEMENT_TYPE, StatementType.METHOD_INVOCATION),
+                            new SetAttrToLeftNode(AttrName.STATEMENT_TYPE, StatementType.METHOD_INVOCATION),
                             new AttrFilter(AttrName.STATEMENT_TYPE)
                     )
                     /*

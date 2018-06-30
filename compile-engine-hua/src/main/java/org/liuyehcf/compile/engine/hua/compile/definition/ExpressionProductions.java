@@ -218,7 +218,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -229,7 +229,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_MUL_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_MUL_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_MUL_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -240,7 +240,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_DIV_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_DIV_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_DIV_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -251,7 +251,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_REM_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_REM_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_REM_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -262,7 +262,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_ADD_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_ADD_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_ADD_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -273,7 +273,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SUB_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_SUB_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_SUB_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -284,7 +284,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SHL_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_SHL_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_SHL_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -295,7 +295,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SHR_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_SHR_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_SHR_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -306,7 +306,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_USHR_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_USHR_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_USHR_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -317,7 +317,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BIT_AND_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_BIT_AND_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_BIT_AND_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -328,7 +328,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BIT_XOR_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_BIT_XOR_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_BIT_XOR_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     ),
                     /*
@@ -339,7 +339,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BIT_OR_ASSIGN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.ASSIGN_OPERATOR, NORMAL_BIT_OR_ASSIGN),
+                            new SetAttrToLeftNode(AttrName.ASSIGN_OPERATOR, NORMAL_BIT_OR_ASSIGN),
                             new AttrFilter(AttrName.ASSIGN_OPERATOR)
                     )
             ),
@@ -407,7 +407,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            new AssignAttrToLeftNode(0, AttrName.CONTROL_TRANSFER_TYPE),
+                            new AssignAttrsToLeftNode(0, AttrName.CONTROL_TRANSFER_TYPE),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new MergeControlTransferByteCode(0, -3),
                             new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
@@ -460,7 +460,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            new AssignAttrToLeftNode(0, AttrName.CONTROL_TRANSFER_TYPE),
+                            new AssignAttrsToLeftNode(0, AttrName.CONTROL_TRANSFER_TYPE),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new MergeControlTransferByteCode(0, -3),
                             new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
@@ -992,7 +992,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
                             new IncrementBackFill(-1, 0, -1),
-                            new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_INT),
+                            new SetAttrToLeftNode(AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -1014,7 +1014,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
                             new IncrementBackFill(-1, 0, 1),
-                            new SetAttrFromSystem(-2, AttrName.TYPE, Type.TYPE_INT),
+                            new SetAttrToLeftNode(AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -1056,7 +1056,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LOGICAL_NOT),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new AssignAttrs(0, -1, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION),
+                            new AssignAttrsToLeftNode(0, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION),
                             new PushUnaryComputeByteCode(-1, 0),
                             new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
@@ -1088,7 +1088,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DOUBLE_MINUS)
                             ),
                             new PushPostIINCByteCode(-1, -1),
-                            new SetAttrFromSystem(-1, AttrName.TYPE, Type.TYPE_INT),
+                            new SetAttrToLeftNode(AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -1109,7 +1109,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DOUBLE_PLUS)
                             ),
                             new PushPostIINCByteCode(-1, 1),
-                            new SetAttrFromSystem(-1, AttrName.TYPE, Type.TYPE_INT),
+                            new SetAttrToLeftNode(AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -1286,7 +1286,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new AssignAttrs(-1, -2, AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE),
+                            new AssignAttrsToLeftNode(-1, AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE),
                             new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
@@ -1456,7 +1456,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_MIDDLE_RIGHT_PARENTHESES)
                             ),
-                            new AssignAttr(-1, -2, AttrName.TYPE),
+                            new AssignAttrsToLeftNode(-1, AttrName.TYPE),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),

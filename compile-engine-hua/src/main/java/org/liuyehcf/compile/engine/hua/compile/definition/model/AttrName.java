@@ -48,7 +48,8 @@ public enum AttrName {
     CONTROL_TRANSFER_TYPE,
 
     /**
-     * 是否为复合的布尔表达式
+     * 是否为布尔表达式
+     * 单个的布尔变量或者布尔字面值不是布尔表达式
      */
     IS_COMPLEX_BOOLEAN_EXPRESSION,
 

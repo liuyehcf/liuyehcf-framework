@@ -7,7 +7,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.AttrFilter;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.SetAttrFromSystem;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.SetAttrToLeftNode;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable.IncreaseArrayTypeDim;
 
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
@@ -82,7 +82,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BOOLEAN)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_BOOLEAN),
+                            new SetAttrToLeftNode(AttrName.TYPE, Type.TYPE_BOOLEAN),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -129,7 +129,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_INT)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_INT),
+                            new SetAttrToLeftNode(AttrName.TYPE, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -140,7 +140,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_LONG)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_LONG),
+                            new SetAttrToLeftNode(AttrName.TYPE, Type.TYPE_LONG),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -151,7 +151,7 @@ abstract class TypeProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_CHAR)
                             ),
-                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_CHAR),
+                            new SetAttrToLeftNode(AttrName.TYPE, Type.TYPE_CHAR),
                             new AttrFilter(AttrName.TYPE)
                     )
                     /*

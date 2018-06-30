@@ -43,7 +43,7 @@ public class AssignAttr extends AbstractSemanticAction implements Serializable {
         this(fromStackOffset, attrName, toStackOffset, attrName);
     }
 
-    public AssignAttr(int fromStackOffset, AttrName fromAttrName, int toStackOffset, AttrName toAttrName) {
+    private AssignAttr(int fromStackOffset, AttrName fromAttrName, int toStackOffset, AttrName toAttrName) {
         this.fromStackOffset = fromStackOffset;
         this.fromAttrName = fromAttrName;
         this.toStackOffset = toStackOffset;
