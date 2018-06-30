@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.compile.definition.semantic.backfill;
+package org.liuyehcf.compile.engine.hua.compile.definition.semantic.code;
 
 import org.liuyehcf.compile.engine.hua.compile.HuaContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
@@ -21,7 +21,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
  * @author hechenfeng
  * @date 2018/6/30
  */
-public class AddCompareTransferByteCode extends AbstractSemanticAction {
+public class PushCompareTransferByteCode extends AbstractSemanticAction {
 
     /**
      * 左运算子-栈偏移量，相对于语法树栈
@@ -44,7 +44,7 @@ public class AddCompareTransferByteCode extends AbstractSemanticAction {
      */
     private final int rightOperatorStackOffset;
 
-    public AddCompareTransferByteCode(int leftOperatorStackOffset, CompareOperatorType compareOperatorType, int rightOperatorStackOffset) {
+    public PushCompareTransferByteCode(int leftOperatorStackOffset, CompareOperatorType compareOperatorType, int rightOperatorStackOffset) {
         this.leftOperatorStackOffset = leftOperatorStackOffset;
         this.compareOperatorType = compareOperatorType;
         this.rightOperatorStackOffset = rightOperatorStackOffset;

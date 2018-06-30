@@ -2,7 +2,6 @@ package org.liuyehcf.compile.engine.hua.compile.definition.semantic.code;
 
 import org.liuyehcf.compile.engine.hua.compile.HuaContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
-import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp._ineg;
@@ -12,7 +11,6 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.cp._lxor;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iconst;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._lconst;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
@@ -80,11 +78,22 @@ public class PushUnaryComputeByteCode extends AbstractSemanticAction {
                 }
                 break;
             case NORMAL_LOGICAL_NOT:
-                assertEquals(rightType, Type.TYPE_BOOLEAN);
-                ControlTransferType controlTransferType = context.getAttr(rightStackOffset, AttrName.BOOLEAN_EXPRESSION_TYPE);
-                ControlTransferType oppositeType = controlTransferType.getOppositeType();
-                context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, oppositeType);
-                break;
+                throw new UnsupportedOperationException();
+//                assertEquals(rightType, Type.TYPE_BOOLEAN);
+//                ControlTransferType controlTransferType = context.getAttr(rightStackOffset, AttrName.BOOLEAN_EXPRESSION_TYPE);
+//                if (controlTransferType != null) {
+//                    ControlTransferType oppositeType = controlTransferType.getOppositeType();
+//                    context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, oppositeType);
+//                }
+//
+//                /*
+//                 * 交换TRUE回填字节码与FALSE回填字节码
+//                 */
+//                List<ByteCode> trueByteCodes = context.getAttr(rightStackOffset, AttrName.TRUE_BYTE_CODE);
+//                List<ByteCode> falseByteCodes = context.getAttr(rightStackOffset, AttrName.FALSE_BYTE_CODE);
+//                context.setAttrToLeftNode(AttrName.TRUE_BYTE_CODE, falseByteCodes);
+//                context.setAttrToLeftNode(AttrName.FALSE_BYTE_CODE, trueByteCodes);
+//                break;
             default:
                 throw new UnsupportedOperationException();
         }
