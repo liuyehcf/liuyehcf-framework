@@ -6,7 +6,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferT
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cf._goto;
-import org.liuyehcf.compile.engine.hua.core.bytecode.cf._ifeq;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iconst;
 
 import java.io.Serializable;
@@ -43,20 +42,8 @@ public class BooleanExpressionEnding extends AbstractSemanticAction implements S
             return;
         }
 
-        ControlTransferType type = context.getAttr(booleanExpressionStackOffset, AttrName.BOOLEAN_EXPRESSION_TYPE);
-
-        ControlTransfer __code;
-
-        if (type == null) {
-            /*
-             * 对于仅由boolean变量或者字面值构成的布尔表达式，没有BOOLEAN_EXPRESSION属性
-             * 该BOOLEAN_EXPRESSION属性是规约 <  <= > >= == != 语句的时候添加的
-             * boolean e= a && b || c && d;
-             */
-            __code = new _ifeq();
-        } else {
-            __code = ControlTransferType.getControlTransferByType(type);
-        }
+        ControlTransferType type = context.getAttr(booleanExpressionStackOffset, AttrName.CONTROL_TRANSFER_TYPE);
+        ControlTransfer __code = ControlTransferType.getControlTransferByType(type);
 
         ControlTransfer __goto = new _goto();
 

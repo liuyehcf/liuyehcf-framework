@@ -43,9 +43,9 @@ public enum AttrName {
     LITERAL_VALUE,
 
     /**
-     * 布尔表达式类型
+     * 控制转移类型
      */
-    BOOLEAN_EXPRESSION_TYPE,
+    CONTROL_TRANSFER_TYPE,
 
     /**
      * 是否为复合的布尔表达式

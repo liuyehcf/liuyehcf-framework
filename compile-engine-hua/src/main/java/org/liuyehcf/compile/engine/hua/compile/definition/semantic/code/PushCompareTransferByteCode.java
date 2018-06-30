@@ -63,22 +63,22 @@ public class PushCompareTransferByteCode extends AbstractSemanticAction {
             case NORMAL_INT:
                 switch (compareOperatorType) {
                     case EQUAL:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPNE);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPNE);
                         break;
                     case NOT_EQUAL:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPEQ);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPEQ);
                         break;
                     case LESS_THAN:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPGE);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPGE);
                         break;
                     case LARGE_THEN:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPLE);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPLE);
                         break;
                     case LESS_EQUAL:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPGT);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPGT);
                         break;
                     case LARGE_EQUAL:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IF_ICMPLT);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPLT);
                         break;
                     default:
                         throw new UnsupportedOperationException();
@@ -88,22 +88,22 @@ public class PushCompareTransferByteCode extends AbstractSemanticAction {
                 context.addByteCodeToCurrentMethod(new _lcmp());
                 switch (compareOperatorType) {
                     case EQUAL:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IFNE);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFNE);
                         break;
                     case NOT_EQUAL:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IFEQ);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFEQ);
                         break;
                     case LESS_THAN:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IFGE);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFGE);
                         break;
                     case LARGE_THEN:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IFLE);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFLE);
                         break;
                     case LESS_EQUAL:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IFGT);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFGT);
                         break;
                     case LARGE_EQUAL:
-                        context.setAttrToLeftNode(AttrName.BOOLEAN_EXPRESSION_TYPE, ControlTransferType.IFLT);
+                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFLT);
                         break;
                     default:
                         throw new UnsupportedOperationException();

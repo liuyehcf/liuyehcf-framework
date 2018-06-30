@@ -98,7 +98,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ASSIGNMENT_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )
             ),
 
@@ -116,7 +116,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <assignment expression> → <assignment>
@@ -358,7 +358,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_OR_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <conditional expression> → <conditional or expression> ? <mark true block> <expression> : <mark false block> <conditional expression>
@@ -394,7 +394,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * (2) <conditional or expression> → <conditional or expression> || <mark 230_2_1> <conditional and expression>
@@ -407,11 +407,10 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
-                            new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE),
+                            new AssignAttrToLeftNode(0, AttrName.CONTROL_TRANSFER_TYPE),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new MergeControlTransferByteCode(0, -3),
-                            new SetAttrFromSystem(-3, AttrName.TYPE, Type.TYPE_BOOLEAN),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )
             ),
 
@@ -448,7 +447,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <conditional and expression> → <conditional and expression> && <mark 232_2_1> <inclusive or expression>
@@ -461,10 +460,10 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
-                            new AssignAttr(0, -3, AttrName.BOOLEAN_EXPRESSION_TYPE),
+                            new AssignAttrToLeftNode(0, AttrName.CONTROL_TRANSFER_TYPE),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new MergeControlTransferByteCode(0, -3),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )
             ),
 
@@ -501,7 +500,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXCLUSIVE_OR_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <inclusive or expression> → <inclusive or expression> | <exclusive or expression>
@@ -532,7 +531,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(AND_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <exclusive or expression> → <exclusive or expression> ^ <and expression>
@@ -563,7 +562,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EQUALITY_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <and expression> → <and expression> & <equality expression>
@@ -594,7 +593,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(RELATIONAL_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <equality expression> → <equality expression> == <relational expression>
@@ -608,7 +607,7 @@ abstract class ExpressionProductions {
                             ),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new PushCompareTransferByteCode(-2, CompareOperatorType.EQUAL, 0),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
                     ),
                     /*
                      * <equality expression> → <equality expression> != <relational expression>
@@ -622,7 +621,7 @@ abstract class ExpressionProductions {
                             ),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new PushCompareTransferByteCode(-2, CompareOperatorType.NOT_EQUAL, 0),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
                     )
             ),
 
@@ -640,7 +639,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(SHIFT_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <relational expression> → <relational expression> < <shift expression>
@@ -654,7 +653,7 @@ abstract class ExpressionProductions {
                             ),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new PushCompareTransferByteCode(-2, CompareOperatorType.LESS_THAN, 0),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
                     ),
                     /*
                      * <relational expression> → <relational expression> > <shift expression>
@@ -668,7 +667,7 @@ abstract class ExpressionProductions {
                             ),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new PushCompareTransferByteCode(-2, CompareOperatorType.LARGE_THEN, 0),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
                     ),
                     /*
                      * <relational expression> → <relational expression> <= <shift expression>
@@ -682,7 +681,7 @@ abstract class ExpressionProductions {
                             ),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new PushCompareTransferByteCode(-2, CompareOperatorType.LESS_EQUAL, 0),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
                     ),
                     /*
                      * <relational expression> → <relational expression> >= <shift expression>
@@ -696,7 +695,7 @@ abstract class ExpressionProductions {
                             ),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new PushCompareTransferByteCode(-2, CompareOperatorType.LARGE_EQUAL, 0),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION)
                     )
                     /*
                      * TODO 缺少以下产生式
@@ -718,7 +717,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <shift expression> → <shift expression> << <additive expression>
@@ -775,7 +774,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <additive expression> → <additive expression> + <multiplicative expression>
@@ -819,7 +818,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <multiplicative expression> → <multiplicative expression> * <unary expression>
@@ -954,7 +953,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(UNARY_EXPRESSION_NOT_PLUS_MINUS)
                             ),
-                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     )
             ),
 
@@ -1034,7 +1033,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(POSTFIX_EXPRESSION)
                             ),
-                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <unary expression not plus minus> → ~ <unary expression>
@@ -1057,9 +1056,9 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_LOGICAL_NOT),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-//                            new PushUnaryComputeByteCode(-1, 0),
-//                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
-                            new AttrFilter() // TODO 尚不支持
+                            new AssignAttrs(0, -1, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION),
+                            new PushUnaryComputeByteCode(-1, 0),
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <unary expression not plus minus> → <cast expression>
@@ -1129,7 +1128,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PRIMARY)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * (2) <postfix expression> → <expression name>
@@ -1139,8 +1138,9 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_NAME)
                             ),
+                            new SetBooleanAttrIfNecessary(0),
                             new VariableLoad(0),
-                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE)
+                            new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE)
                     ),
                     /*
                      * (3) <postfix expression> → <postincrement expression>
@@ -1246,7 +1246,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(PRIMARY_NO_NEW_ARRAY)
                             ),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <primary> → <array creation expression>
@@ -1286,8 +1286,8 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
                             ),
-                            new AssignAttrs(-1, -2, AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE),
-                            new AttrFilter(AttrName.TYPE, AttrName.BOOLEAN_EXPRESSION_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
+                            new AssignAttrs(-1, -2, AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE),
+                            new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
                      * <primary no new array> → <method invocation>
