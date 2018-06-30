@@ -20,6 +20,11 @@ public class TokenContext {
      */
     private final String remainInput;
 
+    /**
+     * 移动的长度
+     */
+    private int moveLength;
+
     TokenContext(Symbol id, String remainInput) {
         this.id = id;
         this.remainInput = remainInput;
@@ -31,5 +36,13 @@ public class TokenContext {
 
     public String getRemainInput() {
         return remainInput;
+    }
+
+    public int getMoveLength() {
+        return moveLength;
+    }
+
+    public void setMoveLength(int moveLength) {
+        this.moveLength = moveLength;
     }
 }

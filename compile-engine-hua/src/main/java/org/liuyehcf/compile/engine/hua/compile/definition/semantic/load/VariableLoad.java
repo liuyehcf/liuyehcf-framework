@@ -51,6 +51,7 @@ public class VariableLoad extends AbstractSemanticAction implements Serializable
         } else {
             switch (type.getTypeName()) {
                 case NORMAL_BOOLEAN:
+                case NORMAL_CHAR:
                 case NORMAL_INT:
                     context.addByteCodeToCurrentMethod(new _iload(variableSymbol.getOrder()));
                     break;

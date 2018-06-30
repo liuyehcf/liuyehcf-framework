@@ -60,6 +60,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                 checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ior());
                         break;
@@ -75,6 +76,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                 checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ixor());
                         break;
@@ -90,6 +92,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                 checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _iand());
                         break;
@@ -105,6 +108,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                 checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ishl());
                         break;
@@ -120,6 +124,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                 checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ishr());
                         break;
@@ -135,6 +140,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                 checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _iushr());
                         break;
@@ -150,6 +156,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                 checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _iadd());
                         break;
@@ -165,6 +172,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                 checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _isub());
                         break;
@@ -180,6 +188,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                 checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _imul());
                         break;
@@ -195,6 +204,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                 checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _idiv());
                         break;
@@ -210,6 +220,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                 checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _irem());
                         break;

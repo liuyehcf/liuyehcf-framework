@@ -118,6 +118,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                     addComputeByteCode(context, identifierType.getTypeName(), operator);
 
                     switch (identifierType.getTypeName()) {
+                        case NORMAL_CHAR:
                         case NORMAL_INT:
                             context.addByteCodeToCurrentMethod(new _iastore());
                             break;
@@ -157,6 +158,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                     addComputeByteCode(context, identifierType.getTypeName(), operator);
 
                     switch (identifierType.getTypeName()) {
+                        case NORMAL_CHAR:
                         case NORMAL_INT:
                             context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOrder()));
                             break;
@@ -178,6 +180,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
         switch (operator) {
             case NORMAL_MUL_ASSIGN:
                 switch (typeName) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         code = new _imul();
                         break;
@@ -190,6 +193,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 break;
             case NORMAL_DIV_ASSIGN:
                 switch (typeName) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         code = new _idiv();
                         break;
@@ -202,6 +206,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 break;
             case NORMAL_REM_ASSIGN:
                 switch (typeName) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         code = new _irem();
                         break;
@@ -214,6 +219,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 break;
             case NORMAL_ADD_ASSIGN:
                 switch (typeName) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         code = new _iadd();
                         break;
@@ -226,6 +232,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 break;
             case NORMAL_SUB_ASSIGN:
                 switch (typeName) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         code = new _isub();
                         break;
@@ -238,6 +245,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 break;
             case NORMAL_SHL_ASSIGN:
                 switch (typeName) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         code = new _ishl();
                         break;
@@ -250,6 +258,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 break;
             case NORMAL_SHR_ASSIGN:
                 switch (typeName) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         code = new _ishr();
                         break;
@@ -262,6 +271,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 break;
             case NORMAL_USHR_ASSIGN:
                 switch (typeName) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         code = new _iushr();
                         break;
@@ -274,6 +284,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 break;
             case NORMAL_BIT_AND_ASSIGN:
                 switch (typeName) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         code = new _iand();
                         break;
@@ -286,6 +297,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 break;
             case NORMAL_BIT_XOR_ASSIGN:
                 switch (typeName) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         code = new _ixor();
                         break;
@@ -298,6 +310,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                 break;
             case NORMAL_BIT_OR_ASSIGN:
                 switch (typeName) {
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         code = new _ior();
                         break;

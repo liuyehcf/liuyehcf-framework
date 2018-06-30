@@ -13,6 +13,7 @@ import java.util.Objects;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_BOOLEAN;
+import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_CHAR;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_INT;
 
 /**
@@ -55,6 +56,7 @@ public class PushReturnByteCode extends AbstractSemanticAction implements Serial
             } else {
                 switch (type.getTypeName()) {
                     case NORMAL_BOOLEAN:
+                    case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ireturn());
                         break;

@@ -30,6 +30,7 @@ public abstract class TokenIdentifiers {
              */
             if (1 < remainInput.length() && remainInput.charAt(1) == '\\') {
                 if (3 < remainInput.length() && ESCAPE_CHARS.containsKey(remainInput.charAt(2)) && remainInput.charAt(3) == '\'') {
+                    tokenContext.setMoveLength(4);
                     return new Token(id, "\'" + (char) (int) ESCAPE_CHARS.get(remainInput.charAt(2)) + "\'");
                 } else {
                     return null;
@@ -39,6 +40,7 @@ public abstract class TokenIdentifiers {
              * 普通非'的字符
              */
             else if (2 < remainInput.length() && remainInput.charAt(1) != '\'' && remainInput.charAt(2) == '\'') {
+                tokenContext.setMoveLength(3);
                 return new Token(id, remainInput.substring(0, 3));
             }
             /*
@@ -75,6 +77,7 @@ public abstract class TokenIdentifiers {
                  */
                 else if (remainInput.charAt(i) == '"') {
                     sb.append('"');
+                    tokenContext.setMoveLength(i + 1);
                     return new Token(id, sb.toString());
                 }
                 /*
@@ -120,6 +123,8 @@ public abstract class TokenIdentifiers {
                 if (nextIsIllegal(i, remainInput)) {
                     return null;
                 }
+
+                tokenContext.setMoveLength(i + 1);
                 return new Token(id, remainInput.substring(0, i));
             }
 
@@ -143,6 +148,7 @@ public abstract class TokenIdentifiers {
              * 到了文末，那么这是一个合法的数字，至于位数，先不管
              */
             if (i == remainInput.length()) {
+                tokenContext.setMoveLength(i + 1);
                 return new Token(id, remainInput.substring(0, i));
             }
             /*
@@ -158,6 +164,8 @@ public abstract class TokenIdentifiers {
             if (nextIsIllegal(i, remainInput)) {
                 return null;
             }
+
+            tokenContext.setMoveLength(i + 1);
             return new Token(id, remainInput.substring(0, i));
         }
 
@@ -205,6 +213,7 @@ public abstract class TokenIdentifiers {
          * 这里可以直接用Character.isAlphabetic方法，虽然这个方法包含了a-f，但是前面的while循环保证了不可能包含a-f
          */
         if (i == remainInput.length() || !Character.isAlphabetic(remainInput.charAt(i))) {
+            tokenContext.setMoveLength(i + 1);
             return new Token(id, remainInput.substring(0, i));
         }
 
@@ -247,6 +256,7 @@ public abstract class TokenIdentifiers {
         if (i == remainInput.length()
                 || !Character.isAlphabetic(remainInput.charAt(i))
                 || !NON_OCTAL_INTEGER_DIGIT.contains(remainInput.charAt(i))) {
+            tokenContext.setMoveLength(i + 1);
             return new Token(id, remainInput.substring(0, i));
         }
 

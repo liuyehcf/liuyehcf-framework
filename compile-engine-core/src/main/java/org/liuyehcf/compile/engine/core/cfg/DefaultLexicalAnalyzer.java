@@ -226,12 +226,13 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
                 for (Morpheme morpheme : morphemes) {
 
                     if (morpheme.getMorphemeType() == MorphemeType.OPERATOR) {
-                        Token token = morpheme.getTokenIdentifier().identify(new TokenContext(morpheme.getId(), remainInput));
+                        TokenContext tokenContext = new TokenContext(morpheme.getId(), remainInput);
+                        Token token = morpheme.getTokenIdentifier().identify(tokenContext);
 
                         if (token != null) {
                             hasNext = true;
                             nextToken = token;
-                            index += token.getValue().length();
+                            index += tokenContext.getMoveLength();
 
                             canBreak = true;
                             break;

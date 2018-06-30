@@ -102,6 +102,7 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction implements S
                  */
                 else {
                     switch (leftHandType.getTypeName()) {
+                        case NORMAL_CHAR:
                         case NORMAL_INT:
                             context.addByteCodeToCurrentMethod(new _iload(variableSymbol.getOrder()));
                             break;
