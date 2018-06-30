@@ -7,6 +7,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.compile.definition.ProgramProductions.PROGRAMS;
+import static org.liuyehcf.compile.engine.hua.compile.definition.TokenIdentifiers.*;
 import static org.liuyehcf.compile.engine.hua.compile.definition.TokenProductions.*;
 
 /**
@@ -46,6 +47,9 @@ public abstract class GrammarDefinition {
 
 
     public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+            .addTokenOperator(Symbol.createIdentifierTerminator(SPECIAL_DECIMAL_INTEGER_LITERAL), IDENTIFIER_DECIMAL_INTEGER_LITERAL)
+            .addTokenOperator(Symbol.createIdentifierTerminator(SPECIAL_CHARACTER_LITERAL), IDENTIFIER_CHAR_LITERAL)
+            .addTokenOperator(Symbol.createIdentifierTerminator(SPECIAL_STRING_LITERAL), IDENTIFIER_STRING_LITERAL)
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES), ")")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES), "[")
@@ -91,8 +95,6 @@ public abstract class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_BIT_OR), "|")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_LT), "<")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_GT), ">")
-            .addNormalMorpheme(Symbol.createTerminator(NORMAL_NUMBER_0), "0")
-            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_NON_ZERO_DIGIT), "[1-9]")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_IF), "if")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_ELSE), "else")
@@ -109,7 +111,5 @@ public abstract class GrammarDefinition {
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_TRUE), "true")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_FALSE), "false")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_SIZEOF), "sizeof")
-            .addCharMorpheme(Symbol.createTerminator(SPECIAL_CHARACTER_LITERAL))
-            .addStringMorpheme(Symbol.createTerminator(SPECIAL_STRING_LITERAL))
             .build();
 }

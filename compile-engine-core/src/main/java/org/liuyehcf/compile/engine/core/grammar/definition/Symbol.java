@@ -69,6 +69,10 @@ public class Symbol implements Comparable<Symbol>, Serializable {
         return createSymbol(true, value, MorphemeType.REGEX);
     }
 
+    public static Symbol createIdentifierTerminator(String value) {
+        return createSymbol(true, value, MorphemeType.OPERATOR);
+    }
+
     public static Symbol createNonTerminator(String value) {
         return createSymbol(false, value, MorphemeType.NORMAL);
     }

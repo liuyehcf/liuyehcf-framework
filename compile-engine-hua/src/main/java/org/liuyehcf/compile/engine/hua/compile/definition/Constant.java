@@ -67,7 +67,6 @@ public abstract class Constant {
     /**
      * literal
      */
-    public static final String NORMAL_NUMBER_0 = "0";
     public static final String NORMAL_BOOLEAN_TRUE = "true";
     public static final String NORMAL_BOOLEAN_FALSE = "false";
 }

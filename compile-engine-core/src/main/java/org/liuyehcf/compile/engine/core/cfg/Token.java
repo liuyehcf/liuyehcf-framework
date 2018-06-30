@@ -23,7 +23,7 @@ public class Token {
      */
     private final String value;
 
-    Token(Symbol id, String value) {
+    public Token(Symbol id, String value) {
         this.id = id;
         this.value = value;
     }
