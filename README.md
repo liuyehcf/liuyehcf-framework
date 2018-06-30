@@ -1,10 +1,16 @@
 # 使用
 
-1. 下载demo目录
-1. 设置环境变量`HUA_PATH`，其值为`demo/lib`目录的绝对路径，即`compile-engine-hua-1.0-SNAPSHOT.jar`所在目录的绝对路径
+1. 下载本工程
+1. 利用maven工具打包`mvn clean package -Dmaven.test.skip=true`
+1. 打包完成后，找到`compile-engine/compile-engine-hua/target/compile-engine-hua-1.0-SNAPSHOT.jar`文件
+1. 设置环境变量`HUA_PATH`，其值为`compile-engine-hua-1.0-SNAPSHOT.jar`所在目录的绝对路径
+1. hua语言提供了3个命令行工具，在`/compile-engine/cmd`目录下，分别是
+    * `huac`：编译源代码(.hua文件)，生成字节码文件(.hcalss)
+    * `hua`：运行程序
+    * `huap`：翻译字节码文件(.hcalss)的内容
 1. 编写.hua源文件，例如test.hua（详见下方示例）
 1. 编译，执行命令`huac -f test.hua`，会在当前路径下生成同名的`.hclass`文件
-    * 如果要指定输出目录，可以使用`-d`参数，可以使用`huac -h`命令查看支持的参数
+    * 如果要指定输出目录，可以使用`-d`参数，可以使用`huac -h`命令查看帮助文档
 1. 运行，执行命令`hua -f test.hclass`
     * 后面可以跟上参数，参数将会作为main方法的入参
 1. 查看编译后的字节码，执行命令`huap -f test.hclass`
@@ -152,133 +158,7 @@ HuaCompiler继承了LALR分析器，其文法定义参照[Java BNF定义](http:/
 例如编写源文件`test.hua`，源文件的内容是冒泡排序、插入排序以及快速排序，源码内容如下：
 
 ```
-void printSplit(){
-	println("\n-----------------------------\n");
-}
 
-void exchange(int[] nums, int i, int j) {
-	int temp = nums[i];
-	nums[i] = nums[j];
-	nums[j] = temp;
-}
-
-void compareAndExchange(int[] nums, int left, int right) {
-    if (nums[left] > nums[right]) {
-        exchange(nums, left, right);
-    }
-}
-
-void bubbleSort(int[] nums) {
-	int size=sizeof nums;
-    for (int i = 0; i < size; i++) {
-        for (int j = size - 1; j > i; j--) {
-            compareAndExchange(nums, j - 1, j);
-        }
-    }
-}
-
-void testBubbleSort(){
-	int[] nums=new int[200];
-
-	for(int i=0;i<200;i++){
-		nums[i]=nextInt(50,100);
-	}
-
-	println("before bubbleSort:\n");
-	println(nums);
-
-	bubbleSort(nums);
-
-	println("after bubbleSort:\n");
-	println(nums);
-
-	printSplit();
-}
-
-
-void insertSort(int[] nums) {
-	int size=sizeof nums;
-    for (int i = 1; i < size; i++) {
-        int pivot = nums[i];
-        int j = i - 1;
-        while (j >= 0 && nums[j] > pivot) {
-            nums[j + 1] = nums[j];
-            j--;
-        }
-        nums[j + 1] = pivot;
-    }
-}
-
-void testInsertSort(){
-	int[] nums=new int[200];
-
-	for(int i=0;i<200;i++){
-		nums[i]=nextInt(50,100);
-	}
-
-	println("before insertSort:\n");
-	println(nums);
-
-	insertSort(nums);
-
-	println("after insertSort:\n");
-	println(nums);
-
-	printSplit();
-}
-
-
-int partition(int[] nums, int lo, int hi) {
-	int i = lo - 1;
-	int pivot = nums[hi];
-	
-	for (int j = lo; j < hi; j++) {
-		if (nums[j] < pivot) {
-			exchange(nums, ++i, j);
-		}
-	}
-
-	exchange(nums, ++i, hi);
-	
-	return i;
-}
-
-void quickSort(int[] nums, int lo, int hi) {
-	if (lo < hi) {
-		int mid = partition(nums, lo, hi);
-		quickSort(nums, lo, mid - 1);
-		quickSort(nums, mid + 1, hi);
-	}
-}
-
-void quickSort(int[] nums) {
-	quickSort(nums, 0, sizeof nums -1);
-}
-
-void testQuickSort(){
-	int[] nums=new int[200];
-
-	for(int i=0;i<200;i++){
-		nums[i]=nextInt(50,100);
-	}
-
-	println("before quickSort:\n");
-	println(nums);
-
-	quickSort(nums);
-
-	println("after quickSort:\n");
-	println(nums);
-
-	printSplit();
-}
-
-
-void main(char[][] args){
-	testBubbleSort();
-	testInsertSort();
-	testQuickSort();
-}
 ```
 
 执行`huac -f test.hua`，在当前路径下生成`test.hclass`。（第一次编译时需要生成状态自动机，会比较慢，大约10s左右）
