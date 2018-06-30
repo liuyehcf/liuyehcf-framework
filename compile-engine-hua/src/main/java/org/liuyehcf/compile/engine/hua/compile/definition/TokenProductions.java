@@ -26,18 +26,13 @@ abstract class TokenProductions {
     public static final String METHOD_NAME = "<method name>"; // 296
     public static final String LITERAL = "<literal>"; // 300
     public static final String INTEGER_LITERAL = "<integer literal>"; // 302
-    public static final String DECIMAL_INTEGER_LITERAL = "<decimal integer literal>"; // 304
-    public static final String HEX_INTEGER_LITERAL = "<hex integer literal>"; // 306
-    public static final String OCTAL_INTEGER_LITERAL = "<octal integer literal>"; // 308
     public static final String BOOLEAN_LITERAL = "<boolean literal>"; // 342
     public static final String CHARACTER_LITERAL = "<character literal>"; // 344
     public static final String STRING_LITERAL = "<string literal>"; // 348
 
-    public static final String SPECIAL_DECIMAL_INTEGER_LITERAL = "#decimalIntegerLiteral";
-    public static final String SPECIAL_HEX_INTEGER_LITERAL = "#hexIntegerLiteral";
-    public static final String SPECIAL_OCTAL_INTEGER_LITERAL = "#octalIntegerLiteral";
-    public static final String SPECIAL_CHARACTER_LITERAL = "#CharacterLiteral";
-    public static final String SPECIAL_STRING_LITERAL = "#StringLiteral";
+    public static final String IDENTIFIER_INTEGER_LITERAL = "#integerLiteral";
+    public static final String IDENTIFIER_CHARACTER_LITERAL = "#CharacterLiteral";
+    public static final String IDENTIFIER_STRING_LITERAL = "#StringLiteral";
 
     public static final Production[] PRODUCTIONS = {
             /*
@@ -146,92 +141,16 @@ abstract class TokenProductions {
 
             /*
              * <integer literal> 302
-             * LACK
-             */
-            Production.create(
-                    /*
-                     * (1) <integer literal> → <decimal integer literal>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(INTEGER_LITERAL),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(DECIMAL_INTEGER_LITERAL)
-                            ),
-                            new AttrFilter(AttrName.LITERAL_VALUE)
-                    ),
-                    /*
-                     * (2) <integer literal> → <hex integer literal>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(INTEGER_LITERAL),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(HEX_INTEGER_LITERAL)
-                            ),
-                            new AttrFilter(AttrName.LITERAL_VALUE)
-                    ),
-                    /*
-                     * (3) <integer literal> → <octal integer literal>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(INTEGER_LITERAL),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(OCTAL_INTEGER_LITERAL)
-                            ),
-                            new AttrFilter(AttrName.LITERAL_VALUE)
-                    )
-            ),
-
-
-            /*
-             * <decimal integer literal> 304
              * DIFFERENT
              */
             Production.create(
                     /*
-                     * <decimal integer literal> → #decimalIntegerLiteral
+                     * (1) <integer literal> → #integerLiteral
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(DECIMAL_INTEGER_LITERAL),
+                            Symbol.createNonTerminator(INTEGER_LITERAL),
                             SymbolString.create(
-                                    Symbol.createIdentifierTerminator(SPECIAL_DECIMAL_INTEGER_LITERAL)
-                            ),
-                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
-                            new AttrFilter(AttrName.LITERAL_VALUE)
-                    )
-            ),
-
-
-            /*
-             * <hex integer literal> 306
-             * DIFFERENT
-             */
-            Production.create(
-                    /*
-                     * <hex integer literal> → #hexIntegerLiteral
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(HEX_INTEGER_LITERAL),
-                            SymbolString.create(
-                                    Symbol.createIdentifierTerminator(SPECIAL_HEX_INTEGER_LITERAL)
-                            ),
-                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
-                            new AttrFilter(AttrName.LITERAL_VALUE)
-                    )
-            ),
-
-
-            /*
-             * <octal integer literal> 308
-             * DIFFERENT
-             */
-            Production.create(
-                    /*
-                     * <octal integer literal> → #octalIntegerLiteral
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(OCTAL_INTEGER_LITERAL),
-                            SymbolString.create(
-                                    Symbol.createIdentifierTerminator(SPECIAL_OCTAL_INTEGER_LITERAL)
+                                    Symbol.createIdentifierTerminator(IDENTIFIER_INTEGER_LITERAL)
                             ),
                             new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)
@@ -245,7 +164,7 @@ abstract class TokenProductions {
              */
             Production.create(
                     /*
-                     * <boolean literal> → true
+                     * (1) <boolean literal> → true
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(BOOLEAN_LITERAL),
@@ -256,7 +175,7 @@ abstract class TokenProductions {
                             new AttrFilter(AttrName.LITERAL_VALUE)
                     ),
                     /*
-                     * <boolean literal> → false
+                     * (2) <boolean literal> → false
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(BOOLEAN_LITERAL),
@@ -274,10 +193,13 @@ abstract class TokenProductions {
              * DIFFERENT
              */
             Production.create(
+                    /*
+                     * <character literal> → #CharacterLiteral
+                     */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(CHARACTER_LITERAL),
                             SymbolString.create(
-                                    Symbol.createIdentifierTerminator(SPECIAL_CHARACTER_LITERAL)
+                                    Symbol.createIdentifierTerminator(IDENTIFIER_CHARACTER_LITERAL)
                             ),
                             new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)
@@ -290,10 +212,13 @@ abstract class TokenProductions {
              * DIFFERENT
              */
             Production.create(
+                    /*
+                     * <string literal> → #StringLiteral
+                     */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(STRING_LITERAL),
                             SymbolString.create(
-                                    Symbol.createIdentifierTerminator(SPECIAL_STRING_LITERAL)
+                                    Symbol.createIdentifierTerminator(IDENTIFIER_STRING_LITERAL)
                             ),
                             new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)

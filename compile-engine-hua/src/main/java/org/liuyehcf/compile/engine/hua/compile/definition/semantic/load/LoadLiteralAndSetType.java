@@ -46,16 +46,38 @@ public class LoadLiteralAndSetType extends AbstractSemanticAction implements Ser
         String literal = context.getAttr(literalStackOffset, AttrName.LITERAL_VALUE);
 
         if (Type.TYPE_INT.equals(type)) {
-            /*
-             * integer字面值可能是int类型或者long类型
-             * 详见 <literal> → <integer literal> 产生式
-             */
-            if (literal.endsWith("l") || literal.endsWith("L")) {
-                context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_LONG);
-                context.addByteCodeToCurrentMethod(new _lconst(parseLong(literal)));
-            } else {
+            char firstChar = literal.charAt(0);
+            BigInteger bigInteger;
+            switch (firstChar) {
+                case '1':
+                    if (literal.endsWith("l") || literal.endsWith("L")) {
+                        bigInteger = new BigInteger(literal.substring(1, literal.length() - 1), 10);
+                        if (bigInteger.bitLength() > 63) {
+                            throw new RuntimeException("Illegal integer literal");
+                        }
+                        context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_LONG);
+                        context.addByteCodeToCurrentMethod(new _lconst(bigInteger.longValue()));
+                        return;
+                    }
+                    bigInteger = new BigInteger(literal.substring(1), 10);
+                    break;
+                case '2':
+                    bigInteger = new BigInteger(literal.substring(3), 16);
+                    break;
+                case '3':
+                    bigInteger = new BigInteger(literal.substring(2), 8);
+                    break;
+                default:
+                    throw new RuntimeException("Lexer parsing integer literal error");
+            }
+            if (bigInteger.bitLength() < 32) {
                 context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_INT);
-                context.addByteCodeToCurrentMethod(new _iconst(parseInt(literal)));
+                context.addByteCodeToCurrentMethod(new _iconst(bigInteger.intValue()));
+            } else if (bigInteger.bitLength() < 64) {
+                context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_LONG);
+                context.addByteCodeToCurrentMethod(new _lconst(bigInteger.longValue()));
+            } else {
+                throw new RuntimeException("Illegal integer literal");
             }
         } else if (Type.TYPE_BOOLEAN.equals(type)) {
             /*
