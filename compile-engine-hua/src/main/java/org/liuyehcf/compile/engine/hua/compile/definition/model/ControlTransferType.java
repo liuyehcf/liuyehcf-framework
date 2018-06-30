@@ -20,6 +20,26 @@ public enum ControlTransferType {
     IFNE,
 
     /**
+     * 大于等于0时跳转
+     */
+    IFGE,
+
+    /**
+     * 大于0时跳转
+     */
+    IFGT,
+
+    /**
+     * 小于等于0时跳转
+     */
+    IFLE,
+
+    /**
+     * 小于0时跳转
+     */
+    IFLT,
+
+    /**
      * 无条件跳转
      */
     GOTO,
@@ -61,6 +81,18 @@ public enum ControlTransferType {
             case IFEQ:
                 code = new _ifeq();
                 break;
+            case IFGE:
+                code = new _ifge();
+                break;
+            case IFGT:
+                code = new _ifgt();
+                break;
+            case IFLE:
+                code = new _ifle();
+                break;
+            case IFLT:
+                code = new _iflt();
+                break;
             case IFNE:
                 code = new _ifne();
                 break;
@@ -98,6 +130,21 @@ public enum ControlTransferType {
         switch (type) {
             case IFEQ:
                 code = new _ifne();
+                break;
+            case IFGE:
+                code = new _iflt();
+                break;
+            case IFGT:
+                code = new _ifle();
+                break;
+            case IFLE:
+                code = new _ifgt();
+                break;
+            case IFLT:
+                code = new _ifge();
+                break;
+            case IFNE:
+                code = new _ifeq();
                 break;
             case IF_ICMPNE:
                 code = new _if_icmpeq();

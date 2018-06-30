@@ -13,12 +13,12 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 布尔赋值语句
+ * 布尔表达式收尾
  *
  * @author hechenfeng
  * @date 2018/6/15
  */
-public class BooleanAssignment extends AbstractSemanticAction implements Serializable {
+public class BooleanExpressionEnding extends AbstractSemanticAction implements Serializable {
 
     /**
      * 布尔表达式-栈偏移量，相对于语法树栈
@@ -28,7 +28,7 @@ public class BooleanAssignment extends AbstractSemanticAction implements Seriali
      */
     private final int booleanExpressionStackOffset;
 
-    public BooleanAssignment(int booleanExpressionStackOffset) {
+    public BooleanExpressionEnding(int booleanExpressionStackOffset) {
         this.booleanExpressionStackOffset = booleanExpressionStackOffset;
     }
 
@@ -48,6 +48,11 @@ public class BooleanAssignment extends AbstractSemanticAction implements Seriali
         ControlTransfer __code;
 
         if (type == null) {
+            /*
+             * 对于仅由boolean变量或者字面值构成的布尔表达式，没有BOOLEAN_EXPRESSION属性
+             * 该BOOLEAN_EXPRESSION属性是规约 <  <= > >= == != 语句的时候添加的
+             * boolean e= a && b || c && d;
+             */
             __code = new _ifeq();
         } else {
             __code = ControlTransferType.getControlTransferByType(type);

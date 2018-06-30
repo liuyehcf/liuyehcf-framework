@@ -397,7 +397,7 @@ public class TestGrammar {
     }
 
     @Test
-    public void testConditionExpression() {
+    public void testConditionExpression1() {
         String text = "void func(boolean a, int i, int j) {\n" +
                 "\tint k= (a||i<j&&j>=3) ? i++:--j;\n" +
                 "}";
@@ -408,6 +408,55 @@ public class TestGrammar {
         assertTrue(result.isSuccess());
         assertEquals(
                 "{\"func(boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":8,\"name\":\"_ifne\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iload\",\"order\":2},{\"codeOffset\":11,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":11,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":1},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":13,\"name\":\"_goto\"},{\"increment\":-1,\"name\":\"_iinc\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testConditionExpression2() {
+        String text = "void func1(long a,long b,boolean c){\n" +
+                "\tc=a==b;\n" +
+                "\tc=a!=b;\n" +
+                "\tc=a<b;\n" +
+                "\tc=a>b;\n" +
+                "\tc=a<=b;\n" +
+                "\tc=a>=b;\n" +
+                "}\n" +
+                "\n" +
+                "void func2(long a,long b){\n" +
+                "\tboolean c=a==b;\n" +
+                "\tboolean d=a!=b;\n" +
+                "\tboolean e=a<b;\n" +
+                "\tboolean f=a>b;\n" +
+                "\tboolean g=a<=b;\n" +
+                "\tboolean h=a>=b;\n" +
+                "}\n" +
+                "\n" +
+                "void func3(long a,long b,int i){\n" +
+                "\tif(a<b){\n" +
+                "\t\tif(a>b)\n" +
+                "\t\t\tif(a<=b){\n" +
+                "\t\t\t\ti=3;\n" +
+                "\t\t\t}else{\n" +
+                "\t\t\t\tif(a<=b){\n" +
+                "\t\t\t\t\tif(a==b){\n" +
+                "\t\t\t\t\t\tif(a!=b){\n" +
+                "\t\t\t\t\t\t\t\n" +
+                "\t\t\t\t\t\t}\n" +
+                "\t\t\t\t\t}\n" +
+                "\t\t\t\t}\n" +
+                "\t\t\t}\n" +
+                "\t\ti=1;\n" +
+                "\t}\n" +
+                "\ti=2;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func1(long,long,boolean)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":6,\"name\":\"_ifne\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":7,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":15,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":22,\"name\":\"_ifge\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":23,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":30,\"name\":\"_ifle\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":31,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":38,\"name\":\"_ifgt\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":39,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":46,\"name\":\"_iflt\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":47,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}],\"func2(long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":6,\"name\":\"_ifne\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":7,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":15,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":3},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":22,\"name\":\"_ifge\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":23,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":30,\"name\":\"_ifle\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":31,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":5},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":38,\"name\":\"_ifgt\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":39,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":6},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":46,\"name\":\"_iflt\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":47,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":7},{\"name\":\"_return\"}],\"func3(long,long,int)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":29,\"name\":\"_ifge\"},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":27,\"name\":\"_ifle\"},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":15,\"name\":\"_ifgt\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":27,\"name\":\"_goto\"},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":27,\"name\":\"_ifgt\"},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":27,\"name\":\"_ifne\"},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lcmp\"},{\"codeOffset\":27,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
                 result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }

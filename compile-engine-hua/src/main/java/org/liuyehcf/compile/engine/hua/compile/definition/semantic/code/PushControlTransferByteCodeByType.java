@@ -19,7 +19,7 @@ import java.io.Serializable;
 public class PushControlTransferByteCodeByType extends AbstractControlTransferByteCode implements Serializable {
 
     /**
-     * 布尔表达式类型-栈偏移量，相对于语法树栈
+     * 布尔表达式类型(BOOLEAN_EXPRESSION_TYPE)-栈偏移量，相对于语法树栈
      * '0'  表示栈顶
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
@@ -46,6 +46,8 @@ public class PushControlTransferByteCodeByType extends AbstractControlTransferBy
         if (type == null) {
             /*
              * 对于仅由boolean变量或者字面值构成的布尔表达式，没有BOOLEAN_EXPRESSION属性
+             * 该BOOLEAN_EXPRESSION属性是规约 <  <= > >= == != 语句的时候添加的
+             * boolean e= a && b || c && d;
              */
             if (isOpposite) {
                 code = new _ifne();

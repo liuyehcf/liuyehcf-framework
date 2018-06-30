@@ -12,7 +12,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.method.ExitMe
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.method.RecordMethodSignature;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.method.RecordParamTypeInfo;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.node.AddFutureSyntaxNode;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.BooleanAssignment;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.BooleanExpressionEnding;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.VariableInitialization;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable.CreateVariable;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable.EnterNamespace;
@@ -299,7 +299,7 @@ abstract class ProgramProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION)
                             ),
-                            new BooleanAssignment(0),
+                            new BooleanExpressionEnding(0),
                             new AttrFilter(AttrName.TYPE)
                     )
                     /*

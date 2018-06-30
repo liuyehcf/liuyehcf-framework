@@ -41,6 +41,10 @@ public class ByteCodeUtils {
         register(_if_icmplt.class);
         register(_if_icmpne.class);
         register(_ifeq.class);
+        register(_ifge.class);
+        register(_ifgt.class);
+        register(_ifle.class);
+        register(_iflt.class);
         register(_ifne.class);
 
         /*
@@ -60,6 +64,7 @@ public class ByteCodeUtils {
         register(_ixor.class);
         register(_ladd.class);
         register(_land.class);
+        register(_lcmp.class);
         register(_ldiv.class);
         register(_lmul.class);
         register(_lor.class);

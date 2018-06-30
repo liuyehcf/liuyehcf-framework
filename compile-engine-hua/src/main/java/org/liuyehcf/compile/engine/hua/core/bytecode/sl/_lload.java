@@ -5,6 +5,8 @@ import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
  * long 加载
+ * < before → after >
+ * < → value >
  *
  * @author hechenfeng
  * @date 2018/6/30
