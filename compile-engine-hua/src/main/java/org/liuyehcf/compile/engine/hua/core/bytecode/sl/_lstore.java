@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
  * < before → after >
  * < value → >
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/30
  */
 public class _lstore extends StoreLoad {

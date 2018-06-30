@@ -872,7 +872,7 @@ public class TestGrammar {
         );
     }
 
-    //    @Test todo
+    @Test
     public void testDecimalLiteral() {
         String text = "void func() {\n" +
                 "\tint a=5;\n" +
@@ -887,7 +887,7 @@ public class TestGrammar {
         CompileResult<IntermediateInfo> result = compiler.compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_lconst\",\"value\":0},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":-100},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lconst\",\"value\":0},{\"name\":\"_lsub\"},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lconst\",\"value\":-10000},{\"name\":\"_ladd\"},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_return\"}]}",
+                "{\"func()\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_lconst\",\"value\":0},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":100},{\"name\":\"_ineg\"},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lconst\",\"value\":0},{\"name\":\"_lneg\"},{\"name\":\"_lsub\"},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lconst\",\"value\":10000},{\"name\":\"_lneg\"},{\"name\":\"_ladd\"},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_return\"}]}",
                 result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }

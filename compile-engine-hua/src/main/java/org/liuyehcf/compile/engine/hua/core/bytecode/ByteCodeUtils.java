@@ -55,6 +55,7 @@ public class ByteCodeUtils {
         register(_idiv.class);
         register(_iinc.class);
         register(_imul.class);
+        register(_ineg.class);
         register(_ior.class);
         register(_irem.class);
         register(_ishl.class);
@@ -67,6 +68,7 @@ public class ByteCodeUtils {
         register(_lcmp.class);
         register(_ldiv.class);
         register(_lmul.class);
+        register(_lneg.class);
         register(_lor.class);
         register(_lrem.class);
         register(_lshl.class);

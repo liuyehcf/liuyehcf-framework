@@ -18,9 +18,10 @@
     * for
     * do
     * void
-    * int
     * boolean
     * char
+    * int
+    * long
     * new
     * return
     * true
@@ -32,38 +33,44 @@
     * 支持函数调用，要求被调用的函数之前必须声明或者定义过（有点像C++）
     * 支持变量声明、变量初始化。语法参考java
     * 支持任意维度的数组
-    * 支持new语句创建数组。语法参考java
-    * 支持for循环、while循环、do while循环。语法参考java
-    * 支持二元运算符`*`、`/`、`%`、`+`、`-`、`<<`、`>>`、`>>>`、`&`、`^`、`|`，目前仅支持int类型
-    * 支持前置、后置递增递减`--`、`++`
+    * 支持`new`语句创建数组。语法参考java
+    * 支持`for`循环、`while`循环、`do while`循环。语法参考java
+    * 支持二元运算符`*`、`/`、`%`、`+`、`-`、`<<`、`>>`、`>>>`、`&`、`^`、`|`，目前仅支持char、int、long类型
+    * 支持前置、后置递增递减`--`、`++`，仅支持int类型
+    * 支持一元运算符`+`、`-`
     * 支持条件语句，语法参考java
+    * 支持比较运算符`==`、`!+`、`<`、`<=`、`>`、`>=`
     * 支持sizeof表达式，其作用是求数组长度
     * 支持赋值运算符`=`
     * 支持复合赋值运算符`*=`、`/=`、`%=`、`+=`、`-=`、`<<=`、`>>=`、`>>>=`、`&=`、`^=`、`|=`
-    * 支持int类型字面值
+    * 支持int类型字面值，包括十进制、十六进制、八进制字面值
     * 支持boolean类型字面值
     * 支持char类型字面值
     * 支持char[]类型字面值（等价于Java中的String）
 1. 系统函数
-    * print(int)
-    * print(char)
-    * print(boolean)
-    * print(int[])
-    * print(char[])
-    * print(boolean[])
-    * println(int)
-    * println(char)
-    * println(boolean)
-    * println(int[])
-    * println(char[])
-    * println(boolean[])
-    * nextInt(int,int)
-    * nextInt()
-    * nextBoolean()
+    * `print(boolean)`
+    * `print(char)`
+    * `print(int)`
+    * `print(long)`
+    * `print(boolean[])`
+    * `print(char[])`
+    * `print(int[])`
+    * `print(long[])`
+    * `println(boolean)`
+    * `println(char)`
+    * `println(int)`
+    * `println(long)`
+    * `println(boolean[])`
+    * `println(char[])`
+    * `println(int[])`
+    * `println(long[])`
+    * `nextBoolean()`
+    * `nextInt(int,int)`
+    * `nextInt()`
+    * `nextLong()`
+
 1. 一个可执行的.hclass文件必须包含`main(char[][])`方法，这是整个程序执行的入口
 
-尚不支持的语法
-1. long型的比较运算
 
 # 编译原理
 
@@ -92,7 +99,9 @@ __[编译原理请移步博客](https://liuyehcf.github.io/categories/%E7%BC%96%
     * 就状态数量而言，LALR<LR1
     * 就错误分析能力，LALR<LR1
 1. 词法分析器（DefaultLexicalAnalyzer）
-    * 该词法分析器实现比较简单
+    * 支持普通词素，即全量匹配
+    * 正则表达式词素
+    * 自定义匹配过程
 
 编译引擎主要封装了词法分析、语法分析的过程，可以为任意无二义性CFG语言生成状态自动机
 

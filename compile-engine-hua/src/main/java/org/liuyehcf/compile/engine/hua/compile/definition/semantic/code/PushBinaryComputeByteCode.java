@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.hua.compile.definition.semantic.operator;
+package org.liuyehcf.compile.engine.hua.compile.definition.semantic.code;
 
 import org.liuyehcf.compile.engine.hua.compile.HuaContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
@@ -11,12 +11,12 @@ import java.io.Serializable;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
- * 双目运算
+ * 添加双目运算
  *
  * @author hechenfeng
  * @date 2018/6/7
  */
-public class BinaryOperation extends AbstractSemanticAction implements Serializable {
+public class PushBinaryComputeByteCode extends AbstractSemanticAction implements Serializable {
 
     /**
      * 左运算子-偏移量，相对于语法树栈
@@ -43,7 +43,7 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
     private final int rightStackOffset;
 
 
-    public BinaryOperation(int leftStackOffset, int operatorStackOffset, int rightStackOffset) {
+    public PushBinaryComputeByteCode(int leftStackOffset, int operatorStackOffset, int rightStackOffset) {
         this.leftStackOffset = leftStackOffset;
         this.operatorStackOffset = operatorStackOffset;
         this.rightStackOffset = rightStackOffset;

@@ -86,7 +86,9 @@ public class LoadLiteralAndSetType extends AbstractSemanticAction implements Ser
     }
 
     private long parseLong(String literal) {
-        if ("0".equals(literal)) {
+        if ("0".equals(literal)
+                || "0L".equals(literal)
+                || "0l".equals(literal)) {
             return 0L;
         }
         if (literal.startsWith("0x") || literal.startsWith("0X")) {

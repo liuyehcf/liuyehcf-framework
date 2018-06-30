@@ -12,16 +12,13 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.backfill.AddCompareTransferByteCode;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.backfill.ControlTransferByteCodeBackFill;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.backfill.IncrementBackFill;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.code.MergeControlTransferByteCode;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.code.PushControlTransferByteCodeByType;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.code.PushPostIINCByteCode;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.code.*;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.expression.ConditionalExpression;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.load.ArrayLoad;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.load.VariableLoad;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.load.VariableLoadIfNecessary;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.method.MethodInvocation;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.method.RecordArgumentType;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.operator.BinaryOperation;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.Assignment;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.BooleanExpressionEnding;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement.SizeofStatement;
@@ -517,7 +514,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_OR),
                                     Symbol.createNonTerminator(EXCLUSIVE_OR_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, -1, 0),
+                            new PushBinaryComputeByteCode(-2, -1, 0),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -548,7 +545,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_XOR),
                                     Symbol.createNonTerminator(AND_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, -1, 0),
+                            new PushBinaryComputeByteCode(-2, -1, 0),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -579,7 +576,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_BIT_AND),
                                     Symbol.createNonTerminator(EQUALITY_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, -1, 0),
+                            new PushBinaryComputeByteCode(-2, -1, 0),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -734,7 +731,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SHL),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, -1, 0),
+                            new PushBinaryComputeByteCode(-2, -1, 0),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -747,7 +744,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SHR),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, -1, 0),
+                            new PushBinaryComputeByteCode(-2, -1, 0),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -760,7 +757,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_USHR),
                                     Symbol.createNonTerminator(ADDITIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, -1, 0),
+                            new PushBinaryComputeByteCode(-2, -1, 0),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -791,7 +788,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_ADD),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, -1, 0),
+                            new PushBinaryComputeByteCode(-2, -1, 0),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -804,7 +801,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SUB),
                                     Symbol.createNonTerminator(MULTIPLICATIVE_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, -1, 0),
+                            new PushBinaryComputeByteCode(-2, -1, 0),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -835,7 +832,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_MUL),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, -1, 0),
+                            new PushBinaryComputeByteCode(-2, -1, 0),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -848,7 +845,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_DIV),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, -1, 0),
+                            new PushBinaryComputeByteCode(-2, -1, 0),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -861,7 +858,7 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_REM),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new BinaryOperation(-2, -1, 0),
+                            new PushBinaryComputeByteCode(-2, -1, 0),
                             new AttrFilter(AttrName.TYPE)
                     )
             ),
@@ -935,7 +932,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_ADD),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new PushUnaryComputeByteCode(-1, 0),
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <unary expression> → - <unary expression>
@@ -946,7 +944,8 @@ abstract class ExpressionProductions {
                                     Symbol.createTerminator(NORMAL_SUB),
                                     Symbol.createNonTerminator(UNARY_EXPRESSION)
                             ),
-                            new AttrFilter() // TODO 尚不支持
+                            new PushUnaryComputeByteCode(-1, 0),
+                            new AttrFilter(AttrName.TYPE)
                     ),
                     /*
                      * <unary expression> → <unary expression not plus minus>
