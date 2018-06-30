@@ -1016,7 +1016,6 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
 
             int lineIndex = 0;
             int lineFirstPos = 0;
-            System.out.println(input.length());
             for (int i = 0; i < tokenIterator.position(); i++) {
                 if (input.charAt(i) == '\n') {
                     sb.append(input.substring(lineFirstPos, i + 1));
@@ -1027,7 +1026,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                 }
             }
             if (lineFirstPos < tokenIterator.position()) {
-                sb.append(input.substring(lineFirstPos, tokenIterator.position() + 1))
+                sb.append(input.substring(lineFirstPos, tokenIterator.position()))
                         .append('\n');
             }
 
