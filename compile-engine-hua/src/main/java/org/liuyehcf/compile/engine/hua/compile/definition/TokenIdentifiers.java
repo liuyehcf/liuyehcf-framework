@@ -64,6 +64,7 @@ public abstract class TokenIdentifiers {
         return null;
 
     };
+
     static final TokenIdentifier IDENTIFIER_STRING_LITERAL = (tokenContext) -> {
         Symbol id = tokenContext.getId();
         String remainInput = tokenContext.getRemainInput();
@@ -101,18 +102,22 @@ public abstract class TokenIdentifiers {
         }
         return null;
     };
+
     /**
      * 非0十进制数字
      */
     private static final Set<Character> NON_ZERO_DECIMAL_INTEGER_DIGIT = new HashSet<>(Arrays.asList('1', '2', '3', '4', '5', '6', '7', '8', '9'));
+
     /**
      * 十进制数字
      */
     private static final Set<Character> DECIMAL_INTEGER_DIGIT = new HashSet<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
+
     /**
      * 十进制后缀
      */
     private static final Set<Character> DECIMAL_INTEGER_SUFFIX = new HashSet<>(Arrays.asList('l', 'L'));
+
     static final TokenIdentifier IDENTIFIER_DECIMAL_INTEGER_LITERAL = new TokenIdentifier() {
         @Override
         public Token identify(TokenContext tokenContext) {
@@ -180,5 +185,97 @@ public abstract class TokenIdentifiers {
                             || Character.isAlphabetic(s.charAt(i))
                             || s.charAt(i) == '_');
         }
+    };
+
+    /**
+     * 十六进制数字
+     */
+    private static final Set<Character> HEX_INTEGER_DIGIT = new HashSet<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'));
+
+
+    /**
+     * 十六进制前缀
+     */
+    private static final Set<Character> HEX_INTEGER_PREFIX = new HashSet<>(Arrays.asList('x', 'X'));
+
+    static final TokenIdentifier IDENTIFIER_HEX_INTEGER_LITERAL = (tokenContext) -> {
+        Symbol id = tokenContext.getId();
+        String remainInput = tokenContext.getRemainInput();
+
+        int i = 0;
+
+        /*
+         * 必须有0x或0X前缀
+         */
+        if (i >= remainInput.length() - 1
+                || remainInput.charAt(i) != '0'
+                || !HEX_INTEGER_PREFIX.contains(remainInput.charAt(i + 1))) {
+            return null;
+        }
+
+        i += 2;
+
+        /*
+         * 后面连续的数字
+         */
+        while (i < remainInput.length() && HEX_INTEGER_DIGIT.contains(remainInput.charAt(i))) {
+            i++;
+        }
+
+        /*
+         * 后面不可接任何除了a-f之外的字母
+         * 这里可以直接用Character.isAlphabetic方法，虽然这个方法包含了a-f，但是前面的while循环保证了不可能包含a-f
+         */
+        if (i == remainInput.length() || !Character.isAlphabetic(remainInput.charAt(i))) {
+            return new Token(id, remainInput.substring(0, i));
+        }
+
+        return null;
+    };
+
+    /**
+     * 八进制数字
+     */
+    private static final Set<Character> OCTAL_INTEGER_DIGIT = new HashSet<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7'));
+
+    /**
+     * 非八进制数字
+     */
+    private static final Set<Character> NON_OCTAL_INTEGER_DIGIT = new HashSet<>(Arrays.asList('8', '9'));
+
+
+    static final TokenIdentifier IDENTIFIER_OCTAL_INTEGER_LITERAL = (tokenContext) -> {
+        Symbol id = tokenContext.getId();
+        String remainInput = tokenContext.getRemainInput();
+
+        int i = 0;
+
+        /*
+         * 必须有0前缀
+         */
+        if (i >= remainInput.length()
+                || remainInput.charAt(i) != '0') {
+            return null;
+        }
+
+        i++;
+
+        /*
+         * 后面连续的数字
+         */
+        while (i < remainInput.length() && OCTAL_INTEGER_DIGIT.contains(remainInput.charAt(i))) {
+            i++;
+        }
+
+        /*
+         * 后面不可接任何字母，数字8 9
+         */
+        if (i == remainInput.length()
+                || !Character.isAlphabetic(remainInput.charAt(i))
+                || !NON_OCTAL_INTEGER_DIGIT.contains(remainInput.charAt(i))) {
+            return new Token(id, remainInput.substring(0, i));
+        }
+
+        return null;
     };
 }

@@ -8,6 +8,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iconst;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._ldc;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_BOOLEAN_FALSE;
@@ -44,7 +45,7 @@ public class LiteralLoad extends AbstractSemanticAction implements Serializable 
         String literal = context.getAttr(literalStackOffset, AttrName.LITERAL_VALUE);
 
         if (Type.TYPE_INT.equals(type)) {
-            context.addByteCodeToCurrentMethod(new _iconst(Integer.parseInt(literal)));
+            context.addByteCodeToCurrentMethod(new _iconst(parseInt(literal)));
         } else if (Type.TYPE_BOOLEAN.equals(type)) {
             /*
              * 布尔字面值也作为int处理
@@ -67,6 +68,19 @@ public class LiteralLoad extends AbstractSemanticAction implements Serializable 
             context.addByteCodeToCurrentMethod(new _ldc(constantOffset));
         } else {
             throw new UnsupportedOperationException();
+        }
+    }
+
+    private int parseInt(String literal) {
+        if ("0".equals(literal)) {
+            return 0;
+        }
+        if (literal.startsWith("0x") || literal.startsWith("0X")) {
+            return new BigInteger(literal.substring(2), 16).intValue();
+        } else if (literal.startsWith("0")) {
+            return new BigInteger(literal.substring(1), 8).intValue();
+        } else {
+            return Integer.parseInt(literal);
         }
     }
 }

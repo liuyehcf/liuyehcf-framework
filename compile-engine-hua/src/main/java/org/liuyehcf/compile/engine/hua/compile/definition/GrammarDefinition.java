@@ -48,6 +48,8 @@ public abstract class GrammarDefinition {
 
     public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
             .addTokenOperator(Symbol.createIdentifierTerminator(SPECIAL_DECIMAL_INTEGER_LITERAL), IDENTIFIER_DECIMAL_INTEGER_LITERAL)
+            .addTokenOperator(Symbol.createIdentifierTerminator(SPECIAL_HEX_INTEGER_LITERAL), IDENTIFIER_HEX_INTEGER_LITERAL)
+            .addTokenOperator(Symbol.createIdentifierTerminator(SPECIAL_OCTAL_INTEGER_LITERAL), IDENTIFIER_OCTAL_INTEGER_LITERAL)
             .addTokenOperator(Symbol.createIdentifierTerminator(SPECIAL_CHARACTER_LITERAL), IDENTIFIER_CHAR_LITERAL)
             .addTokenOperator(Symbol.createIdentifierTerminator(SPECIAL_STRING_LITERAL), IDENTIFIER_STRING_LITERAL)
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")

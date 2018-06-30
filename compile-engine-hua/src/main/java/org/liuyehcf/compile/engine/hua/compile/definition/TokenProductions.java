@@ -35,6 +35,8 @@ abstract class TokenProductions {
     public static final String STRING_LITERAL = "<string literal>"; // 348
 
     public static final String SPECIAL_DECIMAL_INTEGER_LITERAL = "#decimalIntegerLiteral";
+    public static final String SPECIAL_HEX_INTEGER_LITERAL = "#hexIntegerLiteral";
+    public static final String SPECIAL_OCTAL_INTEGER_LITERAL = "#octalIntegerLiteral";
     public static final String SPECIAL_CHARACTER_LITERAL = "#CharacterLiteral";
     public static final String SPECIAL_STRING_LITERAL = "#StringLiteral";
 
@@ -153,7 +155,7 @@ abstract class TokenProductions {
              */
             Production.create(
                     /*
-                     * <integer literal> → <decimal integer literal>
+                     * (1) <integer literal> → <decimal integer literal>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(INTEGER_LITERAL),
@@ -161,12 +163,27 @@ abstract class TokenProductions {
                                     Symbol.createNonTerminator(DECIMAL_INTEGER_LITERAL)
                             ),
                             new AttrFilter(AttrName.LITERAL_VALUE)
-                    )
+                    ),
                     /*
-                     * TODO 缺少以下产生式
-                     * <integer literal> → <hex integer literal>
-                     * <integer literal> → <octal integer literal>
+                     * (2) <integer literal> → <hex integer literal>
                      */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(INTEGER_LITERAL),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(HEX_INTEGER_LITERAL)
+                            ),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
+                    ),
+                    /*
+                     * (3) <integer literal> → <octal integer literal>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(INTEGER_LITERAL),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(OCTAL_INTEGER_LITERAL)
+                            ),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
+                    )
             ),
 
 
@@ -182,6 +199,44 @@ abstract class TokenProductions {
                             Symbol.createNonTerminator(DECIMAL_INTEGER_LITERAL),
                             SymbolString.create(
                                     Symbol.createIdentifierTerminator(SPECIAL_DECIMAL_INTEGER_LITERAL)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
+                    )
+            ),
+
+
+            /*
+             * <hex integer literal> 306
+             * DIFFERENT
+             */
+            Production.create(
+                    /*
+                     * <hex integer literal> → #hexIntegerLiteral
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(HEX_INTEGER_LITERAL),
+                            SymbolString.create(
+                                    Symbol.createIdentifierTerminator(SPECIAL_HEX_INTEGER_LITERAL)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
+                    )
+            ),
+
+
+            /*
+             * <octal integer literal> 308
+             * DIFFERENT
+             */
+            Production.create(
+                    /*
+                     * <octal integer literal> → #octalIntegerLiteral
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(OCTAL_INTEGER_LITERAL),
+                            SymbolString.create(
+                                    Symbol.createIdentifierTerminator(SPECIAL_OCTAL_INTEGER_LITERAL)
                             ),
                             new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)
