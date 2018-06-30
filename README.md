@@ -82,7 +82,7 @@
 
 __[编译原理请移步博客](https://liuyehcf.github.io/categories/%E7%BC%96%E8%AF%91/)__
 
-## 编译引擎介绍
+# 编译引擎介绍
 
 `compile-engine-core`模块主要包含以下几个部分
 
@@ -111,21 +111,21 @@ __[编译原理请移步博客](https://liuyehcf.github.io/categories/%E7%BC%96%
 
 编译引擎主要封装了词法分析、语法分析的过程，可以为任意无二义性CFG语言生成状态自动机
 
-## hua语言
+# hua语言
 
 HuaCompiler继承了LALR分析器，其文法定义参照[Java BNF定义](http://www.daimi.au.dk/dRegAut/JavaBNF.html)
 1. hua属于面向过程的语言，不支持类的定义
 1. 基本语法与java十分相似
 1. 由于面向过程，因此增加一个运算符`sizeof`用于计算数组大小
 
-__`compile-engine-hua`模块介绍__
+## `compile-engine-hua`模块介绍
 
 1. 文法定义，包路径为`org.liuyehcf.compile.engine.hua.compile.definition`
 1. 与文法定义相关的语义动作，包路径为`org.liuyehcf.compile.engine.hua.compile.definition.semantic`
 1. 字节码定义，这里的字节码大部分与java对标，且含义完全一致。部分有区别的指令如下
     * 加载int、boolean、char类型的常量，统一用iconst指令，与java有所区别
-    * invokestatic指令
-    * sizeof指令，新增的
+    * invokestatic指令，用于进行方法调用
+    * sizeof指令，用于计算数组大小
 1. 运行环境，这部分比较简单，主要就是能够执行编译后的指令序列即可
     * 内存管理，一开始分配一定大小的内存空间（byte数组），没有垃圾回收机制
     * 系统方法，封装了Java的部分能力，主要是标准输STD OUT
@@ -135,25 +135,83 @@ __`compile-engine-hua`模块介绍__
 1. 命令行
     * 利用三方库`commons-cli`
 
-__实现难点__
+## 实现难点
 
 1. 继承属性的传递
     * 当前语法树节点，需要向未来的语法树节点传递一些属性值
     * 涉及一个特殊的数据结构即可，参考`FutureSyntaxNodeStack`
 1. 布尔表达式的翻译
     * 正向/反向的转移指令。在识别布尔表达式的时候，填入正向的转移指令类型。在插入转移指令时，设置正向或者反向
-        * 例如if(<bool expression>) while(<bool expression>) for(;<bool expression>;) 就是正向
-        * do {} while(<bool expression>) 就是反向
+        * __所谓正向就是不成立时需要跳转，反向就是成立时需要跳转__
+        * 例如`if(<bool expression>)`、`while(<bool expression>)`、`for(;<bool expression>;)`就是正向
+        * `do {} while(<bool expression>)`就是反向
     * 布尔表达式回填，生成转移指令时，并不知道跳转的代码段起始位置在哪里，需要进行到特定的位置进行回填
-        * 回填类型包括，TRUE回填、FALSE回填、NEXT回填。其中NEXT回填仅出现在if then else语句中
+        * 回填类型包括，`TRUE`回填、`FALSE`回填、`NEXT`回填。其中NEXT回填仅出现在`if then else`语句中
     * 布尔表达式取反
-        * 需要将回填的TRUE、FALSE转移指令进行交换
+        * 需要将回填的`TRUE`、`FALSE`转移指令进行交换
         * 需要将转移指令的类型取反
 1. 关于词法分析器
     * 要注意`<=`的优先级必须比`<`高，其他类似
     * 字符、字符串、整数字面值目前需要作为整体来扫描，利用词法分析器的自定义处理流程接口。否则会出现如下问题：
         * 如果字符串拆分成单个字符来扫描，那么将无法区分字符串中的空白与非字符串区域的空白
     * 词法分析器构建详见`GrammarDefinition`
+
+## `if then`语句布尔值回填
+
+`if then`语句可以表示为如下形式
+
+`if(<condition expression>) { <statements for true> } <other statements>` 
+
+1. 当`<condition expression>`为真时，接着执行`<statements for true>`处的指令
+1. 当`<condition expression>`为假时，需要跳转到`<other statements>`的起始位置，并继续执行。此时就需要插入一条控制转移指令`ifeq`，称为`FALSE型回填`，逻辑为正向的
+    * `ifeq`指令的含义是指，当`<condition expression>`的值等于0（即false）时，跳转到目标代码处
+    * 我们在添加`ifeq`指令时，并不知道需要跳转到哪里（字节码偏移量）去执行，只有分析到`<other statements>`的位置时，才能对刚才的`ifeq`指令回填转移的代码偏移量
+
+## `if then else`语句布尔值回填
+
+`if then else`语句可以表示为如下形式
+
+`if(<condition expression>) { <statements for true> } else { <statements for false> } <other statements>` 
+
+1. 当`<condition expression>`为真时，接着执行`<statements for true>`处的指令
+1. 当`<condition expression>`为假时，需要跳转到`<statements for false>`的起始位置，并继续执行。此时就需要插入一条控制转移指令`ifeq`，称为`FALSE型回填`，逻辑为正向的
+1. 当`<statements for true>`执行完毕后，需要跳转到`<other statements>`的起始位置，并继续执行。此时就需要插入一条控制转移指令`goto`，称为`NEXT型回填`
+
+## `while`语句布尔值回填
+
+`while`语句可以表示为如下形式
+
+`while(<condition expression>) { <statements for true> } <other statements>`
+
+1. 当`<condition expression>`为真时，接着执行`<statements for true>`处的指令
+1. 当`<condition expression>`为假时，需要跳转到`<other statements>`的起始位置，并继续执行。此时就需要插入一条控制转移指令`ifeq`，称为`FALSE型回填`，逻辑为正向的
+1. 当`<statements for true>`执行完毕后，需要跳转到`<condition expression>`的起始位置，并继续执行。此时就需要插入一条控制转移指令`goto`，称为`NEXT型回填`
+
+## `do while`语句布尔值回填
+
+`do while`语句可以表示为如下形式
+
+`do { <loop statements> } while(<condition expression>); <other statements>`
+
+1. 当`<condition expression>`为真时，需要跳转到`<loop statements>`的起始位置，并继续执行。此时就需要插入一条控制转移指令`ifne`，称为`TRUE型回填`，逻辑为反向的
+
+## `&&`语句布尔值回填
+
+逻辑与语句可以表示为如下形式
+
+`<condition expression1> && <condition expression2> <other statements>`
+
+1. 当`<condition expression1>`为真时，接着执行`<condition expression2>`处的指令
+1. 当`<condition expression1>`为假时，需要跳转到`<other statements>`的起始位置，并继续执行。此时就需要插入一条控制转移指令`ifeq`，称为`FALSE型回填`，逻辑为正向的
+
+## `||`语句布尔值回填
+
+逻辑或语句可以表示为如下形式
+
+`<condition expression1> || <condition expression2> <other statements>`
+
+1. 当`<condition expression1>`为真时，需要跳转到`<other statements>`的起始位置，并继续执行。此时就需要插入一条控制转移指令`ifne`，称为`TRUE型回填`，逻辑为反向的
+1. 当`<condition expression1>`为假时，接着执行`<condition expression2>`处的指令
 
 # 示例
 
