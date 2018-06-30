@@ -150,6 +150,46 @@ public class HeapMemoryManagement {
     }
 
     /**
+     * 加载float
+     *
+     * @param offset 地址偏移量
+     * @return float值
+     */
+    public static float loadFloat(int offset) {
+        return ByteUtils.loadFloat(heapMemory, offset);
+    }
+
+    /**
+     * 存储float
+     *
+     * @param offset 地址偏移量
+     * @param value  float值
+     */
+    public static void storeFloat(int offset, float value) {
+        ByteUtils.storeFloat(heapMemory, offset, value);
+    }
+
+    /**
+     * 加载double
+     *
+     * @param offset 地址偏移量
+     * @return double值
+     */
+    public static double loadDouble(int offset) {
+        return ByteUtils.loadDouble(heapMemory, offset);
+    }
+
+    /**
+     * 存储double
+     *
+     * @param offset 地址偏移量
+     * @param value  double值
+     */
+    public static void storeDouble(int offset, double value) {
+        ByteUtils.storeDouble(heapMemory, offset, value);
+    }
+
+    /**
      * 加载引用
      *
      * @param offset 地址偏移量

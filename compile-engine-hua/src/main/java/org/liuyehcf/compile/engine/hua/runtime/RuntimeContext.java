@@ -91,6 +91,22 @@ public class RuntimeContext {
         currentMethod.storeLong(offset, value);
     }
 
+    public float loadFloat(int offset) {
+        return currentMethod.loadFloat(offset);
+    }
+
+    public void storeFloat(int offset, float value) {
+        currentMethod.storeFloat(offset, value);
+    }
+
+    public double loadDouble(int offset) {
+        return currentMethod.loadDouble(offset);
+    }
+
+    public void storeDouble(int offset, double value) {
+        currentMethod.storeDouble(offset, value);
+    }
+
     public Reference loadReference(int offset) {
         return currentMethod.loadReference(offset);
     }

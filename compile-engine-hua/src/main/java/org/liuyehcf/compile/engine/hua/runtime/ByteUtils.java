@@ -122,6 +122,64 @@ abstract class ByteUtils {
     }
 
     /**
+     * 加载float
+     *
+     * @param memory 内存
+     * @param offset 地址偏移量
+     * @return float值
+     */
+    static float loadFloat(byte[] memory, int offset) {
+        int res = 0;
+        for (int i = 0; i < Type.INT_TYPE_WIDTH; i++) {
+            res |= (memory[offset + i] & 0xff) << (8 * i);
+        }
+        return Float.intBitsToFloat(res);
+    }
+
+    /**
+     * 存储float
+     *
+     * @param memory 内存
+     * @param offset 地址偏移量
+     * @param value  float值
+     */
+    static void storeFloat(byte[] memory, int offset, float value) {
+        int intValue = Float.floatToIntBits(value);
+        for (int i = 0; i < Type.INT_TYPE_WIDTH; i++) {
+            memory[offset + i] = (byte) (intValue >> (8 * i) & 0xff);
+        }
+    }
+
+    /**
+     * 加载double
+     *
+     * @param memory 内存
+     * @param offset 地址偏移量
+     * @return double值
+     */
+    static double loadDouble(byte[] memory, int offset) {
+        long res = 0;
+        for (int i = 0; i < Type.LONG_TYPE_WIDTH; i++) {
+            res |= (long) (memory[offset + i] & 0xff) << (8 * i);
+        }
+        return Double.longBitsToDouble(res);
+    }
+
+    /**
+     * 存储double
+     *
+     * @param memory 内存
+     * @param offset 地址偏移量
+     * @param value  double值
+     */
+    static void storeDouble(byte[] memory, int offset, double value) {
+        long longValue = Double.doubleToLongBits(value);
+        for (int i = 0; i < Type.LONG_TYPE_WIDTH; i++) {
+            memory[offset + i] = (byte) (longValue >> (8 * i) & 0xff);
+        }
+    }
+
+    /**
      * 加载reference
      *
      * @param memory 内存

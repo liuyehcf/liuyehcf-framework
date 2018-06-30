@@ -116,6 +116,14 @@ public class ByteCodeUtils {
         register(_bastore.class);
         register(_caload.class);
         register(_castore.class);
+        register(_daload.class);
+        register(_dastore.class);
+        register(_dload.class);
+        register(_dstore.class);
+        register(_faload.class);
+        register(_fastore.class);
+        register(_fload.class);
+        register(_fstore.class);
         register(_iaload.class);
         register(_iastore.class);
         register(_iconst.class);

@@ -132,6 +132,22 @@ class MethodRuntimeInfo {
         ByteUtils.storeLong(stackMemory[order], 0, value);
     }
 
+    float loadFloat(int order) {
+        return ByteUtils.loadFloat(stackMemory[order], 0);
+    }
+
+    void storeFloat(int order, float value) {
+        ByteUtils.storeFloat(stackMemory[order], 0, value);
+    }
+
+    double loadDouble(int order) {
+        return ByteUtils.loadDouble(stackMemory[order], 0);
+    }
+
+    void storeDouble(int order, double value) {
+        ByteUtils.storeDouble(stackMemory[order], 0, value);
+    }
+
     Reference loadReference(int order) {
         return ByteUtils.loadReference(stackMemory[order], 0);
     }
