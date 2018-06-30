@@ -51,12 +51,14 @@ public class ByteCodeUtils {
          * Compute
          */
         register(_dadd.class);
+        register(_dcmp.class);
         register(_ddiv.class);
         register(_dmul.class);
         register(_dneg.class);
         register(_drem.class);
         register(_dsub.class);
         register(_fadd.class);
+        register(_fcmp.class);
         register(_fdiv.class);
         register(_fmul.class);
         register(_fneg.class);
