@@ -118,7 +118,8 @@ HuaCompiler继承了LALR分析器，其文法定义参照[Java BNF定义](http:/
 1. 基本语法与java十分相似
 1. 由于面向过程，因此增加一个运算符`sizeof`用于计算数组大小
 
-`compile-engine-hua`模块主要分为以下几个部分
+__`compile-engine-hua`模块介绍__
+
 1. 文法定义，包路径为`org.liuyehcf.compile.engine.hua.compile.definition`
 1. 与文法定义相关的语义动作，包路径为`org.liuyehcf.compile.engine.hua.compile.definition.semantic`
 1. 字节码定义，这里的字节码大部分与java对标，且含义完全一致。部分有区别的指令如下
@@ -134,7 +135,8 @@ HuaCompiler继承了LALR分析器，其文法定义参照[Java BNF定义](http:/
 1. 命令行
     * 利用三方库`commons-cli`
 
-实现难点
+__实现难点__
+
 1. 继承属性的传递
     * 当前语法树节点，需要向未来的语法树节点传递一些属性值
     * 涉及一个特殊的数据结构即可，参考`FutureSyntaxNodeStack`
@@ -155,13 +157,88 @@ HuaCompiler继承了LALR分析器，其文法定义参照[Java BNF定义](http:/
 
 # 示例
 
-例如编写源文件`test.hua`，源文件的内容是冒泡排序、插入排序以及快速排序，源码内容如下：
+## 编写源码
+
+我们用hua语言实现一下快速排序，文件名为`test.hua`，源码内容如下
 
 ```
+void quickSort(int[] nums);
+void quickSort(int[] nums, int lo, int hi);
+int partition(int[] nums, int lo, int hi);
+void exchange(int[] nums, int i, int j);
 
+void main(char[][] args){
+	int[] nums=new int[200];
+
+	for(int i=0;i<200;i++){
+		nums[i]=nextInt(50,100);
+	}
+
+	println("before quickSort:\n");
+	println(nums);
+
+	quickSort(nums);
+
+	println("after quickSort:\n");
+	println(nums);
+}
+
+void quickSort(int[] nums) {
+	quickSort(nums, 0, sizeof nums -1);
+}
+
+void quickSort(int[] nums, int lo, int hi) {
+	if (lo < hi) {
+		int mid = partition(nums, lo, hi);
+		quickSort(nums, lo, mid - 1);
+		quickSort(nums, mid + 1, hi);
+	}
+}
+
+int partition(int[] nums, int lo, int hi) {
+	int i = lo - 1;
+	int pivot = nums[hi];
+	
+	for (int j = lo; j < hi; j++) {
+		if (nums[j] < pivot) {
+			exchange(nums, ++i, j);
+		}
+	}
+
+	exchange(nums, ++i, hi);
+	
+	return i;
+}
+
+void exchange(int[] nums, int i, int j) {
+	int temp = nums[i];
+	nums[i] = nums[j];
+	nums[j] = temp;
+}
 ```
 
-执行`huac -f test.hua`，在当前路径下生成`test.hclass`。（第一次编译时需要生成状态自动机，会比较慢，大约10s左右）
+## 编译
+
+执行`huac -f test.hua`，在当前路径下生成`test.hclass`
+
+第一次编译时需要生成状态自动机，会比较慢，大约10s左右
+
+第一次执行过后，会在`HUA_PATH`路径下生成`compiler.obj`文件，该文件是编译器状态自动机序列化之后的内容。之后运行将会从该文件中读取状态自动机，因此速度大幅度提升
+
+## 运行
+
+执行`hua -f test.hclass`，运行程序，输出如下
+
+```
+before quickSort:
+
+[55, 88, 66, 76, 56, 75, 99, 82, 58, 76, 78, 62, 91, 92, 56, 51, 89, 95, 89, 55, 99, 75, 71, 62, 74, 96, 61, 71, 93, 89, 92, 95, 92, 94, 84, 79, 76, 72, 75, 90, 86, 84, 63, 98, 66, 95, 67, 63, 57, 75, 86, 74, 70, 62, 70, 95, 96, 66, 74, 96, 99, 83, 69, 66, 65, 80, 63, 69, 97, 76, 61, 80, 53, 91, 98, 79, 67, 77, 50, 99, 52, 51, 72, 52, 98, 71, 59, 66, 55, 89, 98, 83, 57, 85, 57, 84, 80, 99, 61, 96, 57, 54, 63, 96, 82, 97, 78, 63, 60, 98, 55, 71, 92, 73, 54, 88, 77, 92, 63, 58, 50, 52, 96, 86, 84, 75, 92, 64, 88, 54, 59, 85, 86, 91, 87, 88, 96, 99, 50, 83, 64, 87, 52, 94, 53, 55, 73, 85, 77, 85, 86, 95, 85, 93, 75, 92, 88, 50, 80, 76, 67, 97, 54, 60, 50, 81, 97, 67, 83, 96, 66, 93, 69, 86, 81, 85, 59, 74, 97, 50, 90, 55, 90, 64, 97, 82, 62, 76, 88, 57, 74, 77, 83, 80, 92, 52, 81, 58, 95, 51]
+after quickSort:
+
+[50, 50, 50, 50, 50, 50, 51, 51, 51, 52, 52, 52, 52, 52, 53, 53, 54, 54, 54, 54, 55, 55, 55, 55, 55, 55, 56, 56, 57, 57, 57, 57, 57, 58, 58, 58, 59, 59, 59, 60, 60, 61, 61, 61, 62, 62, 62, 62, 63, 63, 63, 63, 63, 63, 64, 64, 64, 65, 66, 66, 66, 66, 66, 66, 67, 67, 67, 67, 69, 69, 69, 70, 70, 71, 71, 71, 71, 72, 72, 73, 73, 74, 74, 74, 74, 74, 75, 75, 75, 75, 75, 75, 76, 76, 76, 76, 76, 76, 77, 77, 77, 77, 78, 78, 79, 79, 80, 80, 80, 80, 80, 81, 81, 81, 82, 82, 82, 83, 83, 83, 83, 83, 84, 84, 84, 84, 85, 85, 85, 85, 85, 85, 86, 86, 86, 86, 86, 86, 87, 87, 88, 88, 88, 88, 88, 88, 89, 89, 89, 89, 90, 90, 90, 91, 91, 91, 92, 92, 92, 92, 92, 92, 92, 92, 93, 93, 93, 94, 94, 95, 95, 95, 95, 95, 95, 96, 96, 96, 96, 96, 96, 96, 96, 97, 97, 97, 97, 97, 97, 98, 98, 98, 98, 98, 99, 99, 99, 99, 99, 99]
+```
+
+## 查看编译后生成的字节码文件内容
 
 执行`huap -f test.hclass`，得到如下输出
 
@@ -169,236 +246,104 @@ HuaCompiler继承了LALR分析器，其文法定义参照[Java BNF定义](http:/
 Compiled from "Huap.java"
 
 Constant pool:
-	#0  =  print(int)
+	#0  =  print(boolean)
 	#1  =  print(char)
-	#2  =  print(boolean)
-	#3  =  print(int[])
-	#4  =  print(char[])
-	#5  =  print(boolean[])
-	#6  =  println(int)
-	#7  =  println(char)
+	#2  =  print(int)
+	#3  =  print(long)
+	#4  =  print(boolean[])
+	#5  =  print(char[])
+	#6  =  print(int[])
+	#7  =  print(long[])
 	#8  =  println(boolean)
-	#9  =  println(int[])
-	#10 =  println(char[])
-	#11 =  println(boolean[])
-	#12 =  nextInt(int,int)
-	#13 =  nextInt()
-	#14 =  nextBoolean()
-	#15 =  printSplit()
-	#16 =
------------------------------
+	#9  =  println(char)
+	#10 =  println(int)
+	#11 =  println(long)
+	#12 =  println(boolean[])
+	#13 =  println(char[])
+	#14 =  println(int[])
+	#15 =  println(long[])
+	#16 =  nextInt(int,int)
+	#17 =  nextBoolean()
+	#18 =  nextInt()
+	#19 =  quickSort(int[])
+	#20 =  quickSort(int[],int,int)
+	#21 =  partition(int[],int,int)
+	#22 =  exchange(int[],int,int)
+	#23 =  main(char[][])
+	#24 =  before quickSort:
 
-	#17 =  exchange(int[],int,int)
-	#18 =  compareAndExchange(int[],int,int)
-	#19 =  bubbleSort(int[])
-	#20 =  testBubbleSort()
-	#21 =  before bubbleSort:
+	#25 =  after quickSort:
 
-	#22 =  after bubbleSort:
 
-	#23 =  insertSort(int[])
-	#24 =  testInsertSort()
-	#25 =  before insertSort:
-
-	#26 =  after insertSort:
-
-	#27 =  partition(int[],int,int)
-	#28 =  quickSort(int[],int,int)
-	#29 =  quickSort(int[])
-	#30 =  testQuickSort()
-	#31 =  before quickSort:
-
-	#32 =  after quickSort:
-
-	#33 =  main(char[][])
-
-printSplit()
+main(char[][])
 	Return type: void
-	Param type:
+	Param type: char[][]
 	Code:
-		0   :  _ldc
-		1   :  _invokestatic #10
-		2   :  _return
-
-exchange(int[],int,int)
-	Return type: void
-	Param type: int[], int, int
-	Code:
-		0   :  _aload 0
-		1   :  _iload 1
-		2   :  _iaload
-		3   :  _istore 3
-		4   :  _aload 0
-		5   :  _iload 1
-		6   :  _aload 0
-		7   :  _iload 2
-		8   :  _iaload
-		9   :  _iastore
-		10  :  _aload 0
-		11  :  _iload 2
-		12  :  _iload 3
-		13  :  _iastore
-		14  :  _return
-
-compareAndExchange(int[],int,int)
-	Return type: void
-	Param type: int[], int, int
-	Code:
-		0   :  _aload 0
-		1   :  _iload 1
-		2   :  _iaload
-		3   :  _aload 0
-		4   :  _iload 2
-		5   :  _iaload
-		6   :  _if_icmple 11
-		7   :  _aload 0
-		8   :  _iload 1
+		0   :  _iconst 200
+		1   :  _newarray int
+		2   :  _astore 1
+		3   :  _iconst 0
+		4   :  _istore 2
+		5   :  _iload 2
+		6   :  _iconst 200
+		7   :  _if_icmpge 16
+		8   :  _aload 1
 		9   :  _iload 2
-		10  :  _invokestatic #17
-		11  :  _return
+		10  :  _iconst 50
+		11  :  _iconst 100
+		12  :  _invokestatic #16
+		13  :  _iastore
+		14  :  _iinc 2, 1
+		15  :  _goto 5
+		16  :  _ldc
+		17  :  _invokestatic #13
+		18  :  _aload 1
+		19  :  _invokestatic #14
+		20  :  _aload 1
+		21  :  _invokestatic #19
+		22  :  _ldc
+		23  :  _invokestatic #13
+		24  :  _aload 1
+		25  :  _invokestatic #14
+		26  :  _return
 
-bubbleSort(int[])
+quickSort(int[])
 	Return type: void
 	Param type: int[]
 	Code:
-		0   :  _sizeof
-		1   :  _istore 1
-		2   :  _iconst 0
-		3   :  _istore 2
-		4   :  _iload 2
-		5   :  _iload 1
-		6   :  _if_icmpge 24
-		7   :  _iload 1
-		8   :  _iconst 1
-		9   :  _isub
-		10  :  _istore 3
-		11  :  _iload 3
-		12  :  _iload 2
-		13  :  _if_icmple 22
+		0   :  _aload 0
+		1   :  _iconst 0
+		2   :  _sizeof 0
+		3   :  _iconst 1
+		4   :  _isub
+		5   :  _invokestatic #20
+		6   :  _return
+
+quickSort(int[],int,int)
+	Return type: void
+	Param type: int[], int, int
+	Code:
+		0   :  _iload 1
+		1   :  _iload 2
+		2   :  _if_icmpge 20
+		3   :  _aload 0
+		4   :  _iload 1
+		5   :  _iload 2
+		6   :  _invokestatic #21
+		7   :  _istore 3
+		8   :  _aload 0
+		9   :  _iload 1
+		10  :  _iload 3
+		11  :  _iconst 1
+		12  :  _isub
+		13  :  _invokestatic #20
 		14  :  _aload 0
 		15  :  _iload 3
 		16  :  _iconst 1
-		17  :  _isub
-		18  :  _iload 3
-		19  :  _invokestatic #18
-		20  :  _iinc 3, -1
-		21  :  _goto 11
-		22  :  _iinc 2, 1
-		23  :  _goto 4
-		24  :  _return
-
-testBubbleSort()
-	Return type: void
-	Param type:
-	Code:
-		0   :  _iconst 200
-		1   :  _newarray int
-		2   :  _astore 0
-		3   :  _iconst 0
-		4   :  _istore 1
-		5   :  _iload 1
-		6   :  _iconst 200
-		7   :  _if_icmpge 16
-		8   :  _aload 0
-		9   :  _iload 1
-		10  :  _iconst 50
-		11  :  _iconst 100
-		12  :  _invokestatic #12
-		13  :  _iastore
-		14  :  _iinc 1, 1
-		15  :  _goto 5
-		16  :  _ldc
-		17  :  _invokestatic #10
-		18  :  _aload 0
-		19  :  _invokestatic #9
-		20  :  _aload 0
-		21  :  _invokestatic #19
-		22  :  _ldc
-		23  :  _invokestatic #10
-		24  :  _aload 0
-		25  :  _invokestatic #9
-		26  :  _invokestatic #15
-		27  :  _return
-
-insertSort(int[])
-	Return type: void
-	Param type: int[]
-	Code:
-		0   :  _sizeof
-		1   :  _istore 1
-		2   :  _iconst 1
-		3   :  _istore 2
-		4   :  _iload 2
-		5   :  _iload 1
-		6   :  _if_icmpge 41
-		7   :  _aload 0
-		8   :  _iload 2
-		9   :  _iaload
-		10  :  _istore 3
-		11  :  _iload 2
-		12  :  _iconst 1
-		13  :  _isub
-		14  :  _istore 4
-		15  :  _iload 4
-		16  :  _iconst 0
-		17  :  _if_icmplt 33
-		18  :  _aload 0
-		19  :  _iload 4
-		20  :  _iaload
-		21  :  _iload 3
-		22  :  _if_icmple 33
-		23  :  _aload 0
-		24  :  _iload 4
-		25  :  _iconst 1
-		26  :  _iadd
-		27  :  _aload 0
-		28  :  _iload 4
-		29  :  _iaload
-		30  :  _iastore
-		31  :  _iinc 4, -1
-		32  :  _goto 15
-		33  :  _aload 0
-		34  :  _iload 4
-		35  :  _iconst 1
-		36  :  _iadd
-		37  :  _iload 3
-		38  :  _iastore
-		39  :  _iinc 2, 1
-		40  :  _goto 4
-		41  :  _return
-
-testInsertSort()
-	Return type: void
-	Param type:
-	Code:
-		0   :  _iconst 200
-		1   :  _newarray int
-		2   :  _astore 0
-		3   :  _iconst 0
-		4   :  _istore 1
-		5   :  _iload 1
-		6   :  _iconst 200
-		7   :  _if_icmpge 16
-		8   :  _aload 0
-		9   :  _iload 1
-		10  :  _iconst 50
-		11  :  _iconst 100
-		12  :  _invokestatic #12
-		13  :  _iastore
-		14  :  _iinc 1, 1
-		15  :  _goto 5
-		16  :  _ldc
-		17  :  _invokestatic #10
-		18  :  _aload 0
-		19  :  _invokestatic #9
-		20  :  _aload 0
-		21  :  _invokestatic #23
-		22  :  _ldc
-		23  :  _invokestatic #10
-		24  :  _aload 0
-		25  :  _invokestatic #9
-		26  :  _invokestatic #15
-		27  :  _return
+		17  :  _iadd
+		18  :  _iload 2
+		19  :  _invokestatic #20
+		20  :  _return
 
 partition(int[],int,int)
 	Return type: int
@@ -426,126 +371,34 @@ partition(int[],int,int)
 		19  :  _iinc 3, 1
 		20  :  _iload 3
 		21  :  _iload 5
-		22  :  _invokestatic #17
+		22  :  _invokestatic #22
 		23  :  _iinc 5, 1
 		24  :  _goto 10
 		25  :  _aload 0
 		26  :  _iinc 3, 1
 		27  :  _iload 3
 		28  :  _iload 2
-		29  :  _invokestatic #17
+		29  :  _invokestatic #22
 		30  :  _iload 3
 		31  :  _ireturn
 
-quickSort(int[],int,int)
+exchange(int[],int,int)
 	Return type: void
 	Param type: int[], int, int
 	Code:
-		0   :  _iload 1
-		1   :  _iload 2
-		2   :  _if_icmpge 20
-		3   :  _aload 0
-		4   :  _iload 1
-		5   :  _iload 2
-		6   :  _invokestatic #27
-		7   :  _istore 3
-		8   :  _aload 0
-		9   :  _iload 1
-		10  :  _iload 3
-		11  :  _iconst 1
-		12  :  _isub
-		13  :  _invokestatic #28
-		14  :  _aload 0
-		15  :  _iload 3
-		16  :  _iconst 1
-		17  :  _iadd
-		18  :  _iload 2
-		19  :  _invokestatic #28
-		20  :  _return
-
-quickSort(int[])
-	Return type: void
-	Param type: int[]
-	Code:
 		0   :  _aload 0
-		1   :  _iconst 0
-		2   :  _sizeof
-		3   :  _iconst 1
-		4   :  _isub
-		5   :  _invokestatic #28
-		6   :  _return
-
-testQuickSort()
-	Return type: void
-	Param type:
-	Code:
-		0   :  _iconst 200
-		1   :  _newarray int
-		2   :  _astore 0
-		3   :  _iconst 0
-		4   :  _istore 1
+		1   :  _iload 1
+		2   :  _iaload
+		3   :  _istore 3
+		4   :  _aload 0
 		5   :  _iload 1
-		6   :  _iconst 200
-		7   :  _if_icmpge 16
-		8   :  _aload 0
-		9   :  _iload 1
-		10  :  _iconst 50
-		11  :  _iconst 100
-		12  :  _invokestatic #12
+		6   :  _aload 0
+		7   :  _iload 2
+		8   :  _iaload
+		9   :  _iastore
+		10  :  _aload 0
+		11  :  _iload 2
+		12  :  _iload 3
 		13  :  _iastore
-		14  :  _iinc 1, 1
-		15  :  _goto 5
-		16  :  _ldc
-		17  :  _invokestatic #10
-		18  :  _aload 0
-		19  :  _invokestatic #9
-		20  :  _aload 0
-		21  :  _invokestatic #29
-		22  :  _ldc
-		23  :  _invokestatic #10
-		24  :  _aload 0
-		25  :  _invokestatic #9
-		26  :  _invokestatic #15
-		27  :  _return
-
-main(char[][])
-	Return type: void
-	Param type: char[][]
-	Code:
-		0   :  _invokestatic #20
-		1   :  _invokestatic #24
-		2   :  _invokestatic #30
-		3   :  _return
-```
-
-执行`hua -f test.hclass`，运行程序，输出如下
-
-```
-before bubbleSort:
-
-[85, 84, 61, 79, 99, 70, 73, 78, 81, 91, 62, 98, 76, 85, 83, 77, 77, 65, 55, 67, 90, 80, 62, 55, 72, 87, 65, 59, 65, 81, 55, 55, 83, 71, 68, 51, 81, 62, 90, 65, 66, 71, 54, 62, 79, 75, 69, 61, 64, 67, 57, 80, 59, 61, 91, 61, 89, 87, 92, 60, 94, 74, 58, 69, 55, 72, 60, 96, 60, 95, 69, 68, 79, 54, 51, 62, 52, 89, 96, 86, 59, 71, 52, 76, 55, 91, 59, 73, 76, 86, 94, 87, 79, 70, 73, 87, 74, 92, 71, 63, 90, 71, 80, 83, 93, 61, 83, 83, 62, 95, 71, 83, 68, 75, 76, 57, 56, 67, 57, 74, 58, 65, 55, 92, 64, 67, 54, 64, 51, 73, 63, 84, 77, 84, 53, 62, 82, 64, 58, 96, 83, 95, 54, 84, 94, 65, 52, 67, 98, 67, 57, 87, 70, 90, 88, 59, 99, 62, 51, 99, 81, 93, 70, 88, 89, 69, 61, 54, 67, 55, 59, 89, 85, 76, 55, 95, 95, 50, 89, 57, 65, 80, 97, 51, 95, 69, 73, 81, 60, 58, 99, 68, 74, 97, 95, 97, 82, 93, 81, 97]
-after bubbleSort:
-
-[50, 51, 51, 51, 51, 51, 52, 52, 52, 53, 54, 54, 54, 54, 54, 55, 55, 55, 55, 55, 55, 55, 55, 55, 56, 57, 57, 57, 57, 57, 58, 58, 58, 58, 59, 59, 59, 59, 59, 59, 60, 60, 60, 60, 61, 61, 61, 61, 61, 61, 62, 62, 62, 62, 62, 62, 62, 62, 63, 63, 64, 64, 64, 64, 65, 65, 65, 65, 65, 65, 65, 66, 67, 67, 67, 67, 67, 67, 67, 68, 68, 68, 68, 69, 69, 69, 69, 69, 70, 70, 70, 70, 71, 71, 71, 71, 71, 71, 72, 72, 73, 73, 73, 73, 73, 74, 74, 74, 74, 75, 75, 76, 76, 76, 76, 76, 77, 77, 77, 78, 79, 79, 79, 79, 80, 80, 80, 80, 81, 81, 81, 81, 81, 81, 82, 82, 83, 83, 83, 83, 83, 83, 83, 84, 84, 84, 84, 85, 85, 85, 86, 86, 87, 87, 87, 87, 87, 88, 88, 89, 89, 89, 89, 89, 90, 90, 90, 90, 91, 91, 91, 92, 92, 92, 93, 93, 93, 94, 94, 94, 95, 95, 95, 95, 95, 95, 95, 96, 96, 96, 97, 97, 97, 97, 98, 98, 99, 99, 99, 99]
-
------------------------------
-
-before insertSort:
-
-[78, 70, 87, 58, 52, 92, 92, 89, 54, 74, 59, 57, 79, 60, 56, 98, 51, 73, 80, 51, 77, 91, 59, 89, 84, 75, 62, 95, 53, 52, 78, 87, 84, 97, 78, 83, 68, 92, 83, 65, 56, 54, 58, 51, 53, 53, 83, 65, 94, 75, 57, 67, 86, 54, 90, 69, 76, 89, 63, 56, 96, 74, 89, 99, 72, 61, 52, 75, 88, 83, 94, 64, 78, 51, 59, 69, 87, 94, 57, 75, 93, 93, 84, 96, 81, 67, 84, 71, 88, 89, 56, 64, 54, 69, 58, 80, 63, 74, 93, 73, 83, 88, 92, 73, 58, 93, 50, 82, 94, 86, 80, 52, 83, 54, 50, 69, 94, 71, 95, 78, 88, 71, 66, 88, 72, 80, 71, 89, 87, 78, 60, 76, 63, 92, 58, 80, 56, 82, 67, 54, 67, 85, 84, 99, 77, 78, 94, 65, 78, 50, 56, 79, 65, 97, 82, 77, 76, 88, 98, 65, 60, 59, 86, 51, 67, 97, 73, 58, 75, 55, 97, 73, 60, 82, 60, 55, 95, 98, 69, 92, 65, 84, 97, 82, 77, 85, 62, 89, 77, 83, 92, 98, 83, 65, 99, 84, 99, 86, 77, 65]
-after insertSort:
-
-[50, 50, 50, 51, 51, 51, 51, 51, 52, 52, 52, 52, 53, 53, 53, 54, 54, 54, 54, 54, 54, 55, 55, 56, 56, 56, 56, 56, 56, 57, 57, 57, 58, 58, 58, 58, 58, 58, 59, 59, 59, 59, 60, 60, 60, 60, 60, 61, 62, 62, 63, 63, 63, 64, 64, 65, 65, 65, 65, 65, 65, 65, 65, 66, 67, 67, 67, 67, 67, 68, 69, 69, 69, 69, 69, 70, 71, 71, 71, 71, 72, 72, 73, 73, 73, 73, 73, 74, 74, 74, 75, 75, 75, 75, 75, 76, 76, 76, 77, 77, 77, 77, 77, 77, 78, 78, 78, 78, 78, 78, 78, 78, 79, 79, 80, 80, 80, 80, 80, 81, 82, 82, 82, 82, 82, 83, 83, 83, 83, 83, 83, 83, 83, 84, 84, 84, 84, 84, 84, 84, 85, 85, 86, 86, 86, 86, 87, 87, 87, 87, 88, 88, 88, 88, 88, 88, 89, 89, 89, 89, 89, 89, 89, 90, 91, 92, 92, 92, 92, 92, 92, 92, 93, 93, 93, 93, 94, 94, 94, 94, 94, 94, 95, 95, 95, 96, 96, 97, 97, 97, 97, 97, 98, 98, 98, 98, 99, 99, 99, 99]
-
------------------------------
-
-before quickSort:
-
-[88, 50, 51, 96, 74, 76, 75, 78, 82, 86, 77, 98, 72, 88, 71, 61, 65, 68, 75, 82, 88, 51, 86, 62, 87, 91, 84, 69, 74, 62, 50, 98, 71, 67, 81, 57, 66, 58, 99, 53, 69, 51, 63, 89, 95, 60, 61, 93, 95, 76, 59, 74, 73, 53, 91, 56, 66, 55, 61, 82, 98, 58, 74, 98, 78, 74, 77, 97, 88, 77, 54, 63, 71, 72, 92, 62, 51, 79, 93, 58, 62, 75, 62, 93, 98, 85, 55, 77, 78, 59, 68, 73, 72, 95, 84, 83, 98, 57, 75, 62, 58, 68, 70, 64, 56, 99, 83, 53, 74, 69, 96, 84, 54, 56, 51, 66, 69, 86, 70, 74, 78, 89, 50, 84, 78, 79, 61, 80, 80, 52, 52, 64, 78, 69, 59, 87, 69, 54, 61, 56, 58, 60, 56, 67, 98, 54, 57, 57, 88, 63, 83, 92, 99, 79, 51, 63, 76, 53, 84, 60, 53, 70, 89, 51, 74, 87, 57, 67, 86, 96, 51, 50, 81, 99, 70, 68, 61, 65, 82, 73, 71, 68, 65, 59, 52, 96, 75, 69, 58, 58, 56, 50, 63, 73, 78, 79, 60, 71, 89, 53]
-after quickSort:
-
-[50, 50, 50, 50, 50, 51, 51, 51, 51, 51, 51, 51, 51, 52, 52, 52, 53, 53, 53, 53, 53, 53, 54, 54, 54, 54, 55, 55, 56, 56, 56, 56, 56, 56, 57, 57, 57, 57, 57, 58, 58, 58, 58, 58, 58, 58, 59, 59, 59, 59, 60, 60, 60, 60, 61, 61, 61, 61, 61, 61, 62, 62, 62, 62, 62, 62, 63, 63, 63, 63, 63, 64, 64, 65, 65, 65, 66, 66, 66, 67, 67, 67, 68, 68, 68, 68, 68, 69, 69, 69, 69, 69, 69, 69, 70, 70, 70, 70, 71, 71, 71, 71, 71, 72, 72, 72, 73, 73, 73, 73, 74, 74, 74, 74, 74, 74, 74, 74, 75, 75, 75, 75, 75, 76, 76, 76, 77, 77, 77, 77, 78, 78, 78, 78, 78, 78, 78, 79, 79, 79, 79, 80, 80, 81, 81, 82, 82, 82, 82, 83, 83, 83, 84, 84, 84, 84, 84, 85, 86, 86, 86, 86, 87, 87, 87, 88, 88, 88, 88, 88, 89, 89, 89, 89, 91, 91, 92, 92, 93, 93, 93, 95, 95, 95, 96, 96, 96, 96, 97, 98, 98, 98, 98, 98, 98, 98, 99, 99, 99, 99]
-
------------------------------
-
+		14  :  _return
 ```
