@@ -124,7 +124,7 @@ public abstract class TokenIdentifiers {
                     return null;
                 }
 
-                tokenContext.setMoveLength(i + 1);
+                tokenContext.setMoveLength(i);
                 return new Token(id, remainInput.substring(0, i));
             }
 
@@ -148,7 +148,7 @@ public abstract class TokenIdentifiers {
              * 到了文末，那么这是一个合法的数字，至于位数，先不管
              */
             if (i == remainInput.length()) {
-                tokenContext.setMoveLength(i + 1);
+                tokenContext.setMoveLength(i);
                 return new Token(id, remainInput.substring(0, i));
             }
             /*
@@ -165,7 +165,7 @@ public abstract class TokenIdentifiers {
                 return null;
             }
 
-            tokenContext.setMoveLength(i + 1);
+            tokenContext.setMoveLength(i);
             return new Token(id, remainInput.substring(0, i));
         }
 
@@ -213,7 +213,7 @@ public abstract class TokenIdentifiers {
          * 这里可以直接用Character.isAlphabetic方法，虽然这个方法包含了a-f，但是前面的while循环保证了不可能包含a-f
          */
         if (i == remainInput.length() || !Character.isAlphabetic(remainInput.charAt(i))) {
-            tokenContext.setMoveLength(i + 1);
+            tokenContext.setMoveLength(i);
             return new Token(id, remainInput.substring(0, i));
         }
 
@@ -256,7 +256,7 @@ public abstract class TokenIdentifiers {
         if (i == remainInput.length()
                 || !Character.isAlphabetic(remainInput.charAt(i))
                 || !NON_OCTAL_INTEGER_DIGIT.contains(remainInput.charAt(i))) {
-            tokenContext.setMoveLength(i + 1);
+            tokenContext.setMoveLength(i);
             return new Token(id, remainInput.substring(0, i));
         }
 
