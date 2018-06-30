@@ -22,6 +22,7 @@ public class Type implements Serializable {
     public static final int INT_TYPE_WIDTH = 4;
     public static final int LONG_TYPE_WIDTH = 8;
     public static final int FLOAT_TYPE_WIDTH = 4;
+    public static final int DOUBLE_TYPE_WIDTH = 8;
     public static final int REFERENCE_TYPE_WIDTH = 8;
     /**
      * 基本类型的一维数组
@@ -31,6 +32,7 @@ public class Type implements Serializable {
     public static final Type TYPE_INT_ARRAY = createArrayType(NORMAL_INT, 1);
     public static final Type TYPE_LONG_ARRAY = createArrayType(NORMAL_LONG, 1);
     public static final Type TYPE_FLOAT_ARRAY = createArrayType(NORMAL_FLOAT, 1);
+    public static final Type TYPE_DOUBLE_ARRAY = createArrayType(NORMAL_DOUBLE, 1);
     public static final Type TYPE_STRING_ARRAY = createArrayType(NORMAL_CHAR, 2);
     private static final int NORMAL_TYPE_DIM = 0;
     /**
@@ -42,6 +44,7 @@ public class Type implements Serializable {
     public static final Type TYPE_INT = createNormalType(NORMAL_INT, INT_TYPE_WIDTH);
     public static final Type TYPE_LONG = createNormalType(NORMAL_LONG, LONG_TYPE_WIDTH);
     public static final Type TYPE_FLOAT = createNormalType(NORMAL_FLOAT, FLOAT_TYPE_WIDTH);
+    public static final Type TYPE_DOUBLE = createNormalType(NORMAL_DOUBLE, DOUBLE_TYPE_WIDTH);
     private static final String ARRAY_DIM_DESCRIPTION = "[]";
 
     /**
