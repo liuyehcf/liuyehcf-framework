@@ -5,10 +5,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._baload;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._caload;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iaload;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iload;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sm._dup2;
 
 import java.io.Serializable;
@@ -92,6 +89,9 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction implements S
                         case NORMAL_INT:
                             context.addByteCodeToCurrentMethod(new _iaload());
                             break;
+                        case NORMAL_LONG:
+                            context.addByteCodeToCurrentMethod(new _laload());
+                            break;
                         default:
                             throw new UnsupportedOperationException();
                     }
@@ -104,11 +104,14 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction implements S
                     switch (leftHandType.getTypeName()) {
                         case NORMAL_INT:
                             context.addByteCodeToCurrentMethod(new _iload(variableSymbol.getOrder()));
-                            context.setAttr(leftHandStackOffset, AttrName.TYPE, leftHandType);
+                            break;
+                        case NORMAL_LONG:
+                            context.addByteCodeToCurrentMethod(new _lload(variableSymbol.getOrder()));
                             break;
                         default:
                             throw new UnsupportedOperationException();
                     }
+                    context.setAttr(leftHandStackOffset, AttrName.TYPE, leftHandType);
                 }
                 break;
             default:

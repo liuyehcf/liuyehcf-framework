@@ -83,6 +83,14 @@ public class RuntimeContext {
         currentMethod.storeInt(offset, value);
     }
 
+    public long loadLong(int offset) {
+        return currentMethod.loadLong(offset);
+    }
+
+    public void storeLong(int offset, long value) {
+        currentMethod.storeLong(offset, value);
+    }
+
     public Reference loadReference(int offset) {
         return currentMethod.loadReference(offset);
     }

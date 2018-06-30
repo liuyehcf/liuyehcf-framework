@@ -70,26 +70,6 @@ public class HeapMemoryManagement {
     }
 
     /**
-     * 加载int值
-     *
-     * @param offset 地址偏移量
-     * @return int值
-     */
-    public static int loadInt(int offset) {
-        return ByteUtils.loadInt(heapMemory, offset);
-    }
-
-    /**
-     * 存储int值
-     *
-     * @param offset 地址偏移量
-     * @param value  int值
-     */
-    public static void storeInt(int offset, int value) {
-        ByteUtils.storeInt(heapMemory, offset, value);
-    }
-
-    /**
      * 加载boolean
      *
      * @param offset 地址偏移量
@@ -100,17 +80,17 @@ public class HeapMemoryManagement {
     }
 
     /**
-     * 存储char值
+     * 存储boolean
      *
      * @param offset 地址偏移量
-     * @param value  char值
+     * @param value  boolean值
      */
     public static void storeBoolean(int offset, int value) {
         ByteUtils.storeBoolean(heapMemory, offset, value);
     }
 
     /**
-     * 加载char值
+     * 加载char
      *
      * @param offset 地址偏移量
      * @return char值
@@ -120,13 +100,53 @@ public class HeapMemoryManagement {
     }
 
     /**
-     * 存储char值
+     * 存储char
      *
      * @param offset 地址偏移量
      * @param value  char值
      */
     public static void storeChar(int offset, int value) {
         ByteUtils.storeChar(heapMemory, offset, value);
+    }
+
+    /**
+     * 加载int
+     *
+     * @param offset 地址偏移量
+     * @return int值
+     */
+    public static int loadInt(int offset) {
+        return ByteUtils.loadInt(heapMemory, offset);
+    }
+
+    /**
+     * 存储int
+     *
+     * @param offset 地址偏移量
+     * @param value  int值
+     */
+    public static void storeInt(int offset, int value) {
+        ByteUtils.storeInt(heapMemory, offset, value);
+    }
+
+    /**
+     * 加载long
+     *
+     * @param offset 地址偏移量
+     * @return long值
+     */
+    public static long loadLong(int offset) {
+        return ByteUtils.loadLong(heapMemory, offset);
+    }
+
+    /**
+     * 存储long
+     *
+     * @param offset 地址偏移量
+     * @param value  long值
+     */
+    public static void storeLong(int offset, long value) {
+        ByteUtils.storeLong(heapMemory, offset, value);
     }
 
     /**

@@ -8,9 +8,8 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.AttrFilter;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.SetAttrFromLexical;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.SetAttrFromSystem;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.SetIdentifierAttr;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.load.LiteralLoad;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.load.LoadLiteralAndSetType;
 
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_BOOLEAN_FALSE;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_BOOLEAN_TRUE;
@@ -100,8 +99,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(INTEGER_LITERAL)
                             ),
-                            new LiteralLoad(0, Type.TYPE_INT),
-                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_INT),
+                            new LoadLiteralAndSetType(0, Type.TYPE_INT),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -112,8 +110,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(BOOLEAN_LITERAL)
                             ),
-                            new LiteralLoad(0, Type.TYPE_BOOLEAN),
-                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_BOOLEAN),
+                            new LoadLiteralAndSetType(0, Type.TYPE_BOOLEAN),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -124,8 +121,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(CHARACTER_LITERAL)
                             ),
-                            new LiteralLoad(0, Type.TYPE_CHAR),
-                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_CHAR),
+                            new LoadLiteralAndSetType(0, Type.TYPE_CHAR),
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
@@ -136,8 +132,7 @@ abstract class TokenProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(STRING_LITERAL)
                             ),
-                            new LiteralLoad(0, Type.TYPE_CHAR_ARRAY),
-                            new SetAttrFromSystem(0, AttrName.TYPE, Type.TYPE_CHAR_ARRAY),
+                            new LoadLiteralAndSetType(0, Type.TYPE_CHAR_ARRAY),
                             new AttrFilter(AttrName.TYPE)
                     )
                     /*

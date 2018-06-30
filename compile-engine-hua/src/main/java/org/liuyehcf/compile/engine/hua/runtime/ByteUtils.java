@@ -2,8 +2,6 @@ package org.liuyehcf.compile.engine.hua.runtime;
 
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 
-import static org.liuyehcf.compile.engine.hua.compile.definition.model.Type.INT_TYPE_WIDTH;
-
 /**
  * Byte工具类
  *
@@ -11,34 +9,6 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.model.Type.INT_
  * @date 2018/6/26
  */
 abstract class ByteUtils {
-    /**
-     * 加载int
-     *
-     * @param memory 内存
-     * @param offset 地址偏移量
-     * @return int值
-     */
-    static int loadInt(byte[] memory, int offset) {
-        int res = 0;
-        for (int i = 0; i < INT_TYPE_WIDTH; i++) {
-            res |= (memory[offset + i] & 0xff) << (8 * i);
-        }
-        return res;
-    }
-
-    /**
-     * 存储int值
-     *
-     * @param memory 内存
-     * @param offset 地址偏移量
-     * @param value  int值
-     */
-    static void storeInt(byte[] memory, int offset, int value) {
-        for (int i = 0; i < INT_TYPE_WIDTH; i++) {
-            memory[offset + i] = (byte) (value >> (8 * i) & 0xff);
-        }
-    }
-
     /**
      * 加载boolean
      *
@@ -67,7 +37,6 @@ abstract class ByteUtils {
         }
     }
 
-
     /**
      * 加载char
      *
@@ -92,6 +61,62 @@ abstract class ByteUtils {
      */
     static void storeChar(byte[] memory, int offset, int value) {
         for (int i = 0; i < Type.CHAR_TYPE_WIDTH; i++) {
+            memory[offset + i] = (byte) (value >> (8 * i) & 0xff);
+        }
+    }
+
+    /**
+     * 加载int
+     *
+     * @param memory 内存
+     * @param offset 地址偏移量
+     * @return int值
+     */
+    static int loadInt(byte[] memory, int offset) {
+        int res = 0;
+        for (int i = 0; i < Type.INT_TYPE_WIDTH; i++) {
+            res |= (memory[offset + i] & 0xff) << (8 * i);
+        }
+        return res;
+    }
+
+    /**
+     * 存储int
+     *
+     * @param memory 内存
+     * @param offset 地址偏移量
+     * @param value  int值
+     */
+    static void storeInt(byte[] memory, int offset, int value) {
+        for (int i = 0; i < Type.INT_TYPE_WIDTH; i++) {
+            memory[offset + i] = (byte) (value >> (8 * i) & 0xff);
+        }
+    }
+
+    /**
+     * 加载long
+     *
+     * @param memory 内存
+     * @param offset 地址偏移量
+     * @return long值
+     */
+    static long loadLong(byte[] memory, int offset) {
+        long res = 0;
+        for (int i = 0; i < Type.LONG_TYPE_WIDTH; i++) {
+            res |= (long) (memory[offset + i] & 0xff) << (8 * i);
+        }
+        return res;
+    }
+
+    /**
+     * 存储long
+     *
+     * @param memory 内存
+     * @param offset 地址偏移量
+     * @param value  long值
+     */
+    static void storeLong(byte[] memory, int offset, long value) {
+        for (int i = 0; i < Type.LONG_TYPE_WIDTH; i++) {
             memory[offset + i] = (byte) (value >> (8 * i) & 0xff);
         }
     }

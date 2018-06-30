@@ -11,9 +11,10 @@ public abstract class Constant {
      * key words
      */
     public static final String NORMAL_BOOLEAN = "boolean";
-    public static final String NORMAL_INT = "int";
-    public static final String NORMAL_FLOAT = "float";
     public static final String NORMAL_CHAR = "char";
+    public static final String NORMAL_INT = "int";
+    public static final String NORMAL_LONG = "long";
+    public static final String NORMAL_FLOAT = "float";
     public static final String NORMAL_VOID = "void";
     public static final String NORMAL_IF = "if";
     public static final String NORMAL_ELSE = "else";

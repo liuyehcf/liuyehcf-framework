@@ -6,19 +6,18 @@ import org.liuyehcf.compile.engine.hua.runtime.Reference;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
- * 存储boolean型数组元素
+ * 加载long型数组元素
  * < before → after >
- * arrayref, index, value →
+ * < arrayref, index → value >
  *
  * @author hechenfeng
- * @date 2018/6/27
+ * @date 2018/6/30
  */
-public class _bastore extends ArrayStoreLoad {
-
+public class _laload extends ArrayStoreLoad {
     /**
      * 唯一操作码
      */
-    public static final int OPERATOR_CODE = 0x54;
+    public static final int OPERATOR_CODE = 0x2f;
 
     /**
      * 操作数类型
@@ -27,13 +26,14 @@ public class _bastore extends ArrayStoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
-        int value = context.pop();
         int index = context.pop();
         Reference arrayReference = context.pop();
 
-        int elementOffset = arrayReference.getAddress() + index * Type.BOOLEAN_TYPE_WIDTH;
+        int elementOffset = arrayReference.getAddress() + index * Type.LONG_TYPE_WIDTH;
 
-        HeapMemoryManagement.storeBoolean(elementOffset, value);
+        long value = HeapMemoryManagement.loadLong(elementOffset);
+
+        context.push(value);
 
         context.increaseCodeOffset();
     }

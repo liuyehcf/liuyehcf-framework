@@ -4,19 +4,17 @@ import com.alibaba.fastjson.annotation.JSONField;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
- * 加载整型常量
- * < before → after >
- * < → value >
+ * long 加载
  *
  * @author hechenfeng
- * @date 2018/6/15
+ * @date 2018/6/30
  */
-public class _iconst extends StoreLoad {
+public class _lload extends StoreLoad {
 
     /**
-     * 唯一操作码(与Java有区别)
+     * 唯一操作码
      */
-    public static final int OPERATOR_CODE = 0x02;
+    public static final int OPERATOR_CODE = 0x16;
 
     /**
      * 操作数类型
@@ -24,21 +22,23 @@ public class _iconst extends StoreLoad {
     public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
 
     /**
-     * 常量值
+     * 标志符序号
      */
-    private final int value;
+    private final int order;
 
-    public _iconst(int value) {
-        this.value = value;
+    public _lload(int order) {
+        this.order = order;
     }
 
-    public int getValue() {
-        return value;
+    public int getOrder() {
+        return order;
     }
 
     @Override
     public void operate(RuntimeContext context) {
-        context.push(this.value);
+        long value = context.loadLong(order);
+
+        context.push(value);
 
         context.increaseCodeOffset();
     }
@@ -46,11 +46,12 @@ public class _iconst extends StoreLoad {
     @Override
     @JSONField(serialize = false)
     public Object[] getOperators() {
-        return new Object[]{value};
+        return new Object[]{order};
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " " + value;
+        return getClass().getSimpleName() + " " + order;
     }
+
 }

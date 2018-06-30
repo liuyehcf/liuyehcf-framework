@@ -63,8 +63,11 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ior());
                         break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _lor());
+                        break;
                     default:
-                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
+                        throw new UnsupportedOperationException();
                 }
 
                 break;
@@ -75,8 +78,11 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ixor());
                         break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _lxor());
+                        break;
                     default:
-                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
+                        throw new UnsupportedOperationException();
                 }
 
                 break;
@@ -87,57 +93,71 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _iand());
                         break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _land());
+                        break;
                     default:
-                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
+                        throw new UnsupportedOperationException();
                 }
 
                 break;
             case NORMAL_SHL:
-                checkIntegralType(rightType, operator);
+                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ishl());
                         break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _lshl());
+                        break;
                     default:
-                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
+                        throw new UnsupportedOperationException();
                 }
 
                 break;
             case NORMAL_SHR:
-                checkIntegralType(rightType, operator);
+                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ishr());
                         break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _lshr());
+                        break;
                     default:
-                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
+                        throw new UnsupportedOperationException();
                 }
 
                 break;
             case NORMAL_USHR:
-                checkIntegralType(rightType, operator);
+                checkEqualType(leftType, rightType, operator);
 
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _iushr());
                         break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _lushr());
+                        break;
                     default:
-                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
+                        throw new UnsupportedOperationException();
                 }
 
                 break;
             case NORMAL_ADD:
                 checkEqualType(leftType, rightType, operator);
 
-
                 switch (leftType.getTypeName()) {
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _iadd());
                         break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _ladd());
+                        break;
                     default:
-                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
+                        throw new UnsupportedOperationException();
                 }
 
                 break;
@@ -148,8 +168,11 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _isub());
                         break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _lsub());
+                        break;
                     default:
-                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
+                        throw new UnsupportedOperationException();
                 }
 
                 break;
@@ -160,8 +183,11 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _imul());
                         break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _lmul());
+                        break;
                     default:
-                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
+                        throw new UnsupportedOperationException();
                 }
 
                 break;
@@ -172,8 +198,11 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _idiv());
                         break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _ldiv());
+                        break;
                     default:
-                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
+                        throw new UnsupportedOperationException();
                 }
 
                 break;
@@ -184,8 +213,11 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _irem());
                         break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _lrem());
+                        break;
                     default:
-                        throw new RuntimeException("Type '" + leftType + "' does not support '" + operator + "' arithmetic");
+                        throw new UnsupportedOperationException();
                 }
 
                 break;
@@ -199,12 +231,6 @@ public class BinaryOperation extends AbstractSemanticAction implements Serializa
     private void checkEqualType(Type type1, Type type2, String operator) {
         if (!type1.equals(type2)) {
             throw new RuntimeException("'" + operator + "' has inconsistent operator subtypes on both sides");
-        }
-    }
-
-    private void checkIntegralType(Type type, String operator) {
-        if (!NORMAL_INT.equals(type.getTypeName())) {
-            throw new RuntimeException("The right side of the '" + operator + "' operator must be an integer");
         }
     }
 }

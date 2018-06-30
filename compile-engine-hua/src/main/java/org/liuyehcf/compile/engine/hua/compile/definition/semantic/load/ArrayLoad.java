@@ -4,10 +4,7 @@ import org.liuyehcf.compile.engine.hua.compile.HuaContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._aaload;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._baload;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._caload;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iaload;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 
 import java.io.Serializable;
 
@@ -49,6 +46,9 @@ public class ArrayLoad extends AbstractSemanticAction implements Serializable {
                     break;
                 case NORMAL_INT:
                     context.addByteCodeToCurrentMethod(new _iaload());
+                    break;
+                case NORMAL_LONG:
+                    context.addByteCodeToCurrentMethod(new _laload());
                     break;
                 default:
                     throw new UnsupportedOperationException();

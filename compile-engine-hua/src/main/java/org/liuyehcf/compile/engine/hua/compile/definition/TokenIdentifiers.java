@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * 词法识别器
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/30
  */
 public abstract class TokenIdentifiers {
@@ -18,20 +18,7 @@ public abstract class TokenIdentifiers {
     /**
      * 允许转义的字符
      */
-    private static final Map<Character, Integer> ESCAPE_CHARS;
-
-    static {
-        ESCAPE_CHARS = new HashMap<>();
-        ESCAPE_CHARS.put('b', 8);
-        ESCAPE_CHARS.put('f', 12);
-        ESCAPE_CHARS.put('n', 10);
-        ESCAPE_CHARS.put('r', 13);
-        ESCAPE_CHARS.put('t', 9);
-        ESCAPE_CHARS.put('\\', 92);
-        ESCAPE_CHARS.put('\'', 39);
-        ESCAPE_CHARS.put('\"', 34);
-        ESCAPE_CHARS.put('0', 0);
-    }
+    private static final Map<Character, Integer> ESCAPE_CHARS = initEscapeChars();
 
     static final TokenIdentifier IDENTIFIER_CHAR_LITERAL = (tokenContext) -> {
         Symbol id = tokenContext.getId();
@@ -64,7 +51,6 @@ public abstract class TokenIdentifiers {
         return null;
 
     };
-
     static final TokenIdentifier IDENTIFIER_STRING_LITERAL = (tokenContext) -> {
         Symbol id = tokenContext.getId();
         String remainInput = tokenContext.getRemainInput();
@@ -102,22 +88,18 @@ public abstract class TokenIdentifiers {
         }
         return null;
     };
-
     /**
      * 非0十进制数字
      */
     private static final Set<Character> NON_ZERO_DECIMAL_INTEGER_DIGIT = new HashSet<>(Arrays.asList('1', '2', '3', '4', '5', '6', '7', '8', '9'));
-
     /**
      * 十进制数字
      */
     private static final Set<Character> DECIMAL_INTEGER_DIGIT = new HashSet<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
-
     /**
      * 十进制后缀
      */
     private static final Set<Character> DECIMAL_INTEGER_SUFFIX = new HashSet<>(Arrays.asList('l', 'L'));
-
     static final TokenIdentifier IDENTIFIER_DECIMAL_INTEGER_LITERAL = new TokenIdentifier() {
         @Override
         public Token identify(TokenContext tokenContext) {
@@ -186,18 +168,14 @@ public abstract class TokenIdentifiers {
                             || s.charAt(i) == '_');
         }
     };
-
     /**
      * 十六进制数字
      */
     private static final Set<Character> HEX_INTEGER_DIGIT = new HashSet<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'));
-
-
     /**
      * 十六进制前缀
      */
     private static final Set<Character> HEX_INTEGER_PREFIX = new HashSet<>(Arrays.asList('x', 'X'));
-
     static final TokenIdentifier IDENTIFIER_HEX_INTEGER_LITERAL = (tokenContext) -> {
         Symbol id = tokenContext.getId();
         String remainInput = tokenContext.getRemainInput();
@@ -232,18 +210,14 @@ public abstract class TokenIdentifiers {
 
         return null;
     };
-
     /**
      * 八进制数字
      */
     private static final Set<Character> OCTAL_INTEGER_DIGIT = new HashSet<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7'));
-
     /**
      * 非八进制数字
      */
     private static final Set<Character> NON_OCTAL_INTEGER_DIGIT = new HashSet<>(Arrays.asList('8', '9'));
-
-
     static final TokenIdentifier IDENTIFIER_OCTAL_INTEGER_LITERAL = (tokenContext) -> {
         Symbol id = tokenContext.getId();
         String remainInput = tokenContext.getRemainInput();
@@ -278,4 +252,18 @@ public abstract class TokenIdentifiers {
 
         return null;
     };
+
+    private static Map<Character, Integer> initEscapeChars() {
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('b', 8);
+        map.put('f', 12);
+        map.put('n', 10);
+        map.put('r', 13);
+        map.put('t', 9);
+        map.put('\\', 92);
+        map.put('\'', 39);
+        map.put('\"', 34);
+        map.put('0', 0);
+        return map;
+    }
 }

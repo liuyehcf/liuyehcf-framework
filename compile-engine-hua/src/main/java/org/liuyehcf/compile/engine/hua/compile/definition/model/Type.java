@@ -13,20 +13,35 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
  */
 public class Type implements Serializable {
 
-    public final static int REFERENCE_TYPE_WIDTH = 8;
-    public final static int INT_TYPE_WIDTH = 4;
-    public static final int CHAR_TYPE_WIDTH = 2;
-    public static final int BOOLEAN_TYPE_WIDTH = 1;
+    /**
+     * 基本类型字长
+     */
     public static final int VOID_TYPE_WIDTH = 0;
-    public final static Type TYPE_BOOLEAN_ARRAY = createArrayType(NORMAL_BOOLEAN, 1);
-    public final static Type TYPE_CHAR_ARRAY = createArrayType(NORMAL_CHAR, 1);
-    public final static Type TYPE_INT_ARRAY = createArrayType(NORMAL_INT, 1);
-    public final static Type TYPE_STRING_ARRAY = createArrayType(NORMAL_CHAR, 2);
-    private final static int NORMAL_TYPE_DIM = 0;
-    public final static Type TYPE_VOID = createNormalType(NORMAL_VOID, VOID_TYPE_WIDTH);
-    public final static Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, BOOLEAN_TYPE_WIDTH);
-    public final static Type TYPE_CHAR = createNormalType(NORMAL_CHAR, CHAR_TYPE_WIDTH);
-    public final static Type TYPE_INT = createNormalType(NORMAL_INT, INT_TYPE_WIDTH);
+    public static final int BOOLEAN_TYPE_WIDTH = 1;
+    public static final int CHAR_TYPE_WIDTH = 2;
+    public static final int INT_TYPE_WIDTH = 4;
+    public static final int LONG_TYPE_WIDTH = 8;
+    public static final int FLOAT_TYPE_WIDTH = 4;
+    public static final int REFERENCE_TYPE_WIDTH = 8;
+    /**
+     * 基本类型的一维数组
+     */
+    public static final Type TYPE_BOOLEAN_ARRAY = createArrayType(NORMAL_BOOLEAN, 1);
+    public static final Type TYPE_CHAR_ARRAY = createArrayType(NORMAL_CHAR, 1);
+    public static final Type TYPE_INT_ARRAY = createArrayType(NORMAL_INT, 1);
+    public static final Type TYPE_LONG_ARRAY = createArrayType(NORMAL_LONG, 1);
+    public static final Type TYPE_FLOAT_ARRAY = createArrayType(NORMAL_FLOAT, 1);
+    public static final Type TYPE_STRING_ARRAY = createArrayType(NORMAL_CHAR, 2);
+    private static final int NORMAL_TYPE_DIM = 0;
+    /**
+     * 基本类型
+     */
+    public static final Type TYPE_VOID = createNormalType(NORMAL_VOID, VOID_TYPE_WIDTH);
+    public static final Type TYPE_BOOLEAN = createNormalType(NORMAL_BOOLEAN, BOOLEAN_TYPE_WIDTH);
+    public static final Type TYPE_CHAR = createNormalType(NORMAL_CHAR, CHAR_TYPE_WIDTH);
+    public static final Type TYPE_INT = createNormalType(NORMAL_INT, INT_TYPE_WIDTH);
+    public static final Type TYPE_LONG = createNormalType(NORMAL_LONG, LONG_TYPE_WIDTH);
+    public static final Type TYPE_FLOAT = createNormalType(NORMAL_FLOAT, FLOAT_TYPE_WIDTH);
     private static final String ARRAY_DIM_DESCRIPTION = "[]";
 
     /**
@@ -71,11 +86,11 @@ public class Type implements Serializable {
         }
 
         switch (remain) {
-            case NORMAL_INT:
+            case NORMAL_BOOLEAN:
                 if (dim == 0) {
-                    return TYPE_INT;
+                    return TYPE_BOOLEAN;
                 } else {
-                    return createArrayType(NORMAL_INT, dim);
+                    return createArrayType(NORMAL_BOOLEAN, dim);
                 }
             case NORMAL_CHAR:
                 if (dim == 0) {
@@ -83,12 +98,19 @@ public class Type implements Serializable {
                 } else {
                     return createArrayType(NORMAL_CHAR, dim);
                 }
-            case NORMAL_BOOLEAN:
+            case NORMAL_INT:
                 if (dim == 0) {
-                    return TYPE_BOOLEAN;
+                    return TYPE_INT;
                 } else {
-                    return createArrayType(NORMAL_BOOLEAN, dim);
+                    return createArrayType(NORMAL_INT, dim);
                 }
+            case NORMAL_LONG:
+                if (dim == 0) {
+                    return TYPE_LONG;
+                } else {
+                    return createArrayType(NORMAL_LONG, dim);
+                }
+
             default:
                 throw new UnsupportedOperationException();
         }
@@ -123,6 +145,8 @@ public class Type implements Serializable {
                     return TYPE_CHAR;
                 case NORMAL_INT:
                     return TYPE_INT;
+                case NORMAL_LONG:
+                    return TYPE_LONG;
                 default:
                     throw new UnsupportedOperationException();
             }

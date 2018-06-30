@@ -7,11 +7,11 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSeman
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._aload;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iload;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl._lload;
 
 import java.io.Serializable;
 
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_BOOLEAN;
-import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL_INT;
+import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
  * 将标志符压入操作数栈
@@ -53,11 +53,14 @@ public class VariableLoad extends AbstractSemanticAction implements Serializable
                 case NORMAL_BOOLEAN:
                 case NORMAL_INT:
                     context.addByteCodeToCurrentMethod(new _iload(variableSymbol.getOrder()));
-                    context.setAttrToLeftNode(AttrName.TYPE, type);
+                    break;
+                case NORMAL_LONG:
+                    context.addByteCodeToCurrentMethod(new _lload(variableSymbol.getOrder()));
                     break;
                 default:
                     throw new UnsupportedOperationException();
             }
+            context.setAttrToLeftNode(AttrName.TYPE, type);
         }
     }
 }

@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.core.utils;
 /**
  * 字符工具类
  *
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/6/29
  */
 public abstract class CharacterUtil {

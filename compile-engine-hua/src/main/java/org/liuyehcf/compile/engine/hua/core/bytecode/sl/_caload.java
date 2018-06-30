@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.hua.runtime.Reference;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
- * 数组元素加载
+ * 加载char型数组元素
  * < before → after >
  * arrayref, index → value
  *

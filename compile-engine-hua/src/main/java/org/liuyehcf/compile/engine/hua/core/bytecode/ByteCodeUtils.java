@@ -58,6 +58,17 @@ public class ByteCodeUtils {
         register(_isub.class);
         register(_iushr.class);
         register(_ixor.class);
+        register(_ladd.class);
+        register(_land.class);
+        register(_ldiv.class);
+        register(_lmul.class);
+        register(_lor.class);
+        register(_lrem.class);
+        register(_lshl.class);
+        register(_lshr.class);
+        register(_lsub.class);
+        register(_lushr.class);
+        register(_lxor.class);
         register(_sizeof.class);
 
         /*
@@ -91,7 +102,12 @@ public class ByteCodeUtils {
         register(_iconst.class);
         register(_iload.class);
         register(_istore.class);
+        register(_laload.class);
+        register(_lastore.class);
+        register(_lconst.class);
         register(_ldc.class);
+        register(_lload.class);
+        register(_lstore.class);
 
         /*
          * OperatorStackManagement

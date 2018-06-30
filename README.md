@@ -62,6 +62,9 @@
     * nextBoolean()
 1. 一个可执行的.hclass文件必须包含`main(char[][])`方法，这是整个程序执行的入口
 
+尚不支持的语法
+1. long型的比较运算
+
 # 编译原理
 
 __[编译原理请移步博客](https://liuyehcf.github.io/categories/%E7%BC%96%E8%AF%91/)__

@@ -124,6 +124,14 @@ class MethodRuntimeInfo {
         ByteUtils.storeInt(stackMemory[order], 0, value);
     }
 
+    long loadLong(int order) {
+        return ByteUtils.loadLong(stackMemory[order], 0);
+    }
+
+    void storeLong(int order, long value) {
+        ByteUtils.storeLong(stackMemory[order], 0, value);
+    }
+
     Reference loadReference(int order) {
         return ByteUtils.loadReference(stackMemory[order], 0);
     }

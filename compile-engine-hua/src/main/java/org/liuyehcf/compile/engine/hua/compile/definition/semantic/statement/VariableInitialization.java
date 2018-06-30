@@ -7,6 +7,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSeman
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._astore;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._istore;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl._lstore;
 
 import java.io.Serializable;
 
@@ -71,6 +72,9 @@ public class VariableInitialization extends AbstractSemanticAction implements Se
                 case NORMAL_CHAR:
                 case NORMAL_INT:
                     context.addByteCodeToCurrentMethod(new _istore(variableSymbol.getOrder()));
+                    break;
+                case NORMAL_LONG:
+                    context.addByteCodeToCurrentMethod(new _lstore(variableSymbol.getOrder()));
                     break;
                 default:
                     throw new UnsupportedOperationException();

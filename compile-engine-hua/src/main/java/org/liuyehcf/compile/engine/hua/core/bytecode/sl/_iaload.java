@@ -1,13 +1,12 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.sl;
 
+import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.runtime.HeapMemoryManagement;
 import org.liuyehcf.compile.engine.hua.runtime.Reference;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
-import static org.liuyehcf.compile.engine.hua.compile.definition.model.Type.INT_TYPE_WIDTH;
-
 /**
- * 数组元素加载
+ * 加载int型数组元素
  * < before → after >
  * < arrayref, index → value >
  *
@@ -31,7 +30,7 @@ public class _iaload extends ArrayStoreLoad {
         int index = context.pop();
         Reference arrayReference = context.pop();
 
-        int elementOffset = arrayReference.getAddress() + index * INT_TYPE_WIDTH;
+        int elementOffset = arrayReference.getAddress() + index * Type.INT_TYPE_WIDTH;
 
         int value = HeapMemoryManagement.loadInt(elementOffset);
 
