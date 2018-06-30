@@ -59,17 +59,17 @@ public enum AttrName {
     IS_EMPTY_EXPRESSION,
 
     /**
-     * 布尔表达式为true时的字节码
+     * 布尔表达式为true时的控制转移字节码
      */
     TRUE_BYTE_CODE,
 
     /**
-     * 布尔表达式为false时的字节码
+     * 布尔表达式为false时的控制转移字节码
      */
     FALSE_BYTE_CODE,
 
     /**
-     * 布尔表达式后续的字节码
+     * goto控制转移字节码
      */
     NEXT_BYTE_CODE,
 

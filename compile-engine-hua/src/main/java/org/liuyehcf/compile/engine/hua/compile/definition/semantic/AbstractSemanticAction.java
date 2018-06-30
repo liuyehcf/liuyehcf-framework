@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.SemanticAction;
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 
 import java.io.Serializable;
 
@@ -11,12 +11,12 @@ import java.io.Serializable;
  * @author hechenfeng
  * @date 2018/6/11
  */
-public abstract class AbstractSemanticAction implements SemanticAction<HuaContext>, Serializable {
+public abstract class AbstractSemanticAction implements SemanticAction<CompilerContext>, Serializable {
 
     public static final String NOT_NULL = "NOT_NULL";
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
 
     }
 }

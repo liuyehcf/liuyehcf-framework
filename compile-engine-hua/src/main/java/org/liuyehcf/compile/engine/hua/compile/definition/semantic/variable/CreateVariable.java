@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -27,7 +27,7 @@ public class CreateVariable extends AbstractSemanticAction implements Serializab
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
 
         String name = context.getValue(identifierStackOffset);
         Type type = context.getAttr(identifierStackOffset, AttrName.TYPE);

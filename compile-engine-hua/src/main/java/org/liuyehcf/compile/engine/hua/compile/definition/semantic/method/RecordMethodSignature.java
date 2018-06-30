@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.method;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -39,7 +39,7 @@ public class RecordMethodSignature extends AbstractSemanticAction implements Ser
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         Type resultType = context.getAttr(resultTypeStackOffset, AttrName.TYPE);
         context.setResultTypeOfCurrentMethod(resultType);
 

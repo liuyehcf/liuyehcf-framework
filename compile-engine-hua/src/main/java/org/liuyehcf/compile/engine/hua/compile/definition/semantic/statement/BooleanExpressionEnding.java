@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -32,7 +32,7 @@ public class BooleanExpressionEnding extends AbstractSemanticAction implements S
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         Object conditionObject = context.getAttr(booleanExpressionStackOffset, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION);
 
         /*

@@ -7,7 +7,21 @@ package org.liuyehcf.compile.engine.hua.compile.definition.model;
  * @date 2018/6/14
  */
 public enum BackFillType {
+    /**
+     * true时跳转
+     * 反向逻辑
+     */
     TRUE,
+
+    /**
+     * false时跳转
+     * 正向逻辑
+     */
     FALSE,
+
+    /**
+     * goto
+     * 仅出现在if else then语句中
+     */
     NEXT
 }

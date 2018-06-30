@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.node;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 
 import java.io.Serializable;
@@ -26,7 +26,7 @@ public class AddFutureSyntaxNode extends AbstractSemanticAction implements Seria
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         context.getStack().addFutureSyntaxNode(stackOffset);
     }
 }

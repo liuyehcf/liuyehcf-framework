@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -44,7 +44,7 @@ public class VariableInitialization extends AbstractSemanticAction implements Se
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         Type expressionType = context.getAttr(initializationExpressionStackOffset, AttrName.TYPE);
         String identifierName = context.getAttr(identifierStackOffset, AttrName.IDENTIFIER_NAME);
         VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);

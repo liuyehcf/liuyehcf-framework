@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.expression;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -38,7 +38,7 @@ public class ConditionalExpression extends AbstractSemanticAction implements Ser
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         Type trueExpressionType = context.getAttr(trueExpressionStackOffset, AttrName.TYPE);
         Type falseExpressionType = context.getAttr(falseExpressionStackOffset, AttrName.TYPE);
 

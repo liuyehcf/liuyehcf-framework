@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.code;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -35,7 +35,7 @@ public abstract class AbstractControlTransferByteCode extends AbstractSemanticAc
         this.backFillType = backFillType;
     }
 
-    void doAddCode(HuaContext context, ControlTransfer code) {
+    void doAddCode(CompilerContext context, ControlTransfer code) {
         switch (backFillType) {
             case TRUE:
                 doAddCode(context, AttrName.TRUE_BYTE_CODE, code);
@@ -51,7 +51,7 @@ public abstract class AbstractControlTransferByteCode extends AbstractSemanticAc
         }
     }
 
-    private void doAddCode(HuaContext context, AttrName attrName, ControlTransfer code) {
+    private void doAddCode(CompilerContext context, AttrName attrName, ControlTransfer code) {
         List<ControlTransfer> codes = context.getAttr(backFillStackOffset, attrName);
 
         if (codes == null) {

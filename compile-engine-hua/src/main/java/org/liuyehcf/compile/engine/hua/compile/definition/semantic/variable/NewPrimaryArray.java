@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -51,7 +51,7 @@ public class NewPrimaryArray extends AbstractSemanticAction implements Serializa
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         Type type = context.getAttr(typeStackOffset, AttrName.TYPE);
         int expressionDimSize = context.getAttr(expressionDimStackOffset, AttrName.EXPRESSION_DIM_SIZE);
         int emptyDimSize = context.getAttr(emptyDimStackOffset, AttrName.EMPTY_DIM_SIZE);

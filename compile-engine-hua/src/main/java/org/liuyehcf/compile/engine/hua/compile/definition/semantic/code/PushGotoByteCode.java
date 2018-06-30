@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.code;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cf.ControlTransfer;
@@ -29,7 +29,7 @@ public class PushGotoByteCode extends AbstractSemanticAction implements Serializ
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         ControlTransfer __goto = new _goto();
         __goto.setCodeOffset(context.getAttr(loopStackOffset, AttrName.CODE_OFFSET));
         context.addByteCodeToCurrentMethod(__goto);

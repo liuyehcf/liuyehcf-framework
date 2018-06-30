@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -30,7 +30,7 @@ public class CheckExpressionDimType extends AbstractSemanticAction implements Se
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         Type type = context.getAttr(expressionDimStackOffset, AttrName.TYPE);
         if (!TYPE_INT.equals(type)) {
             throw new RuntimeException("The array dimension expression type must be an integer");

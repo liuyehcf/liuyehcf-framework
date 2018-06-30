@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -29,7 +29,7 @@ public class IncreaseArrayTypeDim extends AbstractSemanticAction implements Seri
 
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         Type originType = context.getAttr(typeStackOffset, AttrName.TYPE);
         context.setAttr(typeStackOffset, AttrName.TYPE, originType.toDimIncreasedType());
     }

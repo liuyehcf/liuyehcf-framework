@@ -297,7 +297,7 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
             }
 
             for (SemanticAction semanticAction : semanticActions) {
-                ((AbstractSemanticAction) semanticAction).onAction(new HuaContext(context, constantPool, methodInfoTable));
+                ((AbstractSemanticAction) semanticAction).onAction(new CompilerContext(context, constantPool, methodInfoTable));
             }
         }
     }

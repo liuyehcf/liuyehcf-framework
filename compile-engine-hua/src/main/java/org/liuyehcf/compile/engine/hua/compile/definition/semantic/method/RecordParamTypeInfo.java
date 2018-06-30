@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.method;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -39,7 +39,7 @@ public class RecordParamTypeInfo extends AbstractSemanticAction implements Seria
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         Type type = context.getAttr(paramStackOffset, AttrName.TYPE);
 
         List<Type> paramTypeList = context.getAttr(paramListStackOffset, AttrName.PARAMETER_LIST);

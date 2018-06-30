@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.code;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.CompareOperatorType;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferType;
@@ -51,7 +51,7 @@ public class PushCompareTransferByteCode extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         Type leftType = context.getAttr(leftOperatorStackOffset, AttrName.TYPE);
         Type rightType = context.getAttr(rightOperatorStackOffset, AttrName.TYPE);
 

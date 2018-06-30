@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.code;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferType;
@@ -36,7 +36,7 @@ public class PushControlTransferByteCodeByType extends AbstractControlTransferBy
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         ControlTransferType type = context.getAttr(typeStackOffset, AttrName.CONTROL_TRANSFER_TYPE);
 
         ControlTransfer code;

@@ -65,7 +65,7 @@ public class Type implements Serializable {
         this.dim = dim;
     }
 
-    public static Type createNormalType(String typeName, int typeWidth) {
+    private static Type createNormalType(String typeName, int typeWidth) {
         return new Type(typeName, typeWidth, NORMAL_TYPE_DIM);
     }
 

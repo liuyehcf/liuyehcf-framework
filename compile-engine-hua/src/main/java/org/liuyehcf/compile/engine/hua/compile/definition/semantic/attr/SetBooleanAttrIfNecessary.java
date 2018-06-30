@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
@@ -27,7 +27,7 @@ public class SetBooleanAttrIfNecessary extends AbstractSemanticAction {
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         Type type = context.getAttr(expressionStackOffset, AttrName.TYPE);
         if (!Type.TYPE_BOOLEAN.equals(type)) {
             return;

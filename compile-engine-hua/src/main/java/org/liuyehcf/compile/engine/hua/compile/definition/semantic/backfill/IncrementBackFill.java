@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.backfill;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -44,7 +44,7 @@ public class IncrementBackFill extends AbstractSemanticAction implements Seriali
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         _iinc code = context.getAttr(backFillStackOffset, AttrName.IINC_BYTE_CODE);
 
         String identifierName = context.getAttr(expressionStackOffset, AttrName.IDENTIFIER_NAME);

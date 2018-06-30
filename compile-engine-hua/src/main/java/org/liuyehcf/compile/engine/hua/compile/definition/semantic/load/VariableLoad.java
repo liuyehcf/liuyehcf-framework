@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.load;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -34,7 +34,7 @@ public class VariableLoad extends AbstractSemanticAction implements Serializable
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         String identifierName = context.getAttr(identifierNameStackOffset, AttrName.IDENTIFIER_NAME);
         VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
         if (variableSymbol == null) {

@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.hua.compile.definition.semantic.statement;
 
-import org.liuyehcf.compile.engine.hua.compile.HuaContext;
+import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
@@ -53,7 +53,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
     }
 
     @Override
-    public void onAction(HuaContext context) {
+    public void onAction(CompilerContext context) {
         String operator = context.getAttr(operatorStackOffset, AttrName.ASSIGN_OPERATOR);
         String identifierName = context.getAttr(leftHandStackOffset, AttrName.IDENTIFIER_NAME);
         VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
@@ -175,7 +175,7 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
         context.setAttrToLeftNode(AttrName.TYPE, leftHandType);
     }
 
-    private void addComputeByteCode(HuaContext context, String typeName, String operator) {
+    private void addComputeByteCode(CompilerContext context, String typeName, String operator) {
         Compute code;
         switch (operator) {
             case NORMAL_MUL_ASSIGN:

@@ -9,12 +9,12 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
 import java.util.List;
 
 /**
- * Hua上下文
+ * 编译时上下文
  *
  * @author hechenfeng
  * @date 2018/6/19
  */
-public class HuaContext extends Context {
+public class CompilerContext extends Context {
 
     /**
      * 常量池
@@ -26,7 +26,7 @@ public class HuaContext extends Context {
      */
     private final MethodInfoTable methodInfoTable;
 
-    public HuaContext(Context context, ConstantPool constantPool, MethodInfoTable methodInfoTable) {
+    public CompilerContext(Context context, ConstantPool constantPool, MethodInfoTable methodInfoTable) {
         super(context.getRawPrimaryProduction(), context.getStack(), context.getLeftNode());
         this.constantPool = constantPool;
         this.methodInfoTable = methodInfoTable;
