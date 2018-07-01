@@ -168,6 +168,10 @@ public class Type implements Serializable {
                     return TYPE_INT;
                 case NORMAL_LONG:
                     return TYPE_LONG;
+                case NORMAL_FLOAT:
+                    return TYPE_FLOAT;
+                case NORMAL_DOUBLE:
+                    return TYPE_DOUBLE;
                 default:
                     throw new UnsupportedOperationException();
             }

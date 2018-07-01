@@ -167,6 +167,12 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                     case NORMAL_LONG:
                         context.addByteCodeToCurrentMethod(new _ladd());
                         break;
+                    case NORMAL_FLOAT:
+                        context.addByteCodeToCurrentMethod(new _fadd());
+                        break;
+                    case NORMAL_DOUBLE:
+                        context.addByteCodeToCurrentMethod(new _dadd());
+                        break;
                     default:
                         throw new UnsupportedOperationException();
                 }
@@ -181,6 +187,12 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                         break;
                     case NORMAL_LONG:
                         context.addByteCodeToCurrentMethod(new _lsub());
+                        break;
+                    case NORMAL_FLOAT:
+                        context.addByteCodeToCurrentMethod(new _fsub());
+                        break;
+                    case NORMAL_DOUBLE:
+                        context.addByteCodeToCurrentMethod(new _dsub());
                         break;
                     default:
                         throw new UnsupportedOperationException();
@@ -197,6 +209,12 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                     case NORMAL_LONG:
                         context.addByteCodeToCurrentMethod(new _lmul());
                         break;
+                    case NORMAL_FLOAT:
+                        context.addByteCodeToCurrentMethod(new _fmul());
+                        break;
+                    case NORMAL_DOUBLE:
+                        context.addByteCodeToCurrentMethod(new _dmul());
+                        break;
                     default:
                         throw new UnsupportedOperationException();
                 }
@@ -212,6 +230,12 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                     case NORMAL_LONG:
                         context.addByteCodeToCurrentMethod(new _ldiv());
                         break;
+                    case NORMAL_FLOAT:
+                        context.addByteCodeToCurrentMethod(new _fdiv());
+                        break;
+                    case NORMAL_DOUBLE:
+                        context.addByteCodeToCurrentMethod(new _ddiv());
+                        break;
                     default:
                         throw new UnsupportedOperationException();
                 }
@@ -226,6 +250,12 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                         break;
                     case NORMAL_LONG:
                         context.addByteCodeToCurrentMethod(new _lrem());
+                        break;
+                    case NORMAL_FLOAT:
+                        context.addByteCodeToCurrentMethod(new _frem());
+                        break;
+                    case NORMAL_DOUBLE:
+                        context.addByteCodeToCurrentMethod(new _drem());
                         break;
                     default:
                         throw new UnsupportedOperationException();

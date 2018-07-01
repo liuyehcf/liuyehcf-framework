@@ -4,35 +4,35 @@ import com.alibaba.fastjson.annotation.JSONField;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
- * 加载int常量
+ * 加载float常量
  * < before → after >
  * < → value >
  *
  * @author hechenfeng
- * @date 2018/6/15
+ * @date 2018/7/1
  */
-public class _iconst extends StoreLoad {
+public class _fconst extends StoreLoad {
 
     /**
      * 唯一操作码(与Java有区别)
      */
-    public static final int OPERATOR_CODE = 0x02;
+    public static final int OPERATOR_CODE = 0x0b;
 
     /**
      * 操作数类型
      */
-    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{int.class};
+    public static final Class<?>[] OPERATOR_CLASSES = new Class<?>[]{float.class};
 
     /**
      * 常量值
      */
-    private final int value;
+    private final float value;
 
-    public _iconst(int value) {
+    public _fconst(float value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public float getValue() {
         return value;
     }
 

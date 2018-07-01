@@ -26,11 +26,13 @@ abstract class TokenProductions {
     public static final String METHOD_NAME = "<method name>"; // 296
     public static final String LITERAL = "<literal>"; // 300
     public static final String INTEGER_LITERAL = "<integer literal>"; // 302
+    public static final String FLOATING_POINT_LITERAL = "<floating-point literal>"; // 328
     public static final String BOOLEAN_LITERAL = "<boolean literal>"; // 342
     public static final String CHARACTER_LITERAL = "<character literal>"; // 344
     public static final String STRING_LITERAL = "<string literal>"; // 348
 
     public static final String IDENTIFIER_INTEGER_LITERAL = "#integerLiteral";
+    public static final String IDENTIFIER_FLOATING_POINT_LITERAL = "#floatingPointLiteral";
     public static final String IDENTIFIER_CHARACTER_LITERAL = "#CharacterLiteral";
     public static final String IDENTIFIER_STRING_LITERAL = "#StringLiteral";
 
@@ -98,6 +100,17 @@ abstract class TokenProductions {
                             new AttrFilter(AttrName.TYPE)
                     ),
                     /*
+                     * (2) <literal> → <floating-point literal>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(LITERAL),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(FLOATING_POINT_LITERAL)
+                            ),
+                            new LoadLiteralAndSetType(0, Type.TYPE_FLOAT),
+                            new AttrFilter(AttrName.TYPE)
+                    ),
+                    /*
                      * (3) <literal> → <boolean literal>
                      */
                     PrimaryProduction.create(
@@ -132,7 +145,6 @@ abstract class TokenProductions {
                     )
                     /*
                      * TODO 缺少以下产生式
-                     * (2) <literal> → <floating-point literal>
                      * (6) <literal> → <null literal>
                      */
 
@@ -151,6 +163,25 @@ abstract class TokenProductions {
                             Symbol.createNonTerminator(INTEGER_LITERAL),
                             SymbolString.create(
                                     Symbol.createIdentifierTerminator(IDENTIFIER_INTEGER_LITERAL)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
+                            new AttrFilter(AttrName.LITERAL_VALUE)
+                    )
+            ),
+
+
+            /*
+             * <floating-point literal> 328
+             * DIFFERENT
+             */
+            Production.create(
+                    /*
+                     * (1) <floating-point literal> → #floatingPointLiteral
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOATING_POINT_LITERAL),
+                            SymbolString.create(
+                                    Symbol.createIdentifierTerminator(IDENTIFIER_FLOATING_POINT_LITERAL)
                             ),
                             new SetAttrFromLexical(0, AttrName.LITERAL_VALUE, 0),
                             new AttrFilter(AttrName.LITERAL_VALUE)

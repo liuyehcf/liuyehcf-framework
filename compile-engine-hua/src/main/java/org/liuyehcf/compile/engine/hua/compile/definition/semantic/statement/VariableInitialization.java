@@ -5,9 +5,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._astore;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._istore;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._lstore;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 
 import java.io.Serializable;
 
@@ -77,6 +75,12 @@ public class VariableInitialization extends AbstractSemanticAction implements Se
                     break;
                 case NORMAL_LONG:
                     context.addByteCodeToCurrentMethod(new _lstore(variableSymbol.getOrder()));
+                    break;
+                case NORMAL_FLOAT:
+                    context.addByteCodeToCurrentMethod(new _fstore(variableSymbol.getOrder()));
+                    break;
+                case NORMAL_DOUBLE:
+                    context.addByteCodeToCurrentMethod(new _dstore(variableSymbol.getOrder()));
                     break;
                 default:
                     throw new UnsupportedOperationException();

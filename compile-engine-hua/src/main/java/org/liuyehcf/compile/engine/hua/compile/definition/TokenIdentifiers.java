@@ -23,7 +23,7 @@ public abstract class TokenIdentifiers {
     /**
      * char型Token Identifier
      */
-    static final TokenIdentifier IDENTIFIER_CHAR_LITERAL = (tokenContext) -> {
+    static final TokenIdentifier IDENTIFIER_CHARACTER_LITERAL = (tokenContext) -> {
         Symbol id = tokenContext.getId();
         String remainInput = tokenContext.getRemainInput();
 
@@ -199,7 +199,8 @@ public abstract class TokenIdentifiers {
                      */
                     if (i >= remainInput.length()
                             || !Character.isAlphabetic(remainInput.charAt(i))
-                            && '_' != remainInput.charAt(i)) {
+                            && '_' != remainInput.charAt(i)
+                            && '.' != remainInput.charAt(i)) {
                         tokenContext.setMoveLength(i);
                         return new Token(id, typeIndex + remainInput.substring(0, i));
                     }
@@ -222,7 +223,8 @@ public abstract class TokenIdentifiers {
                 if (i >= remainInput.length()
                         || !Character.isAlphabetic(remainInput.charAt(i))
                         && !NON_OCTAL_INTEGER_DIGIT.contains(remainInput.charAt(i))
-                        && '_' != remainInput.charAt(i)) {
+                        && '_' != remainInput.charAt(i)
+                        && '.' != remainInput.charAt(i)) {
                     tokenContext.setMoveLength(i);
                     return new Token(id, typeIndex + remainInput.substring(0, i));
                 }
@@ -286,11 +288,158 @@ public abstract class TokenIdentifiers {
             char c;
             return index >= remain.length()
                     || !Character.isAlphabetic(c = remain.charAt(index))
+                    && !DECIMAL_INTEGER_DIGIT.contains(c)
                     && '_' != c
-                    && !DECIMAL_INTEGER_DIGIT.contains(c);
+                    && '.' != c;
         }
     };
 
+    /**
+     * 浮点型指数标记
+     */
+    private static final Set<Character> FLOAT_EXPONENT = new HashSet<>(Arrays.asList('e', 'E'));
+
+    /**
+     * 浮点型指数符号标记
+     */
+    private static final Set<Character> FLOAT_EXPONENT_SIGN = new HashSet<>(Arrays.asList('+', '-'));
+
+    /**
+     * 小数点
+     */
+    private static final char FLOAT_POINT = '.';
+
+    /**
+     * 浮点后缀
+     */
+    private static final Set<Character> FLOAT_SUFFIX = new HashSet<>(Arrays.asList('f', 'F', 'd', 'D'));
+
+    /**
+     * 浮点型Token Identifier
+     */
+    static final TokenIdentifier IDENTIFIER_FLOATING_POINT_LITERAL = new TokenIdentifier() {
+        @Override
+        public Token identify(TokenContext tokenContext) {
+            Symbol id = tokenContext.getId();
+            String remainInput = tokenContext.getRemainInput();
+
+            /*
+             * 是否有指数符号
+             */
+            boolean hasExponent = false;
+
+            /*
+             * 是否有小数点
+             */
+            boolean hasPoint = false;
+
+            /*
+             * 是否有必须包含数字的区域
+             * 比如位置i出现了e，那么将mustHaveNumberStartIndex设为i+1
+             * return时，需要检查[mustHaveNumberFromIndex,i)是否包含数字
+             */
+            int mustHaveNumberFromIndex = -1;
+
+            int i = 0;
+            char c;
+
+            /*
+             * 浮点字面值允许包含的符号（不包括后缀f、F、d、D）
+             * 1. 指数: e、E
+             * 2. 小数点: .
+             * 3. 整数: 0-9
+             */
+            while (FLOAT_EXPONENT.contains(c = getChar(remainInput, i))
+                    || FLOAT_POINT == c
+                    || DECIMAL_INTEGER_DIGIT.contains(c)) {
+                /*
+                 * 情况1
+                 */
+                if (FLOAT_EXPONENT.contains(c)) {
+                    /*
+                     * 最多允许一个指数符号
+                     */
+                    if (hasExponent || hasPoint) {
+                        return null;
+                    }
+
+                    hasExponent = true;
+                    i++;
+
+                    /*
+                     * 允许后面有指数正负号
+                     */
+                    if (FLOAT_EXPONENT_SIGN.contains(getChar(remainInput, i))) {
+                        i++;
+                    }
+
+                    /*
+                     * 位置i开始到结束必须包含数字
+                     */
+                    mustHaveNumberFromIndex = i;
+                } else if (FLOAT_POINT == c) {
+
+                    if (hasExponent || hasPoint) {
+                        return null;
+                    }
+
+                    hasPoint = true;
+
+                    /*
+                     * 如果第一位就是'.'，那么之后必须包含数字
+                     */
+                    if (i == 0) {
+                        i++;
+                        mustHaveNumberFromIndex = i;
+                    }
+                    /*
+                     * 否则，不要求'.'之后有数字
+                     */
+                    else {
+                        i++;
+                    }
+                } else {
+                    /*
+                     * 数字
+                     */
+                    i++;
+                }
+            }
+
+            /*
+             * 检查[mustHaveNumberFromIndex,i)是否为空
+             */
+            if (mustHaveNumberFromIndex != -1 && remainInput.substring(mustHaveNumberFromIndex, i).isEmpty()) {
+                return null;
+            }
+
+            /*
+             * 必须包含浮点后缀
+             */
+            if (!FLOAT_SUFFIX.contains(getChar(remainInput, i))) {
+                return null;
+            }
+
+            i++;
+
+            if (i >= remainInput.length()
+                    || !DECIMAL_INTEGER_DIGIT.contains(c = getChar(remainInput, i))
+                    && !Character.isAlphabetic(c)
+                    && FLOAT_POINT != c) {
+                tokenContext.setMoveLength(i);
+                return new Token(id, remainInput.substring(0, i));
+            }
+
+            return null;
+        }
+
+        private char getChar(String s, int index) {
+            if (index < s.length()) {
+                return s.charAt(index);
+            }
+            return '\0';
+        }
+    };
 
     private static Map<Character, Integer> initEscapeChars() {
         Map<Character, Integer> map = new HashMap<>();

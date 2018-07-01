@@ -127,6 +127,29 @@ public class TestGrammar {
     }
 
     @Test
+    public void testTypeFloat() {
+        String text = "void func() {\n" +
+                "\tfloat[] a=new float[5];\n" +
+                "\ta[1]=1f;\n" +
+                "\tfloat b=a[2];\n" +
+                "\tb=1e+3f;\n" +
+                "\tb+=a[3]-1f;\n" +
+                "\tb/=0f%a[1];\n" +
+                "\tb*=0.1f*a[0];\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func()\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"float\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_fconst\",\"value\":1.0},{\"name\":\"_fastore\"},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_faload\"},{\"name\":\"_fstore\",\"order\":1},{\"name\":\"_fconst\",\"value\":1000.0},{\"name\":\"_fstore\",\"order\":1},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_faload\"},{\"name\":\"_fconst\",\"value\":1.0},{\"name\":\"_fsub\"},{\"name\":\"_fadd\"},{\"name\":\"_fstore\",\"order\":1},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_fconst\",\"value\":0.0},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_faload\"},{\"name\":\"_frem\"},{\"name\":\"_fdiv\"},{\"name\":\"_fstore\",\"order\":1},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_fconst\",\"value\":0.1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_faload\"},{\"name\":\"_fmul\"},{\"name\":\"_fmul\"},{\"name\":\"_fstore\",\"order\":1},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+
+    @Test
     public void testAdd() {
         String text = "void func(int a, int b) {\n" +
                 "\tint c;\n" +

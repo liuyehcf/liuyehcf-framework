@@ -168,19 +168,27 @@ abstract class TypeProductions {
              */
             Production.create(
                     /*
-                     * <floating-point type> → float
+                     * (1) <floating-point type> → float
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FLOATING_POINT_TYPE),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_FLOAT)
                             ),
+                            new SetAttrToLeftNode(AttrName.TYPE, Type.TYPE_FLOAT),
+                            new AttrFilter(AttrName.TYPE)
+                    ),
+                    /*
+                     * (2) <floating-point type> → double
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOATING_POINT_TYPE),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_DOUBLE)
+                            ),
+                            new SetAttrToLeftNode(AttrName.TYPE, Type.TYPE_DOUBLE),
                             new AttrFilter(AttrName.TYPE)
                     )
-                    /*
-                     * TODO 缺少以下产生式
-                     * <floating-point type> → double
-                     */
             ),
 
 

@@ -4,9 +4,7 @@ import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iconst;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._lconst;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._ldc;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -78,6 +76,22 @@ public class LoadLiteralAndSetType extends AbstractSemanticAction implements Ser
                 context.addByteCodeToCurrentMethod(new _lconst(bigInteger.longValue()));
             } else {
                 throw new RuntimeException("Illegal integer literal");
+            }
+        } else if (Type.TYPE_FLOAT.equals(type)) {
+            if (literal.endsWith("f") || literal.endsWith("F")) {
+                try {
+                    context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_FLOAT);
+                    context.addByteCodeToCurrentMethod(new _fconst(Float.parseFloat(literal.substring(0, literal.length() - 1))));
+                } catch (NumberFormatException e) {
+                    throw new RuntimeException("Illegal float literal");
+                }
+            } else {
+                try {
+                    context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_DOUBLE);
+                    context.addByteCodeToCurrentMethod(new _dconst(Double.parseDouble(literal.substring(0, literal.length() - 1))));
+                } catch (NumberFormatException e) {
+                    throw new RuntimeException("Illegal double literal");
+                }
             }
         } else if (Type.TYPE_BOOLEAN.equals(type)) {
             /*

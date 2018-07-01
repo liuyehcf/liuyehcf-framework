@@ -7,8 +7,6 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.compile.definition.ProgramProductions.PROGRAMS;
-import static org.liuyehcf.compile.engine.hua.compile.definition.TokenIdentifiers.IDENTIFIER_CHAR_LITERAL;
-import static org.liuyehcf.compile.engine.hua.compile.definition.TokenProductions.IDENTIFIER_CHARACTER_LITERAL;
 
 /**
  * 文法定义
@@ -48,7 +46,8 @@ public abstract class GrammarDefinition {
 
     public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
             .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_INTEGER_LITERAL), TokenIdentifiers.IDENTIFIER_INTEGER_LITERAL)
-            .addTokenOperator(Symbol.createIdentifierTerminator(IDENTIFIER_CHARACTER_LITERAL), IDENTIFIER_CHAR_LITERAL)
+            .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_FLOATING_POINT_LITERAL), TokenIdentifiers.IDENTIFIER_FLOATING_POINT_LITERAL)
+            .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_CHARACTER_LITERAL), TokenIdentifiers.IDENTIFIER_CHARACTER_LITERAL)
             .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_STRING_LITERAL), TokenIdentifiers.IDENTIFIER_STRING_LITERAL)
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES), ")")
@@ -107,6 +106,7 @@ public abstract class GrammarDefinition {
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_INT), "int")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_LONG), "long")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_FLOAT), "float")
+            .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_DOUBLE), "double")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_NEW), "new")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_RETURN), "return")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_TRUE), "true")

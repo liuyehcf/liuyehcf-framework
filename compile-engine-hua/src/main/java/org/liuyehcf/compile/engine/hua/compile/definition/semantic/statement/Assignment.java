@@ -107,6 +107,12 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                         case NORMAL_LONG:
                             context.addByteCodeToCurrentMethod(new _lastore());
                             break;
+                        case NORMAL_FLOAT:
+                            context.addByteCodeToCurrentMethod(new _fastore());
+                            break;
+                        case NORMAL_DOUBLE:
+                            context.addByteCodeToCurrentMethod(new _dastore());
+                            break;
                         default:
                             throw new UnsupportedOperationException();
                     }
@@ -124,6 +130,12 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                             break;
                         case NORMAL_LONG:
                             context.addByteCodeToCurrentMethod(new _lastore());
+                            break;
+                        case NORMAL_FLOAT:
+                            context.addByteCodeToCurrentMethod(new _fastore());
+                            break;
+                        case NORMAL_DOUBLE:
+                            context.addByteCodeToCurrentMethod(new _dastore());
                             break;
                         default:
                             throw new UnsupportedOperationException();
@@ -147,6 +159,12 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                         case NORMAL_LONG:
                             context.addByteCodeToCurrentMethod(new _lstore(variableSymbol.getOrder()));
                             break;
+                        case NORMAL_FLOAT:
+                            context.addByteCodeToCurrentMethod(new _fstore(variableSymbol.getOrder()));
+                            break;
+                        case NORMAL_DOUBLE:
+                            context.addByteCodeToCurrentMethod(new _dstore(variableSymbol.getOrder()));
+                            break;
                         default:
                             throw new UnsupportedOperationException();
                     }
@@ -164,6 +182,12 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                             break;
                         case NORMAL_LONG:
                             context.addByteCodeToCurrentMethod(new _lstore(variableSymbol.getOrder()));
+                            break;
+                        case NORMAL_FLOAT:
+                            context.addByteCodeToCurrentMethod(new _fstore(variableSymbol.getOrder()));
+                            break;
+                        case NORMAL_DOUBLE:
+                            context.addByteCodeToCurrentMethod(new _dstore(variableSymbol.getOrder()));
                             break;
                         default:
                             throw new UnsupportedOperationException();
@@ -187,6 +211,12 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                     case NORMAL_LONG:
                         code = new _lmul();
                         break;
+                    case NORMAL_FLOAT:
+                        code = new _fmul();
+                        break;
+                    case NORMAL_DOUBLE:
+                        code = new _dmul();
+                        break;
                     default:
                         throw new UnsupportedOperationException();
                 }
@@ -199,6 +229,12 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                         break;
                     case NORMAL_LONG:
                         code = new _ldiv();
+                        break;
+                    case NORMAL_FLOAT:
+                        code = new _fdiv();
+                        break;
+                    case NORMAL_DOUBLE:
+                        code = new _ddiv();
                         break;
                     default:
                         throw new UnsupportedOperationException();
@@ -213,6 +249,12 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                     case NORMAL_LONG:
                         code = new _lrem();
                         break;
+                    case NORMAL_FLOAT:
+                        code = new _frem();
+                        break;
+                    case NORMAL_DOUBLE:
+                        code = new _drem();
+                        break;
                     default:
                         throw new UnsupportedOperationException();
                 }
@@ -226,6 +268,12 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                     case NORMAL_LONG:
                         code = new _ladd();
                         break;
+                    case NORMAL_FLOAT:
+                        code = new _fadd();
+                        break;
+                    case NORMAL_DOUBLE:
+                        code = new _dadd();
+                        break;
                     default:
                         throw new UnsupportedOperationException();
                 }
@@ -238,6 +286,12 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
                         break;
                     case NORMAL_LONG:
                         code = new _lsub();
+                        break;
+                    case NORMAL_FLOAT:
+                        code = new _fsub();
+                        break;
+                    case NORMAL_DOUBLE:
+                        code = new _dsub();
                         break;
                     default:
                         throw new UnsupportedOperationException();

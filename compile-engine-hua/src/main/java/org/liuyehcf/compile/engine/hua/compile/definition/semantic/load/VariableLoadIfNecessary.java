@@ -108,6 +108,12 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction implements S
                         case NORMAL_LONG:
                             context.addByteCodeToCurrentMethod(new _lload(variableSymbol.getOrder()));
                             break;
+                        case NORMAL_FLOAT:
+                            context.addByteCodeToCurrentMethod(new _fload(variableSymbol.getOrder()));
+                            break;
+                        case NORMAL_DOUBLE:
+                            context.addByteCodeToCurrentMethod(new _dload(variableSymbol.getOrder()));
+                            break;
                         default:
                             throw new UnsupportedOperationException();
                     }

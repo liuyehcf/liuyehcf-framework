@@ -305,7 +305,7 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T>, Ser
                 tokenIds.offer(tokenIterator.next().getId());
             }
             if (!tokenIterator.reachesEof()) {
-                return new CompileResult<>(false, "Cannot reach EOF", null, null);
+                return new CompileResult<>(false, "Lexical error", null, null);
             }
             tokenIds.offer(Symbol.DOLLAR);
 

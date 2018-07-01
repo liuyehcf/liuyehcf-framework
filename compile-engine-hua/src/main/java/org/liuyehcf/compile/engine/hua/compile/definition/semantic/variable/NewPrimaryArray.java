@@ -65,6 +65,8 @@ public class NewPrimaryArray extends AbstractSemanticAction implements Serializa
             case NORMAL_CHAR:
             case NORMAL_INT:
             case NORMAL_LONG:
+            case NORMAL_FLOAT:
+            case NORMAL_DOUBLE:
                 break;
             default:
                 throw new UnsupportedOperationException();

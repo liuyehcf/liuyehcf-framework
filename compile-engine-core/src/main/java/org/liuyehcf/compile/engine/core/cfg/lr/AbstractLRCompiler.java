@@ -863,7 +863,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
             } catch (Throwable e) {
                 error = e;
                 canReceive = false;
-                message = getFriendlyPrompt(e.getMessage());
+                message = getFriendlyPrompt(e.getMessage() == null ? "system error" : e.getMessage());
             }
             return new CompileResult<>(canReceive, message, error, result);
         }
@@ -937,7 +937,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                     throw new CompilerException("Reach EOF second time");
                 }
             } else {
-                throw new CompilerException("Cannot reach EOF");
+                throw new CompilerException("Lexical error");
             }
         }
 
