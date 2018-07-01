@@ -120,9 +120,20 @@ public class Type implements Serializable {
     }
 
     public static boolean isCompatible(Type mainType, Type subType) {
+        /*
+         * long兼容int和char
+         */
         if (TYPE_LONG.equals(mainType)) {
             return TYPE_LONG.equals(subType)
-                    || TYPE_INT.equals(subType);
+                    || TYPE_INT.equals(subType)
+                    || TYPE_CHAR.equals(subType);
+        }
+        /*
+         * int兼容char
+         */
+        else if (TYPE_INT.equals(mainType)) {
+            return TYPE_INT.equals(subType)
+                    || TYPE_CHAR.equals(subType);
         }
         return mainType.equals(subType);
     }

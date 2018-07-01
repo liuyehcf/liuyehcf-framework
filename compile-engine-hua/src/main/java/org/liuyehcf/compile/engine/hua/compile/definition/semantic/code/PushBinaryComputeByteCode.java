@@ -70,7 +70,7 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
         switch (operator) {
             case NORMAL_BIT_OR:
 
-                switch (leftType.getTypeName()) {
+                switch (finalType.getTypeName()) {
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ior());
@@ -85,7 +85,7 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                 break;
             case NORMAL_BIT_XOR:
 
-                switch (leftType.getTypeName()) {
+                switch (finalType.getTypeName()) {
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ixor());
@@ -100,7 +100,7 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                 break;
             case NORMAL_BIT_AND:
 
-                switch (leftType.getTypeName()) {
+                switch (finalType.getTypeName()) {
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _iand());
@@ -115,7 +115,7 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                 break;
             case NORMAL_SHL:
 
-                switch (leftType.getTypeName()) {
+                switch (finalType.getTypeName()) {
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ishl());
@@ -130,7 +130,7 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                 break;
             case NORMAL_SHR:
 
-                switch (leftType.getTypeName()) {
+                switch (finalType.getTypeName()) {
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ishr());
@@ -145,7 +145,7 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                 break;
             case NORMAL_USHR:
 
-                switch (leftType.getTypeName()) {
+                switch (finalType.getTypeName()) {
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _iushr());
@@ -160,7 +160,7 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                 break;
             case NORMAL_ADD:
 
-                switch (leftType.getTypeName()) {
+                switch (finalType.getTypeName()) {
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _iadd());
@@ -175,7 +175,7 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                 break;
             case NORMAL_SUB:
 
-                switch (leftType.getTypeName()) {
+                switch (finalType.getTypeName()) {
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _isub());
@@ -190,7 +190,7 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                 break;
             case NORMAL_MUL:
 
-                switch (leftType.getTypeName()) {
+                switch (finalType.getTypeName()) {
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _imul());
@@ -205,7 +205,7 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                 break;
             case NORMAL_DIV:
 
-                switch (leftType.getTypeName()) {
+                switch (finalType.getTypeName()) {
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _idiv());
@@ -220,7 +220,7 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
                 break;
             case NORMAL_REM:
 
-                switch (leftType.getTypeName()) {
+                switch (finalType.getTypeName()) {
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _irem());
