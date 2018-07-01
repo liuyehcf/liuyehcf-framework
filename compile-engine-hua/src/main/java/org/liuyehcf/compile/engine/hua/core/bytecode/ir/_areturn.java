@@ -1,5 +1,6 @@
 package org.liuyehcf.compile.engine.hua.core.bytecode.ir;
 
+import org.liuyehcf.compile.engine.hua.runtime.Reference;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
@@ -24,8 +25,7 @@ public class _areturn extends Return {
 
     @Override
     public void operate(RuntimeContext context) {
-        // todo
-        int reference = context.pop();
+        Reference reference = context.pop();
         context.setReturnValue(reference);
     }
 }

@@ -80,7 +80,19 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
          */
         if (leftHandType.isArrayType()) {
             assertTrue(NORMAL_ASSIGN.equals(operator), "[SYNTAX_ERROR] - Complex assignment cannot support array type");
-            context.addByteCodeToCurrentMethod(new _aastore());
+
+            /*
+             * 这里要用标志符的类型作为判断依据
+             * int[] a=new int[5];// 1
+             * int[][][] b=new int [3][3][];
+             * b[1][1]=new int[5];// 2
+             * 语句1和2，左侧表达式的类型都是int[]，但是1需要用astore，而2需要用aastore
+             */
+            if (identifierType.getDim() == 1) {
+                context.addByteCodeToCurrentMethod(new _astore(variableSymbol.getOrder()));
+            } else {
+                context.addByteCodeToCurrentMethod(new _aastore());
+            }
         }
         /*
          * 当左侧表达式类型不是数组

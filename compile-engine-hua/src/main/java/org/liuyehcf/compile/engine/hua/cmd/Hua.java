@@ -43,7 +43,6 @@ public class Hua extends BaseCmd {
             hua.init();
             hua.run();
         } catch (Exception e) {
-            e.printStackTrace();
             System.err.println(e.getMessage());
             System.exit(0);
         }
