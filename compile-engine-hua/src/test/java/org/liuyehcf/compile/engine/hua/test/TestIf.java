@@ -13,6 +13,297 @@ import static org.liuyehcf.compile.engine.hua.test.TestGrammar.getCompiler;
  * @date 2018/7/1
  */
 public class TestIf {
+
+    @Test
+    public void testIfThen() {
+        String text = "void func(boolean a, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\ti=1;\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":4,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIfThenElse() {
+        String text = "void func(boolean a, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\ti=1;\n" +
+                "\t}else{\n" +
+                "\t\ti=2;\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":5,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":1},{\"codeOffset\":7,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIfThenNestedIfThen() {
+        String text = "void func(boolean a, boolean b, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":6,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIfThenNestedIfThenElse() {
+        String text = "void func(boolean a, boolean b, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}else{\n" +
+                "\t\t\ti=2;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIfThenElseTrueNestedIfThen() {
+        String text = "void func(boolean a, boolean b, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}\n" +
+                "\t}else{\n" +
+                "\t\ti=2;\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":9,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":9,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIfThenElseTrueNestedIfThenElse() {
+        String text = "void func(boolean a, boolean b, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}else{\n" +
+                "\t\t\ti=2;\n" +
+                "\t\t}\n" +
+                "\t}else{\n" +
+                "\t\ti=3;\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIfThenElseFalseNestedIfThen() {
+        String text = "void func(boolean a, boolean b, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\ti=1;\n" +
+                "\t}else{\n" +
+                "\t\tif(a){\n" +
+                "\t\t\ti=2;\n" +
+                "\t\t}else{\n" +
+                "\t\t\ti=3;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":5,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIfThenElseFalseNestedIfThenElse() {
+        String text = "void func(boolean a, boolean b, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}else{\n" +
+                "\t\t\ti=2;\n" +
+                "\t\t}\n" +
+                "\t}else{\n" +
+                "\t\ti=3;\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":12,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIfThenElseTrueNestedIfThenFalseNestedIfThen() {
+        String text = "void func(boolean a, boolean b, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}\n" +
+                "\t}else{\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=2;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":11,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":11,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":11,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIfThenElseTrueNestedIfThenFalseNestedIfThenElse() {
+        String text = "void func(boolean a, boolean b, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}\n" +
+                "\t}else{\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=2;\n" +
+                "\t\t}else{\n" +
+                "\t\t\ti=3;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":12,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIfThenElseTrueNestedIfThenElseFalseNestedIfThen() {
+        String text = "void func(boolean a, boolean b, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}else{\n" +
+                "\t\t\ti=2;\n" +
+                "\t\t}\n" +
+                "\t}else{\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=3;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":14,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIfThenElseTrueNestedIfThenElseFalseNestedIfThenElse() {
+        String text = "void func(boolean a, boolean b, int i) {\n" +
+                "\tif(a){\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=1;\n" +
+                "\t\t}else{\n" +
+                "\t\t\ti=2;\n" +
+                "\t\t}\n" +
+                "\t}else{\n" +
+                "\t\tif(b){\n" +
+                "\t\t\ti=3;\n" +
+                "\t\t}else{\n" +
+                "\t\t\ti=4;\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "\ti+=1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean,boolean,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":10,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":7,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":17,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":17,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":15,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_istore\",\"order\":2},{\"codeOffset\":17,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
     @Test
     public void testNestedIf1() {
         String text = "void func(boolean a, boolean b, boolean c, boolean d,int i){\n" +
@@ -402,7 +693,6 @@ public class TestIf {
                 result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
-
 
     @Test
     public void testComplexConditionIf1() {
