@@ -7,6 +7,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSeman
 
 import java.io.Serializable;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.model.Type.TYPE_INT;
 
 /**
@@ -32,8 +33,6 @@ public class CheckExpressionDimType extends AbstractSemanticAction implements Se
     @Override
     public void onAction(CompilerContext context) {
         Type type = context.getAttr(expressionDimStackOffset, AttrName.TYPE);
-        if (!TYPE_INT.equals(type)) {
-            throw new RuntimeException("The array dimension expression type must be an integer");
-        }
+        assertTrue(TYPE_INT.equals(type), "[SYNTAX_ERROR] - The array dimension expression type must be an integer");
     }
 }

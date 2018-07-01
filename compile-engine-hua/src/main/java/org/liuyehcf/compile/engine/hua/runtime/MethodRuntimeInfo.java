@@ -82,7 +82,7 @@ class MethodRuntimeInfo {
 
     private void setArgs(Object[] args) {
         List<Type> paramTypeList = methodInfo.getParamTypeList();
-        assertEquals(args.length, paramTypeList.size());
+        assertEquals(args.length, paramTypeList.size(), "[SYSTEM_ERROR] - The actual parameter quantity must be consistent with the shape parameter quantity");
 
         for (int i = 0; i < args.length; i++) {
             Type paramType = paramTypeList.get(i);

@@ -8,6 +8,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.cp.*;
 
 import java.io.Serializable;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
@@ -55,10 +56,8 @@ public class PushBinaryComputeByteCode extends AbstractSemanticAction implements
         Type rightType = context.getAttr(rightStackOffset, AttrName.TYPE);
         String operator = context.getValue(operatorStackOffset);
 
-        if (!Type.isCompatible(leftType, rightType)
-                && !Type.isCompatible(rightType, leftType)) {
-            throw new RuntimeException("'" + operator + "' has inconsistent operator subtypes on both sides");
-        }
+        assertTrue(Type.isCompatible(leftType, rightType) || Type.isCompatible(rightType, leftType),
+                "Binary operator '" + operator + "' has inconsistent operator subtypes on both sides");
 
         Type finalType;
         if (Type.isCompatible(leftType, rightType)) {

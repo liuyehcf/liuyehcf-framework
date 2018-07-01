@@ -3,6 +3,7 @@ package org.liuyehcf.compile.engine.hua.compile.definition.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
@@ -155,9 +156,7 @@ public class Type implements Serializable {
     }
 
     public Type toDimDecreasedType() {
-        if (!isArrayType()) {
-            throw new RuntimeException("Non-array type cannot perform dimensionality reduction");
-        }
+        assertTrue(isArrayType(), "[SYSTEM_ERROR] - Non-array type cannot perform dimensionality reduction");
 
         if (this.dim == 1) {
             switch (this.typeName) {

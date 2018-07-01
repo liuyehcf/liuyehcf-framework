@@ -70,9 +70,8 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
         try {
             compilerDirectory = new File(COMPILER_SERIALIZATION_DIRECTORY);
             if (!compilerDirectory.exists()) {
-                if (!compilerDirectory.mkdirs()) {
-                    throw new RuntimeException("Create directory '" + compilerDirectory.getAbsolutePath() + "' error");
-                }
+                boolean success = compilerDirectory.mkdirs();
+                assertTrue(success, "Create directory '" + compilerDirectory.getAbsolutePath() + "' error");
             }
             compilerFile = new File(COMPILER_SERIALIZATION_FILE);
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(compilerFile));

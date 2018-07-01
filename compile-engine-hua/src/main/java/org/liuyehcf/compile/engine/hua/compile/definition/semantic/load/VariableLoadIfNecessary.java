@@ -11,6 +11,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.sm._dup2;
 import java.io.Serializable;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.compile.definition.GrammarDefinition.NORMAL_ASSIGN;
 
@@ -50,9 +51,7 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction implements S
 
         VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
 
-        if (variableSymbol == null) {
-            throw new RuntimeException("Non-variables cannot be assigned");
-        }
+        assertNotNull(variableSymbol, "[SYNTAX_ERROR] - Non-variables cannot be assigned");
 
         Type identifierType = variableSymbol.getType();
 

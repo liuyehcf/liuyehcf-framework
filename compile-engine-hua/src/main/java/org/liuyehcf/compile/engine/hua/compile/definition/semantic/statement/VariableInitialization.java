@@ -12,6 +12,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.sl._lstore;
 import java.io.Serializable;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
@@ -49,11 +50,12 @@ public class VariableInitialization extends AbstractSemanticAction implements Se
         String identifierName = context.getAttr(identifierStackOffset, AttrName.IDENTIFIER_NAME);
         VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
 
-        assertNotNull(expressionType);
-        assertNotNull(variableSymbol);
-        if (!Type.isCompatible(variableSymbol.getType(), expressionType)) {
-            throw new RuntimeException("Variable initialization statement on both sides of the type does not match");
-        }
+        assertNotNull(expressionType, "[SYSTEM_ERROR] - Expression type of SemanticAction 'VariableInitialization' cannot be null");
+        assertNotNull(variableSymbol, "[SYSTEM_ERROR] - VariableSymbol type of SemanticAction 'VariableInitialization' cannot be null");
+        assertTrue(Type.isCompatible(variableSymbol.getType(), expressionType),
+                "[SYNTAX_ERROR] - Variable initialization statement on both sides of the type does not match, " +
+                        "variableSymbol type is '" + variableSymbol.getType().toTypeDescription() + "', " +
+                        "expression type is '" + expressionType.toTypeDescription() + "'");
 
         Type identifierType = variableSymbol.getType();
 

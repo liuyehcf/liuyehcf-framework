@@ -7,6 +7,7 @@ import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 
 import java.util.List;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.hua.core.MethodInfo.buildMethodSignature;
 
 /**
@@ -28,9 +29,7 @@ public class RuntimeDaemon {
 
     private MethodInfo getMainMethod() {
         MethodInfo mainMethod = intermediateInfo.getMethodInfoTable().getMethodByMethodSignature(buildMethodSignature("main", ListUtils.of(Type.TYPE_STRING_ARRAY)));
-        if (mainMethod == null) {
-            throw new RuntimeException("The source file does not define the main method");
-        }
+        assertNotNull(mainMethod, "[SYNTAX_ERROR] - The source file does not define the main method");
         return mainMethod;
     }
 

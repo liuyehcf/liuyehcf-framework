@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
+
 /**
  * Hua执行器
  *
@@ -66,15 +69,12 @@ public class Hua extends BaseCmd {
     }
 
     private void check() {
-        if (filePath == null) {
-            throw new RuntimeException("Please input the source file path by -f option, use -help see more options");
-        }
+        assertNotNull(filePath == null, "Please input the source file path by -f option, use -help see more options");
 
         File file = new File(filePath);
 
-        if (!file.exists() || !file.isFile()) {
-            throw new RuntimeException("Please input the source file path by -f option, use -help see more options");
-        }
+        assertTrue(file.exists(), "Source file '" + file.getAbsolutePath() + "' is not exist");
+        assertTrue(file.isFile(), "Source file '" + file.getAbsolutePath() + "' is not file");
     }
 
     private void run() {

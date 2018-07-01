@@ -51,12 +51,10 @@ public class MethodInvocation extends AbstractSemanticAction implements Serializ
 
         MethodSignature methodSignature = buildMethodSignature(methodName, argumentTypeList);
 
-        if (!context.containsMethod(methodSignature)) {
-            throw new RuntimeException("Method' " + methodSignature.getSignature() + " 'undefined");
-        }
+        assertTrue(context.containsMethod(methodSignature), "[SYNTAX_ERROR] - Method' " + methodSignature.getSignature() + " 'undefined");
 
         BasicMethodInfo basicMethodInfo = context.getBasicMethodByMethodSignature(methodSignature);
-        assertNotNull(basicMethodInfo);
+        assertNotNull(basicMethodInfo, "[SYNTAX_ERROR] - Cannot find definition of method '" + methodSignature.getSignature() + "'");
 
         int constantOffset = context.getConstantOffset(methodSignature.getSignature());
         assertTrue(constantOffset >= 0, "[SYSTEM_ERROR] - Constant offset is illegal");

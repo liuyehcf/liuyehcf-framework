@@ -47,7 +47,7 @@ public class SetAttrFromLexical extends AbstractSemanticAction implements Serial
     public void onAction(CompilerContext context) {
         Object fromValue = context.getValue(fromStackOffset);
 
-        assertNotNull(fromValue);
+        assertNotNull(fromValue, "[SYSTEM_ERROR] - From value of SemanticAction 'SetAttrFromLexical' cannot be null");
         context.setAttr(toStackOffset, toAttrName, fromValue);
     }
 }

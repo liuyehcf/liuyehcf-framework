@@ -36,7 +36,7 @@ public class RemoveRedundantLoadByteCode extends AbstractSemanticAction implemen
     public void onAction(CompilerContext context) {
         StatementType type = context.getAttr(statementStackOffset, AttrName.STATEMENT_TYPE);
 
-        assertNotNull(type);
+        assertNotNull(type, "[SYSTEM_ERROR] - Statement type of SemanticAction 'RemoveRedundantLoadByteCode' cannot be null");
 
 
         List<ByteCode> byteCodes = context.getByteCodesOfOfCurrentMethod();

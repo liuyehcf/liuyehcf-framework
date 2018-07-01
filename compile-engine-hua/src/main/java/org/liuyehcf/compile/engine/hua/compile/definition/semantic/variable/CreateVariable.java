@@ -4,8 +4,11 @@ import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 
 import java.io.Serializable;
+
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 
 /**
  * 创建一个变量，记录类型、宽度、偏移量等信息
@@ -28,12 +31,10 @@ public class CreateVariable extends AbstractSemanticAction implements Serializab
 
     @Override
     public void onAction(CompilerContext context) {
-
         String name = context.getValue(identifierStackOffset);
         Type type = context.getAttr(identifierStackOffset, AttrName.TYPE);
 
-        if (context.createVariableSymbol(name, type) == null) {
-            throw new RuntimeException("Identifier '" + name + "' already exist, do not repeat definitions");
-        }
+        VariableSymbol newVariableSymbol = context.createVariableSymbol(name, type);
+        assertNotNull(newVariableSymbol, "[SYNTAX_ERROR] - Identifier '" + name + "' already exist, do not repeat definitions");
     }
 }

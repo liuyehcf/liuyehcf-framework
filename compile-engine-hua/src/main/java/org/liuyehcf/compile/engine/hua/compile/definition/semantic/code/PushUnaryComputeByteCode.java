@@ -83,7 +83,7 @@ public class PushUnaryComputeByteCode extends AbstractSemanticAction {
                 }
                 break;
             case NORMAL_LOGICAL_NOT:
-                assertEquals(rightType, Type.TYPE_BOOLEAN);
+                assertEquals(rightType, Type.TYPE_BOOLEAN, "[SYSTEM_ERROR] - Right operator type of SemanticAction 'PushUnaryComputeByteCode' must be boolean");
                 /*
                  * 转换跳转指令的类型
                  */

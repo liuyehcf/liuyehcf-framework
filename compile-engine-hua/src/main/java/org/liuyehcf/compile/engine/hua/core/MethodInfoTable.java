@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 import static org.liuyehcf.compile.engine.hua.core.SystemMethod.SYSTEM_METHOD_POOL;
 
 /**
@@ -101,9 +102,8 @@ public class MethodInfoTable {
      */
     public MethodSignature recordBasicMethodInfo() {
         MethodSignature methodSignature = curMethodInfo.getMethodSignature();
-        if (SYSTEM_METHOD_POOL.containsKey(methodSignature)) {
-            throw new RuntimeException("Method '" + methodSignature.getSignature() + "' is System method, cannot be redefined by user");
-        }
+        assertFalse(SYSTEM_METHOD_POOL.containsKey(methodSignature), "[SYNTAX_ERROR] - Method '" + methodSignature.getSignature() + "' is System method, cannot be redefined by user");
+
         /*
          * 这里允许重复，因为允许方法多次声明
          */
@@ -121,9 +121,8 @@ public class MethodInfoTable {
          * 对于方法声明，跳过即可
          */
         if (hasMethodBody) {
-            if (table.containsKey(curMethodInfo.getMethodSignature())) {
-                throw new RuntimeException("Method '" + curMethodInfo.getMethodSignature().getSignature() + "' is repeatedly defined");
-            }
+            assertFalse(table.containsKey(curMethodInfo.getMethodSignature()),
+                    "[SYNTAX_ERROR] - Method '" + curMethodInfo.getMethodSignature().getSignature() + "' is repeatedly defined");
             table.put(curMethodInfo.getMethodSignature(), curMethodInfo);
         }
         curMethodInfo = null;

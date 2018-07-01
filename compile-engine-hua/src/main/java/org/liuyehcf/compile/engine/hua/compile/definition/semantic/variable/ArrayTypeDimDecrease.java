@@ -7,6 +7,8 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSeman
 
 import java.io.Serializable;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
+
 /**
  * 数组类型降维
  *
@@ -31,9 +33,7 @@ public class ArrayTypeDimDecrease extends AbstractSemanticAction implements Seri
     public void onAction(CompilerContext context) {
         Type type = context.getAttr(expressionNameStackOffset, AttrName.TYPE);
 
-        if (!type.isArrayType()) {
-            throw new RuntimeException("Non-array can not be reduced dimension operation\n");
-        }
+        assertTrue(type.isArrayType(), "[SYNTAX_ERROR] - Non-array can not be reduced dimension operation");
 
         context.setAttrToLeftNode(AttrName.TYPE, type.toDimDecreasedType());
     }

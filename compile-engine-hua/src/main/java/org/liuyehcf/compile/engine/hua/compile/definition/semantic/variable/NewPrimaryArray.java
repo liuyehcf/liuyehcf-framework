@@ -11,6 +11,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.oc._newarray;
 import java.io.Serializable;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
@@ -56,11 +57,7 @@ public class NewPrimaryArray extends AbstractSemanticAction implements Serializa
         int expressionDimSize = context.getAttr(expressionDimStackOffset, AttrName.EXPRESSION_DIM_SIZE);
         int emptyDimSize = context.getAttr(emptyDimStackOffset, AttrName.EMPTY_DIM_SIZE);
 
-        if (expressionDimSize <= 0) {
-            throw new RuntimeException("Create an array must specify the size of the first dimension");
-        }
-
-
+        assertTrue(expressionDimSize > 0, "[SYNTAX_ERROR] - Create an array must specify the size of the first dimension");
         assertFalse(type.isArrayType(), "[SYSTEM_ERROR] - Array type's basic type cannot be array-type");
 
         switch (type.getTypeName()) {

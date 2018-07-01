@@ -8,8 +8,8 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp._lcmp;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
@@ -55,10 +55,19 @@ public class PushCompareTransferByteCode extends AbstractSemanticAction {
         Type leftType = context.getAttr(leftOperatorStackOffset, AttrName.TYPE);
         Type rightType = context.getAttr(rightOperatorStackOffset, AttrName.TYPE);
 
-        assertEquals(leftType, rightType);
+        assertTrue(Type.isCompatible(leftType, rightType) || Type.isCompatible(rightType, leftType),
+                "[SYNTAX_ERROR] - Comparable operator left and right type do not match");
         assertFalse(leftType.isArrayType(), "[SYSTEM_ERROR] - Comparable operator cannot support array type");
 
-        switch (leftType.getTypeName()) {
+        Type finalType;
+
+        if (Type.isCompatible(leftType, rightType)) {
+            finalType = leftType;
+        } else {
+            finalType = rightType;
+        }
+
+        switch (finalType.getTypeName()) {
             case NORMAL_CHAR:
             case NORMAL_INT:
                 switch (compareOperatorType) {

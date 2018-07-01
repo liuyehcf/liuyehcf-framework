@@ -11,6 +11,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.sl._lload;
 
 import java.io.Serializable;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
@@ -37,9 +38,7 @@ public class VariableLoad extends AbstractSemanticAction implements Serializable
     public void onAction(CompilerContext context) {
         String identifierName = context.getAttr(identifierNameStackOffset, AttrName.IDENTIFIER_NAME);
         VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
-        if (variableSymbol == null) {
-            throw new RuntimeException("Identifier " + identifierName + " undefined");
-        }
+        assertNotNull(variableSymbol, "[SYNTAX_ERROR] - Identifier " + identifierName + " undefined");
 
         Type type = variableSymbol.getType();
 

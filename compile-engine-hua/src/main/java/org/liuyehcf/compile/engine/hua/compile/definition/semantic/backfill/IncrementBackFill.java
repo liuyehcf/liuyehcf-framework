@@ -9,6 +9,9 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.cp._iinc;
 
 import java.io.Serializable;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+
 /**
  * 自增字节码回填
  *
@@ -50,13 +53,8 @@ public class IncrementBackFill extends AbstractSemanticAction implements Seriali
         String identifierName = context.getAttr(expressionStackOffset, AttrName.IDENTIFIER_NAME);
         VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
 
-        if (variableSymbol == null) {
-            throw new RuntimeException("Pre-increment/decrement operator cannot act on 'value'");
-        }
-
-        if (!Type.TYPE_INT.equals(variableSymbol.getType())) {
-            throw new RuntimeException("Pre-increment/decrement operator does not work on 'non-int variables'");
-        }
+        assertNotNull(variableSymbol, "[SYNTAX_ERROR] - Pre-increment/decrement operator cannot act on 'value'");
+        assertEquals(Type.TYPE_INT, variableSymbol.getType(), "[SYNTAX_ERROR] - Pre-increment/decrement operator does not work on 'non-int variables'");
 
         code.setOrder(variableSymbol.getOrder());
         code.setIncrement(increment);

@@ -8,6 +8,8 @@ import org.liuyehcf.compile.engine.hua.core.io.HuaClassOutputStream;
 
 import java.io.*;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.core.io.HClassConstant.HCLASS_SUFFIX;
 
 /**
@@ -70,21 +72,17 @@ public class Huac extends BaseCmd {
     private void check() {
         File file, target;
 
-        if (filePath == null) {
-            throw new RuntimeException("Please input the source file path by -f option, use -help see more options");
-        }
+        assertNotNull(filePath == null, "Please input the source file path by -f option, use -help see more options");
 
         file = new File(filePath);
         target = new File(targetPath);
 
 
-        if (!file.exists() || !file.isFile()) {
-            throw new RuntimeException("Illegal file: " + filePath);
-        }
+        assertTrue(file.exists(), "Source file '" + filePath + "' is not exist");
+        assertTrue(file.isFile(), "Source file '" + filePath + "' is not file");
 
-        if (!target.exists() && !target.isDirectory()) {
-            throw new RuntimeException("Illegal directory: " + targetPath);
-        }
+        assertTrue(target.exists(), "Target directory '" + targetPath + "' is not exist");
+        assertTrue(target.isDirectory(), "Target directory '" + targetPath + "' is not directory");
     }
 
     private void compile() {

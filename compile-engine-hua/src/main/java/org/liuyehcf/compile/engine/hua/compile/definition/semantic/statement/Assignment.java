@@ -11,6 +11,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 import java.io.Serializable;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.compile.definition.GrammarDefinition.NORMAL_ASSIGN;
 
@@ -61,25 +62,24 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
         Type expressionType = context.getAttr(expressionStackOffset, AttrName.TYPE);
         Type leftHandType = context.getAttr(leftHandStackOffset, AttrName.TYPE);
 
-        if (!Type.isCompatible(leftHandType, expressionType)) {
-            throw new RuntimeException("Assign operator left and right types do not match");
-        }
+        assertTrue(Type.isCompatible(leftHandType, expressionType),
+                "[SYNTAX_ERROR] - Assign operator left and right types do not match, " +
+                        "leftHand type is '" + leftHandType.toTypeDescription() + "', " +
+                        "expression type is '" + expressionType.toTypeDescription() + "'");
 
         Type identifierType = variableSymbol.getType();
 
         /*
          * 标志符的类型可能是数组类型，但是其类型名必须与赋值运算符左侧一致
          */
-        assertEquals(leftHandType.getTypeName(), identifierType.getTypeName());
+        assertEquals(leftHandType.getTypeName(), identifierType.getTypeName(),
+                "[SYSTEM_ERROR] - Type name of leftHand expression must be consistent with type name of leftHand identifier");
 
         /*
          * 当左侧表达式类型是数组
          */
         if (leftHandType.isArrayType()) {
-            if (!NORMAL_ASSIGN.equals(operator)) {
-                throw new RuntimeException("Compound assignment operator does not support array types");
-            }
-
+            assertTrue(NORMAL_ASSIGN.equals(operator), "[SYNTAX_ERROR] - Complex assignment cannot support array type");
             context.addByteCodeToCurrentMethod(new _aastore());
         }
         /*

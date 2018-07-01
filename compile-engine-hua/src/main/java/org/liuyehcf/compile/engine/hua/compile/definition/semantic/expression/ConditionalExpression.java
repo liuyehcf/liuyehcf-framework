@@ -6,7 +6,8 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 
 import java.io.Serializable;
-import java.util.Objects;
+
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 
 /**
  * 条件语句
@@ -42,10 +43,18 @@ public class ConditionalExpression extends AbstractSemanticAction implements Ser
         Type trueExpressionType = context.getAttr(trueExpressionStackOffset, AttrName.TYPE);
         Type falseExpressionType = context.getAttr(falseExpressionStackOffset, AttrName.TYPE);
 
-        if (!Objects.equals(trueExpressionType, falseExpressionType)) {
-            throw new RuntimeException("Conditional expressions vary by branch type");
+        assertTrue(Type.isCompatible(trueExpressionType, falseExpressionType) || Type.isCompatible(falseExpressionType, trueExpressionType),
+                "[SYNTAX_ERROR] - Conditional expressions vary by branch type, " +
+                        "true branch type is '" + trueExpressionType.toTypeDescription() + "', " +
+                        "false branch type is '" + falseExpressionType.toTypeDescription() + "'");
+
+        Type finalType;
+        if (Type.isCompatible(trueExpressionType, falseExpressionType)) {
+            finalType = trueExpressionType;
+        } else {
+            finalType = falseExpressionType;
         }
 
-        context.setAttrToLeftNode(AttrName.TYPE, trueExpressionType);
+        context.setAttrToLeftNode(AttrName.TYPE, finalType);
     }
 }

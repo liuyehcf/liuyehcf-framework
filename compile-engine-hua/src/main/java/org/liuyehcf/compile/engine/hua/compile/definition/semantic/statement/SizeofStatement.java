@@ -7,6 +7,8 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSeman
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp._sizeof;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
+
 /**
  * sizeof语句
  *
@@ -34,9 +36,7 @@ public class SizeofStatement extends AbstractSemanticAction {
 
         Type type = variableSymbol.getType();
 
-        if (!type.isArrayType()) {
-            throw new RuntimeException("Operator 'sizeof' cannot work on non-array type");
-        }
+        assertTrue(type.isArrayType(), "[SYNTAX_ERROR] - Operator 'sizeof' cannot work on non-array type");
 
         context.addByteCodeToCurrentMethod(new _sizeof(variableSymbol.getOrder()));
 

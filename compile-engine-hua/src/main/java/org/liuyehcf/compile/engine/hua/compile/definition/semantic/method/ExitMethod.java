@@ -10,6 +10,8 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.ir._return;
 import java.io.Serializable;
 import java.util.List;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
+
 /**
  * 退出方法标记
  *
@@ -37,9 +39,8 @@ public class ExitMethod extends AbstractSemanticAction implements Serializable {
                 context.addByteCodeToCurrentMethod(new _return());
             } else {
                 List<ByteCode> byteCodes = context.getByteCodesOfOfCurrentMethod();
-                if (byteCodes.isEmpty() || !(byteCodes.get(byteCodes.size() - 1) instanceof Return)) {
-                    throw new RuntimeException("Method lacks return statement");
-                }
+                assertTrue(!byteCodes.isEmpty() && (byteCodes.get(byteCodes.size() - 1) instanceof Return),
+                        "[SYNTAX_ERROR] - Method lacks return statement");
             }
         }
         context.exitMethod(hasMethodBody);
