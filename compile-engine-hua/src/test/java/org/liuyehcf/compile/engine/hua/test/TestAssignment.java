@@ -1581,4 +1581,167 @@ public class TestAssignment {
                 result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
+
+    @Test
+    public void testBooleanArrayReferenceAssign() {
+        String text = "void func(boolean[] a, boolean[][][] b) {\n" +
+                "\ta = new boolean[1];\n" +
+                "\tb = new boolean[2][2][2];\n" +
+                "\tb[1] = new boolean[2][2];\n" +
+                "\tb[1][1] = new boolean[2];\n" +
+                "\tb[1][1][1] = true;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(boolean[],boolean[][][])\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"boolean\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"boolean[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"boolean[][]\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_newarray\",\"type\":\"boolean\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_bastore\"},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testCharArrayReferenceAssign() {
+        String text = "void func(char[] a, char[][][] b) {\n" +
+                "\ta = new char[1];\n" +
+                "\tb = new char[2][2][2];\n" +
+                "\tb[1] = new char[2][2];\n" +
+                "\tb[1][1] = new char[2];\n" +
+                "\tb[1][1][1] = '1';\n" +
+                "\tb[1][1][1] *= '1';\n" +
+                "\tb[1][1][1] /= '1';\n" +
+                "\tb[1][1][1] %= '1';\n" +
+                "\tb[1][1][1] += '1';\n" +
+                "\tb[1][1][1] -= '1';\n" +
+                "\tb[1][1][1] <<= '1';\n" +
+                "\tb[1][1][1] >>= '1';\n" +
+                "\tb[1][1][1] >>>= '1';\n" +
+                "\tb[1][1][1] &= '1';\n" +
+                "\tb[1][1][1] ^= '1';\n" +
+                "\tb[1][1][1] |= '1';\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(char[],char[][][])\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"char\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"char[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"char[][]\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_newarray\",\"type\":\"char\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_castore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_caload\"},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_imul\"},{\"name\":\"_castore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_caload\"},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_idiv\"},{\"name\":\"_castore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_caload\"},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_irem\"},{\"name\":\"_castore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_caload\"},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_iadd\"},{\"name\":\"_castore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_caload\"},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_isub\"},{\"name\":\"_castore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_caload\"},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_ishl\"},{\"name\":\"_castore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_caload\"},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_ishr\"},{\"name\":\"_castore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_caload\"},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_iushr\"},{\"name\":\"_castore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_caload\"},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_iand\"},{\"name\":\"_castore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_caload\"},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_ixor\"},{\"name\":\"_castore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_caload\"},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_ior\"},{\"name\":\"_castore\"},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testIntArrayReferenceAssign() {
+        String text = "void func(int[] a, int[][][] b) {\n" +
+                "\ta = new int[1];\n" +
+                "\tb = new int[2][2][2];\n" +
+                "\tb[1] = new int[2][2];\n" +
+                "\tb[1][1] = new int[2];\n" +
+                "\tb[1][1][1] = 1;\n" +
+                "\tb[1][1][1] *= 1;\n" +
+                "\tb[1][1][1] /= 1;\n" +
+                "\tb[1][1][1] %= 1;\n" +
+                "\tb[1][1][1] += 1;\n" +
+                "\tb[1][1][1] -= 1;\n" +
+                "\tb[1][1][1] <<= 1;\n" +
+                "\tb[1][1][1] >>= 1;\n" +
+                "\tb[1][1][1] >>>= 1;\n" +
+                "\tb[1][1][1] &= 1;\n" +
+                "\tb[1][1][1] ^= 1;\n" +
+                "\tb[1][1][1] |= 1;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(int[],int[][][])\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"int[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"int[][]\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_imul\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_idiv\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_irem\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_isub\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_ishl\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_ishr\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iushr\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iand\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_ixor\"},{\"name\":\"_iastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_iaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_ior\"},{\"name\":\"_iastore\"},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testLongArrayReferenceAssign() {
+        String text = "void func(long[] a, long[][][] b) {\n" +
+                "\ta = new long[1];\n" +
+                "\tb = new long[2][2][2];\n" +
+                "\tb[1] = new long[2][2];\n" +
+                "\tb[1][1] = new long[2];\n" +
+                "\tb[1][1][1] = 1L;\n" +
+                "\tb[1][1][1] *= 1L;\n" +
+                "\tb[1][1][1] /= 1L;\n" +
+                "\tb[1][1][1] %= 1L;\n" +
+                "\tb[1][1][1] += 1L;\n" +
+                "\tb[1][1][1] -= 1L;\n" +
+                "\tb[1][1][1] <<= 1L;\n" +
+                "\tb[1][1][1] >>= 1L;\n" +
+                "\tb[1][1][1] >>>= 1L;\n" +
+                "\tb[1][1][1] &= 1L;\n" +
+                "\tb[1][1][1] ^= 1L;\n" +
+                "\tb[1][1][1] |= 1L;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(long[],long[][][])\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"long\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"long[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"long[][]\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_newarray\",\"type\":\"long\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_laload\"},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lmul\"},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_laload\"},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_ldiv\"},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_laload\"},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lrem\"},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_laload\"},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_ladd\"},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_laload\"},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lsub\"},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_laload\"},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lshl\"},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_laload\"},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lshr\"},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_laload\"},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lushr\"},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_laload\"},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_land\"},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_laload\"},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lxor\"},{\"name\":\"_lastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_laload\"},{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lor\"},{\"name\":\"_lastore\"},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testFloatArrayReferenceAssign() {
+        String text = "void func(float[] a, float[][][] b) {\n" +
+                "\ta = new float[1];\n" +
+                "\tb = new float[2][2][2];\n" +
+                "\tb[1] = new float[2][2];\n" +
+                "\tb[1][1] = new float[2];\n" +
+                "\tb[1][1][1] = 1.1f;\n" +
+                "\tb[1][1][1] *= 1.1f;\n" +
+                "\tb[1][1][1] /= 1.1f;\n" +
+                "\tb[1][1][1] %= 1.1f;\n" +
+                "\tb[1][1][1] += 1.1f;\n" +
+                "\tb[1][1][1] -= 1.1f;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(float[],float[][][])\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"float\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"float[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"float[][]\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_newarray\",\"type\":\"float\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_fconst\",\"value\":1.1},{\"name\":\"_fastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_faload\"},{\"name\":\"_fconst\",\"value\":1.1},{\"name\":\"_fmul\"},{\"name\":\"_fastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_faload\"},{\"name\":\"_fconst\",\"value\":1.1},{\"name\":\"_fdiv\"},{\"name\":\"_fastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_faload\"},{\"name\":\"_fconst\",\"value\":1.1},{\"name\":\"_frem\"},{\"name\":\"_fastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_faload\"},{\"name\":\"_fconst\",\"value\":1.1},{\"name\":\"_fadd\"},{\"name\":\"_fastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_faload\"},{\"name\":\"_fconst\",\"value\":1.1},{\"name\":\"_fsub\"},{\"name\":\"_fastore\"},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testDoubleArrayReferenceAssign() {
+        String text = "void func(double[] a, double[][][] b) {\n" +
+                "\ta = new double[1];\n" +
+                "\tb = new double[2][2][2];\n" +
+                "\tb[1] = new double[2][2];\n" +
+                "\tb[1][1] = new double[2];\n" +
+                "\tb[1][1][1] = 1.1d;\n" +
+                "\tb[1][1][1] *= 1.1d;\n" +
+                "\tb[1][1][1] /= 1.1d;\n" +
+                "\tb[1][1][1] %= 1.1d;\n" +
+                "\tb[1][1][1] += 1.1d;\n" +
+                "\tb[1][1][1] -= 1.1d;\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(double[],double[][][])\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"double\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"double[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iconst\",\"value\":2},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"double[][]\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_newarray\",\"type\":\"double\"},{\"name\":\"_aastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dconst\",\"value\":1.1},{\"name\":\"_dastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_daload\"},{\"name\":\"_dconst\",\"value\":1.1},{\"name\":\"_dmul\"},{\"name\":\"_dastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_daload\"},{\"name\":\"_dconst\",\"value\":1.1},{\"name\":\"_ddiv\"},{\"name\":\"_dastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_daload\"},{\"name\":\"_dconst\",\"value\":1.1},{\"name\":\"_drem\"},{\"name\":\"_dastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_daload\"},{\"name\":\"_dconst\",\"value\":1.1},{\"name\":\"_dadd\"},{\"name\":\"_dastore\"},{\"name\":\"_aload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_aaload\"},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dup2\"},{\"name\":\"_daload\"},{\"name\":\"_dconst\",\"value\":1.1},{\"name\":\"_dsub\"},{\"name\":\"_dastore\"},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
 }

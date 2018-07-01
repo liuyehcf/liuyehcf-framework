@@ -129,7 +129,7 @@ public class PushCompareTransferByteCode extends AbstractSemanticAction {
                     throw new UnsupportedOperationException();
             }
         }
-        
+
         context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_BOOLEAN);
     }
 }
