@@ -56,7 +56,7 @@ public class PushCompareTransferByteCode extends AbstractSemanticAction {
         Type rightType = context.getAttr(rightOperatorStackOffset, AttrName.TYPE);
 
         assertEquals(leftType, rightType);
-        assertFalse(leftType.isArrayType());
+        assertFalse(leftType.isArrayType(), "[SYSTEM_ERROR] - Comparable operator cannot support array type");
 
         switch (leftType.getTypeName()) {
             case NORMAL_CHAR:

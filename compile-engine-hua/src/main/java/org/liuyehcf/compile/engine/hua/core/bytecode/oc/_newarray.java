@@ -46,7 +46,7 @@ public class _newarray extends ObjectCreate {
         int count = context.pop();
 
         Type t = Type.parse(type);
-        assertFalse(t.isArrayType());
+        assertFalse(t.isArrayType(), "[SYSTEM_ERROR] - ByteCode 'newarray' cannot support array basic type");
         int width = t.getTypeWidth();
 
         Reference reference = HeapMemoryManagement.allocate(width, count);

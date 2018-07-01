@@ -83,21 +83,21 @@ public class LoadLiteralAndSetType extends AbstractSemanticAction implements Ser
             /*
              * 布尔字面值也作为int处理
              */
-            assertTrue(NORMAL_BOOLEAN_TRUE.equals(literal) || NORMAL_BOOLEAN_FALSE.equals(literal));
+            assertTrue(NORMAL_BOOLEAN_TRUE.equals(literal) || NORMAL_BOOLEAN_FALSE.equals(literal), "[SYSTEM_ERROR] - Boolean literal parse error");
             context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_BOOLEAN);
             context.addByteCodeToCurrentMethod(new _iconst(NORMAL_BOOLEAN_TRUE.equals(literal) ? 1 : 0));
         } else if (Type.TYPE_CHAR.equals(type)) {
             /*
              * char也作为int处理
              */
-            assertTrue(literal.length() == 3 && literal.charAt(0) == '\'' && literal.charAt(2) == '\'');
+            assertTrue(literal.length() == 3 && literal.charAt(0) == '\'' && literal.charAt(2) == '\'', "[SYSTEM_ERROR] - Char literal parse error");
             context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_CHAR);
             context.addByteCodeToCurrentMethod(new _iconst(literal.charAt(1)));
         } else if (Type.TYPE_CHAR_ARRAY.equals(type)) {
             /*
              * string，也就是char数组
              */
-            assertTrue(literal.length() >= 2 && literal.charAt(0) == '\"' && literal.charAt(literal.length() - 1) == '\"');
+            assertTrue(literal.length() >= 2 && literal.charAt(0) == '\"' && literal.charAt(literal.length() - 1) == '\"', "[SYSTEM_ERROR] - String literal parse error");
             String content = literal.substring(1, literal.length() - 1);
             int constantOffset = context.addConstant(content);
             context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_CHAR_ARRAY);

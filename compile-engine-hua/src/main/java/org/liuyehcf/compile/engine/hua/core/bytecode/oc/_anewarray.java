@@ -46,7 +46,7 @@ public class _anewarray extends ObjectCreate {
         int count = context.pop();
 
         Type t = Type.parse(type);
-        assertTrue(t.isArrayType());
+        assertTrue(t.isArrayType(), "[SYSTEM_ERROR] - ByteCode cannot support non-array type");
         int width = t.getTypeWidth();
 
         Reference reference = HeapMemoryManagement.allocate(width, count);

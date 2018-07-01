@@ -97,7 +97,7 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
          */
         if (compilerFile.exists()) {
             boolean isDelete = compilerFile.delete();
-            assertTrue(isDelete);
+            assertTrue(isDelete, "Delete file {" + compilerFile.getName() + "} error");
         }
 
         /*
@@ -252,7 +252,7 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
                      * 若跳转偏移量比当前不可达指令的偏移量要大，那么跳转偏移量-1
                      */
                     if (controlTransferCode.getCodeOffset() > unvisitedCodeOffset) {
-                        assertFalse(controlTransferCode.getCodeOffset() == unvisitedCodeOffset);
+                        assertFalse(controlTransferCode.getCodeOffset() == unvisitedCodeOffset, "[SYSTEM_ERROR] - ControlTransfer bytecode jump to illegal offset");
                         controlTransferCode.setCodeOffset(controlTransferCode.getCodeOffset() - 1);
                     }
                 }

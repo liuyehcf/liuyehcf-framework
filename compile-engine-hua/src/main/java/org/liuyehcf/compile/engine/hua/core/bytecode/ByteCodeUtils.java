@@ -163,7 +163,7 @@ public class ByteCodeUtils {
 
     private static void register(Class<? extends ByteCode> clazz) {
         int operatorCode = getOperatorCode(clazz);
-        assertFalse(operatorCodePool.containsKey(operatorCode));
+        assertFalse(operatorCodePool.containsKey(operatorCode), "[SYSTEM_ERROR] - ByteCode OperatorCode repeated: " + operatorCodePool.get(operatorCode).getSimpleName() + ", " + clazz.getSimpleName());
         operatorCodePool.put(operatorCode, clazz);
     }
 

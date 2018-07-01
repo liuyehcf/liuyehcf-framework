@@ -61,7 +61,7 @@ public class NewPrimaryArray extends AbstractSemanticAction implements Serializa
         }
 
 
-        assertFalse(type.isArrayType());
+        assertFalse(type.isArrayType(), "[SYSTEM_ERROR] - Array type's basic type cannot be array-type");
 
         switch (type.getTypeName()) {
             case NORMAL_BOOLEAN:

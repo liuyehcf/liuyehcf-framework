@@ -49,7 +49,7 @@ public class RemoveRedundantLoadByteCode extends AbstractSemanticAction implemen
                  * 对于 ++i; 这样的语句，iload指令是多余的，删掉即可
                  */
                 code = byteCodes.get(byteCodes.size() - 1);
-                assertTrue(code instanceof _iload);
+                assertTrue(code instanceof _iload, "[SYSTEM_ERROR] - Redundant bytecode is not 'iload'");
                 byteCodes.remove(byteCodes.size() - 1);
                 break;
             case POST_DECREMENT:
@@ -58,7 +58,7 @@ public class RemoveRedundantLoadByteCode extends AbstractSemanticAction implemen
                  * 对于 i++; 这样的语句，iload指令是多余的，删掉即可
                  */
                 code = byteCodes.get(byteCodes.size() - 2);
-                assertTrue(code instanceof _iload);
+                assertTrue(code instanceof _iload, "[SYSTEM_ERROR] - Redundant bytecode is not 'iload'");
                 byteCodes.remove(byteCodes.size() - 2);
                 break;
             case ASSIGNMENT:

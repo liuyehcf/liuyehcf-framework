@@ -70,7 +70,7 @@ public class VariableLoadIfNecessary extends AbstractSemanticAction implements S
             case NORMAL_BIT_AND_ASSIGN:
             case NORMAL_BIT_XOR_ASSIGN:
             case NORMAL_BIT_OR_ASSIGN:
-                assertFalse(leftHandType.isArrayType());
+                assertFalse(leftHandType.isArrayType(), "[SYSTEM_ERROR] - Complex assign cannot support array type");
 
                 /*
                  * 标志符为数组类型

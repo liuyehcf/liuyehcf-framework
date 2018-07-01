@@ -59,7 +59,7 @@ public class MethodInvocation extends AbstractSemanticAction implements Serializ
         assertNotNull(basicMethodInfo);
 
         int constantOffset = context.getConstantOffset(methodSignature.getSignature());
-        assertTrue(constantOffset >= 0);
+        assertTrue(constantOffset >= 0, "[SYSTEM_ERROR] - Constant offset is illegal");
         context.addByteCodeToCurrentMethod(new _invokestatic(constantOffset));
         context.setAttrToLeftNode(AttrName.TYPE, basicMethodInfo.getResultType());
     }
