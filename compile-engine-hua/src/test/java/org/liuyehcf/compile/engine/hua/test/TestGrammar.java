@@ -2133,6 +2133,40 @@ public class TestGrammar {
     }
 
     @Test
+    public void testCompatibleType3() {
+        String text = "void func(int i) {\n" +
+                "\ti=(i>1)?'1':0xffff;\n" +
+                "\tint j=(i==0||i<-3)?0777:'a';\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":5,\"name\":\"_if_icmple\"},{\"name\":\"_iconst\",\"value\":49},{\"codeOffset\":6,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":65535},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"codeOffset\":14,\"name\":\"_if_icmpeq\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"name\":\"_ineg\"},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iconst\",\"value\":511},{\"codeOffset\":17,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":97},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
+    public void testCompatibleType4() {
+        String text = "void func(long i) {\n" +
+                "\ti=(i>'1')?'1':0xffff;\n" +
+                "\tlong j=(i==0x77||i<-3L)?1000000000000000L:'a';\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = compiler.compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_lcmp\"},{\"codeOffset\":6,\"name\":\"_ifle\"},{\"name\":\"_iconst\",\"value\":49},{\"codeOffset\":7,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":65535},{\"name\":\"_lstore\",\"order\":0},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_iconst\",\"value\":119},{\"name\":\"_lcmp\"},{\"codeOffset\":17,\"name\":\"_ifeq\"},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lconst\",\"value\":3},{\"name\":\"_lneg\"},{\"name\":\"_lcmp\"},{\"codeOffset\":19,\"name\":\"_ifge\"},{\"name\":\"_lconst\",\"value\":1000000000000000},{\"codeOffset\":20,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":97},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_return\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
     public void testQuickSort() {
         String text = "void exchange(int[] nums, int i, int j) {\n" +
                 "\tint temp = nums[i];\n" +
