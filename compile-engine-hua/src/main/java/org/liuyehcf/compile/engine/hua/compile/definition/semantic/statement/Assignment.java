@@ -137,6 +137,8 @@ public class Assignment extends AbstractSemanticAction implements Serializable {
 
                     switch (identifierType.getTypeName()) {
                         case NORMAL_CHAR:
+                            context.addByteCodeToCurrentMethod(new _castore());
+                            break;
                         case NORMAL_INT:
                             context.addByteCodeToCurrentMethod(new _iastore());
                             break;
