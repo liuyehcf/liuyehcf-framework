@@ -3,19 +3,19 @@ package org.liuyehcf.compile.engine.hua.core.bytecode.ir;
 import org.liuyehcf.compile.engine.hua.runtime.RuntimeContext;
 
 /**
- * 返回int
+ * 返回long
  * < before → after >
  * < value → [empty] >
  *
  * @author hechenfeng
- * @date 2018/6/22
+ * @date 2018/7/1
  */
-public class _ireturn extends Return {
+public class _lreturn extends Return {
 
     /**
      * 唯一操作码
      */
-    public static final int OPERATOR_CODE = 0xac;
+    public static final int OPERATOR_CODE = 0xad;
 
     /**
      * 操作数类型
@@ -24,7 +24,8 @@ public class _ireturn extends Return {
 
     @Override
     public void operate(RuntimeContext context) {
-        int value = context.pop();
+        long value = context.popLong();
         context.setReturnValue(value);
     }
 }
+

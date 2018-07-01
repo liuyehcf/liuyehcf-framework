@@ -5,9 +5,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._aload;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iload;
-import org.liuyehcf.compile.engine.hua.core.bytecode.sl._lload;
+import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 
 import java.io.Serializable;
 
@@ -56,6 +54,12 @@ public class VariableLoad extends AbstractSemanticAction implements Serializable
                     break;
                 case NORMAL_LONG:
                     context.addByteCodeToCurrentMethod(new _lload(variableSymbol.getOrder()));
+                    break;
+                case NORMAL_FLOAT:
+                    context.addByteCodeToCurrentMethod(new _fload(variableSymbol.getOrder()));
+                    break;
+                case NORMAL_DOUBLE:
+                    context.addByteCodeToCurrentMethod(new _dload(variableSymbol.getOrder()));
                     break;
                 default:
                     throw new UnsupportedOperationException();

@@ -114,7 +114,18 @@ public class Type implements Serializable {
                 } else {
                     return createArrayType(NORMAL_LONG, dim);
                 }
-
+            case NORMAL_FLOAT:
+                if (dim == 0) {
+                    return TYPE_FLOAT;
+                } else {
+                    return createArrayType(NORMAL_FLOAT, dim);
+                }
+            case NORMAL_DOUBLE:
+                if (dim == 0) {
+                    return TYPE_DOUBLE;
+                } else {
+                    return createArrayType(NORMAL_DOUBLE, dim);
+                }
             default:
                 throw new UnsupportedOperationException();
         }

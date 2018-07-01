@@ -4,9 +4,7 @@ import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
-import org.liuyehcf.compile.engine.hua.core.bytecode.ir._areturn;
-import org.liuyehcf.compile.engine.hua.core.bytecode.ir._ireturn;
-import org.liuyehcf.compile.engine.hua.core.bytecode.ir._return;
+import org.liuyehcf.compile.engine.hua.core.bytecode.ir.*;
 
 import java.io.Serializable;
 
@@ -55,6 +53,15 @@ public class PushReturnByteCode extends AbstractSemanticAction implements Serial
                     case NORMAL_CHAR:
                     case NORMAL_INT:
                         context.addByteCodeToCurrentMethod(new _ireturn());
+                        break;
+                    case NORMAL_LONG:
+                        context.addByteCodeToCurrentMethod(new _lreturn());
+                        break;
+                    case NORMAL_FLOAT:
+                        context.addByteCodeToCurrentMethod(new _freturn());
+                        break;
+                    case NORMAL_DOUBLE:
+                        context.addByteCodeToCurrentMethod(new _dreturn());
                         break;
                     default:
                         throw new UnsupportedOperationException();

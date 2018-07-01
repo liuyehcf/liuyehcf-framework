@@ -2,10 +2,7 @@ package org.liuyehcf.compile.engine.hua.core.bytecode;
 
 import org.liuyehcf.compile.engine.hua.core.bytecode.cf.*;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp.*;
-import org.liuyehcf.compile.engine.hua.core.bytecode.ir._areturn;
-import org.liuyehcf.compile.engine.hua.core.bytecode.ir._invokestatic;
-import org.liuyehcf.compile.engine.hua.core.bytecode.ir._ireturn;
-import org.liuyehcf.compile.engine.hua.core.bytecode.ir._return;
+import org.liuyehcf.compile.engine.hua.core.bytecode.ir.*;
 import org.liuyehcf.compile.engine.hua.core.bytecode.oc._anewarray;
 import org.liuyehcf.compile.engine.hua.core.bytecode.oc._multianewarray;
 import org.liuyehcf.compile.engine.hua.core.bytecode.oc._newarray;
@@ -96,8 +93,11 @@ public class ByteCodeUtils {
          * InvokeAndReturn
          */
         register(_areturn.class);
+        register(_dreturn.class);
+        register(_freturn.class);
         register(_invokestatic.class);
         register(_ireturn.class);
+        register(_lreturn.class);
         register(_return.class);
 
         /*

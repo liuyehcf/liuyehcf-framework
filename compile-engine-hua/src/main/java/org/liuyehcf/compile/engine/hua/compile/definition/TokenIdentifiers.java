@@ -338,7 +338,7 @@ public abstract class TokenIdentifiers {
              * 比如位置i出现了e，那么将mustHaveNumberStartIndex设为i+1
              * return时，需要检查[mustHaveNumberFromIndex,i)是否包含数字
              */
-            int mustHaveNumberFromIndex = -1;
+            int mustHaveNumberFromIndex = 0;
 
             int i = 0;
             char c;
@@ -409,7 +409,7 @@ public abstract class TokenIdentifiers {
             /*
              * 检查[mustHaveNumberFromIndex,i)是否为空
              */
-            if (mustHaveNumberFromIndex != -1 && remainInput.substring(mustHaveNumberFromIndex, i).isEmpty()) {
+            if (remainInput.substring(mustHaveNumberFromIndex, i).isEmpty()) {
                 return null;
             }
 

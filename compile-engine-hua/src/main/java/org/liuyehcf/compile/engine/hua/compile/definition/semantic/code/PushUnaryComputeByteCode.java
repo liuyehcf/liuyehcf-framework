@@ -6,10 +6,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferT
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
-import org.liuyehcf.compile.engine.hua.core.bytecode.cp._ineg;
-import org.liuyehcf.compile.engine.hua.core.bytecode.cp._ixor;
-import org.liuyehcf.compile.engine.hua.core.bytecode.cp._lneg;
-import org.liuyehcf.compile.engine.hua.core.bytecode.cp._lxor;
+import org.liuyehcf.compile.engine.hua.core.bytecode.cp.*;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iconst;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._lconst;
 
@@ -61,6 +58,12 @@ public class PushUnaryComputeByteCode extends AbstractSemanticAction {
                     case NORMAL_LONG:
                         context.addByteCodeToCurrentMethod(new _lneg());
                         break;
+                    case NORMAL_FLOAT:
+                        context.addByteCodeToCurrentMethod(new _fneg());
+                        break;
+                    case NORMAL_DOUBLE:
+                        context.addByteCodeToCurrentMethod(new _dneg());
+                        break;
                     default:
                         throw new UnsupportedOperationException();
                 }
@@ -79,7 +82,7 @@ public class PushUnaryComputeByteCode extends AbstractSemanticAction {
                         context.addByteCodeToCurrentMethod(new _lxor());
                         break;
                     default:
-                        throw new UnsupportedOperationException();
+                        throw new UnsupportedOperationException("[SYNTAX_ERROR] - Operator '" + NORMAL_BIT_REVERSED + "' cannot support type '" + typeName + "'");
                 }
                 break;
             case NORMAL_LOGICAL_NOT:

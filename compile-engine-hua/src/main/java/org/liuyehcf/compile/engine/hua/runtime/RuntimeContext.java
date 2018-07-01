@@ -41,10 +41,44 @@ public class RuntimeContext {
         /*
          * 做类型兼容
          */
-        if (obj instanceof Integer) {
+        if (obj instanceof Character) {
+            return (long) (char) obj;
+        } else if (obj instanceof Integer) {
             return (long) (int) obj;
         }
         return (long) obj;
+    }
+
+    public float popFloat() {
+        Object obj = pop();
+        /*
+         * 做类型兼容
+         */
+        if (obj instanceof Character) {
+            return (float) (char) obj;
+        } else if (obj instanceof Integer) {
+            return (float) (int) obj;
+        } else if (obj instanceof Long) {
+            return (float) (long) obj;
+        }
+        return (float) obj;
+    }
+
+    public double popDouble() {
+        Object obj = pop();
+        /*
+         * 做类型兼容
+         */
+        if (obj instanceof Character) {
+            return (double) (char) obj;
+        } else if (obj instanceof Integer) {
+            return (double) (int) obj;
+        } else if (obj instanceof Long) {
+            return (double) (long) obj;
+        } else if (obj instanceof Float) {
+            return (double) (float) obj;
+        }
+        return (double) obj;
     }
 
     public Object invoke(MethodSignature methodSignature, Object[] args) {
@@ -64,13 +98,8 @@ public class RuntimeContext {
         currentMethod.finishMethod();
     }
 
-    public void intReturn(int value) {
+    public void setReturnValue(Object value) {
         setResult(value);
-        currentMethod.finishMethod();
-    }
-
-    public void referenceReturn(int reference) {
-        setResult(reference);
         currentMethod.finishMethod();
     }
 

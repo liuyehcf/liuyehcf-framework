@@ -6,6 +6,8 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.CompareOperatorT
 import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
+import org.liuyehcf.compile.engine.hua.core.bytecode.cp._dcmp;
+import org.liuyehcf.compile.engine.hua.core.bytecode.cp._fcmp;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp._lcmp;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
@@ -67,61 +69,67 @@ public class PushCompareTransferByteCode extends AbstractSemanticAction {
             finalType = rightType;
         }
 
-        switch (finalType.getTypeName()) {
-            case NORMAL_CHAR:
-            case NORMAL_INT:
-                switch (compareOperatorType) {
-                    case EQUAL:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPNE);
-                        break;
-                    case NOT_EQUAL:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPEQ);
-                        break;
-                    case LESS_THAN:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPGE);
-                        break;
-                    case LARGE_THEN:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPLE);
-                        break;
-                    case LESS_EQUAL:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPGT);
-                        break;
-                    case LARGE_EQUAL:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPLT);
-                        break;
-                    default:
-                        throw new UnsupportedOperationException();
-                }
-                break;
-            case NORMAL_LONG:
-                context.addByteCodeToCurrentMethod(new _lcmp());
-                switch (compareOperatorType) {
-                    case EQUAL:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFNE);
-                        break;
-                    case NOT_EQUAL:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFEQ);
-                        break;
-                    case LESS_THAN:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFGE);
-                        break;
-                    case LARGE_THEN:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFLE);
-                        break;
-                    case LESS_EQUAL:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFGT);
-                        break;
-                    case LARGE_EQUAL:
-                        context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFLT);
-                        break;
-                    default:
-                        throw new UnsupportedOperationException();
-                }
-                break;
-            default:
-                throw new UnsupportedOperationException();
-        }
 
+        String typeName = finalType.getTypeName();
+
+        if (NORMAL_CHAR.equals(typeName) || NORMAL_INT.equals(typeName)) {
+            switch (compareOperatorType) {
+                case EQUAL:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPNE);
+                    break;
+                case NOT_EQUAL:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPEQ);
+                    break;
+                case LESS_THAN:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPGE);
+                    break;
+                case LARGE_THEN:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPLE);
+                    break;
+                case LESS_EQUAL:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPGT);
+                    break;
+                case LARGE_EQUAL:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IF_ICMPLT);
+                    break;
+                default:
+                    throw new UnsupportedOperationException();
+            }
+        } else {
+            if (NORMAL_LONG.equals(typeName)) {
+                context.addByteCodeToCurrentMethod(new _lcmp());
+            } else if (NORMAL_FLOAT.equals(typeName)) {
+                context.addByteCodeToCurrentMethod(new _fcmp());
+            } else if (NORMAL_DOUBLE.equals(typeName)) {
+                context.addByteCodeToCurrentMethod(new _dcmp());
+            } else {
+                throw new UnsupportedOperationException();
+            }
+
+            switch (compareOperatorType) {
+                case EQUAL:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFNE);
+                    break;
+                case NOT_EQUAL:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFEQ);
+                    break;
+                case LESS_THAN:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFGE);
+                    break;
+                case LARGE_THEN:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFLE);
+                    break;
+                case LESS_EQUAL:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFGT);
+                    break;
+                case LARGE_EQUAL:
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFLT);
+                    break;
+                default:
+                    throw new UnsupportedOperationException();
+            }
+        }
+        
         context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_BOOLEAN);
     }
 }
