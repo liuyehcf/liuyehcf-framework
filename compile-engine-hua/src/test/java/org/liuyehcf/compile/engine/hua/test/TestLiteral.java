@@ -112,13 +112,16 @@ public class TestLiteral {
     }
 
     @Test
-    public void testDecimalLiteral() {
+    public void testDoubleLiteral() {
         String text = "void func() {\n" +
-                "\tint a=5;\n" +
-                "\tlong b=+0L;\n" +
-                "\ta+=-100;\n" +
-                "\tb-=-0L;\n" +
-                "\tb+=-10000L;\n" +
+                "\tdouble a=0d;\n" +
+                "\ta=1d;\n" +
+                "\ta=1.d;\n" +
+                "\ta=.0d;\n" +
+                "\ta=.123d;\n" +
+                "\ta=1e9d;\n" +
+                "\ta=0e-3d;\n" +
+                "\ta=3.3e+3d;\n" +
                 "}";
 
         System.out.println(text);
@@ -126,43 +129,10 @@ public class TestLiteral {
         CompileResult<IntermediateInfo> result = getCompiler().compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_lconst\",\"value\":0},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":100},{\"name\":\"_ineg\"},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lconst\",\"value\":0},{\"name\":\"_lneg\"},{\"name\":\"_lsub\"},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lconst\",\"value\":10000},{\"name\":\"_lneg\"},{\"name\":\"_ladd\"},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_return\"}]}",
+                "{\"func()\":[{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.123},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0E9},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":3300.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_return\"}]}",
                 result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }
-
-    @Test
-    public void testHexLiteral() {
-        String text = "void func() {\n" +
-                "\tint a=0X005,b=0xffff;\n" +
-                "}";
-
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":65535},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
-    }
-
-    @Test
-    public void testOctalLiteral() {
-        String text = "void func() {\n" +
-                "\tint a=0005,b=0765;\n" +
-                "}";
-
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":501},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
-    }
-
 
     @Test
     public void testStringLiteral() {
