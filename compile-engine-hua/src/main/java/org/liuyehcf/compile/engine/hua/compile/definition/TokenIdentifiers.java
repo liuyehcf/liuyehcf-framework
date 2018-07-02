@@ -326,12 +326,12 @@ public abstract class TokenIdentifiers {
             /*
              * 是否有指数符号
              */
-            boolean hasExponent = false;
+            boolean canHaveExponent = true;
 
             /*
              * 是否有小数点
              */
-            boolean hasPoint = false;
+            boolean canHavePoint = true;
 
             /*
              * 是否有必须包含数字的区域
@@ -359,11 +359,16 @@ public abstract class TokenIdentifiers {
                     /*
                      * 最多允许一个指数符号
                      */
-                    if (hasExponent || hasPoint) {
+                    if (!canHaveExponent) {
                         return null;
                     }
 
-                    hasExponent = true;
+                    /*
+                     * 指数符号出现后，不允许出现指数符号以及小数点
+                     */
+                    canHaveExponent = false;
+                    canHavePoint = false;
+
                     i++;
 
                     /*
@@ -379,11 +384,11 @@ public abstract class TokenIdentifiers {
                     mustHaveNumberFromIndex = i;
                 } else if (FLOAT_POINT == c) {
 
-                    if (hasExponent || hasPoint) {
+                    if (!canHavePoint) {
                         return null;
                     }
 
-                    hasPoint = true;
+                    canHavePoint = false;
 
                     /*
                      * 如果第一位就是'.'，那么之后必须包含数字
