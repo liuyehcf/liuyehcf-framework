@@ -201,8 +201,17 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
         private int getFinalCodeOffset(List<ByteCode> byteCodes, final int codeOffset) {
             int optimizedCodeOffset = codeOffset;
 
+            Set<ByteCode> visitedCodes = new HashSet<>();
+
             ByteCode code;
             while ((code = byteCodes.get(optimizedCodeOffset)) instanceof ControlTransfer) {
+                /*
+                 * 对于for(;;){}这样的循环，只有一个goto语句，且回到原点
+                 * 跳转链路的终点是一个goto self
+                 */
+                if (!visitedCodes.add(code)) {
+                    return optimizedCodeOffset;
+                }
                 optimizedCodeOffset = ((ControlTransfer) code).getCodeOffset();
             }
 

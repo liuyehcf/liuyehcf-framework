@@ -305,6 +305,32 @@ public class TestIf {
     }
 
     @Test
+    public void testNestedIfThenElseFollowByLoopFor() {
+        String text = "void func(int i) {\n" +
+                "\tif(i<1){\n" +
+                "\t\tif(i<2){\n" +
+                "\t\t\ti=10;\n" +
+                "\t\t}else{\n" +
+                "\t\t\ti=30;\n" +
+                "\t\t}\n" +
+                "\t}else{\n" +
+                "\t\ti=20;\n" +
+                "\t}\n" +
+                "\tfor(;;){\n" +
+                "\t}\n" +
+                "}";
+
+        System.out.println(text);
+
+        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
+        assertTrue(result.isSuccess());
+        assertEquals(
+                "{\"func(int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":12,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":2},{\"codeOffset\":9,\"name\":\"_if_icmpge\"},{\"name\":\"_iconst\",\"value\":10},{\"name\":\"_istore\",\"order\":0},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":30},{\"name\":\"_istore\",\"order\":0},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":20},{\"name\":\"_istore\",\"order\":0},{\"codeOffset\":14,\"name\":\"_goto\"}]}",
+                result.getResult().getMethodInfoTable().toSimpleJSONString()
+        );
+    }
+
+    @Test
     public void testNestedIf1() {
         String text = "void func(boolean a, boolean b, boolean c, boolean d,int i){\n" +
                 "\tif(a){\n" +
