@@ -1,15 +1,11 @@
 package org.liuyehcf.compile.engine.hua.test;
 
 import org.junit.Test;
-import org.liuyehcf.compile.engine.core.CompileResult;
-import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.liuyehcf.compile.engine.hua.test.TestGrammar.getCompiler;
+import static org.liuyehcf.compile.engine.hua.test.TestUtil.test;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/7/1
  */
 public class TestVariableInitialize {
@@ -21,14 +17,7 @@ public class TestVariableInitialize {
                 "\tboolean b=i<=0||i<=100&&i>=3;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"codeOffset\":11,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":100},{\"codeOffset\":13,\"name\":\"_if_icmpgt\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":13,\"name\":\"_if_icmplt\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"codeOffset\":11,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":100},{\"codeOffset\":13,\"name\":\"_if_icmpgt\"},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":13,\"name\":\"_if_icmplt\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -38,14 +27,7 @@ public class TestVariableInitialize {
                 "\tchar b=c+'1';\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char)\":[{\"name\":\"_iconst\",\"value\":97},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char)\":[{\"name\":\"_iconst\",\"value\":97},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -55,14 +37,7 @@ public class TestVariableInitialize {
                 "\tint b=c+0777;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":100},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":511},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":100},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":511},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -72,14 +47,7 @@ public class TestVariableInitialize {
                 "\tlong b=c+1000000l;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long)\":[{\"name\":\"_lconst\",\"value\":100},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lconst\",\"value\":1000000},{\"name\":\"_ladd\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long)\":[{\"name\":\"_lconst\",\"value\":100},{\"name\":\"_lstore\",\"order\":1},{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lconst\",\"value\":1000000},{\"name\":\"_ladd\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -89,14 +57,7 @@ public class TestVariableInitialize {
                 "\tfloat b=c+1e-10f;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(float)\":[{\"name\":\"_fconst\",\"value\":100.0},{\"name\":\"_fstore\",\"order\":1},{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fconst\",\"value\":1.0E-10},{\"name\":\"_fadd\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(float)\":[{\"name\":\"_fconst\",\"value\":100.0},{\"name\":\"_fstore\",\"order\":1},{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fconst\",\"value\":1.0E-10},{\"name\":\"_fadd\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -106,14 +67,7 @@ public class TestVariableInitialize {
                 "\tdouble b=c+9.9e+10d;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(double)\":[{\"name\":\"_dconst\",\"value\":100.0},{\"name\":\"_dstore\",\"order\":1},{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dconst\",\"value\":9.9E10},{\"name\":\"_dadd\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(double)\":[{\"name\":\"_dconst\",\"value\":100.0},{\"name\":\"_dstore\",\"order\":1},{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dconst\",\"value\":9.9E10},{\"name\":\"_dadd\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -123,14 +77,7 @@ public class TestVariableInitialize {
                 "\tboolean[] b=c;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(boolean[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"boolean\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(boolean[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"boolean\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -140,14 +87,7 @@ public class TestVariableInitialize {
                 "\tchar[] b=c;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"char\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"char\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -157,14 +97,7 @@ public class TestVariableInitialize {
                 "\tint[] b=c;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -174,14 +107,7 @@ public class TestVariableInitialize {
                 "\tlong[] b=c;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"long\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"long\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -191,14 +117,7 @@ public class TestVariableInitialize {
                 "\tfloat[] b=c;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(float[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"float\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(float[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"float\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -208,14 +127,7 @@ public class TestVariableInitialize {
                 "\tdouble[] b=c;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(double[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"double\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(double[])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_newarray\",\"type\":\"double\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -227,14 +139,7 @@ public class TestVariableInitialize {
                 "\tboolean[][][] d=e;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(boolean[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"boolean[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"boolean[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"boolean[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(boolean[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"boolean[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"boolean[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"boolean[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -246,14 +151,7 @@ public class TestVariableInitialize {
                 "\tchar[][][] d=e;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"char[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"char[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"char[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"char[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"char[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"char[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -265,14 +163,7 @@ public class TestVariableInitialize {
                 "\tint[][][] d=e;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"int[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"int[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"int[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"int[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"int[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"int[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -284,14 +175,7 @@ public class TestVariableInitialize {
                 "\tlong[][][] d=e;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"long[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"long[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"long[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"long[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"long[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"long[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -303,14 +187,7 @@ public class TestVariableInitialize {
                 "\tfloat[][][] d=e;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(float[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"float[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"float[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"float[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(float[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"float[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"float[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"float[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -322,13 +199,6 @@ public class TestVariableInitialize {
                 "\tdouble[][][] d=e;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(double[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"double[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"double[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"double[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(double[][][])\":[{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"name\":\"_iconst\",\"value\":3},{\"expressionDimSize\":3,\"name\":\"_multianewarray\",\"type\":\"double[][][]\"},{\"name\":\"_astore\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_iconst\",\"value\":4},{\"expressionDimSize\":2,\"name\":\"_multianewarray\",\"type\":\"double[][][]\"},{\"name\":\"_astore\",\"order\":2},{\"name\":\"_iconst\",\"value\":5},{\"name\":\"_anewarray\",\"type\":\"double[][]\"},{\"name\":\"_astore\",\"order\":3},{\"name\":\"_aload\",\"order\":0},{\"name\":\"_astore\",\"order\":4},{\"name\":\"_return\"}]}");
     }
 }

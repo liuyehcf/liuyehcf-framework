@@ -1,15 +1,11 @@
 package org.liuyehcf.compile.engine.hua.test;
 
 import org.junit.Test;
-import org.liuyehcf.compile.engine.core.CompileResult;
-import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.liuyehcf.compile.engine.hua.test.TestGrammar.getCompiler;
+import static org.liuyehcf.compile.engine.hua.test.TestUtil.test;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/7/1
  */
 public class TestFor {
@@ -21,14 +17,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"codeOffset\":0,\"name\":\"_goto\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"codeOffset\":0,\"name\":\"_goto\"}]}");
     }
 
     @Test
@@ -39,14 +28,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":0,\"name\":\"_goto\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":0,\"name\":\"_goto\"}]}");
     }
 
     @Test
@@ -56,14 +38,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":0,\"name\":\"_goto\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":0,\"name\":\"_goto\"}]}");
     }
 
     @Test
@@ -74,14 +49,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":5,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":5,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -92,14 +60,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":2,\"name\":\"_goto\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":2,\"name\":\"_goto\"}]}");
     }
 
     @Test
@@ -110,14 +71,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":6,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":6,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":0,\"name\":\"_goto\"},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -128,14 +82,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":2,\"name\":\"_goto\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":2,\"name\":\"_goto\"}]}");
     }
 
     @Test
@@ -145,14 +92,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":7,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":7,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -163,14 +103,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":10,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":4,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":10,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":4,\"name\":\"_goto\"},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -180,14 +113,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":12,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"increment\":-1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":12,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"increment\":-1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -200,14 +126,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":11,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":9,\"name\":\"_if_icmple\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":11,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":9,\"name\":\"_if_icmple\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -222,14 +141,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":10,\"name\":\"_if_icmple\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":10,\"name\":\"_if_icmple\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":14,\"name\":\"_goto\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":2},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":1},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -242,14 +154,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":12,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":10,\"name\":\"_if_icmpgt\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":5,\"name\":\"_goto\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":12,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":10,\"name\":\"_if_icmpgt\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":5,\"name\":\"_goto\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -262,14 +167,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":11,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":5,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int)\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":11,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":5,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -283,14 +181,7 @@ public class TestFor {
                 "\t}\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":100},{\"codeOffset\":13,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":7,\"name\":\"_goto\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iconst\",\"value\":100},{\"codeOffset\":13,\"name\":\"_if_icmpge\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":1},{\"codeOffset\":7,\"name\":\"_goto\"},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"increment\":1,\"name\":\"_iinc\",\"order\":0},{\"codeOffset\":2,\"name\":\"_goto\"},{\"name\":\"_return\"}]}");
     }
 
 }

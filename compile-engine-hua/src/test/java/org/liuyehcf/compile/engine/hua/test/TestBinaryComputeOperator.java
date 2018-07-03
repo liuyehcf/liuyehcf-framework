@@ -1,12 +1,8 @@
 package org.liuyehcf.compile.engine.hua.test;
 
 import org.junit.Test;
-import org.liuyehcf.compile.engine.core.CompileResult;
-import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.liuyehcf.compile.engine.hua.test.TestGrammar.getCompiler;
+import static org.liuyehcf.compile.engine.hua.test.TestUtil.test;
 
 /**
  * @author hechenfeng
@@ -20,14 +16,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a+b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -36,14 +25,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a+b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iadd\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -52,14 +34,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a+b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_ladd\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_ladd\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -68,14 +43,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a+b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(float,float,float)\":[{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_fadd\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(float,float,float)\":[{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_fadd\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -84,14 +52,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a+b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(double,double,double)\":[{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dload\",\"order\":1},{\"name\":\"_dadd\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(double,double,double)\":[{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dload\",\"order\":1},{\"name\":\"_dadd\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -100,14 +61,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a-b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -116,14 +70,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a-b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_isub\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -132,14 +79,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a-b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lsub\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lsub\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -148,14 +88,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a-b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(float,float,float)\":[{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_fsub\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(float,float,float)\":[{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_fsub\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -164,14 +97,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a-b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(double,double,double)\":[{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dload\",\"order\":1},{\"name\":\"_dsub\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(double,double,double)\":[{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dload\",\"order\":1},{\"name\":\"_dsub\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -180,14 +106,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a*b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_imul\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_imul\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -196,14 +115,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a*b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_imul\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_imul\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -212,14 +124,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a*b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lmul\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lmul\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -228,14 +133,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a*b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(float,float,float)\":[{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_fmul\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(float,float,float)\":[{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_fmul\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -244,14 +142,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a*b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(double,double,double)\":[{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dload\",\"order\":1},{\"name\":\"_dmul\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(double,double,double)\":[{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dload\",\"order\":1},{\"name\":\"_dmul\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -260,14 +151,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a/b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_idiv\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_idiv\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -276,14 +160,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a/b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_idiv\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_idiv\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -292,14 +169,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a/b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_ldiv\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_ldiv\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -308,14 +178,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a/b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(float,float,float)\":[{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_fdiv\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(float,float,float)\":[{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_fdiv\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -324,14 +187,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a/b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(double,double,double)\":[{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dload\",\"order\":1},{\"name\":\"_ddiv\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(double,double,double)\":[{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dload\",\"order\":1},{\"name\":\"_ddiv\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -340,14 +196,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a%b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_irem\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_irem\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -356,14 +205,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a%b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_irem\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_irem\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -372,14 +214,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a%b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lrem\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lrem\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -388,14 +223,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a%b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(float,float,float)\":[{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_frem\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(float,float,float)\":[{\"name\":\"_fload\",\"order\":0},{\"name\":\"_fload\",\"order\":1},{\"name\":\"_frem\"},{\"name\":\"_fstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -404,14 +232,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a%b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(double,double,double)\":[{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dload\",\"order\":1},{\"name\":\"_drem\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(double,double,double)\":[{\"name\":\"_dload\",\"order\":0},{\"name\":\"_dload\",\"order\":1},{\"name\":\"_drem\"},{\"name\":\"_dstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -420,14 +241,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a<<b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ishl\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ishl\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -436,14 +250,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a<<b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ishl\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ishl\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -452,14 +259,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a<<b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lshl\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lshl\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -468,14 +268,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a>>b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ishr\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ishr\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -484,14 +277,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a>>b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ishr\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ishr\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -500,14 +286,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a>>b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lshr\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lshr\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -516,14 +295,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a>>>b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iushr\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iushr\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -532,14 +304,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a>>>b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iushr\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iushr\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -548,14 +313,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a>>>b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lushr\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lushr\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -564,14 +322,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a&b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iand\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iand\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -580,14 +331,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a&b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iand\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_iand\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -596,14 +340,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a&b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_land\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_land\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -612,14 +349,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a|b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ior\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ior\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -628,14 +358,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a|b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ior\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ior\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -644,14 +367,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a|b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lor\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lor\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -660,14 +376,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a^b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ixor\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(char,char,char)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ixor\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -676,14 +385,7 @@ public class TestBinaryComputeOperator {
                 "\tc=a^b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ixor\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(int,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"name\":\"_iload\",\"order\":1},{\"name\":\"_ixor\"},{\"name\":\"_istore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -692,13 +394,6 @@ public class TestBinaryComputeOperator {
                 "\tc=a^b;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lxor\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func(long,long,long)\":[{\"name\":\"_lload\",\"order\":0},{\"name\":\"_lload\",\"order\":1},{\"name\":\"_lxor\"},{\"name\":\"_lstore\",\"order\":2},{\"name\":\"_return\"}]}");
     }
 }

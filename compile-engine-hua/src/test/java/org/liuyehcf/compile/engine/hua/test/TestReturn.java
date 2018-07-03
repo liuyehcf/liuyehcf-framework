@@ -1,15 +1,11 @@
 package org.liuyehcf.compile.engine.hua.test;
 
 import org.junit.Test;
-import org.liuyehcf.compile.engine.core.CompileResult;
-import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.liuyehcf.compile.engine.hua.test.TestGrammar.getCompiler;
+import static org.liuyehcf.compile.engine.hua.test.TestUtil.test;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/7/1
  */
 public class TestReturn {
@@ -19,14 +15,7 @@ public class TestReturn {
                 "\treturn true;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_ireturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_ireturn\"}]}");
     }
 
     @Test
@@ -35,14 +24,7 @@ public class TestReturn {
                 "\treturn 'a';\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":97},{\"name\":\"_ireturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":97},{\"name\":\"_ireturn\"}]}");
     }
 
     @Test
@@ -51,14 +33,7 @@ public class TestReturn {
                 "\treturn 1;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_ireturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_ireturn\"}]}");
     }
 
     @Test
@@ -67,14 +42,7 @@ public class TestReturn {
                 "\treturn 1L;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lreturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_lconst\",\"value\":1},{\"name\":\"_lreturn\"}]}");
     }
 
     @Test
@@ -83,14 +51,7 @@ public class TestReturn {
                 "\treturn 1.0f;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_fconst\",\"value\":1.0},{\"name\":\"_freturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_fconst\",\"value\":1.0},{\"name\":\"_freturn\"}]}");
     }
 
     @Test
@@ -99,14 +60,7 @@ public class TestReturn {
                 "\treturn 1.0d;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dreturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dreturn\"}]}");
     }
 
     @Test
@@ -115,14 +69,7 @@ public class TestReturn {
                 "\treturn new boolean[1];\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"boolean\"},{\"name\":\"_areturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"boolean\"},{\"name\":\"_areturn\"}]}");
     }
 
     @Test
@@ -131,14 +78,7 @@ public class TestReturn {
                 "\treturn new char[1];\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"char\"},{\"name\":\"_areturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"char\"},{\"name\":\"_areturn\"}]}");
     }
 
     @Test
@@ -147,14 +87,7 @@ public class TestReturn {
                 "\treturn new int[1];\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_areturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"int\"},{\"name\":\"_areturn\"}]}");
     }
 
     @Test
@@ -163,14 +96,7 @@ public class TestReturn {
                 "\treturn new long[1];\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"long\"},{\"name\":\"_areturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"long\"},{\"name\":\"_areturn\"}]}");
     }
 
     @Test
@@ -179,14 +105,7 @@ public class TestReturn {
                 "\treturn new float[1];\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"float\"},{\"name\":\"_areturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"float\"},{\"name\":\"_areturn\"}]}");
     }
 
     @Test
@@ -195,13 +114,6 @@ public class TestReturn {
                 "\treturn new double[1];\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"double\"},{\"name\":\"_areturn\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_newarray\",\"type\":\"double\"},{\"name\":\"_areturn\"}]}");
     }
 }

@@ -1,15 +1,11 @@
 package org.liuyehcf.compile.engine.hua.test;
 
 import org.junit.Test;
-import org.liuyehcf.compile.engine.core.CompileResult;
-import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.liuyehcf.compile.engine.hua.test.TestGrammar.getCompiler;
+import static org.liuyehcf.compile.engine.hua.test.TestUtil.test;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/7/1
  */
 public class TestLiteral {
@@ -21,14 +17,7 @@ public class TestLiteral {
                 "\tboolean b=false;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":1},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -40,14 +29,7 @@ public class TestLiteral {
                 "\ta='\n';\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":97},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":97},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":49},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":10},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -60,14 +42,7 @@ public class TestLiteral {
                 "\ta=0767;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":100},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":100},{\"name\":\"_ineg\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":65535},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":503},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":100},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":100},{\"name\":\"_ineg\"},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":65535},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_iconst\",\"value\":503},{\"name\":\"_istore\",\"order\":0},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -78,14 +53,7 @@ public class TestLiteral {
                 "\ta=-100L;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_lconst\",\"value\":0},{\"name\":\"_lstore\",\"order\":0},{\"name\":\"_lconst\",\"value\":100},{\"name\":\"_lstore\",\"order\":0},{\"name\":\"_lconst\",\"value\":100},{\"name\":\"_lneg\"},{\"name\":\"_lstore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_lconst\",\"value\":0},{\"name\":\"_lstore\",\"order\":0},{\"name\":\"_lconst\",\"value\":100},{\"name\":\"_lstore\",\"order\":0},{\"name\":\"_lconst\",\"value\":100},{\"name\":\"_lneg\"},{\"name\":\"_lstore\",\"order\":0},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -101,14 +69,7 @@ public class TestLiteral {
                 "\ta=3.3e+3f;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_fconst\",\"value\":0.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":1.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":1.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":0.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":0.123},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":1.0E9},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":0.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":3300.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_fconst\",\"value\":0.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":1.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":1.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":0.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":0.123},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":1.0E9},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":0.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_fconst\",\"value\":3300.0},{\"name\":\"_fstore\",\"order\":0},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -124,14 +85,7 @@ public class TestLiteral {
                 "\ta=3.3e+3d;\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.123},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0E9},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":3300.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.123},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0E9},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":3300.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_return\"}]}");
     }
 
     @Test
@@ -140,13 +94,6 @@ public class TestLiteral {
                 "\tchar[] c=\"abcdefg\";\n" +
                 "}";
 
-        System.out.println(text);
-
-        CompileResult<IntermediateInfo> result = getCompiler().compile(text);
-        assertTrue(result.isSuccess());
-        assertEquals(
-                "{\"func()\":[{\"constantPoolOffset\":30,\"name\":\"_ldc\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_return\"}]}",
-                result.getResult().getMethodInfoTable().toSimpleJSONString()
-        );
+        test(text, "{\"func()\":[{\"constantPoolOffset\":30,\"name\":\"_ldc\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_return\"}]}");
     }
 }
