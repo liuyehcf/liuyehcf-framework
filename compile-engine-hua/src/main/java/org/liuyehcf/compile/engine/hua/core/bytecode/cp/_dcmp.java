@@ -27,8 +27,8 @@ public class _dcmp extends Compute {
 
     @Override
     public void operate(RuntimeContext context) {
-        double value2 = context.pop();
-        double value1 = context.pop();
+        double value2 = context.popDouble();
+        double value1 = context.popDouble();
 
         int result;
         if (value1 == value2) {

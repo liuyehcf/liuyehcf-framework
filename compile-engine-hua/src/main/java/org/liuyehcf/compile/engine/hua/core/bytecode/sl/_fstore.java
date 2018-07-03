@@ -38,7 +38,7 @@ public class _fstore extends StoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
-        float value = context.pop();
+        float value = context.popFloat();
 
         context.storeFloat(order, value);
 

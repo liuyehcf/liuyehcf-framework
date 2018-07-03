@@ -169,6 +169,10 @@ public class HuaClassOutputStream extends DataOutputStream {
                 writeInt((int) operators[i]);
             } else if (long.class.equals(clazz) || Long.class.equals(clazz)) {
                 writeLong((long) operators[i]);
+            } else if (float.class.equals(clazz) || Float.class.equals(clazz)) {
+                writeFloat((float) operators[i]);
+            } else if (double.class.equals(clazz) || Double.class.equals(clazz)) {
+                writeDouble((double) operators[i]);
             } else {
                 throw new IOException();
             }

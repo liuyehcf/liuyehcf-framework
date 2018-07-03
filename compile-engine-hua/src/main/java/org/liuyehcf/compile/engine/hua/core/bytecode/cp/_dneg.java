@@ -24,7 +24,7 @@ public class _dneg extends Compute {
 
     @Override
     public void operate(RuntimeContext context) {
-        double value = context.pop();
+        double value = context.popDouble();
         context.push(-value);
         context.increaseCodeOffset();
     }

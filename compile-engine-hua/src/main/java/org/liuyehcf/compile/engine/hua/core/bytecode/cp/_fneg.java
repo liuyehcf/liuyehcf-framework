@@ -24,7 +24,7 @@ public class _fneg extends Compute {
 
     @Override
     public void operate(RuntimeContext context) {
-        float value = context.pop();
+        float value = context.popFloat();
         context.push(-value);
         context.increaseCodeOffset();
     }

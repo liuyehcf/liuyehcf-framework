@@ -24,8 +24,8 @@ public class _drem extends Compute {
 
     @Override
     public void operate(RuntimeContext context) {
-        double value2 = context.pop();
-        double value1 = context.pop();
+        double value2 = context.popDouble();
+        double value1 = context.popDouble();
 
         context.push(value1 % value2);
 

@@ -192,6 +192,10 @@ public class HuaClassInputStream extends DataInputStream {
                 operators[i] = readInt();
             } else if (long.class.equals(clazz) || Long.class.equals(clazz)) {
                 operators[i] = readLong();
+            } else if (float.class.equals(clazz) || Float.class.equals(clazz)) {
+                operators[i] = readFloat();
+            } else if (double.class.equals(clazz) || Double.class.equals(clazz)) {
+                operators[i] = readDouble();
             } else {
                 throw new IOException();
             }

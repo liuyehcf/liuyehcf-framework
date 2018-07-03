@@ -133,20 +133,40 @@ public class Type implements Serializable {
 
     public static boolean isCompatible(Type mainType, Type subType) {
         /*
-         * long兼容int和char
+         * int兼容char
          */
-        if (TYPE_LONG.equals(mainType)) {
+        if (TYPE_INT.equals(mainType)) {
+            return TYPE_INT.equals(subType)
+                    || TYPE_CHAR.equals(subType);
+        }
+        /*
+         * long兼容int、char
+         */
+        else if (TYPE_LONG.equals(mainType)) {
             return TYPE_LONG.equals(subType)
                     || TYPE_INT.equals(subType)
                     || TYPE_CHAR.equals(subType);
         }
         /*
-         * int兼容char
+         * float兼容int、char、long
          */
-        else if (TYPE_INT.equals(mainType)) {
-            return TYPE_INT.equals(subType)
+        else if (TYPE_FLOAT.equals(mainType)) {
+            return TYPE_FLOAT.equals(subType)
+                    || TYPE_LONG.equals(subType)
+                    || TYPE_INT.equals(subType)
                     || TYPE_CHAR.equals(subType);
         }
+        /*
+         * double兼容int、char、long、float
+         */
+        else if (TYPE_DOUBLE.equals(mainType)) {
+            return TYPE_DOUBLE.equals(subType)
+                    || TYPE_FLOAT.equals(subType)
+                    || TYPE_LONG.equals(subType)
+                    || TYPE_INT.equals(subType)
+                    || TYPE_CHAR.equals(subType);
+        }
+
         return mainType.equals(subType);
     }
 

@@ -29,7 +29,7 @@
     * int
     * long
     * float
-    * long
+    * double
     * new
     * return
     * true
@@ -83,22 +83,32 @@
     * `print(char)`
     * `print(int)`
     * `print(long)`
+    * `print(float)`
+    * `print(double)`
     * `print(boolean[])`
     * `print(char[])`
     * `print(int[])`
     * `print(long[])`
+    * `print(float[])`
+    * `print(double[])`
     * `println(boolean)`
     * `println(char)`
     * `println(int)`
     * `println(long)`
+    * `println(float)`
+    * `println(double)`
     * `println(boolean[])`
     * `println(char[])`
     * `println(int[])`
     * `println(long[])`
+    * `println(float[])`
+    * `println(double[])`
     * `nextBoolean()`
     * `nextInt(int,int)`
     * `nextInt()`
     * `nextLong()`
+    * `nextFloat()`
+    * `nextDouble()`
 
 1. 一个可执行的.hclass文件必须包含`main(char[][])`方法，这是整个程序执行的入口
 

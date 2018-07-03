@@ -145,7 +145,7 @@ public class TestLiteral {
         CompileResult<IntermediateInfo> result = getCompiler().compile(text);
         assertTrue(result.isSuccess());
         assertEquals(
-                "{\"func()\":[{\"constantPoolOffset\":20,\"name\":\"_ldc\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_return\"}]}",
+                "{\"func()\":[{\"constantPoolOffset\":30,\"name\":\"_ldc\"},{\"name\":\"_astore\",\"order\":0},{\"name\":\"_return\"}]}",
                 result.getResult().getMethodInfoTable().toSimpleJSONString()
         );
     }

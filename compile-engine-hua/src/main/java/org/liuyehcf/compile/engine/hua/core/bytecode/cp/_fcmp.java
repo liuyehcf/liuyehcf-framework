@@ -27,8 +27,8 @@ public class _fcmp extends Compute {
 
     @Override
     public void operate(RuntimeContext context) {
-        float value2 = context.pop();
-        float value1 = context.pop();
+        float value2 = context.popFloat();
+        float value1 = context.popFloat();
 
         int result;
         if (value1 == value2) {

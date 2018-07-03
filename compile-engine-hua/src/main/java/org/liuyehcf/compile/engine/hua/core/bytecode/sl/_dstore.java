@@ -38,7 +38,7 @@ public class _dstore extends StoreLoad {
 
     @Override
     public void operate(RuntimeContext context) {
-        double value = context.pop();
+        double value = context.popDouble();
 
         context.storeDouble(order, value);
 

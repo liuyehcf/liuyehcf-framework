@@ -28,25 +28,35 @@ public class SystemMethod {
     private static final MethodSignature PRINT_CHAR = new MethodSignature("print", new String[]{NORMAL_CHAR});
     private static final MethodSignature PRINT_INT = new MethodSignature("print", new String[]{NORMAL_INT});
     private static final MethodSignature PRINT_LONG = new MethodSignature("print", new String[]{NORMAL_LONG});
+    private static final MethodSignature PRINT_FLOAT = new MethodSignature("print", new String[]{NORMAL_FLOAT});
+    private static final MethodSignature PRINT_DOUBLE = new MethodSignature("print", new String[]{NORMAL_DOUBLE});
 
     private static final MethodSignature PRINT_BOOLEAN_ARRAY = new MethodSignature("print", new String[]{Type.TYPE_BOOLEAN_ARRAY.toTypeDescription()});
     private static final MethodSignature PRINT_CHAR_ARRAY = new MethodSignature("print", new String[]{Type.TYPE_CHAR_ARRAY.toTypeDescription()});
     private static final MethodSignature PRINT_INT_ARRAY = new MethodSignature("print", new String[]{Type.TYPE_INT_ARRAY.toTypeDescription()});
     private static final MethodSignature PRINT_LONG_ARRAY = new MethodSignature("print", new String[]{Type.TYPE_LONG_ARRAY.toTypeDescription()});
+    private static final MethodSignature PRINT_FLOAT_ARRAY = new MethodSignature("print", new String[]{Type.TYPE_FLOAT_ARRAY.toTypeDescription()});
+    private static final MethodSignature PRINT_DOUBLE_ARRAY = new MethodSignature("print", new String[]{Type.TYPE_DOUBLE_ARRAY.toTypeDescription()});
 
     private static final MethodSignature PRINTLN_BOOLEAN = new MethodSignature("println", new String[]{NORMAL_BOOLEAN});
     private static final MethodSignature PRINTLN_CHAR = new MethodSignature("println", new String[]{NORMAL_CHAR});
     private static final MethodSignature PRINTLN_INT = new MethodSignature("println", new String[]{NORMAL_INT});
     private static final MethodSignature PRINTLN_LONG = new MethodSignature("println", new String[]{NORMAL_LONG});
+    private static final MethodSignature PRINTLN_FLOAT = new MethodSignature("println", new String[]{NORMAL_FLOAT});
+    private static final MethodSignature PRINTLN_DOUBLE = new MethodSignature("println", new String[]{NORMAL_DOUBLE});
 
     private static final MethodSignature PRINTLN_BOOLEAN_ARRAY = new MethodSignature("println", new String[]{Type.TYPE_BOOLEAN_ARRAY.toTypeDescription()});
     private static final MethodSignature PRINTLN_CHAR_ARRAY = new MethodSignature("println", new String[]{Type.TYPE_CHAR_ARRAY.toTypeDescription()});
     private static final MethodSignature PRINTLN_INT_ARRAY = new MethodSignature("println", new String[]{Type.TYPE_INT_ARRAY.toTypeDescription()});
     private static final MethodSignature PRINTLN_LONG_ARRAY = new MethodSignature("println", new String[]{Type.TYPE_LONG_ARRAY.toTypeDescription()});
+    private static final MethodSignature PRINTLN_FLOAT_ARRAY = new MethodSignature("println", new String[]{Type.TYPE_FLOAT_ARRAY.toTypeDescription()});
+    private static final MethodSignature PRINTLN_DOUBLE_ARRAY = new MethodSignature("println", new String[]{Type.TYPE_DOUBLE_ARRAY.toTypeDescription()});
 
     private static final MethodSignature RANDOM_NEXT = new MethodSignature("nextInt", new String[]{NORMAL_INT, NORMAL_INT});
     private static final MethodSignature RANDOM_NEXT_INT = new MethodSignature("nextInt", new String[]{});
     private static final MethodSignature RANDOM_NEXT_LONG = new MethodSignature("nextInt", new String[]{});
+    private static final MethodSignature RANDOM_NEXT_FLOAT = new MethodSignature("nextFloat", new String[]{});
+    private static final MethodSignature RANDOM_NEXT_DOUBLE = new MethodSignature("nextDouble", new String[]{});
     private static final MethodSignature RANDOM_NEXT_BOOLEAN = new MethodSignature("nextBoolean", new String[]{});
 
     private static final Random random = new Random();
@@ -90,6 +100,24 @@ public class SystemMethod {
                         (args) -> {
                             long longArg = (long) args[0];
                             System.out.print(longArg);
+                            return null;
+                        }
+                ));
+        SYSTEM_METHOD_POOL.put(PRINT_FLOAT,
+                new Pair<>(
+                        createFakeMethodInfo(PRINT_FLOAT, Type.TYPE_VOID),
+                        (args) -> {
+                            float floatArg = (float) args[0];
+                            System.out.print(floatArg);
+                            return null;
+                        }
+                ));
+        SYSTEM_METHOD_POOL.put(PRINT_DOUBLE,
+                new Pair<>(
+                        createFakeMethodInfo(PRINT_DOUBLE, Type.TYPE_VOID),
+                        (args) -> {
+                            double doubleArg = (double) args[0];
+                            System.out.print(doubleArg);
                             return null;
                         }
                 ));
@@ -150,6 +178,32 @@ public class SystemMethod {
                             return null;
                         }
                 ));
+        SYSTEM_METHOD_POOL.put(PRINT_FLOAT_ARRAY,
+                new Pair<>(
+                        createFakeMethodInfo(PRINT_FLOAT_ARRAY, Type.TYPE_VOID),
+                        (args) -> {
+                            Reference reference = (Reference) args[0];
+                            float[] floatArray = new float[reference.getSize()];
+                            for (int i = 0; i < reference.getSize(); i++) {
+                                floatArray[i] = HeapMemoryManagement.loadFloat(reference.getAddress() + Type.FLOAT_TYPE_WIDTH * i);
+                            }
+                            System.out.print(Arrays.toString(floatArray));
+                            return null;
+                        }
+                ));
+        SYSTEM_METHOD_POOL.put(PRINT_DOUBLE_ARRAY,
+                new Pair<>(
+                        createFakeMethodInfo(PRINT_DOUBLE_ARRAY, Type.TYPE_VOID),
+                        (args) -> {
+                            Reference reference = (Reference) args[0];
+                            double[] doubleArray = new double[reference.getSize()];
+                            for (int i = 0; i < reference.getSize(); i++) {
+                                doubleArray[i] = HeapMemoryManagement.loadDouble(reference.getAddress() + Type.DOUBLE_TYPE_WIDTH * i);
+                            }
+                            System.out.print(Arrays.toString(doubleArray));
+                            return null;
+                        }
+                ));
 
 
         /*
@@ -188,6 +242,24 @@ public class SystemMethod {
                         (args) -> {
                             long longArg = (long) args[0];
                             System.out.println(longArg);
+                            return null;
+                        }
+                ));
+        SYSTEM_METHOD_POOL.put(PRINTLN_FLOAT,
+                new Pair<>(
+                        createFakeMethodInfo(PRINTLN_FLOAT, Type.TYPE_VOID),
+                        (args) -> {
+                            float floatArg = (float) args[0];
+                            System.out.println(floatArg);
+                            return null;
+                        }
+                ));
+        SYSTEM_METHOD_POOL.put(PRINTLN_DOUBLE,
+                new Pair<>(
+                        createFakeMethodInfo(PRINTLN_DOUBLE, Type.TYPE_VOID),
+                        (args) -> {
+                            double doubleArg = (double) args[0];
+                            System.out.println(doubleArg);
                             return null;
                         }
                 ));
@@ -248,7 +320,32 @@ public class SystemMethod {
                             return null;
                         }
                 ));
-
+        SYSTEM_METHOD_POOL.put(PRINTLN_FLOAT_ARRAY,
+                new Pair<>(
+                        createFakeMethodInfo(PRINTLN_FLOAT_ARRAY, Type.TYPE_VOID),
+                        (args) -> {
+                            Reference reference = (Reference) args[0];
+                            float[] floatArray = new float[reference.getSize()];
+                            for (int i = 0; i < reference.getSize(); i++) {
+                                floatArray[i] = HeapMemoryManagement.loadFloat(reference.getAddress() + Type.FLOAT_TYPE_WIDTH * i);
+                            }
+                            System.out.println(Arrays.toString(floatArray));
+                            return null;
+                        }
+                ));
+        SYSTEM_METHOD_POOL.put(PRINTLN_DOUBLE_ARRAY,
+                new Pair<>(
+                        createFakeMethodInfo(PRINTLN_DOUBLE_ARRAY, Type.TYPE_VOID),
+                        (args) -> {
+                            Reference reference = (Reference) args[0];
+                            double[] doubleArray = new double[reference.getSize()];
+                            for (int i = 0; i < reference.getSize(); i++) {
+                                doubleArray[i] = HeapMemoryManagement.loadDouble(reference.getAddress() + Type.DOUBLE_TYPE_WIDTH * i);
+                            }
+                            System.out.println(Arrays.toString(doubleArray));
+                            return null;
+                        }
+                ));
 
         /*
          * rand
@@ -276,6 +373,16 @@ public class SystemMethod {
                 new Pair<>(
                         createFakeMethodInfo(RANDOM_NEXT_LONG, Type.TYPE_LONG),
                         (args) -> random.nextLong()
+                ));
+        SYSTEM_METHOD_POOL.put(RANDOM_NEXT_FLOAT,
+                new Pair<>(
+                        createFakeMethodInfo(RANDOM_NEXT_FLOAT, Type.TYPE_FLOAT),
+                        (args) -> random.nextFloat()
+                ));
+        SYSTEM_METHOD_POOL.put(RANDOM_NEXT_DOUBLE,
+                new Pair<>(
+                        createFakeMethodInfo(RANDOM_NEXT_DOUBLE, Type.TYPE_DOUBLE),
+                        (args) -> random.nextDouble()
                 ));
 
     }
