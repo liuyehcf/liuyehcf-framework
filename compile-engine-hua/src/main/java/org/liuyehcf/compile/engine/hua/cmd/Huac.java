@@ -91,7 +91,6 @@ public class Huac extends BaseCmd {
         CompileResult<IntermediateInfo> result = huaCompiler.compile(fileContent);
 
         if (!result.isSuccess()) {
-            result.getError().printStackTrace();
             System.err.println(result.getMessage());
             System.exit(1);
         }

@@ -7,6 +7,8 @@ import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 
 import java.io.Serializable;
 
+import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+
 /**
  * 根据标志符名称，设置IDENTIFIER_NAME、TYPE属性
  *
@@ -31,6 +33,8 @@ public class SetIdentifierAttr extends AbstractSemanticAction implements Seriali
     public void onAction(CompilerContext context) {
         String identifierName = context.getValue(identifierStackOffset);
         VariableSymbol variableSymbol = context.getVariableSymbolByName(identifierName);
+
+        assertNotNull(variableSymbol, "[SYNTAX_ERROR] - Identifier '" + identifierName + "' has not defined");
 
         context.setAttrToLeftNode(AttrName.IDENTIFIER_NAME, identifierName);
         context.setAttrToLeftNode(AttrName.TYPE, variableSymbol.getType());
