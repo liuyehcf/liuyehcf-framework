@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.core.cfg.ll;
 
 import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.core.cfg.AbstractCfgCompiler;
-import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
+import org.liuyehcf.compile.engine.core.cfg.lexical.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.grammar.CompilerException;
 import org.liuyehcf.compile.engine.core.grammar.converter.GrammarConverterPipelineImpl;
 import org.liuyehcf.compile.engine.core.grammar.converter.LreElfGrammarConverter;

@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.core.cfg;
+package org.liuyehcf.compile.engine.core.cfg.lexical;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 

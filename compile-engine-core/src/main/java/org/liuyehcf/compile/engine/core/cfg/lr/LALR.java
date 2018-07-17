@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.core.cfg.lr;
 
-import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
+import org.liuyehcf.compile.engine.core.cfg.lexical.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 
 import java.io.Serializable;

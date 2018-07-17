@@ -1,4 +1,4 @@
-package org.liuyehcf.compile.engine.core.cfg;
+package org.liuyehcf.compile.engine.core.cfg.lexical;
 
 /**
  * 词法分析器接口

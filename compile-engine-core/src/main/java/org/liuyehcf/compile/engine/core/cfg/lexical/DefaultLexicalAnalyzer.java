@@ -1,5 +1,6 @@
-package org.liuyehcf.compile.engine.core.cfg;
+package org.liuyehcf.compile.engine.core.cfg.lexical;
 
+import org.liuyehcf.compile.engine.core.cfg.lexical.identifier.TokenIdentifier;
 import org.liuyehcf.compile.engine.core.grammar.definition.MorphemeType;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 

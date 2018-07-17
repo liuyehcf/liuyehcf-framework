@@ -1,8 +1,8 @@
 package org.liuyehcf.compile.engine.core.test.cfg;
 
 import org.junit.Test;
-import org.liuyehcf.compile.engine.core.cfg.DefaultLexicalAnalyzer;
-import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
+import org.liuyehcf.compile.engine.core.cfg.lexical.DefaultLexicalAnalyzer;
+import org.liuyehcf.compile.engine.core.cfg.lexical.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 
 import static org.junit.Assert.assertEquals;

@@ -2,8 +2,8 @@ package org.liuyehcf.compile.engine.core.cfg.lr;
 
 import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.core.cfg.AbstractCfgCompiler;
-import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
-import org.liuyehcf.compile.engine.core.cfg.Token;
+import org.liuyehcf.compile.engine.core.cfg.lexical.LexicalAnalyzer;
+import org.liuyehcf.compile.engine.core.cfg.lexical.Token;
 import org.liuyehcf.compile.engine.core.grammar.CompilerException;
 import org.liuyehcf.compile.engine.core.grammar.converter.AugmentedGrammarConverter;
 import org.liuyehcf.compile.engine.core.grammar.converter.GrammarConverterPipelineImpl;

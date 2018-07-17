@@ -1,7 +1,11 @@
 package org.liuyehcf.compile.engine.hua.compile.definition;
 
-import org.liuyehcf.compile.engine.core.cfg.DefaultLexicalAnalyzer;
-import org.liuyehcf.compile.engine.core.cfg.LexicalAnalyzer;
+import org.liuyehcf.compile.engine.core.cfg.lexical.DefaultLexicalAnalyzer;
+import org.liuyehcf.compile.engine.core.cfg.lexical.LexicalAnalyzer;
+import org.liuyehcf.compile.engine.core.cfg.lexical.identifier.impl.CharIdentifier;
+import org.liuyehcf.compile.engine.core.cfg.lexical.identifier.impl.FloatIdentifier;
+import org.liuyehcf.compile.engine.core.cfg.lexical.identifier.impl.IntegerIdentifier;
+import org.liuyehcf.compile.engine.core.cfg.lexical.identifier.impl.StringIdentifier;
 import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 
@@ -45,10 +49,10 @@ public abstract class GrammarDefinition {
 
 
     public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
-            .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_INTEGER_LITERAL), TokenIdentifiers.IDENTIFIER_INTEGER_LITERAL)
-            .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_FLOATING_POINT_LITERAL), TokenIdentifiers.IDENTIFIER_FLOATING_POINT_LITERAL)
-            .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_CHARACTER_LITERAL), TokenIdentifiers.IDENTIFIER_CHARACTER_LITERAL)
-            .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_STRING_LITERAL), TokenIdentifiers.IDENTIFIER_STRING_LITERAL)
+            .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_INTEGER_LITERAL), new IntegerIdentifier())
+            .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_FLOATING_POINT_LITERAL), new FloatIdentifier())
+            .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_CHARACTER_LITERAL), new CharIdentifier())
+            .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_STRING_LITERAL), new StringIdentifier())
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES), ")")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_MIDDLE_LEFT_PARENTHESES), "[")
