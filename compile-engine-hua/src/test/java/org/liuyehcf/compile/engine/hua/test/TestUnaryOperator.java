@@ -115,4 +115,18 @@ public class TestUnaryOperator {
 
         test(text, "{\"func1(boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":12,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":12,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":12,\"name\":\"_if_icmpgt\"},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":16,\"name\":\"_if_icmpge\"},{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func2(boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":16,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iload\",\"order\":3},{\"codeOffset\":9,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":2},{\"name\":\"_iconst\",\"value\":3},{\"codeOffset\":16,\"name\":\"_if_icmple\"},{\"name\":\"_iload\",\"order\":3},{\"name\":\"_iconst\",\"value\":5},{\"codeOffset\":18,\"name\":\"_if_icmplt\"},{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":16,\"name\":\"_ifeq\"},{\"name\":\"_iload\",\"order\":1},{\"codeOffset\":18,\"name\":\"_ifeq\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":19,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}");
     }
+
+    @Test
+    public void testReverseConditionExpression5() {
+        String text = "void func1(boolean a, boolean b, int i, int j) {\n" +
+                "\tboolean c=!true;\n" +
+                "}\n" +
+                "\n" +
+                "void func2(boolean a, boolean b, int i, int j) {\n" +
+                "\tboolean c;\n" +
+                "\tc=!a;\n" +
+                "}";
+
+        test(text, "{\"func1(boolean,boolean,int,int)\":[{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":4,\"name\":\"_ifne\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":5,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}],\"func2(boolean,boolean,int,int)\":[{\"name\":\"_iload\",\"order\":0},{\"codeOffset\":4,\"name\":\"_ifne\"},{\"name\":\"_iconst\",\"value\":1},{\"codeOffset\":5,\"name\":\"_goto\"},{\"name\":\"_iconst\",\"value\":0},{\"name\":\"_istore\",\"order\":4},{\"name\":\"_return\"}]}");
+    }
 }

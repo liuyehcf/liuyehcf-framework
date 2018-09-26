@@ -1517,6 +1517,7 @@ abstract class ExpressionProductions {
                     ),
                     /*
                      * (2) <array access> → <primary no new array> [ <expression> ]
+                     * 这里保留AttrName.IDENTIFIER_NAME是由于形如  (a)[1] 这样的语法
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(ARRAY_ACCESS),

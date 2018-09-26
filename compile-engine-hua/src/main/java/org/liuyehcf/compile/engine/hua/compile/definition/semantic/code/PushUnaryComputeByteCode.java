@@ -91,16 +91,31 @@ public class PushUnaryComputeByteCode extends AbstractSemanticAction {
                  * 转换跳转指令的类型
                  */
                 ControlTransferType controlTransferType = context.getAttr(rightStackOffset, AttrName.CONTROL_TRANSFER_TYPE);
-                ControlTransferType oppositeType = controlTransferType.getOppositeType();
-                context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, oppositeType);
 
                 /*
-                 * 交换TRUE回填字节码与FALSE回填字节码
+                 * 设置为复杂布尔表达式
+                 * 当前节点为布尔字面值，或者单个布尔变量时，该设置有效。其他情况本身就是复杂布尔值
                  */
-                List<ByteCode> trueByteCodes = context.getAttr(rightStackOffset, AttrName.TRUE_BYTE_CODE);
-                List<ByteCode> falseByteCodes = context.getAttr(rightStackOffset, AttrName.FALSE_BYTE_CODE);
-                context.setAttrToLeftNode(AttrName.TRUE_BYTE_CODE, falseByteCodes);
-                context.setAttrToLeftNode(AttrName.FALSE_BYTE_CODE, trueByteCodes);
+                context.setAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL);
+
+                /*
+                 * 如果是普通的布尔值字面值
+                 * 设置为复杂布尔表达式，使得BooleanExpressionEnding可以不上后续字节码
+                 */
+                if (controlTransferType == null) {
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, ControlTransferType.IFNE);
+                } else {
+                    ControlTransferType oppositeType = controlTransferType.getOppositeType();
+                    context.setAttrToLeftNode(AttrName.CONTROL_TRANSFER_TYPE, oppositeType);
+
+                    /*
+                     * 交换TRUE回填字节码与FALSE回填字节码
+                     */
+                    List<ByteCode> trueByteCodes = context.getAttr(rightStackOffset, AttrName.TRUE_BYTE_CODE);
+                    List<ByteCode> falseByteCodes = context.getAttr(rightStackOffset, AttrName.FALSE_BYTE_CODE);
+                    context.setAttrToLeftNode(AttrName.TRUE_BYTE_CODE, falseByteCodes);
+                    context.setAttrToLeftNode(AttrName.FALSE_BYTE_CODE, trueByteCodes);
+                }
                 break;
             default:
                 throw new UnsupportedOperationException();
