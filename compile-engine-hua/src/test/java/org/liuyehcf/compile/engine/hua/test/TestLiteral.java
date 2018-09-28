@@ -83,9 +83,16 @@ public class TestLiteral {
                 "\ta=1e9d;\n" +
                 "\ta=0e-3d;\n" +
                 "\ta=3.3e+3d;\n" +
+                "\ta=1;\n" +
+                "\ta=1.;\n" +
+                "\ta=.0;\n" +
+                "\ta=.123;\n" +
+                "\ta=1e9;\n" +
+                "\ta=0e-3;\n" +
+                "\ta=3.3e+3;\n" +
                 "}";
 
-        test(text, "{\"func()\":[{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.123},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0E9},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":3300.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_return\"}]}");
+        test(text, "{\"func()\":[{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.123},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0E9},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":3300.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_iconst\",\"value\":1},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.123},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":1.0E9},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":0.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_dconst\",\"value\":3300.0},{\"name\":\"_dstore\",\"order\":0},{\"name\":\"_return\"}]}");
     }
 
     @Test

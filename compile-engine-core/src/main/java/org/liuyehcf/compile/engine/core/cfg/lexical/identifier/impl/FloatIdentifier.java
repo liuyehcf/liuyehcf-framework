@@ -139,14 +139,12 @@ public class FloatIdentifier implements TokenIdentifier {
         }
 
         /*
-         * 必须包含浮点后缀
+         * 如果包含浮点后缀
          */
-        if (!FLOAT_SUFFIX.contains(getChar(remainInput, i))) {
-            return null;
+        if (FLOAT_SUFFIX.contains(getChar(remainInput, i))) {
+            i++;
         }
-
-        i++;
-
+        
         if (i >= remainInput.length()
                 || !DECIMAL_INTEGER_DIGIT.contains(c = getChar(remainInput, i))
                 && !Character.isAlphabetic(c)

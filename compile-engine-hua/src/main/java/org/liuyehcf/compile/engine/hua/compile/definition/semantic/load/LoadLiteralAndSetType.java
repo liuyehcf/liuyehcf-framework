@@ -88,7 +88,11 @@ public class LoadLiteralAndSetType extends AbstractSemanticAction implements Ser
             } else {
                 try {
                     context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_DOUBLE);
-                    context.addByteCodeToCurrentMethod(new _dconst(Double.parseDouble(literal.substring(0, literal.length() - 1))));
+                    if ("dDfF".indexOf(literal.charAt(literal.length() - 1)) == -1) {
+                        context.addByteCodeToCurrentMethod(new _dconst(Double.parseDouble(literal)));
+                    } else {
+                        context.addByteCodeToCurrentMethod(new _dconst(Double.parseDouble(literal.substring(0, literal.length() - 1))));
+                    }
                 } catch (NumberFormatException e) {
                     throw new RuntimeException("Illegal double literal");
                 }
@@ -118,34 +122,6 @@ public class LoadLiteralAndSetType extends AbstractSemanticAction implements Ser
             context.addByteCodeToCurrentMethod(new _ldc(constantOffset));
         } else {
             throw new UnsupportedOperationException();
-        }
-    }
-
-    private long parseLong(String literal) {
-        if ("0".equals(literal)
-                || "0L".equals(literal)
-                || "0l".equals(literal)) {
-            return 0L;
-        }
-        if (literal.startsWith("0x") || literal.startsWith("0X")) {
-            return new BigInteger(literal.substring(2), 16).longValue();
-        } else if (literal.startsWith("0")) {
-            return new BigInteger(literal.substring(1), 8).longValue();
-        } else {
-            return Long.parseLong(literal.substring(0, literal.length() - 1));
-        }
-    }
-
-    private int parseInt(String literal) {
-        if ("0".equals(literal)) {
-            return 0;
-        }
-        if (literal.startsWith("0x") || literal.startsWith("0X")) {
-            return new BigInteger(literal.substring(2), 16).intValue();
-        } else if (literal.startsWith("0")) {
-            return new BigInteger(literal.substring(1), 8).intValue();
-        } else {
-            return Integer.parseInt(literal);
         }
     }
 }
