@@ -72,7 +72,8 @@ public enum ControlTransferType {
     /**
      * 比较，小于时跳转
      */
-    IF_ICMPLT,;
+    IF_ICMPLT,
+    ;
 
     public static ControlTransfer getControlTransferByType(ControlTransferType type) {
         ControlTransfer code;

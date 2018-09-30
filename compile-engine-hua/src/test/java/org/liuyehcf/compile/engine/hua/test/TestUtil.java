@@ -7,7 +7,6 @@ import org.liuyehcf.compile.engine.hua.core.IntermediateInfo;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.liuyehcf.compile.engine.hua.compile.HuaCompiler.HUA_PATH_PROPERTY;
 
 
 /**
@@ -22,17 +21,7 @@ public class TestUtil {
 
     static LRCompiler<IntermediateInfo> getCompiler() {
         if (compiler == null) {
-            System.setProperty(HUA_PATH_PROPERTY, "./src/main/resources/");
-
-            long start, end;
-            start = System.currentTimeMillis();
-
             compiler = HuaCompiler.getHuaCompiler();
-
-            end = System.currentTimeMillis();
-            System.out.println("build HuaCompiler consume " + (end - start) / 1000 + "s");
-
-            assertTrue(compiler.isLegal());
         }
         return compiler;
     }

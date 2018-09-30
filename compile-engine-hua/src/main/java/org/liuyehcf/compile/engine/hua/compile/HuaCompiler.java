@@ -3,17 +3,19 @@ package org.liuyehcf.compile.engine.hua.compile;
 import org.liuyehcf.compile.engine.core.cfg.lr.Context;
 import org.liuyehcf.compile.engine.core.cfg.lr.LALR;
 import org.liuyehcf.compile.engine.core.grammar.definition.SemanticAction;
+import org.liuyehcf.compile.engine.core.utils.Pair;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.*;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cf._goto;
 
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.*;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.GrammarDefinition.GRAMMAR;
 import static org.liuyehcf.compile.engine.hua.compile.definition.GrammarDefinition.LEXICAL_ANALYZER;
 
@@ -28,32 +30,7 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
     /**
      * 环境变量名
      */
-    public static final String HUA_PATH_PROPERTY = "HUA_PATH";
-
-    /**
-     * HuaCompiler序列化目录
-     */
-    private static final String COMPILER_SERIALIZATION_DIRECTORY;
-
-    /**
-     * HuaCompiler序列化文件
-     */
-    private static final String COMPILER_SERIALIZATION_FILE;
-
-    static {
-        String value1 = System.getProperty(HUA_PATH_PROPERTY);
-        String value2 = System.getenv(HUA_PATH_PROPERTY);
-
-        if (value1 != null) {
-            COMPILER_SERIALIZATION_DIRECTORY = value1;
-        } else if (value2 != null) {
-            COMPILER_SERIALIZATION_DIRECTORY = value2;
-        } else {
-            throw new Error("Must set env or property '" + HUA_PATH_PROPERTY + "'");
-        }
-
-        COMPILER_SERIALIZATION_FILE = COMPILER_SERIALIZATION_DIRECTORY + "/compiler.obj";
-    }
+    public static final String HUA_SERIALIZATION_FILE = "HUA_COMPILER";
 
     private HuaCompiler() {
         super(GRAMMAR, LEXICAL_ANALYZER);
@@ -61,64 +38,29 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
 
     public static HuaCompiler getHuaCompiler() {
         HuaCompiler huaCompiler;
-        File compilerDirectory;
         File compilerFile = null;
 
         /*
          * 首先从序列化文件中加载编译器
          */
         try {
-            compilerDirectory = new File(COMPILER_SERIALIZATION_DIRECTORY);
-            if (!compilerDirectory.exists()) {
-                boolean success = compilerDirectory.mkdirs();
-                assertTrue(success, "Create directory '" + compilerDirectory.getAbsolutePath() + "' error");
+            InputStream resourceStream = ClassLoader.getSystemClassLoader().getResourceAsStream(HUA_SERIALIZATION_FILE);
+            if (resourceStream == null) {
+                throw new NullPointerException();
             }
-            compilerFile = new File(COMPILER_SERIALIZATION_FILE);
-            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(compilerFile));
-
+            ObjectInputStream inputStream = new ObjectInputStream(resourceStream);
             huaCompiler = (HuaCompiler) inputStream.readObject();
             return huaCompiler;
-        } catch (IOException | ClassNotFoundException e) {
-            /*
-             * 1. 文件找不到
-             * 2. 序列化版本号发生变动（类文件发生了修改，序列化文件失效，此时需要重新编译然后序列化）
-             * 注意
-             *      不要自己定义序列化版本号'serialVersionUID'，让Java自动生成序列化版本号
-             *      这样一来，一旦文件发生更改，序列化版本号就会变更，序列化版本号不一致时，反序列化就会失败，这里就能捕获到InvalidClassException异常
-             */
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Throwable e) {
+            // ignore
         }
 
         /*
-         * 若文件存在，就删除
-         * deleteOnExit 方法的含义是程序退出时删除，而不是存在时删除
-         */
-        if (compilerFile.exists()) {
-            boolean isDelete = compilerFile.delete();
-            assertTrue(isDelete, "Delete file {" + compilerFile.getName() + "} error");
-        }
-
-        /*
-         * 重新构建编译器，并持久化
+         * 重新构建编译器
          */
         huaCompiler = new HuaCompiler();
-        huaCompiler.serialize();
 
         return huaCompiler;
-    }
-
-    /**
-     * 持久化
-     * 直接利用Java序列化
-     */
-    private void serialize() {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(COMPILER_SERIALIZATION_FILE))) {
-            outputStream.writeObject(this);
-            outputStream.flush();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
@@ -232,12 +174,12 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
             Collections.sort(unvisitedCodeOffsets);
 
             List<ControlTransfer> controlTransferCodes = new ArrayList<>();
-            Map<ControlTransfer, Integer> controlTransferCodeOffsetMap = new HashMap<>();
+            Map<ControlTransfer, Pair<Integer, Integer>> controlTransferCodeOffsetMap = new HashMap<>();
             for (int offset = 0; offset < byteCodes.size(); offset++) {
                 ByteCode code = byteCodes.get(offset);
                 if (code instanceof ControlTransfer) {
                     controlTransferCodes.add((ControlTransfer) code);
-                    controlTransferCodeOffsetMap.put((ControlTransfer) code, offset);
+                    controlTransferCodeOffsetMap.put((ControlTransfer) code, new Pair<>(offset, ((ControlTransfer) code).getCodeOffset()));
                 }
             }
 
@@ -247,20 +189,21 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
                  * 因此该跳转指令的目标代码序号需要-1
                  */
                 for (ControlTransfer controlTransferCode : controlTransferCodes) {
-                    int controlTransferCodeOffset = controlTransferCodeOffsetMap.get(controlTransferCode);
+                    Pair<Integer, Integer> pair = controlTransferCodeOffsetMap.get(controlTransferCode);
+                    int offset = pair.getFirst();
+                    int toOffset = pair.getSecond();
 
                     /*
                      * 这个跳转指令也不可达，跳过不处理
                      */
-                    if (unvisitedCodeOffsets.contains(controlTransferCodeOffset)) {
+                    if (unvisitedCodeOffsets.contains(offset)) {
                         continue;
                     }
 
                     /*
                      * 若跳转偏移量比当前不可达指令的偏移量要大，那么跳转偏移量-1
                      */
-                    if (controlTransferCode.getCodeOffset() > unvisitedCodeOffset) {
-                        assertFalse(controlTransferCode.getCodeOffset() == unvisitedCodeOffset, "[SYSTEM_ERROR] - ControlTransfer bytecode jump to illegal offset");
+                    if (toOffset > unvisitedCodeOffset) {
                         controlTransferCode.setCodeOffset(controlTransferCode.getCodeOffset() - 1);
                     }
                 }

@@ -144,7 +144,7 @@ public class FloatIdentifier implements TokenIdentifier {
         if (FLOAT_SUFFIX.contains(getChar(remainInput, i))) {
             i++;
         }
-        
+
         if (i >= remainInput.length()
                 || !DECIMAL_INTEGER_DIGIT.contains(c = getChar(remainInput, i))
                 && !Character.isAlphabetic(c)
