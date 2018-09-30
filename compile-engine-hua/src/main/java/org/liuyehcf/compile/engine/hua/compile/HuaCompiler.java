@@ -146,7 +146,7 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
             Set<ByteCode> visitedCodes = new HashSet<>();
 
             ByteCode code;
-            while ((code = byteCodes.get(optimizedCodeOffset)) instanceof ControlTransfer) {
+            while ((code = byteCodes.get(optimizedCodeOffset)) instanceof _goto) {
                 /*
                  * 对于for(;;){}这样的循环，只有一个goto语句，且回到原点
                  * 跳转链路的终点是一个goto self
