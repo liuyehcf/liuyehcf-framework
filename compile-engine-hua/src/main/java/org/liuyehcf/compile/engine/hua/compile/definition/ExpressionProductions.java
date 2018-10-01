@@ -4,10 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
-import org.liuyehcf.compile.engine.hua.compile.definition.model.BackFillType;
-import org.liuyehcf.compile.engine.hua.compile.definition.model.CompareOperatorType;
-import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
+import org.liuyehcf.compile.engine.hua.compile.definition.model.*;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.backfill.ControlTransferByteCodeBackFill;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.backfill.IncrementBackFill;
@@ -25,7 +22,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable.Arra
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable.CheckExpressionDimType;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.variable.NewPrimaryArray;
 
-import static org.liuyehcf.compile.engine.hua.compile.definition.BlockProductions.MARK_FALSE_BLOCK;
 import static org.liuyehcf.compile.engine.hua.compile.definition.BlockProductions.MARK_TRUE_BLOCK;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 import static org.liuyehcf.compile.engine.hua.compile.definition.GrammarDefinition.*;
@@ -82,6 +78,7 @@ abstract class ExpressionProductions {
     private static final String MARK_230_2_1 = "<mark 230_2_1>";
     private static final String MARK_232_2_1 = "<mark 232_2_1>";
     private static final String MARK_PREFIX_EXPRESSION = "<mark prefix expression>";
+    private static final String MARK_CONDITIONAL_FALSE_BLOCK = "<mark conditional false block>";
     private static final String MARK_286_1_1 = "<mark 286_1_1>";
 
     public static final Production[] PRODUCTIONS = {
@@ -361,7 +358,7 @@ abstract class ExpressionProductions {
                             new AttrFilter(AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, AttrName.TRUE_BYTE_CODE, AttrName.FALSE_BYTE_CODE)
                     ),
                     /*
-                     * <conditional expression> → <conditional or expression> ? <mark true block> <expression> : <mark false block> <conditional expression>
+                     * <conditional expression> → <conditional or expression> ? <mark true block> <expression> : <mark conditional false block> <conditional expression>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(CONDITIONAL_EXPRESSION),
@@ -371,12 +368,32 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_TRUE_BLOCK),
                                     Symbol.createNonTerminator(EXPRESSION),
                                     Symbol.createTerminator(NORMAL_COLON),
-                                    Symbol.createNonTerminator(MARK_FALSE_BLOCK),
+                                    Symbol.createNonTerminator(MARK_CONDITIONAL_FALSE_BLOCK),
                                     Symbol.createNonTerminator(CONDITIONAL_EXPRESSION)
                             ),
                             new ControlTransferByteCodeBackFill(-6, BackFillType.NEXT),
                             new ConditionalExpression(-3, 0),
                             new AttrFilter(AttrName.TYPE)
+                    )
+            ),
+
+
+            /*
+             * <mark conditional false block>
+             */
+            Production.create(
+                    /*
+                     * <mark conditional false block> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(MARK_CONDITIONAL_FALSE_BLOCK),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new BooleanExpressionEnding(-1),
+                            new PushControlTransferByteCode(-4, ControlTransferType.GOTO, BackFillType.NEXT),
+                            new ControlTransferByteCodeBackFill(-4, BackFillType.FALSE),
+                            new AttrFilter()
                     )
             ),
 
