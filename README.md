@@ -3,6 +3,7 @@
 1. 下载本工程
 1. 利用maven工具打包`mvn clean package -Dmaven.test.skip=true`
 1. 打包完成后，找到`compile-engine/compile-engine-hua/target/compile-engine-hua-1.0-SNAPSHOT.jar`文件
+1. 设置环境变量`HUA_PATH`，其值为`compile-engine-hua-1.0-SNAPSHOT.jar`所在目录的绝对路径
 1. hua语言提供了3个命令行工具，在`compile-engine/cmd`目录下，分别是
     * `huac`：编译源代码(.hua文件)，生成字节码文件(.hcalss)
     * `hua`：运行程序
