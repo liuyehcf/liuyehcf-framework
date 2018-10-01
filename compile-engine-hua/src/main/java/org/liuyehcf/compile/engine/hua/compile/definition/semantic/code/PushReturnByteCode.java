@@ -6,8 +6,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ir.*;
 
-import java.io.Serializable;
-
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
@@ -18,7 +16,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
  * @author hechenfeng
  * @date 2018/6/22
  */
-public class PushReturnByteCode extends AbstractSemanticAction implements Serializable {
+public class PushReturnByteCode extends AbstractSemanticAction {
 
     /**
      * 表达式-偏移量，相对于语法树栈

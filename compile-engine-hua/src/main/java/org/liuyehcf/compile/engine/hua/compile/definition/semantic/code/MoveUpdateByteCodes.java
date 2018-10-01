@@ -6,7 +6,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSeman
 import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cf.ControlTransfer;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/6/19
  */
-public class MoveUpdateByteCodes extends AbstractSemanticAction implements Serializable {
+public class MoveUpdateByteCodes extends AbstractSemanticAction {
     /**
      * 存储开始代码偏移量的语法树节点-偏移量，相对于语法树栈
      * '0'  表示栈顶

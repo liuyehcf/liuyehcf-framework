@@ -7,7 +7,6 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ir.Return;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ir._return;
 
-import java.io.Serializable;
 import java.util.List;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
@@ -18,7 +17,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
  * @author hechenfeng
  * @date 2018/6/7
  */
-public class ExitMethod extends AbstractSemanticAction implements Serializable {
+public class ExitMethod extends AbstractSemanticAction {
 
     /**
      * 没有方法体

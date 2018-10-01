@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferT
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/10/1
  */
 public class SetControlTransferTypeIfNecessary extends AbstractSemanticAction {

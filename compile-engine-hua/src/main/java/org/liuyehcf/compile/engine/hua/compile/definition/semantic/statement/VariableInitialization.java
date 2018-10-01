@@ -7,8 +7,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSeman
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 
-import java.io.Serializable;
-
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
@@ -19,7 +17,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
  * @author hechenfeng
  * @date 2018/6/11
  */
-public class VariableInitialization extends AbstractSemanticAction implements Serializable {
+public class VariableInitialization extends AbstractSemanticAction {
 
     /**
      * 初始化表达式-偏移量，相对于语法树栈

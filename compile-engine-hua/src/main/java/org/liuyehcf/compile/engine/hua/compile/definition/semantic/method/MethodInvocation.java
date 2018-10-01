@@ -8,7 +8,6 @@ import org.liuyehcf.compile.engine.hua.core.BasicMethodInfo;
 import org.liuyehcf.compile.engine.hua.core.MethodSignature;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ir._invokestatic;
 
-import java.io.Serializable;
 import java.util.List;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
@@ -21,7 +20,7 @@ import static org.liuyehcf.compile.engine.hua.core.MethodInfo.buildMethodSignatu
  * @author hechenfeng
  * @date 2018/6/10
  */
-public class MethodInvocation extends AbstractSemanticAction implements Serializable {
+public class MethodInvocation extends AbstractSemanticAction {
 
     /**
      * 方法名称-偏移量，相对于语法树栈

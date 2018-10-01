@@ -7,8 +7,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSeman
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 
-import java.io.Serializable;
-
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
@@ -18,7 +16,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
  * @author hechenfeng
  * @date 2018/6/4
  */
-public class VariableLoad extends AbstractSemanticAction implements Serializable {
+public class VariableLoad extends AbstractSemanticAction {
 
     /**
      * 标志符-偏移量，相对于语法树栈

@@ -5,8 +5,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 
-import java.io.Serializable;
-
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 
 /**
@@ -15,7 +13,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
  * @author hechenfeng
  * @date 2018/6/11
  */
-public class SetIdentifierAttr extends AbstractSemanticAction implements Serializable {
+public class SetIdentifierAttr extends AbstractSemanticAction {
 
     /**
      * 标志符-偏移量，相对于语法树栈

@@ -6,7 +6,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
@@ -19,7 +18,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.NORMAL
  * @author hechenfeng
  * @date 2018/6/11
  */
-public class LoadLiteralAndSetType extends AbstractSemanticAction implements Serializable {
+public class LoadLiteralAndSetType extends AbstractSemanticAction {
 
     /**
      * 字面值-偏移量，相对于语法树栈

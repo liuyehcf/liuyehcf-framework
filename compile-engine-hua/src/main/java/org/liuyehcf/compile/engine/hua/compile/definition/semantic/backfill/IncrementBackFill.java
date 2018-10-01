@@ -7,8 +7,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSeman
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp._iinc;
 
-import java.io.Serializable;
-
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 
@@ -18,7 +16,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
  * @author hechenfeng
  * @date 2018/6/18
  */
-public class IncrementBackFill extends AbstractSemanticAction implements Serializable {
+public class IncrementBackFill extends AbstractSemanticAction {
     /**
      * 用于存放回填iinc字节码的节点-偏移量，相对于语法树栈
      * '0'  表示栈顶

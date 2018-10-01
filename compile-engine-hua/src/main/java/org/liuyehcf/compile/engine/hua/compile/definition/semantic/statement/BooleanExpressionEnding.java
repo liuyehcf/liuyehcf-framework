@@ -8,7 +8,6 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.cf.ControlTransfer;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cf._goto;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl._iconst;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/6/15
  */
-public class BooleanExpressionEnding extends AbstractSemanticAction implements Serializable {
+public class BooleanExpressionEnding extends AbstractSemanticAction {
 
     /**
      * 布尔表达式-栈偏移量，相对于语法树栈

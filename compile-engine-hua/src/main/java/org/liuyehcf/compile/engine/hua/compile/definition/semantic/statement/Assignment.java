@@ -8,8 +8,6 @@ import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp.*;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 
-import java.io.Serializable;
-
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
@@ -21,7 +19,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.GrammarDefiniti
  * @author hechenfeng
  * @date 2018/6/10
  */
-public class Assignment extends AbstractSemanticAction implements Serializable {
+public class Assignment extends AbstractSemanticAction {
 
     /**
      * 赋值左侧-偏移量，相对于语法树栈

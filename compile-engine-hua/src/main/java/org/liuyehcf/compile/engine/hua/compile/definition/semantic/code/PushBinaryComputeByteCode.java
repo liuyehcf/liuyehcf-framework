@@ -6,8 +6,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp.*;
 
-import java.io.Serializable;
-
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
@@ -17,7 +15,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
  * @author hechenfeng
  * @date 2018/6/7
  */
-public class PushBinaryComputeByteCode extends AbstractSemanticAction implements Serializable {
+public class PushBinaryComputeByteCode extends AbstractSemanticAction {
 
     /**
      * 左运算子-偏移量，相对于语法树栈

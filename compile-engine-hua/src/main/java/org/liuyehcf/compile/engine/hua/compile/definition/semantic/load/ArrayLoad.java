@@ -6,8 +6,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 
-import java.io.Serializable;
-
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**
@@ -16,7 +14,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
  * @author hechenfeng
  * @date 2018/6/12
  */
-public class ArrayLoad extends AbstractSemanticAction implements Serializable {
+public class ArrayLoad extends AbstractSemanticAction {
 
     /**
      * 数组访问表达式的语法树节点-偏移量，相对于语法树栈

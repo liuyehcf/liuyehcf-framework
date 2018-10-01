@@ -5,15 +5,13 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 
-import java.io.Serializable;
-
 /**
  * 增加数组维度
  *
  * @author hechenfeng
  * @date 2018/6/7
  */
-public class IncreaseArrayTypeDim extends AbstractSemanticAction implements Serializable {
+public class IncreaseArrayTypeDim extends AbstractSemanticAction {
 
     /**
      * 类型-偏移量，相对于语法树栈

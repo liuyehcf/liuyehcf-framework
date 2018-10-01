@@ -5,8 +5,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 
-import java.io.Serializable;
-
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
 
 /**
@@ -15,7 +13,7 @@ import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
  * @author hechenfeng
  * @date 2018/6/12
  */
-public class ArrayTypeDimDecrease extends AbstractSemanticAction implements Serializable {
+public class ArrayTypeDimDecrease extends AbstractSemanticAction {
 
     /**
      * 表达式名称-偏移量，相对于语法树栈

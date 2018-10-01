@@ -4,15 +4,13 @@ import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 
-import java.io.Serializable;
-
 /**
  * 递增整数属性
  *
  * @author hechenfeng
  * @date 2018/6/22
  */
-public class IncreaseIntAttr extends AbstractSemanticAction implements Serializable {
+public class IncreaseIntAttr extends AbstractSemanticAction {
 
     /**
      * 空维度-偏移量，相对于语法树栈

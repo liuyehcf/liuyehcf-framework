@@ -3,15 +3,13 @@ package org.liuyehcf.compile.engine.hua.compile.definition.semantic.node;
 import org.liuyehcf.compile.engine.hua.compile.CompilerContext;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 
-import java.io.Serializable;
-
 /**
  * 创建一个Future语法树节点，仅用于标记非终结符
  *
  * @author hechenfeng
  * @date 2018/6/2
  */
-public class AddFutureSyntaxNode extends AbstractSemanticAction implements Serializable {
+public class AddFutureSyntaxNode extends AbstractSemanticAction {
 
     /**
      * 偏移量，相对于语法树栈

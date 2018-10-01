@@ -5,7 +5,6 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cf.ControlTransfer;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2018/6/15
  */
-public class MergeControlTransferByteCode extends AbstractSemanticAction implements Serializable {
+public class MergeControlTransferByteCode extends AbstractSemanticAction {
 
     /**
      * 源属性-偏移量，相对于语法树栈

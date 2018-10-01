@@ -8,8 +8,6 @@ import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sl.*;
 import org.liuyehcf.compile.engine.hua.core.bytecode.sm._dup2;
 
-import java.io.Serializable;
-
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
 import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
@@ -21,7 +19,7 @@ import static org.liuyehcf.compile.engine.hua.compile.definition.GrammarDefiniti
  * @author hechenfeng
  * @date 2018/6/20
  */
-public class VariableLoadIfNecessary extends AbstractSemanticAction implements Serializable {
+public class VariableLoadIfNecessary extends AbstractSemanticAction {
     /**
      * 赋值左侧-偏移量，相对于语法树栈
      * '0'  表示栈顶

@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.liuyehcf.compile.engine.hua.test.TestUtil.test;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2018/10/1
  */
 public class TestConditionalExpression {
