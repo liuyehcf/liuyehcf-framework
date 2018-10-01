@@ -371,6 +371,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_CONDITIONAL_FALSE_BLOCK),
                                     Symbol.createNonTerminator(CONDITIONAL_EXPRESSION)
                             ),
+                            new BooleanExpressionEnding(0),
                             new ControlTransferByteCodeBackFill(-6, BackFillType.NEXT),
                             new ConditionalExpression(-3, 0),
                             new AttrFilter(AttrName.TYPE)
@@ -424,6 +425,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_230_2_1),
                                     Symbol.createNonTerminator(CONDITIONAL_AND_EXPRESSION)
                             ),
+                            new SetControlTransferTypeIfNecessary(0),
                             new AssignAttrsToLeftNode(0, AttrName.CONTROL_TRANSFER_TYPE),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new MergeControlTransferByteCode(0, -3),
@@ -444,6 +446,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
+                            new SetControlTransferTypeIfNecessary(-1),
                             new PushControlTransferByteCodeByType(-1, -1, BackFillType.TRUE, true),
                             new ControlTransferByteCodeBackFill(-1, BackFillType.FALSE),
                             new AttrFilter()
@@ -477,6 +480,7 @@ abstract class ExpressionProductions {
                                     Symbol.createNonTerminator(MARK_232_2_1),
                                     Symbol.createNonTerminator(INCLUSIVE_OR_EXPRESSION)
                             ),
+                            new SetControlTransferTypeIfNecessary(0),
                             new AssignAttrsToLeftNode(0, AttrName.CONTROL_TRANSFER_TYPE),
                             new SetAttrToLeftNode(AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, NOT_NULL),
                             new MergeControlTransferByteCode(0, -3),
@@ -497,6 +501,7 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
+                            new SetControlTransferTypeIfNecessary(-1),
                             new PushControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
                             new ControlTransferByteCodeBackFill(-1, BackFillType.TRUE),
                             new AttrFilter()
@@ -1155,7 +1160,6 @@ abstract class ExpressionProductions {
                             SymbolString.create(
                                     Symbol.createNonTerminator(EXPRESSION_NAME)
                             ),
-                            new SetBooleanAttrIfNecessary(0),
                             new VariableLoad(0),
                             new AttrFilter(AttrName.IDENTIFIER_NAME, AttrName.TYPE, AttrName.CONTROL_TRANSFER_TYPE)
                     ),

@@ -27,6 +27,14 @@ public class TestUtil {
     }
 
     static void test(String text, String expected) {
+        test(text, expected, false);
+    }
+
+    static void testAndPrintCode(String text, String expected) {
+        test(text, expected, true);
+    }
+
+    private static void test(String text, String expected, boolean print) {
         System.out.println(text);
 
         CompileResult<IntermediateInfo> result = getCompiler().compile(text);
@@ -34,7 +42,9 @@ public class TestUtil {
             result.getError().printStackTrace();
         }
         assertTrue(result.isSuccess());
+        if (print) {
+            System.out.println(result.getResult().toReadableString());
+        }
         assertEquals(expected, result.getResult().getMethodInfoTable().toSimpleJSONString());
     }
-
 }

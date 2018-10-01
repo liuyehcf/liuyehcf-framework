@@ -8,10 +8,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.BackFillType;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.ControlTransferType;
 import org.liuyehcf.compile.engine.hua.compile.definition.model.StatementType;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.AssignAttr;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.AttrFilter;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.SetAttrToLeftNode;
-import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.SetCodeOffsetAttr;
+import org.liuyehcf.compile.engine.hua.compile.definition.semantic.attr.*;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.backfill.ControlTransferByteCodeBackFill;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.backfill.ControlTransferByteCodeBackFillWithLoop;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.code.*;
@@ -564,6 +561,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
+                            new SetControlTransferTypeIfNecessary(-1),
                             new PushControlTransferByteCodeByType(-1, -1, BackFillType.FALSE, false),
                             new ControlTransferByteCodeBackFill(-1, BackFillType.TRUE),
                             new AttrFilter()

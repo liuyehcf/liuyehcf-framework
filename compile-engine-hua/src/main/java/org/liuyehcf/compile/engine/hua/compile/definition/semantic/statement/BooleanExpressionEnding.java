@@ -99,5 +99,10 @@ public class BooleanExpressionEnding extends AbstractSemanticAction implements S
          * 回填__goto
          */
         __goto.setCodeOffset(context.getByteCodeSizeOfCurrentMethod());
+
+        /*
+         * 表达式已补上后缀，因此将属性置空
+         */
+        context.setAttr(booleanExpressionStackOffset, AttrName.IS_COMPLEX_BOOLEAN_EXPRESSION, null);
     }
 }
