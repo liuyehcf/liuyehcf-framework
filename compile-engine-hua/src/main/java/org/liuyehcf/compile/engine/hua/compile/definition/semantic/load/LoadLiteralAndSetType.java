@@ -88,10 +88,10 @@ public class LoadLiteralAndSetType extends AbstractSemanticAction implements Ser
             } else {
                 try {
                     context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_DOUBLE);
-                    if ("dDfF".indexOf(literal.charAt(literal.length() - 1)) == -1) {
-                        context.addByteCodeToCurrentMethod(new _dconst(Double.parseDouble(literal)));
-                    } else {
+                    if (literal.endsWith("f") || literal.endsWith("F") || literal.endsWith("d") || literal.endsWith("D")) {
                         context.addByteCodeToCurrentMethod(new _dconst(Double.parseDouble(literal.substring(0, literal.length() - 1))));
+                    } else {
+                        context.addByteCodeToCurrentMethod(new _dconst(Double.parseDouble(literal)));
                     }
                 } catch (NumberFormatException e) {
                     throw new RuntimeException("Illegal double literal");
