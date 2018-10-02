@@ -78,23 +78,24 @@ public class LoadLiteralAndSetType extends AbstractSemanticAction {
             }
         } else if (Type.TYPE_FLOAT.equals(type)) {
             if (literal.endsWith("f") || literal.endsWith("F")) {
-                try {
-                    context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_FLOAT);
-                    context.addByteCodeToCurrentMethod(new _fconst(Float.parseFloat(literal.substring(0, literal.length() - 1))));
-                } catch (NumberFormatException e) {
+                context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_FLOAT);
+                float f = Float.parseFloat(literal.substring(0, literal.length() - 1));
+                if (Float.isInfinite(f)) {
                     throw new RuntimeException("Illegal float literal");
                 }
+                context.addByteCodeToCurrentMethod(new _fconst(f));
             } else {
-                try {
-                    context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_DOUBLE);
-                    if (literal.endsWith("f") || literal.endsWith("F") || literal.endsWith("d") || literal.endsWith("D")) {
-                        context.addByteCodeToCurrentMethod(new _dconst(Double.parseDouble(literal.substring(0, literal.length() - 1))));
-                    } else {
-                        context.addByteCodeToCurrentMethod(new _dconst(Double.parseDouble(literal)));
-                    }
-                } catch (NumberFormatException e) {
+                context.setAttrToLeftNode(AttrName.TYPE, Type.TYPE_DOUBLE);
+                double d;
+                if (literal.endsWith("f") || literal.endsWith("F") || literal.endsWith("d") || literal.endsWith("D")) {
+                    d = Double.parseDouble(literal.substring(0, literal.length() - 1));
+                } else {
+                    d = Double.parseDouble(literal);
+                }
+                if (Double.isInfinite(d)) {
                     throw new RuntimeException("Illegal double literal");
                 }
+                context.addByteCodeToCurrentMethod(new _dconst(d));
             }
         } else if (Type.TYPE_BOOLEAN.equals(type)) {
             /*
