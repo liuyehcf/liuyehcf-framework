@@ -12,5 +12,6 @@
     <modules>
         <module>compile-engine-core</module>
         <module>compile-engine-hua</module>
+        <module>compile-engine-expression</module>
     </modules>
 </project>
