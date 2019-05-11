@@ -9,7 +9,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.ir._return;
 
 import java.util.List;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertTrue;
 
 /**
  * 退出方法标记

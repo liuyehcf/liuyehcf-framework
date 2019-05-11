@@ -3,13 +3,13 @@ package org.liuyehcf.compile.engine.core.rg.nfa;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.rg.utils.EscapedUtils;
 import org.liuyehcf.compile.engine.core.rg.utils.SymbolUtils;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 import org.liuyehcf.compile.engine.core.utils.Pair;
 
 import java.util.*;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertNotNull;
 
 /**
  * <p>Nfa自动机构造器</p>
@@ -135,7 +135,7 @@ public class NfaBuildIterator {
     private void finishWork() {
         combineNfaClosuresOfCurGroup();
 
-        AssertUtils.assertTrue(unions.isEmpty());
+        Assert.assertTrue(unions.isEmpty());
 
         if (curNfaClosure == null) {
             curNfaClosure = NfaClosure.getEmptyClosureForGroup(0);
@@ -147,7 +147,7 @@ public class NfaBuildIterator {
     }
 
     private void processEachSymbol() {
-        AssertUtils.assertTrue(getCurSymbol().isTerminator());
+        Assert.assertTrue(getCurSymbol().isTerminator());
         Symbol curSymbol = getCurSymbol();
 
         if (SymbolUtils.ANY.equals(curSymbol)) {
@@ -567,7 +567,7 @@ public class NfaBuildIterator {
         while (!SymbolUtils.RIGHT_BIG_PARENTHESIS.equals(getCurSymbol())) {
 
             if (SymbolUtils.getChar(getCurSymbol()) == ',') {
-                AssertUtils.assertNull(leftNumber);
+                Assert.assertNull(leftNumber);
                 leftNumber = Integer.parseInt(sb.toString());
                 sb = new StringBuilder();
             } else {
@@ -587,7 +587,7 @@ public class NfaBuildIterator {
         }
 
         if (rightNumber != null) {
-            AssertUtils.assertTrue(rightNumber >= leftNumber);
+            Assert.assertTrue(rightNumber >= leftNumber);
         }
 
         moveForward();
@@ -651,12 +651,12 @@ public class NfaBuildIterator {
              * '-'前面存在有效字符时
              */
             else if (pre != -1 && SymbolUtils.TO.equals(getCurSymbol())) {
-                AssertUtils.assertFalse(hasTo);
+                Assert.assertFalse(hasTo);
                 hasTo = true;
             } else {
                 if (hasTo) {
-                    AssertUtils.assertTrue(pre != -1);
-                    AssertUtils.assertTrue(pre <= SymbolUtils.getChar(getCurSymbol()));
+                    Assert.assertTrue(pre != -1);
+                    Assert.assertTrue(pre <= SymbolUtils.getChar(getCurSymbol()));
                     /*
                      * pre在上一次已经添加过了，本次从pre+1开始
                      */
@@ -733,7 +733,7 @@ public class NfaBuildIterator {
 
         while ((topStackUnion = popStackUnion()) != null
                 && (secondTopStackUnion = popStackUnion()) != null) {
-            AssertUtils.assertTrue(topStackUnion.isNfaClosure());
+            Assert.assertTrue(topStackUnion.isNfaClosure());
 
             if (secondTopStackUnion.isNfaClosure()) {
                 if (secondTopStackUnion.getNfaClosure().getGroup()
@@ -749,9 +749,9 @@ public class NfaBuildIterator {
                         topStackUnion.getNfaClosure());
                 unions.push(secondTopStackUnion);
             } else {
-                AssertUtils.assertFalse(unions.isEmpty());
+                Assert.assertFalse(unions.isEmpty());
                 thirdTopStackUnion = unions.pop();
-                AssertUtils.assertTrue(thirdTopStackUnion.isNfaClosure());
+                Assert.assertTrue(thirdTopStackUnion.isNfaClosure());
                 if (thirdTopStackUnion.getNfaClosure().getGroup()
                         != topStackUnion.getNfaClosure().getGroup()) {
                     /*
@@ -819,7 +819,7 @@ public class NfaBuildIterator {
     }
 
     private NfaClosure buildNfaClosureWithSymbols(Collection<Symbol> symbols) {
-        AssertUtils.assertFalse(symbols.isEmpty());
+        Assert.assertFalse(symbols.isEmpty());
 
         NfaState startNfaState = new NfaState();
         List<NfaState> endNfaStates = new ArrayList<>();
@@ -834,7 +834,7 @@ public class NfaBuildIterator {
     }
 
     private void combineTwoClosure(NfaClosure pre, NfaClosure next) {
-        AssertUtils.assertTrue(pre.getGroup() == next.getGroup());
+        Assert.assertTrue(pre.getGroup() == next.getGroup());
 
         /*
          *
@@ -983,7 +983,7 @@ public class NfaBuildIterator {
         }
 
         private NfaClosure getNfaClosure() {
-            AssertUtils.assertTrue(isNfaClosure());
+            Assert.assertTrue(isNfaClosure());
             return nfaClosure;
         }
 

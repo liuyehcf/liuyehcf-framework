@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.expression.core.function;
 
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.expression.core.model.OperatorType;
 import org.liuyehcf.compile.engine.expression.runtime.ExpressionValue;
 
@@ -21,8 +21,8 @@ public class DelegateOperatorFunction extends OperatorFunction {
     private final OperatorFunction operatorFunction;
 
     public DelegateOperatorFunction(String id, OperatorFunction operatorFunction) {
-        AssertUtils.assertNotNull(id);
-        AssertUtils.assertNotNull(operatorFunction);
+        Assert.assertNotNull(id);
+        Assert.assertNotNull(operatorFunction);
         this.id = id;
         this.operatorFunction = operatorFunction;
     }

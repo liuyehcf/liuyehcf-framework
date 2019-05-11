@@ -8,8 +8,8 @@ import org.liuyehcf.compile.engine.hua.core.io.HuaClassOutputStream;
 
 import java.io.*;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertTrue;
 import static org.liuyehcf.compile.engine.hua.core.io.HClassConstant.HCLASS_SUFFIX;
 
 /**

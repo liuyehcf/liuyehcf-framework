@@ -5,7 +5,7 @@ import org.liuyehcf.compile.engine.core.utils.ListUtils;
 import java.io.Serializable;
 import java.util.*;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertFalse;
 
 /**
  * 文法定义

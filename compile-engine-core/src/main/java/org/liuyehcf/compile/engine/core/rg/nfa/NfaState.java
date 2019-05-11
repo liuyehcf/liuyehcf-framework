@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.core.rg.nfa;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 
 import java.util.*;
 
@@ -46,7 +46,7 @@ public class NfaState {
     }
 
     public void setStart(int group) {
-        AssertUtils.assertFalse(groupStart.contains(group));
+        Assert.assertFalse(groupStart.contains(group));
         groupStart.add(group);
     }
 
@@ -55,7 +55,7 @@ public class NfaState {
     }
 
     void setReceive(int group) {
-        AssertUtils.assertFalse(groupReceive.contains(group));
+        Assert.assertFalse(groupReceive.contains(group));
         groupReceive.add(group);
     }
 

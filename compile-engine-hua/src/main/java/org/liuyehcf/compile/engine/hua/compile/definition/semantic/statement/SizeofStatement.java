@@ -7,7 +7,7 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSeman
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp._sizeof;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertTrue;
 
 /**
  * sizeof语句

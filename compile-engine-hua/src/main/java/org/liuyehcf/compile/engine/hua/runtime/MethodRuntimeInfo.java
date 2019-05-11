@@ -6,7 +6,7 @@ import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 
 import java.util.List;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertEquals;
 
 /**
  * 方法运行时信息，方法栈的元素

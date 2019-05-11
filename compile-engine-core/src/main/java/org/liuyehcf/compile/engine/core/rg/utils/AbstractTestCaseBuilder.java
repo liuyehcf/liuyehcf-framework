@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.core.rg.utils;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 import org.liuyehcf.compile.engine.core.utils.Pair;
 
@@ -259,7 +259,7 @@ public abstract class AbstractTestCaseBuilder {
         while ((c = getCurChar()) != '}') {
 
             if (c == ',') {
-                AssertUtils.assertNull(leftNumber);
+                Assert.assertNull(leftNumber);
                 leftNumber = Integer.parseInt(sb.toString());
                 sb = new StringBuilder();
             } else {
@@ -279,7 +279,7 @@ public abstract class AbstractTestCaseBuilder {
         }
 
         if (rightNumber != null) {
-            AssertUtils.assertTrue(rightNumber >= leftNumber);
+            Assert.assertTrue(rightNumber >= leftNumber);
         }
 
         index++;
@@ -312,12 +312,12 @@ public abstract class AbstractTestCaseBuilder {
              * '-'前面存在有效字符时
              */
             else if (pre != -1 && getCurChar() == '-') {
-                AssertUtils.assertFalse(hasTo);
+                Assert.assertFalse(hasTo);
                 hasTo = true;
             } else {
                 if (hasTo) {
-                    AssertUtils.assertTrue(pre != -1);
-                    AssertUtils.assertTrue(pre <= getCurChar());
+                    Assert.assertTrue(pre != -1);
+                    Assert.assertTrue(pre <= getCurChar());
                     /*
                      * pre在上一次已经添加过了，本次从pre+1开始
                      */
@@ -580,7 +580,7 @@ public abstract class AbstractTestCaseBuilder {
 
             int textCaseIndex = RANDOM.nextInt(testCasesOfAllParts.size());
 
-            AssertUtils.assertTrue(testCasesOfAllParts.get(textCaseIndex).size() == 1);
+            Assert.assertTrue(testCasesOfAllParts.get(textCaseIndex).size() == 1);
             String testCase = testCasesOfAllParts.get(textCaseIndex).iterator().next();
 
             pushCurStackUnion();

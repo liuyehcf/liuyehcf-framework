@@ -8,8 +8,8 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.oc._anewarray;
 import org.liuyehcf.compile.engine.hua.core.bytecode.oc._multianewarray;
 import org.liuyehcf.compile.engine.hua.core.bytecode.oc._newarray;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertFalse;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertTrue;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**

@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.core.cfg.lr;
 
 import org.liuyehcf.compile.engine.core.cfg.lexical.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.core.utils.SetUtils;
 
 import java.io.Serializable;
@@ -34,7 +34,7 @@ public class LR1<T> extends AbstractLRCompiler<T> implements Serializable {
          */
         PrimaryProduction ppStart;
 
-        AssertUtils.assertTrue(getProductionMap().get(Symbol.START).getPrimaryProductions().size() == 2);
+        Assert.assertTrue(getProductionMap().get(Symbol.START).getPrimaryProductions().size() == 2);
 
         /*
          * 第一个子产生式
@@ -59,13 +59,13 @@ public class LR1<T> extends AbstractLRCompiler<T> implements Serializable {
 
         Symbol nextSymbol = nextSymbol(item);
         Item nextItem = successor(item);
-        AssertUtils.assertNotNull(nextSymbol);
-        AssertUtils.assertNotNull(nextItem);
+        Assert.assertNotNull(nextSymbol);
+        Assert.assertNotNull(nextItem);
 
         SymbolString beta = nextSymbolString(nextItem);
 
         Set<Symbol> lookAHeadsA = item.getLookAHeads();
-        AssertUtils.assertFalse(lookAHeadsA.isEmpty());
+        Assert.assertFalse(lookAHeadsA.isEmpty());
 
         Set<Symbol> lookAHeadsB;
 

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.*;
+import static org.liuyehcf.compile.engine.core.utils.Assert.*;
 
 
 /**

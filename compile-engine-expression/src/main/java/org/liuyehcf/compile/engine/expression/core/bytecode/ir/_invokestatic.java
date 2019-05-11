@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.expression.core.bytecode.ir;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.expression.core.function.Function;
 import org.liuyehcf.compile.engine.expression.runtime.ExpressionValue;
 import org.liuyehcf.compile.engine.expression.runtime.RuntimeContext;
@@ -70,7 +70,7 @@ public class _invokestatic extends Invoke {
         }
 
         ExpressionValue result = FunctionUtils.invoke(function, args.toArray(new ExpressionValue[0]));
-        AssertUtils.assertNotNull(result, "function's result cannot be null");
+        Assert.assertNotNull(result, "function's result cannot be null");
 
         context.push(result);
         context.increaseCodeOffset();

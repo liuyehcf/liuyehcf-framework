@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.core.rg.nfa;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.rg.Matcher;
 import org.liuyehcf.compile.engine.core.rg.utils.SymbolUtils;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.core.utils.Pair;
 import org.liuyehcf.compile.engine.core.utils.Tuple;
 
@@ -367,7 +367,7 @@ public class NfaMatcher implements Matcher {
     @Override
     public String group(int group) {
         if (groupStartIndexes == null) {
-            AssertUtils.assertNull(groupEndIndexes);
+            Assert.assertNull(groupEndIndexes);
             throw new IllegalStateException("No match found");
         }
         if (group < 0 || group > groupCount()) {
@@ -391,7 +391,7 @@ public class NfaMatcher implements Matcher {
     @Override
     public int start(int group) {
         if (groupStartIndexes == null) {
-            AssertUtils.assertNull(groupEndIndexes);
+            Assert.assertNull(groupEndIndexes);
             throw new IllegalStateException("No match available");
         }
         if (group < 0 || group > groupCount()) {
@@ -403,7 +403,7 @@ public class NfaMatcher implements Matcher {
     @Override
     public int end(int group) {
         if (groupStartIndexes == null) {
-            AssertUtils.assertNull(groupEndIndexes);
+            Assert.assertNull(groupEndIndexes);
             throw new IllegalStateException("No match available");
         }
         if (group < 0 || group > groupCount()) {

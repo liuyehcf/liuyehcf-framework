@@ -7,7 +7,7 @@ import org.liuyehcf.compile.engine.expression.core.bytecode.ir._invokestatic;
 import org.liuyehcf.compile.engine.expression.core.function.Function;
 import org.liuyehcf.compile.engine.expression.utils.FunctionUtils;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertNotNull;
 
 /**
  * 方法调用

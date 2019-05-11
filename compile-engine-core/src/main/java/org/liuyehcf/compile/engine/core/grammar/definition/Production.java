@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.core.grammar.definition;
 
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 
 import java.io.Serializable;
@@ -35,7 +35,7 @@ public class Production implements Comparable<Production>, Serializable {
             if (left == null) {
                 left = pp.getLeft();
             } else {
-                AssertUtils.assertTrue(left.equals(pp.getLeft()));
+                Assert.assertTrue(left.equals(pp.getLeft()));
             }
         }
         this.left = left;
@@ -72,7 +72,7 @@ public class Production implements Comparable<Production>, Serializable {
                     .append(' ');
         }
 
-        AssertUtils.assertFalse(primaryProductions.isEmpty());
+        Assert.assertFalse(primaryProductions.isEmpty());
         sb.setLength(sb.length() - 3);
 
         sb.append('\"');

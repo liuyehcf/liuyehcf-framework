@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.expression;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.expression.compile.ExpressionCompiler;
 import org.liuyehcf.compile.engine.expression.core.ExpressionCode;
 import org.liuyehcf.compile.engine.expression.core.ExpressionException;
@@ -254,7 +254,7 @@ public abstract class ExpressionEngine {
      * @return id of added operator function of related type
      */
     public synchronized static String addOperatorFunction(OperatorFunction function) {
-        AssertUtils.assertNotNull(function);
+        Assert.assertNotNull(function);
         OperatorType type = function.getType();
         String id = UUID.randomUUID().toString();
         OPERATOR_FUNCTIONS.get(type).add(new DelegateOperatorFunction(id, function));

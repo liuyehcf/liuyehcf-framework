@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.core.cfg.lr;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 
 import java.io.Serializable;
 import java.util.*;
@@ -67,7 +67,7 @@ class Item implements Comparable<Item>, Serializable {
         sb.append(primaryProduction);
 
         if (lookAHeads != null) {
-            AssertUtils.assertFalse(lookAHeads.isEmpty());
+            Assert.assertFalse(lookAHeads.isEmpty());
             sb.append(", ");
             sb.append(lookAHeads);
         }

@@ -7,8 +7,8 @@ import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSeman
 import org.liuyehcf.compile.engine.hua.core.VariableSymbol;
 import org.liuyehcf.compile.engine.hua.core.bytecode.cp._iinc;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertEquals;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertNotNull;
 
 /**
  * 后置 递增/递减

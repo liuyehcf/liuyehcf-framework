@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.core.grammar.converter;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 
 import java.io.Serializable;
@@ -24,7 +24,7 @@ public class AugmentedGrammarConverter extends AbstractGrammarConverter implemen
     protected Grammar doConvert() {
         List<Production> newProductions = new ArrayList<>();
 
-        AssertUtils.assertFalse(originalGrammar.getProductions().isEmpty());
+        Assert.assertFalse(originalGrammar.getProductions().isEmpty());
 
         newProductions.add(
                 Production.create(

@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.core.rg.dfa;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.rg.nfa.NfaState;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -97,7 +97,7 @@ public class DfaState {
     }
 
     public void setStart(int group) {
-        AssertUtils.assertFalse(groupStart.contains(group));
+        Assert.assertFalse(groupStart.contains(group));
         groupStart.add(group);
     }
 
@@ -106,7 +106,7 @@ public class DfaState {
     }
 
     public void setReceive(int group) {
-        AssertUtils.assertFalse(groupReceive.contains(group));
+        Assert.assertFalse(groupReceive.contains(group));
         groupReceive.add(group);
     }
 
@@ -149,7 +149,7 @@ public class DfaState {
     }
 
     void addInputSymbolAndNextDfaState(Symbol symbol, DfaState dfaState) {
-        AssertUtils.assertFalse(nextDfaStateMap.containsKey(symbol));
+        Assert.assertFalse(nextDfaStateMap.containsKey(symbol));
         nextDfaStateMap.put(symbol, dfaState);
     }
 
@@ -189,7 +189,7 @@ public class DfaState {
             for (Symbol inputSymbol : curDfaState.getAllInputSymbols()) {
                 DfaState nextDfaState = curDfaState.getNextDfaStateWithSymbol(inputSymbol);
 
-                AssertUtils.assertNotNull(nextDfaState);
+                Assert.assertNotNull(nextDfaState);
 
                 System.out.println(curDfaState + " (" + inputSymbol + ")-> " + nextDfaState);
 

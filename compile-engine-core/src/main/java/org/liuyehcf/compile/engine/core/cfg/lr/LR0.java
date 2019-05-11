@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.core.cfg.lr;
 
 import org.liuyehcf.compile.engine.core.cfg.lexical.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class LR0<T> extends AbstractLRCompiler<T> implements Serializable {
          */
         PrimaryProduction ppStart;
 
-        AssertUtils.assertTrue(getProductionMap().get(Symbol.START).getPrimaryProductions().size() == 2);
+        Assert.assertTrue(getProductionMap().get(Symbol.START).getPrimaryProductions().size() == 2);
 
         /*
          * 第一个子产生式
@@ -51,7 +51,7 @@ public class LR0<T> extends AbstractLRCompiler<T> implements Serializable {
          */
 
         Symbol nextSymbol = nextSymbol(item);
-        AssertUtils.assertNotNull(nextSymbol);
+        Assert.assertNotNull(nextSymbol);
 
         List<Item> result = new ArrayList<>();
 

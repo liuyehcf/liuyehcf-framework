@@ -10,8 +10,8 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.ir._invokestatic;
 
 import java.util.List;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertTrue;
 import static org.liuyehcf.compile.engine.hua.core.MethodInfo.buildMethodSignature;
 
 /**

@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.expression.core;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.expression.core.bytecode.ByteCode;
 import org.liuyehcf.compile.engine.expression.runtime.ExpressionVirtualMachine;
 import org.liuyehcf.compile.engine.expression.utils.EnvBuilder;
@@ -33,7 +33,7 @@ public class ExpressionCode {
     }
 
     public ExpressionCode(List<ByteCode> byteCodes) {
-        AssertUtils.assertNotNull(byteCodes);
+        Assert.assertNotNull(byteCodes);
         this.byteCodes = byteCodes;
     }
 

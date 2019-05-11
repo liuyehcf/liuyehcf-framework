@@ -7,8 +7,8 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertFalse;
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertTrue;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertFalse;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertTrue;
 
 /**
  * 符号表

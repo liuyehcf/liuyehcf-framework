@@ -7,7 +7,7 @@ import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.core.cfg.lr.Context;
 import org.liuyehcf.compile.engine.core.cfg.lr.LALR;
 import org.liuyehcf.compile.engine.core.grammar.definition.SemanticAction;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.expression.compile.optimize.OptimizerPipeline;
 import org.liuyehcf.compile.engine.expression.compile.optimize.impl.ConstantExpressionOptimizer;
 import org.liuyehcf.compile.engine.expression.compile.optimize.impl.ControlTransferOptimizer;
@@ -47,7 +47,7 @@ public class ExpressionCompiler extends LALR<ExpressionCode> {
     private static ExpressionCompiler loadCompiler() {
         try {
             InputStream resourceStream = ClassLoader.getSystemClassLoader().getResourceAsStream(COMPILER_SERIALIZATION_FILE);
-            AssertUtils.assertNotNull(resourceStream);
+            Assert.assertNotNull(resourceStream);
             ObjectInputStream inputStream = new ObjectInputStream(resourceStream);
             return (ExpressionCompiler) inputStream.readObject();
         } catch (Throwable e) {

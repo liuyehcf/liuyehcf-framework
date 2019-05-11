@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.expression.compile.definition.semantic.code;
 
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.expression.compile.CompilerContext;
 import org.liuyehcf.compile.engine.expression.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.expression.compile.definition.semantic.AbstractSemanticAction;
@@ -30,7 +30,7 @@ public class PushPropertyLoadByteCode extends AbstractSemanticAction {
     public void onAction(CompilerContext context) {
         String identifierName = context.getAttr(identifierNameStackOffset, AttrName.IDENTIFIER_NAME);
 
-        AssertUtils.assertNotNull(identifierName);
+        Assert.assertNotNull(identifierName);
 
         context.addByteCode(new _pload(identifierName));
     }

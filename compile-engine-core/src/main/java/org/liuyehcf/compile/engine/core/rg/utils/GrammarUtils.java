@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.core.rg.utils;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public abstract class GrammarUtils {
                 }
             } else if (obj instanceof Symbol) {
                 Symbol symbol = (Symbol) obj;
-                AssertUtils.assertFalse(symbol.isTerminator());
+                Assert.assertFalse(symbol.isTerminator());
                 symbols.add(symbol);
             }
         }
@@ -51,11 +51,11 @@ public abstract class GrammarUtils {
     }
 
     public static List<Symbol> extractSymbolsFromGrammar(Grammar grammar) {
-        AssertUtils.assertTrue(grammar.getProductions().size() == 1);
+        Assert.assertTrue(grammar.getProductions().size() == 1);
 
         Production p = grammar.getProductions().get(0);
 
-        AssertUtils.assertTrue(p.getPrimaryProductions().size() == 1);
+        Assert.assertTrue(p.getPrimaryProductions().size() == 1);
 
         return p.getPrimaryProductions().get(0).getRight().getSymbols();
     }

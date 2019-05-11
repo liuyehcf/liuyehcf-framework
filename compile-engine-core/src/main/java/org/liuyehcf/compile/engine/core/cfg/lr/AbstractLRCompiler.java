@@ -13,7 +13,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
 import org.liuyehcf.compile.engine.core.grammar.definition.SymbolString;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.core.utils.ListUtils;
 import org.liuyehcf.compile.engine.core.utils.Pair;
 import org.liuyehcf.compile.engine.core.utils.SetUtils;
@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertNotNull;
 import static org.liuyehcf.compile.engine.core.utils.CharacterUtil.isBlankChar;
 
 /**
@@ -90,7 +90,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
     static Item successor(Item preItem) {
         PrimaryProduction pp = preItem.getPrimaryProduction();
 
-        AssertUtils.assertTrue(pp.getRight().getIndexOfDot() != -1);
+        Assert.assertTrue(pp.getRight().getIndexOfDot() != -1);
 
         if (pp.getRight().getIndexOfDot() == pp.getRight().getSymbols().size()) {
             return null;
@@ -112,7 +112,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
     static Symbol nextSymbol(Item preItem) {
         PrimaryProduction pp = preItem.getPrimaryProduction();
 
-        AssertUtils.assertTrue(pp.getRight().getIndexOfDot() != -1);
+        Assert.assertTrue(pp.getRight().getIndexOfDot() != -1);
 
         if (pp.getRight().getIndexOfDot() == pp.getRight().getSymbols().size()) {
             return null;
@@ -124,7 +124,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
     static SymbolString nextSymbolString(Item preItem) {
         PrimaryProduction pp = preItem.getPrimaryProduction();
 
-        AssertUtils.assertTrue(pp.getRight().getIndexOfDot() != -1);
+        Assert.assertTrue(pp.getRight().getIndexOfDot() != -1);
 
         if (pp.getRight().getIndexOfDot() == pp.getRight().getSymbols().size()) {
             return null;
@@ -134,7 +134,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
     }
 
     static PrimaryProduction removeDot(PrimaryProduction pp) {
-        AssertUtils.assertTrue(pp.getRight().getIndexOfDot() != -1);
+        Assert.assertTrue(pp.getRight().getIndexOfDot() != -1);
 
         return PrimaryProduction.create(
                 pp.getLeft(),
@@ -266,7 +266,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                                     .append(" /");
                         }
                     }
-                    AssertUtils.assertTrue(sb.charAt(sb.length() - 1) == '/');
+                    Assert.assertTrue(sb.charAt(sb.length() - 1) == '/');
                     sb.setLength(sb.length() - 1);
                 }
             }
@@ -380,7 +380,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                      */
                     if (nextItem != null) {
                         Symbol nextSymbol = nextSymbol(preItem);
-                        AssertUtils.assertNotNull(nextSymbol);
+                        Assert.assertNotNull(nextSymbol);
 
                         if (!successorMap.containsKey(nextSymbol)) {
                             successorMap.put(nextSymbol, new ArrayList<>());
@@ -411,7 +411,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                         closureTransferTable.put(preClosure.getId(), new HashMap<>(16));
                     }
 
-                    AssertUtils.assertTrue(!closureTransferTable.get(preClosure.getId()).containsKey(nextSymbol)
+                    Assert.assertTrue(!closureTransferTable.get(preClosure.getId()).containsKey(nextSymbol)
                             || closureTransferTable.get(preClosure.getId()).get(nextSymbol).equals(nextClosure.getId()));
 
                     if (!closureTransferTable.get(preClosure.getId()).containsKey(nextSymbol)) {
@@ -602,7 +602,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                      * 转移  "savedClosureId --(nextSymbol)--> actualToClosureId"  要么尚未建立，要么已经存在
                      * 不可能存在   "savedClosureId --(nextSymbol)--> otherToClosureId"
                      */
-                    AssertUtils.assertTrue(!newClosureTransferTable.get(actualFromClosureId).containsKey(nextSymbol)
+                    Assert.assertTrue(!newClosureTransferTable.get(actualFromClosureId).containsKey(nextSymbol)
                             || newClosureTransferTable.get(actualFromClosureId).get(nextSymbol).equals(actualToClosureId));
 
                     newClosureTransferTable.get(actualFromClosureId)
@@ -620,12 +620,12 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                 List<Item> coreItems = new ArrayList<>();
                 List<Item> equalItems = new ArrayList<>();
 
-                AssertUtils.assertTrue(savedClosure.getCoreItems().size() == removedClosure.getCoreItems().size());
-                AssertUtils.assertTrue(savedClosure.getEqualItems().size() == removedClosure.getEqualItems().size());
-                AssertUtils.assertTrue(savedClosure.getItems().size() == removedClosure.getItems().size());
+                Assert.assertTrue(savedClosure.getCoreItems().size() == removedClosure.getCoreItems().size());
+                Assert.assertTrue(savedClosure.getEqualItems().size() == removedClosure.getEqualItems().size());
+                Assert.assertTrue(savedClosure.getItems().size() == removedClosure.getItems().size());
 
                 for (int i = 0; i < savedClosure.getCoreItems().size(); i++) {
-                    AssertUtils.assertTrue(savedClosure.getCoreItems().get(i).getPrimaryProduction().equals(
+                    Assert.assertTrue(savedClosure.getCoreItems().get(i).getPrimaryProduction().equals(
                             removedClosure.getCoreItems().get(i).getPrimaryProduction()
                     ));
                     coreItems.add(
@@ -640,7 +640,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
                 }
 
                 for (int i = 0; i < savedClosure.getEqualItems().size(); i++) {
-                    AssertUtils.assertTrue(savedClosure.getEqualItems().get(i).getPrimaryProduction().equals(
+                    Assert.assertTrue(savedClosure.getEqualItems().get(i).getPrimaryProduction().equals(
                             removedClosure.getEqualItems().get(i).getPrimaryProduction()
                     ));
                     equalItems.add(
@@ -781,7 +781,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         if (analysisTable.get(closureId).get(symbol).isEmpty()) {
             return null;
         }
-        AssertUtils.assertTrue(analysisTable.get(closureId).get(symbol).size() == 1);
+        Assert.assertTrue(analysisTable.get(closureId).get(symbol).size() == 1);
         return analysisTable.get(closureId).get(symbol).iterator().next();
     }
 
@@ -942,8 +942,8 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         }
 
         private void moveIn() {
-            AssertUtils.assertTrue(statusStack.size() == nodeStack.size());
-            AssertUtils.assertFalse(nodeTransferOperation.getNextClosureId() == -1);
+            Assert.assertTrue(statusStack.size() == nodeStack.size());
+            Assert.assertFalse(nodeTransferOperation.getNextClosureId() == -1);
 
             statusStack.push(nodeTransferOperation.getNextClosureId());
 
@@ -954,10 +954,10 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         }
 
         private void reduction() {
-            AssertUtils.assertTrue(statusStack.size() == nodeStack.size());
+            Assert.assertTrue(statusStack.size() == nodeStack.size());
 
             PrimaryProduction ppReduction = nodeTransferOperation.getPrimaryProduction();
-            AssertUtils.assertNotNull(ppReduction);
+            Assert.assertNotNull(ppReduction);
 
             SyntaxNode leftNode;
 
@@ -995,7 +995,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         }
 
         private void jump() {
-            AssertUtils.assertTrue(statusStack.size() + 1 == nodeStack.size());
+            Assert.assertTrue(statusStack.size() + 1 == nodeStack.size());
 
             Integer peekStatus = statusStack.peek();
             SyntaxNode peekNode = nodeStack.peek();
@@ -1004,8 +1004,8 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
             assertNotNull(peekNode);
 
             NodeTransferOperation nextNodeTransferOperation = getOperationFromAnalysisTable(peekStatus, peekNode.getId());
-            AssertUtils.assertNotNull(nextNodeTransferOperation);
-            AssertUtils.assertFalse(nextNodeTransferOperation.getNextClosureId() == -1);
+            Assert.assertNotNull(nextNodeTransferOperation);
+            Assert.assertFalse(nextNodeTransferOperation.getNextClosureId() == -1);
 
             statusStack.push(nextNodeTransferOperation.getNextClosureId());
         }

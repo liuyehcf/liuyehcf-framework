@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.core.rg.utils;
 
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -69,7 +69,7 @@ public abstract class SymbolUtils {
     }
 
     public static char getChar(Symbol symbol) {
-        AssertUtils.assertTrue(symbol.getValue().length() == 1);
+        Assert.assertTrue(symbol.getValue().length() == 1);
         return symbol.getValue().charAt(0);
     }
 }

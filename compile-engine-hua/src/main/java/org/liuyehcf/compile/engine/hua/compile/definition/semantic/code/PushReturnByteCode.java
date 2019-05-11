@@ -6,8 +6,8 @@ import org.liuyehcf.compile.engine.hua.compile.definition.model.Type;
 import org.liuyehcf.compile.engine.hua.compile.definition.semantic.AbstractSemanticAction;
 import org.liuyehcf.compile.engine.hua.core.bytecode.ir.*;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertEquals;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertNotNull;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**

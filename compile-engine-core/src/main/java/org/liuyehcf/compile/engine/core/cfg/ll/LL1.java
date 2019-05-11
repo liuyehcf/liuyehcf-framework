@@ -9,7 +9,7 @@ import org.liuyehcf.compile.engine.core.grammar.converter.GrammarConverterPipeli
 import org.liuyehcf.compile.engine.core.grammar.converter.LreElfGrammarConverter;
 import org.liuyehcf.compile.engine.core.grammar.converter.MergeGrammarConverter;
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.core.utils.SetUtils;
 
 import java.io.Serializable;
@@ -66,7 +66,7 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T>, Ser
                 if (!selects.containsKey(a)) {
                     selects.put(a, new HashMap<>(16));
                 }
-                AssertUtils.assertFalse(selects.get(a).containsKey(ppa));
+                Assert.assertFalse(selects.get(a).containsKey(ppa));
 
                 selects.get(a).put(ppa, new HashSet<>());
 
@@ -99,7 +99,7 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T>, Ser
          */
         for (Symbol a : this.grammar.getNonTerminators()) {
             Map<PrimaryProduction, Set<Symbol>> map = selects.get(a);
-            AssertUtils.assertNotNull(map);
+            Assert.assertNotNull(map);
 
             Set<Symbol> selectsOfA = new HashSet<>();
 
@@ -169,20 +169,20 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T>, Ser
                     sb.append(firstSymbol).append(',');
                 }
 
-                AssertUtils.assertFalse(innerEntry.getValue().isEmpty());
+                Assert.assertFalse(innerEntry.getValue().isEmpty());
                 sb.setLength(sb.length() - 1);
 
                 sb.append('\"');
                 sb.append(',');
             }
 
-            AssertUtils.assertFalse(outerEntry.getValue().entrySet().isEmpty());
+            Assert.assertFalse(outerEntry.getValue().entrySet().isEmpty());
             sb.setLength(sb.length() - 1);
             sb.append('}');
             sb.append(',');
         }
 
-        AssertUtils.assertFalse(selects.isEmpty());
+        Assert.assertFalse(selects.isEmpty());
         sb.setLength(sb.length() - 1);
         sb.append('}');
 

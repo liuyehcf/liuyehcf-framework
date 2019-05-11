@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.core.rg.dfa;
 
 import org.liuyehcf.compile.engine.core.rg.Matcher;
 import org.liuyehcf.compile.engine.core.rg.utils.SymbolUtils;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +47,7 @@ public class DfaMatcher implements Matcher {
     @Override
     public boolean matches() {
         DfaState curDfaState = dfa.getStartDfaState();
-        AssertUtils.assertNotNull(curDfaState);
+        Assert.assertNotNull(curDfaState);
         for (int i = 0; i < input.length(); i++) {
             for (int group : curDfaState.getGroupStart()) {
                 groupStartIndexes.put(group, i);

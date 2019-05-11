@@ -1,7 +1,7 @@
 package org.liuyehcf.compile.engine.expression.compile;
 
 import org.liuyehcf.compile.engine.core.cfg.lr.Context;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.expression.compile.definition.model.AttrName;
 import org.liuyehcf.compile.engine.expression.core.ExpressionCode;
 import org.liuyehcf.compile.engine.expression.core.bytecode.ByteCode;
@@ -33,7 +33,7 @@ public class CompilerContext extends Context {
      * @param value       属性值
      */
     public void setAttr(int stackOffset, AttrName attrName, Object value) {
-        AssertUtils.assertNotNull(attrName);
+        Assert.assertNotNull(attrName);
         getStack().get(stackOffset).put(attrName.name(), value);
     }
 
@@ -44,7 +44,7 @@ public class CompilerContext extends Context {
      * @param value    属性值
      */
     public void setAttrToLeftNode(AttrName attrName, Object value) {
-        AssertUtils.assertNotNull(attrName);
+        Assert.assertNotNull(attrName);
         getLeftNode().put(attrName.name(), value);
     }
 
@@ -57,7 +57,7 @@ public class CompilerContext extends Context {
      * @return 属性值
      */
     public <T> T getAttr(int stackOffset, AttrName attrName) {
-        AssertUtils.assertNotNull(attrName);
+        Assert.assertNotNull(attrName);
         return getStack().get(stackOffset).get(attrName.name());
     }
 

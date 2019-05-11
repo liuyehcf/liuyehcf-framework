@@ -5,7 +5,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.rg.Matcher;
 import org.liuyehcf.compile.engine.core.rg.Pattern;
 import org.liuyehcf.compile.engine.core.rg.utils.GrammarUtils;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.core.utils.Pair;
 
 /**
@@ -63,7 +63,7 @@ public class Nfa implements Pattern, GrammarHolder {
     }
 
     public void print() {
-        AssertUtils.assertNotNull(nfaClosure);
+        Assert.assertNotNull(nfaClosure);
         nfaClosure.print();
     }
 }

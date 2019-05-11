@@ -7,7 +7,7 @@ import org.liuyehcf.compile.engine.hua.core.MethodInfo;
 
 import java.util.List;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertNotNull;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertNotNull;
 import static org.liuyehcf.compile.engine.hua.core.MethodInfo.buildMethodSignature;
 
 /**

@@ -4,7 +4,7 @@ import org.liuyehcf.compile.engine.core.CompileResult;
 import org.liuyehcf.compile.engine.core.cfg.lexical.LexicalAnalyzer;
 import org.liuyehcf.compile.engine.core.grammar.converter.GrammarConverterPipeline;
 import org.liuyehcf.compile.engine.core.grammar.definition.*;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.core.utils.SetUtils;
 
 import java.io.Serializable;
@@ -121,7 +121,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T>, Serializ
         this.productionMap = new HashMap<>(16);
 
         for (Production p : grammar.getProductions()) {
-            AssertUtils.assertFalse(productionMap.containsKey(p.getLeft()));
+            Assert.assertFalse(productionMap.containsKey(p.getLeft()));
             productionMap.put(p.getLeft(), p);
         }
 
@@ -147,7 +147,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T>, Serializ
             for (Symbol x : this.grammar.getNonTerminators()) {
                 Production px = productionMap.get(x);
 
-                AssertUtils.assertNotNull(px);
+                Assert.assertNotNull(px);
 
                 /*
                  * 如果X是一个非终结符，且X→Y1...Yk∈P(k≥1)
@@ -227,7 +227,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T>, Serializ
             for (Symbol a : this.grammar.getNonTerminators()) {
                 Production pa = productionMap.get(a);
 
-                AssertUtils.assertNotNull(pa);
+                Assert.assertNotNull(pa);
 
                 for (PrimaryProduction ppa : pa.getPrimaryProductions()) {
                     for (int i = 0; i < ppa.getRight().getSymbols().size(); i++) {
@@ -251,7 +251,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T>, Serializ
                             }
 
                             Set<Symbol> firstsOfBeta = getFirstsOf(beta);
-                            AssertUtils.assertNotNull(firstsOfBeta);
+                            Assert.assertNotNull(firstsOfBeta);
 
                             newFollows.get(b).addAll(
                                     SetUtils.extract(
@@ -292,7 +292,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T>, Serializ
          * 检查一下是否所有的非终结符都有了follow集
          */
         for (Symbol nonTerminator : this.grammar.getNonTerminators()) {
-            AssertUtils.assertFalse(follows.get(nonTerminator) == null
+            Assert.assertFalse(follows.get(nonTerminator) == null
                     || follows.get(nonTerminator).isEmpty());
         }
     }
@@ -326,7 +326,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T>, Serializ
 
             appendAttr(sb, map, this.grammar.getTerminators());
 
-            AssertUtils.assertFalse(this.grammar.getTerminators().isEmpty());
+            Assert.assertFalse(this.grammar.getTerminators().isEmpty());
             sb.setLength(sb.length() - 1);
 
             sb.append('}');
@@ -341,7 +341,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T>, Serializ
 
         appendAttr(sb, map, this.grammar.getNonTerminators());
 
-        AssertUtils.assertFalse(this.grammar.getNonTerminators().isEmpty());
+        Assert.assertFalse(this.grammar.getNonTerminators().isEmpty());
         sb.setLength(sb.length() - 1);
 
         sb.append('}');
@@ -355,7 +355,7 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T>, Serializ
             sb.append('\"').append(symbol).append("\":");
             sb.append('\"');
 
-            AssertUtils.assertFalse(map.get(symbol).isEmpty());
+            Assert.assertFalse(map.get(symbol).isEmpty());
 
             for (Symbol firstSymbol : map.get(symbol)) {
                 sb.append(firstSymbol).append(',');

@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.expression.compile.optimize.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.core.utils.Pair;
 import org.liuyehcf.compile.engine.expression.compile.optimize.Optimizer;
 import org.liuyehcf.compile.engine.expression.core.ExpressionCode;
@@ -87,7 +87,7 @@ public class ConstantExpressionOptimizer implements Optimizer {
             ByteCode byteCode = expressionCode.getByteCodes().get(i);
             if (byteCode instanceof ControlTransfer) {
                 int codeOffset = ((ControlTransfer) byteCode).getCodeOffset();
-                AssertUtils.assertFalse(codeOffset == -1);
+                Assert.assertFalse(codeOffset == -1);
                 int blockId = startCodeOffsets.indexOf(codeOffset);
                 ((ControlTransfer) byteCode).setCodeOffset(blockId);
             }
@@ -174,7 +174,7 @@ public class ConstantExpressionOptimizer implements Optimizer {
                         hasEnoughOperators = false;
                     } else {
                         final int stackOperandNum = computeByteCode.getStackOperandNum();
-                        AssertUtils.assertFalse(constByteCodes.size() > stackOperandNum);
+                        Assert.assertFalse(constByteCodes.size() > stackOperandNum);
                         hasEnoughOperators = constByteCodes.size() == stackOperandNum;
                     }
 
@@ -257,7 +257,7 @@ public class ConstantExpressionOptimizer implements Optimizer {
         for (ByteCode byteCode : joinedByteCode) {
             if (byteCode instanceof ControlTransfer) {
                 int blockId = ((ControlTransfer) byteCode).getCodeOffset();
-                AssertUtils.assertTrue(offsetMap.containsKey(blockId));
+                Assert.assertTrue(offsetMap.containsKey(blockId));
                 ((ControlTransfer) byteCode).setCodeOffset(offsetMap.get(blockId));
             }
         }

@@ -8,7 +8,7 @@ import org.liuyehcf.compile.engine.core.rg.Pattern;
 import org.liuyehcf.compile.engine.core.rg.nfa.Nfa;
 import org.liuyehcf.compile.engine.core.rg.nfa.NfaClosure;
 import org.liuyehcf.compile.engine.core.rg.nfa.NfaState;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 
 import java.util.*;
 
@@ -54,7 +54,7 @@ public class Dfa implements Pattern, GrammarHolder {
     }
 
     public void print() {
-        AssertUtils.assertNotNull(startDfaState);
+        Assert.assertNotNull(startDfaState);
         startDfaState.print();
     }
 
@@ -112,10 +112,10 @@ public class Dfa implements Pattern, GrammarHolder {
         }
 
         private void addUnMarkedDfaState(DfaState dfaState) {
-            AssertUtils.assertFalse(dfaState.isMarked());
-            AssertUtils.assertFalse(dfaStatesMap.containsKey(dfaState.getDescription()));
+            Assert.assertFalse(dfaState.isMarked());
+            Assert.assertFalse(dfaStatesMap.containsKey(dfaState.getDescription()));
             dfaStatesMap.put(dfaState.getDescription(), dfaState);
-            AssertUtils.assertFalse(unMarkedDfaStates.contains(dfaState));
+            Assert.assertFalse(unMarkedDfaStates.contains(dfaState));
             unMarkedDfaStates.add(dfaState);
         }
 
@@ -125,17 +125,17 @@ public class Dfa implements Pattern, GrammarHolder {
             DfaState dfaState = null;
             if (it.hasNext()) {
                 dfaState = it.next();
-                AssertUtils.assertFalse(dfaState.isMarked());
+                Assert.assertFalse(dfaState.isMarked());
             }
             return dfaState;
         }
 
         private void markDfaState(DfaState dfaState) {
-            AssertUtils.assertFalse(dfaState.isMarked());
+            Assert.assertFalse(dfaState.isMarked());
             dfaState.setMarked();
-            AssertUtils.assertTrue(unMarkedDfaStates.contains(dfaState));
+            Assert.assertTrue(unMarkedDfaStates.contains(dfaState));
             unMarkedDfaStates.remove(dfaState);
-            AssertUtils.assertFalse(markedDfaStates.contains(dfaState));
+            Assert.assertFalse(markedDfaStates.contains(dfaState));
             markedDfaStates.add(dfaState);
         }
     }

@@ -4,7 +4,7 @@ import org.liuyehcf.compile.engine.core.grammar.definition.Grammar;
 import org.liuyehcf.compile.engine.core.grammar.definition.PrimaryProduction;
 import org.liuyehcf.compile.engine.core.grammar.definition.Production;
 import org.liuyehcf.compile.engine.core.grammar.definition.Symbol;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class MergeGrammarConverter extends AbstractGrammarConverter implements S
     }
 
     private static Production parallelProduction(Production p1, Production p2) {
-        AssertUtils.assertTrue(p1.getLeft().equals(p2.getLeft()));
+        Assert.assertTrue(p1.getLeft().equals(p2.getLeft()));
 
         List<PrimaryProduction> primaryProductions = new ArrayList<>(p1.getPrimaryProductions());
         primaryProductions.addAll(p2.getPrimaryProductions());
@@ -41,7 +41,7 @@ public class MergeGrammarConverter extends AbstractGrammarConverter implements S
 
         for (Production p : originalGrammar.getProductions()) {
             Symbol nonTerminator = p.getLeft();
-            AssertUtils.assertFalse(nonTerminator.isTerminator());
+            Assert.assertFalse(nonTerminator.isTerminator());
 
             /*
              * 合并相同左部的产生式

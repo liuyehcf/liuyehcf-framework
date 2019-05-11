@@ -1,6 +1,6 @@
 package org.liuyehcf.compile.engine.core.rg.dfa;
 
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,7 +25,7 @@ public class DfaStateDescription {
     private final Set<Integer> nfaStateIds;
 
     DfaStateDescription(Set<Integer> nfaStateIds) {
-        AssertUtils.assertNotNull(nfaStateIds);
+        Assert.assertNotNull(nfaStateIds);
 
         this.nfaStateIds = Collections.unmodifiableSet(new HashSet<>(nfaStateIds));
 

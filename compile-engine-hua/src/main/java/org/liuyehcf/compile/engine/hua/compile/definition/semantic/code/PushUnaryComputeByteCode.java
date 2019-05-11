@@ -12,7 +12,7 @@ import org.liuyehcf.compile.engine.hua.core.bytecode.sl._lconst;
 
 import java.util.List;
 
-import static org.liuyehcf.compile.engine.core.utils.AssertUtils.assertEquals;
+import static org.liuyehcf.compile.engine.core.utils.Assert.assertEquals;
 import static org.liuyehcf.compile.engine.hua.compile.definition.Constant.*;
 
 /**

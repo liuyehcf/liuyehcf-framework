@@ -3,7 +3,7 @@ package org.liuyehcf.compile.engine.expression.compile.optimize.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.expression.compile.optimize.Optimizer;
 import org.liuyehcf.compile.engine.expression.core.ExpressionCode;
 import org.liuyehcf.compile.engine.expression.core.bytecode.ByteCode;
@@ -52,7 +52,7 @@ public class ControlTransferOptimizer implements Optimizer {
              */
             removeNullByteCode(byteCodes);
 
-            AssertUtils.assertFalse(byteCodes.size() > originSize);
+            Assert.assertFalse(byteCodes.size() > originSize);
             canBreak = byteCodes.size() == originSize;
         }
     }
@@ -197,7 +197,7 @@ public class ControlTransferOptimizer implements Optimizer {
                     /*
                      * 中间必然是不可达指令序列
                      */
-                    AssertUtils.assertNull(byteCodes.get(i));
+                    Assert.assertNull(byteCodes.get(i));
                 }
 
                 /*
@@ -224,7 +224,7 @@ public class ControlTransferOptimizer implements Optimizer {
         for (ByteCode byteCode : byteCodes) {
             if (byteCode instanceof ControlTransfer) {
                 int codeOffset = ((ControlTransfer) byteCode).getCodeOffset();
-                AssertUtils.assertNotNull(byteCodes.get(codeOffset));
+                Assert.assertNotNull(byteCodes.get(codeOffset));
             }
         }
 

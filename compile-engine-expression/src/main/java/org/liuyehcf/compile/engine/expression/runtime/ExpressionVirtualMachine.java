@@ -2,7 +2,7 @@ package org.liuyehcf.compile.engine.expression.runtime;
 
 import com.google.common.collect.Maps;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.liuyehcf.compile.engine.core.utils.AssertUtils;
+import org.liuyehcf.compile.engine.core.utils.Assert;
 import org.liuyehcf.compile.engine.expression.core.ExpressionCode;
 import org.liuyehcf.compile.engine.expression.core.bytecode.ByteCode;
 
@@ -25,7 +25,7 @@ public class ExpressionVirtualMachine implements RuntimeContext {
     private int codeOffset = 0;
 
     private ExpressionVirtualMachine(ExpressionCode expressionCode, Map<String, Object> env) {
-        AssertUtils.assertNotNull(expressionCode);
+        Assert.assertNotNull(expressionCode);
         this.expressionCode = expressionCode;
         if (env == null) {
             this.env = Maps.newHashMap();
