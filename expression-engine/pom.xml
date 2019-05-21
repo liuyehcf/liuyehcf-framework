@@ -8,8 +8,8 @@
     <artifactId>expression-engine</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>compile-engine</name>
-    <description>compile engine</description>
+    <name>expression-engine</name>
+    <description>expression engine</description>
     <url>https://github.com/liuyehcf/liuyehcf-framework</url>
 
     <licenses>
@@ -72,6 +72,7 @@
     </dependencies>
 
     <build>
+        <finalName>expression-engine</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
