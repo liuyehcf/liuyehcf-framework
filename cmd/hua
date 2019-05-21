@@ -1,1 +1,1 @@
-java -classpath ${HUA_PATH}/compile-engine-hua-1.0-SNAPSHOT.jar org.liuyehcf.compile.engine.hua.cmd.Hua $*
+java -classpath ${HUA_PATH}/compile-engine-hua-1.0-SNAPSHOT.jar com.github.liuyehcf.framework.language.hua.cmd.Hua $*

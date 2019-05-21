@@ -155,8 +155,8 @@ HuaCompiler继承了LALR分析器，其文法定义参照[Java BNF定义](http:/
 
 ## `compile-engine-hua`模块介绍
 
-1. 文法定义，包路径为`org.liuyehcf.compile.engine.hua.compile.definition`
-1. 与文法定义相关的语义动作，包路径为`org.liuyehcf.compile.engine.hua.compile.definition.semantic`
+1. 文法定义，包路径为`com.github.liuyehcf.framework.language.hua.compile.definition`
+1. 与文法定义相关的语义动作，包路径为`com.github.liuyehcf.framework.language.hua.compile.definition.semantic`
 1. 字节码定义，这里的字节码大部分与java对标，且含义完全一致。部分有区别的指令如下
     * 加载int、boolean、char类型的常量，统一用iconst指令，与java有所区别
     * invokestatic指令，用于进行方法调用
