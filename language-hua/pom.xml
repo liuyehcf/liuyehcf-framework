@@ -8,8 +8,8 @@
     <artifactId>language-hua</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>language-engine</name>
-    <description>language engine</description>
+    <name>language-hua</name>
+    <description>language hua</description>
     <url>https://github.com/liuyehcf/liuyehcf-framework</url>
 
     <licenses>
