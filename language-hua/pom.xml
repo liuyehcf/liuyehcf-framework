@@ -6,7 +6,7 @@
 
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>language-hua</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>language-hua</name>
     <description>language hua</description>
@@ -24,7 +24,7 @@
         <connection>scm:git:git@github.com:liuyehcf/liuyehcf-framework.git</connection>
         <developerConnection>scm:git:git@github.com:liuyehcf/liuyehcf-framework.git</developerConnection>
         <url>git@github.com:liuyehcf/liuyehcf-framework.git</url>
-        <tag>1.0.0</tag>
+        <tag>1.0.1</tag>
     </scm>
 
     <developers>
