@@ -3,6 +3,7 @@
 
 *.iml
 *.html
+*.hclass
 
 ## Directory-based project format:
 .idea/
