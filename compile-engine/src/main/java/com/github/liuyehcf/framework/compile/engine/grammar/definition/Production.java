@@ -15,6 +15,7 @@ import java.util.Objects;
  * @date 2018/04/16
  */
 public class Production implements Comparable<Production>, Serializable {
+
     private static final String OR = "|";
 
     /**

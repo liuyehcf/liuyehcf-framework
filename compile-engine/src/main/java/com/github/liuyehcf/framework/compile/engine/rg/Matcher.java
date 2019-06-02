@@ -7,6 +7,7 @@ package com.github.liuyehcf.framework.compile.engine.rg;
  * @date 2018/04/16
  */
 public interface Matcher {
+
     /**
      * 正则表达式是否匹配整个字符串
      *

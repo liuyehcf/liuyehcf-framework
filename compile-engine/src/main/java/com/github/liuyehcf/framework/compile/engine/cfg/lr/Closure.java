@@ -13,6 +13,7 @@ import java.util.List;
  * @date 2018/04/16
  */
 class Closure implements Serializable {
+
     /**
      * 项目集闭包id
      */

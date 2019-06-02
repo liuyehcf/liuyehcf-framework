@@ -7,6 +7,7 @@ package com.github.liuyehcf.framework.compile.engine;
  * @date 2018/04/16
  */
 public interface Compiler<T> extends GrammarHolder {
+
     /**
      * 编译给定输入字符串
      *

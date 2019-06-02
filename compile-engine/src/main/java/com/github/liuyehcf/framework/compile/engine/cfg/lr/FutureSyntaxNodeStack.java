@@ -14,6 +14,7 @@ import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTr
  * @date 2018/04/16
  */
 public class FutureSyntaxNodeStack {
+
     private int top = -1;
     private LinkedList<SyntaxNode> stack = new LinkedList<>();
 
@@ -99,7 +100,6 @@ public class FutureSyntaxNodeStack {
     public boolean isEmpty() {
         return top == -1;
     }
-
 
     /**
      * 依据偏移量从栈中获取语法树节点

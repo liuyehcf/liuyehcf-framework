@@ -37,7 +37,6 @@ public class FloatIdentifier implements TokenIdentifier {
      */
     private static final Set<Character> FLOAT_SUFFIX = new HashSet<>(Arrays.asList('f', 'F', 'd', 'D'));
 
-
     @Override
     public Token identify(TokenContext tokenContext) {
         Symbol id = tokenContext.getId();

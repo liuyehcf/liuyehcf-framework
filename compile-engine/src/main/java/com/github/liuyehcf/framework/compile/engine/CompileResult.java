@@ -7,6 +7,7 @@ package com.github.liuyehcf.framework.compile.engine;
  * @date 2018/04/16
  */
 public class CompileResult<T> {
+
     /**
      * 编译是否成功
      */

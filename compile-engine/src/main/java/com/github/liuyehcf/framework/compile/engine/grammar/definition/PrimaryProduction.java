@@ -15,6 +15,7 @@ import java.util.Objects;
  * @date 2018/04/16
  */
 public class PrimaryProduction implements Comparable<PrimaryProduction>, Serializable {
+
     /**
      * 产生式左侧非终结符
      */

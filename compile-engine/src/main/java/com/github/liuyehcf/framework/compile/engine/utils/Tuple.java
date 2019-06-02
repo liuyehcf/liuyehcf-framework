@@ -7,6 +7,7 @@ package com.github.liuyehcf.framework.compile.engine.utils;
  * @date 2018/04/16
  */
 public class Tuple<FIRST, SECOND, THIRD> {
+
     private final FIRST first;
 
     private final SECOND second;

@@ -94,5 +94,4 @@ public class LR0<T> extends AbstractLRCompiler<T> implements Serializable {
             }
         }
     }
-
 }

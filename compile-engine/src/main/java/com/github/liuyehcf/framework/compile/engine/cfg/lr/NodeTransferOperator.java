@@ -7,6 +7,7 @@ package com.github.liuyehcf.framework.compile.engine.cfg.lr;
  * @date 2018/04/16
  */
 enum NodeTransferOperator {
+
     /**
      * 移入
      */

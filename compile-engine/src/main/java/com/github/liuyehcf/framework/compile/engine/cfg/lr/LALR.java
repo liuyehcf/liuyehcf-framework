@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @date 2018/04/16
  */
 public class LALR<T> extends LR1<T> implements Serializable {
+
     public LALR(Grammar originalGrammar, LexicalAnalyzer lexicalAnalyzer) {
         super(originalGrammar, lexicalAnalyzer, true);
     }

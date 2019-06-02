@@ -12,6 +12,7 @@ import java.util.Objects;
  * @date 2018/04/16
  */
 class NodeTransferOperation implements Serializable {
+
     /**
      * 下一跳项目集闭包id
      */

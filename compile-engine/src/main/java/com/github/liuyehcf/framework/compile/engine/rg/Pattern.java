@@ -7,6 +7,7 @@ package com.github.liuyehcf.framework.compile.engine.rg;
  * @date 2018/04/16
  */
 public interface Pattern {
+
     /**
      * 返回一个Matcher对象
      *

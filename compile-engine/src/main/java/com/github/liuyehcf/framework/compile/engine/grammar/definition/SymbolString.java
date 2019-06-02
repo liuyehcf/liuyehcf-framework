@@ -13,6 +13,7 @@ import java.util.List;
  * @date 2018/04/16
  */
 public class SymbolString implements Comparable<SymbolString>, Serializable {
+
     /**
      * 仅包含ε的文法符号串
      */

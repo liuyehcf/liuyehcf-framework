@@ -12,6 +12,7 @@ import java.util.Map;
  * @date 2018/04/16
  */
 public class SyntaxNode {
+
     private final Map<String, Object> attrs = new HashMap<>(16);
     private Symbol id;
     private String value;

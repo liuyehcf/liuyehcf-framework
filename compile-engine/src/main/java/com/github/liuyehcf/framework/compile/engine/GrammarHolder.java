@@ -9,6 +9,7 @@ import com.github.liuyehcf.framework.compile.engine.grammar.definition.Grammar;
  * @date 2018/04/16
  */
 public interface GrammarHolder {
+
     /**
      * 获取Grammar
      *

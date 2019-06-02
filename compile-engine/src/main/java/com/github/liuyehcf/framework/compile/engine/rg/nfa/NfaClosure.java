@@ -11,6 +11,7 @@ import java.util.*;
  * @date 2018/04/16
  */
 public class NfaClosure {
+
     private static int count = 1;
     private final int id = count++;
 

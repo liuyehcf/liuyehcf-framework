@@ -9,6 +9,7 @@ import com.github.liuyehcf.framework.compile.engine.Compiler;
  * @date 2018/04/16
  */
 public interface CfgCompiler<T> extends Compiler<T> {
+
     /**
      * 获取First集的JSON串
      *

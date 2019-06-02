@@ -19,10 +19,12 @@ public class IntegerIdentifier implements TokenIdentifier {
      * 十进制数字
      */
     static final Set<Character> DECIMAL_INTEGER_DIGIT = new HashSet<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
+
     /**
      * 非0十进制数字
      */
     private static final Set<Character> NON_ZERO_DECIMAL_INTEGER_DIGIT = new HashSet<>(Arrays.asList('1', '2', '3', '4', '5', '6', '7', '8', '9'));
+
     /**
      * 十进制后缀
      */
@@ -47,7 +49,6 @@ public class IntegerIdentifier implements TokenIdentifier {
      * 非八进制数字
      */
     private static final Set<Character> NON_OCTAL_INTEGER_DIGIT = new HashSet<>(Arrays.asList('8', '9'));
-
 
     @Override
     public Token identify(TokenContext tokenContext) {

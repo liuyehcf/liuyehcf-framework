@@ -13,6 +13,7 @@ import java.util.*;
  * @date 2018/04/16
  */
 public class NfaState {
+
     private static int count = 1;
     private final int id = count++;
     private final Set<NfaState> NONE = Collections.unmodifiableSet(new HashSet<>());

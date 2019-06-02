@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  * @date 2018/04/16
  */
 public class MergeGrammarConverter extends AbstractGrammarConverter implements Serializable {
+
     public MergeGrammarConverter(Grammar originalGrammar) {
         super(originalGrammar);
     }

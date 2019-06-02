@@ -7,6 +7,7 @@ package com.github.liuyehcf.framework.compile.engine.grammar.definition;
  * @date 2018/04/16
  */
 public enum MorphemeType {
+
     /**
      * 普通词素
      */

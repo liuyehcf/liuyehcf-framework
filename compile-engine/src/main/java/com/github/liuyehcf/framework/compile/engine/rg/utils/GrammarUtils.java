@@ -13,6 +13,7 @@ import java.util.List;
  * @date 2018/04/16
  */
 public abstract class GrammarUtils {
+
     private static Symbol DEFAULT_NON_TERMINATOR = Symbol.createNonTerminator("DEFAULT_NON_TERMINATOR");
 
     public static Grammar createGrammarWithRegex(String regex) {

@@ -16,6 +16,7 @@ import java.util.Queue;
  * @date 2018/04/16
  */
 public abstract class AbstractGrammarConverter implements GrammarConverter, Serializable {
+
     /**
      * 待转换的文法
      */

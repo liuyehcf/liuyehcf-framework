@@ -12,6 +12,7 @@ import static com.github.liuyehcf.framework.compile.engine.cfg.lexical.identifie
  * @date 2018/7/17
  */
 public class StringIdentifier implements TokenIdentifier {
+
     @Override
     public Token identify(TokenContext tokenContext) {
         Symbol id = tokenContext.getId();

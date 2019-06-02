@@ -16,6 +16,7 @@ import java.util.List;
  * @date 2018/04/16
  */
 public class GrammarConverterPipelineImpl implements GrammarConverterPipeline, Serializable {
+
     /**
      * 注册的文法转换器集合
      */
