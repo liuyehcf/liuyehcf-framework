@@ -26,10 +26,12 @@ public abstract class AbstractCfgCompiler<T> implements CfgCompiler<T>, Serializ
      * 词法分析器
      */
     protected final LexicalAnalyzer lexicalAnalyzer;
+
     /**
      * 原始文法
      */
     private final Grammar originalGrammar;
+
     /**
      * 文法转换pipeline
      */

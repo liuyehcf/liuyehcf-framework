@@ -48,5 +48,72 @@ __我们用编译引擎来完成一个简单的计算器，功能如下__
 1. 支持`()`
 1. 仅支持整数
 
+[详细示例代码](src/test/java/com/github/liuyehcf/framework/compile/engine/test/example/calculator)
 
 ## 定义词法分析器
+
+我们可以用`DefaultLexicalAnalyzer`来构建一个词法分析器，计算器的词素包括
+
+1. 运算符，`+`、`-`、`*`、`/`
+1. 括号`()`
+1. 数字
+
+__词素的类型有如下三种__
+
+1. `normal`: 普通词素，例如这里的`+`、`-`、`*`、`/`
+1. `keyword`: 关键词，其优先级会高于普通词素
+1. `operator`: 自定义的解析过程，例如这里的整数的解析
+
+```Java
+    static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+            .addTokenOperator(Symbol.createIdentifierTerminator(IDENTIFIER_INTEGER_LITERAL), new IntegerIdentifier())
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES), ")")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_MUL), "*")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_DIV), "/")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_ADD), "+")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_SUB), "-")
+            .build();
+```
+
+# 定义文法
+
+计算器的文法定义如下
+
+```
+<program> → <expression>
+<expression> → <additive expression>
+<additive expression> → <additive expression> + <multiplicative expression>
+    | <additive expression> - <multiplicative expression>
+    | <multiplicative expression>
+<multiplicative expression> → <multiplicative expression> * <primary>
+    | <multiplicative expression> * <primary> 
+    | <multiplicative expression> / <primary>
+    | <primary>
+<primary> → #integerLiteral 
+    | ( <expression> )
+```
+
+利用编译引擎提供的文法定义工具，对上述文法进行翻译
+
+1. `Symbol`: 文法符号，包括终结符、非终结符
+1. `SymbolString`: 文法符号串
+1. `PrimaryProduction`: 产生式，可以包含语义动作
+1. `Production`: 具有相同左部的产生式的集合
+1. `Grammar`: 文法
+
+示例代码参考`com.github.liuyehcf.framework.compile.engine.test.example.calculator.CalculatorGrammar`
+
+# 语义动作
+
+计算器的语义动作很简单
+
+1. 在归约`<additive expression> → <additive expression> + <multiplicative expression>`时，添加`Add`操作码
+1. 在归约`<additive expression> → <additive expression> - <multiplicative expression>`时，添加`Sub`操作码
+1. 在归约`<multiplicative expression> → <multiplicative expression> * <primary>`时，添加`Mul`操作码
+1. 在归约`<multiplicative expression> → <multiplicative expression> / <primary>`时，添加`Div`操作码
+1. 在归约`<primary> → #integerLiteral`时，添加`Load`操作码
+
+编译后生成`产物`就是包含`Add`、`Sub`、`Mul`、`Div`、`Load`的操作码集合，结果计算就是按照操作码的排列顺序依次进行计算即可
+
+示例代码参考`com.github.liuyehcf.framework.compile.engine.test.example.calculator.CalculatorCode`
