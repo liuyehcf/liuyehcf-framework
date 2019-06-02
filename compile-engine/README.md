@@ -35,7 +35,7 @@ __编译引擎支持多种不同的文法分析法，包括__
         <dependency>
             <groupId>com.github.liuyehcf</groupId>
             <artifactId>compile-engine</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 ```
 
