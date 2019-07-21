@@ -6,6 +6,10 @@
 
 [expression engine](expression-engine/README.md)
 
+# Rule Engine
+
+[rule engine](rule-engine/README.md)
+
 # Language Hua
 
 [language hua](language-hua/README.md)
