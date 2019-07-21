@@ -25,10 +25,6 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * todo
- * 1. global listener 并发执行，变量update的断言
- * 2. if() 的trace以及拓扑测试用例
- *
  * @author hechenfeng
  * @date 2019/4/23
  */
