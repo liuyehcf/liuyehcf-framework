@@ -1,0 +1,30 @@
+package com.github.liuyehcf.framework.rule.engine.test.runtime.condition;
+
+import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ConditionDelegate;
+import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.ConditionContext;
+import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.DelegateField;
+
+/**
+ * @author hechenfeng
+ * @date 2019/4/29
+ */
+public class GetPropertyCondition implements ConditionDelegate {
+
+    private DelegateField name;
+    private DelegateField expectedValue;
+    private DelegateField output;
+
+    @Override
+    public boolean onCondition(ConditionContext context) {
+        String propertyName = name.getValue();
+        Object expectedValue = this.expectedValue.getValue();
+        boolean conditionOutput = output.getValue();
+
+        Object propertyValue = context.getProperty(propertyName);
+
+        Assert.assertEquals(expectedValue, propertyValue, "property value not equals");
+
+        return conditionOutput;
+    }
+}

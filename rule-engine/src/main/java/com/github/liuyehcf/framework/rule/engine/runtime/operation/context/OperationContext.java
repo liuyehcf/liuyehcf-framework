@@ -1,0 +1,239 @@
+package com.github.liuyehcf.framework.rule.engine.runtime.operation.context;
+
+import com.github.liuyehcf.framework.rule.engine.model.Element;
+import com.github.liuyehcf.framework.rule.engine.model.Executable;
+import com.github.liuyehcf.framework.rule.engine.model.Node;
+import com.github.liuyehcf.framework.rule.engine.model.Rule;
+import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
+import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
+import com.github.liuyehcf.framework.rule.engine.promise.Promise;
+import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
+import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
+import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
+import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionLink;
+import com.github.liuyehcf.framework.rule.engine.runtime.statistics.Trace;
+
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReentrantLock;
+
+/**
+ * @author hechenfeng
+ * @date 2019/4/27
+ */
+public interface OperationContext {
+
+    /**
+     * get promise of this rule
+     *
+     * @return promise
+     */
+    Promise<ExecutionInstance> getPromise();
+
+    /**
+     * get lock of given element, created if not exists
+     *
+     * @param element element
+     * @return lock
+     */
+    ReentrantLock getElementLock(Element element);
+
+    /**
+     * the specified rule
+     *
+     * @return rule
+     */
+    Rule getRule();
+
+    /**
+     * get execution instance
+     *
+     * @return execution instance
+     */
+    ExecutionInstance getExecutionInstance();
+
+    /**
+     * get execution link
+     *
+     * @return execution link
+     */
+    ExecutionLink getExecutionLink();
+
+    /**
+     * get rule env
+     *
+     * @return env
+     */
+    Map<String, Object> getEnv();
+
+    /**
+     * get current node of current execution link
+     *
+     * @return node
+     */
+    Node getNode();
+
+    /**
+     * set current node of current execution link
+     *
+     * @param node node
+     */
+    void setNode(Node node);
+
+    /**
+     * get execution id generator
+     *
+     * @return execution id generator
+     */
+    AtomicLong getExecutionIdGenerator();
+
+    /**
+     * mark rule finished
+     *
+     * @return whether success(concurrency)
+     */
+    boolean markRuleFinished();
+
+    /**
+     * mark element finished
+     * make sure trace is added when mark element finished
+     *
+     * @param element finished element
+     * @return whether success(concurrency)
+     */
+    boolean markElementFinished(Element element);
+
+    /**
+     * whether element is finished
+     *
+     * @param element the specified element
+     * @return whether finished
+     */
+    boolean isElementFinished(Element element);
+
+    /**
+     * mark node unreachable
+     *
+     * @param node unreachable node
+     */
+    void markNodeUnreachable(Node node);
+
+    /**
+     * whether node is unreachable
+     *
+     * @param node the specified node
+     * @return whether unreachable
+     */
+    boolean isNodeUnreachable(Node node);
+
+    /**
+     * mark output of specified condition
+     */
+    void setConditionOutput(Condition condition, boolean output);
+
+    /**
+     * get output of specified condition
+     *
+     * @param condition condition node
+     * @return null if condition hasn't executed yet
+     */
+    Boolean getConditionOutput(Condition condition);
+
+    /**
+     * reach gateway
+     *
+     * @param joinGateway target gateway
+     */
+    void linkReachesJoinGateway(JoinGateway joinGateway);
+
+    /**
+     * whether current execution link reaches joinGateway
+     *
+     * @param joinGateway join gateway
+     * @return whether reaches joinGateway
+     */
+    boolean isLinkReachedJoinGateway(JoinGateway joinGateway, ExecutionLink link);
+
+    /**
+     * get join gateway reach count
+     *
+     * @param joinGateway target target
+     * @return count
+     */
+    int getJoinGatewayReachesNum(JoinGateway joinGateway);
+
+    /**
+     * mark joinGateway finish merge operation
+     *
+     * @param joinGateway join gateway
+     */
+    void markJoinGatewayAggregated(JoinGateway joinGateway);
+
+    /**
+     * whether joinGateway finish merge operation
+     *
+     * @param joinGateway join gateway
+     * @return whether merged
+     */
+    boolean isJoinGatewayAggregated(JoinGateway joinGateway);
+
+    /**
+     * get delegate invocation which wraps target delegate with delegate interception
+     *
+     * @param executable target executable
+     * @return delegate invocation
+     */
+    DelegateInvocation getDelegateInvocation(Executable executable);
+
+    /**
+     * get unique execution id(within rule)
+     *
+     * @return execution id
+     */
+    long getNextExecutionId();
+
+    /**
+     * execute operation sync
+     *
+     * @param operation the specified operation
+     */
+    void executeSync(AbstractOperation operation);
+
+    /**
+     * execute operation async
+     *
+     * @param operation the specified operation
+     */
+    void executeAsync(AbstractOperation operation);
+
+    /**
+     * add execution trace to current execution link
+     *
+     * @param trace trace
+     */
+    void addTrace(Trace trace);
+
+    /**
+     * clone context and add link to instance
+     *
+     * @param executionLink cloned if null
+     * @return cloned context
+     */
+    OperationContext cloneLinkedContext(ExecutionLink executionLink);
+
+    /**
+     * clone context without adding link to instance
+     *
+     * @param executionLink link
+     * @return cloned context
+     */
+    OperationContext cloneUnLinkedContext(ExecutionLink executionLink);
+
+    /**
+     * clone context for MarkSuccessorUnreachableOperation
+     * env and execution link of this context is null
+     *
+     * @return cloned context
+     */
+    OperationContext cloneMarkContext();
+}
