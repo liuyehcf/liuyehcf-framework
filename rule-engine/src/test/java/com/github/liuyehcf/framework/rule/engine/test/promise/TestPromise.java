@@ -2,11 +2,14 @@ package com.github.liuyehcf.framework.rule.engine.test.promise;
 
 import com.github.liuyehcf.framework.rule.engine.RuleErrorCode;
 import com.github.liuyehcf.framework.rule.engine.RuleException;
+import com.github.liuyehcf.framework.rule.engine.model.DefaultRule;
+import com.github.liuyehcf.framework.rule.engine.model.Start;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.promise.RulePromise;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.DefaultExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -283,7 +286,7 @@ public class TestPromise {
         Promise<ExecutionInstance> promise = new RulePromise();
         long start = System.currentTimeMillis();
 
-        Assert.assertTrue(promise.trySuccess(new DefaultExecutionInstance(null, null)));
+        Assert.assertTrue(promise.trySuccess(new DefaultExecutionInstance(null, new DefaultRule("1", "2", new Start("a")), Maps.newHashMap())));
 
         Assert.assertNotNull(promise.get(300, TimeUnit.MILLISECONDS));
         long end = System.currentTimeMillis();
@@ -383,7 +386,7 @@ public class TestPromise {
     private void sleepThenTrySuccess(Promise<ExecutionInstance> promise, int milliseconds) {
         try {
             TimeUnit.MILLISECONDS.sleep(milliseconds);
-            Assert.assertTrue(promise.trySuccess(new DefaultExecutionInstance(null, null)));
+            Assert.assertTrue(promise.trySuccess(new DefaultExecutionInstance(null, new DefaultRule("1", "2", new Start("a")), Maps.newHashMap())));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

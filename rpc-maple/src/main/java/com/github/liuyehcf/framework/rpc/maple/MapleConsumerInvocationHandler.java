@@ -19,7 +19,7 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/18
  */
 public class MapleConsumerInvocationHandler implements InvocationHandler {

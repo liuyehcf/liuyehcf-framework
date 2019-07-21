@@ -12,7 +12,7 @@ import org.junit.Test;
  * @date 2019/5/18
  */
 @SuppressWarnings("all")
-public class TestCascade extends TestTraceBase {
+public class TestCascadeTrace extends TestTraceBase {
 
     @Test
     public void testCascadeSingle() {
@@ -31,7 +31,7 @@ public class TestCascade extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 2);
@@ -69,7 +69,7 @@ public class TestCascade extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 6);
@@ -111,7 +111,7 @@ public class TestCascade extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 7);
@@ -162,7 +162,7 @@ public class TestCascade extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 0, 1);
+            assertExecutionInstance(executionInstance, 0, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 4);
@@ -210,7 +210,7 @@ public class TestCascade extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 7);
@@ -267,7 +267,7 @@ public class TestCascade extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 7);
@@ -318,7 +318,7 @@ public class TestCascade extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 0, 1);
+            assertExecutionInstance(executionInstance, 0, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 4);

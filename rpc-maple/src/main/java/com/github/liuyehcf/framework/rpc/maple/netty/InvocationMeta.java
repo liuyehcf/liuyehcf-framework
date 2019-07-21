@@ -5,7 +5,7 @@ import com.github.liuyehcf.framework.rpc.maple.register.ServiceMeta;
 import java.io.Serializable;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/22
  */
 public interface InvocationMeta extends Serializable {

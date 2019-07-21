@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.rpc.maple.register;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/25
  */
 public interface ServiceInstance {

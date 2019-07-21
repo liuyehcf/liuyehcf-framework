@@ -7,6 +7,8 @@ import com.github.liuyehcf.framework.rule.engine.model.Element;
 import com.github.liuyehcf.framework.rule.engine.model.ElementType;
 import com.github.liuyehcf.framework.rule.engine.model.Executable;
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
+import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
+import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerScope;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ConditionDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.Delegate;
@@ -29,6 +31,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -37,6 +40,8 @@ import java.util.Set;
  */
 public class ReflectiveDelegateInvocation implements DelegateInvocation {
 
+    private final Object result;
+    private final Throwable cause;
     private final Executable executable;
     private final Delegate delegate;
     private final Set<String> delegateFieldNames;
@@ -49,7 +54,9 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
     private int index = 0;
     private int stackCnt = 0;
 
-    public ReflectiveDelegateInvocation(Executable executable,
+    public ReflectiveDelegateInvocation(Object result,
+                                        Throwable cause,
+                                        Executable executable,
                                         Delegate delegate,
                                         OperationContext operationContext,
                                         ExecutableContext<? extends Element> executableContext,
@@ -60,6 +67,8 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
         Assert.assertNotNull(executableContext);
         Assert.assertNotNull(factories);
 
+        this.result = result;
+        this.cause = cause;
         this.executable = executable;
         this.delegate = delegate;
         this.delegateFieldNames = ReflectionUtils.getAllDelegateFieldNames(this.delegate);
@@ -70,7 +79,10 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
         this.chains = Lists.newArrayList();
 
         for (Factory<DelegateInterceptor> factory : factories) {
-            chains.add(factory.create());
+            DelegateInterceptor delegateInterceptor = factory.create();
+            if (delegateInterceptor.matches(executable.getName())) {
+                chains.add(delegateInterceptor);
+            }
         }
     }
 
@@ -133,7 +145,14 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
         } else if (delegate instanceof ConditionDelegate) {
             return ((ConditionDelegate) delegate).onCondition((ConditionContext) executableContext);
         } else if (delegate instanceof ListenerDelegate) {
-            ((ListenerDelegate) delegate).onListener((ListenerContext) executableContext);
+            Listener listener = (Listener) executable;
+            if (ListenerEvent.before.equals(listener.getEvent())) {
+                ((ListenerDelegate) delegate).onBefore((ListenerContext) executableContext);
+            } else if (ListenerEvent.success.equals(listener.getEvent())) {
+                ((ListenerDelegate) delegate).onSuccess((ListenerContext) executableContext, result);
+            } else if (ListenerEvent.failure.equals(listener.getEvent())) {
+                ((ListenerDelegate) delegate).onFailure((ListenerContext) executableContext, cause);
+            }
             return null;
         } else {
             throw new UnsupportedOperationException();
@@ -150,21 +169,26 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
             arguments.add(new DefaultArgument(argumentNames[i], argumentValues[i]));
         }
 
-        operationContext.addTrace(
-                new DefaultTrace(
-                        executableContext.getExecutionId(),
-                        ((Element) executable).getId(),
-                        ((Element) executable).getType(),
-                        executable.getName(),
-                        arguments,
-                        result,
-                        propertyUpdates,
-                        attributes,
-                        cause,
-                        startNanos,
-                        System.nanoTime()
-                )
+        DefaultTrace trace = new DefaultTrace(
+                executableContext.getExecutionId(),
+                ((Element) executable).getId(),
+                ((Element) executable).getType(),
+                executable.getName(),
+                arguments,
+                result,
+                propertyUpdates,
+                attributes,
+                cause,
+                startNanos,
+                System.nanoTime()
         );
+
+        if (executable instanceof Listener
+                && Objects.equals(ListenerScope.GLOBAL, ((Listener) executable).getScope())) {
+            operationContext.addTraceToExecutionInstance(trace);
+        } else {
+            operationContext.addTraceToExecutionLink(trace);
+        }
     }
 
     private void injectDelegateFields(Executable executable, Delegate delegate) {
@@ -198,7 +222,7 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
             return originValue;
         }
 
-        return PlaceHolderUtils.parsePlaceHolder(operationContext.getEnv(), (String) originValue);
+        return PlaceHolderUtils.parsePlaceHolder(executableContext.getEnv(), (String) originValue);
     }
 
     private void injectMissingDelegateFields(Delegate delegate) {

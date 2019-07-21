@@ -22,6 +22,12 @@ public interface ExecutionInstance {
     Rule getRule();
 
     /**
+     * get env
+     * If there are multiple execution links, then all envs will be aggregated
+     */
+    Map<String, Object> getEnv();
+
+    /**
      * add execution link to this execution instance
      */
     void addLink(ExecutionLink link);
@@ -52,6 +58,24 @@ public interface ExecutionInstance {
      * unfinished execution means execution cannot reach end node
      */
     List<ExecutionLink> getUnreachableLinks();
+
+    /**
+     * add trace of execution instance
+     * contains only global level listeners
+     */
+    void addTrace(Trace trace);
+
+    /**
+     * remove trace of execution instance
+     * contains only global level listeners
+     */
+    void removeTrace(Trace trace);
+
+    /**
+     * get traces of execution instance
+     * contains only global level listeners
+     */
+    List<Trace> getTraces();
 
     /**
      * attributes

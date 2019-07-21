@@ -18,13 +18,13 @@ public class TestClone extends TestRuntimeBase {
                 "            if(conditionA()){\n" +
                 "                actionA(arg1=\"hehe\")&\n" +
                 "            } \n" +
-                "        }[listenerA(event=\"start\")]\n" +
+                "        }[listenerA(event=\"before\")]\n" +
                 "    } then {\n" +
                 "        if(conditionA()){\n" +
                 "            actionB()\n" +
                 "        }\n" +
                 "    } \n" +
-                "}[listenerB(event=\"start\")]");
+                "}[listenerB(event=\"before\")]");
 
         byte[] bytes;
         Rule clonedRule;

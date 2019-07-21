@@ -20,7 +20,7 @@ public class TestDotSlashName extends TestRuntimeBase {
 
         Rule rule = compile(
                 "{\n" +
-                        "    if(dot.name.condition(output=true) [dot.name.listener(event=\"start\")]) {\n" +
+                        "    if(dot.name.condition(output=true) [dot.name.listener(event=\"before\")]) {\n" +
                         "        dot.name.action()\n" +
                         "    }\n" +
                         "}");
@@ -39,11 +39,11 @@ public class TestDotSlashName extends TestRuntimeBase {
 
         Rule rule = compile(
                 "{\n" +
-                        "    if(slash/name/condition(output=false) [slash/name/listener(event=\"end\")]) {\n" +
+                        "    if(slash/name/condition(output=false) [slash/name/listener(event=\"success\")]) {\n" +
                         "        dot.name.action()\n" +
                         "    }else{\n" +
                         "        slash/name/action(){\n" +
-                        "            slash/name/action()[slash/name/listener(event=\"start\")]\n" +
+                        "            slash/name/action()[slash/name/listener(event=\"before\")]\n" +
                         "        }\n" +
                         "    }\n" +
                         "}");
@@ -62,11 +62,11 @@ public class TestDotSlashName extends TestRuntimeBase {
 
         Rule rule = compile(
                 "{\n" +
-                        "    if(slash/name/condition(output=false) [dot.name.listener(event=\"end\")]) {\n" +
+                        "    if(slash/name/condition(output=false) [dot.name.listener(event=\"success\")]) {\n" +
                         "        dot.name.action()\n" +
                         "    }else{\n" +
                         "        dot.name.action(){\n" +
-                        "            slash/name/action()[slash/name/listener(event=\"start\")]\n" +
+                        "            slash/name/action()[slash/name/listener(event=\"before\")]\n" +
                         "        }\n" +
                         "    }\n" +
                         "}");

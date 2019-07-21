@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ComponentListener implements ListenerDelegate {
     @Override
-    public void onListener(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
         System.out.println(getClass().getSimpleName());
     }
 }

@@ -2,7 +2,6 @@ package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 
 import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.util.CloneUtils;
@@ -24,9 +23,9 @@ public class SubRuleTriggerOperation extends AbstractOperation<Void> {
     protected void execute() throws Throwable {
         context.setNode(subRule);
 
-        invokeListeners(getNodeListenerByEvent(subRule, ListenerEvent.start));
+        invokeNodeBeforeListeners(subRule);
 
-        RuleEngine.startRule(subRule, context.getExecutionInstance().getId(), CloneUtils.hessianClone(context.getEnv()), context.getExecutionIdGenerator())
+        RuleEngine.startRule(subRule, context.getExecutionInstance().getId(), CloneUtils.hessianClone(context.getLinkEnv()), context.getExecutionIdGenerator())
                 .addListener(new SubRuleMergeOperation(context, subRule, System.nanoTime()));
     }
 }

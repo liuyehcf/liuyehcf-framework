@@ -4,14 +4,12 @@ import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.RuleErrorCode;
 import com.github.liuyehcf.framework.rule.engine.RuleException;
-import com.github.liuyehcf.framework.rule.engine.model.Element;
-import com.github.liuyehcf.framework.rule.engine.model.Executable;
-import com.github.liuyehcf.framework.rule.engine.model.Node;
-import com.github.liuyehcf.framework.rule.engine.model.Rule;
+import com.github.liuyehcf.framework.rule.engine.model.*;
 import com.github.liuyehcf.framework.rule.engine.model.activity.Action;
 import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
+import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerScope;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.DefaultActionContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.DefaultConditionContext;
@@ -44,6 +42,7 @@ public class DefaultOperationContext implements OperationContext {
     private final ReentrantLock ruleLock;
     private final Map<String, ReentrantLock> elementLocks;
     private final Rule rule;
+    private final boolean isMarkContext;
     private final ExecutionInstance executionInstance;
     private final ExecutionLink executionLink;
     private final AtomicBoolean ruleFinished;
@@ -64,8 +63,9 @@ public class DefaultOperationContext implements OperationContext {
                 new ReentrantLock(),
                 Maps.newConcurrentMap(),
                 rule,
-                new DefaultExecutionInstance(instanceId, rule),
-                new DefaultExecutionLink(env, Lists.newCopyOnWriteArrayList()),
+                false,
+                new DefaultExecutionInstance(instanceId, rule, env),
+                null,
                 new AtomicBoolean(false),
                 Sets.newConcurrentHashSet(),
                 Sets.newConcurrentHashSet(),
@@ -73,14 +73,13 @@ public class DefaultOperationContext implements OperationContext {
                 Maps.newConcurrentMap(),
                 Sets.newConcurrentHashSet(),
                 executionIdGenerator);
-
-        addLink(this.executionLink);
     }
 
     private DefaultOperationContext(Promise<ExecutionInstance> promise,
                                     ReentrantLock ruleLock,
                                     Map<String, ReentrantLock> elementLocks,
                                     Rule rule,
+                                    boolean isMarkContext,
                                     ExecutionInstance executionInstance,
                                     ExecutionLink executionLink,
                                     AtomicBoolean ruleFinished,
@@ -107,6 +106,7 @@ public class DefaultOperationContext implements OperationContext {
         this.ruleLock = ruleLock;
         this.elementLocks = elementLocks;
         this.rule = rule;
+        this.isMarkContext = isMarkContext;
         this.executionInstance = executionInstance;
         this.executionLink = executionLink;
         this.ruleFinished = ruleFinished;
@@ -139,6 +139,11 @@ public class DefaultOperationContext implements OperationContext {
     }
 
     @Override
+    public final boolean isMarkContext() {
+        return isMarkContext;
+    }
+
+    @Override
     public final ExecutionInstance getExecutionInstance() {
         return executionInstance;
     }
@@ -149,7 +154,7 @@ public class DefaultOperationContext implements OperationContext {
     }
 
     @Override
-    public final Map<String, Object> getEnv() {
+    public final Map<String, Object> getLinkEnv() {
         return executionLink.getEnv();
     }
 
@@ -253,34 +258,53 @@ public class DefaultOperationContext implements OperationContext {
     }
 
     @Override
-    public final DelegateInvocation getDelegateInvocation(Executable executable) {
+    public final DelegateInvocation getDelegateInvocation(Executable executable, Object result, Throwable cause) {
         String instanceId = executionInstance.getId();
-        String linkId = executionLink.getId();
+        String linkId = executionLink == null ? IDGenerator.generateUuid() : executionLink.getId();
         long executionId = getNextExecutionId();
 
         if (executable instanceof Action) {
             return new ReflectiveDelegateInvocation(
+                    null,
+                    null,
                     executable,
                     RuleEngine.getActionDelegate(executable.getName()),
                     this,
-                    new DefaultActionContext((Action) executable, instanceId, linkId, executionId, getEnv(), executionInstance.getAttributes()),
+                    new DefaultActionContext((Action) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
                     RuleEngine.getDelegateInterceptorFactories());
         } else if (executable instanceof Condition) {
             return new ReflectiveDelegateInvocation(
+                    null,
+                    null,
                     executable,
                     RuleEngine.getConditionDelegate(executable.getName()),
                     this,
-                    new DefaultConditionContext((Condition) executable, instanceId, linkId, executionId, getEnv(), executionInstance.getAttributes()),
+                    new DefaultConditionContext((Condition) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
                     RuleEngine.getDelegateInterceptorFactories());
         } else if (executable instanceof Listener) {
-            return new ReflectiveDelegateInvocation(
-                    executable,
-                    RuleEngine.getListenerDelegate(executable.getName()),
-                    this,
-                    new DefaultListenerContext((Listener) executable, instanceId, linkId, executionId, getEnv(), executionInstance.getAttributes()),
-                    RuleEngine.getDelegateInterceptorFactories());
+            if (ListenerScope.GLOBAL.equals(((Listener) executable).getScope())) {
+                return new ReflectiveDelegateInvocation(
+                        result,
+                        cause,
+                        executable,
+                        RuleEngine.getListenerDelegate(executable.getName()),
+                        this,
+                        new DefaultListenerContext((Listener) executable, instanceId, linkId, executionId, executionInstance.getEnv(), executionInstance.getAttributes()),
+                        RuleEngine.getDelegateInterceptorFactories());
+            } else if (ListenerScope.NODE.equals(((Listener) executable).getScope())) {
+                return new ReflectiveDelegateInvocation(
+                        result,
+                        cause,
+                        executable,
+                        RuleEngine.getListenerDelegate(executable.getName()),
+                        this,
+                        new DefaultListenerContext((Listener) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
+                        RuleEngine.getDelegateInterceptorFactories());
+            } else {
+                throw new UnsupportedOperationException("unexpected listener scope");
+            }
         } else {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException("unexpected executable");
         }
     }
 
@@ -304,15 +328,20 @@ public class DefaultOperationContext implements OperationContext {
     }
 
     @Override
-    public final void addTrace(Trace trace) {
+    public final void addTraceToExecutionLink(Trace trace) {
         executionLink.addTrace(trace);
+    }
+
+    @Override
+    public final void addTraceToExecutionInstance(Trace trace) {
+        executionInstance.addTrace(trace);
     }
 
     @Override
     public final OperationContext cloneLinkedContext(ExecutionLink executionLink) {
         ExecutionLink actualLink;
         if (executionLink == null) {
-            actualLink = new DefaultExecutionLink(CloneUtils.hessianClone(getEnv()), Lists.newCopyOnWriteArrayList(this.executionLink.getTraces()));
+            actualLink = new DefaultExecutionLink(CloneUtils.hessianClone(getLinkEnv()), Lists.newCopyOnWriteArrayList(this.executionLink.getTraces()));
         } else {
             actualLink = executionLink;
         }
@@ -323,6 +352,7 @@ public class DefaultOperationContext implements OperationContext {
                 ruleLock,
                 elementLocks,
                 rule,
+                false,
                 executionInstance,
                 actualLink,
                 ruleFinished,
@@ -335,16 +365,15 @@ public class DefaultOperationContext implements OperationContext {
     }
 
     @Override
-    public final OperationContext cloneUnLinkedContext(ExecutionLink executionLink) {
-        Assert.assertNotNull(executionLink);
-
+    public final OperationContext cloneUnLinkedContext() {
         return new DefaultOperationContext(
                 promise,
                 ruleLock,
                 elementLocks,
                 rule,
+                false,
                 executionInstance,
-                executionLink,
+                null,
                 ruleFinished,
                 finishedElementIds,
                 unreachableNodeIds,
@@ -361,6 +390,7 @@ public class DefaultOperationContext implements OperationContext {
                 ruleLock,
                 elementLocks,
                 rule,
+                true,
                 executionInstance,
                 null,
                 ruleFinished,

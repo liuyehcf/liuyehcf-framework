@@ -16,7 +16,25 @@ public class PrintListener implements ListenerDelegate {
     private DelegateField content;
 
     @Override
-    public void onListener(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
+        String content = this.content.getValue();
+        Assert.assertNotNull(content);
+        if (STD_OUT_SWITCH) {
+            System.out.println(String.format("execute printListener. content=%s", content));
+        }
+    }
+
+    @Override
+    public void onSuccess(ListenerContext context, Object result) {
+        String content = this.content.getValue();
+        Assert.assertNotNull(content);
+        if (STD_OUT_SWITCH) {
+            System.out.println(String.format("execute printListener. content=%s", content));
+        }
+    }
+
+    @Override
+    public void onFailure(ListenerContext context, Throwable cause) {
         String content = this.content.getValue();
         Assert.assertNotNull(content);
         if (STD_OUT_SWITCH) {

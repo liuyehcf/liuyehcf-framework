@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
@@ -34,15 +33,22 @@ public class ConditionOperation extends AbstractOperation<Boolean> {
         Throwable cause = null;
         boolean hasSuccess = false;
         try {
-            invokeListeners(getNodeListenerByEvent(condition, ListenerEvent.start));
+            invokeNodeBeforeListeners(condition);
 
-            DelegateInvocation delegateInvocation = context.getDelegateInvocation(condition);
-            boolean conditionOutput = (boolean) delegateInvocation.proceed();
+            DelegateInvocation delegateInvocation = context.getDelegateInvocation(condition, null, null);
+            boolean conditionOutput;
+            try {
+                conditionOutput = (boolean) delegateInvocation.proceed();
+            } catch (Throwable e) {
+                invokeNodeFailureListeners(condition, e);
+                throw e;
+            }
+
+            invokeNodeSuccessListeners(condition, conditionOutput);
+
             context.setConditionOutput(condition, conditionOutput);
             LinkType linkType = conditionOutput ? LinkType.TRUE : LinkType.FALSE;
             LinkType unReachableLinkType = conditionOutput ? LinkType.FALSE : LinkType.TRUE;
-
-            invokeListeners(getNodeListenerByEvent(condition, ListenerEvent.end));
 
             if (optPromise != null && optPromise.trySuccess(conditionOutput)) {
                 hasSuccess = true;

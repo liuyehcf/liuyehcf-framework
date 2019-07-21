@@ -14,7 +14,23 @@ public class SetTraceAttrListener implements ListenerDelegate {
     private DelegateField value;
 
     @Override
-    public void onListener(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
+        String attrName = name.getValue();
+        Object attrValue = value.getValue();
+
+        context.addLocalAttribute(attrName, attrValue);
+    }
+
+    @Override
+    public void onSuccess(ListenerContext context, Object result) {
+        String attrName = name.getValue();
+        Object attrValue = value.getValue();
+
+        context.addLocalAttribute(attrName, attrValue);
+    }
+
+    @Override
+    public void onFailure(ListenerContext context, Throwable cause) {
         String attrName = name.getValue();
         Object attrValue = value.getValue();
 

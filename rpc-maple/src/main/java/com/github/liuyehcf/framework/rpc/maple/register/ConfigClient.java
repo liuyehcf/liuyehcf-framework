@@ -3,7 +3,7 @@ package com.github.liuyehcf.framework.rpc.maple.register;
 import java.util.List;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/22
  */
 public interface ConfigClient {

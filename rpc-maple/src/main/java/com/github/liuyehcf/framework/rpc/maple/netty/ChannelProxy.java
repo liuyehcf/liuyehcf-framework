@@ -5,7 +5,7 @@ import io.netty.channel.Channel;
 import lombok.Data;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/25
  */
 @Data

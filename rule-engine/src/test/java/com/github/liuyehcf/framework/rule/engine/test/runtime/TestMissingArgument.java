@@ -37,7 +37,7 @@ public class TestMissingArgument extends TestRuntimeBase {
     @Test
     public void testListener() {
         Promise<ExecutionInstance> promise = startRule("{\n" +
-                "    printAction(content=\"actionA\")[missingArgumentListener(event=\"start\", notMissing1=1,notMissing2=2)]\n" +
+                "    printAction(content=\"actionA\")[missingArgumentListener(event=\"before\", notMissing1=1,notMissing2=2)]\n" +
                 "}", null);
 
         promise.sync();

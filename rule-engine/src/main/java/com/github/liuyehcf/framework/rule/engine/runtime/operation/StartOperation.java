@@ -2,7 +2,6 @@ package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 
 import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.Start;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.DefaultTrace;
@@ -18,14 +17,12 @@ public class StartOperation extends AbstractOperation<Void> {
     }
 
     @Override
-    protected void execute() throws Throwable {
+    protected void execute() {
         Start start = context.getRule().getStart();
 
         context.setNode(start);
 
-        invokeListeners(getGlobalListenerByEvent(ListenerEvent.start));
-
-        context.addTrace(new DefaultTrace(
+        context.addTraceToExecutionLink(new DefaultTrace(
                 context.getNextExecutionId(),
                 start.getId(),
                 start.getType(),

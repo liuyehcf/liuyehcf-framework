@@ -3,7 +3,7 @@ package com.github.liuyehcf.framework.rpc.maple.netty.util;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/25
  */
 public abstract class IDGenerator {

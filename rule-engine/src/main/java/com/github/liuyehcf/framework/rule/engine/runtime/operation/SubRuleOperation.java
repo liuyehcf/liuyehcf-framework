@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.DefaultTrace;
@@ -37,7 +36,7 @@ public class SubRuleOperation extends AbstractOperation<Void> {
     protected void execute() throws Throwable {
         context.setNode(subRule);
 
-        context.addTrace(new DefaultTrace(
+        context.addTraceToExecutionLink(new DefaultTrace(
                 context.getNextExecutionId(),
                 subRule.getId(),
                 subRule.getType(),
@@ -50,7 +49,7 @@ public class SubRuleOperation extends AbstractOperation<Void> {
                 startNanos,
                 System.nanoTime()));
 
-        invokeListeners(getNodeListenerByEvent(subRule, ListenerEvent.end));
+        invokeNodeSuccessListeners(subRule, LinkType.TRUE.equals(linkType));
 
         context.markElementFinished(subRule);
 

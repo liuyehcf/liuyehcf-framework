@@ -1195,7 +1195,7 @@ public class TestMain {
                 });
 
         String dsl = "{\n" +
-                "    greetAction(name=\"chenlu\")\n" +
+                "    greetAction(name=\"hechenfeng\")\n" +
                 "}";
 
         Promise<ExecutionInstance> promise = RuleEngine.startRule(dsl, Maps.newHashMap());
@@ -1227,13 +1227,13 @@ enter MyDelegateInterceptor
 null
 2ed97aef-eed5-4d4b-8e41-397d1813bd64
 greetAction
-Hello, chenlu. This is rule engine!
+Hello, hechenfeng. This is rule engine!
 argumentNames=["name"]
-argumentValues=["chenlu"]
+argumentValues=["hechenfeng"]
 attributes={}
 exit MyDelegateInterceptor
 trigger promise listener
-{"attributes":{},"endNanos":42968801169067,"id":"2ed97aef-eed5-4d4b-8e41-397d1813bd64","links":[{"env":{},"id":"ebb321f7-027d-4865-b25e-9c01544dfa35","traces":[{"endNanos":42968711375424,"executionId":0,"id":"1","startNanos":42968711375275,"type":"START"},{"arguments":[{"name":"name","value":"chenlu"}],"attributes":{},"endNanos":42968793883525,"executionId":1,"id":"2","name":"greetAction","propertyUpdates":[],"startNanos":42968719847516,"type":"ACTION"}]}],"rule":{"elements":[{"id":"1","listeners":[],"predecessors":[],"rule":{"$ref":"$.rule"},"successors":[{"argumentNames":["name"],"argumentValues":["chenlu"],"id":"2","linkType":"NORMAL","listeners":[],"name":"greetAction","predecessors":[{"$ref":"$.rule.elements[0]"}],"rule":{"$ref":"$.rule"},"successors":[],"type":"ACTION"}],"type":"START"},{"$ref":"$.rule.elements[0].successors[0]"}],"ends":[{"$ref":"$.rule.elements[0].successors[0]"}],"events":[],"id":"431c0e69-361c-469b-813e-1abadbb441ba","linkType":"NORMAL","listeners":[],"predecessors":[],"start":{"$ref":"$.rule.elements[0]"},"successors":[],"type":"SUB_RULE"},"startNanos":42968706815634,"unreachableLinks":[]}
+{"attributes":{},"endNanos":42968801169067,"id":"2ed97aef-eed5-4d4b-8e41-397d1813bd64","links":[{"env":{},"id":"ebb321f7-027d-4865-b25e-9c01544dfa35","traces":[{"endNanos":42968711375424,"executionId":0,"id":"1","startNanos":42968711375275,"type":"START"},{"arguments":[{"name":"name","value":"hechenfeng"}],"attributes":{},"endNanos":42968793883525,"executionId":1,"id":"2","name":"greetAction","propertyUpdates":[],"startNanos":42968719847516,"type":"ACTION"}]}],"rule":{"elements":[{"id":"1","listeners":[],"predecessors":[],"rule":{"$ref":"$.rule"},"successors":[{"argumentNames":["name"],"argumentValues":["hechenfeng"],"id":"2","linkType":"NORMAL","listeners":[],"name":"greetAction","predecessors":[{"$ref":"$.rule.elements[0]"}],"rule":{"$ref":"$.rule"},"successors":[],"type":"ACTION"}],"type":"START"},{"$ref":"$.rule.elements[0].successors[0]"}],"ends":[{"$ref":"$.rule.elements[0].successors[0]"}],"events":[],"id":"431c0e69-361c-469b-813e-1abadbb441ba","linkType":"NORMAL","listeners":[],"predecessors":[],"start":{"$ref":"$.rule.elements[0]"},"successors":[],"type":"SUB_RULE"},"startNanos":42968706815634,"unreachableLinks":[]}
 ```
 
 ## 8.3 spring环境

@@ -6,6 +6,7 @@ import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.action.*;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.condition.*;
+import com.github.liuyehcf.framework.rule.engine.test.runtime.interceptor.ActionRegexInterceptor;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.interceptor.EmptyInterceptor;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.interceptor.LogInterceptor;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.listener.*;
@@ -64,6 +65,9 @@ public class TestRuntimeBase {
         RuleEngine.registerListenerDelegateFactory("slash/name/listener", SlashNameListener::new);
         RuleEngine.registerListenerDelegateFactory("throwExceptionListener", ThrowExceptionListener::new);
         RuleEngine.registerListenerDelegateFactory("throwLinkTerminateListener", ThrowLinkTerminateListener::new);
+        RuleEngine.registerListenerDelegateFactory("successResultListener", SuccessResultListener::new);
+
+        RuleEngine.registerDelegateInterceptorFactory(ActionRegexInterceptor::new);
 
         if (STD_OUT_SWITCH) {
             RuleEngine.registerDelegateInterceptorFactory(EmptyInterceptor::new);

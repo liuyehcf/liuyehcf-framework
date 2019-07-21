@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.rpc.maple;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/4/3
  */
 public interface GenericService {

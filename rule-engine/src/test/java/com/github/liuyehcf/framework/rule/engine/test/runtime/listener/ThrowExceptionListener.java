@@ -12,7 +12,23 @@ import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntime
 public class ThrowExceptionListener implements ListenerDelegate {
 
     @Override
-    public void onListener(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
+        if (STD_OUT_SWITCH) {
+            System.out.println("execute throwExceptionListener.");
+        }
+        throw new RuntimeException("throw exception listener");
+    }
+
+    @Override
+    public void onSuccess(ListenerContext context, Object result) {
+        if (STD_OUT_SWITCH) {
+            System.out.println("execute throwExceptionListener.");
+        }
+        throw new RuntimeException("throw exception listener");
+    }
+
+    @Override
+    public void onFailure(ListenerContext context, Throwable cause) {
         if (STD_OUT_SWITCH) {
             System.out.println("execute throwExceptionListener.");
         }

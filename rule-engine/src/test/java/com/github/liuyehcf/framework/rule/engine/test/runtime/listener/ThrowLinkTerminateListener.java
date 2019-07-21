@@ -11,7 +11,17 @@ import com.github.liuyehcf.framework.rule.engine.runtime.exception.LinkExecution
 public class ThrowLinkTerminateListener implements ListenerDelegate {
 
     @Override
-    public void onListener(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
+        throw new LinkExecutionTerminateException();
+    }
+
+    @Override
+    public void onSuccess(ListenerContext context, Object result) {
+        throw new LinkExecutionTerminateException();
+    }
+
+    @Override
+    public void onFailure(ListenerContext context, Throwable cause) {
         throw new LinkExecutionTerminateException();
     }
 }

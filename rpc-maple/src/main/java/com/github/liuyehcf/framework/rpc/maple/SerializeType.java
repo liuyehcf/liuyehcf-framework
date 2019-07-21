@@ -3,7 +3,7 @@ package com.github.liuyehcf.framework.rpc.maple;
 import java.util.Objects;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/24
  */
 public enum SerializeType {

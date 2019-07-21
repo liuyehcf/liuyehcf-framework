@@ -14,5 +14,27 @@ public interface ListenerDelegate extends Delegate {
      * @param context context of execution
      * @throws Exception exceptions
      */
-    void onListener(ListenerContext context) throws Exception;
+    default void onBefore(ListenerContext context) throws Exception {
+        // default implementation
+    }
+
+    /**
+     * method invoke when bound element' execution succeeded
+     *
+     * @param context context of execution
+     * @throws Exception exceptions
+     */
+    default void onSuccess(ListenerContext context, Object result) throws Exception {
+        // default implementation
+    }
+
+    /**
+     * method invoke when bound element' execution failed
+     *
+     * @param context context of execution
+     * @throws Exception exceptions
+     */
+    default void onFailure(ListenerContext context, Throwable cause) throws Exception {
+        // default implementation
+    }
 }

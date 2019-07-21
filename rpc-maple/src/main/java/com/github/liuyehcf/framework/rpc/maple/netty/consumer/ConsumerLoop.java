@@ -16,7 +16,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.net.InetSocketAddress;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/18
  */
 public abstract class ConsumerLoop {

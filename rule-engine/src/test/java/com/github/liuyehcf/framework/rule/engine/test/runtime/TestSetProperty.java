@@ -119,7 +119,7 @@ public class TestSetProperty extends TestRuntimeBase {
 
         Promise<ExecutionInstance> promise = startRule(
                 "{\n" +
-                        "    getPropertyAction(name=\"a\",expectedValue=\"${a}\")[setPropertyListener(event=\"start\",name=\"a\",value=\"b\")]\n" +
+                        "    getPropertyAction(name=\"a\",expectedValue=\"${a}\")[setPropertyListener(event=\"before\",name=\"a\",value=\"b\")]\n" +
                         "}",
                 env);
 
@@ -135,7 +135,7 @@ public class TestSetProperty extends TestRuntimeBase {
 
         Promise<ExecutionInstance> promise = startRule(
                 "{\n" +
-                        "    getPropertyAction(name=\"a\",expectedValue=\"b\")[setPropertyListener(event=\"end\",name=\"a\",value=\"b\")]\n" +
+                        "    getPropertyAction(name=\"a\",expectedValue=\"b\")[setPropertyListener(event=\"success\",name=\"a\",value=\"b\")]\n" +
                         "}",
                 env);
 
@@ -153,7 +153,7 @@ public class TestSetProperty extends TestRuntimeBase {
 
         Promise<ExecutionInstance> promise = startRule(
                 "{\n" +
-                        "    getPropertyAction(name=\"a.b.c\",expectedValue=\"${a.b.c}\")[setPropertyListener(event=\"start\",name=\"a.b.c\",value=\"test\")]\n" +
+                        "    getPropertyAction(name=\"a.b.c\",expectedValue=\"${a.b.c}\")[setPropertyListener(event=\"before\",name=\"a.b.c\",value=\"test\")]\n" +
                         "}",
                 env);
 
@@ -169,7 +169,7 @@ public class TestSetProperty extends TestRuntimeBase {
 
         Promise<ExecutionInstance> promise = startRule(
                 "{\n" +
-                        "    getPropertyAction(name=\"a.b.c\",expectedValue=\"${a.b.c}\")[setPropertyListener(event=\"end\",name=\"a.b.c\",alue=\"test\")]\n" +
+                        "    getPropertyAction(name=\"a.b.c\",expectedValue=\"${a.b.c}\")[setPropertyListener(event=\"success\",name=\"a.b.c\",alue=\"test\")]\n" +
                         "}",
                 env);
 

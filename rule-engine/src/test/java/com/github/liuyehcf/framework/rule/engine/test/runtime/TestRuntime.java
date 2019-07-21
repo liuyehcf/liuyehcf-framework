@@ -124,7 +124,7 @@ public class TestRuntime extends TestRuntimeBase {
     public void testListener1() {
         Promise<ExecutionInstance> promise = startRule(
                 "{\n" +
-                        "    printAction(content=\"test\")[printListener(event=\"start\", content=\"listener1\")]\n" +
+                        "    printAction(content=\"test\")[printListener(event=\"before\", content=\"listener1\")]\n" +
                         "}",
                 null);
 
@@ -137,13 +137,13 @@ public class TestRuntime extends TestRuntimeBase {
     public void testListener2() {
         Promise<ExecutionInstance> promise = startRule(
                 "{\n" +
-                        "    if(printCondition(content=\"condition1\", output=true)[printListener(event=\"start\", content=\"listener1\")]){\n" +
-                        "        printAction(content=\"action1\")[printListener(event=\"start\", content=\"listener2\")]\n" +
+                        "    if(printCondition(content=\"condition1\", output=true)[printListener(event=\"before\", content=\"listener1\")]){\n" +
+                        "        printAction(content=\"action1\")[printListener(event=\"before\", content=\"listener2\")]\n" +
                         "    },\n" +
-                        "    if(printCondition(content=\"condition2\", output=false)[printListener(event=\"end\", content=\"listener3\")]){\n" +
-                        "        printAction(content=\"action2\")[printListener(event=\"start\", content=\"listener4\")]\n" +
+                        "    if(printCondition(content=\"condition2\", output=false)[printListener(event=\"success\", content=\"listener3\")]){\n" +
+                        "        printAction(content=\"action2\")[printListener(event=\"before\", content=\"listener4\")]\n" +
                         "    }else{\n" +
-                        "        printAction(content=\"action3\")[printListener(event=\"end\", content=\"listener5\")]\n" +
+                        "        printAction(content=\"action3\")[printListener(event=\"success\", content=\"listener5\")]\n" +
                         "    }\n" +
                         "}",
                 null);
@@ -157,7 +157,7 @@ public class TestRuntime extends TestRuntimeBase {
     public void testListener3() {
         Promise<ExecutionInstance> promise = startRule(
                 "{\n" +
-                        "    printAction(content=\"action1\")[unknownListener(event=\"start\", content=\"listener2\")]\n" +
+                        "    printAction(content=\"action1\")[unknownListener(event=\"before\", content=\"listener2\")]\n" +
                         "}",
                 null);
 
@@ -292,7 +292,7 @@ public class TestRuntime extends TestRuntimeBase {
                         "                }\n" +
                         "            }\n" +
                         "        }\n" +
-                        "    }[getPropertyListener(event=\"start\", name=\"a\",expectedValue=1),getPropertyListener(event=\"end\", name=\"a\",expectedValue=1)],\n" +
+                        "    }[getPropertyListener(event=\"before\", name=\"a\",expectedValue=1),getPropertyListener(event=\"success\", name=\"a\",expectedValue=1)],\n" +
                         "    printAction(content=\"test\")\n" +
                         "}",
                 env);
@@ -309,7 +309,7 @@ public class TestRuntime extends TestRuntimeBase {
                         "    join & {\n" +
                         "        printAction(content=\"test1\")&,\n" +
                         "        printAction(content=\"test2\")\n" +
-                        "    } [printListener(event=\"end\", content=\"listener1\"), printListener(event=\"start\", content=\"listener2\")]\n" +
+                        "    } [printListener(event=\"success\", content=\"listener1\"), printListener(event=\"before\", content=\"listener2\")]\n" +
                         "}",
                 null);
 
@@ -325,7 +325,7 @@ public class TestRuntime extends TestRuntimeBase {
                         "    join & {\n" +
                         "        printAction(content=\"test1\")&,\n" +
                         "        printAction(content=\"test2\")&\n" +
-                        "    } [printListener(event=\"end\", content=\"listener1\"), printListener(event=\"start\", content=\"listener2\")]\n" +
+                        "    } [printListener(event=\"success\", content=\"listener1\"), printListener(event=\"before\", content=\"listener2\")]\n" +
                         "}",
                 null);
 
@@ -343,7 +343,7 @@ public class TestRuntime extends TestRuntimeBase {
                         "            printAction(content=\"test1\")&\n" +
                         "        },\n" +
                         "        printAction(content=\"test2\")\n" +
-                        "    } [printListener(event=\"end\", content=\"listener1\")]\n" +
+                        "    } [printListener(event=\"success\", content=\"listener1\")]\n" +
                         "}",
                 null);
 
@@ -361,7 +361,7 @@ public class TestRuntime extends TestRuntimeBase {
                         "            printAction(content=\"test1\")&\n" +
                         "        },\n" +
                         "        printAction(content=\"test2\")&\n" +
-                        "    } [printListener(event=\"end\", content=\"listener1\")]\n" +
+                        "    } [printListener(event=\"success\", content=\"listener1\")]\n" +
                         "}",
                 null);
 
@@ -377,7 +377,7 @@ public class TestRuntime extends TestRuntimeBase {
                         "    join & {\n" +
                         "        printAction(content=\"test1\")&,\n" +
                         "        printAction(content=\"test2\")\n" +
-                        "    } [printListener(event=\"end\", content=\"listener1\"), printListener(event=\"start\", content=\"listener2\")] then {\n" +
+                        "    } [printListener(event=\"success\", content=\"listener1\"), printListener(event=\"before\", content=\"listener2\")] then {\n" +
                         "        printAction(content=\"test3\")\n" +
                         "    }\n" +
                         "}",
@@ -395,7 +395,7 @@ public class TestRuntime extends TestRuntimeBase {
                         "    join & {\n" +
                         "        printAction(content=\"test1\")&,\n" +
                         "        printAction(content=\"test2\")&\n" +
-                        "    } [printListener(event=\"end\", content=\"listener1\"), printListener(event=\"start\", content=\"listener2\")] then  {\n" +
+                        "    } [printListener(event=\"success\", content=\"listener1\"), printListener(event=\"before\", content=\"listener2\")] then  {\n" +
                         "        printAction(content=\"test3\")\n" +
                         "    }\n" +
                         "}",
@@ -415,7 +415,7 @@ public class TestRuntime extends TestRuntimeBase {
                         "            printAction(content=\"test1\")&\n" +
                         "        },\n" +
                         "        printAction(content=\"test2\")\n" +
-                        "    } [printListener(event=\"end\", content=\"listener1\")] then {\n" +
+                        "    } [printListener(event=\"success\", content=\"listener1\")] then {\n" +
                         "        printAction(content=\"test3\")\n" +
                         "    }\n" +
                         "}",
@@ -435,7 +435,7 @@ public class TestRuntime extends TestRuntimeBase {
                         "            printAction(content=\"test1\")&\n" +
                         "        },\n" +
                         "        printAction(content=\"test2\")&\n" +
-                        "    } [printListener(event=\"end\", content=\"listener1\")] then  {\n" +
+                        "    } [printListener(event=\"success\", content=\"listener1\")] then  {\n" +
                         "        printAction(content=\"test3\")\n" +
                         "    }\n" +
                         "}",

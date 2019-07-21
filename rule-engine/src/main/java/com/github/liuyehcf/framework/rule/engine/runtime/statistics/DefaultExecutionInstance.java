@@ -18,19 +18,24 @@ public class DefaultExecutionInstance implements ExecutionInstance {
 
     private final String id;
     private final Rule rule;
+    private final Map<String, Object> env;
     private final List<ExecutionLink> links = Lists.newCopyOnWriteArrayList();
     private final List<ExecutionLink> unreachableLinks = Lists.newCopyOnWriteArrayList();
+    private final List<Trace> traces = Lists.newCopyOnWriteArrayList();
     private final Map<String, Attribute> attributes = Maps.newConcurrentMap();
     private final long startNanos = System.nanoTime();
     private long endNanos;
 
-    public DefaultExecutionInstance(String id, Rule rule) {
+    public DefaultExecutionInstance(String id, Rule rule, Map<String, Object> env) {
+        Assert.assertNotNull(rule);
+        Assert.assertNotNull(env);
         if (id == null) {
             this.id = IDGenerator.generateUuid();
         } else {
             this.id = id;
         }
         this.rule = rule;
+        this.env = env;
     }
 
     @Override
@@ -41,6 +46,11 @@ public class DefaultExecutionInstance implements ExecutionInstance {
     @Override
     public final Rule getRule() {
         return rule;
+    }
+
+    @Override
+    public final Map<String, Object> getEnv() {
+        return env;
     }
 
     @Override
@@ -73,6 +83,21 @@ public class DefaultExecutionInstance implements ExecutionInstance {
     @Override
     public final List<ExecutionLink> getUnreachableLinks() {
         return unreachableLinks;
+    }
+
+    @Override
+    public final void addTrace(Trace trace) {
+        traces.add(trace);
+    }
+
+    @Override
+    public final void removeTrace(Trace trace) {
+        traces.remove(trace);
+    }
+
+    @Override
+    public final List<Trace> getTraces() {
+        return traces;
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.DefaultTrace;
@@ -28,9 +27,9 @@ public class JoinGatewayOperation extends AbstractOperation<Void> {
 
         long startNanos = System.nanoTime();
 
-        invokeListeners(getNodeListenerByEvent(joinGateway, ListenerEvent.start));
+        invokeNodeBeforeListeners(joinGateway);
 
-        context.addTrace(new DefaultTrace(
+        context.addTraceToExecutionLink(new DefaultTrace(
                 context.getNextExecutionId(),
                 joinGateway.getId(),
                 joinGateway.getType(),
@@ -44,7 +43,7 @@ public class JoinGatewayOperation extends AbstractOperation<Void> {
                 System.nanoTime()));
         context.markElementFinished(joinGateway);
 
-        invokeListeners(getNodeListenerByEvent(joinGateway, ListenerEvent.end));
+        invokeNodeSuccessListeners(joinGateway, null);
 
         forward(LinkType.NORMAL, joinGateway.getSuccessors());
     }

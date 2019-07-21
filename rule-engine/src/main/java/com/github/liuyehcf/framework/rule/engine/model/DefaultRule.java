@@ -44,7 +44,7 @@ public class DefaultRule extends AbstractNode implements Rule {
     }
 
     @Override
-    public ElementType getType() {
+    public final ElementType getType() {
         return ElementType.SUB_RULE;
     }
 

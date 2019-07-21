@@ -16,7 +16,7 @@ import java.util.Map;
  * @date 2019/5/18
  */
 @SuppressWarnings("all")
-public class TestAttr extends TestTraceBase {
+public class TestAttrTrace extends TestTraceBase {
     @Test
     public void testAttr1() {
         Rule rule = compile("{\n" +
@@ -37,7 +37,7 @@ public class TestAttr extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 2);
@@ -53,7 +53,7 @@ public class TestAttr extends TestTraceBase {
     @Test
     public void testAttr2() {
         Rule rule = compile("{\n" +
-                "    setTraceAttrAction(name=\"a\",value=2)[setTraceAttrListener(event=\"end\",name=\"b\",value=\"test\")]\n" +
+                "    setTraceAttrAction(name=\"a\",value=2)[setTraceAttrListener(event=\"success\",name=\"b\",value=\"test\")]\n" +
                 "}");
 
         executeTimes(() -> {
@@ -70,7 +70,7 @@ public class TestAttr extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -82,7 +82,7 @@ public class TestAttr extends TestTraceBase {
             assertSetAttrAction(trace, "a", 2);
 
             trace = executionLink.getTraces().get(2);
-            assertSetAttrListener(trace, "b", "test", ListenerEvent.end);
+            assertSetAttrListener(trace, "b", "test", ListenerEvent.success);
         });
     }
 
@@ -114,7 +114,7 @@ public class TestAttr extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);

@@ -11,7 +11,7 @@ import com.github.liuyehcf.framework.rule.engine.spring.boot.starter.annotation.
 @ListenerBean(names = {"multi.name.listener", "multi/name/listener", "*****"})
 public class MultiNameListener implements ListenerDelegate {
     @Override
-    public void onListener(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
         System.out.println(getClass().getSimpleName());
     }
 }

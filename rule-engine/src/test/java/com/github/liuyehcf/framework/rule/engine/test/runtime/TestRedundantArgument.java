@@ -37,7 +37,7 @@ public class TestRedundantArgument extends TestRuntimeBase {
     @Test
     public void testListener() {
         Promise<ExecutionInstance> promise = startRule("{\n" +
-                "    printAction(content=\"actionA\")[printListener(event=\"start\", redundantArg1=1, content=\"actionA\",redundantArg2=2)]\n" +
+                "    printAction(content=\"actionA\")[printListener(event=\"before\", redundantArg1=1, content=\"actionA\",redundantArg2=2)]\n" +
                 "}", null);
 
         promise.sync();

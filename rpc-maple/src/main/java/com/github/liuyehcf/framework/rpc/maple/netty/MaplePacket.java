@@ -3,7 +3,7 @@ package com.github.liuyehcf.framework.rpc.maple.netty;
 import com.github.liuyehcf.framework.rpc.maple.SerializeType;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/24
  */
 public interface MaplePacket {

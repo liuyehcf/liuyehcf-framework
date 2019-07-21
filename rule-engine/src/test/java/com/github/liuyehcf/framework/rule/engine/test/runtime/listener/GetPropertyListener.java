@@ -15,7 +15,27 @@ public class GetPropertyListener implements ListenerDelegate {
     private DelegateField expectedValue;
 
     @Override
-    public void onListener(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
+        String propertyName = name.getValue();
+        Object expectedValue = this.expectedValue.getValue();
+
+        Object propertyValue = context.getProperty(propertyName);
+
+        Assert.assertEquals(expectedValue, propertyValue, "property value not equals");
+    }
+
+    @Override
+    public void onSuccess(ListenerContext context, Object result) {
+        String propertyName = name.getValue();
+        Object expectedValue = this.expectedValue.getValue();
+
+        Object propertyValue = context.getProperty(propertyName);
+
+        Assert.assertEquals(expectedValue, propertyValue, "property value not equals");
+    }
+
+    @Override
+    public void onFailure(ListenerContext context, Throwable cause) {
         String propertyName = name.getValue();
         Object expectedValue = this.expectedValue.getValue();
 

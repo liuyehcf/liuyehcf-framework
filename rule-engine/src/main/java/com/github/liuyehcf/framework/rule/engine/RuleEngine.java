@@ -11,7 +11,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ConditionDeleg
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ListenerDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.factory.Factory;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInterceptor;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.StartOperation;
+import com.github.liuyehcf.framework.rule.engine.runtime.operation.GlobalBeforeListenerOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.DefaultOperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
@@ -204,7 +204,7 @@ public abstract class RuleEngine {
      */
     public static ActionDelegate getActionDelegate(String actionName) {
         Factory<ActionDelegate> actionDelegateFactory = getActionDelegateFactory(actionName);
-        Assert.assertNotNull(actionDelegateFactory, String.format("unregistered action '%s'", actionName));
+        Assert.assertNotNull(actionDelegateFactory, () -> String.format("unregistered action '%s'", actionName));
 
         return actionDelegateFactory.create();
     }
@@ -217,7 +217,7 @@ public abstract class RuleEngine {
      */
     public static ConditionDelegate getConditionDelegate(String conditionName) {
         Factory<ConditionDelegate> conditionDelegateFactory = getConditionDelegateFactory(conditionName);
-        Assert.assertNotNull(conditionDelegateFactory, String.format("unregistered condition '%s'", conditionName));
+        Assert.assertNotNull(conditionDelegateFactory, () -> String.format("unregistered condition '%s'", conditionName));
 
         return conditionDelegateFactory.create();
     }
@@ -230,7 +230,7 @@ public abstract class RuleEngine {
      */
     public static ListenerDelegate getListenerDelegate(String listenerName) {
         Factory<ListenerDelegate> listenerDelegateFactory = getListenerDelegateFactory(listenerName);
-        Assert.assertNotNull(listenerDelegateFactory, String.format("unregistered listener '%s'", listenerName));
+        Assert.assertNotNull(listenerDelegateFactory, () -> String.format("unregistered listener '%s'", listenerName));
 
         return listenerDelegateFactory.create();
     }
@@ -336,7 +336,7 @@ public abstract class RuleEngine {
                     env == null ? Maps.newHashMap() : env,
                     executionIdGenerator == null ? new AtomicLong(0) : executionIdGenerator,
                     promise);
-            operationContext.executeAsync(new StartOperation(operationContext));
+            operationContext.executeAsync(new GlobalBeforeListenerOperation(operationContext));
         } catch (Throwable e) {
             promise.tryFailure(e);
         }

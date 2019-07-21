@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings("all")
 public class TestTraceBase extends TestRuntimeBase {
 
-    void assertStart(Trace trace) {
+    protected void assertStart(Trace trace) {
         Assert.assertEquals(ElementType.START, trace.getType());
         Assert.assertNull(trace.getName());
         Assert.assertNull(trace.getArguments());
@@ -26,7 +26,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertSetPropertyAction(Trace trace, String name, Object value, PropertyUpdateType type, Object oldValue) {
+    protected void assertSetPropertyAction(Trace trace, String name, Object value, PropertyUpdateType type, Object oldValue) {
         Argument argument;
         PropertyUpdate propertyUpdate;
 
@@ -50,7 +50,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertGetPropertyAction(Trace trace, String name, Object expectedValue) {
+    protected void assertGetPropertyAction(Trace trace, String name, Object expectedValue) {
         Argument argument;
 
         Assert.assertEquals(ElementType.ACTION, trace.getType());
@@ -69,7 +69,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertPrintAction(Trace trace, String content) {
+    protected void assertPrintAction(Trace trace, String content) {
         Argument argument;
 
         Assert.assertEquals(ElementType.ACTION, trace.getType());
@@ -84,7 +84,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertSetAttrAction(Trace trace, String name, Object value) {
+    protected void assertSetAttrAction(Trace trace, String name, Object value) {
         Argument argument;
         Attribute attr;
 
@@ -106,7 +106,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertThrowLinkTerminateAction(Trace trace) {
+    protected void assertThrowLinkTerminateAction(Trace trace) {
         Assert.assertEquals(ElementType.ACTION, trace.getType());
         Assert.assertEquals("throwLinkTerminateAction", trace.getName());
         Assert.assertEquals(0, trace.getArguments().size());
@@ -116,7 +116,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNotNull(trace.getCause());
     }
 
-    void assertSetPropertyCondition(Trace trace, String name, Object value, boolean output, PropertyUpdateType type, Object oldValue) {
+    protected void assertSetPropertyCondition(Trace trace, String name, Object value, boolean output, PropertyUpdateType type, Object oldValue) {
         Argument argument;
         PropertyUpdate propertyUpdate;
 
@@ -143,7 +143,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertPrintCondition(Trace trace, String content, Boolean output) {
+    protected void assertPrintCondition(Trace trace, String content, Boolean output) {
         Argument argument;
 
         Assert.assertEquals(ElementType.CONDITION, trace.getType());
@@ -164,7 +164,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertSetAttrCondition(Trace trace, String name, Object value, boolean output) {
+    protected void assertSetAttrCondition(Trace trace, String name, Object value, boolean output) {
         Argument argument;
         Attribute attr;
 
@@ -189,7 +189,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertThrowLinkTerminateCondition(Trace trace) {
+    protected void assertThrowLinkTerminateCondition(Trace trace) {
         Assert.assertEquals(ElementType.CONDITION, trace.getType());
         Assert.assertEquals("throwLinkTerminateCondition", trace.getName());
         Assert.assertEquals(0, trace.getArguments().size());
@@ -199,7 +199,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNotNull(trace.getCause());
     }
 
-    void assertSleepCondition(Trace trace, long timeout, boolean output) {
+    protected void assertSleepCondition(Trace trace, long timeout, boolean output) {
         Argument argument;
         Attribute attr;
 
@@ -218,7 +218,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertSetPropertyListener(Trace trace, String name, Object value, ListenerEvent event, PropertyUpdateType type, Object oldValue) {
+    protected void assertSetPropertyListener(Trace trace, String name, Object value, ListenerEvent event, PropertyUpdateType type, Object oldValue) {
         Argument argument;
         PropertyUpdate propertyUpdate;
 
@@ -245,7 +245,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertGetPropertyListener(Trace trace, String name, Object expectedValue, ListenerEvent event) {
+    protected void assertGetPropertyListener(Trace trace, String name, Object expectedValue, ListenerEvent event) {
         Argument argument;
 
         Assert.assertEquals(ElementType.LISTENER, trace.getType());
@@ -267,7 +267,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertPrintListener(Trace trace, String content, ListenerEvent event) {
+    protected void assertPrintListener(Trace trace, String content, ListenerEvent event) {
         Argument argument;
 
         Assert.assertEquals(ElementType.LISTENER, trace.getType());
@@ -285,7 +285,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertThrowLinkTerminateListener(Trace trace, ListenerEvent event) {
+    protected void assertThrowLinkTerminateListener(Trace trace, ListenerEvent event) {
         Argument argument;
 
         Assert.assertEquals(ElementType.LISTENER, trace.getType());
@@ -300,7 +300,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNotNull(trace.getCause());
     }
 
-    void assertSetAttrListener(Trace trace, String name, String value, ListenerEvent event) {
+    protected void assertSetAttrListener(Trace trace, String name, String value, ListenerEvent event) {
         Argument argument;
         Attribute attr;
 
@@ -325,7 +325,26 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertExclusiveGateway(Trace trace) {
+    protected void assertSuccessResultListener(Trace trace, Object result, ListenerEvent event) {
+        Argument argument;
+        Attribute attr;
+
+        Assert.assertEquals(ElementType.LISTENER, trace.getType());
+        Assert.assertEquals("successResultListener", trace.getName());
+        Assert.assertEquals(2, trace.getArguments().size());
+        argument = trace.getArguments().get(0);
+        Assert.assertEquals("event", argument.getName());
+        Assert.assertEquals(event.name(), argument.getValue());
+        argument = trace.getArguments().get(1);
+        Assert.assertEquals("result", argument.getName());
+        Assert.assertEquals(result, argument.getValue());
+        Assert.assertNull(trace.getResult());
+        Assert.assertEquals(0, trace.getPropertyUpdates().size());
+        Assert.assertEquals(0, trace.getAttributes().size());
+        Assert.assertNull(trace.getCause());
+    }
+
+    protected void assertExclusiveGateway(Trace trace) {
         Assert.assertEquals(ElementType.EXCLUSIVE_GATEWAY, trace.getType());
         Assert.assertNull(trace.getName());
         Assert.assertNull(trace.getArguments());
@@ -335,7 +354,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertJoinGateway(Trace trace) {
+    protected void assertJoinGateway(Trace trace) {
         Assert.assertEquals(ElementType.JOIN_GATEWAY, trace.getType());
         Assert.assertNull(trace.getName());
         Assert.assertNull(trace.getArguments());
@@ -345,7 +364,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertRule(Trace trace) {
+    protected void assertRule(Trace trace) {
         Assert.assertEquals(ElementType.SUB_RULE, trace.getType());
         Assert.assertNull(trace.getName());
         Assert.assertNull(trace.getArguments());
@@ -355,9 +374,10 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getCause());
     }
 
-    void assertExecutionInstance(ExecutionInstance executionInstance, int finishedSize, int unFinishedSize) {
+    protected void assertExecutionInstance(ExecutionInstance executionInstance, int finishedSize, int unFinishedSize, int traceNum) {
         Assert.assertEquals(finishedSize, executionInstance.getLinks().size());
         Assert.assertEquals(unFinishedSize, executionInstance.getUnreachableLinks().size());
+        Assert.assertEquals(traceNum, executionInstance.getTraces().size());
 
         for (ExecutionLink link : executionInstance.getLinks()) {
             List<Trace> traces = link.getTraces();
@@ -371,10 +391,11 @@ public class TestTraceBase extends TestRuntimeBase {
         }
     }
 
-    void assertExecutionInstance(ExecutionInstance executionInstance, int finishedSize, int minUnfinishedSize, int maxUnfinishedSize) {
+    protected void assertExecutionInstance(ExecutionInstance executionInstance, int finishedSize, int minUnfinishedSize, int maxUnfinishedSize, int traceNum) {
         Assert.assertEquals(finishedSize, executionInstance.getLinks().size());
         Assert.assertTrue(executionInstance.getUnreachableLinks().size() >= minUnfinishedSize
                 && executionInstance.getUnreachableLinks().size() <= maxUnfinishedSize);
+        Assert.assertEquals(traceNum, executionInstance.getTraces().size());
 
         for (ExecutionLink link : executionInstance.getLinks()) {
             List<Trace> traces = link.getTraces();
@@ -388,16 +409,19 @@ public class TestTraceBase extends TestRuntimeBase {
         }
     }
 
-    void assertExecutionLink(ExecutionLink executionLink, int size) {
+    protected void assertExecutionLink(ExecutionLink executionLink, int size) {
         Assert.assertEquals(size, executionLink.getTraces().size());
     }
 
-    void assertExecutionLink(ExecutionLink executionLink, int minSize, int maxSize) {
+    protected void assertExecutionLink(ExecutionLink executionLink, int minSize, int maxSize) {
         Assert.assertTrue(executionLink.getTraces().size() >= minSize
                 && executionLink.getTraces().size() <= maxSize);
+
+        Assert.assertFalse(executionLink.getTraces().size() < minSize);
+        Assert.assertFalse(executionLink.getTraces().size() > maxSize);
     }
 
-    ExecutionLink findLink(ExecutionInstance executionInstance, int traceNum) {
+    protected ExecutionLink findLink(ExecutionInstance executionInstance, int traceNum) {
         for (ExecutionLink link : executionInstance.getLinks()) {
             if (link.getTraces().size() == traceNum) {
                 return link;
@@ -406,7 +430,7 @@ public class TestTraceBase extends TestRuntimeBase {
         throw new RuntimeException();
     }
 
-    ExecutionLink findUnreachableLink(ExecutionInstance executionInstance, int traceNum) {
+    protected ExecutionLink findUnreachableLink(ExecutionInstance executionInstance, int traceNum) {
         for (ExecutionLink link : executionInstance.getUnreachableLinks()) {
             if (link.getTraces().size() == traceNum) {
                 return link;

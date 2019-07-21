@@ -12,7 +12,7 @@ import org.springframework.beans.factory.InitializingBean;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/15
  */
 @Data

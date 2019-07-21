@@ -13,12 +13,12 @@ public class DefaultDelegateField implements DelegateField {
     }
 
     @Override
-    public <T> T getValue() {
+    public final <T> T getValue() {
         return getValueOrDefault(null);
     }
 
     @Override
-    public <T> void setValue(T value) {
+    public final <T> void setValue(T value) {
         this.value = value;
     }
 

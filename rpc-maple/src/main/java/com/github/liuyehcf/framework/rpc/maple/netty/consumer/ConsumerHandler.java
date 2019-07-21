@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/18
  */
 public class ConsumerHandler extends SimpleChannelInboundHandler<MaplePacket> {

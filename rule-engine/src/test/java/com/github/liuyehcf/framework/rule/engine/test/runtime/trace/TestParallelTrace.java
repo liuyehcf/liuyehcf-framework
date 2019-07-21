@@ -16,7 +16,7 @@ import java.util.Map;
  * @date 2019/5/18
  */
 @SuppressWarnings("all")
-public class TestParallel extends TestTraceBase {
+public class TestParallelTrace extends TestTraceBase {
 
     @Test
     public void testParallelMultiple() {
@@ -39,7 +39,7 @@ public class TestParallel extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 5, 0);
+            assertExecutionInstance(executionInstance, 5, 0, 0);
 
             for (int i = 0; i < executionInstance.getLinks().size(); i++) {
                 executionLink = executionInstance.getLinks().get(i);
@@ -80,7 +80,7 @@ public class TestParallel extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 4, 0);
+            assertExecutionInstance(executionInstance, 4, 0, 0);
 
             executionLink = findLink(executionInstance, 2);
 
@@ -154,7 +154,7 @@ public class TestParallel extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0);
+            assertExecutionInstance(executionInstance, 2, 0, 0);
 
             executionLink = findLink(executionInstance, 2);
 
@@ -199,7 +199,7 @@ public class TestParallel extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0);
+            assertExecutionInstance(executionInstance, 2, 0, 0);
 
             executionLink = findLink(executionInstance, 2);
 
@@ -244,7 +244,7 @@ public class TestParallel extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0);
+            assertExecutionInstance(executionInstance, 2, 0, 0);
 
             executionLink = findLink(executionInstance, 2);
 
@@ -289,7 +289,7 @@ public class TestParallel extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 4);
+            assertExecutionInstance(executionInstance, 2, 4, 0);
 
             for (int i = 0; i < executionInstance.getLinks().size(); i++) {
                 executionLink = executionInstance.getLinks().get(i);
@@ -359,7 +359,7 @@ public class TestParallel extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 6);
+            assertExecutionInstance(executionInstance, 1, 6, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 2);

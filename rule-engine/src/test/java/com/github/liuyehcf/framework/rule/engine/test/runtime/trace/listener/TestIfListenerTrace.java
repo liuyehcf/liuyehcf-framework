@@ -1,25 +1,32 @@
-package com.github.liuyehcf.framework.rule.engine.test.runtime.trace;
+package com.github.liuyehcf.framework.rule.engine.test.runtime.trace.listener;
 
 import com.github.liuyehcf.framework.expression.engine.utils.EnvBuilder;
+import com.github.liuyehcf.framework.rule.engine.model.ElementType;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
+import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionLink;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.Trace;
+import com.github.liuyehcf.framework.rule.engine.test.runtime.trace.TestTraceBase;
 import org.junit.Test;
+
+import java.util.Map;
 
 /**
  * @author hechenfeng
- * @date 2019/5/18
+ * @date 2019/7/19
  */
 @SuppressWarnings("all")
-public class TestIfThen extends TestTraceBase {
+public class TestIfListenerTrace extends TestTraceBase {
 
     @Test
-    public void testSingleIf() {
+    public void testSingleIfNestedInActionWithGlobalListener() {
         Rule rule = compile("{\n" +
-                "    if(printCondition(content=\"conditionA\", output=true))\n" +
-                "}");
+                "    printAction(content=\"actionA\"){\n" +
+                "        if(printCondition(content=\"conditionA\", output=true)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")])\n" +
+                "    }\n" +
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -32,26 +39,90 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
 
             executionLink = executionInstance.getLinks().get(0);
-            assertExecutionLink(executionLink, 2);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+        });
+    }
+
+    @Test
+    public void testSingleIfNestedInIfThenWithGlobalListener() {
+        Rule rule = compile("{\n" +
+                "    if(printCondition(content=\"conditionA\", output=true)){\n" +
+                "        if(printCondition(content=\"conditionB\", output=false)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")])\n" +
+                "    }\n" +
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
 
             trace = executionLink.getTraces().get(0);
             assertStart(trace);
 
             trace = executionLink.getTraces().get(1);
             assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintCondition(trace, "conditionB", false);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
         });
     }
 
     @Test
-    public void testParallelSingleIf() {
+    public void testSingleIfNestedInIfThenElseTrueWithGlobalListener() {
         Rule rule = compile("{\n" +
-                "    if(printCondition(content=\"conditionA\", output=true)),\n" +
-                "    if(printCondition(content=\"conditionB\", output=true)),\n" +
-                "    if(printCondition(content=\"conditionC\", output=false))\n" +
-                "}");
+                "    if(printCondition(content=\"conditionA\", output=true)){\n" +
+                "        if(printCondition(content=\"conditionB\", output=false)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")])\n" +
+                "    } else{\n" +
+                "        throwExceptionAction()\n" +
+                "    }\n" +
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -64,305 +135,318 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 3, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintCondition(trace, "conditionB", false);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+        });
+    }
+
+    @Test
+    public void testSingleIfNestedInIfThenElseFlaseWithGlobalListener() {
+        Rule rule = compile("{\n" +
+                "    if(printCondition(content=\"conditionA\", output=false)){\n" +
+                "        throwExceptionAction()\n" +
+                "    } else{\n" +
+                "        if(printCondition(content=\"conditionB\", output=true)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")])\n" +
+                "    }\n" +
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintCondition(trace, "conditionB", true);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+        });
+    }
+
+    @Test
+    public void testSingleIfNestedInHardJoinWithGlobalListener() {
+        Rule rule = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]),\n" +
+                "        printAction(content=\"actionA\")&\n" +
+                "    }\n" +
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSingleIfNestedInSoftJoinWithGlobalListener() {
+        Rule rule = compile("{\n" +
+                "    join {\n" +
+                "        printAction(content=\"actionA\")&,\n" +
+                "        if(printCondition(content=\"conditionA\", output=true)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")])\n" +
+                "    }\n" +
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSingleIfNestedInOrJoinWithGlobalListener() {
+        Rule rule = compile("{\n" +
+                "    join | {\n" +
+                "        printAction(content=\"actionA\")&,\n" +
+                "        if(printCondition(content=\"conditionA\", output=false)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]),\n" +
+                "        printAction(content=\"actionB\")&\n" +
+                "    }\n" +
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 1, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "action[AB]");
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSingleIfNestedInHardJoinThenWithGlobalListener() {
+        Rule rule = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]),\n" +
+                "        printAction(content=\"actionA\")&\n" +
+                "    } then {\n" +
+                "        printAction(content=\"actionB\")\n" +
+                "    }\n" +
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
 
             for (int i = 0; i < executionInstance.getLinks().size(); i++) {
                 executionLink = executionInstance.getLinks().get(i);
-                assertExecutionLink(executionLink, 2);
+                assertExecutionLink(executionLink, 4);
 
                 trace = executionLink.getTraces().get(0);
                 assertStart(trace);
 
                 trace = executionLink.getTraces().get(1);
-                assertPrintCondition(trace, "condition[ABC]", null);
+                if (ElementType.LISTENER.equals(trace.getType())) {
+                    assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+                    trace = executionLink.getTraces().get(2);
+                    assertPrintCondition(trace, "conditionA", true);
+
+                    trace = executionLink.getTraces().get(3);
+                    assertPrintListener(trace, "listenerB", ListenerEvent.success);
+                } else {
+                    assertPrintAction(trace, "actionA");
+
+                    trace = executionLink.getTraces().get(2);
+                    assertJoinGateway(trace);
+
+                    trace = executionLink.getTraces().get(3);
+                    assertPrintAction(trace, "actionB");
+                }
             }
         });
     }
 
     @Test
-    public void testSingleIfNestedInAction() {
-        Rule rule = compile("{\n" +
-                "    printAction(content=\"actionA\"){\n" +
-                "        if(printCondition(content=\"conditionA\", output=true))\n" +
-                "    }\n" +
-                "}");
-
-        executeTimes(() -> {
-            Promise<ExecutionInstance> promise = startRule(rule, null);
-
-            promise.sync();
-            assertPromise(promise, false, true, true, false);
-
-            ExecutionInstance executionInstance;
-            ExecutionLink executionLink;
-            Trace trace;
-
-            executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
-
-            executionLink = executionInstance.getLinks().get(0);
-            assertExecutionLink(executionLink, 3);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintAction(trace, "actionA");
-
-            trace = executionLink.getTraces().get(2);
-            assertPrintCondition(trace, "conditionA", true);
-        });
-    }
-
-    @Test
-    public void testSingleIfNestedInIfThen() {
-        Rule rule = compile("{\n" +
-                "    if(printCondition(content=\"conditionA\", output=true)){\n" +
-                "        if(printCondition(content=\"conditionB\", output=false))\n" +
-                "    }\n" +
-                "}");
-
-        executeTimes(() -> {
-            Promise<ExecutionInstance> promise = startRule(rule, null);
-
-            promise.sync();
-            assertPromise(promise, false, true, true, false);
-
-            ExecutionInstance executionInstance;
-            ExecutionLink executionLink;
-            Trace trace;
-
-            executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
-
-            executionLink = executionInstance.getLinks().get(0);
-            assertExecutionLink(executionLink, 3);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", true);
-
-            trace = executionLink.getTraces().get(2);
-            assertPrintCondition(trace, "conditionB", false);
-        });
-    }
-
-    @Test
-    public void testSingleIfNestedInIfThenElseTrue() {
-        Rule rule = compile("{\n" +
-                "    if(printCondition(content=\"conditionA\", output=true)){\n" +
-                "        if(printCondition(content=\"conditionB\", output=false))\n" +
-                "    } else{\n" +
-                "        throwExceptionAction()\n" +
-                "    }\n" +
-                "}");
-
-        executeTimes(() -> {
-            Promise<ExecutionInstance> promise = startRule(rule, null);
-
-            promise.sync();
-            assertPromise(promise, false, true, true, false);
-
-            ExecutionInstance executionInstance;
-            ExecutionLink executionLink;
-            Trace trace;
-
-            executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
-
-            executionLink = executionInstance.getLinks().get(0);
-            assertExecutionLink(executionLink, 3);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", true);
-
-            trace = executionLink.getTraces().get(2);
-            assertPrintCondition(trace, "conditionB", false);
-        });
-    }
-
-    @Test
-    public void testSingleIfNestedInIfThenElseFlase() {
-        Rule rule = compile("{\n" +
-                "    if(printCondition(content=\"conditionA\", output=false)){\n" +
-                "        throwExceptionAction()\n" +
-                "    } else{\n" +
-                "        if(printCondition(content=\"conditionB\", output=true))\n" +
-                "    }\n" +
-                "}");
-
-        executeTimes(() -> {
-            Promise<ExecutionInstance> promise = startRule(rule, null);
-
-            promise.sync();
-            assertPromise(promise, false, true, true, false);
-
-            ExecutionInstance executionInstance;
-            ExecutionLink executionLink;
-            Trace trace;
-
-            executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
-
-            executionLink = executionInstance.getLinks().get(0);
-            assertExecutionLink(executionLink, 3);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", false);
-
-            trace = executionLink.getTraces().get(2);
-            assertPrintCondition(trace, "conditionB", true);
-        });
-    }
-
-    @Test
-    public void testSingleIfNestedInHardJoin() {
-        Rule rule = compile("{\n" +
-                "    join & {\n" +
-                "        if(printCondition(content=\"conditionA\", output=true)),\n" +
-                "        printAction(content=\"actionA\")&\n" +
-                "    }\n" +
-                "}");
-
-        executeTimes(() -> {
-            Promise<ExecutionInstance> promise = startRule(rule, null);
-
-            promise.sync();
-            assertPromise(promise, false, true, true, false);
-
-            ExecutionInstance executionInstance;
-            ExecutionLink executionLink;
-            Trace trace;
-
-            executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0);
-
-            executionLink = findLink(executionInstance, 2);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", true);
-
-            executionLink = findLink(executionInstance, 3);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintAction(trace, "actionA");
-
-            trace = executionLink.getTraces().get(2);
-            assertJoinGateway(trace);
-        });
-    }
-
-    @Test
-    public void testSingleIfNestedInSoftJoin() {
+    public void testSingleIfNestedInSoftJoinThenWithGlobalListener() {
         Rule rule = compile("{\n" +
                 "    join {\n" +
                 "        printAction(content=\"actionA\")&,\n" +
-                "        if(printCondition(content=\"conditionA\", output=true))\n" +
-                "    }\n" +
-                "}");
-
-        executeTimes(() -> {
-            Promise<ExecutionInstance> promise = startRule(rule, null);
-
-            promise.sync();
-            assertPromise(promise, false, true, true, false);
-
-            ExecutionInstance executionInstance;
-            ExecutionLink executionLink;
-            Trace trace;
-
-            executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0);
-
-            executionLink = findLink(executionInstance, 2);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", true);
-
-            executionLink = findLink(executionInstance, 3);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintAction(trace, "actionA");
-
-            trace = executionLink.getTraces().get(2);
-            assertJoinGateway(trace);
-        });
-    }
-
-    @Test
-    public void testSingleIfNestedInOrJoin() {
-        Rule rule = compile("{\n" +
-                "    join | {\n" +
-                "        printAction(content=\"actionA\")&,\n" +
-                "        if(printCondition(content=\"conditionA\", output=false)),\n" +
-                "        printAction(content=\"actionB\")&\n" +
-                "    }\n" +
-                "}");
-
-        executeTimes(() -> {
-            Promise<ExecutionInstance> promise = startRule(rule, null);
-
-            promise.sync();
-            assertPromise(promise, false, true, true, false);
-
-            ExecutionInstance executionInstance;
-            ExecutionLink executionLink;
-            Trace trace;
-
-            executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0, 1);
-
-            executionLink = findLink(executionInstance, 2);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", false);
-
-            executionLink = findLink(executionInstance, 3);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintAction(trace, "action[AB]");
-
-            trace = executionLink.getTraces().get(2);
-            assertJoinGateway(trace);
-        });
-    }
-
-    @Test
-    public void testSingleIfNestedInHardJoinThen() {
-        Rule rule = compile("{\n" +
-                "    join & {\n" +
-                "        if(printCondition(content=\"conditionA\", output=true)),\n" +
-                "        printAction(content=\"actionA\")&\n" +
+                "        if(printCondition(content=\"conditionA\", output=true)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")])\n" +
                 "    } then {\n" +
                 "        printAction(content=\"actionB\")\n" +
                 "    }\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -375,91 +459,54 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0);
+            assertExecutionInstance(executionInstance, 2, 0, 2);
 
-            executionLink = findLink(executionInstance, 2);
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
 
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
 
-            trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", true);
+            for (int i = 0; i < executionInstance.getLinks().size(); i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 4);
 
-            executionLink = findLink(executionInstance, 4);
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
 
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
+                trace = executionLink.getTraces().get(1);
+                if (ElementType.LISTENER.equals(trace.getType())) {
+                    assertPrintListener(trace, "listenerA", ListenerEvent.before);
 
-            trace = executionLink.getTraces().get(1);
-            assertPrintAction(trace, "actionA");
+                    trace = executionLink.getTraces().get(2);
+                    assertPrintCondition(trace, "conditionA", true);
 
-            trace = executionLink.getTraces().get(2);
-            assertJoinGateway(trace);
+                    trace = executionLink.getTraces().get(3);
+                    assertPrintListener(trace, "listenerB", ListenerEvent.success);
+                } else {
+                    assertPrintAction(trace, "actionA");
 
-            trace = executionLink.getTraces().get(3);
-            assertPrintAction(trace, "actionB");
+                    trace = executionLink.getTraces().get(2);
+                    assertJoinGateway(trace);
+
+                    trace = executionLink.getTraces().get(3);
+                    assertPrintAction(trace, "actionB");
+                }
+            }
         });
     }
 
     @Test
-    public void testSingleIfNestedInSoftJoinThen() {
-        Rule rule = compile("{\n" +
-                "    join {\n" +
-                "        printAction(content=\"actionA\")&,\n" +
-                "        if(printCondition(content=\"conditionA\", output=true))\n" +
-                "    } then {\n" +
-                "        printAction(content=\"actionB\")\n" +
-                "    }\n" +
-                "}");
-
-        executeTimes(() -> {
-            Promise<ExecutionInstance> promise = startRule(rule, null);
-
-            promise.sync();
-            assertPromise(promise, false, true, true, false);
-
-            ExecutionInstance executionInstance;
-            ExecutionLink executionLink;
-            Trace trace;
-
-            executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0);
-
-            executionLink = findLink(executionInstance, 2);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", true);
-
-            executionLink = findLink(executionInstance, 4);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintAction(trace, "actionA");
-
-            trace = executionLink.getTraces().get(2);
-            assertJoinGateway(trace);
-
-            trace = executionLink.getTraces().get(3);
-            assertPrintAction(trace, "actionB");
-        });
-    }
-
-    @Test
-    public void testSingleIfNestedInOrJoinThen() {
+    public void testSingleIfNestedInOrJoinThenWithGlobalListener() {
         Rule rule = compile("{\n" +
                 "    join | {\n" +
                 "        printAction(content=\"actionA\")&,\n" +
-                "        if(printCondition(content=\"conditionA\", output=false)),\n" +
+                "        if(printCondition(content=\"conditionA\", output=false)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]),\n" +
                 "        printAction(content=\"actionB\")&\n" +
                 "    } then  {\n" +
                 "        printAction(content=\"actionC\")\n" +
                 "    }\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -472,29 +519,40 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0, 1);
+            assertExecutionInstance(executionInstance, 2, 0, 1, 2);
 
-            executionLink = findLink(executionInstance, 2);
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
 
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
 
-            trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", false);
+            for (int i = 0; i < executionInstance.getLinks().size(); i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 4);
 
-            executionLink = findLink(executionInstance, 4);
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
 
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
+                trace = executionLink.getTraces().get(1);
+                if (ElementType.LISTENER.equals(trace.getType())) {
+                    assertPrintListener(trace, "listenerA", ListenerEvent.before);
 
-            trace = executionLink.getTraces().get(1);
-            assertPrintAction(trace, "action[AB]");
+                    trace = executionLink.getTraces().get(2);
+                    assertPrintCondition(trace, "conditionA", false);
 
-            trace = executionLink.getTraces().get(2);
-            assertJoinGateway(trace);
+                    trace = executionLink.getTraces().get(3);
+                    assertPrintListener(trace, "listenerB", ListenerEvent.success);
+                } else {
+                    assertPrintAction(trace, "action[AB]");
 
-            trace = executionLink.getTraces().get(3);
-            assertPrintAction(trace, "actionC");
+                    trace = executionLink.getTraces().get(2);
+                    assertJoinGateway(trace);
+
+                    trace = executionLink.getTraces().get(3);
+                    assertPrintAction(trace, "actionC");
+                }
+            }
         });
     }
 
@@ -504,9 +562,9 @@ public class TestIfThen extends TestTraceBase {
                 "    join & {\n" +
                 "        printAction(content=\"actionA\")&\n" +
                 "    } then {\n" +
-                "        if(printCondition(content=\"conditionA\", output=true))\n" +
+                "        if(printCondition(content=\"conditionA\", output=true)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")])\n" +
                 "    }\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -519,9 +577,15 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 2);
 
-            executionLink = findLink(executionInstance, 4);
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            executionLink = findLink(executionInstance, 6);
 
             trace = executionLink.getTraces().get(0);
             assertStart(trace);
@@ -533,7 +597,13 @@ public class TestIfThen extends TestTraceBase {
             assertJoinGateway(trace);
 
             trace = executionLink.getTraces().get(3);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(4);
             assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
         });
     }
 
@@ -543,9 +613,9 @@ public class TestIfThen extends TestTraceBase {
                 "    join {\n" +
                 "        printAction(content=\"actionA\")&\n" +
                 "    } then {\n" +
-                "        if(printCondition(content=\"conditionA\", output=false))\n" +
+                "        if(printCondition(content=\"conditionA\", output=false)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")])\n" +
                 "    }\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -558,9 +628,15 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 2);
 
-            executionLink = findLink(executionInstance, 4);
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            executionLink = findLink(executionInstance, 6);
 
             trace = executionLink.getTraces().get(0);
             assertStart(trace);
@@ -572,7 +648,13 @@ public class TestIfThen extends TestTraceBase {
             assertJoinGateway(trace);
 
             trace = executionLink.getTraces().get(3);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(4);
             assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
         });
     }
 
@@ -583,9 +665,9 @@ public class TestIfThen extends TestTraceBase {
                 "        printAction(content=\"actionA\")&,\n" +
                 "        printAction(content=\"actionB\")&\n" +
                 "    } then {\n" +
-                "        if(printCondition(content=\"conditionA\", output=false))\n" +
+                "        if(printCondition(content=\"conditionA\", output=false)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")])\n" +
                 "    }\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -598,9 +680,15 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0, 1);
+            assertExecutionInstance(executionInstance, 1, 0, 1, 2);
 
-            executionLink = findLink(executionInstance, 4);
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            executionLink = findLink(executionInstance, 6);
 
             trace = executionLink.getTraces().get(0);
             assertStart(trace);
@@ -612,21 +700,27 @@ public class TestIfThen extends TestTraceBase {
             assertJoinGateway(trace);
 
             trace = executionLink.getTraces().get(3);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(4);
             assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
         });
     }
 
     @Test
-    public void testSingleIfNestedInSelect() {
+    public void testSingleIfNestedInSelectWithGlobalListener() {
         Rule rule = compile("{\n" +
                 "    select {\n" +
-                "        if(printCondition(content=\"conditionA\", output=${output0})),\n" +
-                "        if(printCondition(content=\"conditionB\", output=${output1})),\n" +
-                "        if(printCondition(content=\"conditionC\", output=${output2})),\n" +
-                "        if(printCondition(content=\"conditionD\", output=${output3})),\n" +
-                "        if(printCondition(content=\"conditionE\", output=${output4}))\n" +
+                "        if(printCondition(content=\"conditionA\", output=${output0})[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]),\n" +
+                "        if(printCondition(content=\"conditionB\", output=${output1})[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]),\n" +
+                "        if(printCondition(content=\"conditionC\", output=${output2})[printListener(event=\"before\", content=\"listenerE\"), printListener(event=\"success\", content=\"listenerF\")]),\n" +
+                "        if(printCondition(content=\"conditionD\", output=${output3})[printListener(event=\"before\", content=\"listenerG\"), printListener(event=\"success\", content=\"listenerH\")]),\n" +
+                "        if(printCondition(content=\"conditionE\", output=${output4})[printListener(event=\"before\", content=\"listenerI\"), printListener(event=\"success\", content=\"listenerJ\")])\n" +
                 "    }\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerK\"), printListener(event=\"success\", content=\"listenerL\")]");
 
         executeTimes(() -> {
             EnvBuilder builder = EnvBuilder.builder();
@@ -650,12 +744,18 @@ public class TestIfThen extends TestTraceBase {
 
             executionInstance = promise.get();
 
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerK", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerL", ListenerEvent.success);
+
             if (firstTrue == -1) {
-                assertExecutionInstance(executionInstance, 5, 0);
+                assertExecutionInstance(executionInstance, 5, 0, 2);
 
                 for (int i = 0; i < executionInstance.getLinks().size(); i++) {
                     executionLink = executionInstance.getLinks().get(i);
-                    assertExecutionLink(executionLink, 3);
+                    assertExecutionLink(executionLink, 5);
 
                     trace = executionLink.getTraces().get(0);
                     assertStart(trace);
@@ -664,15 +764,21 @@ public class TestIfThen extends TestTraceBase {
                     assertExclusiveGateway(trace);
 
                     trace = executionLink.getTraces().get(2);
+                    assertPrintListener(trace, "listener[ACEGI]", ListenerEvent.before);
+
+                    trace = executionLink.getTraces().get(3);
                     assertPrintCondition(trace, "condition[ABCDE]", false);
+
+                    trace = executionLink.getTraces().get(4);
+                    assertPrintListener(trace, "listener[BDFHJ]", ListenerEvent.success);
                 }
             } else {
                 // finishOperation may be earlier than markOperation
-                assertExecutionInstance(executionInstance, firstTrue + 1, 0, 5 - firstTrue - 1);
+                assertExecutionInstance(executionInstance, firstTrue + 1, 0, 5 - firstTrue - 1, 2);
 
                 for (int i = 0; i < executionInstance.getLinks().size(); i++) {
                     executionLink = executionInstance.getLinks().get(i);
-                    assertExecutionLink(executionLink, 3);
+                    assertExecutionLink(executionLink, 5);
 
                     trace = executionLink.getTraces().get(0);
                     assertStart(trace);
@@ -681,7 +787,13 @@ public class TestIfThen extends TestTraceBase {
                     assertExclusiveGateway(trace);
 
                     trace = executionLink.getTraces().get(2);
+                    assertPrintListener(trace, "listener[ACEGI]", ListenerEvent.before);
+
+                    trace = executionLink.getTraces().get(3);
                     assertPrintCondition(trace, "condition[ABCDE]", null);
+
+                    trace = executionLink.getTraces().get(4);
+                    assertPrintListener(trace, "listener[BDFHJ]", ListenerEvent.success);
                 }
 
                 for (int i = 0; i < executionInstance.getUnreachableLinks().size(); i++) {
@@ -699,12 +811,12 @@ public class TestIfThen extends TestTraceBase {
     }
 
     @Test
-    public void testSingleIfThenTrue() {
+    public void testSingleIfThenTrueWithGlobalListener() {
         Rule rule = compile("{\n" +
                 "    if(printCondition(content=\"conditionA\", output=true)){\n" +
                 "        printAction(content=\"actionA\")\n" +
                 "    }\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -717,7 +829,13 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -734,12 +852,12 @@ public class TestIfThen extends TestTraceBase {
     }
 
     @Test
-    public void testSingleIfThenFalse() {
+    public void testSingleIfThenFalseWithGlobalListener() {
         Rule rule = compile("{\n" +
                 "    if(printCondition(content=\"conditionA\", output=false)){\n" +
                 "        throwExceptionAction()\n" +
                 "    }\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -752,7 +870,13 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 0, 1);
+            assertExecutionInstance(executionInstance, 0, 1, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 2);
@@ -766,7 +890,7 @@ public class TestIfThen extends TestTraceBase {
     }
 
     @Test
-    public void testIfThenCascaded() {
+    public void testIfThenCascadedWithGlobalListener() {
         Rule rule = compile("{\n" +
                 "    if(printCondition(content=\"conditionA\", output=true)){\n" +
                 "        if(printCondition(content=\"conditionB\", output=true)){\n" +
@@ -779,7 +903,7 @@ public class TestIfThen extends TestTraceBase {
                 "            }\n" +
                 "        }\n" +
                 "    }\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -792,7 +916,13 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 7);
@@ -811,7 +941,7 @@ public class TestIfThen extends TestTraceBase {
     }
 
     @Test
-    public void testIfThenParalled() {
+    public void testIfThenParalledWithGlobalListener() {
         Rule rule = compile("{\n" +
                 "    if(printCondition(content=\"conditionA\", output=true)){\n" +
                 "        if(printCondition(content=\"conditionB\", output=true)){\n" +
@@ -826,7 +956,7 @@ public class TestIfThen extends TestTraceBase {
                 "        printAction(content=\"actionD\")\n" +
                 "    },\n" +
                 "    printAction(content=\"actionE\")\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -839,7 +969,13 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 5, 0);
+            assertExecutionInstance(executionInstance, 5, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
 
             for (int i = 0; i < executionInstance.getLinks().size(); i++) {
                 executionLink = executionInstance.getLinks().get(i);
@@ -879,14 +1015,14 @@ public class TestIfThen extends TestTraceBase {
     }
 
     @Test
-    public void testIfThenLinkException() {
+    public void testIfThenLinkExceptionWithGlobalListener() {
         Rule rule = compile("{\n" +
                 "    if(printCondition(content=\"conditionA\", output=true)){\n" +
                 "        throwLinkTerminateAction(),\n" +
                 "        printAction(content=\"actionA\")\n" +
                 "    },\n" +
                 "    throwLinkTerminateAction()\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -899,7 +1035,13 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 2);
+            assertExecutionInstance(executionInstance, 1, 2, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -935,27 +1077,22 @@ public class TestIfThen extends TestTraceBase {
     }
 
     @Test
-    public void testIfThenHardAndJoinAndJoinThen() {
+    public void testSingleIfThenElseWithGlobalListener() {
         Rule rule = compile("{\n" +
-                "    printAction(content=\"actionA\"),\n" +
-                "    if(printCondition(content=\"conditionA\", output=true)){\n" +
-                "        join & {\n" +
-                "            printAction(content=\"actionB\")&,\n" +
-                "            printAction(content=\"actionC\")&,\n" +
-                "            printAction(content=\"actionD\")&\n" +
-                "        }\n" +
-                "    },\n" +
-                "    if(printCondition(content=\"conditionB\", output=false)){\n" +
-                "        join & {\n" +
-                "            throwExceptionAction()&\n" +
-                "        } then {\n" +
-                "            throwExceptionAction()\n" +
-                "        }\n" +
+                "    if(printCondition(content=\"conditionA\", output=${output1})){\n" +
+                "        printAction(content=\"actionA\")\n" +
+                "    }else{\n" +
+                "        printAction(content=\"actionB\")\n" +
                 "    }\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]");
 
         executeTimes(() -> {
-            Promise<ExecutionInstance> promise = startRule(rule, null);
+            boolean output1 = RANDOM.nextBoolean();
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("output1", output1)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
 
             promise.sync();
             assertPromise(promise, false, true, true, false);
@@ -965,71 +1102,45 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 2);
 
-            assertExecutionInstance(executionInstance, 2, 1);
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
 
-            executionLink = findLink(executionInstance, 2);
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
 
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintAction(trace, "actionA");
-
-            executionLink = findLink(executionInstance, 6);
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
 
             trace = executionLink.getTraces().get(0);
             assertStart(trace);
 
             trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", true);
+            assertPrintCondition(trace, "conditionA", output1);
 
-            for (int i = 2; i <= 4; i++) {
-                trace = executionLink.getTraces().get(i);
-                assertPrintAction(trace, "action[BCD]");
-            }
-
-            trace = executionLink.getTraces().get(5);
-            assertJoinGateway(trace);
-
-            executionLink = executionInstance.getUnreachableLinks().get(0);
-            assertExecutionLink(executionLink, 2);
-
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
-
-            trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionB", false);
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "action[AB]");
         });
     }
 
     @Test
-    public void testIfThenSelect() {
+    public void testIfThenElseCascadedWithGlobalListener() {
         Rule rule = compile("{\n" +
                 "    if(printCondition(content=\"conditionA\", output=true)){\n" +
-                "        select {\n" +
-                "            if(printCondition(content=\"conditionB\", output=false)){\n" +
-                "                throwExceptionAction()\n" +
-                "            },\n" +
+                "        if(printCondition(content=\"conditionB\", output=false)){\n" +
+                "            throwExceptionAction()\n" +
+                "        }else{\n" +
                 "            if(printCondition(content=\"conditionC\", output=true)){\n" +
                 "                printAction(content=\"actionA\")\n" +
-                "            },\n" +
-                "            if(printCondition(content=\"conditionD\", output=false)){\n" +
+                "            }else{\n" +
                 "                throwExceptionAction()\n" +
                 "            }\n" +
                 "        }\n" +
-                "    },\n" +
-                "    if(printCondition(content=\"conditionE\", output=false)){\n" +
-                "        select {\n" +
-                "            if(throwExceptionCondition()){\n" +
-                "                throwExceptionAction()\n" +
-                "            },\n" +
-                "            if(throwExceptionCondition()){\n" +
-                "                throwExceptionAction()\n" +
-                "            }\n" +
-                "        }\n" +
+                "    }else{\n" +
+                "        throwExceptionAction()\n" +
                 "    }\n" +
-                "}");
+                "}[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -1042,7 +1153,13 @@ public class TestIfThen extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 2);
+            assertExecutionInstance(executionInstance, 1, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -1054,12 +1171,57 @@ public class TestIfThen extends TestTraceBase {
             assertPrintCondition(trace, "conditionA", true);
 
             trace = executionLink.getTraces().get(2);
-            assertExclusiveGateway(trace);
+            assertPrintCondition(trace, "conditionB", false);
 
             trace = executionLink.getTraces().get(3);
             assertPrintCondition(trace, "conditionC", true);
 
             trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionA");
+        });
+    }
+
+    @Test
+    public void testIfThenElseLinkExceptionWithGlobalListener() {
+        Rule rule = compile("{\n" +
+                "    if(printCondition(content=\"conditionA\", output=false)){\n" +
+                "        throwExceptionAction()\n" +
+                "    }else{\n" +
+                "        printAction(content=\"actionA\"),\n" +
+                "        throwLinkTerminateAction()\n" +
+                "    },\n" +
+                "    throwLinkTerminateAction()\n" +
+                "}[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 2, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
             assertPrintAction(trace, "actionA");
 
             executionLink = findUnreachableLink(executionInstance, 2);
@@ -1068,21 +1230,18 @@ public class TestIfThen extends TestTraceBase {
             assertStart(trace);
 
             trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionE", false);
+            assertThrowLinkTerminateAction(trace);
 
-            executionLink = findUnreachableLink(executionInstance, 4);
+            executionLink = findUnreachableLink(executionInstance, 3);
 
             trace = executionLink.getTraces().get(0);
             assertStart(trace);
 
             trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", true);
+            assertPrintCondition(trace, "conditionA", false);
 
             trace = executionLink.getTraces().get(2);
-            assertExclusiveGateway(trace);
-
-            trace = executionLink.getTraces().get(3);
-            assertPrintCondition(trace, "conditionB", false);
+            assertThrowLinkTerminateAction(trace);
         });
     }
 }

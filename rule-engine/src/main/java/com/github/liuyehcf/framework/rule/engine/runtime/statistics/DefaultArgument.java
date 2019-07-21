@@ -15,12 +15,12 @@ public class DefaultArgument implements Argument {
     }
 
     @Override
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
     @Override
-    public Object getValue() {
+    public final Object getValue() {
         return value;
     }
 

@@ -7,6 +7,16 @@ package com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor;
 public interface DelegateInterceptor {
 
     /**
+     * whether given executableName matches this interceptor
+     *
+     * @param executableName executable name
+     * @return whether matches
+     */
+    default boolean matches(String executableName) {
+        return true;
+    }
+
+    /**
      * Implement this method to perform extra treatments before and
      * after the invocation.
      *

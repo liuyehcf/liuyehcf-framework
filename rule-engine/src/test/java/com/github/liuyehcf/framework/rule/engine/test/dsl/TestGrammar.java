@@ -3158,7 +3158,7 @@ public class TestGrammar {
                 "            d()\n" +
                 "        }\n" +
                 "    }\n" +
-                "}[l(event=\"start\")]");
+                "}[l(event=\"before\")]");
 
         compile("{\n" +
                 "    select {\n" +
@@ -3203,7 +3203,7 @@ public class TestGrammar {
                 "        }\n" +
                 "    },\n" +
                 "    a()\n" +
-                "}[l(event=\"start\")]");
+                "}[l(event=\"before\")]");
 
         compile("{\n" +
                 "    b(),\n" +
@@ -3231,7 +3231,7 @@ public class TestGrammar {
                 "            if(d()){\n" +
                 "                f()\n" +
                 "            }\n" +
-                "        }[l(event=\"start\")]\n" +
+                "        }[l(event=\"before\")]\n" +
                 "    }\n" +
                 "}");
 
@@ -3245,7 +3245,7 @@ public class TestGrammar {
                 "                if(d()){\n" +
                 "                    f()\n" +
                 "                }\n" +
-                "            }[l(event=\"start\")]\n" +
+                "            }[l(event=\"before\")]\n" +
                 "        }\n" +
                 "    }\n" +
                 "}");
@@ -3262,7 +3262,7 @@ public class TestGrammar {
                 "                if(d()){\n" +
                 "                    f()\n" +
                 "                }\n" +
-                "            }[l(event=\"start\")],\n" +
+                "            }[l(event=\"before\")],\n" +
                 "            f()\n" +
                 "        },\n" +
                 "        d()\n" +
@@ -3294,7 +3294,7 @@ public class TestGrammar {
                 "            if(c()){\n" +
                 "                d()\n" +
                 "            }\n" +
-                "        }[s(event=\"end\")]\n" +
+                "        }[s(event=\"success\")]\n" +
                 "    }\n" +
                 "}");
 
@@ -3313,10 +3313,10 @@ public class TestGrammar {
                 "            if(f()){\n" +
                 "                g()&\n" +
                 "            }\n" +
-                "        }[ls(event=\"start\")],\n" +
+                "        }[ls(event=\"before\")],\n" +
                 "        a()&,\n" +
                 "        b()\n" +
-                "    }[ls(event=\"start\")],\n" +
+                "    }[ls(event=\"before\")],\n" +
                 "    b()\n" +
                 "}");
 
@@ -3338,7 +3338,7 @@ public class TestGrammar {
                 "        if(f()){\n" +
                 "            g()\n" +
                 "        }\n" +
-                "    }[ls(event=\"start\")],\n" +
+                "    }[ls(event=\"before\")],\n" +
                 "    b()\n" +
                 "}");
 
@@ -3357,10 +3357,10 @@ public class TestGrammar {
                 "            if(f()){\n" +
                 "                g()&\n" +
                 "            }\n" +
-                "        }[ls(event=\"start\")],\n" +
+                "        }[ls(event=\"before\")],\n" +
                 "        a()&,\n" +
                 "        b()\n" +
-                "    }[ls(event=\"start\")] then{\n" +
+                "    }[ls(event=\"before\")] then{\n" +
                 "        c(),\n" +
                 "        select{\n" +
                 "            if(c()){\n" +
@@ -3372,7 +3372,7 @@ public class TestGrammar {
                 "            if(f()){\n" +
                 "                g()\n" +
                 "            }\n" +
-                "        }[ls(event=\"start\")]\n" +
+                "        }[ls(event=\"before\")]\n" +
                 "    },\n" +
                 "    b()\n" +
                 "}");
@@ -3387,7 +3387,7 @@ public class TestGrammar {
                 "                    d()&\n" +
                 "                },\n" +
                 "                c()\n" +
-                "            } [li(event=\"start\")] then{\n" +
+                "            } [li(event=\"before\")] then{\n" +
                 "                a()\n" +
                 "            }\n" +
                 "        },\n" +
@@ -3397,7 +3397,7 @@ public class TestGrammar {
                 "        if(f()){\n" +
                 "            g()\n" +
                 "        }\n" +
-                "    }[ls(event=\"start\")],\n" +
+                "    }[ls(event=\"before\")],\n" +
                 "    b()\n" +
                 "}");
     }
@@ -3405,30 +3405,30 @@ public class TestGrammar {
     @Test
     public void testListener() {
         compile("{\n" +
-                "    nodeA()[listenerA(event=\"start\")]\n" +
+                "    nodeA()[listenerA(event=\"before\")]\n" +
                 "}");
 
         compile("{\n" +
-                "    nodeA()[listenerA(event=\"start\"),listenerB(event=\"start\", id=${id})]\n" +
+                "    nodeA()[listenerA(event=\"before\"),listenerB(event=\"before\", id=${id})]\n" +
                 "}");
 
         compile("{\n" +
-                "    nodeA()[listenerA(event=\"start\"),listenerB(event=\"end\", id=${id})]{\n" +
+                "    nodeA()[listenerA(event=\"before\"),listenerB(event=\"success\", id=${id})]{\n" +
                 "        nodeB()\n" +
                 "    }\n" +
                 "}");
 
         compile("{\n" +
-                "    nodeA()[listenerA(event=\"start\"),listenerB(event=\"start\", id=${id})]{\n" +
-                "        nodeB()[listenerC(event=\"start\")]\n" +
+                "    nodeA()[listenerA(event=\"before\"),listenerB(event=\"before\", id=${id})]{\n" +
+                "        nodeB()[listenerC(event=\"before\")]\n" +
                 "    }\n" +
                 "}");
 
         compile("{\n" +
                 "    join & {\n" +
-                "        nodeA()[listenerA(event=\"start\"),listenerB(event=\"start\", id=${id})]&,\n" +
+                "        nodeA()[listenerA(event=\"before\"),listenerB(event=\"before\", id=${id})]&,\n" +
                 "        nodeB(){\n" +
-                "            nodeC()[listenerA(event=\"start\", id=45)]\n" +
+                "            nodeC()[listenerA(event=\"before\", id=45)]\n" +
                 "        }\n" +
                 "    } then {\n" +
                 "        nodeD()\n" +
@@ -3437,10 +3437,10 @@ public class TestGrammar {
 
         compile("{\n" +
                 "    join & {\n" +
-                "        nodeA()[listenerA(event=\"start\"),listenerB(event=\"start\", id=${id})]&,\n" +
+                "        nodeA()[listenerA(event=\"before\"),listenerB(event=\"before\", id=${id})]&,\n" +
                 "        if(expression(exp=\"a<4\")){\n" +
                 "            nodeB(){\n" +
-                "                nodeC()[listenerA(event=\"start\", id=45)]&\n" +
+                "                nodeC()[listenerA(event=\"before\", id=45)]&\n" +
                 "            }\n" +
                 "        }\n" +
                 "    } then {\n" +
@@ -3450,7 +3450,7 @@ public class TestGrammar {
 
         compile("{\n" +
                 "    testAction()\n" +
-                "}[listenerA(event=\"start\"), listenerB(event=\"end\")]");
+                "}[listenerA(event=\"before\"), listenerB(event=\"success\")]");
     }
 
     @Test
@@ -3515,7 +3515,7 @@ public class TestGrammar {
                 "    nodeA(){\n" +
                 "        sub{\n" +
                 "            nodeB()\n" +
-                "        } [LA(event=\"start\")]\n" +
+                "        } [LA(event=\"before\")]\n" +
                 "    }\n" +
                 "}");
 
@@ -3525,12 +3525,12 @@ public class TestGrammar {
                 "            nodeB(){\n" +
                 "                nodeC()\n" +
                 "            }\n" +
-                "        }[LA(event=\"start\")],\n" +
+                "        }[LA(event=\"before\")],\n" +
                 "        sub{\n" +
                 "            nodeB(){\n" +
                 "                nodeC()\n" +
                 "            }\n" +
-                "        }[LA(event=\"start\")]\n" +
+                "        }[LA(event=\"before\")]\n" +
                 "    }\n" +
                 "}");
 
@@ -3542,12 +3542,12 @@ public class TestGrammar {
                 "            nodeB(){\n" +
                 "                nodeC()\n" +
                 "            }\n" +
-                "        }[LA(event=\"start\")],\n" +
+                "        }[LA(event=\"before\")],\n" +
                 "        sub{\n" +
                 "            nodeB(){\n" +
                 "                nodeC()\n" +
                 "            }\n" +
-                "        }[LA(event=\"start\")]\n" +
+                "        }[LA(event=\"before\")]\n" +
                 "    }\n" +
                 "}");
 
@@ -3559,11 +3559,11 @@ public class TestGrammar {
                 "            nodeA(){\n" +
                 "                nodeB()\n" +
                 "            }\n" +
-                "        }[LA(event=\"start\")],\n" +
+                "        }[LA(event=\"before\")],\n" +
                 "        sub{\n" +
                 "            nodeA(),\n" +
                 "            nodeB()\n" +
-                "        }[LA(event=\"start\")]\n" +
+                "        }[LA(event=\"before\")]\n" +
                 "    }\n" +
                 "}");
     }
@@ -3644,7 +3644,7 @@ public class TestGrammar {
                 "    nodeA(){\n" +
                 "        sub{\n" +
                 "            nodeB()\n" +
-                "        } [LA(event=\"start\")] then {\n" +
+                "        } [LA(event=\"before\")] then {\n" +
                 "            nodeC()\n" +
                 "        }\n" +
                 "    }\n" +
@@ -3656,14 +3656,14 @@ public class TestGrammar {
                 "            nodeB(){\n" +
                 "                nodeC()\n" +
                 "            } \n" +
-                "        } [LA(event=\"start\")] then {\n" +
+                "        } [LA(event=\"before\")] then {\n" +
                 "            nodeD()\n" +
                 "        },\n" +
                 "        sub{\n" +
                 "            nodeB(){\n" +
                 "                nodeC()\n" +
                 "            }\n" +
-                "        } [LA(event=\"start\")] then {\n" +
+                "        } [LA(event=\"before\")] then {\n" +
                 "            nodeD()\n" +
                 "        }\n" +
                 "    }\n" +
@@ -3677,14 +3677,14 @@ public class TestGrammar {
                 "            nodeB(){\n" +
                 "                nodeC()\n" +
                 "            }\n" +
-                "        } [LA(event=\"start\")] then {\n" +
+                "        } [LA(event=\"before\")] then {\n" +
                 "            nodeD()\n" +
                 "        },\n" +
                 "        sub{\n" +
                 "            nodeB(){\n" +
                 "                nodeC()\n" +
                 "            }\n" +
-                "        } [LA(event=\"start\")] then {\n" +
+                "        } [LA(event=\"before\")] then {\n" +
                 "            nodeD()\n" +
                 "        }\n" +
                 "    }\n" +
@@ -3698,13 +3698,13 @@ public class TestGrammar {
                 "            nodeA(){\n" +
                 "                nodeB()\n" +
                 "            }\n" +
-                "        } [LA(event=\"start\")] then {\n" +
+                "        } [LA(event=\"before\")] then {\n" +
                 "            nodeD()\n" +
                 "        },\n" +
                 "        sub{\n" +
                 "            nodeA(),\n" +
                 "            nodeB()\n" +
-                "        } [LA(event=\"start\")] then {\n" +
+                "        } [LA(event=\"before\")] then {\n" +
                 "            nodeD()\n" +
                 "        }\n" +
                 "    }\n" +
@@ -3956,14 +3956,14 @@ public class TestGrammar {
 
         compile("{\n" +
                 "    actionA()\n" +
-                "} [listenerA(event=\"start\")]");
+                "} [listenerA(event=\"before\")]");
 
         compile("{\n" +
-                "    actionA()[listenerA(event=\"start\")]\n" +
+                "    actionA()[listenerA(event=\"before\")]\n" +
                 "}");
 
         compile("{\n" +
-                "    if(conditionA() [listenerA(event=\"start\")]) {\n" +
+                "    if(conditionA() [listenerA(event=\"before\")]) {\n" +
                 "        actionA()\n" +
                 "    }\n" +
                 "}");
@@ -3976,14 +3976,14 @@ public class TestGrammar {
                 "        if(conditionB()){\n" +
                 "            actionB()\n" +
                 "        }\n" +
-                "    } [listenerA(event=\"start\")]\n" +
+                "    } [listenerA(event=\"before\")]\n" +
                 "}");
 
         compile("{\n" +
                 "    join {\n" +
                 "        actionA()&,\n" +
                 "        actionB()&\n" +
-                "    } [listenerA(event=\"start\")] then {\n" +
+                "    } [listenerA(event=\"before\")] then {\n" +
                 "        actionD()\n" +
                 "    }\n" +
                 "}");
@@ -3991,17 +3991,17 @@ public class TestGrammar {
         compile("{\n" +
                 "    sub {\n" +
                 "        actionA()\n" +
-                "    }[listenerA(event=\"start\")],\n" +
+                "    }[listenerA(event=\"before\")],\n" +
                 "\n" +
                 "    sub {\n" +
                 "        actionB()\n" +
-                "    }[listenerB(event=\"end\")] then {\n" +
+                "    }[listenerB(event=\"success\")] then {\n" +
                 "        actionC()\n" +
                 "    },\n" +
                 "\n" +
                 "    sub {\n" +
                 "        actionD()\n" +
-                "    }[listenerC(event=\"start\")] then {\n" +
+                "    }[listenerC(event=\"before\")] then {\n" +
                 "        actionE()\n" +
                 "    } else {\n" +
                 "        actionF()\n" +
@@ -4009,7 +4009,7 @@ public class TestGrammar {
                 "}");
 
         compile("{\n" +
-                "    actionA()[listenerA(event=\"start\"), listenerB(event=\"end\")]\n" +
+                "    actionA()[listenerA(event=\"before\"), listenerB(event=\"success\")]\n" +
                 "}");
     }
 }

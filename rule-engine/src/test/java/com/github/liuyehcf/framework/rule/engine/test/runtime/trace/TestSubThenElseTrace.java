@@ -20,7 +20,7 @@ import java.util.UUID;
  * @date 2019/7/9
  */
 @SuppressWarnings("all")
-public class TestSubThenElse extends TestTraceBase {
+public class TestSubThenElseTrace extends TestTraceBase {
 
     @Test
     public void testSubThenElseTrueSingleAction() {
@@ -60,7 +60,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 1);
+            assertExecutionInstance(executionInstance, 1, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -153,7 +153,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -217,7 +217,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 1);
+            assertExecutionInstance(executionInstance, 1, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -320,7 +320,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 7);
@@ -388,7 +388,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 3, 1);
+            assertExecutionInstance(executionInstance, 3, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -485,7 +485,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 3, 0);
+            assertExecutionInstance(executionInstance, 3, 0, 0);
 
             for (int i = 0; i < executionInstance.getLinks().size(); i++) {
                 executionLink = executionInstance.getLinks().get(i);
@@ -554,7 +554,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 1);
+            assertExecutionInstance(executionInstance, 2, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -659,7 +659,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0);
+            assertExecutionInstance(executionInstance, 2, 0, 0);
 
             for (int i = 0; i < executionInstance.getLinks().size(); i++) {
                 executionLink = executionInstance.getLinks().get(i);
@@ -733,7 +733,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 1);
+            assertExecutionInstance(executionInstance, 2, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -858,7 +858,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0);
+            assertExecutionInstance(executionInstance, 2, 0, 0);
 
             for (int i = 0; i < executionInstance.getLinks().size(); i++) {
                 executionLink = executionInstance.getLinks().get(i);
@@ -948,7 +948,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 2);
+            assertExecutionInstance(executionInstance, 1, 2, 0);
 
             executionLink = findUnreachableLink(executionInstance, 5);
 
@@ -1088,7 +1088,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 1);
+            assertExecutionInstance(executionInstance, 1, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 6);
@@ -1141,28 +1141,28 @@ public class TestSubThenElse extends TestTraceBase {
     public void testSubThenElseTrueWithListeners() {
         Rule rule = compile("{\n" +
                 "    sub{\n" +
-                "        if(printCondition(content=\"conditionA\", output=true)[printListener(event=\"start\", content=\"listenerA\"), printListener(event=\"end\", content=\"listenerB\")] ){\n" +
+                "        if(printCondition(content=\"conditionA\", output=true)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")] ){\n" +
                 "            if(printCondition(content=\"conditionB\", output=false)){\n" +
                 "                throwExceptionAction()\n" +
                 "            }else{\n" +
                 "                join {\n" +
                 "                    select{\n" +
                 "                        if(printCondition(content=\"conditionC\", output=true))&\n" +
-                "                    }[printListener(event=\"start\", content=\"listenerC\"), printListener(event=\"end\", content=\"listenerD\")],\n" +
+                "                    }[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")],\n" +
                 "                    if(printCondition(content=\"conditionD\", output=false)){\n" +
                 "                        throwExceptionAction()&\n" +
                 "                    }\n" +
-                "                }[printListener(event=\"start\", content=\"listenerE\"), printListener(event=\"end\", content=\"listenerF\")] then {\n" +
-                "                    printAction(content=\"actionA\")[printListener(event=\"start\", content=\"listenerG\"), printListener(event=\"end\", content=\"listenerH\")]\n" +
+                "                }[printListener(event=\"before\", content=\"listenerE\"), printListener(event=\"success\", content=\"listenerF\")] then {\n" +
+                "                    printAction(content=\"actionA\")[printListener(event=\"before\", content=\"listenerG\"), printListener(event=\"success\", content=\"listenerH\")]\n" +
                 "                }\n" +
                 "            }\n" +
                 "        }\n" +
-                "    } [printListener(event=\"start\", content=\"listenerI\"), printListener(event=\"end\", content=\"listenerJ\")]then {\n" +
-                "        printAction(content=\"actionB\")[printListener(event=\"start\", content=\"listenerK\"), printListener(event=\"end\", content=\"listenerL\")]\n" +
+                "    } [printListener(event=\"before\", content=\"listenerI\"), printListener(event=\"success\", content=\"listenerJ\")]then {\n" +
+                "        printAction(content=\"actionB\")[printListener(event=\"before\", content=\"listenerK\"), printListener(event=\"success\", content=\"listenerL\")]\n" +
                 "    } else{\n" +
                 "        throwExceptionAction()\n" +
                 "    }\n" +
-                "}[printListener(event=\"start\", content=\"listenerM\"), printListener(event=\"end\", content=\"listenerN\")]");
+                "}[printListener(event=\"before\", content=\"listenerM\"), printListener(event=\"success\", content=\"listenerN\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -1175,112 +1175,112 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 1);
+            assertExecutionInstance(executionInstance, 1, 1, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerM", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerN", ListenerEvent.success);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 9);
 
             trace = executionLink.getTraces().get(0);
-            assertPrintListener(trace, "listenerM", ListenerEvent.start);
+            assertStart(trace);
 
             trace = executionLink.getTraces().get(1);
-            assertStart(trace);
+            assertPrintListener(trace, "listenerI", ListenerEvent.before);
 
             trace = executionLink.getTraces().get(2);
-            assertPrintListener(trace, "listenerI", ListenerEvent.start);
-
-            trace = executionLink.getTraces().get(3);
             assertStart(trace);
 
-            trace = executionLink.getTraces().get(4);
-            assertPrintListener(trace, "listenerA", ListenerEvent.start);
+            trace = executionLink.getTraces().get(3);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
 
-            trace = executionLink.getTraces().get(5);
+            trace = executionLink.getTraces().get(4);
             assertPrintCondition(trace, "conditionA", true);
 
-            trace = executionLink.getTraces().get(6);
-            assertPrintListener(trace, "listenerB", ListenerEvent.end);
+            trace = executionLink.getTraces().get(5);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
 
-            trace = executionLink.getTraces().get(7);
+            trace = executionLink.getTraces().get(6);
             assertPrintCondition(trace, "conditionB", false);
 
-            trace = executionLink.getTraces().get(8);
+            trace = executionLink.getTraces().get(7);
             assertPrintCondition(trace, "conditionD", false);
 
+            trace = executionLink.getTraces().get(8);
+            assertPrintListener(trace, "listenerJ", ListenerEvent.success);
+
             executionLink = executionInstance.getLinks().get(0);
-            assertExecutionLink(executionLink, 24);
+            assertExecutionLink(executionLink, 22);
 
             trace = executionLink.getTraces().get(0);
-            assertPrintListener(trace, "listenerM", ListenerEvent.start);
+            assertStart(trace);
 
             trace = executionLink.getTraces().get(1);
-            assertStart(trace);
+            assertPrintListener(trace, "listenerI", ListenerEvent.before);
 
             trace = executionLink.getTraces().get(2);
-            assertPrintListener(trace, "listenerI", ListenerEvent.start);
-
-            trace = executionLink.getTraces().get(3);
             assertStart(trace);
 
-            trace = executionLink.getTraces().get(4);
-            assertPrintListener(trace, "listenerA", ListenerEvent.start);
+            trace = executionLink.getTraces().get(3);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
 
-            trace = executionLink.getTraces().get(5);
+            trace = executionLink.getTraces().get(4);
             assertPrintCondition(trace, "conditionA", true);
 
-            trace = executionLink.getTraces().get(6);
-            assertPrintListener(trace, "listenerB", ListenerEvent.end);
+            trace = executionLink.getTraces().get(5);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
 
-            trace = executionLink.getTraces().get(7);
+            trace = executionLink.getTraces().get(6);
             assertPrintCondition(trace, "conditionB", false);
 
-            trace = executionLink.getTraces().get(8);
-            assertPrintListener(trace, "listenerC", ListenerEvent.start);
+            trace = executionLink.getTraces().get(7);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
 
-            trace = executionLink.getTraces().get(9);
+            trace = executionLink.getTraces().get(8);
             assertExclusiveGateway(trace);
 
-            trace = executionLink.getTraces().get(10);
-            assertPrintListener(trace, "listenerD", ListenerEvent.end);
+            trace = executionLink.getTraces().get(9);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
 
-            trace = executionLink.getTraces().get(11);
+            trace = executionLink.getTraces().get(10);
             assertPrintCondition(trace, "conditionC", true);
 
-            trace = executionLink.getTraces().get(12);
-            assertPrintListener(trace, "listenerE", ListenerEvent.start);
+            trace = executionLink.getTraces().get(11);
+            assertPrintListener(trace, "listenerE", ListenerEvent.before);
 
-            trace = executionLink.getTraces().get(13);
+            trace = executionLink.getTraces().get(12);
             assertJoinGateway(trace);
 
+            trace = executionLink.getTraces().get(13);
+            assertPrintListener(trace, "listenerF", ListenerEvent.success);
+
             trace = executionLink.getTraces().get(14);
-            assertPrintListener(trace, "listenerF", ListenerEvent.end);
+            assertPrintListener(trace, "listenerG", ListenerEvent.before);
 
             trace = executionLink.getTraces().get(15);
-            assertPrintListener(trace, "listenerG", ListenerEvent.start);
-
-            trace = executionLink.getTraces().get(16);
             assertPrintAction(trace, "actionA");
 
+            trace = executionLink.getTraces().get(16);
+            assertPrintListener(trace, "listenerH", ListenerEvent.success);
+
             trace = executionLink.getTraces().get(17);
-            assertPrintListener(trace, "listenerH", ListenerEvent.end);
+            assertPrintListener(trace, "listenerJ", ListenerEvent.success);
 
             trace = executionLink.getTraces().get(18);
-            assertPrintListener(trace, "listenerJ", ListenerEvent.end);
-
-            trace = executionLink.getTraces().get(19);
             assertRule(trace);
 
-            trace = executionLink.getTraces().get(20);
-            assertPrintListener(trace, "listenerK", ListenerEvent.start);
+            trace = executionLink.getTraces().get(19);
+            assertPrintListener(trace, "listenerK", ListenerEvent.before);
 
-            trace = executionLink.getTraces().get(21);
+            trace = executionLink.getTraces().get(20);
             assertPrintAction(trace, "actionB");
 
-            trace = executionLink.getTraces().get(22);
-            assertPrintListener(trace, "listenerL", ListenerEvent.end);
-
-            trace = executionLink.getTraces().get(23);
-            assertPrintListener(trace, "listenerN", ListenerEvent.end);
+            trace = executionLink.getTraces().get(21);
+            assertPrintListener(trace, "listenerL", ListenerEvent.success);
         });
     }
 
@@ -1288,28 +1288,28 @@ public class TestSubThenElse extends TestTraceBase {
     public void testSubThenElseFalseWithListeners() {
         Rule rule = compile("{\n" +
                 "    sub{\n" +
-                "        if(printCondition(content=\"conditionA\", output=false)[printListener(event=\"start\", content=\"listenerA\"), printListener(event=\"end\", content=\"listenerB\")] ){\n" +
+                "        if(printCondition(content=\"conditionA\", output=false)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")] ){\n" +
                 "            if(printCondition(content=\"conditionB\", output=false)){\n" +
                 "                throwExceptionAction()\n" +
                 "            }else{\n" +
                 "                join {\n" +
                 "                    select{\n" +
                 "                        if(printCondition(content=\"conditionC\", output=true))&\n" +
-                "                    }[printListener(event=\"start\", content=\"listenerC\"), printListener(event=\"end\", content=\"listenerD\")],\n" +
+                "                    }[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")],\n" +
                 "                    if(printCondition(content=\"conditionD\", output=false)){\n" +
                 "                        throwExceptionAction()&\n" +
                 "                    }\n" +
-                "                }[printListener(event=\"start\", content=\"listenerE\"), printListener(event=\"end\", content=\"listenerF\")] then {\n" +
-                "                    printAction(content=\"actionA\")[printListener(event=\"start\", content=\"listenerG\"), printListener(event=\"end\", content=\"listenerH\")]\n" +
+                "                }[printListener(event=\"before\", content=\"listenerE\"), printListener(event=\"success\", content=\"listenerF\")] then {\n" +
+                "                    printAction(content=\"actionA\")[printListener(event=\"before\", content=\"listenerG\"), printListener(event=\"success\", content=\"listenerH\")]\n" +
                 "                }\n" +
                 "            }\n" +
                 "        }\n" +
-                "    } [printListener(event=\"start\", content=\"listenerI\"), printListener(event=\"end\", content=\"listenerJ\")]then {\n" +
+                "    } [printListener(event=\"before\", content=\"listenerI\"), printListener(event=\"success\", content=\"listenerJ\")]then {\n" +
                 "        throwExceptionAction()\n" +
                 "    } else{\n" +
-                "        printAction(content=\"actionB\")[printListener(event=\"start\", content=\"listenerK\"), printListener(event=\"end\", content=\"listenerL\")]\n" +
+                "        printAction(content=\"actionB\")[printListener(event=\"before\", content=\"listenerK\"), printListener(event=\"success\", content=\"listenerL\")]\n" +
                 "    }\n" +
-                "}[printListener(event=\"start\", content=\"listenerM\"), printListener(event=\"end\", content=\"listenerN\")]");
+                "}[printListener(event=\"before\", content=\"listenerM\"), printListener(event=\"success\", content=\"listenerN\")]");
 
         executeTimes(() -> {
             Promise<ExecutionInstance> promise = startRule(rule, null);
@@ -1322,46 +1322,49 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerM", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerN", ListenerEvent.success);
 
             executionLink = executionInstance.getLinks().get(0);
-            assertExecutionLink(executionLink, 12);
+            assertExecutionLink(executionLink, 11);
 
             trace = executionLink.getTraces().get(0);
-            assertPrintListener(trace, "listenerM", ListenerEvent.start);
+            assertStart(trace);
 
             trace = executionLink.getTraces().get(1);
-            assertStart(trace);
+            assertPrintListener(trace, "listenerI", ListenerEvent.before);
 
             trace = executionLink.getTraces().get(2);
-            assertPrintListener(trace, "listenerI", ListenerEvent.start);
-
-            trace = executionLink.getTraces().get(3);
             assertStart(trace);
 
-            trace = executionLink.getTraces().get(4);
-            assertPrintListener(trace, "listenerA", ListenerEvent.start);
+            trace = executionLink.getTraces().get(3);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
 
-            trace = executionLink.getTraces().get(5);
+            trace = executionLink.getTraces().get(4);
             assertPrintCondition(trace, "conditionA", false);
 
+            trace = executionLink.getTraces().get(5);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+
             trace = executionLink.getTraces().get(6);
-            assertPrintListener(trace, "listenerB", ListenerEvent.end);
+            assertPrintListener(trace, "listenerJ", ListenerEvent.success);
 
             trace = executionLink.getTraces().get(7);
             assertRule(trace);
 
             trace = executionLink.getTraces().get(8);
-            assertPrintListener(trace, "listenerK", ListenerEvent.start);
+            assertPrintListener(trace, "listenerK", ListenerEvent.before);
 
             trace = executionLink.getTraces().get(9);
             assertPrintAction(trace, "actionB");
 
             trace = executionLink.getTraces().get(10);
-            assertPrintListener(trace, "listenerL", ListenerEvent.end);
-
-            trace = executionLink.getTraces().get(11);
-            assertPrintListener(trace, "listenerN", ListenerEvent.end);
+            assertPrintListener(trace, "listenerL", ListenerEvent.success);
         });
     }
 
@@ -1405,7 +1408,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 1);
+            assertExecutionInstance(executionInstance, 1, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -1506,7 +1509,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 7);
@@ -1557,7 +1560,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -1602,7 +1605,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -1654,7 +1657,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 0);
+            assertExecutionInstance(executionInstance, 2, 0, 0);
 
             for (int i = 0; i < executionInstance.getLinks().size(); i++) {
                 executionLink = executionInstance.getLinks().get(i);
@@ -1685,7 +1688,7 @@ public class TestSubThenElse extends TestTraceBase {
                 "        if(printCondition(content=\"conditionA\", output=true)){\n" +
                 "            printAction(content=\"actionA\")\n" +
                 "        }\n" +
-                "    } [printListener(event=\"start\", content=\"listenerA\"), printListener(event=\"end\", content=\"listenerB\")]then {\n" +
+                "    } [printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]then {\n" +
                 "        printAction(content=\"actionB\")\n" +
                 "    } else {\n" +
                 "        throwExceptionAction()\n" +
@@ -1697,17 +1700,17 @@ public class TestSubThenElse extends TestTraceBase {
                 subRule.getId(),
                 "printListener",
                 ListenerScope.NODE,
-                ListenerEvent.start,
+                ListenerEvent.before,
                 new String[]{"event", "content"},
-                new Object[]{"start", "listenerC"}
+                new Object[]{"before", "listenerC"}
         ));
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
                 ListenerScope.NODE,
-                ListenerEvent.end,
+                ListenerEvent.success,
                 new String[]{"event", "content"},
-                new Object[]{"end", "listenerD"}
+                new Object[]{"success", "listenerD"}
         ));
 
         executeTimes(() -> {
@@ -1721,7 +1724,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 10);
@@ -1730,10 +1733,10 @@ public class TestSubThenElse extends TestTraceBase {
             assertStart(trace);
 
             trace = executionLink.getTraces().get(1);
-            assertPrintListener(trace, "listenerC", ListenerEvent.start);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
 
             trace = executionLink.getTraces().get(2);
-            assertPrintListener(trace, "listenerA", ListenerEvent.start);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
 
             trace = executionLink.getTraces().get(3);
             assertStart(trace);
@@ -1745,13 +1748,13 @@ public class TestSubThenElse extends TestTraceBase {
             assertPrintAction(trace, "actionA");
 
             trace = executionLink.getTraces().get(6);
-            assertPrintListener(trace, "listenerB", ListenerEvent.end);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
 
             trace = executionLink.getTraces().get(7);
             assertRule(trace);
 
             trace = executionLink.getTraces().get(8);
-            assertPrintListener(trace, "listenerD", ListenerEvent.end);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
 
             trace = executionLink.getTraces().get(9);
             assertPrintAction(trace, "actionB");
@@ -1765,7 +1768,7 @@ public class TestSubThenElse extends TestTraceBase {
                 "        if(printCondition(content=\"conditionA\", output=false)){\n" +
                 "            printAction(content=\"actionA\")\n" +
                 "        }\n" +
-                "    } [printListener(event=\"start\", content=\"listenerA\"), printListener(event=\"end\", content=\"listenerB\")]then {\n" +
+                "    } [printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]then {\n" +
                 "        throwExceptionAction()\n" +
                 "    } else{\n" +
                 "        printAction(content=\"actionB\")\n" +
@@ -1777,17 +1780,17 @@ public class TestSubThenElse extends TestTraceBase {
                 subRule.getId(),
                 "printListener",
                 ListenerScope.NODE,
-                ListenerEvent.start,
+                ListenerEvent.before,
                 new String[]{"event", "content"},
-                new Object[]{"start", "listenerC"}
+                new Object[]{"before", "listenerC"}
         ));
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
                 ListenerScope.NODE,
-                ListenerEvent.end,
+                ListenerEvent.success,
                 new String[]{"event", "content"},
-                new Object[]{"end", "listenerD"}
+                new Object[]{"success", "listenerD"}
         ));
 
         executeTimes(() -> {
@@ -1801,19 +1804,19 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
-            assertExecutionLink(executionLink, 8);
+            assertExecutionLink(executionLink, 9);
 
             trace = executionLink.getTraces().get(0);
             assertStart(trace);
 
             trace = executionLink.getTraces().get(1);
-            assertPrintListener(trace, "listenerC", ListenerEvent.start);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
 
             trace = executionLink.getTraces().get(2);
-            assertPrintListener(trace, "listenerA", ListenerEvent.start);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
 
             trace = executionLink.getTraces().get(3);
             assertStart(trace);
@@ -1822,12 +1825,15 @@ public class TestSubThenElse extends TestTraceBase {
             assertPrintCondition(trace, "conditionA", false);
 
             trace = executionLink.getTraces().get(5);
-            assertRule(trace);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
 
             trace = executionLink.getTraces().get(6);
-            assertPrintListener(trace, "listenerD", ListenerEvent.end);
+            assertRule(trace);
 
             trace = executionLink.getTraces().get(7);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            trace = executionLink.getTraces().get(8);
             assertPrintAction(trace, "actionB");
         });
     }
@@ -1857,7 +1863,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -1922,7 +1928,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -1973,7 +1979,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 1);
+            assertExecutionInstance(executionInstance, 1, 1, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -2054,7 +2060,7 @@ public class TestSubThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 9);

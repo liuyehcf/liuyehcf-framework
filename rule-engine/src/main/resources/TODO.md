@@ -1,2 +1,0 @@
-SoftAndJoinGateway 的 unreachable 分支添加的trace可能在global end之后，造成executionId不按顺序
-testOrJoinAndIfThenAndIfThenElse会出现2个unreachable的情况，但是debug的时候看到的是三个，传的值是两个，说明出现并发问题了

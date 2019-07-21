@@ -20,7 +20,7 @@ import java.util.Map;
  * @date 2019/5/18
  */
 @SuppressWarnings("all")
-public class TestJoin extends TestTraceBase {
+public class TestJoinTrace extends TestTraceBase {
 
     @Test
     public void testHardAndJoinSingle() {
@@ -41,7 +41,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -78,7 +78,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -121,7 +121,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 7);
@@ -167,7 +167,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 8);
@@ -200,7 +200,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 0, 2);
+            assertExecutionInstance(executionInstance, 0, 2, 0);
 
             for (int i = 0; i < executionInstance.getUnreachableLinks().size(); i++) {
                 executionLink = executionInstance.getUnreachableLinks().get(i);
@@ -241,7 +241,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 0, 2);
+            assertExecutionInstance(executionInstance, 0, 2, 0);
 
             for (int i = 0; i < executionInstance.getUnreachableLinks().size(); i++) {
                 executionLink = executionInstance.getUnreachableLinks().get(i);
@@ -290,7 +290,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 2);
+            assertExecutionInstance(executionInstance, 1, 2, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -339,7 +339,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -382,7 +382,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 0, 1);
+            assertExecutionInstance(executionInstance, 0, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 2);
@@ -419,7 +419,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -459,7 +459,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -497,7 +497,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 0, 1);
+            assertExecutionInstance(executionInstance, 0, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -542,7 +542,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 4, 0);
+            assertExecutionInstance(executionInstance, 4, 0, 0);
 
             executionLink = findLink(executionInstance, 2);
 
@@ -607,10 +607,10 @@ public class TestJoin extends TestTraceBase {
                 "            setPropertyAction(name=\"d.e\",value=5)&\n" +
                 "        }\n" +
                 "    } [\n" +
-                "        getPropertyListener(event=\"start\", name=\"a\", expectedValue=1),\n" +
-                "        getPropertyListener(event=\"end\", name=\"b.c\", expectedValue=2),\n" +
-                "        getPropertyListener(event=\"start\", name=\"c\", expectedValue=3),\n" +
-                "        getPropertyListener(event=\"end\", name=\"d.e\", expectedValue=5)\n" +
+                "        getPropertyListener(event=\"before\", name=\"a\", expectedValue=1),\n" +
+                "        getPropertyListener(event=\"success\", name=\"b.c\", expectedValue=2),\n" +
+                "        getPropertyListener(event=\"before\", name=\"c\", expectedValue=3),\n" +
+                "        getPropertyListener(event=\"success\", name=\"d.e\", expectedValue=5)\n" +
                 "      ]\n" +
                 "}");
 
@@ -630,7 +630,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 10);
@@ -662,7 +662,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -699,7 +699,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -742,7 +742,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 7);
@@ -788,7 +788,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 8);
@@ -821,7 +821,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 1);
+            assertExecutionInstance(executionInstance, 1, 1, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -866,7 +866,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 1);
+            assertExecutionInstance(executionInstance, 1, 1, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -919,7 +919,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 2);
+            assertExecutionInstance(executionInstance, 1, 2, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -968,7 +968,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -1011,7 +1011,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 0, 1);
+            assertExecutionInstance(executionInstance, 0, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 2);
@@ -1048,7 +1048,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -1088,7 +1088,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -1147,7 +1147,7 @@ public class TestJoin extends TestTraceBase {
 
             executionInstance = promise.get();
 
-            assertExecutionInstance(executionInstance, 4, 0);
+            assertExecutionInstance(executionInstance, 4, 0, 0);
 
             executionLink = findLink(executionInstance, 2);
 
@@ -1229,7 +1229,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 4);
@@ -1277,7 +1277,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 4, 0);
+            assertExecutionInstance(executionInstance, 4, 0, 0);
 
             executionLink = findLink(executionInstance, 2);
 
@@ -1372,7 +1372,7 @@ public class TestJoin extends TestTraceBase {
             executionInstance = promise.get();
 
             if (trueNum == 0) {
-                assertExecutionInstance(executionInstance, 0, 7);
+                assertExecutionInstance(executionInstance, 0, 7, 0);
 
                 for (int i = 0; i < executionInstance.getUnreachableLinks().size(); i++) {
                     executionLink = executionInstance.getUnreachableLinks().get(i);
@@ -1385,7 +1385,7 @@ public class TestJoin extends TestTraceBase {
                     assertPrintCondition(trace, "condition[A-G]", false);
                 }
             } else {
-                assertExecutionInstance(executionInstance, 1, falseNum);
+                assertExecutionInstance(executionInstance, 1, falseNum, 0);
 
                 executionLink = executionInstance.getLinks().get(0);
                 assertExecutionLink(executionLink, 2 + trueNum);
@@ -1415,10 +1415,10 @@ public class TestJoin extends TestTraceBase {
                 "            setPropertyAction(name=\"d.e\",value=5)&\n" +
                 "        }\n" +
                 "    } [\n" +
-                "        getPropertyListener(event=\"start\", name=\"a\", expectedValue=1),\n" +
-                "        getPropertyListener(event=\"end\", name=\"b.c\", expectedValue=2),\n" +
-                "        getPropertyListener(event=\"start\", name=\"c\", expectedValue=3),\n" +
-                "        getPropertyListener(event=\"end\", name=\"d.e\", expectedValue=5)\n" +
+                "        getPropertyListener(event=\"before\", name=\"a\", expectedValue=1),\n" +
+                "        getPropertyListener(event=\"success\", name=\"b.c\", expectedValue=2),\n" +
+                "        getPropertyListener(event=\"before\", name=\"c\", expectedValue=3),\n" +
+                "        getPropertyListener(event=\"success\", name=\"d.e\", expectedValue=5)\n" +
                 "      ]\n" +
                 "}");
 
@@ -1438,7 +1438,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 10);
@@ -1460,9 +1460,9 @@ public class TestJoin extends TestTraceBase {
                 "            setPropertyAction(name=\"d.e\",value=5)&\n" +
                 "        }\n" +
                 "    } [\n" +
-                "        getPropertyListener(event=\"start\", name=\"a\"),\n" +
-                "        getPropertyListener(event=\"start\", name=\"c\", expectedValue=3),\n" +
-                "        getPropertyListener(event=\"end\", name=\"d.e\", expectedValue=5)\n" +
+                "        getPropertyListener(event=\"before\", name=\"a\"),\n" +
+                "        getPropertyListener(event=\"before\", name=\"c\", expectedValue=3),\n" +
+                "        getPropertyListener(event=\"success\", name=\"d.e\", expectedValue=5)\n" +
                 "      ]\n" +
                 "}");
 
@@ -1482,7 +1482,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 1);
+            assertExecutionInstance(executionInstance, 1, 1, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 7);
@@ -1506,9 +1506,9 @@ public class TestJoin extends TestTraceBase {
                 "            setPropertyAction(name=\"d.e\",value=5)&\n" +
                 "        }\n" +
                 "    } [\n" +
-                "        getPropertyListener(event=\"start\", name=\"a\"),\n" +
-                "        getPropertyListener(event=\"start\", name=\"c\", expectedValue=3),\n" +
-                "        getPropertyListener(event=\"end\", name=\"d.e\", expectedValue=5)\n" +
+                "        getPropertyListener(event=\"before\", name=\"a\"),\n" +
+                "        getPropertyListener(event=\"before\", name=\"c\", expectedValue=3),\n" +
+                "        getPropertyListener(event=\"success\", name=\"d.e\", expectedValue=5)\n" +
                 "      ]\n" +
                 "}");
 
@@ -1528,7 +1528,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 1);
+            assertExecutionInstance(executionInstance, 1, 1, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 7);
@@ -1555,9 +1555,9 @@ public class TestJoin extends TestTraceBase {
                 "            getPropertyAction(name=\"c\", expectedValue=\"789\")&\n" +
                 "        }\n" +
                 "    } [\n" +
-                "        getPropertyListener(event=\"end\", name=\"a\"), \n" +
-                "        getPropertyListener(event=\"end\", name=\"b\"),\n" +
-                "        getPropertyListener(event=\"end\", name=\"c\", expectedValue=\"789\")\n" +
+                "        getPropertyListener(event=\"success\", name=\"a\"), \n" +
+                "        getPropertyListener(event=\"success\", name=\"b\"),\n" +
+                "        getPropertyListener(event=\"success\", name=\"c\", expectedValue=\"789\")\n" +
                 "    ]\n" +
                 "}");
 
@@ -1576,7 +1576,7 @@ public class TestJoin extends TestTraceBase {
 
             executionInstance = promise.get();
 
-            assertExecutionInstance(executionInstance, 1, 2);
+            assertExecutionInstance(executionInstance, 1, 2, 0);
 
             executionLink = findUnreachableLink(executionInstance, 2);
 
@@ -1613,13 +1613,13 @@ public class TestJoin extends TestTraceBase {
             assertJoinGateway(trace);
 
             trace = executionLink.getTraces().get(4);
-            assertGetPropertyListener(trace, "a", null, ListenerEvent.end);
+            assertGetPropertyListener(trace, "a", null, ListenerEvent.success);
 
             trace = executionLink.getTraces().get(5);
-            assertGetPropertyListener(trace, "b", null, ListenerEvent.end);
+            assertGetPropertyListener(trace, "b", null, ListenerEvent.success);
 
             trace = executionLink.getTraces().get(6);
-            assertGetPropertyListener(trace, "c", "789", ListenerEvent.end);
+            assertGetPropertyListener(trace, "c", "789", ListenerEvent.success);
         });
     }
 
@@ -1642,7 +1642,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -1679,7 +1679,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0, 2);
+            assertExecutionInstance(executionInstance, 1, 0, 2, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -1733,7 +1733,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0, 2);
+            assertExecutionInstance(executionInstance, 1, 0, 2, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             if (executionLink.getTraces().size() == 3) {
@@ -1809,7 +1809,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0, 3);
+            assertExecutionInstance(executionInstance, 1, 0, 3, 0);
 
             executionLink = executionInstance.getLinks().get(0);
 
@@ -1886,7 +1886,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0, 1);
+            assertExecutionInstance(executionInstance, 1, 0, 1, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -1933,7 +1933,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0, 1);
+            assertExecutionInstance(executionInstance, 1, 0, 1, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -1988,7 +1988,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 2, 3);
+            assertExecutionInstance(executionInstance, 1, 2, 3, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             if (executionLink.getTraces().size() == 3) {
@@ -2066,7 +2066,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0, 1);
+            assertExecutionInstance(executionInstance, 1, 0, 1, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 4);
@@ -2121,7 +2121,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 0, 1);
+            assertExecutionInstance(executionInstance, 0, 1, 0);
 
             executionLink = executionInstance.getUnreachableLinks().get(0);
             assertExecutionLink(executionLink, 2);
@@ -2140,7 +2140,7 @@ public class TestJoin extends TestTraceBase {
                 "    if(printCondition(content=\"conditionA\", output=true)){\n" +
                 "        join | {\n" +
                 "            printAction(content=\"actionA\")&,\n" +
-                "            printAction(content=\"actionA\")&\n" +
+                "            printAction(content=\"actionB\")&\n" +
                 "        }\n" +
                 "    }else{\n" +
                 "        throwExceptionAction()\n" +
@@ -2158,7 +2158,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0, 1);
+            assertExecutionInstance(executionInstance, 1, 0, 1, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 4);
@@ -2217,7 +2217,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -2255,7 +2255,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 4);
@@ -2307,7 +2307,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 3, 0, 2);
+            assertExecutionInstance(executionInstance, 3, 0, 2, 0);
 
             executionLink = findLink(executionInstance, 3);
 
@@ -2378,8 +2378,8 @@ public class TestJoin extends TestTraceBase {
                 "            throwExceptionAction()\n" +
                 "        }\n" +
                 "    } [\n" +
-                "        printListener(event=\"start\", content=\"listenerA\"),\n" +
-                "        printListener(event=\"end\", content=\"listenerB\")\n" +
+                "        printListener(event=\"before\", content=\"listenerA\"),\n" +
+                "        printListener(event=\"success\", content=\"listenerB\")\n" +
                 "    ]\n" +
                 "}");
 
@@ -2398,7 +2398,7 @@ public class TestJoin extends TestTraceBase {
 
             executionInstance = promise.get();
 
-            assertExecutionInstance(executionInstance, 1, 4);
+            assertExecutionInstance(executionInstance, 1, 4, 0);
 
             executionLink = findLink(executionInstance, 5);
 
@@ -2409,13 +2409,13 @@ public class TestJoin extends TestTraceBase {
             assertSleepCondition(trace, 1234567L, true);
 
             trace = executionLink.getTraces().get(2);
-            assertPrintListener(trace, "listenerA", ListenerEvent.start);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
 
             trace = executionLink.getTraces().get(3);
             assertJoinGateway(trace);
 
             trace = executionLink.getTraces().get(4);
-            assertPrintListener(trace, "listenerB", ListenerEvent.end);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
         }, 10);
     }
 
@@ -2444,7 +2444,7 @@ public class TestJoin extends TestTraceBase {
 
             executionInstance = promise.get();
 
-            assertExecutionInstance(executionInstance, 1, 0, 5);
+            assertExecutionInstance(executionInstance, 1, 0, 5, 0);
 
             executionLink = findLink(executionInstance, 3);
             Assert.assertEquals(1, executionLink.getEnv().size());
@@ -2477,7 +2477,7 @@ public class TestJoin extends TestTraceBase {
 
             executionInstance = promise.get();
 
-            assertExecutionInstance(executionInstance, 1, 0, 1);
+            assertExecutionInstance(executionInstance, 1, 0, 1, 0);
 
             executionLink = findLink(executionInstance, 4);
 
@@ -2515,7 +2515,7 @@ public class TestJoin extends TestTraceBase {
 
             executionInstance = promise.get();
 
-            assertExecutionInstance(executionInstance, 1, 0, 6);
+            assertExecutionInstance(executionInstance, 1, 0, 6, 0);
 
             executionLink = findLink(executionInstance, 3);
 
@@ -2559,7 +2559,7 @@ public class TestJoin extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 3, 0);
+            assertExecutionInstance(executionInstance, 3, 0, 0);
 
             executionLink = findLink(executionInstance, 4);
 

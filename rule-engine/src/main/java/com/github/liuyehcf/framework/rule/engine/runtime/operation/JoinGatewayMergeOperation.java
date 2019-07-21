@@ -63,7 +63,7 @@ public class JoinGatewayMergeOperation extends AbstractOperation<Void> {
             try {
                 if (!ElementUtils.isOrJoinMode(joinGateway)) {
                     List<ExecutionLink> reachedExecutionLinks = getReachedExecutionLinks();
-                    mergedExecutionLink = mergeLink(reachedExecutionLinks);
+                    mergedExecutionLink = mergeLinks(reachedExecutionLinks);
                     reachedExecutionLinks.forEach(context.getExecutionInstance()::removeLink);
                 } else {
                     // JoinGatewayMergeOperation may trigger by MarkSuccessorUnreachableOperation

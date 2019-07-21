@@ -9,6 +9,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.Delegate
  * @author hechenfeng
  * @date 2019/4/30
  */
+@SuppressWarnings("all")
 public class MissingArgumentListener implements ListenerDelegate {
 
     private DelegateField notMissing1;
@@ -26,7 +27,33 @@ public class MissingArgumentListener implements ListenerDelegate {
 
     @Override
     @SuppressWarnings("Duplicates")
-    public void onListener(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
+        Assert.assertNotNull(notMissing1);
+        Assert.assertNotNull(notMissing2);
+        Assert.assertNotNull(missing1);
+        Assert.assertNotNull(missing2);
+
+        Assert.assertNotNull(notMissing1.getValue());
+        Assert.assertNotNull(notMissing2.getValue());
+        Assert.assertNull(missing1.getValue());
+        Assert.assertNull(missing2.getValue());
+    }
+
+    @Override
+    public void onSuccess(ListenerContext context, Object result) {
+        Assert.assertNotNull(notMissing1);
+        Assert.assertNotNull(notMissing2);
+        Assert.assertNotNull(missing1);
+        Assert.assertNotNull(missing2);
+
+        Assert.assertNotNull(notMissing1.getValue());
+        Assert.assertNotNull(notMissing2.getValue());
+        Assert.assertNull(missing1.getValue());
+        Assert.assertNull(missing2.getValue());
+    }
+
+    @Override
+    public void onFailure(ListenerContext context, Throwable cause) {
         Assert.assertNotNull(notMissing1);
         Assert.assertNotNull(notMissing2);
         Assert.assertNotNull(missing1);

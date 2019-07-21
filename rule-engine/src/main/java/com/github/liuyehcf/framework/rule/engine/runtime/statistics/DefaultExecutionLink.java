@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.rule.engine.runtime.statistics;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.IDGenerator;
+import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,10 @@ public class DefaultExecutionLink implements ExecutionLink {
         this.traces = traces;
     }
 
+    public DefaultExecutionLink(Map<String, Object> env) {
+        this(env, Lists.newCopyOnWriteArrayList());
+    }
+
     @Override
     public final String getId() {
         return id;
@@ -41,8 +46,8 @@ public class DefaultExecutionLink implements ExecutionLink {
     }
 
     @Override
-    public final void addTraces(List<Trace> traces) {
-        this.traces.addAll(traces);
+    public final void removeTrace(Trace trace) {
+        this.traces.remove(trace);
     }
 
     @Override

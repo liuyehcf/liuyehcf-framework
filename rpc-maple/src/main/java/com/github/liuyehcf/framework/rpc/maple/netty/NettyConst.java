@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.rpc.maple.netty;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/21
  */
 public interface NettyConst {

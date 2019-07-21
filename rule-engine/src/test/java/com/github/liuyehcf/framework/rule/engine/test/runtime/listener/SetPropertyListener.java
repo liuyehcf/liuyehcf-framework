@@ -14,7 +14,23 @@ public class SetPropertyListener implements ListenerDelegate {
     private DelegateField value;
 
     @Override
-    public void onListener(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
+        String propertyName = name.getValue();
+        Object propertyValue = value.getValue();
+
+        context.setProperty(propertyName, propertyValue);
+    }
+
+    @Override
+    public void onSuccess(ListenerContext context, Object result) {
+        String propertyName = name.getValue();
+        Object propertyValue = value.getValue();
+
+        context.setProperty(propertyName, propertyValue);
+    }
+
+    @Override
+    public void onFailure(ListenerContext context, Throwable cause) {
         String propertyName = name.getValue();
         Object propertyValue = value.getValue();
 

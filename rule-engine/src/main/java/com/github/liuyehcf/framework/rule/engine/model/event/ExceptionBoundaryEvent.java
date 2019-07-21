@@ -16,7 +16,7 @@ public class ExceptionBoundaryEvent extends AbstractAttachable implements Event 
     }
 
     @Override
-    public ElementType getType() {
+    public final ElementType getType() {
         return ElementType.EVENT;
     }
 }

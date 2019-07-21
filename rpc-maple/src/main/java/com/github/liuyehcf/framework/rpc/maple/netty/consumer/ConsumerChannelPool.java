@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/27
  */
 public abstract class ConsumerChannelPool {

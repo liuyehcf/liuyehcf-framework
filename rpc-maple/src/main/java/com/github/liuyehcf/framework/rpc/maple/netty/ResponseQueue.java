@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.SynchronousQueue;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/25
  */
 public class ResponseQueue {

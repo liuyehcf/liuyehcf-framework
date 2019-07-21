@@ -3,7 +3,7 @@ package com.github.liuyehcf.framework.rpc.maple.register;
 import java.io.Serializable;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/15
  */
 public interface ServiceMeta extends Serializable {

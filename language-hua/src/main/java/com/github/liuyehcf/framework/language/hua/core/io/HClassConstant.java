@@ -9,5 +9,5 @@ package com.github.liuyehcf.framework.language.hua.core.io;
 public abstract class HClassConstant {
     public static final String HCLASS_SUFFIX = ".hclass";
 
-    static final String MAGIC = "CHENLU_NIUBI";
+    static final String MAGIC = "LIUYE_NIUBI";
 }

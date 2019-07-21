@@ -29,7 +29,7 @@ public interface ExecutionLink {
     /**
      * add traces to this execution link
      */
-    void addTraces(List<Trace> traces);
+    void removeTrace(Trace trace);
 
     /**
      * get traces of this execution link

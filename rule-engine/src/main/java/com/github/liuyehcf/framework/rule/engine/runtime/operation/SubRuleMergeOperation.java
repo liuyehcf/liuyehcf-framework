@@ -12,6 +12,9 @@ import com.github.liuyehcf.framework.rule.engine.runtime.statistics.*;
 import com.github.liuyehcf.framework.rule.engine.util.CloneUtils;
 import com.google.common.collect.Lists;
 
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * @author hechenfeng
  * @date 2019/7/3
@@ -56,20 +59,18 @@ public class SubRuleMergeOperation extends AbstractOperation<Void> implements Pr
 
             // merge unreachable links if not empty
             if (!subExecutionInstance.getUnreachableLinks().isEmpty()) {
-                ExecutionLink mergedUnreachableLink = mergeLink(subExecutionInstance.getUnreachableLinks());
-                context.getExecutionInstance().addUnreachableLink(mergeSubLinkAndCurLink(mergedUnreachableLink));
+                ExecutionLink mergedSubUnreachableLink = mergeLinks(subExecutionInstance.getUnreachableLinks());
+                context.getExecutionInstance().addUnreachableLink(appendSubRuleTracesToCurrentLink(subExecutionInstance, mergedSubUnreachableLink));
             }
 
-            ExecutionLink mergedReachableLink = mergeLink(subExecutionInstance.getLinks());
+            ExecutionLink mergedSubReachableLink = mergeLinks(subExecutionInstance.getLinks());
             context.getExecutionInstance().removeLink(context.getExecutionLink());
 
-            context.executeAsync(new SubRuleOperation(context.cloneLinkedContext(mergeSubLinkAndCurLink(mergedReachableLink)), subRule, startNanos, LinkType.TRUE));
+            context.executeAsync(new SubRuleOperation(context.cloneLinkedContext(appendSubRuleTracesToCurrentLink(subExecutionInstance, mergedSubReachableLink)), subRule, startNanos, LinkType.TRUE));
         } else {
-            ExecutionLink mergedUnreachableLink = mergeLink(subExecutionInstance.getUnreachableLinks());
-            context.getExecutionLink().addTraces(mergedUnreachableLink.getTraces());
-            redoOnCurEnvFromSplitPoint(context.getExecutionLink(), mergedUnreachableLink);
-
-            context.executeAsync(new SubRuleOperation(context, subRule, startNanos, LinkType.FALSE));
+            ExecutionLink mergedSubUnreachableLink = mergeLinks(subExecutionInstance.getUnreachableLinks());
+            context.getExecutionInstance().removeLink(context.getExecutionLink());
+            context.executeAsync(new SubRuleOperation(context.cloneLinkedContext(appendSubRuleTracesToCurrentLink(subExecutionInstance, mergedSubUnreachableLink)), subRule, startNanos, LinkType.FALSE));
         }
     }
 
@@ -99,14 +100,20 @@ public class SubRuleMergeOperation extends AbstractOperation<Void> implements Pr
         return appendedExecutionLink;
     }
 
-    private ExecutionLink mergeSubLinkAndCurLink(ExecutionLink mergedLink) {
-        ExecutionLink executionLink = context.getExecutionLink();
+    private ExecutionLink appendSubRuleTracesToCurrentLink(ExecutionInstance subExecutionInstance, ExecutionLink mergedSubRuleLink) {
 
-        DefaultExecutionLink appendedExecutionLink = new DefaultExecutionLink(
-                CloneUtils.hessianClone(mergedLink.getEnv()),
-                Lists.newCopyOnWriteArrayList(executionLink.getTraces()));
-        appendedExecutionLink.addTraces(mergedLink.getTraces());
+        // env is subject to subRule
+        DefaultExecutionLink clonedAppendedLink = new DefaultExecutionLink(
+                CloneUtils.hessianClone(mergedSubRuleLink.getEnv()),
+                Lists.newCopyOnWriteArrayList(context.getExecutionLink().getTraces()));
 
-        return appendedExecutionLink;
+        List<Trace> traces = Lists.newCopyOnWriteArrayList();
+        traces.addAll(subExecutionInstance.getTraces());
+        traces.addAll(mergedSubRuleLink.getTraces());
+        traces.sort(Comparator.comparingLong(Trace::getExecutionId));
+
+        traces.forEach(clonedAppendedLink::addTrace);
+
+        return clonedAppendedLink;
     }
 }

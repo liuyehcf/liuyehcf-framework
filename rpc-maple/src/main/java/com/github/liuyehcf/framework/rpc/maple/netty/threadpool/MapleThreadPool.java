@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/26
  */
 public abstract class MapleThreadPool {

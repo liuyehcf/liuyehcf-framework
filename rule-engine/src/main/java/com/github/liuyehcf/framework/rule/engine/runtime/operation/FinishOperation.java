@@ -8,57 +8,29 @@ import com.github.liuyehcf.framework.rule.engine.model.activity.Action;
 import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
-import com.github.liuyehcf.framework.rule.engine.promise.PromiseListener;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.promise.GlobalEndListenerPromise;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionLink;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.Trace;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
  * @author hechenfeng
  * @date 2019/4/28
  */
-public class FinishOperation extends AbstractOperation<Void> implements PromiseListener<Void> {
-
-    private AtomicInteger reachableLinkNum;
+public class FinishOperation extends AbstractOperation<Void> {
 
     public FinishOperation(OperationContext context) {
         super(context);
     }
 
     @Override
-    public void operationComplete(Promise<Void> promise) {
-        if (promise.isSuccess()) {
-            int pre = reachableLinkNum.get();
-            int next = pre - 1;
-
-            while (!reachableLinkNum.compareAndSet(pre, next)) {
-                pre = reachableLinkNum.get();
-                next = pre - 1;
-            }
-
-            if (next == 0) {
-                finishRulePromise();
-            }
-        } else {
-            // this is not necessary to do so if GlobalEndListenerOperation's optPromise failed
-            // because any unknown exception trigger rule terminate
-            // just for the sake of insurance, execute one more time
-            context.getPromise().tryFailure(promise.cause());
-        }
-    }
-
-    @Override
-    protected void execute() {
+    protected void execute() throws Throwable {
         Rule rule = context.getRule();
 
         List<Node> ends = rule.getEnds();
@@ -73,7 +45,7 @@ public class FinishOperation extends AbstractOperation<Void> implements PromiseL
             }
         }
 
-        if (allFinished && isMarkLink()) {
+        if (allFinished && context.isMarkContext()) {
             // if current execution link is MarkSuccessorUnreachableOperation link
             // then delegate to any ended link to do the finish operation
             ExecutionLink endedLink = findAnyEndedLink();
@@ -88,7 +60,7 @@ public class FinishOperation extends AbstractOperation<Void> implements PromiseL
             // so let the rule finish
             ExecutionLink link = findAnyLink();
             if (link != null) {
-                context.executeAsync(new FinishOperation(context.cloneUnLinkedContext(link)));
+                context.executeAsync(new FinishOperation(context.cloneUnLinkedContext()));
                 return;
             }
 
@@ -97,19 +69,20 @@ public class FinishOperation extends AbstractOperation<Void> implements PromiseL
         }
 
         if (allFinished && context.markRuleFinished()) {
-            List<Listener> globalEndListeners = getGlobalListenerByEvent(ListenerEvent.end);
             removeUnreachableLinks();
 
-            if (!context.getExecutionInstance().getLinks().isEmpty()) {
-                reachableLinkNum = new AtomicInteger(context.getExecutionInstance().getLinks().size());
-                for (ExecutionLink link : context.getExecutionInstance().getLinks()) {
-                    Promise<Void> listenerPromise = new GlobalEndListenerPromise();
-                    listenerPromise.addListener(this);
-                    context.executeAsync(new GlobalEndListenerOperation(context.cloneLinkedContext(link), listenerPromise, globalEndListeners));
-                }
+            boolean hasReachableLinks = !context.getExecutionInstance().getLinks().isEmpty();
+
+            if (hasReachableLinks) {
+                ExecutionLink executionLink = mergeLinks(context.getExecutionInstance().getLinks());
+                context.getExecutionInstance().getEnv().clear();
+                context.getExecutionInstance().getEnv().putAll(executionLink.getEnv());
+                invokeGlobalSuccessListeners(true);
             } else {
-                finishRulePromise();
+                invokeGlobalSuccessListeners(false);
             }
+
+            finishRulePromise();
         }
     }
 
@@ -138,10 +111,6 @@ public class FinishOperation extends AbstractOperation<Void> implements PromiseL
         }
 
         return true;
-    }
-
-    private boolean isMarkLink() {
-        return context.getExecutionLink() == null;
     }
 
     private ExecutionLink findAnyEndedLink() {

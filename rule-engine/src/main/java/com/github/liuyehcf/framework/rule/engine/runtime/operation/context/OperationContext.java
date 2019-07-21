@@ -46,6 +46,11 @@ public interface OperationContext {
     Rule getRule();
 
     /**
+     * whether mark context
+     */
+    boolean isMarkContext();
+
+    /**
      * get execution instance
      *
      * @return execution instance
@@ -60,11 +65,11 @@ public interface OperationContext {
     ExecutionLink getExecutionLink();
 
     /**
-     * get rule env
+     * get env of current execution link
      *
      * @return env
      */
-    Map<String, Object> getEnv();
+    Map<String, Object> getLinkEnv();
 
     /**
      * get current node of current execution link
@@ -181,9 +186,11 @@ public interface OperationContext {
      * get delegate invocation which wraps target delegate with delegate interception
      *
      * @param executable target executable
+     * @param result     element's execution result(only for listener)
+     * @param cause      element's execution exception(only for listener)
      * @return delegate invocation
      */
-    DelegateInvocation getDelegateInvocation(Executable executable);
+    DelegateInvocation getDelegateInvocation(Executable executable, Object result, Throwable cause);
 
     /**
      * get unique execution id(within rule)
@@ -211,7 +218,14 @@ public interface OperationContext {
      *
      * @param trace trace
      */
-    void addTrace(Trace trace);
+    void addTraceToExecutionLink(Trace trace);
+
+    /**
+     * add execution trace to execution instance
+     *
+     * @param trace trace
+     */
+    void addTraceToExecutionInstance(Trace trace);
 
     /**
      * clone context and add link to instance
@@ -224,10 +238,9 @@ public interface OperationContext {
     /**
      * clone context without adding link to instance
      *
-     * @param executionLink link
      * @return cloned context
      */
-    OperationContext cloneUnLinkedContext(ExecutionLink executionLink);
+    OperationContext cloneUnLinkedContext();
 
     /**
      * clone context for MarkSuccessorUnreachableOperation

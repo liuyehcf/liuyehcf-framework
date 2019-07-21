@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.activity.Action;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
@@ -26,12 +25,17 @@ public class ActionOperation extends AbstractOperation<Void> {
     protected void execute() throws Throwable {
         context.setNode(action);
 
-        invokeListeners(getNodeListenerByEvent(action, ListenerEvent.start));
+        invokeNodeBeforeListeners(action);
 
-        DelegateInvocation delegateInvocation = context.getDelegateInvocation(action);
-        delegateInvocation.proceed();
+        DelegateInvocation delegateInvocation = context.getDelegateInvocation(action, null, null);
+        try {
+            delegateInvocation.proceed();
+        } catch (Throwable e) {
+            invokeNodeFailureListeners(action, e);
+            throw e;
+        }
 
-        invokeListeners(getNodeListenerByEvent(action, ListenerEvent.end));
+        invokeNodeSuccessListeners(action, null);
 
         context.markElementFinished(action);
 

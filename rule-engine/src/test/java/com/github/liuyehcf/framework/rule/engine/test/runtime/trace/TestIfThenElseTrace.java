@@ -15,7 +15,7 @@ import java.util.Map;
  * @date 2019/5/18
  */
 @SuppressWarnings("all")
-public class TestIfThenElse extends TestTraceBase {
+public class TestIfThenElseTrace extends TestTraceBase {
 
     @Test
     public void testSingleIfThenElse() {
@@ -43,7 +43,7 @@ public class TestIfThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -88,7 +88,7 @@ public class TestIfThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 0);
+            assertExecutionInstance(executionInstance, 1, 0, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 5);
@@ -133,7 +133,7 @@ public class TestIfThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 1, 2);
+            assertExecutionInstance(executionInstance, 1, 2, 0);
 
             executionLink = executionInstance.getLinks().get(0);
             assertExecutionLink(executionLink, 3);
@@ -213,7 +213,7 @@ public class TestIfThenElse extends TestTraceBase {
 
             executionInstance = promise.get();
 
-            assertExecutionInstance(executionInstance, 3, 0);
+            assertExecutionInstance(executionInstance, 3, 0, 0);
 
             executionLink = findLink(executionInstance, 2);
 
@@ -303,7 +303,7 @@ public class TestIfThenElse extends TestTraceBase {
             Trace trace;
 
             executionInstance = promise.get();
-            assertExecutionInstance(executionInstance, 2, 1);
+            assertExecutionInstance(executionInstance, 2, 1, 0);
 
             executionLink = findLink(executionInstance, 3);
 

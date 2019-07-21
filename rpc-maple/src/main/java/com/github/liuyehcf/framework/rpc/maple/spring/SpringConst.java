@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.rpc.maple.spring;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/23
  */
 public interface SpringConst {

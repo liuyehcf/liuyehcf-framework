@@ -110,7 +110,7 @@ public class TestGetProperty extends TestRuntimeBase {
 
         Promise<ExecutionInstance> promise = startRule(
                 "{\n" +
-                        "    getPropertyAction(name=\"a.b\",expectedValue=2)[setPropertyListener(event=\"start\", name=\"a.b\", value=2)]\n" +
+                        "    getPropertyAction(name=\"a.b\",expectedValue=2)[setPropertyListener(event=\"before\", name=\"a.b\", value=2)]\n" +
                         "}",
                 env);
 
@@ -224,7 +224,7 @@ public class TestGetProperty extends TestRuntimeBase {
 
         Promise<ExecutionInstance> promise = startRule(
                 "{    \n" +
-                        "    printAction(content=\"test\")[getPropertyListener(event=\"start\",name=\"a\",expectedValue=0xf)]\n" +
+                        "    printAction(content=\"test\")[getPropertyListener(event=\"before\",name=\"a\",expectedValue=0xf)]\n" +
                         "}",
                 env);
 
@@ -241,7 +241,7 @@ public class TestGetProperty extends TestRuntimeBase {
 
         Promise<ExecutionInstance> promise = startRule(
                 "{    \n" +
-                        "    printAction(content=\"test\")[getPropertyListener(event=\"start\",name=\"a\",expectedValue=0xf)]\n" +
+                        "    printAction(content=\"test\")[getPropertyListener(event=\"before\",name=\"a\",expectedValue=0xf)]\n" +
                         "}",
                 env);
 
@@ -259,7 +259,7 @@ public class TestGetProperty extends TestRuntimeBase {
 
         Promise<ExecutionInstance> promise = startRule(
                 "{    \n" +
-                        "    printAction(content=\"test\")[getPropertyListener(event=\"start\",name=\"a.b.c\",expectedValue=07)]\n" +
+                        "    printAction(content=\"test\")[getPropertyListener(event=\"before\",name=\"a.b.c\",expectedValue=07)]\n" +
                         "}",
                 env);
 
@@ -276,7 +276,7 @@ public class TestGetProperty extends TestRuntimeBase {
 
         Promise<ExecutionInstance> promise = startRule(
                 "{    \n" +
-                        "    printAction(content=\"test\")[getPropertyListener(event=\"start\",name=\"a.b.c\",expectedValue=07)]\n" +
+                        "    printAction(content=\"test\")[getPropertyListener(event=\"before\",name=\"a.b.c\",expectedValue=07)]\n" +
                         "}",
                 env);
 
@@ -293,7 +293,7 @@ public class TestGetProperty extends TestRuntimeBase {
 
         Promise<ExecutionInstance> promise = startRule(
                 "{    \n" +
-                        "    printAction(content=\"test\")[getPropertyListener(event=\"start\",name=\"a.b.c\",expectedValue=07)]\n" +
+                        "    printAction(content=\"test\")[getPropertyListener(event=\"before\",name=\"a.b.c\",expectedValue=07)]\n" +
                         "}",
                 env);
 

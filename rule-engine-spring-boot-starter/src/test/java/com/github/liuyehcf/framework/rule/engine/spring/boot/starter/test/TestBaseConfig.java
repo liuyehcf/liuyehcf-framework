@@ -21,7 +21,7 @@ public class TestBaseConfig {
     public void test1() {
         Promise<ExecutionInstance> promise = RuleEngine.startRule("{\n" +
                 "    if(componentCondition(output=true)){\n" +
-                "        componentAction()[componentListener(event=\"start\")]\n" +
+                "        componentAction()[componentListener(event=\"before\")]\n" +
                 "    }\n" +
                 "}", null);
 
@@ -32,7 +32,7 @@ public class TestBaseConfig {
     public void test2() {
         Promise<ExecutionInstance> promise = RuleEngine.startRule("{\n" +
                 "    if(multi.name.condition(output=true)){\n" +
-                "        multi/name/action()[multi.name.listener(event=\"start\"), multi/name/listener(event=\"end\")]\n" +
+                "        multi/name/action()[multi.name.listener(event=\"before\"), multi/name/listener(event=\"success\")]\n" +
                 "    }\n" +
                 "}", null);
 

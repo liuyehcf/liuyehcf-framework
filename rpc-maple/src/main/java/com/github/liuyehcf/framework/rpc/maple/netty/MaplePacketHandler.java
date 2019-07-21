@@ -7,7 +7,7 @@ import io.netty.handler.codec.ByteToMessageCodec;
 import java.util.List;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/24
  */
 public class MaplePacketHandler extends ByteToMessageCodec<MaplePacket> {

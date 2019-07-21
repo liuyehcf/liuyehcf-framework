@@ -1,7 +1,6 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 
 import com.github.liuyehcf.framework.rule.engine.model.gateway.ExclusiveGateway;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.DefaultTrace;
@@ -23,9 +22,9 @@ class ExclusiveGatewayOperation extends AbstractOperation<Void> {
     protected void execute() throws Throwable {
         context.setNode(exclusiveGateway);
 
-        invokeListeners(getNodeListenerByEvent(exclusiveGateway, ListenerEvent.start));
+        invokeNodeBeforeListeners(exclusiveGateway);
 
-        context.addTrace(new DefaultTrace(
+        context.addTraceToExecutionLink(new DefaultTrace(
                 context.getNextExecutionId(),
                 exclusiveGateway.getId(),
                 exclusiveGateway.getType(),
@@ -39,7 +38,7 @@ class ExclusiveGatewayOperation extends AbstractOperation<Void> {
                 System.nanoTime())
         );
 
-        invokeListeners(getNodeListenerByEvent(exclusiveGateway, ListenerEvent.end));
+        invokeNodeSuccessListeners(exclusiveGateway, null);
 
         // clean redundant link
         if (!exclusiveGateway.getSuccessors().isEmpty()) {
