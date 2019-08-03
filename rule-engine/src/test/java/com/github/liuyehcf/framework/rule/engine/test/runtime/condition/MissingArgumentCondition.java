@@ -1,7 +1,6 @@
 package com.github.liuyehcf.framework.rule.engine.test.runtime.condition;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ConditionDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.ConditionContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.DelegateField;
 
@@ -9,7 +8,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.Delegate
  * @author hechenfeng
  * @date 2019/4/30
  */
-public class MissingArgumentCondition implements ConditionDelegate {
+public class MissingArgumentCondition extends BaseCondition {
 
     private DelegateField notMissing1;
     private DelegateField notMissing2;
@@ -26,7 +25,7 @@ public class MissingArgumentCondition implements ConditionDelegate {
 
     @Override
     @SuppressWarnings("Duplicates")
-    public boolean onCondition(ConditionContext context) {
+    boolean doCondition(ConditionContext context) {
         Assert.assertNotNull(notMissing1);
         Assert.assertNotNull(notMissing2);
         Assert.assertNotNull(missing1);

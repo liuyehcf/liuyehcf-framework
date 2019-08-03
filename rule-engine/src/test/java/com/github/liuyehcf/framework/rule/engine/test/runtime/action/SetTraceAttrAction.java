@@ -1,6 +1,5 @@
 package com.github.liuyehcf.framework.rule.engine.test.runtime.action;
 
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.ActionContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.DelegateField;
 
@@ -8,13 +7,13 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.Delegate
  * @author hechenfeng
  * @date 2019/5/6
  */
-public class SetTraceAttrAction implements ActionDelegate {
+public class SetTraceAttrAction extends BaseAction {
 
     private DelegateField name;
     private DelegateField value;
 
     @Override
-    public void onAction(ActionContext context) {
+    void doAction(ActionContext context) {
         String attrName = name.getValue();
         Object attrValue = value.getValue();
 

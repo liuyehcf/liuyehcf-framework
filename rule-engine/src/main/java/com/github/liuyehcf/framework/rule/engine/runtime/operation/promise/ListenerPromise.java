@@ -4,7 +4,7 @@ import com.github.liuyehcf.framework.rule.engine.promise.AbstractPromise;
 
 /**
  * @author hechenfeng
- * @date 2019/7/10
+ * @date 2019/8/1
  */
-public class GlobalEndListenerPromise extends AbstractPromise<Void> {
+public class ListenerPromise extends AbstractPromise<Void> {
 }

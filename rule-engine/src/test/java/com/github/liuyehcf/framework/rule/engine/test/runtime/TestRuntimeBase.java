@@ -26,9 +26,12 @@ import java.util.concurrent.*;
 public class TestRuntimeBase {
 
     public static final boolean STD_OUT_SWITCH = false;
+    public static final boolean ACTION_ASYNC_SWITCH = true;
+    public static final boolean CONDITION_ASYNC_SWITCH = true;
+    public static final boolean LISTENER_ASYNC_SWITCH = true;
     protected static final Random RANDOM = new Random();
     protected static final int EXECUTE_TIMES = 1;
-    private static ExecutorService EXECUTOR = new ThreadPoolExecutor(256, 512, 5L, TimeUnit.SECONDS,
+    private static ExecutorService EXECUTOR = new ThreadPoolExecutor(16, 16, 5L, TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(1024),
             new ThreadFactoryBuilder().setNameFormat("RULE-ENGINE-TEST-t-%d").build(),
             new ThreadPoolExecutor.CallerRunsPolicy());

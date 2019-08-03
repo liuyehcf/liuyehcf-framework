@@ -1,6 +1,5 @@
 package com.github.liuyehcf.framework.rule.engine.test.runtime.condition;
 
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ConditionDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.ConditionContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.exception.LinkExecutionTerminateException;
 
@@ -8,10 +7,10 @@ import com.github.liuyehcf.framework.rule.engine.runtime.exception.LinkExecution
  * @author hechenfeng
  * @date 2019/5/17
  */
-public class ThrowLinkTerminateCondition implements ConditionDelegate {
+public class ThrowLinkTerminateCondition extends BaseCondition {
 
     @Override
-    public boolean onCondition(ConditionContext context) {
+    boolean doCondition(ConditionContext context) {
         throw new LinkExecutionTerminateException();
     }
 }

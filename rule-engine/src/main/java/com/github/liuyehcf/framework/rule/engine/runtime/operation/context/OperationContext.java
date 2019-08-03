@@ -8,7 +8,7 @@ import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
+import com.github.liuyehcf.framework.rule.engine.runtime.operation.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionLink;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.Trace;
@@ -130,6 +130,11 @@ public interface OperationContext {
      * @return whether unreachable
      */
     boolean isNodeUnreachable(Node node);
+
+    /**
+     * mark global failure listener finished
+     */
+    boolean markGlobalFailureListenerFinished();
 
     /**
      * mark output of specified condition

@@ -23,5 +23,5 @@ public interface DelegateInterceptor {
      * @param delegateInvocation delegate invoker
      * @return result of target delegate call
      */
-    Object invoke(DelegateInvocation delegateInvocation) throws Throwable;
+    DelegateResult invoke(DelegateInvocation delegateInvocation) throws Throwable;
 }

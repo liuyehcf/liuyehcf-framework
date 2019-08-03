@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.DefaultTrace;
 
@@ -11,7 +10,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.statistics.DefaultTrace
  * @author hechenfeng
  * @date 2019/7/4
  */
-public class SubRuleOperation extends AbstractOperation<Void> {
+class SubRuleOperation extends AbstractOperation<Void> {
 
     private final Rule subRule;
     private final long startNanos;
@@ -33,7 +32,7 @@ public class SubRuleOperation extends AbstractOperation<Void> {
     }
 
     @Override
-    protected void execute() throws Throwable {
+    void operate() throws Throwable {
         context.setNode(subRule);
 
         context.addTraceToExecutionLink(new DefaultTrace(
@@ -49,8 +48,10 @@ public class SubRuleOperation extends AbstractOperation<Void> {
                 startNanos,
                 System.nanoTime()));
 
-        invokeNodeSuccessListeners(subRule, LinkType.TRUE.equals(linkType));
+        invokeNodeSuccessListeners(subRule, LinkType.TRUE.equals(linkType), this::continueForward);
+    }
 
+    private void continueForward() {
         context.markElementFinished(subRule);
 
         context.executeAsync(new MarkSuccessorUnreachableOperation(context.cloneMarkContext(), subRule, reverseLinkType));

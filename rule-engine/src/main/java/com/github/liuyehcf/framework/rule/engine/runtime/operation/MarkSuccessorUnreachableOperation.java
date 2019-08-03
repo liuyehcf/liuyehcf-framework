@@ -4,7 +4,6 @@ import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.Node;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.google.common.collect.Lists;
 
@@ -18,13 +17,13 @@ import java.util.stream.Collectors;
  * @author hechenfeng
  * @date 2019/4/28
  */
-public class MarkSuccessorUnreachableOperation extends AbstractOperation<Void> {
+class MarkSuccessorUnreachableOperation extends AbstractOperation<Void> {
 
     private final Node node;
 
     private final LinkType unReachableLinkType;
 
-    public MarkSuccessorUnreachableOperation(OperationContext context, Node node, LinkType unReachableLinkType) {
+    MarkSuccessorUnreachableOperation(OperationContext context, Node node, LinkType unReachableLinkType) {
         super(context);
         Assert.assertNotNull(node);
         Assert.assertNotNull(unReachableLinkType);
@@ -33,7 +32,7 @@ public class MarkSuccessorUnreachableOperation extends AbstractOperation<Void> {
     }
 
     @Override
-    protected void execute() {
+    void operate() {
         List<Node> unreachableDirectSuccessors = getDirectUnreachableSuccessors();
 
         Map<String, Node> unreachableSuccessors = unreachableDirectSuccessors.stream()

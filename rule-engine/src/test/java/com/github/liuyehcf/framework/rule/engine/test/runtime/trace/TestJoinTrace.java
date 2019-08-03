@@ -2083,18 +2083,20 @@ public class TestJoinTrace extends TestTraceBase {
             trace = executionLink.getTraces().get(3);
             assertJoinGateway(trace);
 
-            executionLink = executionInstance.getUnreachableLinks().get(0);
-            assertExecutionLink(executionLink, 2, 3);
+            if (executionInstance.getUnreachableLinks().size() > 0) {
+                executionLink = executionInstance.getUnreachableLinks().get(0);
+                assertExecutionLink(executionLink, 2, 3);
 
-            trace = executionLink.getTraces().get(0);
-            assertStart(trace);
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
 
-            trace = executionLink.getTraces().get(1);
-            assertPrintCondition(trace, "conditionA", true);
+                trace = executionLink.getTraces().get(1);
+                assertPrintCondition(trace, "conditionA", true);
 
-            if (executionLink.getTraces().size() > 2) {
-                trace = executionLink.getTraces().get(2);
-                assertPrintAction(trace, "action[AB]");
+                if (executionLink.getTraces().size() > 2) {
+                    trace = executionLink.getTraces().get(2);
+                    assertPrintAction(trace, "action[AB]");
+                }
             }
         });
     }

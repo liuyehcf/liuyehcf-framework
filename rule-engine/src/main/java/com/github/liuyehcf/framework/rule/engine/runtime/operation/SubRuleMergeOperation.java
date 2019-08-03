@@ -6,7 +6,6 @@ import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.promise.PromiseListener;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.*;
 import com.github.liuyehcf.framework.rule.engine.util.CloneUtils;
@@ -19,7 +18,7 @@ import java.util.List;
  * @author hechenfeng
  * @date 2019/7/3
  */
-public class SubRuleMergeOperation extends AbstractOperation<Void> implements PromiseListener<ExecutionInstance> {
+class SubRuleMergeOperation extends AbstractOperation<Void> implements PromiseListener<ExecutionInstance> {
 
     private final Rule subRule;
     private final long startNanos;
@@ -38,7 +37,7 @@ public class SubRuleMergeOperation extends AbstractOperation<Void> implements Pr
     }
 
     @Override
-    protected void execute() throws Throwable {
+    void operate() throws Throwable {
         context.setNode(subRule);
 
         if (!subRulePromise.isSuccess()) {

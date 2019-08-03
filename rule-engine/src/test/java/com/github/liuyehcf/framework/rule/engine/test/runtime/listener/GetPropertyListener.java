@@ -1,7 +1,6 @@
 package com.github.liuyehcf.framework.rule.engine.test.runtime.listener;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ListenerDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.ListenerContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.DelegateField;
 
@@ -9,13 +8,13 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.Delegate
  * @author hechenfeng
  * @date 2019/4/29
  */
-public class GetPropertyListener implements ListenerDelegate {
+public class GetPropertyListener extends BaseListener {
 
     private DelegateField name;
     private DelegateField expectedValue;
 
     @Override
-    public void onBefore(ListenerContext context) {
+    void doBefore(ListenerContext context) {
         String propertyName = name.getValue();
         Object expectedValue = this.expectedValue.getValue();
 
@@ -25,7 +24,7 @@ public class GetPropertyListener implements ListenerDelegate {
     }
 
     @Override
-    public void onSuccess(ListenerContext context, Object result) {
+    void doSuccess(ListenerContext context, Object result) {
         String propertyName = name.getValue();
         Object expectedValue = this.expectedValue.getValue();
 
@@ -35,7 +34,7 @@ public class GetPropertyListener implements ListenerDelegate {
     }
 
     @Override
-    public void onFailure(ListenerContext context, Throwable cause) {
+    void doFailure(ListenerContext context, Throwable cause) {
         String propertyName = name.getValue();
         Object expectedValue = this.expectedValue.getValue();
 

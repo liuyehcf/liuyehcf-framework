@@ -16,7 +16,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.Defaul
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.DefaultListenerContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.ReflectiveDelegateInvocation;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
+import com.github.liuyehcf.framework.rule.engine.runtime.operation.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.*;
 import com.github.liuyehcf.framework.rule.engine.util.CloneUtils;
 import com.google.common.collect.Lists;
@@ -46,6 +46,7 @@ public class DefaultOperationContext implements OperationContext {
     private final ExecutionInstance executionInstance;
     private final ExecutionLink executionLink;
     private final AtomicBoolean ruleFinished;
+    private final AtomicBoolean globalFailureListenerFinished;
     private final Set<String> finishedElementIds;
     private final Set<String> unreachableNodeIds;
     private final Map<String, Boolean> conditionOutputs;
@@ -67,6 +68,7 @@ public class DefaultOperationContext implements OperationContext {
                 new DefaultExecutionInstance(instanceId, rule, env),
                 null,
                 new AtomicBoolean(false),
+                new AtomicBoolean(false),
                 Sets.newConcurrentHashSet(),
                 Sets.newConcurrentHashSet(),
                 Maps.newConcurrentMap(),
@@ -83,6 +85,7 @@ public class DefaultOperationContext implements OperationContext {
                                     ExecutionInstance executionInstance,
                                     ExecutionLink executionLink,
                                     AtomicBoolean ruleFinished,
+                                    AtomicBoolean globalFailureListenerFinished,
                                     Set<String> finishedElementIds,
                                     Set<String> unreachableNodeIds,
                                     Map<String, Boolean> conditionOutputs,
@@ -95,6 +98,7 @@ public class DefaultOperationContext implements OperationContext {
         Assert.assertNotNull(rule);
         Assert.assertNotNull(executionInstance);
         Assert.assertNotNull(ruleFinished);
+        Assert.assertNotNull(globalFailureListenerFinished);
         Assert.assertNotNull(finishedElementIds);
         Assert.assertNotNull(unreachableNodeIds);
         Assert.assertNotNull(conditionOutputs);
@@ -110,6 +114,7 @@ public class DefaultOperationContext implements OperationContext {
         this.executionInstance = executionInstance;
         this.executionLink = executionLink;
         this.ruleFinished = ruleFinished;
+        this.globalFailureListenerFinished = globalFailureListenerFinished;
         this.finishedElementIds = finishedElementIds;
         this.unreachableNodeIds = unreachableNodeIds;
         this.conditionOutputs = conditionOutputs;
@@ -211,6 +216,11 @@ public class DefaultOperationContext implements OperationContext {
     }
 
     @Override
+    public final boolean markGlobalFailureListenerFinished() {
+        return globalFailureListenerFinished.compareAndSet(false, true);
+    }
+
+    @Override
     public final void setConditionOutput(Condition condition, boolean output) {
         conditionOutputs.put(condition.getId(), output);
     }
@@ -270,7 +280,7 @@ public class DefaultOperationContext implements OperationContext {
                     executable,
                     RuleEngine.getActionDelegate(executable.getName()),
                     this,
-                    new DefaultActionContext((Action) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
+                    new DefaultActionContext((Action) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise),
                     RuleEngine.getDelegateInterceptorFactories());
         } else if (executable instanceof Condition) {
             return new ReflectiveDelegateInvocation(
@@ -279,7 +289,7 @@ public class DefaultOperationContext implements OperationContext {
                     executable,
                     RuleEngine.getConditionDelegate(executable.getName()),
                     this,
-                    new DefaultConditionContext((Condition) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
+                    new DefaultConditionContext((Condition) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise),
                     RuleEngine.getDelegateInterceptorFactories());
         } else if (executable instanceof Listener) {
             if (ListenerScope.GLOBAL.equals(((Listener) executable).getScope())) {
@@ -289,7 +299,7 @@ public class DefaultOperationContext implements OperationContext {
                         executable,
                         RuleEngine.getListenerDelegate(executable.getName()),
                         this,
-                        new DefaultListenerContext((Listener) executable, instanceId, linkId, executionId, executionInstance.getEnv(), executionInstance.getAttributes()),
+                        new DefaultListenerContext((Listener) executable, instanceId, linkId, executionId, executionInstance.getEnv(), executionInstance.getAttributes(), promise),
                         RuleEngine.getDelegateInterceptorFactories());
             } else if (ListenerScope.NODE.equals(((Listener) executable).getScope())) {
                 return new ReflectiveDelegateInvocation(
@@ -298,7 +308,7 @@ public class DefaultOperationContext implements OperationContext {
                         executable,
                         RuleEngine.getListenerDelegate(executable.getName()),
                         this,
-                        new DefaultListenerContext((Listener) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
+                        new DefaultListenerContext((Listener) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise),
                         RuleEngine.getDelegateInterceptorFactories());
             } else {
                 throw new UnsupportedOperationException("unexpected listener scope");
@@ -356,6 +366,7 @@ public class DefaultOperationContext implements OperationContext {
                 executionInstance,
                 actualLink,
                 ruleFinished,
+                globalFailureListenerFinished,
                 finishedElementIds,
                 unreachableNodeIds,
                 conditionOutputs,
@@ -375,6 +386,7 @@ public class DefaultOperationContext implements OperationContext {
                 executionInstance,
                 null,
                 ruleFinished,
+                globalFailureListenerFinished,
                 finishedElementIds,
                 unreachableNodeIds,
                 conditionOutputs,
@@ -394,6 +406,7 @@ public class DefaultOperationContext implements OperationContext {
                 executionInstance,
                 null,
                 ruleFinished,
+                globalFailureListenerFinished,
                 finishedElementIds,
                 unreachableNodeIds,
                 conditionOutputs,

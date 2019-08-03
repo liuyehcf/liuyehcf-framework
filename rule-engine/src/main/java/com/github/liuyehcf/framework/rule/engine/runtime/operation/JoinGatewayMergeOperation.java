@@ -2,7 +2,6 @@ package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionLink;
@@ -16,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author hechenfeng
  * @date 2019/4/30
  */
-public class JoinGatewayMergeOperation extends AbstractOperation<Void> {
+class JoinGatewayMergeOperation extends AbstractOperation<Void> {
 
     private final JoinGateway joinGateway;
     private final boolean increaseReaches;
@@ -29,7 +28,7 @@ public class JoinGatewayMergeOperation extends AbstractOperation<Void> {
     }
 
     @Override
-    protected void execute() {
+    void operate() {
         context.setNode(joinGateway);
 
         if (increaseReaches) {

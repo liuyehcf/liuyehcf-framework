@@ -66,7 +66,7 @@ public interface Promise<T> {
     boolean tryFailure(Throwable cause);
 
     /**
-     * Adds the specified listener to this promise.
+     * Add the specified listener to this promise.
      *
      * @param listener listener
      */

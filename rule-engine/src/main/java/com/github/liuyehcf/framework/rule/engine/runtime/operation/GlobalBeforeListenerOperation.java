@@ -1,6 +1,5 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.DefaultExecutionLink;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionLink;
@@ -19,9 +18,13 @@ public class GlobalBeforeListenerOperation extends AbstractOperation<Void> {
     }
 
     @Override
-    protected void execute() throws Throwable {
-        invokeGlobalBeforeListeners();
+    void operate() throws Throwable {
+        context.setNode(context.getRule().getStart());
 
+        invokeGlobalBeforeListeners(this::continueStartRule);
+    }
+
+    private void continueStartRule() {
         Map<String, Object> instanceEnv = context.getExecutionInstance().getEnv();
         ExecutionLink startLink = new DefaultExecutionLink(CloneUtils.hessianClone(instanceEnv));
 

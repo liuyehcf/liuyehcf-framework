@@ -1,7 +1,6 @@
 package com.github.liuyehcf.framework.rule.engine.test.runtime.listener;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ListenerDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.ListenerContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.DelegateField;
 
@@ -10,7 +9,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.Delegate
  * @date 2019/4/30
  */
 @SuppressWarnings("all")
-public class MissingArgumentListener implements ListenerDelegate {
+public class MissingArgumentListener extends BaseListener {
 
     private DelegateField notMissing1;
     private DelegateField notMissing2;
@@ -27,7 +26,7 @@ public class MissingArgumentListener implements ListenerDelegate {
 
     @Override
     @SuppressWarnings("Duplicates")
-    public void onBefore(ListenerContext context) {
+    void doBefore(ListenerContext context) {
         Assert.assertNotNull(notMissing1);
         Assert.assertNotNull(notMissing2);
         Assert.assertNotNull(missing1);
@@ -40,7 +39,7 @@ public class MissingArgumentListener implements ListenerDelegate {
     }
 
     @Override
-    public void onSuccess(ListenerContext context, Object result) {
+    void doSuccess(ListenerContext context, Object result) {
         Assert.assertNotNull(notMissing1);
         Assert.assertNotNull(notMissing2);
         Assert.assertNotNull(missing1);
@@ -53,7 +52,7 @@ public class MissingArgumentListener implements ListenerDelegate {
     }
 
     @Override
-    public void onFailure(ListenerContext context, Throwable cause) {
+    void doFailure(ListenerContext context, Throwable cause) {
         Assert.assertNotNull(notMissing1);
         Assert.assertNotNull(notMissing2);
         Assert.assertNotNull(missing1);

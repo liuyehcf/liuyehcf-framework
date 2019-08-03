@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.rule.engine.test.runtime.interceptor;
 
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.AbstractRegexpDelegateInterceptor;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
+import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateResult;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -19,7 +20,7 @@ public class ActionRegexInterceptor extends AbstractRegexpDelegateInterceptor {
     }
 
     @Override
-    public Object invoke(DelegateInvocation delegateInvocation) throws Throwable {
+    public DelegateResult invoke(DelegateInvocation delegateInvocation) throws Throwable {
         COUNTER.incrementAndGet();
 
         return delegateInvocation.proceed();

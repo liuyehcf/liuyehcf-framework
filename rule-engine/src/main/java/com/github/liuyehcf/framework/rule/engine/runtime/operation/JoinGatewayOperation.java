@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.DefaultTrace;
 
@@ -11,7 +10,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.statistics.DefaultTrace
  * @author hechenfeng
  * @date 2019/4/30
  */
-public class JoinGatewayOperation extends AbstractOperation<Void> {
+class JoinGatewayOperation extends AbstractOperation<Void> {
 
     private final JoinGateway joinGateway;
 
@@ -22,13 +21,13 @@ public class JoinGatewayOperation extends AbstractOperation<Void> {
     }
 
     @Override
-    protected void execute() throws Throwable {
+    void operate() throws Throwable {
         context.setNode(joinGateway);
 
-        long startNanos = System.nanoTime();
+        invokeNodeBeforeListeners(joinGateway, this::continueSuccessListener);
+    }
 
-        invokeNodeBeforeListeners(joinGateway);
-
+    private void continueSuccessListener() throws Throwable {
         context.addTraceToExecutionLink(new DefaultTrace(
                 context.getNextExecutionId(),
                 joinGateway.getId(),
@@ -39,12 +38,14 @@ public class JoinGatewayOperation extends AbstractOperation<Void> {
                 null,
                 null,
                 null,
-                startNanos,
+                System.nanoTime(),
                 System.nanoTime()));
         context.markElementFinished(joinGateway);
 
-        invokeNodeSuccessListeners(joinGateway, null);
+        invokeNodeSuccessListeners(joinGateway, null, this::continueForward);
+    }
 
+    private void continueForward() {
         forward(LinkType.NORMAL, joinGateway.getSuccessors());
     }
 }

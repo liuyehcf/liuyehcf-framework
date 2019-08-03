@@ -1,6 +1,5 @@
 package com.github.liuyehcf.framework.rule.engine.test.runtime.action;
 
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.ActionContext;
 
 import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntimeBase.STD_OUT_SWITCH;
@@ -9,10 +8,10 @@ import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntime
  * @author hechenfeng
  * @date 2019/4/28
  */
-public class ThrowExceptionAction implements ActionDelegate {
+public class ThrowExceptionAction extends BaseAction {
 
     @Override
-    public void onAction(ActionContext context) {
+    void doAction(ActionContext context) {
         if (STD_OUT_SWITCH) {
             System.out.println("execute throwExceptionAction.");
         }

@@ -9,7 +9,6 @@ import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionLink;
@@ -23,14 +22,14 @@ import java.util.stream.Collectors;
  * @author hechenfeng
  * @date 2019/4/28
  */
-public class FinishOperation extends AbstractOperation<Void> {
+class FinishOperation extends AbstractOperation<Void> {
 
-    public FinishOperation(OperationContext context) {
+    FinishOperation(OperationContext context) {
         super(context);
     }
 
     @Override
-    protected void execute() throws Throwable {
+    void operate() throws Throwable {
         Rule rule = context.getRule();
 
         List<Node> ends = rule.getEnds();
@@ -77,12 +76,10 @@ public class FinishOperation extends AbstractOperation<Void> {
                 ExecutionLink executionLink = mergeLinks(context.getExecutionInstance().getLinks());
                 context.getExecutionInstance().getEnv().clear();
                 context.getExecutionInstance().getEnv().putAll(executionLink.getEnv());
-                invokeGlobalSuccessListeners(true);
+                invokeGlobalSuccessListeners(true, this::finishRulePromise);
             } else {
-                invokeGlobalSuccessListeners(false);
+                invokeGlobalSuccessListeners(false, this::finishRulePromise);
             }
-
-            finishRulePromise();
         }
     }
 

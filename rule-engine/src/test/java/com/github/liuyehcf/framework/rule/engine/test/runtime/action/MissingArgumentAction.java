@@ -1,7 +1,6 @@
 package com.github.liuyehcf.framework.rule.engine.test.runtime.action;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.ActionContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.DelegateField;
 
@@ -9,7 +8,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.field.Delegate
  * @author hechenfeng
  * @date 2019/4/30
  */
-public class MissingArgumentAction implements ActionDelegate {
+public class MissingArgumentAction extends BaseAction {
 
     private DelegateField notMissing1;
     private DelegateField notMissing2;
@@ -25,8 +24,7 @@ public class MissingArgumentAction implements ActionDelegate {
     }
 
     @Override
-    @SuppressWarnings("Duplicates")
-    public void onAction(ActionContext context) {
+    void doAction(ActionContext context) {
         Assert.assertNotNull(notMissing1);
         Assert.assertNotNull(notMissing2);
         Assert.assertNotNull(missing1);

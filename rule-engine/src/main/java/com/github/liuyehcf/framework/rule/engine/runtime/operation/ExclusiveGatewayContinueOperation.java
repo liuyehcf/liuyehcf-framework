@@ -10,7 +10,6 @@ import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.ExclusiveGateway;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.promise.PromiseListener;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.promise.ConditionPromise;
 
@@ -18,7 +17,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.operation.promise.Condi
  * @author hechenfeng
  * @date 2019/7/4
  */
-public class ExclusiveGatewayContinueOperation extends AbstractOperation<Void> implements PromiseListener<Boolean> {
+class ExclusiveGatewayContinueOperation extends AbstractOperation<Void> implements PromiseListener<Boolean> {
 
     private final ExclusiveGateway exclusiveGateway;
     private final int indexOfSuccessor;
@@ -38,7 +37,7 @@ public class ExclusiveGatewayContinueOperation extends AbstractOperation<Void> i
     }
 
     @Override
-    protected void execute() throws Throwable {
+    void operate() throws Throwable {
         context.setNode(exclusiveGateway);
 
         if (!isInListenerLoop) {

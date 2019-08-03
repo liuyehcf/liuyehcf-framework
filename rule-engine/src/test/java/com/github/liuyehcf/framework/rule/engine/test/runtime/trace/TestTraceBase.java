@@ -1,5 +1,7 @@
 package com.github.liuyehcf.framework.rule.engine.test.runtime.trace;
 
+import com.github.liuyehcf.framework.rule.engine.RuleErrorCode;
+import com.github.liuyehcf.framework.rule.engine.RuleException;
 import com.github.liuyehcf.framework.rule.engine.model.ElementType;
 import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.*;
@@ -7,6 +9,7 @@ import com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntimeBase;
 import org.junit.Assert;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 /**
@@ -23,7 +26,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertNull(trace.getPropertyUpdates());
         Assert.assertNull(trace.getAttributes());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertSetPropertyAction(Trace trace, String name, Object value, PropertyUpdateType type, Object oldValue) {
@@ -47,7 +54,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertEquals(value, propertyUpdate.getNewValue());
         Assert.assertEquals(oldValue, propertyUpdate.getOldValue());
         Assert.assertEquals(0, trace.getAttributes().size());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertGetPropertyAction(Trace trace, String name, Object expectedValue) {
@@ -66,7 +77,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertEquals(0, trace.getPropertyUpdates().size());
         Assert.assertEquals(0, trace.getAttributes().size());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertPrintAction(Trace trace, String content) {
@@ -81,7 +96,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertEquals(0, trace.getPropertyUpdates().size());
         Assert.assertEquals(0, trace.getAttributes().size());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertSetAttrAction(Trace trace, String name, Object value) {
@@ -103,7 +122,11 @@ public class TestTraceBase extends TestRuntimeBase {
         attr = trace.getAttributes().get(name);
         Assert.assertEquals(name, attr.getName());
         Assert.assertEquals(value, attr.getValue());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertThrowLinkTerminateAction(Trace trace) {
@@ -113,6 +136,9 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertEquals(0, trace.getPropertyUpdates().size());
         Assert.assertEquals(0, trace.getAttributes().size());
+        if (trace.getCause() == null) {
+            sleep(1);
+        }
         Assert.assertNotNull(trace.getCause());
     }
 
@@ -140,7 +166,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertEquals(value, propertyUpdate.getNewValue());
         Assert.assertEquals(oldValue, propertyUpdate.getOldValue());
         Assert.assertEquals(0, trace.getAttributes().size());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertPrintCondition(Trace trace, String content, Boolean output) {
@@ -156,12 +186,31 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertEquals("output", argument.getName());
         if (output != null) {
             Assert.assertEquals(output, argument.getValue());
-            Assert.assertEquals(output, trace.getResult());
+
+            if (trace.getCause() == null) {
+                if (trace.getResult() == null) {
+                    sleep(1);
+                }
+                if (trace.getCause() == null) {
+                    Assert.assertEquals(output, trace.getResult());
+                }
+            }
         }
-        Assert.assertNotNull(trace.getResult());
+        if (trace.getCause() == null) {
+            if (trace.getResult() == null) {
+                sleep(1);
+            }
+            if (trace.getCause() == null) {
+                Assert.assertNotNull(trace.getResult());
+            }
+        }
         Assert.assertEquals(0, trace.getPropertyUpdates().size());
         Assert.assertEquals(0, trace.getAttributes().size());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertSetAttrCondition(Trace trace, String name, Object value, boolean output) {
@@ -186,7 +235,11 @@ public class TestTraceBase extends TestRuntimeBase {
         attr = trace.getAttributes().get(name);
         Assert.assertEquals(name, attr.getName());
         Assert.assertEquals(value, attr.getValue());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertThrowLinkTerminateCondition(Trace trace) {
@@ -196,6 +249,9 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertEquals(0, trace.getPropertyUpdates().size());
         Assert.assertEquals(0, trace.getAttributes().size());
+        if (trace.getCause() == null) {
+            sleep(1);
+        }
         Assert.assertNotNull(trace.getCause());
     }
 
@@ -215,7 +271,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertEquals(output, trace.getResult());
         Assert.assertEquals(0, trace.getPropertyUpdates().size());
         Assert.assertEquals(0, trace.getAttributes().size());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertSetPropertyListener(Trace trace, String name, Object value, ListenerEvent event, PropertyUpdateType type, Object oldValue) {
@@ -242,7 +302,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertEquals(value, propertyUpdate.getNewValue());
         Assert.assertEquals(oldValue, propertyUpdate.getOldValue());
         Assert.assertEquals(0, trace.getAttributes().size());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertGetPropertyListener(Trace trace, String name, Object expectedValue, ListenerEvent event) {
@@ -264,7 +328,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertEquals(0, trace.getPropertyUpdates().size());
         Assert.assertEquals(0, trace.getAttributes().size());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertPrintListener(Trace trace, String content, ListenerEvent event) {
@@ -282,7 +350,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertEquals(0, trace.getPropertyUpdates().size());
         Assert.assertEquals(0, trace.getAttributes().size());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertThrowLinkTerminateListener(Trace trace, ListenerEvent event) {
@@ -297,6 +369,9 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertEquals(0, trace.getPropertyUpdates().size());
         Assert.assertEquals(0, trace.getAttributes().size());
+        if (trace.getCause() == null) {
+            sleep(1);
+        }
         Assert.assertNotNull(trace.getCause());
     }
 
@@ -322,7 +397,11 @@ public class TestTraceBase extends TestRuntimeBase {
         attr = trace.getAttributes().get(name);
         Assert.assertEquals(name, attr.getName());
         Assert.assertEquals(value, attr.getValue());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertSuccessResultListener(Trace trace, Object result, ListenerEvent event) {
@@ -341,7 +420,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertEquals(0, trace.getPropertyUpdates().size());
         Assert.assertEquals(0, trace.getAttributes().size());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertExclusiveGateway(Trace trace) {
@@ -351,7 +434,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertNull(trace.getPropertyUpdates());
         Assert.assertNull(trace.getAttributes());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertJoinGateway(Trace trace) {
@@ -361,7 +448,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertNull(trace.getPropertyUpdates());
         Assert.assertNull(trace.getAttributes());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertRule(Trace trace) {
@@ -371,7 +462,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getResult());
         Assert.assertNull(trace.getPropertyUpdates());
         Assert.assertNull(trace.getAttributes());
-        Assert.assertNull(trace.getCause());
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof RuleException);
+            Assert.assertEquals(RuleErrorCode.RULE_ALREADY_FINISHED, ((RuleException) cause).getCode());
+        }
     }
 
     protected void assertExecutionInstance(ExecutionInstance executionInstance, int finishedSize, int unFinishedSize, int traceNum) {
@@ -437,5 +532,13 @@ public class TestTraceBase extends TestRuntimeBase {
             }
         }
         throw new RuntimeException();
+    }
+
+    private void sleep(int seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException e) {
+            // ignore
+        }
     }
 }

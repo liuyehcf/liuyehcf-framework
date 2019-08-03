@@ -4,14 +4,14 @@ import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.activity.Action;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
+import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateResult;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 
 /**
  * @author hechenfeng
  * @date 2019/4/30
  */
-public class ActionOperation extends AbstractOperation<Void> {
+class ActionOperation extends AbstractOperation<Void> {
 
     private final Action action;
 
@@ -22,21 +22,34 @@ public class ActionOperation extends AbstractOperation<Void> {
     }
 
     @Override
-    protected void execute() throws Throwable {
+    void operate() throws Throwable {
         context.setNode(action);
 
-        invokeNodeBeforeListeners(action);
+        invokeNodeBeforeListeners(action, this::continueAction);
+    }
 
+    private void continueAction() throws Throwable {
         DelegateInvocation delegateInvocation = context.getDelegateInvocation(action, null, null);
+        DelegateResult delegateResult;
         try {
-            delegateInvocation.proceed();
+            delegateResult = delegateInvocation.proceed();
         } catch (Throwable e) {
-            invokeNodeFailureListeners(action, e);
-            throw e;
+            invokeNodeFailureListeners(action, e, () -> throwCause(e));
+            return;
         }
 
-        invokeNodeSuccessListeners(action, null);
+        if (delegateResult.isAsync()) {
+            delegateResult.getDelegatePromise().addListener(promise -> processAsyncPromise(promise, this::continueSuccessListener));
+        } else {
+            continueSuccessListener();
+        }
+    }
 
+    private void continueSuccessListener() throws Throwable {
+        invokeNodeSuccessListeners(action, null, this::continueForward);
+    }
+
+    private void continueForward() {
         context.markElementFinished(action);
 
         forward(LinkType.NORMAL, action.getSuccessors());

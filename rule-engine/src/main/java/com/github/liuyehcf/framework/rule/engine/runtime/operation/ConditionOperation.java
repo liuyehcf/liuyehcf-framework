@@ -5,16 +5,18 @@ import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
-import com.github.liuyehcf.framework.rule.engine.runtime.operation.base.AbstractOperation;
+import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateResult;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 
 /**
  * @author hechenfeng
  * @date 2019/4/30
  */
-public class ConditionOperation extends AbstractOperation<Boolean> {
+class ConditionOperation extends AbstractOperation<Boolean> {
 
     private final Condition condition;
+    private volatile DelegateResult delegateResult;
+    private volatile boolean conditionOutput;
 
     ConditionOperation(OperationContext context, Condition condition) {
         this(context, condition, null);
@@ -27,45 +29,57 @@ public class ConditionOperation extends AbstractOperation<Boolean> {
     }
 
     @Override
-    protected void execute() throws Throwable {
+    void operate() throws Throwable {
         context.setNode(condition);
 
-        Throwable cause = null;
-        boolean hasSuccess = false;
+        invokeNodeBeforeListeners(condition, this::conditionCondition);
+    }
+
+    private void conditionCondition() throws Throwable {
+        DelegateInvocation delegateInvocation = context.getDelegateInvocation(condition, null, null);
+
         try {
-            invokeNodeBeforeListeners(condition);
-
-            DelegateInvocation delegateInvocation = context.getDelegateInvocation(condition, null, null);
-            boolean conditionOutput;
-            try {
-                conditionOutput = (boolean) delegateInvocation.proceed();
-            } catch (Throwable e) {
-                invokeNodeFailureListeners(condition, e);
-                throw e;
-            }
-
-            invokeNodeSuccessListeners(condition, conditionOutput);
-
-            context.setConditionOutput(condition, conditionOutput);
-            LinkType linkType = conditionOutput ? LinkType.TRUE : LinkType.FALSE;
-            LinkType unReachableLinkType = conditionOutput ? LinkType.FALSE : LinkType.TRUE;
-
-            if (optPromise != null && optPromise.trySuccess(conditionOutput)) {
-                hasSuccess = true;
-            }
-
-            context.executeAsync(new MarkSuccessorUnreachableOperation(context.cloneMarkContext(), condition, unReachableLinkType));
-
-            context.markElementFinished(condition);
-
-            forward(linkType, condition.getSuccessors());
+            delegateResult = delegateInvocation.proceed();
         } catch (Throwable e) {
-            cause = e;
-            throw e;
-        } finally {
-            if (optPromise != null && !hasSuccess) {
-                optPromise.tryFailure(cause);
-            }
+            invokeNodeFailureListeners(condition, e, () -> {
+                if (optPromise != null) {
+                    optPromise.tryFailure(e);
+                }
+                throwCause(e);
+            });
+            return;
         }
+
+        if (delegateResult.isAsync()) {
+            delegateResult.getDelegatePromise().addListener(promise -> processAsyncPromise(promise, this::continueSuccessListener));
+        } else {
+            continueSuccessListener();
+        }
+    }
+
+    private void continueSuccessListener() throws Throwable {
+        if (delegateResult.isAsync()) {
+            conditionOutput = (boolean) delegateResult.getDelegatePromise().get();
+        } else {
+            conditionOutput = (boolean) delegateResult.getResult();
+        }
+
+        invokeNodeSuccessListeners(condition, conditionOutput, this::continueForward);
+    }
+
+    private void continueForward() {
+        context.setConditionOutput(condition, conditionOutput);
+        LinkType linkType = conditionOutput ? LinkType.TRUE : LinkType.FALSE;
+        LinkType unReachableLinkType = conditionOutput ? LinkType.FALSE : LinkType.TRUE;
+
+        if (optPromise != null) {
+            optPromise.trySuccess(conditionOutput);
+        }
+
+        context.executeAsync(new MarkSuccessorUnreachableOperation(context.cloneMarkContext(), condition, unReachableLinkType));
+
+        context.markElementFinished(condition);
+
+        forward(linkType, condition.getSuccessors());
     }
 }

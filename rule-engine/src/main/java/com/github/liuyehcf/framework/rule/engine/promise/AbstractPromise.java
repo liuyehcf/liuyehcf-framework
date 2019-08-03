@@ -239,23 +239,26 @@ public abstract class AbstractPromise<T> implements Promise<T> {
     }
 
     private void setCanceledUnderLock() {
-        isDone = true;
+        // isDone is used to determine success, so the assignment of isDone must be at the end
         isFailure = true;
         isCanceled = true;
+        isDone = true;
         completeCondition.signalAll();
     }
 
     private void setSuccessUnderLock(T outcome) {
-        isDone = true;
+        // isDone is used to determine success, so the assignment of isDone must be at the end
         isSuccess = true;
         this.outcome = outcome;
+        isDone = true;
         completeCondition.signalAll();
     }
 
     private void setFailureUnderLock(Throwable cause) {
-        isDone = true;
+        // isDone is used to determine success, so the assignment of isDone must be at the end
         isFailure = true;
         this.cause = cause;
+        isDone = true;
         completeCondition.signalAll();
     }
 

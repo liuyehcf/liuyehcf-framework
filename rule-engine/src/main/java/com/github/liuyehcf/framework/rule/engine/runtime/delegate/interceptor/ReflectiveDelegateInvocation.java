@@ -40,8 +40,10 @@ import java.util.Set;
  */
 public class ReflectiveDelegateInvocation implements DelegateInvocation {
 
+    // result and cause only for listener
     private final Object result;
     private final Throwable cause;
+
     private final Executable executable;
     private final Delegate delegate;
     private final Set<String> delegateFieldNames;
@@ -87,10 +89,10 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
     }
 
     @Override
-    public final Object proceed() throws Throwable {
+    public final DelegateResult proceed() throws Throwable {
         long startNanos = System.nanoTime();
         Throwable cause = null;
-        Object result = null;
+        DelegateResult delegateResult = null;
         try {
             if (stackCnt++ == 0) {
                 injectDelegateFields(executable, delegate);
@@ -98,17 +100,19 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
 
             if (index < chains.size()) {
                 DelegateInterceptor delegateInterceptor = chains.get(index++);
-                return delegateInterceptor.invoke(this);
+                delegateResult = delegateInterceptor.invoke(this);
+                return delegateResult;
             } else {
-                result = doInvoke();
-                return result;
+                delegateResult = doInvoke();
+                return delegateResult;
             }
         } catch (Throwable e) {
             cause = e;
+            delegateResult = new DefaultDelegateResult(false, null, null);
             throw e;
         } finally {
             if (--stackCnt == 0) {
-                recordTrace(result, cause, startNanos);
+                recordTrace(delegateResult, cause, startNanos);
             }
         }
     }
@@ -138,12 +142,24 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
         return this.argumentValues;
     }
 
-    private Object doInvoke() throws Throwable {
+    private DelegateResult doInvoke() throws Throwable {
         if (delegate instanceof ActionDelegate) {
             ((ActionDelegate) delegate).onAction((ActionContext) executableContext);
-            return null;
+
+            if (executableContext.isAsync()) {
+                return new DefaultDelegateResult(true, null, executableContext.getDelegatePromise());
+            } else {
+                return new DefaultDelegateResult(false, null, null);
+            }
         } else if (delegate instanceof ConditionDelegate) {
-            return ((ConditionDelegate) delegate).onCondition((ConditionContext) executableContext);
+            boolean result = ((ConditionDelegate) delegate).onCondition((ConditionContext) executableContext);
+
+            if (executableContext.isAsync()) {
+                return new DefaultDelegateResult(true, null, executableContext.getDelegatePromise());
+            } else {
+                return new DefaultDelegateResult(false, result, null);
+            }
+
         } else if (delegate instanceof ListenerDelegate) {
             Listener listener = (Listener) executable;
             if (ListenerEvent.before.equals(listener.getEvent())) {
@@ -153,13 +169,18 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
             } else if (ListenerEvent.failure.equals(listener.getEvent())) {
                 ((ListenerDelegate) delegate).onFailure((ListenerContext) executableContext, cause);
             }
-            return null;
+
+            if (executableContext.isAsync()) {
+                return new DefaultDelegateResult(true, null, executableContext.getDelegatePromise());
+            } else {
+                return new DefaultDelegateResult(false, null, null);
+            }
         } else {
             throw new UnsupportedOperationException();
         }
     }
 
-    private void recordTrace(Object result, Throwable cause, long startNanos) {
+    private void recordTrace(DelegateResult delegateResult, Throwable cause, long startNanos) {
         List<PropertyUpdate> propertyUpdates = executableContext.getPropertyUpdates();
         Map<String, Attribute> attributes = executableContext.getLocalAttributes();
 
@@ -169,19 +190,38 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
             arguments.add(new DefaultArgument(argumentNames[i], argumentValues[i]));
         }
 
+        Object executableResult;
+
+        if (delegateResult.isAsync()) {
+            executableResult = null;
+        } else {
+            executableResult = delegateResult.getResult();
+        }
+
         DefaultTrace trace = new DefaultTrace(
                 executableContext.getExecutionId(),
                 ((Element) executable).getId(),
                 ((Element) executable).getType(),
                 executable.getName(),
                 arguments,
-                result,
+                executableResult,
                 propertyUpdates,
                 attributes,
                 cause,
                 startNanos,
                 System.nanoTime()
         );
+
+        if (delegateResult.isAsync()) {
+            delegateResult.getDelegatePromise().addListener(promise -> {
+                if (promise.isSuccess()) {
+                    trace.setResult(promise.get());
+                } else if (promise.isFailure()) {
+                    trace.setCause(promise.cause());
+                }
+                trace.setEndNanos(System.nanoTime());
+            });
+        }
 
         if (executable instanceof Listener
                 && Objects.equals(ListenerScope.GLOBAL, ((Listener) executable).getScope())) {

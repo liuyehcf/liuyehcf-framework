@@ -26,7 +26,10 @@ public enum RuleErrorCode {
     PLACE_HOLDER("063", "PLACE_HOLDER"),
 
     LINK_TERMINATE("071", "LINK_TERMINATE"),
-    INSTANCE_TERMINATE("072", "INSTANCE_TERMINATE");
+    INSTANCE_TERMINATE("072", "INSTANCE_TERMINATE"),
+
+    RULE_ALREADY_FINISHED("081", "RULE_ALREADY_FINISHED"),
+    ;
 
     private String code;
     private String scope;

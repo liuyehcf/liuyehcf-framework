@@ -21,6 +21,94 @@ import java.util.Map;
 public class TestIfListenerTrace extends TestTraceBase {
 
     @Test
+    public void testSingleIfWithGlobalListener() {
+        Rule rule = compile("{\n" +
+                "    if(printCondition(content=\"conditionA\", output=true)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")])\n" +
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+        });
+    }
+
+    @Test
+    public void testParallelSingleIfWithGlobalListener() {
+        Rule rule = compile("{\n" +
+                "    if(printCondition(content=\"conditionA\", output=true)[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]),\n" +
+                "    if(printCondition(content=\"conditionB\", output=true)[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]),\n" +
+                "    if(printCondition(content=\"conditionC\", output=false)[printListener(event=\"before\", content=\"listenerE\"), printListener(event=\"success\", content=\"listenerF\")])\n" +
+                "}[printListener(event=\"before\", content=\"listenerG\"), printListener(event=\"success\", content=\"listenerH\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 3, 0, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerG", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerH", ListenerEvent.success);
+
+            for (int i = 0; i < executionInstance.getLinks().size(); i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 4);
+
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(1);
+                assertPrintListener(trace, "listener[ACE]", ListenerEvent.before);
+
+                trace = executionLink.getTraces().get(2);
+                assertPrintCondition(trace, "condition[ABC]", null);
+
+                trace = executionLink.getTraces().get(3);
+                assertPrintListener(trace, "listener[BDF]", ListenerEvent.success);
+            }
+        });
+    }
+
+    @Test
     public void testSingleIfNestedInActionWithGlobalListener() {
         Rule rule = compile("{\n" +
                 "    printAction(content=\"actionA\"){\n" +
