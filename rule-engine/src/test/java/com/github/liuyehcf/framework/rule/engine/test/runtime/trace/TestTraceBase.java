@@ -340,7 +340,7 @@ public class TestTraceBase extends TestRuntimeBase {
 
         Assert.assertEquals(ElementType.LISTENER, trace.getType());
         Assert.assertEquals("printListener", trace.getName());
-        Assert.assertEquals(2, trace.getArguments().size());
+        Assert.assertEquals(3, trace.getArguments().size());
         argument = trace.getArguments().get(0);
         Assert.assertEquals("event", argument.getName());
         Assert.assertEquals(event.name(), argument.getValue());
@@ -362,7 +362,7 @@ public class TestTraceBase extends TestRuntimeBase {
 
         Assert.assertEquals(ElementType.LISTENER, trace.getType());
         Assert.assertEquals("throwLinkTerminateListener", trace.getName());
-        Assert.assertEquals(1, trace.getArguments().size());
+        Assert.assertEquals(2, trace.getArguments().size());
         argument = trace.getArguments().get(0);
         Assert.assertEquals("event", argument.getName());
         Assert.assertEquals(event.name(), argument.getValue());

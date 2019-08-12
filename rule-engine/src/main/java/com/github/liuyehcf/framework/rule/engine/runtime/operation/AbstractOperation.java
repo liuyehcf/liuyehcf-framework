@@ -47,10 +47,16 @@ public abstract class AbstractOperation<T> implements Runnable {
     }
 
     AbstractOperation(OperationContext context, Promise<T> optPromise) {
+        this(context, optPromise, false);
+    }
+
+    AbstractOperation(OperationContext context, Promise<T> optPromise, boolean skipBind) {
         Assert.assertNotNull(context);
         this.context = context;
         this.optPromise = optPromise;
-        bindToRulePromise();
+        if (!skipBind) {
+            bindToRulePromise();
+        }
     }
 
     @Override
@@ -306,9 +312,7 @@ public abstract class AbstractOperation<T> implements Runnable {
 
     private void bindToRulePromise() {
         if (optPromise != null) {
-            context.getPromise().addListener(rulePromise ->
-                    optPromise.tryFailure(new RuleException(RuleErrorCode.RULE_ALREADY_FINISHED, rulePromise.cause()))
-            );
+            context.getPromise().addListener(rulePromise -> optPromise.tryFailure(new RuleException(RuleErrorCode.RULE_ALREADY_FINISHED, rulePromise.cause())));
         }
     }
 
@@ -367,7 +371,7 @@ public abstract class AbstractOperation<T> implements Runnable {
 
             listenerPromise.addListener(promiseListener);
 
-            context.executeAsync(new ListenerOperation(context, listenerPromise, listeners, 0, result, cause));
+            context.executeAsync(new ListenerOperation(context, listenerPromise, false, listeners, 0, result, cause));
         }
     }
 

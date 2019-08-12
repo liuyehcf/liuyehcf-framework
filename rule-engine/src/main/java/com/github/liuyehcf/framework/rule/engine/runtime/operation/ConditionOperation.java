@@ -9,6 +9,8 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.De
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 
 /**
+ * must guarantee optPromise will end in any cases
+ *
  * @author hechenfeng
  * @date 2019/4/30
  */

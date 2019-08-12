@@ -1,6 +1,7 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.delegate.context;
 
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
+import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerScope;
 
 /**
  * @author hechenfeng
@@ -15,4 +16,12 @@ public interface ListenerContext extends ExecutableContext<Listener> {
      */
     @Override
     Listener getElement();
+
+    /**
+     * get listener scope of current listener
+     *
+     * @return listener scope
+     * @see ListenerScope
+     */
+    ListenerScope getListenerScope();
 }

@@ -8,10 +8,19 @@ import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionLink;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.Trace;
+import com.github.liuyehcf.framework.rule.engine.test.runtime.listener.PrintListener;
+import com.github.liuyehcf.framework.rule.engine.test.runtime.listener.ThrowExceptionListener;
+import com.github.liuyehcf.framework.rule.engine.test.runtime.listener.ThrowLinkTerminateListener;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.trace.TestTraceBase;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author hechenfeng
@@ -599,16 +608,95 @@ public class TestCommonListenerTrace extends TestTraceBase {
     }
 
     @Test
-    public void testActionWithGlobalMultiBeforeExceptionListener() {
+    public void testActionWithGlobalMultiFirstBeforeExceptionListener() {
         Rule rule = compile("{\n" +
                 "    throwExceptionAction()\n" +
-                "}[printListener(event=\"before\", content=\"listenerA\"), throwExceptionListener(event=\"before\"), printListener(event=\"before\", content=\"listenerB\")]");
+                "}[throwExceptionListener(event=\"before\", namespace=${namespace}), printListener(event=\"before\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"before\", content=\"listenerB\", namespace=${namespace})]");
 
         executeTimes(() -> {
-            Promise<ExecutionInstance> promise = startRule(rule, null);
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_BEFORE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
 
             promise.sync();
             assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(0, printBeforeCounter.get());
+
+            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiMiddleBeforeExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[printListener(event=\"before\", content=\"listenerA\", namespace=${namespace}), throwExceptionListener(event=\"before\", namespace=${namespace}), printListener(event=\"before\", content=\"listenerB\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_BEFORE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(1, printBeforeCounter.get());
+
+            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiLastBeforeExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[printListener(event=\"before\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"before\", content=\"listenerB\", namespace=${namespace}), throwExceptionListener(event=\"before\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_BEFORE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(2, printBeforeCounter.get());
+
+            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
         });
     }
 
@@ -637,7 +725,31 @@ public class TestCommonListenerTrace extends TestTraceBase {
     }
 
     @Test
-    public void testActionWithGlobalMultiBeforeLinkTerminationListener() {
+    public void testActionWithGlobalMultiBeforeFirstLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[throwLinkTerminateListener(event=\"before\"), printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"before\", content=\"listenerB\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 0, 1);
+
+            trace = executionInstance.getTraces().get(0);
+            assertThrowLinkTerminateListener(trace, ListenerEvent.before);
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiBeforeMiddleLinkTerminationListener() {
         Rule rule = compile("{\n" +
                 "    throwExceptionAction()\n" +
                 "}[printListener(event=\"before\", content=\"listenerA\"),throwLinkTerminateListener(event=\"before\"), printListener(event=\"before\", content=\"listenerB\")]");
@@ -664,6 +776,36 @@ public class TestCommonListenerTrace extends TestTraceBase {
     }
 
     @Test
+    public void testActionWithGlobalMultiBeforeLastLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"before\", content=\"listenerB\"), throwLinkTerminateListener(event=\"before\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 0, 3);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerB", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(2);
+            assertThrowLinkTerminateListener(trace, ListenerEvent.before);
+        });
+    }
+
+    @Test
     public void testActionWithGlobalSuccessExceptionListener() {
         Rule rule = compile("{\n" +
                 "    printAction(content=\"actionA\"),\n" +
@@ -680,18 +822,101 @@ public class TestCommonListenerTrace extends TestTraceBase {
     }
 
     @Test
-    public void testActionWithGlobalMultiSuccessExceptionListener() {
+    public void testActionWithGlobalMultiFirstSuccessExceptionListener() {
         Rule rule = compile("{\n" +
                 "    printAction(content=\"actionA\"),\n" +
                 "\tprintAction(content=\"actionB\"),\n" +
                 "\tprintAction(content=\"actionC\")\n" +
-                "}[printListener(event=\"success\", content=\"listenerA\"), throwExceptionListener(event=\"success\"), printListener(event=\"success\", content=\"listenerB\")]");
+                "}[throwExceptionListener(event=\"success\", namespace=${namespace}), printListener(event=\"success\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"success\", content=\"listenerB\", namespace=${namespace})]");
 
         executeTimes(() -> {
-            Promise<ExecutionInstance> promise = startRule(rule, null);
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_SUCCESS_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
 
             promise.sync();
             assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(0, printBeforeCounter.get());
+
+            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiMiddleSuccessExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    printAction(content=\"actionA\"),\n" +
+                "\tprintAction(content=\"actionB\"),\n" +
+                "\tprintAction(content=\"actionC\")\n" +
+                "}[printListener(event=\"success\", content=\"listenerA\", namespace=${namespace}), throwExceptionListener(event=\"success\", namespace=${namespace}), printListener(event=\"success\", content=\"listenerB\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_SUCCESS_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(1, printBeforeCounter.get());
+
+            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiLastSuccessExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    printAction(content=\"actionA\"),\n" +
+                "\tprintAction(content=\"actionB\"),\n" +
+                "\tprintAction(content=\"actionC\")\n" +
+                "}[printListener(event=\"success\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"success\", content=\"listenerB\", namespace=${namespace}), throwExceptionListener(event=\"success\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_SUCCESS_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(2, printBeforeCounter.get());
+
+            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
         });
     }
 
@@ -733,7 +958,44 @@ public class TestCommonListenerTrace extends TestTraceBase {
     }
 
     @Test
-    public void testActionWithGlobalMultiSuccessLinkTerminationListener() {
+    public void testActionWithGlobalMultiFirstSuccessLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    printAction(content=\"actionA\"),\n" +
+                "\tprintAction(content=\"actionB\"),\n" +
+                "\tprintAction(content=\"actionC\")\n" +
+                "}[throwLinkTerminateListener(event=\"success\"), printListener(event=\"success\", content=\"listenerA\"),printListener(event=\"success\", content=\"listenerB\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 3, 0, 1);
+
+            trace = executionInstance.getTraces().get(0);
+            assertThrowLinkTerminateListener(trace, ListenerEvent.success);
+
+            for (int i = 0; i < executionInstance.getLinks().size(); i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 2);
+
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(1);
+                assertPrintAction(trace, "action[ABC]");
+            }
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiMiddleSuccessLinkTerminationListener() {
         Rule rule = compile("{\n" +
                 "    printAction(content=\"actionA\"),\n" +
                 "\tprintAction(content=\"actionB\"),\n" +
@@ -769,6 +1031,289 @@ public class TestCommonListenerTrace extends TestTraceBase {
                 trace = executionLink.getTraces().get(1);
                 assertPrintAction(trace, "action[ABC]");
             }
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiLastSuccessLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    printAction(content=\"actionA\"),\n" +
+                "\tprintAction(content=\"actionB\"),\n" +
+                "\tprintAction(content=\"actionC\")\n" +
+                "}[printListener(event=\"success\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\"),throwLinkTerminateListener(event=\"success\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startRule(rule, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 3, 0, 3);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerA", ListenerEvent.success);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+
+            trace = executionInstance.getTraces().get(2);
+            assertThrowLinkTerminateListener(trace, ListenerEvent.success);
+
+            for (int i = 0; i < executionInstance.getLinks().size(); i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 2);
+
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(1);
+                assertPrintAction(trace, "action[ABC]");
+            }
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalFailureExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[throwExceptionListener(event=\"failure\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger counter = new AtomicInteger();
+            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.put(namespace, counter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            assertEquals(1, counter.get());
+
+            assertNotNull(ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.remove(namespace));
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiFirstFailureExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[throwExceptionListener(event=\"failure\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(0, printBeforeCounter.get());
+
+            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiMiddleFailureExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), throwExceptionListener(event=\"failure\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(1, printBeforeCounter.get());
+
+            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiLastFailureExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace}), throwExceptionListener(event=\"failure\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(2, printBeforeCounter.get());
+
+            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalFailureLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[throwLinkTerminateListener(event=\"failure\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger counter = new AtomicInteger();
+            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.put(namespace, counter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            assertEquals(1, counter.get());
+
+            assertNotNull(ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.remove(namespace));
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiFirstFailureLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[throwLinkTerminateListener(event=\"failure\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(0, printBeforeCounter.get());
+
+            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiMiddleFailureLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), throwLinkTerminateListener(event=\"failure\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(1, printBeforeCounter.get());
+
+            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalMultiLastFailureLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace}), throwLinkTerminateListener(event=\"failure\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(2, printBeforeCounter.get());
+
+            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
         });
     }
 

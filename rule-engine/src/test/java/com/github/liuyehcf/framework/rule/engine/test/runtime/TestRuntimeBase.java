@@ -25,10 +25,14 @@ import java.util.concurrent.*;
  */
 public class TestRuntimeBase {
 
+    public static final int SYNC_MODE = 1;
+    public static final int ASYNC_MODE_WITHOUT_TIMEOUT = 1;
+    public static final int ASYNC_MODE_WITH_TIMEOUT = 2;
+
     public static final boolean STD_OUT_SWITCH = false;
-    public static final boolean ACTION_ASYNC_SWITCH = true;
-    public static final boolean CONDITION_ASYNC_SWITCH = true;
-    public static final boolean LISTENER_ASYNC_SWITCH = true;
+    public static final int ACTION_EXECUTION_MODE = ASYNC_MODE_WITHOUT_TIMEOUT;
+    public static final int CONDITION_EXECUTION_MODE = ASYNC_MODE_WITHOUT_TIMEOUT;
+    public static final int LISTENER_EXECUTION_MODE = ASYNC_MODE_WITHOUT_TIMEOUT;
     protected static final Random RANDOM = new Random();
     protected static final int EXECUTE_TIMES = 1;
     private static ExecutorService EXECUTOR = new ThreadPoolExecutor(16, 16, 5L, TimeUnit.SECONDS,

@@ -9,12 +9,13 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntimeBase.LISTENER_ASYNC_SWITCH;
+import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntimeBase.*;
 
 /**
  * @author hechenfeng
  * @date 2019/8/1
  */
+@SuppressWarnings("all")
 public abstract class BaseListener implements ListenerDelegate {
 
     private static ExecutorService LISTENER_EXECUTOR = new ThreadPoolExecutor(16, 16, 5L, TimeUnit.SECONDS,
@@ -24,11 +25,16 @@ public abstract class BaseListener implements ListenerDelegate {
 
     @Override
     public void onBefore(ListenerContext context) throws Exception {
-        if (LISTENER_ASYNC_SWITCH) {
+        if (LISTENER_EXECUTION_MODE == ASYNC_MODE_WITHOUT_TIMEOUT) {
             context.executeAsync(LISTENER_EXECUTOR, () -> {
                 doBefore(context);
                 return null;
             });
+        } else if (LISTENER_EXECUTION_MODE == ASYNC_MODE_WITH_TIMEOUT) {
+            context.executeAsync(LISTENER_EXECUTOR, () -> {
+                doBefore(context);
+                return null;
+            }, 3, TimeUnit.SECONDS);
         } else {
             doBefore(context);
         }
@@ -36,11 +42,16 @@ public abstract class BaseListener implements ListenerDelegate {
 
     @Override
     public void onSuccess(ListenerContext context, Object result) throws Exception {
-        if (LISTENER_ASYNC_SWITCH) {
+        if (LISTENER_EXECUTION_MODE == ASYNC_MODE_WITHOUT_TIMEOUT) {
             context.executeAsync(LISTENER_EXECUTOR, () -> {
                 doSuccess(context, result);
                 return null;
             });
+        } else if (LISTENER_EXECUTION_MODE == ASYNC_MODE_WITH_TIMEOUT) {
+            context.executeAsync(LISTENER_EXECUTOR, () -> {
+                doSuccess(context, result);
+                return null;
+            }, 3, TimeUnit.SECONDS);
         } else {
             doSuccess(context, result);
         }
@@ -48,11 +59,16 @@ public abstract class BaseListener implements ListenerDelegate {
 
     @Override
     public void onFailure(ListenerContext context, Throwable cause) throws Exception {
-        if (LISTENER_ASYNC_SWITCH) {
+        if (LISTENER_EXECUTION_MODE == ASYNC_MODE_WITHOUT_TIMEOUT) {
             context.executeAsync(LISTENER_EXECUTOR, () -> {
                 doFailure(context, cause);
                 return null;
             });
+        } else if (LISTENER_EXECUTION_MODE == ASYNC_MODE_WITH_TIMEOUT) {
+            context.executeAsync(LISTENER_EXECUTOR, () -> {
+                doFailure(context, cause);
+                return null;
+            }, 3, TimeUnit.SECONDS);
         } else {
             doFailure(context, cause);
         }

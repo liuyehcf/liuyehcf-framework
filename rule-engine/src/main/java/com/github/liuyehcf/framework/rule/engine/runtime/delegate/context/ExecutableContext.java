@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author hechenfeng
@@ -197,6 +199,16 @@ public interface ExecutableContext<E extends Element> {
      * @param callable         asynchronous Execution Logic
      */
     void executeAsync(Executor externalExecutor, Callable<?> callable);
+
+    /**
+     * execute delegate async
+     *
+     * @param externalExecutor user's external executor
+     * @param callable         asynchronous Execution Logic
+     * @param timeout          timeout of execution
+     * @param timeUnit         timeUnit of timeout
+     */
+    void executeAsync(ExecutorService externalExecutor, Callable<?> callable, long timeout, TimeUnit timeUnit);
 
     /**
      * whether execution is async

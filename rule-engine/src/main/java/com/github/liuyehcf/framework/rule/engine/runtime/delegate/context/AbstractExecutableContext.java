@@ -18,8 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -203,9 +202,8 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
         if (isAsync.compareAndSet(false, true)
                 && delegatePromise.compareAndSet(null, new DelegatePromise())) {
 
-            rulePromise.addListener((rulePromise) ->
-                    delegatePromise.get().tryFailure(new RuleException(RuleErrorCode.RULE_ALREADY_FINISHED, rulePromise.cause()))
-            );
+            DelegatePromise delegatePromise = this.delegatePromise.get();
+            rulePromise.addListener((rulePromise) -> delegatePromise.tryFailure(new RuleException(RuleErrorCode.RULE_ALREADY_FINISHED, rulePromise.cause())));
 
             try {
                 externalExecutor.execute(() -> {
@@ -216,6 +214,46 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
                     } catch (Throwable e) {
                         cause = e;
                     } finally {
+                        if (cause != null) {
+                            delegatePromise.tryFailure(cause);
+                        } else {
+                            delegatePromise.trySuccess(result);
+                        }
+                    }
+                });
+            } catch (Throwable e) {
+                delegatePromise.tryFailure(e);
+            }
+        }
+    }
+
+    @Override
+    public final void executeAsync(ExecutorService externalExecutor, Callable<?> callable, long timeout, TimeUnit timeUnit) {
+        if (isAsync.compareAndSet(false, true)
+                && delegatePromise.compareAndSet(null, new DelegatePromise())) {
+
+            rulePromise.addListener((rulePromise) ->
+                    delegatePromise.get().tryFailure(new RuleException(RuleErrorCode.RULE_ALREADY_FINISHED, rulePromise.cause()))
+            );
+
+            try {
+                Future<Object> future = externalExecutor.submit(callable::call);
+
+                externalExecutor.execute(() -> {
+                    Throwable cause = null;
+                    Object result = null;
+                    try {
+                        result = future.get(timeout, timeUnit);
+                    } catch (ExecutionException e) {
+                        if (e.getCause() != null) {
+                            cause = e.getCause();
+                        } else {
+                            cause = e;
+                        }
+                    } catch (Throwable e) {
+                        cause = e;
+                    } finally {
+                        future.cancel(true);
                         if (cause != null) {
                             delegatePromise.get().tryFailure(cause);
                         } else {

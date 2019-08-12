@@ -274,41 +274,44 @@ public class DefaultOperationContext implements OperationContext {
         long executionId = getNextExecutionId();
 
         if (executable instanceof Action) {
+            Action action = (Action) executable;
             return new ReflectiveDelegateInvocation(
                     null,
                     null,
                     executable,
                     RuleEngine.getActionDelegate(executable.getName()),
                     this,
-                    new DefaultActionContext((Action) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise),
+                    new DefaultActionContext(action, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise),
                     RuleEngine.getDelegateInterceptorFactories());
         } else if (executable instanceof Condition) {
+            Condition condition = (Condition) executable;
             return new ReflectiveDelegateInvocation(
                     null,
                     null,
                     executable,
                     RuleEngine.getConditionDelegate(executable.getName()),
                     this,
-                    new DefaultConditionContext((Condition) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise),
+                    new DefaultConditionContext(condition, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise),
                     RuleEngine.getDelegateInterceptorFactories());
         } else if (executable instanceof Listener) {
-            if (ListenerScope.GLOBAL.equals(((Listener) executable).getScope())) {
+            Listener listener = (Listener) executable;
+            if (ListenerScope.GLOBAL.equals((listener).getScope())) {
                 return new ReflectiveDelegateInvocation(
                         result,
                         cause,
                         executable,
                         RuleEngine.getListenerDelegate(executable.getName()),
                         this,
-                        new DefaultListenerContext((Listener) executable, instanceId, linkId, executionId, executionInstance.getEnv(), executionInstance.getAttributes(), promise),
+                        new DefaultListenerContext(listener, instanceId, linkId, executionId, executionInstance.getEnv(), executionInstance.getAttributes(), promise, listener.getScope()),
                         RuleEngine.getDelegateInterceptorFactories());
-            } else if (ListenerScope.NODE.equals(((Listener) executable).getScope())) {
+            } else if (ListenerScope.NODE.equals((listener).getScope())) {
                 return new ReflectiveDelegateInvocation(
                         result,
                         cause,
                         executable,
                         RuleEngine.getListenerDelegate(executable.getName()),
                         this,
-                        new DefaultListenerContext((Listener) executable, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise),
+                        new DefaultListenerContext(listener, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise, listener.getScope()),
                         RuleEngine.getDelegateInterceptorFactories());
             } else {
                 throw new UnsupportedOperationException("unexpected listener scope");

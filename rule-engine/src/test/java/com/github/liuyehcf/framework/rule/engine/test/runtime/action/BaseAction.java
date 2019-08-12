@@ -10,12 +10,13 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntimeBase.ACTION_ASYNC_SWITCH;
+import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntimeBase.*;
 
 /**
  * @author hechenfeng
  * @date 2019/8/1
  */
+@SuppressWarnings("all")
 public abstract class BaseAction implements ActionDelegate {
 
     private static ExecutorService ACTION_EXECUTOR = new ThreadPoolExecutor(16, 16, 5L, TimeUnit.SECONDS,
@@ -25,11 +26,16 @@ public abstract class BaseAction implements ActionDelegate {
 
     @Override
     public final void onAction(ActionContext context) throws Exception {
-        if (ACTION_ASYNC_SWITCH) {
+        if (ACTION_EXECUTION_MODE == ASYNC_MODE_WITHOUT_TIMEOUT) {
             context.executeAsync(ACTION_EXECUTOR, () -> {
                 doAction(context);
                 return null;
             });
+        } else if (ACTION_EXECUTION_MODE == ASYNC_MODE_WITH_TIMEOUT) {
+            context.executeAsync(ACTION_EXECUTOR, () -> {
+                doAction(context);
+                return null;
+            }, 3, TimeUnit.SECONDS);
         } else {
             doAction(context);
         }

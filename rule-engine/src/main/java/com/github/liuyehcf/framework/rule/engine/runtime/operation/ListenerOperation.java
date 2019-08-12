@@ -22,8 +22,8 @@ class ListenerOperation extends AbstractOperation<Void> {
     private final Object result;
     private final Throwable cause;
 
-    ListenerOperation(OperationContext context, Promise<Void> optPromise, List<Listener> listeners, int offset, Object result, Throwable cause) {
-        super(context, optPromise);
+    ListenerOperation(OperationContext context, Promise<Void> optPromise, boolean skipBind, List<Listener> listeners, int offset, Object result, Throwable cause) {
+        super(context, optPromise, skipBind);
         Assert.assertNotNull(listeners);
         Assert.assertNotNull(optPromise);
         Assert.assertTrue(offset <= listeners.size());
@@ -67,7 +67,7 @@ class ListenerOperation extends AbstractOperation<Void> {
         context.markElementFinished(listener);
 
         if (offset + 1 < listeners.size()) {
-            context.executeAsync(new ListenerOperation(context, optPromise, listeners, offset + 1, result, cause));
+            context.executeAsync(new ListenerOperation(context, optPromise, true, listeners, offset + 1, result, cause));
         } else {
             optPromise.trySuccess(null);
         }
