@@ -1,6 +1,7 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.RuleErrorCode;
 import com.github.liuyehcf.framework.rule.engine.RuleException;
 import com.github.liuyehcf.framework.rule.engine.model.Element;
@@ -9,6 +10,7 @@ import com.github.liuyehcf.framework.rule.engine.model.Executable;
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerScope;
+import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ConditionDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.Delegate;
@@ -33,12 +35,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author hechenfeng
  * @date 2019/4/27
  */
-public class ReflectiveDelegateInvocation implements DelegateInvocation {
+public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
 
     // result and cause only for listener
     private final Object result;
@@ -89,10 +94,61 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
     }
 
     @Override
-    public final DelegateResult proceed() throws Throwable {
+    public DelegateResult unsafeProceed() throws Throwable {
+        if (delegate.isAsync()) {
+            Promise<ExecutionInstance> rulePromise = operationContext.getPromise();
+
+            DelegatePromise delegatePromise = new DelegatePromise();
+            rulePromise.addListener((promise) -> delegatePromise.tryFailure(new RuleException(RuleErrorCode.RULE_ALREADY_FINISHED, promise.cause())));
+
+            try {
+                long timeout;
+                if ((timeout = delegate.getAsyncTimeout()) <= 0) {
+                    doProceedAsync(delegatePromise);
+                } else {
+                    Future<?> future = doProceedAsync(delegatePromise);
+
+                    RuleEngine.getScheduledExecutor().schedule(() -> {
+                        Throwable cause = null;
+                        Object result = null;
+                        try {
+                            if (!future.isDone()) {
+                                future.cancel(true);
+                            }
+                            result = future.get();
+                        } catch (ExecutionException e) {
+                            if (e.getCause() != null) {
+                                cause = e.getCause();
+                            } else {
+                                cause = e;
+                            }
+                        } catch (Throwable e) {
+                            cause = e;
+                        } finally {
+                            if (cause != null) {
+                                delegatePromise.tryFailure(cause);
+                            } else {
+                                delegatePromise.trySuccess(result);
+                            }
+                        }
+                    }, timeout, TimeUnit.MILLISECONDS);
+                }
+            } catch (Throwable e) {
+                delegatePromise.tryFailure(e);
+            }
+
+            return new DefaultDelegateResult(true, null, delegatePromise);
+        } else {
+            Object result = proceed();
+            return new DefaultDelegateResult(false, result, null);
+        }
+    }
+
+    @Override
+    public final Object proceed() throws Throwable {
         long startNanos = System.nanoTime();
         Throwable cause = null;
-        DelegateResult delegateResult = null;
+        Object result = null;
         try {
             if (stackCnt++ == 0) {
                 injectDelegateFields(executable, delegate);
@@ -100,19 +156,18 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
 
             if (index < chains.size()) {
                 DelegateInterceptor delegateInterceptor = chains.get(index++);
-                delegateResult = delegateInterceptor.invoke(this);
-                return delegateResult;
+                result = delegateInterceptor.invoke(this);
+                return result;
             } else {
-                delegateResult = doInvoke();
-                return delegateResult;
+                result = doInvoke();
+                return result;
             }
         } catch (Throwable e) {
             cause = e;
-            delegateResult = new DefaultDelegateResult(false, null, null);
             throw e;
         } finally {
             if (--stackCnt == 0) {
-                recordTrace(delegateResult, cause, startNanos);
+                recordTrace(result, cause, startNanos);
             }
         }
     }
@@ -142,24 +197,30 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
         return this.argumentValues;
     }
 
-    private DelegateResult doInvoke() throws Throwable {
+    private Future<?> doProceedAsync(DelegatePromise delegatePromise) {
+        return delegate.getAsyncExecutor().submit(() -> {
+            Throwable cause = null;
+            Object result = null;
+            try {
+                result = proceed();
+            } catch (Throwable e) {
+                cause = e;
+            } finally {
+                if (cause != null) {
+                    delegatePromise.tryFailure(cause);
+                } else {
+                    delegatePromise.trySuccess(result);
+                }
+            }
+        });
+    }
+
+    private Object doInvoke() throws Throwable {
         if (delegate instanceof ActionDelegate) {
             ((ActionDelegate) delegate).onAction((ActionContext) executableContext);
-
-            if (executableContext.isAsync()) {
-                return new DefaultDelegateResult(true, null, executableContext.getDelegatePromise());
-            } else {
-                return new DefaultDelegateResult(false, null, null);
-            }
+            return null;
         } else if (delegate instanceof ConditionDelegate) {
-            boolean result = ((ConditionDelegate) delegate).onCondition((ConditionContext) executableContext);
-
-            if (executableContext.isAsync()) {
-                return new DefaultDelegateResult(true, null, executableContext.getDelegatePromise());
-            } else {
-                return new DefaultDelegateResult(false, result, null);
-            }
-
+            return ((ConditionDelegate) delegate).onCondition((ConditionContext) executableContext);
         } else if (delegate instanceof ListenerDelegate) {
             Listener listener = (Listener) executable;
             if (ListenerEvent.before.equals(listener.getEvent())) {
@@ -169,18 +230,13 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
             } else if (ListenerEvent.failure.equals(listener.getEvent())) {
                 ((ListenerDelegate) delegate).onFailure((ListenerContext) executableContext, cause);
             }
-
-            if (executableContext.isAsync()) {
-                return new DefaultDelegateResult(true, null, executableContext.getDelegatePromise());
-            } else {
-                return new DefaultDelegateResult(false, null, null);
-            }
+            return null;
         } else {
             throw new UnsupportedOperationException();
         }
     }
 
-    private void recordTrace(DelegateResult delegateResult, Throwable cause, long startNanos) {
+    private void recordTrace(Object result, Throwable cause, long startNanos) {
         List<PropertyUpdate> propertyUpdates = executableContext.getPropertyUpdates();
         Map<String, Attribute> attributes = executableContext.getLocalAttributes();
 
@@ -190,38 +246,19 @@ public class ReflectiveDelegateInvocation implements DelegateInvocation {
             arguments.add(new DefaultArgument(argumentNames[i], argumentValues[i]));
         }
 
-        Object executableResult;
-
-        if (delegateResult.isAsync()) {
-            executableResult = null;
-        } else {
-            executableResult = delegateResult.getResult();
-        }
-
         DefaultTrace trace = new DefaultTrace(
                 executableContext.getExecutionId(),
                 ((Element) executable).getId(),
                 ((Element) executable).getType(),
                 executable.getName(),
                 arguments,
-                executableResult,
+                result,
                 propertyUpdates,
                 attributes,
                 cause,
                 startNanos,
                 System.nanoTime()
         );
-
-        if (delegateResult.isAsync()) {
-            delegateResult.getDelegatePromise().addListener(promise -> {
-                if (promise.isSuccess()) {
-                    trace.setResult(promise.get());
-                } else if (promise.isFailure()) {
-                    trace.setCause(promise.cause());
-                }
-                trace.setEndNanos(System.nanoTime());
-            });
-        }
 
         if (executable instanceof Listener
                 && Objects.equals(ListenerScope.GLOBAL, ((Listener) executable).getScope())) {

@@ -13,17 +13,17 @@ public class SuccessResultListener extends BaseListener {
     private DelegateField result;
 
     @Override
-    void doBefore(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    void doSuccess(ListenerContext context, Object result) {
+    public void onSuccess(ListenerContext context, Object result) {
         Assert.assertEquals(this.result.getValue(), result);
     }
 
     @Override
-    void doFailure(ListenerContext context, Throwable cause) {
+    public void onFailure(ListenerContext context, Throwable cause) {
         throw new UnsupportedOperationException();
     }
 }

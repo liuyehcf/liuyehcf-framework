@@ -14,7 +14,7 @@ public class SetPropertyCondition extends BaseCondition {
     private DelegateField output;
 
     @Override
-    boolean doCondition(ConditionContext context) {
+    public boolean onCondition(ConditionContext context) {
         String propertyName = name.getValue();
         Object propertyValue = value.getValue();
         boolean conditionOutput = output.getValue();

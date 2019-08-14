@@ -13,7 +13,7 @@ public class SetPropertyAction extends BaseAction {
     private DelegateField value;
 
     @Override
-    void doAction(ActionContext context) {
+    public void onAction(ActionContext context) {
         String propertyName = name.getValue();
         Object propertyValue = value.getValue();
 

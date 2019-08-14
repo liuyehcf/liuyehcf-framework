@@ -26,7 +26,7 @@ public class MissingArgumentListener extends BaseListener {
 
     @Override
     @SuppressWarnings("Duplicates")
-    void doBefore(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
         Assert.assertNotNull(notMissing1);
         Assert.assertNotNull(notMissing2);
         Assert.assertNotNull(missing1);
@@ -39,7 +39,7 @@ public class MissingArgumentListener extends BaseListener {
     }
 
     @Override
-    void doSuccess(ListenerContext context, Object result) {
+    public void onSuccess(ListenerContext context, Object result) {
         Assert.assertNotNull(notMissing1);
         Assert.assertNotNull(notMissing2);
         Assert.assertNotNull(missing1);
@@ -52,7 +52,7 @@ public class MissingArgumentListener extends BaseListener {
     }
 
     @Override
-    void doFailure(ListenerContext context, Throwable cause) {
+    public void onFailure(ListenerContext context, Throwable cause) {
         Assert.assertNotNull(notMissing1);
         Assert.assertNotNull(notMissing2);
         Assert.assertNotNull(missing1);

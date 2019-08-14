@@ -14,7 +14,7 @@ public class GetPropertyAction extends BaseAction {
     private DelegateField expectedValue;
 
     @Override
-    void doAction(ActionContext context) {
+    public void onAction(ActionContext context) {
         String propertyName = name.getValue();
         Object expectedValue = this.expectedValue.getValue();
 

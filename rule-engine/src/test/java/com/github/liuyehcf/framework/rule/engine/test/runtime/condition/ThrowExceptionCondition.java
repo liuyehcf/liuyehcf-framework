@@ -11,7 +11,7 @@ import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntime
 public class ThrowExceptionCondition extends BaseCondition {
 
     @Override
-    boolean doCondition(ConditionContext context) {
+    public boolean onCondition(ConditionContext context) {
         if (STD_OUT_SWITCH) {
             System.out.println("execute throwExceptionCondition.");
         }

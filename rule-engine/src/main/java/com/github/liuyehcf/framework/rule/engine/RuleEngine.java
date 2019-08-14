@@ -38,9 +38,12 @@ public abstract class RuleEngine {
     private static final Map<String, Factory<ConditionDelegate>> CONDITION_DELEGATE_FACTORIES = Maps.newConcurrentMap();
     private static final Map<String, Factory<ListenerDelegate>> LISTENER_DELEGATE_FACTORIES = Maps.newConcurrentMap();
 
+    private static final ThreadFactory NAMED_SCHEDULED_THREAD_FACTORY = new ThreadFactoryBuilder().setNameFormat(
+            "RULE-ENGINE-SCHEDULER-THREAD-POOL-t-%d").build();
     private static final ThreadFactory NAMED_THREAD_FACTORY = new ThreadFactoryBuilder().setNameFormat(
-            "RULE-ENGINE-ASYNC-t-%d").build();
-    private static Executor executor = new ThreadPoolExecutor(16, 128, 5L, TimeUnit.SECONDS,
+            "RULE-ENGINE-THREAD-POOL-t-%d").build();
+    private static ScheduledExecutorService scheduledExecutor = new ScheduledThreadPoolExecutor(16, NAMED_SCHEDULED_THREAD_FACTORY, new ThreadPoolExecutor.DiscardPolicy());
+    private static ExecutorService executor = new ThreadPoolExecutor(16, 128, 5L, TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(1024), NAMED_THREAD_FACTORY, new ThreadPoolExecutor.CallerRunsPolicy());
 
     /**
@@ -182,7 +185,7 @@ public abstract class RuleEngine {
      *
      * @return executor
      */
-    public static Executor getExecutor() {
+    public static ExecutorService getExecutor() {
         return executor;
     }
 
@@ -191,9 +194,28 @@ public abstract class RuleEngine {
      *
      * @param executor executor
      */
-    public static void setExecutor(Executor executor) {
+    public static void setExecutor(ExecutorService executor) {
         Assert.assertNotNull(executor);
         RuleEngine.executor = executor;
+    }
+
+    /**
+     * get rule scheduled async executor
+     *
+     * @return schedulerExecutor
+     */
+    public static ScheduledExecutorService getScheduledExecutor() {
+        return scheduledExecutor;
+    }
+
+    /**
+     * set rule scheduled execution async executor
+     *
+     * @param scheduledExecutor executor
+     */
+    public static void setScheduledExecutor(ScheduledExecutorService scheduledExecutor) {
+        Assert.assertNotNull(scheduledExecutor);
+        RuleEngine.scheduledExecutor = scheduledExecutor;
     }
 
     /**

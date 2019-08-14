@@ -10,7 +10,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.exception.LinkExecution
 public class ThrowLinkTerminateAction extends BaseAction {
 
     @Override
-    void doAction(ActionContext context) {
+    public void onAction(ActionContext context) {
         throw new LinkExecutionTerminateException();
     }
 }

@@ -15,5 +15,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Component
 public @interface ConditionBean {
+
+    /**
+     * bunch of action names
+     */
     String[] names();
 }

@@ -59,17 +59,17 @@ public class DefaultTrace implements Trace {
     /**
      * executable's result
      */
-    private volatile Object result;
+    private final Object result;
 
     /**
      * cause
      */
-    private volatile Throwable cause;
+    private final Throwable cause;
 
     /**
      * end nanos
      */
-    private volatile long endNanos;
+    private final long endNanos;
 
     public DefaultTrace(long executionId, String id, ElementType type, String name, List<Argument> arguments, Object result,
                         List<PropertyUpdate> propertyUpdates, Map<String, Attribute> attributes, Throwable cause,
@@ -121,10 +121,6 @@ public class DefaultTrace implements Trace {
         return (T) result;
     }
 
-    public final void setResult(Object result) {
-        this.result = result;
-    }
-
     @Override
     public final List<PropertyUpdate> getPropertyUpdates() {
         return propertyUpdates;
@@ -140,10 +136,6 @@ public class DefaultTrace implements Trace {
         return cause;
     }
 
-    public final void setCause(Throwable cause) {
-        this.cause = cause;
-    }
-
     @Override
     public final long getStartNanos() {
         return startNanos;
@@ -152,10 +144,6 @@ public class DefaultTrace implements Trace {
     @Override
     public final long getEndNanos() {
         return endNanos;
-    }
-
-    public final void setEndNanos(long endNanos) {
-        this.endNanos = endNanos;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class PrintCondition extends BaseCondition {
     }
 
     @Override
-    boolean doCondition(ConditionContext context) {
+    public boolean onCondition(ConditionContext context) {
         String content = this.content.getValue();
         Assert.assertNotNull(content);
         if (STD_OUT_SWITCH) {

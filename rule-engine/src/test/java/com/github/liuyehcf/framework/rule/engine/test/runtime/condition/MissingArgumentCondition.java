@@ -25,7 +25,7 @@ public class MissingArgumentCondition extends BaseCondition {
 
     @Override
     @SuppressWarnings("Duplicates")
-    boolean doCondition(ConditionContext context) {
+    public boolean onCondition(ConditionContext context) {
         Assert.assertNotNull(notMissing1);
         Assert.assertNotNull(notMissing2);
         Assert.assertNotNull(missing1);

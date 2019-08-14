@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.rule.engine.test.runtime.interceptor;
 import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInterceptor;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateResult;
 
 /**
  * @author hechenfeng
@@ -11,7 +10,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.De
  */
 public class LogInterceptor implements DelegateInterceptor {
     @Override
-    public DelegateResult invoke(DelegateInvocation delegateInvocation) throws Throwable {
+    public Object invoke(DelegateInvocation delegateInvocation) throws Throwable {
         try {
             System.err.println("[LOG-BEGIN]");
             System.err.println(String.format("     - %-15s - %s", "name", delegateInvocation.getExecutableContext().getName()));

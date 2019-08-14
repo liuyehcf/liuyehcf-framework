@@ -14,8 +14,8 @@ import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.DefaultActionContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.DefaultConditionContext;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.DefaultListenerContext;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.ReflectiveDelegateInvocation;
+import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.UnsafeDelegateInvocation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.*;
 import com.github.liuyehcf.framework.rule.engine.util.CloneUtils;
@@ -268,7 +268,7 @@ public class DefaultOperationContext implements OperationContext {
     }
 
     @Override
-    public final DelegateInvocation getDelegateInvocation(Executable executable, Object result, Throwable cause) {
+    public final UnsafeDelegateInvocation getDelegateInvocation(Executable executable, Object result, Throwable cause) {
         String instanceId = executionInstance.getId();
         String linkId = executionLink == null ? IDGenerator.generateUuid() : executionLink.getId();
         long executionId = getNextExecutionId();
@@ -281,7 +281,7 @@ public class DefaultOperationContext implements OperationContext {
                     executable,
                     RuleEngine.getActionDelegate(executable.getName()),
                     this,
-                    new DefaultActionContext(action, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise),
+                    new DefaultActionContext(action, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
                     RuleEngine.getDelegateInterceptorFactories());
         } else if (executable instanceof Condition) {
             Condition condition = (Condition) executable;
@@ -291,7 +291,7 @@ public class DefaultOperationContext implements OperationContext {
                     executable,
                     RuleEngine.getConditionDelegate(executable.getName()),
                     this,
-                    new DefaultConditionContext(condition, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise),
+                    new DefaultConditionContext(condition, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
                     RuleEngine.getDelegateInterceptorFactories());
         } else if (executable instanceof Listener) {
             Listener listener = (Listener) executable;
@@ -302,7 +302,7 @@ public class DefaultOperationContext implements OperationContext {
                         executable,
                         RuleEngine.getListenerDelegate(executable.getName()),
                         this,
-                        new DefaultListenerContext(listener, instanceId, linkId, executionId, executionInstance.getEnv(), executionInstance.getAttributes(), promise, listener.getScope()),
+                        new DefaultListenerContext(listener, instanceId, linkId, executionId, executionInstance.getEnv(), executionInstance.getAttributes(), listener.getScope()),
                         RuleEngine.getDelegateInterceptorFactories());
             } else if (ListenerScope.NODE.equals((listener).getScope())) {
                 return new ReflectiveDelegateInvocation(
@@ -311,7 +311,7 @@ public class DefaultOperationContext implements OperationContext {
                         executable,
                         RuleEngine.getListenerDelegate(executable.getName()),
                         this,
-                        new DefaultListenerContext(listener, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), promise, listener.getScope()),
+                        new DefaultListenerContext(listener, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), listener.getScope()),
                         RuleEngine.getDelegateInterceptorFactories());
             } else {
                 throw new UnsupportedOperationException("unexpected listener scope");

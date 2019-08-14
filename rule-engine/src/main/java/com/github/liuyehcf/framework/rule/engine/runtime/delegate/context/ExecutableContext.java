@@ -2,16 +2,11 @@ package com.github.liuyehcf.framework.rule.engine.runtime.delegate.context;
 
 import com.github.liuyehcf.framework.rule.engine.model.Element;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegatePromise;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.Attribute;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.PropertyUpdate;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author hechenfeng
@@ -191,35 +186,4 @@ public interface ExecutableContext<E extends Element> {
      * @return attributes
      */
     Map<String, Attribute> getGlobalAttributes();
-
-    /**
-     * execute delegate async
-     *
-     * @param externalExecutor user's external executor
-     * @param callable         asynchronous Execution Logic
-     */
-    void executeAsync(Executor externalExecutor, Callable<?> callable);
-
-    /**
-     * execute delegate async
-     *
-     * @param externalExecutor user's external executor
-     * @param callable         asynchronous Execution Logic
-     * @param timeout          timeout of execution
-     * @param timeUnit         timeUnit of timeout
-     */
-    void executeAsync(ExecutorService externalExecutor, Callable<?> callable, long timeout, TimeUnit timeUnit);
-
-    /**
-     * whether execution is async
-     */
-    boolean isAsync();
-
-    /**
-     * get delegate promise
-     * null if not async
-     *
-     * @return delegate promise
-     */
-    DelegatePromise getDelegatePromise();
 }

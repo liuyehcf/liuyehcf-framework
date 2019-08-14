@@ -23,7 +23,7 @@ public class ThrowExceptionListener extends BaseListener {
     private DelegateField namespace;
 
     @Override
-    void doBefore(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
         if (STD_OUT_SWITCH) {
             System.out.println("execute throwExceptionListener.");
         }
@@ -39,7 +39,7 @@ public class ThrowExceptionListener extends BaseListener {
     }
 
     @Override
-    void doSuccess(ListenerContext context, Object result) {
+    public void onSuccess(ListenerContext context, Object result) {
         if (STD_OUT_SWITCH) {
             System.out.println("execute throwExceptionListener.");
         }
@@ -55,7 +55,7 @@ public class ThrowExceptionListener extends BaseListener {
     }
 
     @Override
-    void doFailure(ListenerContext context, Throwable cause) {
+    public void onFailure(ListenerContext context, Throwable cause) {
         if (STD_OUT_SWITCH) {
             System.out.println("execute throwExceptionListener.");
         }

@@ -14,7 +14,7 @@ public class SetTraceAttrCondition extends BaseCondition {
     private DelegateField value;
 
     @Override
-    boolean doCondition(ConditionContext context) {
+    public boolean onCondition(ConditionContext context) {
         String attrName = name.getValue();
         Object attrValue = value.getValue();
 

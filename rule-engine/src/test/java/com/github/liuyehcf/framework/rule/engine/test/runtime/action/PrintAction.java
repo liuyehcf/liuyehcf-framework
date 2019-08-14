@@ -15,7 +15,7 @@ public class PrintAction extends BaseAction {
     private DelegateField content;
 
     @Override
-    void doAction(ActionContext context) {
+    public void onAction(ActionContext context) {
         String content = this.content.getValue();
         Assert.assertNotNull(content);
         if (STD_OUT_SWITCH) {

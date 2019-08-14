@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.rule.engine.spring.boot.starter.test.inter
 import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInterceptor;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateResult;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class TestInterceptor implements DelegateInterceptor {
 
     @Override
-    public DelegateResult invoke(DelegateInvocation delegateInvocation) throws Throwable {
+    public Object invoke(DelegateInvocation delegateInvocation) throws Throwable {
         System.out.println(String.format("type=%s", delegateInvocation.getType()));
         System.out.println(String.format("name=%s", delegateInvocation.getExecutableContext().getName()));
         System.out.println(String.format("argumentNames=%s", JSON.toJSONString(delegateInvocation.getArgumentNames())));

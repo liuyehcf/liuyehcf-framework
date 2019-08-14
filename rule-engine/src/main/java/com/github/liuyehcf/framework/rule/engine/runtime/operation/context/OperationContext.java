@@ -7,7 +7,7 @@ import com.github.liuyehcf.framework.rule.engine.model.Rule;
 import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
+import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.UnsafeDelegateInvocation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.AbstractOperation;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionLink;
@@ -195,7 +195,7 @@ public interface OperationContext {
      * @param cause      element's execution exception(only for listener)
      * @return delegate invocation
      */
-    DelegateInvocation getDelegateInvocation(Executable executable, Object result, Throwable cause);
+    UnsafeDelegateInvocation getDelegateInvocation(Executable executable, Object result, Throwable cause);
 
     /**
      * get unique execution id(within rule)

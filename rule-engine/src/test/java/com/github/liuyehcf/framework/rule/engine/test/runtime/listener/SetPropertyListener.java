@@ -13,7 +13,7 @@ public class SetPropertyListener extends BaseListener {
     private DelegateField value;
 
     @Override
-    void doBefore(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
         String propertyName = name.getValue();
         Object propertyValue = value.getValue();
 
@@ -21,7 +21,7 @@ public class SetPropertyListener extends BaseListener {
     }
 
     @Override
-    void doSuccess(ListenerContext context, Object result) {
+    public void onSuccess(ListenerContext context, Object result) {
         String propertyName = name.getValue();
         Object propertyValue = value.getValue();
 
@@ -29,7 +29,7 @@ public class SetPropertyListener extends BaseListener {
     }
 
     @Override
-    void doFailure(ListenerContext context, Throwable cause) {
+    public void onFailure(ListenerContext context, Throwable cause) {
         String propertyName = name.getValue();
         Object propertyValue = value.getValue();
 

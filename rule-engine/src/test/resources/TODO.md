@@ -4,6 +4,8 @@
 2. if() 的trace以及拓扑测试用例
 3. LinkTermination异常的测试用例
 4. ListenerContext包含scope的测试用例
+5. 规则引擎线程的拒绝策略要做限制
+6. 拦截器是否执行到的测试用例
 
 # README
 

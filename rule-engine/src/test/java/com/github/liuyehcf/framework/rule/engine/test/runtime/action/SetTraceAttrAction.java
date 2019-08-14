@@ -13,7 +13,7 @@ public class SetTraceAttrAction extends BaseAction {
     private DelegateField value;
 
     @Override
-    void doAction(ActionContext context) {
+    public void onAction(ActionContext context) {
         String attrName = name.getValue();
         Object attrValue = value.getValue();
 

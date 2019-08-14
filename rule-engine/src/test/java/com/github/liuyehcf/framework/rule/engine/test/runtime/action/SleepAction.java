@@ -14,7 +14,7 @@ public class SleepAction extends BaseAction {
     private DelegateField timeout;
 
     @Override
-    void doAction(ActionContext context) throws Exception {
+    public void onAction(ActionContext context) throws Exception {
         TimeUnit.NANOSECONDS.sleep(timeout.getValue());
     }
 }

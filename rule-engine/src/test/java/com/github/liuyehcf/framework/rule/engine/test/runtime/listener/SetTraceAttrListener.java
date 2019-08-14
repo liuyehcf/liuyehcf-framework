@@ -13,7 +13,7 @@ public class SetTraceAttrListener extends BaseListener {
     private DelegateField value;
 
     @Override
-    void doBefore(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
         String attrName = name.getValue();
         Object attrValue = value.getValue();
 
@@ -21,7 +21,7 @@ public class SetTraceAttrListener extends BaseListener {
     }
 
     @Override
-    void doSuccess(ListenerContext context, Object result) {
+    public void onSuccess(ListenerContext context, Object result) {
         String attrName = name.getValue();
         Object attrValue = value.getValue();
 
@@ -29,7 +29,7 @@ public class SetTraceAttrListener extends BaseListener {
     }
 
     @Override
-    void doFailure(ListenerContext context, Throwable cause) {
+    public void onFailure(ListenerContext context, Throwable cause) {
         String attrName = name.getValue();
         Object attrValue = value.getValue();
 

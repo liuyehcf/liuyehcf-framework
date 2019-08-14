@@ -1,7 +1,6 @@
 package com.github.liuyehcf.framework.rule.engine.test.runtime.condition;
 
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ConditionDelegate;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.context.ConditionContext;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import java.util.concurrent.ExecutorService;
@@ -9,7 +8,8 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntimeBase.*;
+import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntimeBase.CONDITION_TIMEOUT;
+import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntimeBase.IS_CONDITION_ASYNC;
 
 /**
  * @author hechenfeng
@@ -24,17 +24,17 @@ public abstract class BaseCondition implements ConditionDelegate {
             new ThreadPoolExecutor.CallerRunsPolicy());
 
     @Override
-    public boolean onCondition(ConditionContext context) throws Exception {
-        if (CONDITION_EXECUTION_MODE == ASYNC_MODE_WITHOUT_TIMEOUT) {
-            context.executeAsync(CONDITION_EXECUTOR, () -> doCondition(context));
-            return false;
-        } else if (CONDITION_EXECUTION_MODE == ASYNC_MODE_WITH_TIMEOUT) {
-            context.executeAsync(CONDITION_EXECUTOR, () -> doCondition(context), 3, TimeUnit.SECONDS);
-            return false;
-        } else {
-            return doCondition(context);
-        }
+    public boolean isAsync() {
+        return IS_CONDITION_ASYNC;
     }
 
-    abstract boolean doCondition(ConditionContext context) throws Exception;
+    @Override
+    public ExecutorService getAsyncExecutor() {
+        return CONDITION_EXECUTOR;
+    }
+
+    @Override
+    public long getAsyncTimeout() {
+        return CONDITION_TIMEOUT;
+    }
 }

@@ -25,7 +25,7 @@ public class PrintListener extends BaseListener {
     private DelegateField namespace;
 
     @Override
-    void doBefore(ListenerContext context) {
+    public void onBefore(ListenerContext context) {
         String content = this.content.getValue();
         Assert.assertNotNull(content);
 
@@ -42,7 +42,7 @@ public class PrintListener extends BaseListener {
     }
 
     @Override
-    void doSuccess(ListenerContext context, Object result) {
+    public void onSuccess(ListenerContext context, Object result) {
         String content = this.content.getValue();
         Assert.assertNotNull(content);
 
@@ -59,7 +59,7 @@ public class PrintListener extends BaseListener {
     }
 
     @Override
-    void doFailure(ListenerContext context, Throwable cause) {
+    public void onFailure(ListenerContext context, Throwable cause) {
         String content = this.content.getValue();
         Assert.assertNotNull(content);
 

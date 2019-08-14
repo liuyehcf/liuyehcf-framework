@@ -16,7 +16,7 @@ public interface DelegateInvocation {
      *
      * @return result of target delegate call
      */
-    DelegateResult proceed() throws Throwable;
+    Object proceed() throws Throwable;
 
     /**
      * get target delegate

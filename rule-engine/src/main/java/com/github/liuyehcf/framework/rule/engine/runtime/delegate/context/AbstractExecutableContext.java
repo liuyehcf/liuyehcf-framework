@@ -7,8 +7,6 @@ import com.github.liuyehcf.framework.rule.engine.RuleException;
 import com.github.liuyehcf.framework.rule.engine.model.Element;
 import com.github.liuyehcf.framework.rule.engine.model.Executable;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
-import com.github.liuyehcf.framework.rule.engine.promise.Promise;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegatePromise;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -18,9 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author hechenfeng
@@ -39,19 +34,14 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
     private final Map<String, Attribute> localAttributes = Maps.newConcurrentMap();
     private final Map<String, Attribute> globalAttributes;
     private final List<PropertyUpdate> propertyUpdates = Lists.newCopyOnWriteArrayList();
-    private final Promise<ExecutionInstance> rulePromise;
-    private final AtomicBoolean isAsync = new AtomicBoolean(false);
-    private final AtomicReference<DelegatePromise> delegatePromise = new AtomicReference<>(null);
 
     AbstractExecutableContext(Element element, String instanceId, String linkId, long executionId,
-                              Map<String, Object> env, Map<String, Attribute> globalAttributes,
-                              Promise<ExecutionInstance> rulePromise) {
+                              Map<String, Object> env, Map<String, Attribute> globalAttributes) {
         Assert.assertNotNull(element);
         Assert.assertNotNull(instanceId);
         Assert.assertNotNull(linkId);
         Assert.assertNotNull(env);
         Assert.assertNotNull(globalAttributes);
-        Assert.assertNotNull(rulePromise);
         this.element = element;
         this.rule = this.element.getRule();
         this.instanceId = instanceId;
@@ -59,7 +49,6 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
         this.executionId = executionId;
         this.env = env;
         this.globalAttributes = globalAttributes;
-        this.rulePromise = rulePromise;
     }
 
     @Override
@@ -195,85 +184,5 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
     @Override
     public final Map<String, Attribute> getGlobalAttributes() {
         return globalAttributes;
-    }
-
-    @Override
-    public final void executeAsync(Executor externalExecutor, Callable<?> callable) {
-        if (isAsync.compareAndSet(false, true)
-                && delegatePromise.compareAndSet(null, new DelegatePromise())) {
-
-            DelegatePromise delegatePromise = this.delegatePromise.get();
-            rulePromise.addListener((rulePromise) -> delegatePromise.tryFailure(new RuleException(RuleErrorCode.RULE_ALREADY_FINISHED, rulePromise.cause())));
-
-            try {
-                externalExecutor.execute(() -> {
-                    Throwable cause = null;
-                    Object result = null;
-                    try {
-                        result = callable.call();
-                    } catch (Throwable e) {
-                        cause = e;
-                    } finally {
-                        if (cause != null) {
-                            delegatePromise.tryFailure(cause);
-                        } else {
-                            delegatePromise.trySuccess(result);
-                        }
-                    }
-                });
-            } catch (Throwable e) {
-                delegatePromise.tryFailure(e);
-            }
-        }
-    }
-
-    @Override
-    public final void executeAsync(ExecutorService externalExecutor, Callable<?> callable, long timeout, TimeUnit timeUnit) {
-        if (isAsync.compareAndSet(false, true)
-                && delegatePromise.compareAndSet(null, new DelegatePromise())) {
-
-            rulePromise.addListener((rulePromise) ->
-                    delegatePromise.get().tryFailure(new RuleException(RuleErrorCode.RULE_ALREADY_FINISHED, rulePromise.cause()))
-            );
-
-            try {
-                Future<Object> future = externalExecutor.submit(callable::call);
-
-                externalExecutor.execute(() -> {
-                    Throwable cause = null;
-                    Object result = null;
-                    try {
-                        result = future.get(timeout, timeUnit);
-                    } catch (ExecutionException e) {
-                        if (e.getCause() != null) {
-                            cause = e.getCause();
-                        } else {
-                            cause = e;
-                        }
-                    } catch (Throwable e) {
-                        cause = e;
-                    } finally {
-                        future.cancel(true);
-                        if (cause != null) {
-                            delegatePromise.get().tryFailure(cause);
-                        } else {
-                            delegatePromise.get().trySuccess(result);
-                        }
-                    }
-                });
-            } catch (Throwable e) {
-                delegatePromise.get().tryFailure(e);
-            }
-        }
-    }
-
-    @Override
-    public final boolean isAsync() {
-        return isAsync.get();
-    }
-
-    @Override
-    public DelegatePromise getDelegatePromise() {
-        return delegatePromise.get();
     }
 }

@@ -4,8 +4,8 @@ import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.LinkType;
 import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateResult;
+import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.UnsafeDelegateInvocation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 
 /**
@@ -38,10 +38,10 @@ class ConditionOperation extends AbstractOperation<Boolean> {
     }
 
     private void conditionCondition() throws Throwable {
-        DelegateInvocation delegateInvocation = context.getDelegateInvocation(condition, null, null);
+        UnsafeDelegateInvocation delegateInvocation = context.getDelegateInvocation(condition, null, null);
 
         try {
-            delegateResult = delegateInvocation.proceed();
+            delegateResult = delegateInvocation.unsafeProceed();
         } catch (Throwable e) {
             invokeNodeFailureListeners(condition, e, () -> {
                 if (optPromise != null) {

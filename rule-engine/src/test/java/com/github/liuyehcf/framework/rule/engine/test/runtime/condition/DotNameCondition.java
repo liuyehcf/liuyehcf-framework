@@ -14,7 +14,7 @@ public class DotNameCondition extends BaseCondition {
     private DelegateField output;
 
     @Override
-    boolean doCondition(ConditionContext context) {
+    public boolean onCondition(ConditionContext context) {
         if (STD_OUT_SWITCH) {
             System.out.println(getClass().getSimpleName());
         }

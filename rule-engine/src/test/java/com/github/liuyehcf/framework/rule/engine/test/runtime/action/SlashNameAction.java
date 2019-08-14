@@ -11,7 +11,7 @@ import static com.github.liuyehcf.framework.rule.engine.test.runtime.TestRuntime
 public class SlashNameAction extends BaseAction {
 
     @Override
-    void doAction(ActionContext context) {
+    public void onAction(ActionContext context) {
         if (STD_OUT_SWITCH) {
             System.out.println(getClass().getSimpleName());
         }

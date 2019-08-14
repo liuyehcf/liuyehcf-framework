@@ -24,7 +24,7 @@ public class MissingArgumentAction extends BaseAction {
     }
 
     @Override
-    void doAction(ActionContext context) {
+    public void onAction(ActionContext context) {
         Assert.assertNotNull(notMissing1);
         Assert.assertNotNull(notMissing2);
         Assert.assertNotNull(missing1);

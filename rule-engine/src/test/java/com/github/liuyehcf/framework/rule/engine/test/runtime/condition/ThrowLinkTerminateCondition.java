@@ -10,7 +10,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.exception.LinkExecution
 public class ThrowLinkTerminateCondition extends BaseCondition {
 
     @Override
-    boolean doCondition(ConditionContext context) {
+    public boolean onCondition(ConditionContext context) {
         throw new LinkExecutionTerminateException();
     }
 }

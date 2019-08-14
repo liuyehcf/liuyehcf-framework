@@ -15,7 +15,7 @@ public class SleepCondition extends BaseCondition {
     private DelegateField output;
 
     @Override
-    boolean doCondition(ConditionContext context) throws Exception {
+    public boolean onCondition(ConditionContext context) throws Exception {
         TimeUnit.NANOSECONDS.sleep(timeout.getValue());
         return output.getValue();
     }

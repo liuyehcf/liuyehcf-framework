@@ -3,9 +3,9 @@ package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInvocation;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegatePromise;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateResult;
+import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.UnsafeDelegateInvocation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 
 import java.util.List;
@@ -45,11 +45,11 @@ class ListenerOperation extends AbstractOperation<Void> {
             return;
         }
 
-        DelegateInvocation delegateInvocation = context.getDelegateInvocation(listener, result, cause);
+        UnsafeDelegateInvocation delegateInvocation = context.getDelegateInvocation(listener, result, cause);
         DelegateResult delegateResult;
 
         try {
-            delegateResult = delegateInvocation.proceed();
+            delegateResult = delegateInvocation.unsafeProceed();
         } catch (Throwable e) {
             optPromise.tryFailure(e);
             throw e;
