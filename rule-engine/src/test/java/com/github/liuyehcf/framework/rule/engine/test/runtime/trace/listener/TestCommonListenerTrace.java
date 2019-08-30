@@ -618,8 +618,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_BEFORE_COUNTER.put(namespace, printBeforeCounter);
+            ThrowExceptionListener.BEFORE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.BEFORE_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -633,8 +633,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(0, printBeforeCounter.get());
 
-            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
+            ThrowExceptionListener.BEFORE_COUNTER.remove(namespace);
+            PrintListener.BEFORE_COUNTER.remove(namespace);
         });
     }
 
@@ -649,8 +649,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_BEFORE_COUNTER.put(namespace, printBeforeCounter);
+            ThrowExceptionListener.BEFORE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.BEFORE_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -664,8 +664,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(1, printBeforeCounter.get());
 
-            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
+            ThrowExceptionListener.BEFORE_COUNTER.remove(namespace);
+            PrintListener.BEFORE_COUNTER.remove(namespace);
         });
     }
 
@@ -680,8 +680,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_BEFORE_COUNTER.put(namespace, printBeforeCounter);
+            ThrowExceptionListener.BEFORE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.BEFORE_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -695,8 +695,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(2, printBeforeCounter.get());
 
-            ThrowExceptionListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_BEFORE_COUNTER.remove(namespace);
+            ThrowExceptionListener.BEFORE_COUNTER.remove(namespace);
+            PrintListener.BEFORE_COUNTER.remove(namespace);
         });
     }
 
@@ -834,8 +834,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_SUCCESS_COUNTER.put(namespace, printBeforeCounter);
+            ThrowExceptionListener.SUCCESS_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.SUCCESS_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -849,8 +849,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(0, printBeforeCounter.get());
 
-            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
+            ThrowExceptionListener.SUCCESS_COUNTER.remove(namespace);
+            PrintListener.SUCCESS_COUNTER.remove(namespace);
         });
     }
 
@@ -867,8 +867,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_SUCCESS_COUNTER.put(namespace, printBeforeCounter);
+            ThrowExceptionListener.SUCCESS_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.SUCCESS_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -882,8 +882,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(1, printBeforeCounter.get());
 
-            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
+            ThrowExceptionListener.SUCCESS_COUNTER.remove(namespace);
+            PrintListener.SUCCESS_COUNTER.remove(namespace);
         });
     }
 
@@ -900,8 +900,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_SUCCESS_COUNTER.put(namespace, printBeforeCounter);
+            ThrowExceptionListener.SUCCESS_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.SUCCESS_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -915,8 +915,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(2, printBeforeCounter.get());
 
-            ThrowExceptionListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_SUCCESS_COUNTER.remove(namespace);
+            ThrowExceptionListener.SUCCESS_COUNTER.remove(namespace);
+            PrintListener.SUCCESS_COUNTER.remove(namespace);
         });
     }
 
@@ -1078,16 +1078,16 @@ public class TestCommonListenerTrace extends TestTraceBase {
     }
 
     @Test
-    public void testActionWithGlobalFailureExceptionListener() {
+    public void testActionWithFailurePrintListener() {
         Rule rule = compile("{\n" +
-                "    throwExceptionAction()\n" +
-                "}[throwExceptionListener(event=\"failure\", namespace=${namespace})]");
+                "    throwExceptionAction()[printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace})]\n" +
+                "}");
 
         executeTimes(() -> {
             String namespace = UUID.randomUUID().toString();
 
             AtomicInteger counter = new AtomicInteger();
-            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.put(namespace, counter);
+            PrintListener.FAILURE_COUNTER.put(namespace, counter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -1100,7 +1100,302 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             assertEquals(1, counter.get());
 
-            assertNotNull(ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.remove(namespace));
+            assertNotNull(PrintListener.FAILURE_COUNTER.remove(namespace));
+        });
+    }
+
+    @Test
+    public void testActionWithMultiFailurePrintListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()[printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerC\", namespace=${namespace})]\n" +
+                "}");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(3, printBeforeCounter.get());
+
+            PrintListener.FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithFailureExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()[throwExceptionListener(event=\"failure\", namespace=${namespace})]\n" +
+                "}");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger counter = new AtomicInteger();
+            ThrowExceptionListener.FAILURE_COUNTER.put(namespace, counter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            assertEquals(1, counter.get());
+
+            assertNotNull(ThrowExceptionListener.FAILURE_COUNTER.remove(namespace));
+        });
+    }
+
+    @Test
+    public void testActionWithMultiFirstFailureExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()[throwExceptionListener(event=\"failure\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace})]\n" +
+                "}");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(0, printBeforeCounter.get());
+
+            ThrowExceptionListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithMultiMiddleFailureExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()[printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), throwExceptionListener(event=\"failure\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace})]\n" +
+                "}");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(1, printBeforeCounter.get());
+
+            ThrowExceptionListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithMultiLastFailureExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()[printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace}), throwExceptionListener(event=\"failure\", namespace=${namespace})]\n" +
+                "}");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowExceptionListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(2, printBeforeCounter.get());
+
+            ThrowExceptionListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithFailureLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()[throwLinkTerminateListener(event=\"failure\", namespace=${namespace})]\n" +
+                "}");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger counter = new AtomicInteger();
+            ThrowLinkTerminateListener.FAILURE_COUNTER.put(namespace, counter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            assertEquals(1, counter.get());
+
+            assertNotNull(ThrowLinkTerminateListener.FAILURE_COUNTER.remove(namespace));
+        });
+    }
+
+    @Test
+    public void testActionWithMultiFirstFailureLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()[throwLinkTerminateListener(event=\"failure\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace})]\n" +
+                "}");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowLinkTerminateListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(0, printBeforeCounter.get());
+
+            ThrowLinkTerminateListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithMultiMiddleFailureLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()[printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), throwLinkTerminateListener(event=\"failure\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace})]\n" +
+                "}");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowLinkTerminateListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(1, printBeforeCounter.get());
+
+            ThrowLinkTerminateListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithMultiLastFailureLinkTerminationListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()[printListener(event=\"failure\", content=\"listenerA\", namespace=${namespace}), printListener(event=\"failure\", content=\"listenerB\", namespace=${namespace}), throwLinkTerminateListener(event=\"failure\", namespace=${namespace})]\n" +
+                "}");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger exceptionCounter = new AtomicInteger();
+            AtomicInteger printBeforeCounter = new AtomicInteger();
+            ThrowLinkTerminateListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertEquals(1, exceptionCounter.get());
+            Assert.assertEquals(2, printBeforeCounter.get());
+
+            ThrowLinkTerminateListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
+        });
+    }
+
+    @Test
+    public void testActionWithGlobalFailureExceptionListener() {
+        Rule rule = compile("{\n" +
+                "    throwExceptionAction()\n" +
+                "}[throwExceptionListener(event=\"failure\", namespace=${namespace})]");
+
+        executeTimes(() -> {
+            String namespace = UUID.randomUUID().toString();
+
+            AtomicInteger counter = new AtomicInteger();
+            ThrowExceptionListener.FAILURE_COUNTER.put(namespace, counter);
+
+            Map<String, Object> env = EnvBuilder.builder()
+                    .put("namespace", namespace)
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env);
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            assertEquals(1, counter.get());
+
+            assertNotNull(ThrowExceptionListener.FAILURE_COUNTER.remove(namespace));
         });
     }
 
@@ -1115,8 +1410,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+            ThrowExceptionListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -1130,8 +1425,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(0, printBeforeCounter.get());
 
-            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            ThrowExceptionListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
         });
     }
 
@@ -1146,8 +1441,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+            ThrowExceptionListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -1161,8 +1456,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(1, printBeforeCounter.get());
 
-            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            ThrowExceptionListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
         });
     }
 
@@ -1177,8 +1472,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+            ThrowExceptionListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -1192,8 +1487,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(2, printBeforeCounter.get());
 
-            ThrowExceptionListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            ThrowExceptionListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
         });
     }
 
@@ -1207,7 +1502,7 @@ public class TestCommonListenerTrace extends TestTraceBase {
             String namespace = UUID.randomUUID().toString();
 
             AtomicInteger counter = new AtomicInteger();
-            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.put(namespace, counter);
+            ThrowLinkTerminateListener.FAILURE_COUNTER.put(namespace, counter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -1220,7 +1515,7 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             assertEquals(1, counter.get());
 
-            assertNotNull(ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.remove(namespace));
+            assertNotNull(ThrowLinkTerminateListener.FAILURE_COUNTER.remove(namespace));
         });
     }
 
@@ -1235,8 +1530,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+            ThrowLinkTerminateListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -1250,8 +1545,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(0, printBeforeCounter.get());
 
-            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            ThrowLinkTerminateListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
         });
     }
 
@@ -1266,8 +1561,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+            ThrowLinkTerminateListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -1281,8 +1576,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(1, printBeforeCounter.get());
 
-            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            ThrowLinkTerminateListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
         });
     }
 
@@ -1297,8 +1592,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
 
             AtomicInteger exceptionCounter = new AtomicInteger();
             AtomicInteger printBeforeCounter = new AtomicInteger();
-            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.put(namespace, exceptionCounter);
-            PrintListener.GLOBAL_FAILURE_COUNTER.put(namespace, printBeforeCounter);
+            ThrowLinkTerminateListener.FAILURE_COUNTER.put(namespace, exceptionCounter);
+            PrintListener.FAILURE_COUNTER.put(namespace, printBeforeCounter);
 
             Map<String, Object> env = EnvBuilder.builder()
                     .put("namespace", namespace)
@@ -1312,8 +1607,8 @@ public class TestCommonListenerTrace extends TestTraceBase {
             Assert.assertEquals(1, exceptionCounter.get());
             Assert.assertEquals(2, printBeforeCounter.get());
 
-            ThrowLinkTerminateListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
-            PrintListener.GLOBAL_FAILURE_COUNTER.remove(namespace);
+            ThrowLinkTerminateListener.FAILURE_COUNTER.remove(namespace);
+            PrintListener.FAILURE_COUNTER.remove(namespace);
         });
     }
 

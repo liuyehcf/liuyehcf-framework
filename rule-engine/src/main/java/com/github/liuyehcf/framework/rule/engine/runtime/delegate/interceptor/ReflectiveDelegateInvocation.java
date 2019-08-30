@@ -261,7 +261,7 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
         );
 
         if (executable instanceof Listener
-                && Objects.equals(ListenerScope.GLOBAL, ((Listener) executable).getScope())) {
+                && Objects.equals(ListenerScope.global, ((Listener) executable).getScope())) {
             operationContext.addTraceToExecutionInstance(trace);
         } else {
             operationContext.addTraceToExecutionLink(trace);

@@ -46,7 +46,7 @@ public class AddGlobalListeners extends AbstractSemanticAction {
             Field field = clazz.getDeclaredField("scope");
             modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
             field.setAccessible(true);
-            field.set(listener, ListenerScope.GLOBAL);
+            field.set(listener, ListenerScope.global);
             modifiersField.setInt(field, field.getModifiers() | Modifier.FINAL);
             field.setAccessible(false);
 

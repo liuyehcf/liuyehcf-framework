@@ -66,20 +66,21 @@ public abstract class AbstractOperation<T> implements Runnable {
 
     abstract void operate() throws Throwable;
 
-    final void processAsyncPromise(Promise promise, Runnable runnable) {
+    final void processAsyncPromise(Promise promise, Runnable continuation, ExceptionHandler exceptionHandler) {
         execute(() -> {
             if (promise.isSuccess()) {
-                if (runnable != null) {
-                    runnable.run();
+                if (continuation != null) {
+                    continuation.run();
                 }
             } else {
                 if (optPromise != null) {
                     optPromise.tryFailure(promise.cause());
                 }
-                if (promise.cause() == null) {
-                    throw new RuleException(RuleErrorCode.PROMISE, "promise failed");
+
+                if (exceptionHandler != null) {
+                    exceptionHandler.handleException(promise.cause());
                 } else {
-                    throw promise.cause();
+                    throwCause(promise.cause());
                 }
             }
         });
@@ -129,7 +130,7 @@ public abstract class AbstractOperation<T> implements Runnable {
                 null,
                 null,
                 continuation,
-                promise -> processAsyncPromise(promise, continuation));
+                promise -> processAsyncPromise(promise, continuation, null));
     }
 
     final void invokeNodeSuccessListeners(Node node, Object result, Runnable continuation) throws Throwable {
@@ -137,15 +138,17 @@ public abstract class AbstractOperation<T> implements Runnable {
                 result,
                 null,
                 continuation,
-                promise -> processAsyncPromise(promise, continuation));
+                promise -> processAsyncPromise(promise, continuation, null));
     }
 
-    final void invokeNodeFailureListeners(Node node, Throwable cause, Runnable continuation) throws Throwable {
+    final void invokeNodeFailureListeners(Node node, Throwable cause, Runnable rethrowContinuation) throws Throwable {
+        // guarantee rethrowContinuation will be executed in all cases
+        // so let `(e) -> rethrowContinuation.run()` be the exceptionHandler
         invokeListeners(getNodeListenerByEvent(node, ListenerEvent.failure),
                 null,
                 cause,
-                continuation,
-                promise -> processAsyncPromise(promise, continuation));
+                rethrowContinuation,
+                promise -> processAsyncPromise(promise, rethrowContinuation, (e) -> rethrowContinuation.run()));
     }
 
     final void invokeGlobalBeforeListeners(Runnable continuation) throws Throwable {
@@ -226,7 +229,9 @@ public abstract class AbstractOperation<T> implements Runnable {
     }
 
     final void throwCause(Throwable cause) throws Throwable {
-        throw cause;
+        throw cause == null ?
+                new RuleException(RuleErrorCode.PROMISE, "promise failed") :
+                cause;
     }
 
     final int getUnreachableNumOfJoinGateway(JoinGateway joinGateway) {
@@ -322,7 +327,7 @@ public abstract class AbstractOperation<T> implements Runnable {
         Rule rule = context.getRule();
 
         for (Listener listener : rule.getListeners()) {
-            if (Objects.equals(ListenerScope.GLOBAL, listener.getScope())
+            if (Objects.equals(ListenerScope.global, listener.getScope())
                     && Objects.equals(event, listener.getEvent())) {
                 listeners.add(listener);
             }
@@ -432,5 +437,10 @@ public abstract class AbstractOperation<T> implements Runnable {
     protected interface Runnable {
 
         void run() throws Throwable;
+    }
+
+    protected interface ExceptionHandler {
+
+        void handleException(Throwable e) throws Throwable;
     }
 }

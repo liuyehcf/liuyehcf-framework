@@ -1007,7 +1007,7 @@ public class TestSubTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.before,
                 new String[]{"event", "content"},
                 new Object[]{"before", "listenerC"}
@@ -1015,7 +1015,7 @@ public class TestSubTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.success,
                 new String[]{"event", "content"},
                 new Object[]{"success", "listenerD"}
@@ -1080,7 +1080,7 @@ public class TestSubTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.before,
                 new String[]{"event", "content"},
                 new Object[]{"before", "listenerC"}
@@ -1088,7 +1088,7 @@ public class TestSubTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.success,
                 new String[]{"event", "content"},
                 new Object[]{"success", "listenerD"}

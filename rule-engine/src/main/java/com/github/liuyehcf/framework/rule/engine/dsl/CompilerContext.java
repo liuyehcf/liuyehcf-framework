@@ -165,7 +165,7 @@ public class CompilerContext extends Context {
                 generateId(),
                 rule.peekNode().getId(),
                 listenerName,
-                ListenerScope.NODE,
+                ListenerScope.node,
                 listenerEvent,
                 argumentNameList.toArray(new String[0]),
                 argumentValueList.toArray(new Object[0])

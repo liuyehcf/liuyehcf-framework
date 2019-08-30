@@ -39,7 +39,12 @@ class ActionOperation extends AbstractOperation<Void> {
         }
 
         if (delegateResult.isAsync()) {
-            delegateResult.getDelegatePromise().addListener(promise -> processAsyncPromise(promise, this::continueSuccessListener));
+            // if this delete invocation failed, then trigger failure listeners
+            // after all the failure listeners executed, then rethrow the origin exception
+            delegateResult.getDelegatePromise()
+                    .addListener(promise -> processAsyncPromise(promise,
+                            this::continueSuccessListener,
+                            (e) -> invokeNodeFailureListeners(action, e, () -> throwCause(e))));
         } else {
             continueSuccessListener();
         }

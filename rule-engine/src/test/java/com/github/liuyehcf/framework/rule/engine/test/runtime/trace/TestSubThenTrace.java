@@ -1069,7 +1069,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.before,
                 new String[]{"event", "content"},
                 new Object[]{"before", "listenerC"}
@@ -1077,7 +1077,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.success,
                 new String[]{"event", "content"},
                 new Object[]{"success", "listenerD"}
@@ -1152,7 +1152,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.before,
                 new String[]{"event", "content"},
                 new Object[]{"before", "listenerE"}
@@ -1160,7 +1160,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.before,
                 new String[]{"event", "content"},
                 new Object[]{"before", "listenerF"}
@@ -1169,7 +1169,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.success,
                 new String[]{"event", "content"},
                 new Object[]{"success", "listenerG"}
@@ -1177,7 +1177,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.success,
                 new String[]{"event", "content"},
                 new Object[]{"success", "listenerH"}
@@ -1259,7 +1259,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.before,
                 new String[]{"event", "content"},
                 new Object[]{"before", "listenerC"}
@@ -1267,7 +1267,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.success,
                 new String[]{"event", "content"},
                 new Object[]{"success", "listenerD"}
@@ -1336,7 +1336,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.before,
                 new String[]{"event", "content"},
                 new Object[]{"before", "listenerE"}
@@ -1344,7 +1344,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.before,
                 new String[]{"event", "content"},
                 new Object[]{"before", "listenerF"}
@@ -1353,7 +1353,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.success,
                 new String[]{"event", "content"},
                 new Object[]{"success", "listenerG"}
@@ -1361,7 +1361,7 @@ public class TestSubThenTrace extends TestTraceBase {
         subRule.addListener(new DefaultListener(UUID.randomUUID().toString(),
                 subRule.getId(),
                 "printListener",
-                ListenerScope.NODE,
+                ListenerScope.node,
                 ListenerEvent.success,
                 new String[]{"event", "content"},
                 new Object[]{"success", "listenerH"}

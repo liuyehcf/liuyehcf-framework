@@ -295,7 +295,7 @@ public class DefaultOperationContext implements OperationContext {
                     RuleEngine.getDelegateInterceptorFactories());
         } else if (executable instanceof Listener) {
             Listener listener = (Listener) executable;
-            if (ListenerScope.GLOBAL.equals((listener).getScope())) {
+            if (ListenerScope.global.equals((listener).getScope())) {
                 return new ReflectiveDelegateInvocation(
                         result,
                         cause,
@@ -304,7 +304,7 @@ public class DefaultOperationContext implements OperationContext {
                         this,
                         new DefaultListenerContext(listener, instanceId, linkId, executionId, executionInstance.getEnv(), executionInstance.getAttributes(), listener.getScope()),
                         RuleEngine.getDelegateInterceptorFactories());
-            } else if (ListenerScope.NODE.equals((listener).getScope())) {
+            } else if (ListenerScope.node.equals((listener).getScope())) {
                 return new ReflectiveDelegateInvocation(
                         result,
                         cause,

@@ -6,7 +6,7 @@
 
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>rule-engine</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
     <name>rule-engine</name>
     <description>rule engine</description>

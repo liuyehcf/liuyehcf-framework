@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
-import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegatePromise;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateResult;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.UnsafeDelegateInvocation;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
@@ -56,8 +55,13 @@ class ListenerOperation extends AbstractOperation<Void> {
         }
 
         if (delegateResult.isAsync()) {
-            DelegatePromise delegatePromise = delegateResult.getDelegatePromise();
-            delegatePromise.addListener(promise -> processAsyncPromise(promise, this::continueNextListener));
+            delegateResult.getDelegatePromise()
+                    .addListener(promise -> processAsyncPromise(promise,
+                            this::continueNextListener,
+                            (e) -> {
+                                optPromise.tryFailure(e);
+                                throwCause(e);
+                            }));
         } else {
             continueNextListener();
         }

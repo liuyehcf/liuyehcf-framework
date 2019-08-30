@@ -54,7 +54,7 @@ public class TestBaseTopology {
             for (Listener listener : rule.getListeners()) {
                 String attachedId = listener.getAttachedId();
                 if (attachedId == null) {
-                    Assert.assertEquals(ListenerScope.GLOBAL, listener.getScope());
+                    Assert.assertEquals(ListenerScope.global, listener.getScope());
                     continue;
                 }
                 Node attachedNode = (Node) rule.getElement(attachedId);

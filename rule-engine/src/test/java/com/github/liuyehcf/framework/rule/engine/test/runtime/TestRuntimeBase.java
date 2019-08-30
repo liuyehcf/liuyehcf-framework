@@ -73,6 +73,7 @@ public class TestRuntimeBase {
         RuleEngine.registerListenerDelegateFactory("throwExceptionListener", ThrowExceptionListener::new);
         RuleEngine.registerListenerDelegateFactory("throwLinkTerminateListener", ThrowLinkTerminateListener::new);
         RuleEngine.registerListenerDelegateFactory("successResultListener", SuccessResultListener::new);
+        RuleEngine.registerListenerDelegateFactory("scopeListener", ScopeListener::new);
 
         RuleEngine.registerDelegateInterceptorFactory(ActionRegexInterceptor::new);
 

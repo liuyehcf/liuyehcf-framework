@@ -235,7 +235,7 @@ public class DefaultRule extends AbstractNode implements Rule {
         int nodeListenerNum = elements.values().stream()
                 .filter(e -> e instanceof Listener)
                 .map(e -> (Listener) e)
-                .filter(l -> Objects.equals(ListenerScope.NODE, l.getScope()))
+                .filter(l -> Objects.equals(ListenerScope.node, l.getScope()))
                 .collect(Collectors.toList()).size();
 
         Assert.assertEquals(nodeListenerNum, nodeListeners.size(),

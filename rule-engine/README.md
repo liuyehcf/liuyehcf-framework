@@ -12,8 +12,9 @@
         * ExclusiveGateway
     * Listener
         * event
-            * start
-            * end
+            * before
+            * success
+            * failure
         * scope
             * node
             * global
@@ -36,6 +37,8 @@
     * PromiseListener
     * DelegateInterceptor
     * DelegateField
+    * 线程池隔离
+    * 异步执行超时设置
 1. __集成Spring-Boot-Starter__
 1. __数据统计__
     * 执行链路
@@ -66,8 +69,8 @@
 1. `Conditional`: 规则中可以作为条件节点后继的节点，包含
     * `linktype`: 链路类型，包括`NORMAL`、`TRUE`、`FALSE`三种
 1. `Listener`: 监听，包含
-    * `scope`: 监听级别，包括`GLOBAL`以及`NODE`
-    * `event`: 事件类型，包括`start`以及`event`
+    * `scope`: 监听级别，包括`global`以及`node`
+    * `event`: 事件类型，包括`before`、`success`以及`failure`
 1. `Activity`: 该概念的定义，参考`flowable`
 1. `Action`: 一个普通的执行节点
 1. `Condition`: 一个条件执行节点
@@ -80,7 +83,21 @@
     * `or`表示当任意前继节点正常执行时，允许通过
 1. `Rule`: 规则本身也可以作为节点存在于上一级的规则拓扑中（即子规则）
 
-## 2.2 Node
+## 2.2 LinkType
+
+__在规则引擎中，节点与节点之间的连线称为`Link`，其类型包含如下三种__
+
+* `LinkType.TRUE`: true分支
+* `LinkType.FALSE`: false分支
+* `LinkType.NORMAL`: 默认分支
+
+__其中，`Condition`以及`Rule`与后继节点的连线的类型是`LinkType.TRUE`或`LinkType.FALSE`；其余类型的节点与后继节点的连线的类型是`LinkType.NORMAL`，请参考如下示意图__
+
+![linktype_example](images/linktype_example.png) 
+
+__在下文中，我们把某个节点与其后继节点的连线称为`后继Link`__
+
+## 2.3 Node
 
 __`Node`是规则拓扑结构中的最基本元素，而其他元素，例如`Listener`只能依附于`Node`而存在，`Node`包括：__
 
@@ -90,7 +107,7 @@ __`Node`是规则拓扑结构中的最基本元素，而其他元素，例如`Li
 * `ExclusiveGateway`
 * `Rule`
 
-## 2.3 Executable
+## 2.4 Executable
 
 `Executable`是可执行Java代码的元素，包括`Action`、`Condition`以及`Listener`
 
@@ -111,20 +128,6 @@ __命名__
 1. 标志符，例如`actionA`、`action1`、`_action_2`
 1. 标志符结合`.`，例如`my.test.condition3`
 1. 标志符结合`/`，例如`my/test/listener5`
-
-## 2.4 LinkType
-
-__在规则引擎中，节点与节点之间的连线称为`Link`，其类型包含如下三种__
-
-* `LinkType.TRUE`: true分支
-* `LinkType.FALSE`: false分支
-* `LinkType.NORMAL`: 默认分支
-
-__其中，`Condition`以及`Rule`与后继节点的连线的类型是`LinkType.TRUE`或`LinkType.FALSE`；其余类型的节点与后继节点的连线的类型是`LinkType.NORMAL`，请参考如下示意图__
-
-![linktype_example](images/linktype_example.png) 
-
-__在下文中，我们把某个节点与其后继节点的连线称为`后继Link`__
 
 ### 2.4.1 Action
 
@@ -202,31 +205,33 @@ __其中，`context`可用于__
 
 __`Listener`不是规则拓扑结构中的节点，`Listener`必须依附于节点而存在，包括__
 
-1. `Rule`（`Global/Node` Scope）
-    * 只允许对`Sub Rule`配置`Node`的监听
-    * 可以对`Rule`或`Sub Rule`配置`Global`监听
-1. `Activity`（`Node` Scope）
+1. `Rule`（`global/node` Scope）
+    * 只允许对`Sub Rule`配置`node`的监听
+    * 可以对`Rule`或`Sub Rule`配置`global`监听
+1. `Activity`（`node` Scope）
     * `Action`
     * `Condition`
-1. `Gateway`（`Node` Scope）
+1. `Gateway`（`node` Scope）
     * `JoinGateway`
     * `ExclusiveGateway`
 
 __event: Listener触发时机__
 
-1. `start`: 执行链路刚刚到达该`Listener`所依附的节点时触发（此时依附的节点尚未执行相关逻辑）
-1. `end`: 执行链路将要离开该该`Listener`所依附的节点时触发（此时依附的节点已经执行相关逻辑）
+1. `before`: 执行链路刚刚到达该`Listener`所依附的节点时触发（此时依附的节点尚未执行相关逻辑）
+1. `success`: 该`Listener`所依附的节点正常执行时触发
+    * 对于`Action`、`Condition`这类节点，当节点执行未抛出异常时，才会触发`success`监听
+    * 对于`JoinGateway`、`ExclusiveGateway`这类节点，由于不包含执行逻辑，意味着不可能抛出异常，因此必然触发`success`监听
+1. `failure`: 当依附的节点抛出异常时，会触发该类型的监听
+    * 该类型的监听只能用于感知异常情况，但无法处理异常。换言之，在该监听处理完毕之后，该异常仍然会向上层继续抛出
 
 __scope: Listener的范围__
 
-1. `NODE`: 节点级别的监听，该监听可以依附于`Action`、`Condition`、`Gateway`
-1. `GLOBAL`: 规则级别的监听，即仅在规则开始前/结束后触发监听
+1. `node`: 节点级别的监听，该监听可以依附于`Action`、`Condition`、`Gateway`
+1. `global`: 规则级别的监听，即仅在规则开始前/成功执行/执行异常后触发
+    * 如果规则存在多个执行分支，那么`success/failure`监听也只会执行一次
+    * __例如下面的示意图，如果`actionA`、`actionB`和`actionC`都正常执行，那么该`GlobalSuccessListener`同样只会执行一次__
 
-__注意，如果配置了scope为`GLOBAL`且event为`end`的监听，且流程有多个可达分支，那么所有的可达分支都会执行该监听，例如下面的示意图，如果`actionA`、`actionB`和`actionC`都正常执行，那么该`GlobalEndListener`将会执行三次__
-
-![listener](images/global_end_example.png)  
-
-__为什么要这样设计？因为各个不同执行链路的环境变量是相互独立的，而执行监听的逻辑时可能会取用环境变量中的值，因此该监听的执行也设计成不同执行链路相互独立__
+![listener](images/global_success_example.png)  
 
 ![listener](images/listener.png)  
 
@@ -249,7 +254,29 @@ public interface ListenerDelegate extends Delegate {
      * @param context context of execution
      * @throws Exception exceptions
      */
-    void onListener(ListenerContext context) throws Exception;
+    default void onBefore(ListenerContext context) throws Exception {
+        // default implementation
+    }
+
+    /**
+     * method invoke when bound element' execution succeeded
+     *
+     * @param context context of execution
+     * @throws Exception exceptions
+     */
+    default void onSuccess(ListenerContext context, Object result) throws Exception {
+        // default implementation
+    }
+
+    /**
+     * method invoke when bound element' execution failed
+     *
+     * @param context context of execution
+     * @throws Exception exceptions
+     */
+    default void onFailure(ListenerContext context, Throwable cause) throws Exception {
+        // default implementation
+    }
 }
 ```
 
@@ -270,7 +297,7 @@ __如果`Delegate`需要配置一些变量，那么必须使用`DelegateField`�
 
 1. `set`方法，优先使用该方式，也推荐使用该方式（不会受Spring-Aop的影响）
 1. 字段注入（不推荐该方式，在Spring环境中，如果配置了AOP，那么该方式会失效，字段会注入到包装类）
-* 如果节点未指定该参数，那么通过`DelegateField.getValue`方法获取到的值为null，但`DelegateField`本身不是null
+* __如果节点未指定该参数，那么通过`DelegateField.getValue`方法获取到的值为null，但`DelegateField`本身一定不是null__
 
 ```java
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ActionDelegate;
@@ -299,6 +326,58 @@ public class MyAction implements ActionDelegate {
         Object value1 = arg1.getValue();
         Object value2 = arg2.getValue();
         // ...
+    }
+}
+```
+
+### 2.4.5 线程池隔离
+
+当节点的业务逻辑较为复杂时，建议用业务线程池来处理业务逻辑，不要在规则引擎的线程池中执行业务逻辑
+
+`ActionDelegate`、`ConditionDelegate`、`ListenerDelegate`可以通过`isAsync`方法设置成异步执行；可以通过`getAsyncTimeout`设置超时时间；可以通过`getAsyncExecutor`设置业务线程池，这些方法都定义在顶层接口`Delegate`中，默认是非异步模式
+
+```Java
+package com.github.liuyehcf.framework.rule.engine.runtime.delegate;
+
+import com.github.liuyehcf.framework.rule.engine.RuleEngine;
+
+import java.util.concurrent.ExecutorService;
+
+/**
+ * @author hechenfeng
+ * @date 2019/4/27
+ */
+public interface Delegate {
+
+    /**
+     * whether execution in async mode
+     * default is sync mode, which means that it will execute in the thread pool of the RuleEngine
+     */
+    default boolean isAsync() {
+        return false;
+    }
+
+    /**
+     * thread pool for executing asynchronous logic
+     * default is RuleEngine's thread pool
+     * <p>
+     * invalid when isAsync() is false
+     */
+    default ExecutorService getAsyncExecutor() {
+        return RuleEngine.getExecutor();
+    }
+
+    /**
+     * timeout of async execution, the unit is milliseconds
+     * non-positive value means wait until execution finished, default is 0
+     * <p>
+     * if the execution time exceeds the specified time, an interrupt signal is emitted,
+     * but the response depends on the business code itself.
+     * <p>
+     * invalid when isAsync() is false
+     */
+    default long getAsyncTimeout() {
+        return 0;
     }
 }
 ```
@@ -369,10 +448,11 @@ __在这种场景下，`sub rule`与`or`模式的`JoinGateway`非常相似，但
 
 __如何定义`sub rule`执行成功：当存在任意一条分支成功执行（即任意一个分支到达叶子节点时），就认为`sub rule`执行成功，反之则认为`sub rule`执行失败__
 
-__`sub rule`的监听：我们可以为`sub rule`配置`Global`以及`Node`级别的`Listener`__
+__`sub rule`的监听：我们可以为`sub rule`配置`global`以及`node`级别的`Listener`__
 
-* `Global`级别的`Listener`，其行为与规则的`Global`级别的`Listener`的行为一致。注意到，如果`sub rule`执行失败，即无任何分支到达叶子节点，那么该`Global`级别的`End Listener`是不会执行的
-* `Node`级别的`Listener`，其行为与普通节点的`Listener`行为一致。注意到，无论`sub rule`的执行结果如何，`Node`级别的`End Listener`都会执行
+* `global`级别的`Listener`，其行为与规则的`global`级别的`Listener`的行为一致
+* `node`级别的`Listener`，其行为与普通节点的`Listener`行为一致
+* 对于`sub rule`而言，`node`级别的监听与`global`级别的监听是等价的
 
 ## 2.7 异常
 
@@ -762,14 +842,14 @@ __全局监听__
 ```
 {
     actionA()
-} [listenerA(event="start")]
+} [listenerA(event="before")]
 ```
 
 __action监听__
 
 ```
 {
-    actionA()[listenerA(event="start")]
+    actionA()[listenerA(event="before")]
 }
 ```
 
@@ -777,7 +857,7 @@ __condition监听__
 
 ```
 {
-    if(conditionA() [listenerA(event="start")]) {
+    if(conditionA() [listenerA(event="before")]) {
         actionA()
     }
 }
@@ -794,7 +874,7 @@ __exclusiveGateway监听__
         if(conditionB()){
             actionB()
         }
-    } [listenerA(event="start")]
+    } [listenerA(event="before")]
 }
 ```
 
@@ -805,7 +885,7 @@ __joinGateway监听__
     join {
         actionA()&,
         actionB()&
-    } [listenerA(event="start")] then {
+    } [listenerA(event="before")] then {
         actionD()
     }
 }
@@ -817,17 +897,17 @@ __subRule监听__
 {
     sub {
         actionA()
-    }[listenerA(event="start")],
+    }[listenerA(event="before")],
     
     sub {
         actionB()
-    }[listenerB(event="end")] then {
+    }[listenerB(event="success")] then {
         actionC()
     },
     
     sub {
         actionD()
-    }[listenerC(event="start")] then {
+    }[listenerC(event="before")] then {
         actionE()
     } else {
         actionF()
@@ -839,7 +919,7 @@ __监听均支持多个，以逗号分隔__
 
 ```
 {
-    actionA()[listenerA(event="start"), listenerB(event="end")]
+    actionA()[listenerA(event="before"), listenerB(event="success")]
 }
 ```
 
@@ -879,7 +959,7 @@ __可以基于Promise配置监听，当规则正常或者异常终止时，会�
 
 规则引擎提供了类似spring-aop的拦截器机制，核心接口包括`DelegateInterceptor`以及`DelegateInvocation`，通过拦截器，我们可以轻松地实现一些业务能力，执行统计、日志打印等
 
-`DelegateInterceptor`类似于`MethodInterceptor`
+`DelegateInterceptor`类似于`MethodInterceptor`，此外还提供了节点匹配的能力，可以通过`matches`方法来选择匹配节点
 
 ```java
 package com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor;
@@ -889,6 +969,16 @@ package com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor;
  * @date 2019/4/27
  */
 public interface DelegateInterceptor {
+
+    /**
+     * whether given executableName matches this interceptor
+     *
+     * @param executableName executable name
+     * @return whether matches
+     */
+    default boolean matches(String executableName) {
+        return true;
+    }
 
     /**
      * Implement this method to perform extra treatments before and
@@ -1067,8 +1157,18 @@ public class PrintListener implements ListenerDelegate {
     }
 
     @Override
-    public void onListener(ListenerContext listenerContext) throws Exception {
-        System.out.println(String.format("printListener. content=%s", content.getValue()));
+    public void onBefore(ListenerContext context) throws Exception {
+        System.out.println(String.format("printListener onBefore. content=%s", content.getValue()));
+    }
+
+    @Override
+    public void onSuccess(ListenerContext context, Object result) throws Exception {
+        System.out.println(String.format("printListener onSuccess. content=%s", content.getValue()));
+    }
+
+    @Override
+    public void onFailure(ListenerContext context, Throwable cause) throws Exception {
+        System.out.println(String.format("printListener onFailure. content=%s", content.getValue()));
     }
 }
 ```
@@ -1129,11 +1229,11 @@ public class MyDelegateInterceptor1 implements DelegateInterceptor {
 ## 8.1 非spring环境
 
 ```xml
-        <dependency>
-            <groupId>com.github.liuyehcf</groupId>
-            <artifactId>rule-engine</artifactId>
-            <version>1.1.0</version>
-        </dependency>
+<dependency>
+    <groupId>com.github.liuyehcf</groupId>
+    <artifactId>rule-engine</artifactId>
+    <version>1.2.0</version>
+</dependency>
 ```
 
 ## 8.2 示例
@@ -1241,9 +1341,9 @@ trigger promise listener
 __maven依赖__
 
 ```xml
-        <dependency>
-            <groupId>com.github.liuyehcf</groupId>
-            <artifactId>rule-engine-spring-boot-starter</artifactId>
-            <version>1.1.0</version>
-        </dependency>
+<dependency>
+    <groupId>com.github.liuyehcf</groupId>
+    <artifactId>rule-engine-spring-boot-starter</artifactId>
+    <version>1.2.0</version>
+</dependency>
 ```
