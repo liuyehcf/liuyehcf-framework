@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2019/8/14
  */
 public interface UnsafeDelegateInvocation extends DelegateInvocation {
