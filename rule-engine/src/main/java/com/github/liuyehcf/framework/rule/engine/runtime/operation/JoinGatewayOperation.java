@@ -16,7 +16,7 @@ class JoinGatewayOperation extends AbstractOperation<Void> {
 
     JoinGatewayOperation(OperationContext context, JoinGateway joinGateway) {
         super(context);
-        Assert.assertNotNull(joinGateway);
+        Assert.assertNotNull(joinGateway, "joinGateway");
         this.joinGateway = joinGateway;
     }
 

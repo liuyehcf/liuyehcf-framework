@@ -25,8 +25,8 @@ class MarkSuccessorUnreachableOperation extends AbstractOperation<Void> {
 
     MarkSuccessorUnreachableOperation(OperationContext context, Node node, LinkType unReachableLinkType) {
         super(context);
-        Assert.assertNotNull(node);
-        Assert.assertNotNull(unReachableLinkType);
+        Assert.assertNotNull(node, "node");
+        Assert.assertNotNull(unReachableLinkType, "unReachableLinkType");
         this.node = node;
         this.unReachableLinkType = unReachableLinkType;
     }

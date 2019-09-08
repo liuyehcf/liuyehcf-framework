@@ -18,7 +18,7 @@ public abstract class AbstractElement implements Element {
     private Rule rule;
 
     AbstractElement(String id) {
-        Assert.assertNotNull(id);
+        Assert.assertNotNull(id, "id");
         this.id = id;
     }
 

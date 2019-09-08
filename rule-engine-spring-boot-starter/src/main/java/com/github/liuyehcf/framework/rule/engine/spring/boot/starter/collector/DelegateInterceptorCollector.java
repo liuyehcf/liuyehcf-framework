@@ -21,6 +21,12 @@ import java.util.List;
  */
 public class DelegateInterceptorCollector implements BeanFactoryPostProcessor {
 
+    private final RuleEngine engine;
+
+    public DelegateInterceptorCollector(RuleEngine engine) {
+        this.engine = engine;
+    }
+
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         List<OrderedDelegateInterceptorFactory> orderedFactories = Lists.newArrayList();
@@ -57,7 +63,7 @@ public class DelegateInterceptorCollector implements BeanFactoryPostProcessor {
         orderedFactories.sort(Comparator.comparingInt(OrderedDelegateInterceptorFactory::getOrder));
 
         for (OrderedDelegateInterceptorFactory factory : orderedFactories) {
-            RuleEngine.registerDelegateInterceptorFactory(factory.target);
+            engine.registerDelegateInterceptorFactory(factory.target);
         }
     }
 

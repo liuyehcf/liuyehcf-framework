@@ -26,7 +26,7 @@ class ConditionOperation extends AbstractOperation<Boolean> {
 
     ConditionOperation(OperationContext context, Condition condition, Promise<Boolean> optPromise) {
         super(context, optPromise);
-        Assert.assertNotNull(condition);
+        Assert.assertNotNull(condition, "condition");
         this.condition = condition;
     }
 

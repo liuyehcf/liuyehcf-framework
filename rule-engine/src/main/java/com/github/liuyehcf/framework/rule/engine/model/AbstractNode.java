@@ -19,7 +19,7 @@ public abstract class AbstractNode extends AbstractElement implements Node {
 
     protected AbstractNode(String id, LinkType linkType) {
         super(id);
-        Assert.assertNotNull(linkType);
+        Assert.assertNotNull(linkType, "linkType");
         this.linkType = linkType;
     }
 
@@ -30,37 +30,37 @@ public abstract class AbstractNode extends AbstractElement implements Node {
 
     @Override
     public final void addListener(Listener listener) {
-        Assert.assertNotNull(listener);
+        Assert.assertNotNull(listener, "listener");
         listeners.add(listener);
     }
 
     @Override
     public final void removeListener(Listener listener) {
-        Assert.assertNotNull(listener);
+        Assert.assertNotNull(listener, "listener");
         listeners.remove(listener);
     }
 
     @Override
     public final void addPredecessor(Node node) {
-        Assert.assertNotNull(node);
+        Assert.assertNotNull(node, "node");
         predecessors.add(node);
     }
 
     @Override
     public final void removePredecessor(Node node) {
-        Assert.assertNotNull(node);
+        Assert.assertNotNull(node, "node");
         predecessors.remove(node);
     }
 
     @Override
     public final void addSuccessor(Node node) {
-        Assert.assertNotNull(node);
+        Assert.assertNotNull(node, "node");
         successors.add(node);
     }
 
     @Override
     public final void removeSuccessor(Node node) {
-        Assert.assertNotNull(node);
+        Assert.assertNotNull(node, "node");
         successors.remove(node);
     }
 

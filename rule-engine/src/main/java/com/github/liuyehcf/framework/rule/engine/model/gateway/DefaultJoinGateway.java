@@ -16,7 +16,7 @@ public class DefaultJoinGateway extends AbstractGateway implements JoinGateway {
 
     public DefaultJoinGateway(String id, JoinMode joinMode) {
         super(id, LinkType.TRUE);
-        Assert.assertNotNull(joinMode);
+        Assert.assertNotNull(joinMode, "joinMode");
         this.joinMode = joinMode;
     }
 

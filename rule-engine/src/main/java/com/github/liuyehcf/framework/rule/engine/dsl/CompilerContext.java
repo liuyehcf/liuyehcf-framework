@@ -41,7 +41,7 @@ public class CompilerContext extends Context {
      * @param value       属性值
      */
     public void setAttr(int stackOffset, AttrName attrName, Object value) {
-        Assert.assertNotNull(attrName);
+        Assert.assertNotNull(attrName, "attrName");
         getStack().get(stackOffset).put(attrName.name(), value);
     }
 
@@ -52,7 +52,7 @@ public class CompilerContext extends Context {
      * @param value    属性值
      */
     public void setAttrToLeftNode(AttrName attrName, Object value) {
-        Assert.assertNotNull(attrName);
+        Assert.assertNotNull(attrName, "attrName");
         getLeftNode().put(attrName.name(), value);
     }
 
@@ -65,7 +65,7 @@ public class CompilerContext extends Context {
      * @return 属性值
      */
     public <T> T getAttr(int stackOffset, AttrName attrName) {
-        Assert.assertNotNull(attrName);
+        Assert.assertNotNull(attrName, "attrName");
         return getStack().get(stackOffset).get(attrName.name());
     }
 
@@ -271,7 +271,7 @@ public class CompilerContext extends Context {
     }
 
     public void addJoinNode(Node node) {
-        Assert.assertNotNull(node);
+        Assert.assertNotNull(node, "node");
         peekJoinScope().addJoinNode(node);
     }
 

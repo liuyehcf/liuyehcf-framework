@@ -25,7 +25,6 @@ import com.google.common.collect.Sets;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -37,7 +36,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class DefaultOperationContext implements OperationContext {
 
-    private final Executor executor = RuleEngine.getExecutor();
+    private final RuleEngine engine;
     private final Promise<ExecutionInstance> promise;
     private final ReentrantLock ruleLock;
     private final Map<String, ReentrantLock> elementLocks;
@@ -55,12 +54,14 @@ public class DefaultOperationContext implements OperationContext {
     private final AtomicLong executionIdGenerator;
     private Node node;
 
-    public DefaultOperationContext(Rule rule,
+    public DefaultOperationContext(RuleEngine engine,
+                                   Rule rule,
                                    String instanceId,
                                    Map<String, Object> env,
                                    AtomicLong executionIdGenerator,
                                    Promise<ExecutionInstance> promise) {
-        this(promise,
+        this(engine,
+                promise,
                 new ReentrantLock(),
                 Maps.newConcurrentMap(),
                 rule,
@@ -77,7 +78,8 @@ public class DefaultOperationContext implements OperationContext {
                 executionIdGenerator);
     }
 
-    private DefaultOperationContext(Promise<ExecutionInstance> promise,
+    private DefaultOperationContext(RuleEngine engine,
+                                    Promise<ExecutionInstance> promise,
                                     ReentrantLock ruleLock,
                                     Map<String, ReentrantLock> elementLocks,
                                     Rule rule,
@@ -92,20 +94,22 @@ public class DefaultOperationContext implements OperationContext {
                                     Map<String, Set<String>> joinGatewayReachedLinkIds,
                                     Set<String> aggregatedJoinGatewayIds,
                                     AtomicLong executionIdGenerator) {
-        Assert.assertNotNull(promise);
-        Assert.assertNotNull(ruleLock);
-        Assert.assertNotNull(elementLocks);
-        Assert.assertNotNull(rule);
-        Assert.assertNotNull(executionInstance);
-        Assert.assertNotNull(ruleFinished);
-        Assert.assertNotNull(globalFailureListenerFinished);
-        Assert.assertNotNull(finishedElementIds);
-        Assert.assertNotNull(unreachableNodeIds);
-        Assert.assertNotNull(conditionOutputs);
-        Assert.assertNotNull(joinGatewayReachedLinkIds);
-        Assert.assertNotNull(aggregatedJoinGatewayIds);
-        Assert.assertNotNull(executionIdGenerator);
+        Assert.assertNotNull(engine, "engine");
+        Assert.assertNotNull(promise, "promise");
+        Assert.assertNotNull(ruleLock, "ruleLock");
+        Assert.assertNotNull(elementLocks, "elementLocks");
+        Assert.assertNotNull(rule, "rule");
+        Assert.assertNotNull(executionInstance, "executionInstance");
+        Assert.assertNotNull(ruleFinished, "ruleFinished");
+        Assert.assertNotNull(globalFailureListenerFinished, "globalFailureListenerFinished");
+        Assert.assertNotNull(finishedElementIds, "finishedElementIds");
+        Assert.assertNotNull(unreachableNodeIds, "unreachableNodeIds");
+        Assert.assertNotNull(conditionOutputs, "conditionOutputs");
+        Assert.assertNotNull(joinGatewayReachedLinkIds, "joinGatewayReachedLinkIds");
+        Assert.assertNotNull(aggregatedJoinGatewayIds, "aggregatedJoinGatewayIds");
+        Assert.assertNotNull(executionIdGenerator, "executionIdGenerator");
 
+        this.engine = engine;
         this.promise = promise;
         this.ruleLock = ruleLock;
         this.elementLocks = elementLocks;
@@ -121,6 +125,11 @@ public class DefaultOperationContext implements OperationContext {
         this.joinGatewayReachedLinkIds = joinGatewayReachedLinkIds;
         this.aggregatedJoinGatewayIds = aggregatedJoinGatewayIds;
         this.executionIdGenerator = executionIdGenerator;
+    }
+
+    @Override
+    public final RuleEngine getEngine() {
+        return engine;
     }
 
     @Override
@@ -279,20 +288,20 @@ public class DefaultOperationContext implements OperationContext {
                     null,
                     null,
                     executable,
-                    RuleEngine.getActionDelegate(executable.getName()),
+                    engine.getActionDelegate(executable.getName()),
                     this,
                     new DefaultActionContext(action, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
-                    RuleEngine.getDelegateInterceptorFactories());
+                    engine.getDelegateInterceptorFactories());
         } else if (executable instanceof Condition) {
             Condition condition = (Condition) executable;
             return new ReflectiveDelegateInvocation(
                     null,
                     null,
                     executable,
-                    RuleEngine.getConditionDelegate(executable.getName()),
+                    engine.getConditionDelegate(executable.getName()),
                     this,
                     new DefaultConditionContext(condition, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
-                    RuleEngine.getDelegateInterceptorFactories());
+                    engine.getDelegateInterceptorFactories());
         } else if (executable instanceof Listener) {
             Listener listener = (Listener) executable;
             if (ListenerScope.global.equals((listener).getScope())) {
@@ -300,19 +309,19 @@ public class DefaultOperationContext implements OperationContext {
                         result,
                         cause,
                         executable,
-                        RuleEngine.getListenerDelegate(executable.getName()),
+                        engine.getListenerDelegate(executable.getName()),
                         this,
                         new DefaultListenerContext(listener, instanceId, linkId, executionId, executionInstance.getEnv(), executionInstance.getAttributes(), listener.getScope()),
-                        RuleEngine.getDelegateInterceptorFactories());
+                        engine.getDelegateInterceptorFactories());
             } else if (ListenerScope.node.equals((listener).getScope())) {
                 return new ReflectiveDelegateInvocation(
                         result,
                         cause,
                         executable,
-                        RuleEngine.getListenerDelegate(executable.getName()),
+                        engine.getListenerDelegate(executable.getName()),
                         this,
                         new DefaultListenerContext(listener, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), listener.getScope()),
-                        RuleEngine.getDelegateInterceptorFactories());
+                        engine.getDelegateInterceptorFactories());
             } else {
                 throw new UnsupportedOperationException("unexpected listener scope");
             }
@@ -334,7 +343,7 @@ public class DefaultOperationContext implements OperationContext {
     @Override
     public final void executeAsync(AbstractOperation operation) {
         try {
-            executor.execute(operation);
+            engine.getExecutor().execute(operation);
         } catch (RejectedExecutionException e) {
             promise.tryFailure(new RuleException(RuleErrorCode.THREAD_POOL, "task rejected by thread pool", e));
         }
@@ -361,7 +370,8 @@ public class DefaultOperationContext implements OperationContext {
 
         addLink(actualLink);
 
-        return new DefaultOperationContext(promise,
+        return new DefaultOperationContext(engine,
+                promise,
                 ruleLock,
                 elementLocks,
                 rule,
@@ -380,7 +390,7 @@ public class DefaultOperationContext implements OperationContext {
 
     @Override
     public final OperationContext cloneUnLinkedContext() {
-        return new DefaultOperationContext(
+        return new DefaultOperationContext(engine,
                 promise,
                 ruleLock,
                 elementLocks,
@@ -400,7 +410,7 @@ public class DefaultOperationContext implements OperationContext {
 
     @Override
     public final OperationContext cloneMarkContext() {
-        return new DefaultOperationContext(
+        return new DefaultOperationContext(engine,
                 promise,
                 ruleLock,
                 elementLocks,

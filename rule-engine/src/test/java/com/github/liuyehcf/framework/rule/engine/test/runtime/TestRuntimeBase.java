@@ -3,6 +3,7 @@ package com.github.liuyehcf.framework.rule.engine.test.runtime;
 import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
+import com.github.liuyehcf.framework.rule.engine.runtime.DefaultRuleEngine;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.action.*;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.condition.*;
@@ -35,51 +36,52 @@ public class TestRuntimeBase {
     public static final boolean IS_LISTENER_ASYNC = true;
     protected static final Random RANDOM = new Random();
     protected static final int EXECUTE_TIMES = 1;
+    protected static final RuleEngine engine = new DefaultRuleEngine();
     private static ExecutorService EXECUTOR = new ThreadPoolExecutor(16, 16, 5L, TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(1024),
             new ThreadFactoryBuilder().setNameFormat("RULE-ENGINE-TEST-t-%d").build(),
             new ThreadPoolExecutor.CallerRunsPolicy());
 
     static {
-        RuleEngine.registerActionDelegateFactory("printAction", PrintAction::new);
-        RuleEngine.registerActionDelegateFactory("throwExceptionAction", ThrowExceptionAction::new);
-        RuleEngine.registerActionDelegateFactory("throwLinkTerminateAction", ThrowLinkTerminateAction::new);
-        RuleEngine.registerActionDelegateFactory("getPropertyAction", GetPropertyAction::new);
-        RuleEngine.registerActionDelegateFactory("setPropertyAction", SetPropertyAction::new);
-        RuleEngine.registerActionDelegateFactory("missingArgumentAction", MissingArgumentAction::new);
-        RuleEngine.registerActionDelegateFactory("setTraceAttrAction", SetTraceAttrAction::new);
-        RuleEngine.registerActionDelegateFactory("dot.name.action", DotNameAction::new);
-        RuleEngine.registerActionDelegateFactory("slash/name/action", SlashNameAction::new);
-        RuleEngine.registerActionDelegateFactory("sleepAction", SleepAction::new);
+        engine.registerActionDelegateFactory("printAction", PrintAction::new);
+        engine.registerActionDelegateFactory("throwExceptionAction", ThrowExceptionAction::new);
+        engine.registerActionDelegateFactory("throwLinkTerminateAction", ThrowLinkTerminateAction::new);
+        engine.registerActionDelegateFactory("getPropertyAction", GetPropertyAction::new);
+        engine.registerActionDelegateFactory("setPropertyAction", SetPropertyAction::new);
+        engine.registerActionDelegateFactory("missingArgumentAction", MissingArgumentAction::new);
+        engine.registerActionDelegateFactory("setTraceAttrAction", SetTraceAttrAction::new);
+        engine.registerActionDelegateFactory("dot.name.action", DotNameAction::new);
+        engine.registerActionDelegateFactory("slash/name/action", SlashNameAction::new);
+        engine.registerActionDelegateFactory("sleepAction", SleepAction::new);
 
-        RuleEngine.registerConditionDelegateFactory("printCondition", PrintCondition::new);
-        RuleEngine.registerConditionDelegateFactory("throwExceptionCondition", ThrowExceptionCondition::new);
-        RuleEngine.registerConditionDelegateFactory("throwLinkTerminateCondition", ThrowLinkTerminateCondition::new);
-        RuleEngine.registerConditionDelegateFactory("getPropertyCondition", GetPropertyCondition::new);
-        RuleEngine.registerConditionDelegateFactory("setPropertyCondition", SetPropertyCondition::new);
-        RuleEngine.registerConditionDelegateFactory("missingArgumentCondition", MissingArgumentCondition::new);
-        RuleEngine.registerConditionDelegateFactory("setTraceAttrCondition", SetTraceAttrCondition::new);
-        RuleEngine.registerConditionDelegateFactory("dot.name.condition", DotNameCondition::new);
-        RuleEngine.registerConditionDelegateFactory("slash/name/condition", SlashNameCondition::new);
-        RuleEngine.registerConditionDelegateFactory("sleepCondition", SleepCondition::new);
+        engine.registerConditionDelegateFactory("printCondition", PrintCondition::new);
+        engine.registerConditionDelegateFactory("throwExceptionCondition", ThrowExceptionCondition::new);
+        engine.registerConditionDelegateFactory("throwLinkTerminateCondition", ThrowLinkTerminateCondition::new);
+        engine.registerConditionDelegateFactory("getPropertyCondition", GetPropertyCondition::new);
+        engine.registerConditionDelegateFactory("setPropertyCondition", SetPropertyCondition::new);
+        engine.registerConditionDelegateFactory("missingArgumentCondition", MissingArgumentCondition::new);
+        engine.registerConditionDelegateFactory("setTraceAttrCondition", SetTraceAttrCondition::new);
+        engine.registerConditionDelegateFactory("dot.name.condition", DotNameCondition::new);
+        engine.registerConditionDelegateFactory("slash/name/condition", SlashNameCondition::new);
+        engine.registerConditionDelegateFactory("sleepCondition", SleepCondition::new);
 
-        RuleEngine.registerListenerDelegateFactory("printListener", PrintListener::new);
-        RuleEngine.registerListenerDelegateFactory("getPropertyListener", GetPropertyListener::new);
-        RuleEngine.registerListenerDelegateFactory("setPropertyListener", SetPropertyListener::new);
-        RuleEngine.registerListenerDelegateFactory("missingArgumentListener", MissingArgumentListener::new);
-        RuleEngine.registerListenerDelegateFactory("setTraceAttrListener", SetTraceAttrListener::new);
-        RuleEngine.registerListenerDelegateFactory("dot.name.listener", DotNameListener::new);
-        RuleEngine.registerListenerDelegateFactory("slash/name/listener", SlashNameListener::new);
-        RuleEngine.registerListenerDelegateFactory("throwExceptionListener", ThrowExceptionListener::new);
-        RuleEngine.registerListenerDelegateFactory("throwLinkTerminateListener", ThrowLinkTerminateListener::new);
-        RuleEngine.registerListenerDelegateFactory("successResultListener", SuccessResultListener::new);
-        RuleEngine.registerListenerDelegateFactory("scopeListener", ScopeListener::new);
+        engine.registerListenerDelegateFactory("printListener", PrintListener::new);
+        engine.registerListenerDelegateFactory("getPropertyListener", GetPropertyListener::new);
+        engine.registerListenerDelegateFactory("setPropertyListener", SetPropertyListener::new);
+        engine.registerListenerDelegateFactory("missingArgumentListener", MissingArgumentListener::new);
+        engine.registerListenerDelegateFactory("setTraceAttrListener", SetTraceAttrListener::new);
+        engine.registerListenerDelegateFactory("dot.name.listener", DotNameListener::new);
+        engine.registerListenerDelegateFactory("slash/name/listener", SlashNameListener::new);
+        engine.registerListenerDelegateFactory("throwExceptionListener", ThrowExceptionListener::new);
+        engine.registerListenerDelegateFactory("throwLinkTerminateListener", ThrowLinkTerminateListener::new);
+        engine.registerListenerDelegateFactory("successResultListener", SuccessResultListener::new);
+        engine.registerListenerDelegateFactory("scopeListener", ScopeListener::new);
 
-        RuleEngine.registerDelegateInterceptorFactory(ActionRegexInterceptor::new);
+        engine.registerDelegateInterceptorFactory(ActionRegexInterceptor::new);
 
         if (STD_OUT_SWITCH) {
-            RuleEngine.registerDelegateInterceptorFactory(EmptyInterceptor::new);
-            RuleEngine.registerDelegateInterceptorFactory(LogInterceptor::new);
+            engine.registerDelegateInterceptorFactory(EmptyInterceptor::new);
+            engine.registerDelegateInterceptorFactory(LogInterceptor::new);
         }
     }
 
@@ -119,15 +121,15 @@ public class TestRuntimeBase {
 
     protected Rule compile(String content) {
         System.out.println(content);
-        return RuleEngine.compile(content);
+        return engine.compile(content);
     }
 
     protected Promise<ExecutionInstance> startRule(String content, Map<String, Object> env) {
         System.out.println(content);
-        return RuleEngine.startRule(content, env);
+        return engine.startRule(content, env);
     }
 
     protected Promise<ExecutionInstance> startRule(Rule rule, Map<String, Object> env) {
-        return RuleEngine.startRule(rule, env);
+        return engine.startRule(rule, env);
     }
 }

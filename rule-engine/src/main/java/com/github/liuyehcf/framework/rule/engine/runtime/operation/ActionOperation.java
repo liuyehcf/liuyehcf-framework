@@ -17,7 +17,7 @@ class ActionOperation extends AbstractOperation<Void> {
 
     ActionOperation(OperationContext context, Action action) {
         super(context);
-        Assert.assertNotNull(action);
+        Assert.assertNotNull(action, "action");
         this.action = action;
     }
 

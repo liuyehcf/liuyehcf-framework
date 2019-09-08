@@ -1,6 +1,7 @@
 package com.github.liuyehcf.framework.rule.engine.spring.boot.starter.collector;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.Delegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.factory.Factory;
 import com.github.liuyehcf.framework.rule.engine.spring.boot.starter.annotation.ActionBean;
@@ -23,6 +24,12 @@ import java.util.Set;
  * @date 2019/5/8
  */
 abstract class AbstractDelegateCollector<T extends Annotation, D extends Delegate> implements BeanFactoryPostProcessor {
+
+    final RuleEngine engine;
+
+    AbstractDelegateCollector(RuleEngine engine) {
+        this.engine = engine;
+    }
 
     @Override
     @SuppressWarnings("unchecked")

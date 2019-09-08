@@ -32,7 +32,7 @@ public class RuleException extends RuntimeException {
     }
 
     private static String concat(RuleErrorCode code, String message, Throwable cause) {
-        Assert.assertNotNull(code);
+        Assert.assertNotNull(code, "code");
         if (message == null && cause == null) {
             return String.format("%s", code.getReason());
         } else if (message == null) {

@@ -51,7 +51,7 @@ public abstract class AbstractOperation<T> implements Runnable {
     }
 
     AbstractOperation(OperationContext context, Promise<T> optPromise, boolean skipBind) {
-        Assert.assertNotNull(context);
+        Assert.assertNotNull(context, "context");
         this.context = context;
         this.optPromise = optPromise;
         if (!skipBind) {

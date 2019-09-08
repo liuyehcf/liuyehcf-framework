@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.operation.context;
 
+import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.model.Element;
 import com.github.liuyehcf.framework.rule.engine.model.Executable;
 import com.github.liuyehcf.framework.rule.engine.model.Node;
@@ -22,6 +23,13 @@ import java.util.concurrent.locks.ReentrantLock;
  * @date 2019/4/27
  */
 public interface OperationContext {
+
+    /**
+     * get rule engine
+     *
+     * @return rule engine
+     */
+    RuleEngine getEngine();
 
     /**
      * get promise of this rule

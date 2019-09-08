@@ -1,0 +1,36 @@
+package com.github.liuyehcf.framework.rule.engine.runtime.remote.io.message;
+
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.Identifier;
+
+/**
+ * @author hechenfeng
+ * @date 2019/9/8
+ */
+public class GreetMessage implements Message, Identifier {
+
+    private final String host;
+    private final int port;
+
+    public GreetMessage(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
+
+    @Override
+    public final MessageType getType() {
+        return MessageType.GREET;
+    }
+
+    @Override
+    public final String getIdentifier() {
+        return String.format("%s:%d", host, port);
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+}

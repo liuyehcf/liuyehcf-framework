@@ -52,7 +52,7 @@ public class AddGlobalListeners extends AbstractSemanticAction {
 
             while (!AbstractAttachable.class.equals(clazz)) {
                 clazz = clazz.getSuperclass();
-                Assert.assertNotNull(clazz);
+                Assert.assertNotNull(clazz, "clazz");
             }
 
             field = clazz.getDeclaredField("attachedId");

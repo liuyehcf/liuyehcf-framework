@@ -22,7 +22,7 @@ class JoinGatewayMergeOperation extends AbstractOperation<Void> {
 
     JoinGatewayMergeOperation(OperationContext context, JoinGateway joinGateway, boolean increaseReaches) {
         super(context);
-        Assert.assertNotNull(joinGateway);
+        Assert.assertNotNull(joinGateway, "joinGateway");
         this.joinGateway = joinGateway;
         this.increaseReaches = increaseReaches;
     }
@@ -51,7 +51,7 @@ class JoinGatewayMergeOperation extends AbstractOperation<Void> {
                     // JoinGatewayMergeOperation may trigger by MarkSuccessorUnreachableOperation
                     // but only for softAnd mode, so context.getExecutionLink() is not null in or mode
                     ExecutionLink currentLink = context.getExecutionLink();
-                    Assert.assertNotNull(currentLink);
+                    Assert.assertNotNull(currentLink, "currentLink");
                     context.getExecutionInstance().removeLink(currentLink);
                     context.getExecutionInstance().addUnreachableLink(currentLink);
                 }
@@ -68,7 +68,7 @@ class JoinGatewayMergeOperation extends AbstractOperation<Void> {
                     // JoinGatewayMergeOperation may trigger by MarkSuccessorUnreachableOperation
                     // but only for softAnd mode, so context.getExecutionLink() is not null in or mode
                     mergedExecutionLink = context.getExecutionLink();
-                    Assert.assertNotNull(mergedExecutionLink);
+                    Assert.assertNotNull(mergedExecutionLink, "mergedExecutionLink");
                     context.getExecutionInstance().removeLink(mergedExecutionLink);
                 }
 

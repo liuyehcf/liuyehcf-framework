@@ -11,6 +11,10 @@ import com.github.liuyehcf.framework.rule.engine.spring.boot.starter.annotation.
  */
 public class ListenerDelegateCollector extends AbstractDelegateCollector<ListenerBean, ListenerDelegate> {
 
+    public ListenerDelegateCollector(RuleEngine engine) {
+        super(engine);
+    }
+
     @Override
     Class<ListenerDelegate> getDelegateClass() {
         return ListenerDelegate.class;
@@ -23,7 +27,7 @@ public class ListenerDelegateCollector extends AbstractDelegateCollector<Listene
 
     @Override
     void register(String executableName, Factory<ListenerDelegate> factory) {
-        RuleEngine.registerListenerDelegateFactory(executableName, factory);
+        engine.registerListenerDelegateFactory(executableName, factory);
     }
 }
 

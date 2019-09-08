@@ -1,7 +1,5 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.delegate;
 
-import com.github.liuyehcf.framework.rule.engine.RuleEngine;
-
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -20,12 +18,12 @@ public interface Delegate {
 
     /**
      * thread pool for executing asynchronous logic
-     * default is RuleEngine's thread pool
+     * ruleEngine's executor will be used if return value is null
      * <p>
      * invalid when isAsync() is false
      */
     default ExecutorService getAsyncExecutor() {
-        return RuleEngine.getExecutor();
+        return null;
     }
 
     /**

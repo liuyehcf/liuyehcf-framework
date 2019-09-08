@@ -11,6 +11,10 @@ import com.github.liuyehcf.framework.rule.engine.spring.boot.starter.annotation.
  */
 public class ActionDelegateCollector extends AbstractDelegateCollector<ActionBean, ActionDelegate> {
 
+    public ActionDelegateCollector(RuleEngine engine) {
+        super(engine);
+    }
+
     @Override
     Class<ActionDelegate> getDelegateClass() {
         return ActionDelegate.class;
@@ -23,6 +27,6 @@ public class ActionDelegateCollector extends AbstractDelegateCollector<ActionBea
 
     @Override
     void register(String executableName, Factory<ActionDelegate> factory) {
-        RuleEngine.registerActionDelegateFactory(executableName, factory);
+        engine.registerActionDelegateFactory(executableName, factory);
     }
 }

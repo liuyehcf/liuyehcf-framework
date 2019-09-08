@@ -182,18 +182,18 @@ public class DefaultRule extends AbstractNode implements Rule {
             if (node instanceof Condition || node instanceof Rule) {
                 for (Node successor : node.getSuccessors()) {
                     LinkType linkType = successor.getLinkType();
-                    Assert.assertNotNull(linkType);
+                    Assert.assertNotNull(linkType, "linkType");
                     Assert.assertNotEquals(LinkType.NORMAL, linkType);
                 }
             } else {
                 for (Node successor : node.getSuccessors()) {
                     if (successor instanceof JoinGateway) {
                         LinkType linkType = successor.getLinkType();
-                        Assert.assertNotNull(linkType);
+                        Assert.assertNotNull(linkType, "linkType");
                         Assert.assertEquals(LinkType.TRUE, linkType);
                     } else {
                         LinkType linkType = successor.getLinkType();
-                        Assert.assertNotNull(linkType);
+                        Assert.assertNotNull(linkType, "linkType");
                         Assert.assertEquals(LinkType.NORMAL, linkType);
                     }
                 }

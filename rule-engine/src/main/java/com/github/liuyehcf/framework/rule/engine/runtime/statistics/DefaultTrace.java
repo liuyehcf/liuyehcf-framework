@@ -74,8 +74,8 @@ public class DefaultTrace implements Trace {
     public DefaultTrace(long executionId, String id, ElementType type, String name, List<Argument> arguments, Object result,
                         List<PropertyUpdate> propertyUpdates, Map<String, Attribute> attributes, Throwable cause,
                         long startNanos, long endNanos) {
-        Assert.assertNotNull(id);
-        Assert.assertNotNull(type);
+        Assert.assertNotNull(id, "id");
+        Assert.assertNotNull(type, "type");
 
         this.executionId = executionId;
         this.id = id;

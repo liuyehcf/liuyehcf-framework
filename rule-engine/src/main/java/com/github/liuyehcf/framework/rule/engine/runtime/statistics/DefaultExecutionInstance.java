@@ -27,8 +27,8 @@ public class DefaultExecutionInstance implements ExecutionInstance {
     private long endNanos;
 
     public DefaultExecutionInstance(String id, Rule rule, Map<String, Object> env) {
-        Assert.assertNotNull(rule);
-        Assert.assertNotNull(env);
+        Assert.assertNotNull(rule, "rule");
+        Assert.assertNotNull(env, "env");
         if (id == null) {
             this.id = IDGenerator.generateUuid();
         } else {
@@ -55,7 +55,7 @@ public class DefaultExecutionInstance implements ExecutionInstance {
 
     @Override
     public final void addLink(ExecutionLink link) {
-        Assert.assertNotNull(link);
+        Assert.assertNotNull(link, "link");
         ((CopyOnWriteArrayList<ExecutionLink>) links).addIfAbsent(link);
     }
 
@@ -71,7 +71,7 @@ public class DefaultExecutionInstance implements ExecutionInstance {
 
     @Override
     public final void addUnreachableLink(ExecutionLink link) {
-        Assert.assertNotNull(link);
+        Assert.assertNotNull(link, "link");
         ((CopyOnWriteArrayList<ExecutionLink>) unreachableLinks).addIfAbsent(link);
     }
 

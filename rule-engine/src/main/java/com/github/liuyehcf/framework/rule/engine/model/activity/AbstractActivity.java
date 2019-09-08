@@ -18,9 +18,9 @@ public abstract class AbstractActivity extends AbstractNode implements Activity 
 
     AbstractActivity(String id, LinkType linkType, String name, String[] argumentNames, Object[] argumentValues) {
         super(id, linkType);
-        Assert.assertNotNull(name);
-        Assert.assertNotNull(argumentNames);
-        Assert.assertNotNull(argumentValues);
+        Assert.assertNotNull(name, "name");
+        Assert.assertNotNull(argumentNames, "argumentNames");
+        Assert.assertNotNull(argumentValues, "argumentValues");
         this.name = name;
         this.argumentNames = argumentNames;
         this.argumentValues = argumentValues;

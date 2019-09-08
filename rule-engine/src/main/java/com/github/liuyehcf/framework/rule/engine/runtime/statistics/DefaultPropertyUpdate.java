@@ -31,21 +31,21 @@ public class DefaultPropertyUpdate implements PropertyUpdate {
     private final Object newValue;
 
     public DefaultPropertyUpdate(PropertyUpdateType type, String name, Object oldValue, Object newValue) {
-        Assert.assertNotNull(type);
-        Assert.assertNotNull(name);
+        Assert.assertNotNull(type, "type");
+        Assert.assertNotNull(name, "name");
 
         switch (type) {
             case CREATE:
                 Assert.assertNull(oldValue);
-                Assert.assertNotNull(newValue);
+                Assert.assertNotNull(newValue, "newValue");
                 break;
             case DELETE:
-                Assert.assertNotNull(oldValue);
+                Assert.assertNotNull(oldValue, "oldValue");
                 Assert.assertNull(newValue);
                 break;
             case UPDATE:
-                Assert.assertNotNull(oldValue);
-                Assert.assertNotNull(newValue);
+                Assert.assertNotNull(oldValue, "oldValue");
+                Assert.assertNotNull(newValue, "newValue");
                 break;
             default:
                 throw new UnsupportedOperationException();

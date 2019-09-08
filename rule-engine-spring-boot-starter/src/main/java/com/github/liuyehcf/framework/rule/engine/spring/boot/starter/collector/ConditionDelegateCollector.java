@@ -11,6 +11,10 @@ import com.github.liuyehcf.framework.rule.engine.spring.boot.starter.annotation.
  */
 public class ConditionDelegateCollector extends AbstractDelegateCollector<ConditionBean, ConditionDelegate> {
 
+    public ConditionDelegateCollector(RuleEngine engine) {
+        super(engine);
+    }
+
     @Override
     Class<ConditionDelegate> getDelegateClass() {
         return ConditionDelegate.class;
@@ -23,6 +27,6 @@ public class ConditionDelegateCollector extends AbstractDelegateCollector<Condit
 
     @Override
     void register(String executableName, Factory<ConditionDelegate> factory) {
-        RuleEngine.registerConditionDelegateFactory(executableName, factory);
+        engine.registerConditionDelegateFactory(executableName, factory);
     }
 }

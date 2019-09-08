@@ -23,8 +23,8 @@ class ListenerOperation extends AbstractOperation<Void> {
 
     ListenerOperation(OperationContext context, Promise<Void> optPromise, boolean skipBind, List<Listener> listeners, int offset, Object result, Throwable cause) {
         super(context, optPromise, skipBind);
-        Assert.assertNotNull(listeners);
-        Assert.assertNotNull(optPromise);
+        Assert.assertNotNull(listeners, "listeners");
+        Assert.assertNotNull(optPromise, "optPromise");
         Assert.assertTrue(offset <= listeners.size());
         this.listeners = listeners;
         if (offset < listeners.size()) {

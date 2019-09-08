@@ -18,11 +18,11 @@ public class DefaultListener extends AbstractAttachable implements Listener {
 
     public DefaultListener(String id, String attachedId, String name, ListenerScope scope, ListenerEvent event, String[] argumentNames, Object[] argumentValues) {
         super(id, attachedId);
-        Assert.assertNotNull(name);
-        Assert.assertNotNull(scope);
-        Assert.assertNotNull(event);
-        Assert.assertNotNull(argumentNames);
-        Assert.assertNotNull(argumentValues);
+        Assert.assertNotNull(name, "name");
+        Assert.assertNotNull(scope, "scope");
+        Assert.assertNotNull(event, "event");
+        Assert.assertNotNull(argumentNames, "argumentNames");
+        Assert.assertNotNull(argumentValues, "argumentValues");
         this.name = name;
         this.scope = scope;
         this.event = event;

@@ -37,7 +37,7 @@ public class DslCompiler extends LALR<Rule> {
     private static DslCompiler loadCompiler() {
         try {
             InputStream resourceStream = ClassLoader.getSystemClassLoader().getResourceAsStream(COMPILER_SERIALIZATION_FILE);
-            Assert.assertNotNull(resourceStream);
+            Assert.assertNotNull(resourceStream, "resourceStream");
             ObjectInputStream inputStream = new ObjectInputStream(resourceStream);
             return (DslCompiler) inputStream.readObject();
         } catch (Throwable e) {

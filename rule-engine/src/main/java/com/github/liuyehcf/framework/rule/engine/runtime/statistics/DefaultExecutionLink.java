@@ -20,8 +20,8 @@ public class DefaultExecutionLink implements ExecutionLink {
 
     public DefaultExecutionLink(Map<String, Object> env, List<Trace> traces) {
         Assert.assertTrue(traces instanceof CopyOnWriteArrayList);
-        Assert.assertNotNull(env);
-        Assert.assertNotNull(traces);
+        Assert.assertNotNull(env, "env");
+        Assert.assertNotNull(traces, "traces");
         this.env = env;
         this.traces = traces;
     }

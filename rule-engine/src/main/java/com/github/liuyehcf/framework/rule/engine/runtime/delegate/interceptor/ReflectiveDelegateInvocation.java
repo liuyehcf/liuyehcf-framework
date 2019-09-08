@@ -1,7 +1,6 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
-import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.RuleErrorCode;
 import com.github.liuyehcf.framework.rule.engine.RuleException;
 import com.github.liuyehcf.framework.rule.engine.model.Element;
@@ -36,6 +35,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -68,11 +68,11 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
                                         OperationContext operationContext,
                                         ExecutableContext<? extends Element> executableContext,
                                         List<Factory<DelegateInterceptor>> factories) {
-        Assert.assertNotNull(executable);
-        Assert.assertNotNull(delegate);
-        Assert.assertNotNull(operationContext);
-        Assert.assertNotNull(executableContext);
-        Assert.assertNotNull(factories);
+        Assert.assertNotNull(executable, "executable");
+        Assert.assertNotNull(delegate, "delegate");
+        Assert.assertNotNull(operationContext, "operationContext");
+        Assert.assertNotNull(executableContext, "executableContext");
+        Assert.assertNotNull(factories, "factories");
 
         this.result = result;
         this.cause = cause;
@@ -108,7 +108,7 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
                 } else {
                     Future<?> future = doProceedAsync(delegatePromise);
 
-                    RuleEngine.getScheduledExecutor().schedule(() -> {
+                    operationContext.getEngine().getScheduledExecutor().schedule(() -> {
                         Throwable cause = null;
                         Object result = null;
                         try {
@@ -198,7 +198,11 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
     }
 
     private Future<?> doProceedAsync(DelegatePromise delegatePromise) {
-        return delegate.getAsyncExecutor().submit(() -> {
+        ExecutorService asyncExecutor = delegate.getAsyncExecutor();
+        if (asyncExecutor == null) {
+            asyncExecutor = operationContext.getEngine().getExecutor();
+        }
+        return asyncExecutor.submit(() -> {
             Throwable cause = null;
             Object result = null;
             try {

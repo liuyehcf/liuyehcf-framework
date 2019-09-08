@@ -37,11 +37,11 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
 
     AbstractExecutableContext(Element element, String instanceId, String linkId, long executionId,
                               Map<String, Object> env, Map<String, Attribute> globalAttributes) {
-        Assert.assertNotNull(element);
-        Assert.assertNotNull(instanceId);
-        Assert.assertNotNull(linkId);
-        Assert.assertNotNull(env);
-        Assert.assertNotNull(globalAttributes);
+        Assert.assertNotNull(element, "element");
+        Assert.assertNotNull(instanceId, "instanceId");
+        Assert.assertNotNull(linkId, "linkId");
+        Assert.assertNotNull(env, "env");
+        Assert.assertNotNull(globalAttributes, "globalAttributes");
         this.element = element;
         this.rule = this.element.getRule();
         this.instanceId = instanceId;
@@ -90,7 +90,7 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
     @SuppressWarnings("unchecked")
     public final <T> T getProperty(String name) {
         try {
-            Assert.assertNotNull(name);
+            Assert.assertNotNull(name, "name");
             return (T) PropertyUtils.getProperty(env, name);
         } catch (Exception e) {
             throw new RuleException(RuleErrorCode.PROPERTY, String.format("propertyName='%s'", name), e);
@@ -100,8 +100,8 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
     @Override
     public final <T> void setProperty(String name, T value) {
         try {
-            Assert.assertNotNull(name);
-            Assert.assertNotNull(value);
+            Assert.assertNotNull(name, "name");
+            Assert.assertNotNull(value, "value");
             Object oldValue = getProperty(name);
             PropertyUtils.setProperty(env, name, value);
 
