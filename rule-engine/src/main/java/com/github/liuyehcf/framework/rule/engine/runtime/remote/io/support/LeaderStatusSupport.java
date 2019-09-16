@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2019/9/12
  */
 public class LeaderStatusSupport {

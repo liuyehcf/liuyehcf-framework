@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.remote.io.message;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2019/9/10
  */
 public class SyncTopologyRequest implements Message {

@@ -5,7 +5,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.Member;
 import java.util.List;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2019/9/13
  */
 public class CompensateMembers implements Message {

@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.rule.engine.util;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2019/9/12
  */
 public abstract class StatisticsUtils {

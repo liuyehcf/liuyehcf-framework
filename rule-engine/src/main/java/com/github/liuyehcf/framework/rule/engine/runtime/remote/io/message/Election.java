@@ -4,7 +4,7 @@ import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.Member;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2019/9/9
  */
 public class Election implements Message {

@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2019/9/15
  */
 public abstract class SplitUtils {
