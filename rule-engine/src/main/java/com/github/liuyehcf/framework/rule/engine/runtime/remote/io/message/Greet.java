@@ -6,12 +6,12 @@ import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.Identifi
  * @author hechenfeng
  * @date 2019/9/8
  */
-public class GreetMessage implements Message, Identifier {
+public class Greet implements Message, Identifier {
 
     private final String host;
     private final int port;
 
-    public GreetMessage(String host, int port) {
+    public Greet(String host, int port) {
         this.host = host;
         this.port = port;
     }

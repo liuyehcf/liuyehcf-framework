@@ -3,7 +3,7 @@
     <!-- https://github.com/spring-projects/spring-boot/blob/v1.5.12.RELEASE/spring-boot/src/main/resources/org/springframework/boot/logging/logback/defaults.xml -->
 
     <property name="NORMAL_LOG_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5p] --- %m%n"/>
+              value="%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%highlight(%-5p)] --- %cyan(%m%n)"/>
 
     <appender name="SYNC-CONSOLE-STANDARD" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -14,20 +14,10 @@
         <appender-ref ref="SYNC-CONSOLE-STANDARD"/>
     </appender>
 
-    <appender name="SYNC-CONSOLE-ERROR" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
-        </filter>
-        <encoder>
-            <pattern>${NORMAL_LOG_PATTERN}</pattern>
-        </encoder>
-    </appender>
-    <appender name="ASYNC-CONSOLE-ERROR" class="ch.qos.logback.classic.AsyncAppender">
-        <appender-ref ref="SYNC-CONSOLE-ERROR"/>
-    </appender>
-
-    <root level="INFO">
+    <logger name="com.github.liuyehcf.framework.rule.engine" level="INFO">
         <appender-ref ref="ASYNC-CONSOLE-STANDARD"/>
-        <appender-ref ref="ASYNC-CONSOLE-ERROR"/>
+    </logger>
+
+    <root level="ERROR">
     </root>
 </configuration>

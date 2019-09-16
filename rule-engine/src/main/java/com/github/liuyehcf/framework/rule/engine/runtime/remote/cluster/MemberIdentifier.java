@@ -4,20 +4,20 @@ package com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster;
  * @author hechenfeng
  * @date 2019/9/8
  */
-public interface ClusterNodeIdentifier extends Identifier {
+public interface MemberIdentifier extends Identifier {
 
     /**
-     * host of cluster node
+     * host of cluster member
      */
     String getHost();
 
     /**
-     * port of cluster node
+     * port of cluster member
      */
     Integer getPort();
 
     /**
-     * unique identifier of cluster node
+     * unique identifier of cluster member
      */
     default String getIdentifier() {
         return String.format("%s:%d", getHost(), getPort());

@@ -8,6 +8,7 @@ import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinMode;
  * @date 2019/5/15
  */
 public abstract class ElementUtils {
+
     public static boolean isOrJoinMode(JoinGateway joinGateway) {
         return JoinMode.or.equals(joinGateway.getJoinMode());
     }

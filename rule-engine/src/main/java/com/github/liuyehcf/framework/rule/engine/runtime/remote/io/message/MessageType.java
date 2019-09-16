@@ -17,19 +17,60 @@ public enum MessageType {
     GREET(0),
 
     /**
-     * cluster node joining cluster through seed node
+     * cluster member joining cluster through seed member
      */
     JOINING(1),
 
     /**
-     * spread node status to other nodes in the cluster
+     * spread member status to other members in the cluster
      */
-    SPREAD_NODE_STATUS(2),
+    SYNC_MEMBER(2),
 
     /**
      * cluster topology
      */
-    CLUSTER_TOPOLOGY(3);
+    SYNC_TOPOLOGY(3),
+
+    /**
+     * elect as a leader
+     */
+    ELECTION(4),
+
+    /**
+     * vote for leader
+     */
+    VOTE(7),
+
+    /**
+     * leader of cluster has been selected
+     */
+    ELECTION_RESULT(8),
+
+    /**
+     * ask leader to send topology
+     */
+    SYNC_TOPOLOGY_REQUEST(9),
+
+    /**
+     * ask whether leader is reachable
+     */
+    LEADER_STATUS_REQUEST(10),
+
+    /**
+     * response whether leader is reachable
+     */
+    LEADER_STATUS_RESPONSE(11),
+
+    /**
+     * one leader leave office and direct recommend another leader
+     */
+    LEADER_RECOMMENDATION(12),
+
+    /**
+     * if one leader is lose in leadership collide, then the lose side will sent compensate member to the peer
+     */
+    COMPENSATE_MEMBERS(13),
+    ;
 
     private final int type;
 

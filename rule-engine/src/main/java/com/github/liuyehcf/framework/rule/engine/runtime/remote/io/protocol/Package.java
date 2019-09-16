@@ -26,7 +26,7 @@ public class Package {
      */
     private final byte[] payload;
 
-    public Package(int type, int serializeType, byte[] payload) {
+    private Package(int type, int serializeType, byte[] payload) {
         this.type = type;
         this.serializeType = serializeType;
         this.payload = payload;

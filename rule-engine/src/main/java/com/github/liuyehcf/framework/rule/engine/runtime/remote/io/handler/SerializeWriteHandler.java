@@ -29,14 +29,15 @@ public class SerializeWriteHandler extends MessageToMessageEncoder<Message> {
                         msg.getType().getType(),
                         serializeType.getType(),
                         CloneUtils.javaSerialize(msg)));
+                break;
             case hessian:
                 out.add(Package.wrap(
                         msg.getType().getType(),
                         serializeType.getType(),
                         CloneUtils.hessianSerialize(msg)));
-            default:
-                // todo
                 break;
+            default:
+                throw new UnsupportedOperationException(String.format("unsupported serialize type='%s'", serializeType));
         }
     }
 }

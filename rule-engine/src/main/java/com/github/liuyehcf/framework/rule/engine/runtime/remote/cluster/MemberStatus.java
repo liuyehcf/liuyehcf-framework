@@ -4,7 +4,7 @@ package com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster;
  * @author hechenfeng
  * @date 2019/9/5
  */
-public enum ClusterNodeStatus {
+public enum MemberStatus {
 
     /**
      * before new member of cluster adding to the cluster
@@ -19,6 +19,7 @@ public enum ClusterNodeStatus {
 
     /**
      * member of cluster is active
+     * in this status, member can communicate to other active members
      */
     active,
 
@@ -34,8 +35,29 @@ public enum ClusterNodeStatus {
     inactive,
 
     /**
-     * invalid state
+     * detect unreachable
      */
-    invalid,
+    unreachable,
+
     ;
+
+    public boolean isInit() {
+        return init.equals(this);
+    }
+
+    public boolean isUnreachable() {
+        return unreachable.equals(this);
+    }
+
+    public boolean isActive() {
+        return active.equals(this);
+    }
+
+    public boolean isLeaving() {
+        return leaving.equals(this);
+    }
+
+    public boolean isInactive() {
+        return inactive.equals(this);
+    }
 }

@@ -1,6 +1,7 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.remote.io;
 
 
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.Identifier;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 
@@ -11,9 +12,9 @@ import io.netty.channel.ChannelFuture;
 public interface ClusterChannel {
 
     /**
-     * get cluster node's identifier on the other side
+     * get cluster member's identifier on the other side
      */
-    String getPeerIdentifier();
+    Identifier getPeerIdentifier();
 
     /**
      * netty channel

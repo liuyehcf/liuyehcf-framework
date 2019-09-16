@@ -8,27 +8,27 @@ import java.util.List;
  */
 public class ClusterConfig {
 
-    private List<ClusterNodeConfig> seeds;
-    private ClusterNodeConfig self;
+    private List<MemberConfig> seeds;
+    private MemberConfig self;
     private Integer idleTime;
     private Integer heartbeatInterval;
     private Integer heartbeatRetryInterval;
-    private Integer topologyKeepAliveInterval;
+    private Integer topologyProbeInterval;
     private String serializeType;
 
-    public List<ClusterNodeConfig> getSeeds() {
+    public List<MemberConfig> getSeeds() {
         return seeds;
     }
 
-    public void setSeeds(List<ClusterNodeConfig> seeds) {
+    public void setSeeds(List<MemberConfig> seeds) {
         this.seeds = seeds;
     }
 
-    public ClusterNodeConfig getSelf() {
+    public MemberConfig getSelf() {
         return self;
     }
 
-    public void setSelf(ClusterNodeConfig self) {
+    public void setSelf(MemberConfig self) {
         this.self = self;
     }
 
@@ -56,12 +56,12 @@ public class ClusterConfig {
         this.heartbeatRetryInterval = heartbeatRetryInterval;
     }
 
-    public Integer getTopologyKeepAliveInterval() {
-        return topologyKeepAliveInterval;
+    public Integer getTopologyProbeInterval() {
+        return topologyProbeInterval;
     }
 
-    public void setTopologyKeepAliveInterval(Integer topologyKeepAliveInterval) {
-        this.topologyKeepAliveInterval = topologyKeepAliveInterval;
+    public void setTopologyProbeInterval(Integer topologyProbeInterval) {
+        this.topologyProbeInterval = topologyProbeInterval;
     }
 
     public String getSerializeType() {

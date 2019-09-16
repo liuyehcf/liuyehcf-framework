@@ -2,7 +2,7 @@ package com.github.liuyehcf.framework.rule.engine.runtime.config;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.ClusterConfig;
-import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.ClusterNodeConfig;
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.MemberConfig;
 import com.github.liuyehcf.framework.rule.engine.runtime.remote.io.protocol.SerializeType;
 import com.github.liuyehcf.framework.rule.engine.util.AddressUtils;
 import com.google.common.collect.Sets;
@@ -27,11 +27,10 @@ public class RuleProperties extends HashMap<String, Object> {
         Assert.assertNotNull(clusterConfig, "clusterConfig");
 
         // self
-        ClusterNodeConfig self = clusterConfig.getSelf();
+        MemberConfig self = clusterConfig.getSelf();
         if (self == null) {
-            clusterConfig.setSelf(self = new ClusterNodeConfig());
+            clusterConfig.setSelf(self = new MemberConfig());
         }
-
         if (StringUtils.isBlank(self.getHost())) {
             self.setHost(Property.HOST.getDefaultValue());
         }
@@ -43,11 +42,11 @@ public class RuleProperties extends HashMap<String, Object> {
         }
 
         // seed
-        List<ClusterNodeConfig> seeds = clusterConfig.getSeeds();
+        List<MemberConfig> seeds = clusterConfig.getSeeds();
         Assert.assertNotEmpty(seeds, "cluster's seeds is empty");
         Set<String> seedNodeIdentifiers = Sets.newHashSet();
         boolean isSeed = false;
-        for (ClusterNodeConfig seed : seeds) {
+        for (MemberConfig seed : seeds) {
             Assert.assertNotNull(seed, "seed");
             Assert.assertNotNull(seed.getHost(), "seed.host");
             if (seed.getPort() == null) {
@@ -82,9 +81,9 @@ public class RuleProperties extends HashMap<String, Object> {
         }
 
         // topology keep alive interval
-        Integer topologyKeepAliveInterval = clusterConfig.getTopologyKeepAliveInterval();
+        Integer topologyKeepAliveInterval = clusterConfig.getTopologyProbeInterval();
         if (topologyKeepAliveInterval == null) {
-            clusterConfig.setTopologyKeepAliveInterval(topologyKeepAliveInterval = Property.TOPOLOGY_KEEP_LIVE_INTERVAL.getDefaultValue());
+            clusterConfig.setTopologyProbeInterval(topologyKeepAliveInterval = Property.TOPOLOGY_PROBE_INTERVAL.getDefaultValue());
         }
 
         // serializeType
@@ -104,12 +103,12 @@ public class RuleProperties extends HashMap<String, Object> {
         put(Property.IDLE_TIME, idleTime);
         put(Property.HEARTBEAT_INTERVAL, heartbeatInterval);
         put(Property.HEARTBEAT_RETRY_INTERVAL, heartbeatRetryInterval);
-        put(Property.TOPOLOGY_KEEP_LIVE_INTERVAL, topologyKeepAliveInterval);
+        put(Property.TOPOLOGY_PROBE_INTERVAL, topologyKeepAliveInterval);
         put(Property.SERIALIZE_TYPE, serializeEnum);
         put(Property.CLUSTER_CONFIG, clusterConfig);
     }
 
-    public ClusterNodeConfig getSelfConfig() {
+    public MemberConfig getSelfConfig() {
         return getClusterConfig().getSelf();
     }
 
@@ -145,8 +144,8 @@ public class RuleProperties extends HashMap<String, Object> {
         return getDefault(Property.HEARTBEAT_RETRY_INTERVAL);
     }
 
-    public int getTopologyKeepAliveInterval() {
-        return getDefault(Property.TOPOLOGY_KEEP_LIVE_INTERVAL);
+    public int getTopologyProbeInterval() {
+        return getDefault(Property.TOPOLOGY_PROBE_INTERVAL);
     }
 
     public SerializeType getSerializeType() {
@@ -170,7 +169,7 @@ public class RuleProperties extends HashMap<String, Object> {
         IDLE_TIME("idleTime", 60),
         HEARTBEAT_INTERVAL("heartbeatInterval", 5),
         HEARTBEAT_RETRY_INTERVAL("heartbeatRetryInterval", 5),
-        TOPOLOGY_KEEP_LIVE_INTERVAL("topologyKeepAliveInterval", 5),
+        TOPOLOGY_PROBE_INTERVAL("topologyProbeInterval", 5),
         SERIALIZE_TYPE("serializeType", SerializeType.hessian),
         CLUSTER_CONFIG("clusterConfig", null);
 

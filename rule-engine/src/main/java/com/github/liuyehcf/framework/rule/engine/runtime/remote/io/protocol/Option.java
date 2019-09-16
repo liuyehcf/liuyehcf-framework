@@ -19,7 +19,7 @@ public class Option {
      */
     private final byte[] value;
 
-    public Option(OptionType type, byte[] value) {
+    Option(OptionType type, byte[] value) {
         Assert.assertNotNull(type, "type");
         this.type = type;
         if (type.getLength() > 0) {

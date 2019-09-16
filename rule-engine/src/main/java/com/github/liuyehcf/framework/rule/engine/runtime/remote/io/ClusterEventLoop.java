@@ -3,9 +3,13 @@ package com.github.liuyehcf.framework.rule.engine.runtime.remote.io;
 import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.promise.PromiseListener;
-import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.ClusterNode;
-import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.ClusterNodeIdentifier;
-import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.ClusterTopology;
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.Identifier;
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.Member;
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.MemberIdentifier;
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.Topology;
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.io.message.Election;
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.io.message.LeaderStatusResponse;
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.io.message.Vote;
 
 import java.util.Collection;
 
@@ -23,7 +27,7 @@ public interface ClusterEventLoop {
     /**
      * get topology of cluster
      */
-    ClusterTopology getTopology();
+    Topology getTopology();
 
     /**
      * add cluster channel if absent
@@ -36,12 +40,12 @@ public interface ClusterEventLoop {
     /**
      * whether has channel
      */
-    boolean hasChannel(String peerIdentifier);
+    boolean hasChannel(Identifier peerIdentifier);
 
     /**
      * get cluster channel
      */
-    ClusterChannel getChannel(String peerIdentifier);
+    ClusterChannel getChannel(Identifier peerIdentifier);
 
     /**
      * get all channels
@@ -51,12 +55,66 @@ public interface ClusterEventLoop {
     /**
      * create client mode cluster channel
      */
-    void createChannel(ClusterNodeIdentifier peerIdentifier) throws InterruptedException;
+    void createChannel(MemberIdentifier peerIdentifier) throws InterruptedException;
 
     /**
-     * update node status of topology, and spread it to other connected nodes
+     * send message to specified member
+     *
+     * @param peerIdentifier identifier of peer member
+     * @param message        to be delivered
+     * @return whether success
      */
-    void updateAndSpreadNodeStatus(ClusterNode node);
+    boolean unicast(Identifier peerIdentifier, Object message);
+
+    /**
+     * send message to all connected members
+     *
+     * @param message message to be delivered
+     */
+    void broadcast(Object message);
+
+    /**
+     * statistics for leader status
+     */
+    void statisticsForLeaderStatus(LeaderStatusResponse message);
+
+    /**
+     * update member status of topology, and spread it to other connected members
+     */
+    void updateAndBroadcastMemberStatus(Member member);
+
+    /**
+     * vote for first state election
+     *
+     * @see com.github.liuyehcf.framework.rule.engine.runtime.remote.io.message.ElectionState#first
+     */
+    void voteForFirstStateElection(Election election);
+
+    /**
+     * vote for election
+     *
+     * @see com.github.liuyehcf.framework.rule.engine.runtime.remote.io.message.ElectionState#second
+     */
+    void voteForSecondStateElection(Election election);
+
+    /**
+     * vote for first state election
+     *
+     * @see com.github.liuyehcf.framework.rule.engine.runtime.remote.io.message.ElectionState#first
+     */
+    void statisticsForFirstStateElection(Vote vote);
+
+    /**
+     * vote for second state election
+     *
+     * @see com.github.liuyehcf.framework.rule.engine.runtime.remote.io.message.ElectionState#second
+     */
+    void statisticsForSecondStateElection(Vote vote);
+
+    /**
+     * clear election status
+     */
+    void clearElectionStatus();
 
     /**
      * add close promise listener

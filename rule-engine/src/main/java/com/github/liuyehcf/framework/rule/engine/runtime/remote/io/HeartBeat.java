@@ -1,8 +1,7 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.remote.io;
 
-import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.ClusterNodeConfig;
-import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.ClusterTopology;
-import com.github.liuyehcf.framework.rule.engine.runtime.remote.io.message.HeartbeatMessage;
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.Topology;
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.io.message.Heartbeat;
 import io.netty.channel.ChannelFuture;
 import org.quartz.*;
 import org.slf4j.Logger;
@@ -15,7 +14,7 @@ import java.util.UUID;
  * @author hechenfeng
  * @date 2019/9/6
  */
-class HeartBeat extends BaseScheduler {
+abstract class HeartBeat extends BaseScheduler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HeartBeat.class);
 
@@ -42,7 +41,7 @@ class HeartBeat extends BaseScheduler {
             scheduler.scheduleJob(jobDetail, trigger);
             clusterChannel.getChannel().closeFuture().addListener((ChannelFuture future) -> {
                 if (scheduler.unscheduleJob(trigger.getKey())) {
-                    LOGGER.info("Unregister heartbeat due to channel closed, channel={}", future.channel());
+                    LOGGER.info("unregister heartbeat due to channel closed, channel={}", future.channel());
                 }
             });
         } catch (SchedulerException e) {
@@ -58,22 +57,9 @@ class HeartBeat extends BaseScheduler {
             ClusterChannel clusterChannel = (ClusterChannel) jobDataMap.get(KEY_CHANNEL);
             ClusterEventLoop clusterEventLoop = (ClusterEventLoop) jobDataMap.get(KEY_EVENT_LOOP);
 
-            ClusterNodeConfig selfConfig = clusterEventLoop.getEngine()
-                    .getProperties()
-                    .getSelfConfig();
+            Topology topology = clusterEventLoop.getTopology();
 
-            ClusterTopology topology = clusterEventLoop.getTopology();
-
-            clusterChannel.write(new HeartbeatMessage(selfConfig.getIdentifier(), topology.getIdentifier()))
-                    .addListener((ChannelFuture future) -> {
-                        if (!future.isSuccess()) {
-                            Trigger trigger = context.getTrigger();
-                            Scheduler scheduler = context.getScheduler();
-                            if (scheduler.unscheduleJob(trigger.getKey())) {
-                                LOGGER.info("Unregister heartbeat due to writing failure, channel={}", future.channel());
-                            }
-                        }
-                    });
+            clusterChannel.write(new Heartbeat(topology.getLeader(), topology.getTransactionId(), topology.getIdentifier()));
         }
     }
 }

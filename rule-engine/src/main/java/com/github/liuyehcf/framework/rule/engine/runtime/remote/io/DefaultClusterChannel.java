@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.remote.io;
 
+import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.Identifier;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 
@@ -11,18 +12,18 @@ import java.util.Objects;
  */
 public class DefaultClusterChannel implements ClusterChannel {
 
-    private final String peerIdentifier;
+    private final Identifier peerIdentifier;
     private final Channel channel;
     private final ChannelMode channelMode;
 
-    public DefaultClusterChannel(String peerIdentifier, Channel channel, ChannelMode channelMode) {
+    public DefaultClusterChannel(Identifier peerIdentifier, Channel channel, ChannelMode channelMode) {
         this.peerIdentifier = peerIdentifier;
         this.channel = channel;
         this.channelMode = channelMode;
     }
 
     @Override
-    public final String getPeerIdentifier() {
+    public final Identifier getPeerIdentifier() {
         return peerIdentifier;
     }
 
@@ -56,13 +57,13 @@ public class DefaultClusterChannel implements ClusterChannel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DefaultClusterChannel that = (DefaultClusterChannel) o;
-        return Objects.equals(peerIdentifier, that.peerIdentifier) &&
+        return Identifier.equals(peerIdentifier, that.peerIdentifier) &&
                 Objects.equals(channel, that.channel) &&
                 channelMode == that.channelMode;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(peerIdentifier, channel, channelMode);
+        return Objects.hash(peerIdentifier.getIdentifier(), channel, channelMode);
     }
 }
