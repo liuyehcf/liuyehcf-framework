@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.rule.engine.spring.boot.starter.collector;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rule.engine.RuleEngine;
+import com.github.liuyehcf.framework.rule.engine.runtime.config.RuleProperties;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.Delegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.factory.Factory;
 import com.github.liuyehcf.framework.rule.engine.spring.boot.starter.annotation.ActionBean;
@@ -17,7 +18,9 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ClassUtils;
 
 import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * @author hechenfeng
@@ -25,10 +28,10 @@ import java.util.Set;
  */
 abstract class AbstractDelegateCollector<T extends Annotation, D extends Delegate> implements BeanFactoryPostProcessor {
 
-    final RuleEngine engine;
+    final List<RuleEngine> engines;
 
-    AbstractDelegateCollector(RuleEngine engine) {
-        this.engine = engine;
+    AbstractDelegateCollector(List<RuleEngine> engines) {
+        this.engines = engines;
     }
 
     @Override
@@ -50,15 +53,20 @@ abstract class AbstractDelegateCollector<T extends Annotation, D extends Delegat
                     T annotation = AnnotationUtils.getAnnotation(beanClass, getAnnotationClass());
 
                     String[] names;
+                    String engineNameRegex;
 
                     if (annotation instanceof ActionBean) {
                         names = ((ActionBean) annotation).names();
+                        engineNameRegex = ((ActionBean) annotation).engineNameRegex();
                     } else if (annotation instanceof ConditionBean) {
                         names = ((ConditionBean) annotation).names();
+                        engineNameRegex = ((ConditionBean) annotation).engineNameRegex();
                     } else if (annotation instanceof ListenerBean) {
                         names = ((ListenerBean) annotation).names();
+                        engineNameRegex = ((ListenerBean) annotation).engineNameRegex();
                     } else {
                         names = new String[]{sourceBeanName};
+                        engineNameRegex = ".*";
                     }
 
                     for (String name : names) {
@@ -69,8 +77,14 @@ abstract class AbstractDelegateCollector<T extends Annotation, D extends Delegat
 
                     Assert.assertFalse(executableNames.isEmpty(), "missing illegal executable name");
 
-                    for (String executableName : executableNames) {
-                        register(executableName, () -> (D) beanFactory.getBean(beanClass));
+                    for (RuleEngine engine : engines) {
+                        RuleProperties properties = engine.getProperties();
+                        String name = properties.getName();
+                        if (Pattern.matches(engineNameRegex, name)) {
+                            for (String executableName : executableNames) {
+                                register(engine, executableName, () -> (D) beanFactory.getBean(beanClass));
+                            }
+                        }
                     }
                 }
             }
@@ -81,5 +95,5 @@ abstract class AbstractDelegateCollector<T extends Annotation, D extends Delegat
 
     abstract Class<T> getAnnotationClass();
 
-    abstract void register(String executableName, Factory<D> factory);
+    abstract void register(RuleEngine engine, String executableName, Factory<D> factory);
 }

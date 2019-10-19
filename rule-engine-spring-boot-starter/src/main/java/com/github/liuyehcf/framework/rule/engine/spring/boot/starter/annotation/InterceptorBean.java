@@ -9,17 +9,12 @@ import java.lang.annotation.Target;
 
 /**
  * @author hechenfeng
- * @date 2019/4/29
+ * @date 2019/10/19
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Component
-public @interface ActionBean {
-
-    /**
-     * bunch of action names
-     */
-    String[] names();
+public @interface InterceptorBean {
 
     /**
      * regex of matched engine instance name

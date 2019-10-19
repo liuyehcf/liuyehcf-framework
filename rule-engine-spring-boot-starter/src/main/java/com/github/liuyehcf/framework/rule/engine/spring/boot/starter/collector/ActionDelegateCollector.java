@@ -5,14 +5,16 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ActionDelegate
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.factory.Factory;
 import com.github.liuyehcf.framework.rule.engine.spring.boot.starter.annotation.ActionBean;
 
+import java.util.List;
+
 /**
  * @author hechenfeng
  * @date 2019/4/28
  */
 public class ActionDelegateCollector extends AbstractDelegateCollector<ActionBean, ActionDelegate> {
 
-    public ActionDelegateCollector(RuleEngine engine) {
-        super(engine);
+    public ActionDelegateCollector(List<RuleEngine> engines) {
+        super(engines);
     }
 
     @Override
@@ -26,7 +28,7 @@ public class ActionDelegateCollector extends AbstractDelegateCollector<ActionBea
     }
 
     @Override
-    void register(String executableName, Factory<ActionDelegate> factory) {
+    void register(RuleEngine engine, String executableName, Factory<ActionDelegate> factory) {
         engine.registerActionDelegateFactory(executableName, factory);
     }
 }

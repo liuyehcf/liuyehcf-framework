@@ -1,8 +1,10 @@
 package com.github.liuyehcf.framework.rule.engine.spring.boot.starter.collector;
 
 import com.github.liuyehcf.framework.rule.engine.RuleEngine;
+import com.github.liuyehcf.framework.rule.engine.runtime.config.RuleProperties;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.factory.Factory;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.DelegateInterceptor;
+import com.github.liuyehcf.framework.rule.engine.spring.boot.starter.annotation.InterceptorBean;
 import com.google.common.collect.Lists;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -14,6 +16,7 @@ import org.springframework.util.ClassUtils;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author hechenfeng
@@ -21,10 +24,10 @@ import java.util.List;
  */
 public class DelegateInterceptorCollector implements BeanFactoryPostProcessor {
 
-    private final RuleEngine engine;
+    private final List<RuleEngine> engines;
 
-    public DelegateInterceptorCollector(RuleEngine engine) {
-        this.engine = engine;
+    public DelegateInterceptorCollector(List<RuleEngine> engines) {
+        this.engines = engines;
     }
 
     @Override
@@ -44,17 +47,28 @@ public class DelegateInterceptorCollector implements BeanFactoryPostProcessor {
 
                     int order;
 
-                    Order annotation = AnnotationUtils.getAnnotation(beanClass, Order.class);
+                    Order orderAnnotation = AnnotationUtils.getAnnotation(beanClass, Order.class);
 
-                    if (annotation != null) {
-                        order = annotation.value();
+                    if (orderAnnotation != null) {
+                        order = orderAnnotation.value();
                     } else {
                         order = 0;
                     }
 
+                    InterceptorBean interceptorBeanAnnotation = AnnotationUtils.getAnnotation(beanClass, InterceptorBean.class);
+
+                    String engineNameRegex;
+
+                    if (interceptorBeanAnnotation != null) {
+                        engineNameRegex = interceptorBeanAnnotation.engineNameRegex();
+                    } else {
+                        engineNameRegex = ".*";
+                    }
+
                     orderedFactories.add(new OrderedDelegateInterceptorFactory(
                             () -> ((DelegateInterceptor) beanFactory.getBean(beanClass)),
-                            order)
+                            order,
+                            engineNameRegex)
                     );
                 }
             }
@@ -63,7 +77,14 @@ public class DelegateInterceptorCollector implements BeanFactoryPostProcessor {
         orderedFactories.sort(Comparator.comparingInt(OrderedDelegateInterceptorFactory::getOrder));
 
         for (OrderedDelegateInterceptorFactory factory : orderedFactories) {
-            engine.registerDelegateInterceptorFactory(factory.target);
+            for (RuleEngine engine : engines) {
+                RuleProperties properties = engine.getProperties();
+                String name = properties.getName();
+
+                if (Pattern.matches(factory.engineNameRegex, name)) {
+                    engine.registerDelegateInterceptorFactory(factory.target);
+                }
+            }
         }
     }
 
@@ -71,10 +92,12 @@ public class DelegateInterceptorCollector implements BeanFactoryPostProcessor {
 
         private final Factory<DelegateInterceptor> target;
         private final int order;
+        private final String engineNameRegex;
 
-        private OrderedDelegateInterceptorFactory(Factory<DelegateInterceptor> target, int order) {
+        private OrderedDelegateInterceptorFactory(Factory<DelegateInterceptor> target, int order, String engineNameRegex) {
             this.target = target;
             this.order = order;
+            this.engineNameRegex = engineNameRegex;
         }
 
         private int getOrder() {

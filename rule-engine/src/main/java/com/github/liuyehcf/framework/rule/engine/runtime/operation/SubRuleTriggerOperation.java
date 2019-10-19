@@ -25,7 +25,11 @@ class SubRuleTriggerOperation extends AbstractOperation<Void> {
     }
 
     private void continueSubRule() {
-        context.getEngine().startRule(subRule, context.getExecutionInstance().getId(), CloneUtils.hessianClone(context.getLinkEnv()), context.getExecutionIdGenerator())
-                .addListener(new SubRuleMergeOperation(context, subRule, System.nanoTime()));
+        context.getEngine().startRule(
+                subRule,
+                context.getExecutionInstance().getId(),
+                CloneUtils.cloneEnv(context.getEngine(), context.getLinkEnv()),
+                context.getExecutionIdGenerator()
+        ).addListener(new SubRuleMergeOperation(context, subRule, System.nanoTime()));
     }
 }

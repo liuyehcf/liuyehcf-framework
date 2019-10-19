@@ -20,4 +20,10 @@ public @interface ListenerBean {
      * bunch of action names
      */
     String[] names();
+
+    /**
+     * regex of matched engine instance name
+     * matches all engine instances by default
+     */
+    String engineNameRegex() default ".*";
 }

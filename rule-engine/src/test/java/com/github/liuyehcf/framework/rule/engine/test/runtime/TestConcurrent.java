@@ -15,6 +15,7 @@ import java.util.Map;
  * @author hechenfeng
  * @date 2019/4/29
  */
+@SuppressWarnings("all")
 public class TestConcurrent extends TestRuntimeBase {
 
     @Test

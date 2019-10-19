@@ -363,7 +363,7 @@ public class DefaultOperationContext implements OperationContext {
     public final OperationContext cloneLinkedContext(ExecutionLink executionLink) {
         ExecutionLink actualLink;
         if (executionLink == null) {
-            actualLink = new DefaultExecutionLink(CloneUtils.hessianClone(getLinkEnv()), Lists.newCopyOnWriteArrayList(this.executionLink.getTraces()));
+            actualLink = new DefaultExecutionLink(CloneUtils.cloneEnv(engine, getLinkEnv()), Lists.newCopyOnWriteArrayList(this.executionLink.getTraces()));
         } else {
             actualLink = executionLink;
         }

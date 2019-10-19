@@ -1,3 +1,7 @@
+# BUG
+
+1. 当一个规则只有一个condition，且抛出了linkExecutionException的时候，算不算到达叶子节点？
+
 # FEATURE
 
 1. ListenerEvent.failure 的拓扑以及trace测试用例

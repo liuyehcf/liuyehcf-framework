@@ -5,14 +5,16 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ListenerDelega
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.factory.Factory;
 import com.github.liuyehcf.framework.rule.engine.spring.boot.starter.annotation.ListenerBean;
 
+import java.util.List;
+
 /**
  * @author hechenfeng
  * @date 2019/4/28
  */
 public class ListenerDelegateCollector extends AbstractDelegateCollector<ListenerBean, ListenerDelegate> {
 
-    public ListenerDelegateCollector(RuleEngine engine) {
-        super(engine);
+    public ListenerDelegateCollector(List<RuleEngine> engines) {
+        super(engines);
     }
 
     @Override
@@ -26,7 +28,7 @@ public class ListenerDelegateCollector extends AbstractDelegateCollector<Listene
     }
 
     @Override
-    void register(String executableName, Factory<ListenerDelegate> factory) {
+    void register(RuleEngine engine, String executableName, Factory<ListenerDelegate> factory) {
         engine.registerListenerDelegateFactory(executableName, factory);
     }
 }

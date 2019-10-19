@@ -92,7 +92,7 @@ class SubRuleMergeOperation extends AbstractOperation<Void> implements PromiseLi
         ExecutionLink executionLink = context.getExecutionLink();
 
         DefaultExecutionLink appendedExecutionLink = new DefaultExecutionLink(
-                CloneUtils.hessianClone(executionLink.getEnv()),
+                CloneUtils.cloneEnv(context.getEngine(), executionLink.getEnv()),
                 Lists.newCopyOnWriteArrayList(executionLink.getTraces()));
         appendedExecutionLink.addTrace(trace);
 
@@ -103,7 +103,7 @@ class SubRuleMergeOperation extends AbstractOperation<Void> implements PromiseLi
 
         // env is subject to subRule
         DefaultExecutionLink clonedAppendedLink = new DefaultExecutionLink(
-                CloneUtils.hessianClone(mergedSubRuleLink.getEnv()),
+                CloneUtils.cloneEnv(context.getEngine(), mergedSubRuleLink.getEnv()),
                 Lists.newCopyOnWriteArrayList(context.getExecutionLink().getTraces()));
 
         List<Trace> traces = Lists.newCopyOnWriteArrayList();

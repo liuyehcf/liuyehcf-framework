@@ -1,6 +1,7 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.config;
 
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.rule.engine.runtime.constant.EnvCloneType;
 import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.ClusterConfig;
 import com.github.liuyehcf.framework.rule.engine.runtime.remote.cluster.MemberConfig;
 import com.github.liuyehcf.framework.rule.engine.runtime.remote.io.protocol.SerializeType;
@@ -18,6 +19,22 @@ import java.util.Set;
  * @date 2019/9/6
  */
 public class RuleProperties extends HashMap<String, Object> {
+
+    public String getName() {
+        return getDefault(Property.NAME);
+    }
+
+    public void setName(String name) {
+        put(Property.NAME, name);
+    }
+
+    public EnvCloneType getEnvCloneType() {
+        return getDefault(Property.ENV_CLONE_TYPE);
+    }
+
+    public void setEnvCloneType(EnvCloneType envCloneType) {
+        put(Property.ENV_CLONE_TYPE, envCloneType);
+    }
 
     public ClusterConfig getClusterConfig() {
         return getDefault(Property.CLUSTER_CONFIG);
@@ -90,7 +107,7 @@ public class RuleProperties extends HashMap<String, Object> {
         String serializeType = clusterConfig.getSerializeType();
         SerializeType serializeEnum;
         if (StringUtils.isBlank(serializeType)) {
-            serializeEnum = Property.SERIALIZE_TYPE.getDefaultValue();
+            serializeEnum = Property.PROTOCOL_SERIALIZE_TYPE.getDefaultValue();
             clusterConfig.setSerializeType(serializeEnum.name());
         } else {
             serializeEnum = SerializeType.valueOf(serializeType);
@@ -104,7 +121,7 @@ public class RuleProperties extends HashMap<String, Object> {
         put(Property.HEARTBEAT_INTERVAL, heartbeatInterval);
         put(Property.HEARTBEAT_RETRY_INTERVAL, heartbeatRetryInterval);
         put(Property.TOPOLOGY_PROBE_INTERVAL, topologyKeepAliveInterval);
-        put(Property.SERIALIZE_TYPE, serializeEnum);
+        put(Property.PROTOCOL_SERIALIZE_TYPE, serializeEnum);
         put(Property.CLUSTER_CONFIG, clusterConfig);
     }
 
@@ -148,8 +165,8 @@ public class RuleProperties extends HashMap<String, Object> {
         return getDefault(Property.TOPOLOGY_PROBE_INTERVAL);
     }
 
-    public SerializeType getSerializeType() {
-        return getDefault(Property.SERIALIZE_TYPE);
+    public SerializeType getProtocolSerializeType() {
+        return getDefault(Property.PROTOCOL_SERIALIZE_TYPE);
     }
 
     @SuppressWarnings("unchecked")
@@ -162,6 +179,11 @@ public class RuleProperties extends HashMap<String, Object> {
     }
 
     private enum Property {
+        // common
+        NAME("name", "ruleEngine"),
+        ENV_CLONE_TYPE("envCloneType", EnvCloneType.hessian),
+
+        // cluster
         RUNTIME_MODE("runtimeMode", RuntimeMode.singleton),
         HOST("host", "127.0.0.1"),
         PORT("port", 16689),
@@ -170,7 +192,7 @@ public class RuleProperties extends HashMap<String, Object> {
         HEARTBEAT_INTERVAL("heartbeatInterval", 5),
         HEARTBEAT_RETRY_INTERVAL("heartbeatRetryInterval", 5),
         TOPOLOGY_PROBE_INTERVAL("topologyProbeInterval", 5),
-        SERIALIZE_TYPE("serializeType", SerializeType.hessian),
+        PROTOCOL_SERIALIZE_TYPE("protocolSerializeType", SerializeType.hessian),
         CLUSTER_CONFIG("clusterConfig", null);
 
         private final String key;

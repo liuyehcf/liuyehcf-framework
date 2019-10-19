@@ -4,6 +4,8 @@ import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.DefaultRuleEngine;
+import com.github.liuyehcf.framework.rule.engine.runtime.config.RuleProperties;
+import com.github.liuyehcf.framework.rule.engine.runtime.constant.EnvCloneType;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.action.*;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.condition.*;
@@ -36,13 +38,17 @@ public class TestRuntimeBase {
     public static final boolean IS_LISTENER_ASYNC = true;
     protected static final Random RANDOM = new Random();
     protected static final int EXECUTE_TIMES = 1;
-    protected static final RuleEngine engine = new DefaultRuleEngine();
+    protected static final RuleEngine engine;
     private static ExecutorService EXECUTOR = new ThreadPoolExecutor(16, 16, 5L, TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(1024),
             new ThreadFactoryBuilder().setNameFormat("RULE-ENGINE-TEST-t-%d").build(),
             new ThreadPoolExecutor.CallerRunsPolicy());
 
     static {
+        RuleProperties properties = new RuleProperties();
+        properties.setEnvCloneType(EnvCloneType.hessian);
+        engine = new DefaultRuleEngine(properties);
+
         engine.registerActionDelegateFactory("printAction", PrintAction::new);
         engine.registerActionDelegateFactory("throwExceptionAction", ThrowExceptionAction::new);
         engine.registerActionDelegateFactory("throwLinkTerminateAction", ThrowLinkTerminateAction::new);

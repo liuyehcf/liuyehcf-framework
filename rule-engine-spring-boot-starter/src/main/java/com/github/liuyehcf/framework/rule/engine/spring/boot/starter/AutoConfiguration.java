@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 /**
  * @author hechenfeng
  * @date 2019/4/28
@@ -25,22 +27,22 @@ public class AutoConfiguration {
     }
 
     @Bean
-    public DelegateInterceptorCollector delegateInterceptorSelector(@Autowired RuleEngine engine) {
-        return new DelegateInterceptorCollector(engine);
+    public DelegateInterceptorCollector delegateInterceptorSelector(@Autowired List<RuleEngine> engines) {
+        return new DelegateInterceptorCollector(engines);
     }
 
     @Bean
-    public ActionDelegateCollector actionDelegateSelector(@Autowired RuleEngine engine) {
-        return new ActionDelegateCollector(engine);
+    public ActionDelegateCollector actionDelegateSelector(@Autowired List<RuleEngine> engines) {
+        return new ActionDelegateCollector(engines);
     }
 
     @Bean
-    public ConditionDelegateCollector conditionDelegateSelector(@Autowired RuleEngine engine) {
-        return new ConditionDelegateCollector(engine);
+    public ConditionDelegateCollector conditionDelegateSelector(@Autowired List<RuleEngine> engines) {
+        return new ConditionDelegateCollector(engines);
     }
 
     @Bean
-    public ListenerDelegateCollector listenerDelegateSelector(@Autowired RuleEngine engine) {
-        return new ListenerDelegateCollector(engine);
+    public ListenerDelegateCollector listenerDelegateSelector(@Autowired List<RuleEngine> engines) {
+        return new ListenerDelegateCollector(engines);
     }
 }

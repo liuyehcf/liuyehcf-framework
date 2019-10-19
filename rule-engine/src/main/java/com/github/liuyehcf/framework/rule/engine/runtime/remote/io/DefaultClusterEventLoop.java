@@ -735,7 +735,7 @@ public class DefaultClusterEventLoop implements ClusterEventLoop {
         addLast(pipeline, new FrameAggregatorHandler());
         addLast(pipeline, new FrameChunkedWriteHandler());
         addLast(pipeline, new MessageHandler(this, channelMode, peerIdentifier));
-        addLast(pipeline, new SerializeWriteHandler(properties.getSerializeType()));
+        addLast(pipeline, new SerializeWriteHandler(properties.getProtocolSerializeType()));
     }
 
     private void addLast(ChannelPipeline pipeline, ChannelHandler handler) {

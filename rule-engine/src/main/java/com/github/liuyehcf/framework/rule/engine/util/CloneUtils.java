@@ -2,16 +2,87 @@ package com.github.liuyehcf.framework.rule.engine.util;
 
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.pool.KryoPool;
+import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.RuleErrorCode;
 import com.github.liuyehcf.framework.rule.engine.RuleException;
+import com.github.liuyehcf.framework.rule.engine.runtime.constant.EnvCloneType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.Map;
 
 /**
  * @author hechenfeng
  * @date 2019/5/1
  */
 public abstract class CloneUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CloneUtils.class);
+
+    private static final KryoPool KRYO_POOL = new KryoPool.Builder(Kryo::new).build();
+
+    public static <K, V> Map<K, V> cloneEnv(RuleEngine ruleEngine, Map<K, V> origin) {
+        EnvCloneType envCloneType = ruleEngine.getProperties().getEnvCloneType();
+
+        switch (envCloneType) {
+            case shallow:
+                try {
+                    return shallowClone(origin);
+                } catch (Throwable e) {
+                    LOGGER.warn("try to clone in hessian, because shallow clone catch unexpected exception, errorMsg={}", e.getMessage(), e);
+                    return hessianClone(origin);
+                }
+            case bean:
+                try {
+                    return BeanUtils.clone(origin);
+                } catch (Throwable e) {
+                    LOGGER.warn("try to clone in hessian, because bean clone catch unexpected exception, errorMsg={}", e.getMessage(), e);
+                    return hessianClone(origin);
+                }
+            case kryo:
+                try {
+                    return kryoClone(origin);
+                } catch (Throwable e) {
+                    LOGGER.warn("try to clone in hessian, because kryo clone catch unexpected exception, errorMsg={}", e.getMessage(), e);
+                    return hessianClone(origin);
+                }
+            case hessian:
+                return hessianClone(origin);
+            case java:
+                return javaClone(origin);
+            default:
+                return hessianClone(origin);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <K, V> Map<K, V> shallowClone(Map<K, V> origin) {
+        if (origin == null) {
+            return null;
+        }
+
+        Map<K, V> clone;
+        try {
+            clone = (Map<K, V>) origin.getClass().newInstance();
+            clone.putAll(origin);
+            return clone;
+        } catch (Exception e) {
+            throw new RuleException(RuleErrorCode.SERIALIZE, e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T kryoClone(T origin) {
+        Kryo kryo = KRYO_POOL.borrow();
+        try {
+            return kryo.copy(origin);
+        } finally {
+            KRYO_POOL.release(kryo);
+        }
+    }
 
     public static <T> T hessianClone(T origin) {
         return hessianDeserialize(hessianSerialize(origin));

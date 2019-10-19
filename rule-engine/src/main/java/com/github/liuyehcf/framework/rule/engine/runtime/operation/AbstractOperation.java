@@ -277,7 +277,7 @@ public abstract class AbstractOperation<T> implements Runnable {
         // merge env
         ExecutionLink firstLink = executionLinks.get(0);
         ExecutionLink mergedLink = new DefaultExecutionLink(
-                CloneUtils.hessianClone(firstLink.getEnv()),
+                CloneUtils.cloneEnv(context.getEngine(), firstLink.getEnv()),
                 Lists.newCopyOnWriteArrayList(firstLink.getTraces())
         );
 
