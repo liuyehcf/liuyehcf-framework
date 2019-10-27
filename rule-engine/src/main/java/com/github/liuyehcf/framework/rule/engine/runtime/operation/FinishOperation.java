@@ -73,9 +73,12 @@ class FinishOperation extends AbstractOperation<Void> {
             boolean hasReachableLinks = !context.getExecutionInstance().getLinks().isEmpty();
 
             if (hasReachableLinks) {
-                ExecutionLink executionLink = mergeLinks(context.getExecutionInstance().getLinks());
-                context.getExecutionInstance().getEnv().clear();
-                context.getExecutionInstance().getEnv().putAll(executionLink.getEnv());
+                if (!context.isSingleLink()) {
+                    ExecutionLink executionLink = mergeLinks(context.getExecutionInstance().getLinks());
+                    context.getExecutionInstance().getEnv().clear();
+                    context.getExecutionInstance().getEnv().putAll(executionLink.getEnv());
+                }
+
                 invokeGlobalSuccessListeners(true, this::finishRulePromise);
             } else {
                 invokeGlobalSuccessListeners(false, this::finishRulePromise);

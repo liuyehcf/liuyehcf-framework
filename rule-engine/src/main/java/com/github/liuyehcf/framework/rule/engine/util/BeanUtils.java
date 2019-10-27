@@ -40,6 +40,8 @@ public abstract class BeanUtils {
             return new BigInteger(bean.toString());
         } else if (bean instanceof BigDecimal) {
             return new BigDecimal(bean.toString());
+        } else if (bean.getClass().isEnum()) {
+            return bean;
         } else if (bean.getClass().isArray()) {
             pushReference(visited, bean);
             Object clone = doCloneArray(bean, visited);

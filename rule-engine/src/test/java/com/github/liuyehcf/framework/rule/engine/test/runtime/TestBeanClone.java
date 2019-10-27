@@ -1954,7 +1954,7 @@ public class TestBeanClone {
     }
 
     private Pair<Object[], Integer> createArray(int extraNum) {
-        Object[] array = new Object[13 + extraNum];
+        Object[] array = new Object[14 + extraNum];
         array[0] = RANDOM.nextBoolean();
         array[1] = (byte) RANDOM.nextInt();
         array[2] = (char) RANDOM.nextInt();
@@ -1967,9 +1967,10 @@ public class TestBeanClone {
         array[9] = getRandomBigInteger();
         array[10] = getRandomBigDecimal();
         array[11] = new Date();
-        array[12] = null;
+        array[12] = getRandomEnum();
+        array[13] = null;
 
-        return new ImmutablePair<>(array, 13);
+        return new ImmutablePair<>(array, 14);
     }
 
     private void fillMap(Map<String, Object> map) {
@@ -1987,6 +1988,7 @@ public class TestBeanClone {
         map.put("date", new Date());
         map.put(null, "null");
         map.put("null", null);
+        map.put("enum", getRandomEnum());
     }
 
     private void fillList(List<Object> list) {
@@ -2003,6 +2005,7 @@ public class TestBeanClone {
         list.add(getRandomBigDecimal());
         list.add(new Date());
         list.add(null);
+        list.add(getRandomEnum());
     }
 
     private void fillNormalBean(NormalBean bean) {
@@ -2077,6 +2080,10 @@ public class TestBeanClone {
         if (RANDOM.nextBoolean()) {
             bean.setDate(new Date());
         }
+
+        if (RANDOM.nextBoolean()) {
+            bean.setTestEnum(getRandomEnum());
+        }
     }
 
     private BigInteger getRandomBigInteger() {
@@ -2085,6 +2092,14 @@ public class TestBeanClone {
 
     private BigDecimal getRandomBigDecimal() {
         return new BigDecimal(Double.toString(RANDOM.nextDouble())).multiply(new BigDecimal(Double.toString(RANDOM.nextDouble())));
+    }
+
+    private TestEnum getRandomEnum() {
+        if (RANDOM.nextBoolean()) {
+            return TestEnum._1;
+        } else {
+            return TestEnum._2;
+        }
     }
 
     private void assertTestBean(
@@ -2162,6 +2177,24 @@ public class TestBeanClone {
         Assert.assertEquals(null, testBean.getMethodWithVoidReturnType2);
         Assert.assertEquals(null, testBean.trueGetWithNoSet);
         Assert.assertEquals(null, testBean.trueGetWithNonVoidReturnSetMethod);
+    }
+
+    public enum TestEnum {
+        _1(1),
+        _2;
+
+        private int i;
+
+        TestEnum() {
+        }
+
+        TestEnum(int i) {
+            this.i = i;
+        }
+
+        public int getI() {
+            return i;
+        }
     }
 
     public static final class TestBean {
@@ -2655,6 +2688,7 @@ public class TestBeanClone {
         private BigInteger bigInteger;
         private BigDecimal bigDecimal;
         private Date date;
+        private TestEnum testEnum;
 
         private Map<String, Object> map;
 
@@ -2820,6 +2854,14 @@ public class TestBeanClone {
 
         public void setDate(Date date) {
             this.date = date;
+        }
+
+        public TestEnum getTestEnum() {
+            return testEnum;
+        }
+
+        public void setTestEnum(TestEnum testEnum) {
+            this.testEnum = testEnum;
         }
 
         public Map<String, Object> getMap() {

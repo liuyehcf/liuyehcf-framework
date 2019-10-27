@@ -41,6 +41,7 @@ public class DefaultOperationContext implements OperationContext {
     private final ReentrantLock ruleLock;
     private final Map<String, ReentrantLock> elementLocks;
     private final Rule rule;
+    private final boolean isSingleLink;
     private final boolean isMarkContext;
     private final ExecutionInstance executionInstance;
     private final ExecutionLink executionLink;
@@ -56,6 +57,7 @@ public class DefaultOperationContext implements OperationContext {
 
     public DefaultOperationContext(RuleEngine engine,
                                    Rule rule,
+                                   boolean isSingleLink,
                                    String instanceId,
                                    Map<String, Object> env,
                                    AtomicLong executionIdGenerator,
@@ -65,6 +67,7 @@ public class DefaultOperationContext implements OperationContext {
                 new ReentrantLock(),
                 Maps.newConcurrentMap(),
                 rule,
+                isSingleLink,
                 false,
                 new DefaultExecutionInstance(instanceId, rule, env),
                 null,
@@ -83,6 +86,7 @@ public class DefaultOperationContext implements OperationContext {
                                     ReentrantLock ruleLock,
                                     Map<String, ReentrantLock> elementLocks,
                                     Rule rule,
+                                    boolean isSingleLink,
                                     boolean isMarkContext,
                                     ExecutionInstance executionInstance,
                                     ExecutionLink executionLink,
@@ -114,6 +118,7 @@ public class DefaultOperationContext implements OperationContext {
         this.ruleLock = ruleLock;
         this.elementLocks = elementLocks;
         this.rule = rule;
+        this.isSingleLink = isSingleLink;
         this.isMarkContext = isMarkContext;
         this.executionInstance = executionInstance;
         this.executionLink = executionLink;
@@ -150,6 +155,11 @@ public class DefaultOperationContext implements OperationContext {
     @Override
     public final Rule getRule() {
         return rule;
+    }
+
+    @Override
+    public final boolean isSingleLink() {
+        return isSingleLink;
     }
 
     @Override
@@ -375,6 +385,7 @@ public class DefaultOperationContext implements OperationContext {
                 ruleLock,
                 elementLocks,
                 rule,
+                isSingleLink,
                 false,
                 executionInstance,
                 actualLink,
@@ -395,6 +406,7 @@ public class DefaultOperationContext implements OperationContext {
                 ruleLock,
                 elementLocks,
                 rule,
+                isSingleLink,
                 false,
                 executionInstance,
                 null,
@@ -415,6 +427,7 @@ public class DefaultOperationContext implements OperationContext {
                 ruleLock,
                 elementLocks,
                 rule,
+                isSingleLink,
                 true,
                 executionInstance,
                 null,

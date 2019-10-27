@@ -21,6 +21,7 @@ import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.Opera
 import com.github.liuyehcf.framework.rule.engine.runtime.remote.io.ClusterEventLoop;
 import com.github.liuyehcf.framework.rule.engine.runtime.remote.io.DefaultClusterEventLoop;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
+import com.github.liuyehcf.framework.rule.engine.util.TopoUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -300,6 +301,7 @@ public class DefaultRuleEngine implements RuleEngine {
             rule.init();
             OperationContext operationContext = new DefaultOperationContext(this,
                     rule,
+                    TopoUtils.isSingleLinkRule(rule),
                     instanceId,
                     env == null ? Maps.newHashMap() : env,
                     executionIdGenerator == null ? new AtomicLong(0) : executionIdGenerator,

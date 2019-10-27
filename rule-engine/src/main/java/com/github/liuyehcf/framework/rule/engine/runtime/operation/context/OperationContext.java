@@ -54,6 +54,12 @@ public interface OperationContext {
     Rule getRule();
 
     /**
+     * whether rule contains only one link
+     * rule engine will rely on this flag to do some optimization ( such as env clone )
+     */
+    boolean isSingleLink();
+
+    /**
      * whether mark context
      */
     boolean isMarkContext();

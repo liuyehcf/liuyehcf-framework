@@ -26,9 +26,14 @@ public class GlobalBeforeListenerOperation extends AbstractOperation<Void> {
 
     private void continueStartRule() {
         Map<String, Object> instanceEnv = context.getExecutionInstance().getEnv();
-        ExecutionLink startLink = new DefaultExecutionLink(CloneUtils.cloneEnv(context.getEngine(), instanceEnv));
+
+        ExecutionLink startLink;
+        if (context.isSingleLink()) {
+            startLink = new DefaultExecutionLink(instanceEnv);
+        } else {
+            startLink = new DefaultExecutionLink(CloneUtils.cloneEnv(context.getEngine(), instanceEnv));
+        }
 
         context.executeAsync(new StartOperation(context.cloneLinkedContext(startLink)));
     }
 }
-
