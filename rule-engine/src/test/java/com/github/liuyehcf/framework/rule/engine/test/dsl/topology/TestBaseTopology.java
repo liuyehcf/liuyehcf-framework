@@ -8,7 +8,6 @@ import com.github.liuyehcf.framework.rule.engine.model.gateway.ExclusiveGateway;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerScope;
 import org.junit.Assert;
 
 /**
@@ -54,7 +53,7 @@ public class TestBaseTopology {
             for (Listener listener : rule.getListeners()) {
                 String attachedId = listener.getAttachedId();
                 if (attachedId == null) {
-                    Assert.assertEquals(ListenerScope.global, listener.getScope());
+                    Assert.assertTrue(listener.getScope().isGlobal());
                     continue;
                 }
                 Node attachedNode = (Node) rule.getElement(attachedId);

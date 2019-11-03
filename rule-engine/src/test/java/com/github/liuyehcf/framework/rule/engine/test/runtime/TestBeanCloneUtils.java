@@ -20,7 +20,7 @@ import java.util.*;
  * @date 2019/10/18
  */
 @SuppressWarnings("all")
-public class TestBeanClone {
+public class TestBeanCloneUtils {
 
     private static final Random RANDOM = new Random();
 

@@ -8,7 +8,6 @@ import com.github.liuyehcf.framework.rule.engine.model.event.Event;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.ExclusiveGateway;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerScope;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -235,7 +234,7 @@ public class DefaultRule extends AbstractNode implements Rule {
         int nodeListenerNum = elements.values().stream()
                 .filter(e -> e instanceof Listener)
                 .map(e -> (Listener) e)
-                .filter(l -> Objects.equals(ListenerScope.node, l.getScope()))
+                .filter(l -> l.getScope().isNode())
                 .collect(Collectors.toList()).size();
 
         Assert.assertEquals(nodeListenerNum, nodeListeners.size(),

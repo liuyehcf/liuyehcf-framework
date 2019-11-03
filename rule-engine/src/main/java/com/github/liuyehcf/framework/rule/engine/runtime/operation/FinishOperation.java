@@ -73,6 +73,8 @@ class FinishOperation extends AbstractOperation<Void> {
             boolean hasReachableLinks = !context.getExecutionInstance().getLinks().isEmpty();
 
             if (hasReachableLinks) {
+                // if this rule is single link, then the env of instance and link are the same object
+                // so there is no need to write back
                 if (!context.isSingleLink()) {
                     ExecutionLink executionLink = mergeLinks(context.getExecutionInstance().getLinks());
                     context.getExecutionInstance().getEnv().clear();

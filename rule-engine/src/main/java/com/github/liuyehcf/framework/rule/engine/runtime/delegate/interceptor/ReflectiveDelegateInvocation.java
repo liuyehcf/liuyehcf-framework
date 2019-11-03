@@ -8,7 +8,6 @@ import com.github.liuyehcf.framework.rule.engine.model.ElementType;
 import com.github.liuyehcf.framework.rule.engine.model.Executable;
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerScope;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.rule.engine.runtime.delegate.ConditionDelegate;
@@ -32,7 +31,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -265,7 +263,7 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
         );
 
         if (executable instanceof Listener
-                && Objects.equals(ListenerScope.global, ((Listener) executable).getScope())) {
+                && ((Listener) executable).getScope().isGlobal()) {
             operationContext.addTraceToExecutionInstance(trace);
         } else {
             operationContext.addTraceToExecutionLink(trace);

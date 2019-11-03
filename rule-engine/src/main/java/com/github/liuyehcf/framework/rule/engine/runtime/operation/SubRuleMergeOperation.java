@@ -64,12 +64,21 @@ class SubRuleMergeOperation extends AbstractOperation<Void> implements PromiseLi
 
             ExecutionLink mergedSubReachableLink = mergeLinks(subExecutionInstance.getLinks());
             context.getExecutionInstance().removeLink(context.getExecutionLink());
-
-            context.executeAsync(new SubRuleOperation(context.cloneLinkedContext(appendSubRuleTracesToCurrentLink(subExecutionInstance, mergedSubReachableLink)), subRule, startNanos, LinkType.TRUE));
+            context.executeAsync(new SubRuleOperation(
+                    context.cloneLinkedContext(appendSubRuleTracesToCurrentLink(subExecutionInstance, mergedSubReachableLink)),
+                    subRule,
+                    startNanos,
+                    LinkType.TRUE)
+            );
         } else {
             ExecutionLink mergedSubUnreachableLink = mergeLinks(subExecutionInstance.getUnreachableLinks());
             context.getExecutionInstance().removeLink(context.getExecutionLink());
-            context.executeAsync(new SubRuleOperation(context.cloneLinkedContext(appendSubRuleTracesToCurrentLink(subExecutionInstance, mergedSubUnreachableLink)), subRule, startNanos, LinkType.FALSE));
+            context.executeAsync(new SubRuleOperation(
+                    context.cloneLinkedContext(appendSubRuleTracesToCurrentLink(subExecutionInstance,
+                            mergedSubUnreachableLink)),
+                    subRule,
+                    startNanos,
+                    LinkType.FALSE));
         }
     }
 
@@ -103,7 +112,7 @@ class SubRuleMergeOperation extends AbstractOperation<Void> implements PromiseLi
 
         // env is subject to subRule
         DefaultExecutionLink clonedAppendedLink = new DefaultExecutionLink(
-                CloneUtils.cloneEnv(context.getEngine(), mergedSubRuleLink.getEnv()),
+                mergedSubRuleLink.getEnv(),
                 Lists.newCopyOnWriteArrayList(context.getExecutionLink().getTraces()));
 
         List<Trace> traces = Lists.newCopyOnWriteArrayList();

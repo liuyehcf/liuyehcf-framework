@@ -10,7 +10,6 @@ import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.rule.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.rule.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
-import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerScope;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.promise.PromiseListener;
 import com.github.liuyehcf.framework.rule.engine.runtime.exception.InstanceExecutionTerminateException;
@@ -260,6 +259,11 @@ public abstract class AbstractOperation<T> implements Runnable {
     }
 
     final ExecutionLink mergeLinks(List<ExecutionLink> executionLinks) {
+        // return the very link if contains only one link
+        if (executionLinks.size() == 1) {
+            return executionLinks.get(0);
+        }
+
         // merge trace
         Set<String> ids = Sets.newHashSet();
         List<Trace> traces = Lists.newCopyOnWriteArrayList();
@@ -327,7 +331,7 @@ public abstract class AbstractOperation<T> implements Runnable {
         Rule rule = context.getRule();
 
         for (Listener listener : rule.getListeners()) {
-            if (Objects.equals(ListenerScope.global, listener.getScope())
+            if (listener.getScope().isGlobal()
                     && Objects.equals(event, listener.getEvent())) {
                 listeners.add(listener);
             }

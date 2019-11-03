@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.rule.engine.util;
 
+import com.github.liuyehcf.framework.rule.engine.model.ElementType;
 import com.github.liuyehcf.framework.rule.engine.model.Node;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
 import com.github.liuyehcf.framework.rule.engine.model.activity.Condition;
@@ -7,6 +8,7 @@ import com.google.common.collect.Lists;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -16,6 +18,19 @@ import java.util.stream.Collectors;
 public abstract class TopoUtils {
 
     public static boolean isSingleLinkRule(Rule rule) {
+        boolean hasGlobalListener = rule.getListeners().stream()
+                .anyMatch(listener -> listener.getScope().isGlobal());
+
+        if (hasGlobalListener) {
+            return false;
+        }
+
+        boolean hasSubRule = rule.getElements().stream()
+                .anyMatch(element -> Objects.equals(ElementType.SUB_RULE, element.getType()));
+        if (hasSubRule) {
+            return false;
+        }
+
         LinkedList<Node> stack = Lists.newLinkedList();
         stack.push(rule.getStart());
 
@@ -30,7 +45,7 @@ public abstract class TopoUtils {
                         .collect(Collectors.toList());
 
                 List<Node> falseSuccessors = successors.stream()
-                        .filter((successor) -> successor.getLinkType().isTrue())
+                        .filter((successor) -> successor.getLinkType().isFalse())
                         .collect(Collectors.toList());
 
                 if (trueSuccessors.size() > 1 || falseSuccessors.size() > 1) {

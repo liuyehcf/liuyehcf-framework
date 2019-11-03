@@ -20,5 +20,14 @@ public enum ListenerScope {
     /**
      * global scope
      */
-    global
+    global,
+    ;
+
+    public boolean isNode() {
+        return node.equals(this);
+    }
+
+    public boolean isGlobal() {
+        return global.equals(this);
+    }
 }

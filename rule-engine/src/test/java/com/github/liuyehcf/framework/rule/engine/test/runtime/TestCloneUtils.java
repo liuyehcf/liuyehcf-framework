@@ -17,7 +17,7 @@ import java.util.UUID;
  * @author hechenfeng
  * @date 2019/5/24
  */
-public class TestClone extends TestRuntimeBase {
+public class TestCloneUtils extends TestRuntimeBase {
 
     @Test
     public void test() {
