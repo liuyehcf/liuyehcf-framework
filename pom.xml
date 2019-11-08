@@ -16,5 +16,6 @@
         <module>rule-engine</module>
         <module>rule-engine-spring-boot-starter</module>
         <module>rpc-maple</module>
+        <module>rpc-ares</module>
     </modules>
 </project>

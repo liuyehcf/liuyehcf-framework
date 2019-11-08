@@ -1,0 +1,3 @@
+# Autoconfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.github.liuyehcf.framework.rpc.http.spring.AresConsumerSpringPostProcessor
