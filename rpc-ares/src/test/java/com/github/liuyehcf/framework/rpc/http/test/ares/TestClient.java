@@ -238,4 +238,29 @@ public interface TestClient {
 
     @AresMethod(path = "/primitiveWrapperInteger")
     Integer primitiveWrapperIntegerWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Integer param1);
+
+    // long
+    @AresMethod(path = "/primitiveLong")
+    long primitiveLongWithPrimitivePrimitive(@AresRequestParam(name = "param1") long param1);
+
+    @AresMethod(path = "/primitiveLong")
+    long primitiveLongWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Long param1);
+
+    @AresMethod(path = "/primitiveLong")
+    Long primitiveLongWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") long param1);
+
+    @AresMethod(path = "/primitiveLong")
+    Long primitiveLongWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Long param1);
+
+    @AresMethod(path = "/primitiveWrapperLong")
+    long primitiveWrapperLongWithPrimitivePrimitive(@AresRequestParam(name = "param1") long param1);
+
+    @AresMethod(path = "/primitiveWrapperLong")
+    long primitiveWrapperLongWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Long param1);
+
+    @AresMethod(path = "/primitiveWrapperLong")
+    Long primitiveWrapperLongWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") long param1);
+
+    @AresMethod(path = "/primitiveWrapperLong")
+    Long primitiveWrapperLongWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Long param1);
 }

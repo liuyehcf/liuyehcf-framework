@@ -483,4 +483,30 @@ public class TestMain extends BaseConfig {
         Assert.assertNull(testClient.primitiveWrapperIntegerWithPrimitiveWrapperPrimitiveWrapper(null));
         Assert.assertEquals(value = random.nextInt(), (int) testClient.primitiveWrapperIntegerWithPrimitiveWrapperPrimitiveWrapper(value));
     }
+
+    @Test
+    public void primitiveLong() {
+        //primitive
+        long value;
+
+        Assert.assertEquals(value = random.nextLong(), testClient.primitiveLongWithPrimitivePrimitive(value));
+
+        Assert.assertEquals(value = random.nextLong(), testClient.primitiveLongWithPrimitiveWrapperPrimitive(value));
+
+        Assert.assertEquals(value = random.nextLong(), (long) testClient.primitiveLongWithPrimitivePrimitiveWrapper(value));
+
+        Assert.assertEquals(value = random.nextLong(), (long) testClient.primitiveLongWithPrimitiveWrapperPrimitiveWrapper(value));
+
+
+        // primitive wrapper
+        Assert.assertEquals(value = random.nextLong(), testClient.primitiveWrapperLongWithPrimitivePrimitive(value));
+
+        Assert.assertEquals(0, testClient.primitiveWrapperLongWithPrimitiveWrapperPrimitive(null));
+        Assert.assertEquals(value = random.nextLong(), testClient.primitiveWrapperLongWithPrimitiveWrapperPrimitive(value));
+
+        Assert.assertEquals(value = random.nextLong(), (long) testClient.primitiveWrapperLongWithPrimitivePrimitiveWrapper(value));
+
+        Assert.assertNull(testClient.primitiveWrapperLongWithPrimitiveWrapperPrimitiveWrapper(null));
+        Assert.assertEquals(value = random.nextLong(), (long) testClient.primitiveWrapperLongWithPrimitiveWrapperPrimitiveWrapper(value));
+    }
 }

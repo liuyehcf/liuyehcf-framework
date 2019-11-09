@@ -116,4 +116,16 @@ public class TestController {
     public Integer primitiveWrapperInteger(@RequestParam(value = "param1", required = false) Integer param1) {
         return param1;
     }
+
+    @RequestMapping("/primitiveLong")
+    @ResponseBody
+    public long primitiveLong(@RequestParam(value = "param1", required = false) long param1) {
+        return param1;
+    }
+
+    @RequestMapping("/primitiveWrapperLong")
+    @ResponseBody
+    public Long primitiveWrapperLong(@RequestParam(value = "param1", required = false) Long param1) {
+        return param1;
+    }
 }
