@@ -360,6 +360,7 @@ public class TestMain extends BaseConfig {
 
     @Test
     public void primitiveBoolean() {
+        //primitive
         Assert.assertFalse(testClient.primitiveBooleanWithPrimitivePrimitive(false));
         Assert.assertTrue(testClient.primitiveBooleanWithPrimitivePrimitive(true));
 
@@ -369,5 +370,25 @@ public class TestMain extends BaseConfig {
 
         Assert.assertFalse(testClient.primitiveBooleanWithPrimitivePrimitiveWrapper(false));
         Assert.assertTrue(testClient.primitiveBooleanWithPrimitivePrimitiveWrapper(true));
+
+        Assert.assertFalse(testClient.primitiveBooleanWithPrimitiveWrapperPrimitiveWrapper(null));
+        Assert.assertFalse(testClient.primitiveBooleanWithPrimitiveWrapperPrimitiveWrapper(false));
+        Assert.assertTrue(testClient.primitiveBooleanWithPrimitiveWrapperPrimitiveWrapper(true));
+
+
+        // primitive wrapper
+        Assert.assertFalse(testClient.primitiveWrapperBooleanWithPrimitivePrimitive(false));
+        Assert.assertTrue(testClient.primitiveWrapperBooleanWithPrimitivePrimitive(true));
+
+        Assert.assertFalse(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitive(null));
+        Assert.assertFalse(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitive(false));
+        Assert.assertTrue(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitive(true));
+
+        Assert.assertFalse(testClient.primitiveWrapperBooleanWithPrimitivePrimitiveWrapper(false));
+        Assert.assertTrue(testClient.primitiveWrapperBooleanWithPrimitivePrimitiveWrapper(true));
+
+        Assert.assertNull(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitiveWrapper(null));
+        Assert.assertFalse(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitiveWrapper(false));
+        Assert.assertTrue(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitiveWrapper(true));
     }
 }

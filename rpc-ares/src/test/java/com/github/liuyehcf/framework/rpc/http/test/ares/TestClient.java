@@ -11,7 +11,7 @@ import java.util.Map;
  * @author chenfeng.hcf
  * @date 2019/11/8
  */
-@SuppressWarnings("all")
+//@SuppressWarnings("all")
 public interface TestClient {
 
     @AresMethod(path = "/zeroRequestParam")
@@ -144,4 +144,19 @@ public interface TestClient {
 
     @AresMethod(path = "/primitiveBoolean")
     Boolean primitiveBooleanWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") boolean param1);
+
+    @AresMethod(path = "/primitiveBoolean")
+    Boolean primitiveBooleanWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Boolean param1);
+
+    @AresMethod(path = "/primitiveWrapperBoolean")
+    boolean primitiveWrapperBooleanWithPrimitivePrimitive(@AresRequestParam(name = "param1") boolean param1);
+
+    @AresMethod(path = "/primitiveWrapperBoolean")
+    boolean primitiveWrapperBooleanWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Boolean param1);
+
+    @AresMethod(path = "/primitiveWrapperBoolean")
+    Boolean primitiveWrapperBooleanWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") boolean param1);
+
+    @AresMethod(path = "/primitiveWrapperBoolean")
+    Boolean primitiveWrapperBooleanWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Boolean param1);
 }
