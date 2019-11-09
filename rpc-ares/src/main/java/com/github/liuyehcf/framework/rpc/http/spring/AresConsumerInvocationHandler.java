@@ -165,16 +165,14 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
         if (ClassUtils.isPrimitiveOrWrapper(type)) {
             return value.toString();
+        } else if (String.class.equals(type)) {
+            return (String) value;
         } else if (Date.class.equals(type)) {
             return Long.toString(((Date) value).getTime());
         } else if (BigInteger.class.equals(type)) {
             return value.toString();
         } else if (BigDecimal.class.equals(type)) {
             return value.toString();
-        } else if (type.isEnum()) {
-            return value.toString();
-        } else if (String.class.equals(type)) {
-            return (String) value;
         } else {
             switch (serializeType) {
                 case json:
@@ -286,16 +284,14 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
             if (isEmpty) {
                 return null;
+            } else if (String.class.equals(type)) {
+                return entity;
             } else if (Date.class.equals(type)) {
                 return new Date(Long.parseLong(entity));
             } else if (BigInteger.class.equals(type)) {
                 return new BigInteger(entity);
             } else if (BigDecimal.class.equals(type)) {
                 return new BigDecimal(entity);
-            } else if (type.isEnum()) {
-                return Enum.valueOf((Class) type, entity);
-            } else if (String.class.equals(type)) {
-                return entity;
             } else {
                 switch (serializeType) {
                     case json:
