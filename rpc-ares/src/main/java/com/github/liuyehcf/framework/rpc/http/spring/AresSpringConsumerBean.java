@@ -1,9 +1,12 @@
 package com.github.liuyehcf.framework.rpc.http.spring;
 
 import lombok.Data;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Proxy;
 
 /**
@@ -12,6 +15,11 @@ import java.lang.reflect.Proxy;
  */
 @Data
 public class AresSpringConsumerBean implements FactoryBean, InitializingBean {
+
+    @Resource
+    private HttpClient httpClient;
+    @Resource
+    private RequestConfig requestConfig;
 
     private Object target;
     private Class<?> objectType;
@@ -38,6 +46,6 @@ public class AresSpringConsumerBean implements FactoryBean, InitializingBean {
         this.target = Proxy.newProxyInstance(
                 this.getClass().getClassLoader(),
                 new Class<?>[]{objectType},
-                new AresConsumerInvocationHandler(schema, host, port));
+                new AresConsumerInvocationHandler(httpClient, requestConfig, schema, host, port));
     }
 }

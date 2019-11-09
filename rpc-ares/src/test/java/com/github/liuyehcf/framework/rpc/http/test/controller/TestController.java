@@ -3,6 +3,7 @@ package com.github.liuyehcf.framework.rpc.http.test.controller;
 import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.rpc.http.test.model.Person;
 import com.google.common.collect.Maps;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 

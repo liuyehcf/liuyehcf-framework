@@ -13,21 +13,15 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.NoHttpResponseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.springframework.core.annotation.AnnotationUtils;
-import sun.net.ConnectionResetException;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -41,36 +35,16 @@ import java.util.Map;
  */
 class AresConsumerInvocationHandler implements InvocationHandler {
 
-    private static final HttpClient client;
-    private static final RequestConfig requestConfig;
-
-    static {
-        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-        connectionManager.setMaxTotal(200);
-        connectionManager.setDefaultMaxPerRoute(200);
-
-        client = HttpClientBuilder.create()
-                .setRetryHandler((IOException exception, int executionCount, HttpContext context) -> {
-                    if (executionCount > 3) {
-                        return false;
-                    }
-                    return exception instanceof NoHttpResponseException
-                            || exception instanceof ConnectionResetException;
-                })
-                .build();
-
-        requestConfig = RequestConfig.custom()
-                .setSocketTimeout(3000)
-                .setConnectTimeout(3000)
-                .setConnectionRequestTimeout(3000)
-                .build();
-    }
+    private final HttpClient httpClient;
+    private final RequestConfig requestConfig;
 
     private final String schema;
     private final String host;
     private final int port;
 
-    AresConsumerInvocationHandler(String schema, String host, int port) {
+    AresConsumerInvocationHandler(HttpClient httpClient, RequestConfig requestConfig, String schema, String host, int port) {
+        this.httpClient = httpClient;
+        this.requestConfig = requestConfig;
         this.schema = schema;
         this.host = host;
         this.port = port;
@@ -178,7 +152,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
         HttpResponse response = null;
         try {
-            response = client.execute(httpRequest);
+            response = httpClient.execute(httpRequest);
             int statusCode = response.getStatusLine().getStatusCode();
 
             String entity = new String(EntityUtils.toByteArray(response.getEntity()));
