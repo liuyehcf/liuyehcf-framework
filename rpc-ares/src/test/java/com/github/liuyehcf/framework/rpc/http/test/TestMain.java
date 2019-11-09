@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import javax.annotation.Resource;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * @author chenfeng.hcf
@@ -16,6 +17,8 @@ public class TestMain extends BaseConfig {
 
     @Resource
     private TestClient testClient;
+
+    private Random random = new Random();
 
     @Test
     public void zeroRequestParamWithOneMoreParam() {
@@ -390,5 +393,33 @@ public class TestMain extends BaseConfig {
         Assert.assertNull(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitiveWrapper(null));
         Assert.assertFalse(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitiveWrapper(false));
         Assert.assertTrue(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitiveWrapper(true));
+    }
+
+    @Test
+    public void primitiveByte() {
+        //primitive
+        byte value;
+
+        Assert.assertEquals(value = (byte) random.nextInt(), testClient.primitiveByteWithPrimitivePrimitive(value));
+
+        Assert.assertEquals((byte) 0, testClient.primitiveByteWithPrimitiveWrapperPrimitive(null));
+        Assert.assertEquals(value = (byte) random.nextInt(), testClient.primitiveByteWithPrimitiveWrapperPrimitive(value));
+
+        Assert.assertEquals(value = (byte) random.nextInt(), (byte) testClient.primitiveByteWithPrimitivePrimitiveWrapper(value));
+
+        Assert.assertEquals((byte) 0, (byte) testClient.primitiveByteWithPrimitiveWrapperPrimitiveWrapper(null));
+        Assert.assertEquals(value = (byte) random.nextInt(), (byte) testClient.primitiveByteWithPrimitiveWrapperPrimitiveWrapper(value));
+
+
+        // primitive wrapper
+        Assert.assertEquals(value = (byte) random.nextInt(), testClient.primitiveWrapperByteWithPrimitivePrimitive(value));
+
+        Assert.assertEquals((byte) 0, testClient.primitiveWrapperByteWithPrimitiveWrapperPrimitive(null));
+        Assert.assertEquals(value = (byte) random.nextInt(), testClient.primitiveWrapperByteWithPrimitiveWrapperPrimitive(value));
+
+        Assert.assertEquals(value = (byte) random.nextInt(), (byte) testClient.primitiveWrapperByteWithPrimitivePrimitiveWrapper(value));
+
+        Assert.assertNull(testClient.primitiveWrapperByteWithPrimitiveWrapperPrimitiveWrapper(null));
+        Assert.assertEquals(value = (byte) random.nextInt(), (byte) testClient.primitiveWrapperByteWithPrimitiveWrapperPrimitiveWrapper(value));
     }
 }
