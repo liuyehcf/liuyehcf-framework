@@ -188,4 +188,29 @@ public interface TestClient {
 
     @AresMethod(path = "/primitiveWrapperByte")
     Byte primitiveWrapperByteWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Byte param1);
+
+    // short
+    @AresMethod(path = "/primitiveShort")
+    short primitiveShortWithPrimitivePrimitive(@AresRequestParam(name = "param1") short param1);
+
+    @AresMethod(path = "/primitiveShort")
+    short primitiveShortWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Short param1);
+
+    @AresMethod(path = "/primitiveShort")
+    Short primitiveShortWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") short param1);
+
+    @AresMethod(path = "/primitiveShort")
+    Short primitiveShortWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Short param1);
+
+    @AresMethod(path = "/primitiveWrapperShort")
+    short primitiveWrapperShortWithPrimitivePrimitive(@AresRequestParam(name = "param1") short param1);
+
+    @AresMethod(path = "/primitiveWrapperShort")
+    short primitiveWrapperShortWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Short param1);
+
+    @AresMethod(path = "/primitiveWrapperShort")
+    Short primitiveWrapperShortWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") short param1);
+
+    @AresMethod(path = "/primitiveWrapperShort")
+    Short primitiveWrapperShortWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Short param1);
 }

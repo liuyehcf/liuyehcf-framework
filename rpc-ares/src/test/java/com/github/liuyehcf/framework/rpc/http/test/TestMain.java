@@ -431,4 +431,30 @@ public class TestMain extends BaseConfig {
         Assert.assertNull(testClient.primitiveWrapperByteWithPrimitiveWrapperPrimitiveWrapper(null));
         Assert.assertEquals(value = (byte) random.nextInt(), (byte) testClient.primitiveWrapperByteWithPrimitiveWrapperPrimitiveWrapper(value));
     }
+
+    @Test
+    public void primitiveShort() {
+        //primitive
+        short value;
+
+        Assert.assertEquals(value = (short) random.nextInt(), testClient.primitiveShortWithPrimitivePrimitive(value));
+
+        Assert.assertEquals(value = (short) random.nextInt(), testClient.primitiveShortWithPrimitiveWrapperPrimitive(value));
+
+        Assert.assertEquals(value = (short) random.nextInt(), (short) testClient.primitiveShortWithPrimitivePrimitiveWrapper(value));
+
+        Assert.assertEquals(value = (short) random.nextInt(), (short) testClient.primitiveShortWithPrimitiveWrapperPrimitiveWrapper(value));
+
+
+        // primitive wrapper
+        Assert.assertEquals(value = (short) random.nextInt(), testClient.primitiveWrapperShortWithPrimitivePrimitive(value));
+
+        Assert.assertEquals((short) 0, testClient.primitiveWrapperShortWithPrimitiveWrapperPrimitive(null));
+        Assert.assertEquals(value = (short) random.nextInt(), testClient.primitiveWrapperShortWithPrimitiveWrapperPrimitive(value));
+
+        Assert.assertEquals(value = (short) random.nextInt(), (short) testClient.primitiveWrapperShortWithPrimitivePrimitiveWrapper(value));
+
+        Assert.assertNull(testClient.primitiveWrapperShortWithPrimitiveWrapperPrimitiveWrapper(null));
+        Assert.assertEquals(value = (short) random.nextInt(), (short) testClient.primitiveWrapperShortWithPrimitiveWrapperPrimitiveWrapper(value));
+    }
 }

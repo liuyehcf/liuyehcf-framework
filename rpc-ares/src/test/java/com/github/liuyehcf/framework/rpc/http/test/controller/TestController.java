@@ -92,4 +92,16 @@ public class TestController {
     public Byte primitiveWrapperByte(@RequestParam(value = "param1", required = false) Byte param1) {
         return param1;
     }
+
+    @RequestMapping("/primitiveShort")
+    @ResponseBody
+    public short primitiveShort(@RequestParam(value = "param1", required = false) short param1) {
+        return param1;
+    }
+
+    @RequestMapping("/primitiveWrapperShort")
+    @ResponseBody
+    public Short primitiveWrapperShort(@RequestParam(value = "param1", required = false) Short param1) {
+        return param1;
+    }
 }
