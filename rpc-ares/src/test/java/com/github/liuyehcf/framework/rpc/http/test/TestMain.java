@@ -357,4 +357,17 @@ public class TestMain extends BaseConfig {
     public void returnNull() {
         Assert.assertNull(testClient.returnNull());
     }
+
+    @Test
+    public void primitiveBoolean() {
+        Assert.assertFalse(testClient.primitiveBooleanWithPrimitivePrimitive(false));
+        Assert.assertTrue(testClient.primitiveBooleanWithPrimitivePrimitive(true));
+
+        Assert.assertFalse(testClient.primitiveBooleanWithPrimitiveWrapperPrimitive(null));
+        Assert.assertFalse(testClient.primitiveBooleanWithPrimitiveWrapperPrimitive(false));
+        Assert.assertTrue(testClient.primitiveBooleanWithPrimitiveWrapperPrimitive(true));
+
+        Assert.assertFalse(testClient.primitiveBooleanWithPrimitivePrimitiveWrapper(false));
+        Assert.assertTrue(testClient.primitiveBooleanWithPrimitivePrimitiveWrapper(true));
+    }
 }

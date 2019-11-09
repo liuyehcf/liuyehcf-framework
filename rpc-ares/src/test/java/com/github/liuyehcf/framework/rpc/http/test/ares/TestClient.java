@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.rpc.http.test.ares;
 import com.github.liuyehcf.framework.rpc.http.AresMethod;
 import com.github.liuyehcf.framework.rpc.http.AresRequestBody;
 import com.github.liuyehcf.framework.rpc.http.AresRequestParam;
-import com.github.liuyehcf.framework.rpc.http.constant.SerializeType;
 import com.github.liuyehcf.framework.rpc.http.test.model.Person;
 
 import java.util.Map;
@@ -35,14 +34,14 @@ public interface TestClient {
                                              @AresRequestBody Object param);
 
     @AresMethod(path = "/oneRequestParam")
-    String oneRequestParamWithRequestBody(@AresRequestBody(serializeType = SerializeType.json) Object param);
+    String oneRequestParamWithRequestBody(@AresRequestBody Object param);
 
     @AresMethod(path = "/oneRequestParam")
-    String oneRequestParamWithJsonSerializeType(@AresRequestParam(name = "param1", serializeType = SerializeType.json) Object param);
+    String oneRequestParamWithJsonSerializeType(@AresRequestParam(name = "param1") Object param);
 
     @AresMethod(path = "/oneRequestParam")
-    String oneRequestParamWithOneMoreParam(@AresRequestParam(name = "param1", serializeType = SerializeType.json) Object param,
-                                           @AresRequestParam(name = "param2", serializeType = SerializeType.json) Object param2);
+    String oneRequestParamWithOneMoreParam(@AresRequestParam(name = "param1") Object param,
+                                           @AresRequestParam(name = "param2") Object param2);
 
     @AresMethod(path = "/twoRequestParam")
     String twoRequestParamMissingFirstAnnotation(Object param1,
@@ -78,12 +77,12 @@ public interface TestClient {
 
     @AresMethod(path = "/twoRequestParam")
     String twoRequestParamWithStringJson(@AresRequestParam(name = "param1") Object param1,
-                                         @AresRequestParam(name = "param2", serializeType = SerializeType.json) Object param2);
+                                         @AresRequestParam(name = "param2") Object param2);
 
     @AresMethod(path = "/twoRequestParam")
-    String twoRequestParamWithOneMoreParam(@AresRequestParam(name = "param1", serializeType = SerializeType.json) Object param1,
-                                           @AresRequestParam(name = "param2", serializeType = SerializeType.json) Object param2,
-                                           @AresRequestParam(name = "param3", serializeType = SerializeType.json) Object param3);
+    String twoRequestParamWithOneMoreParam(@AresRequestParam(name = "param1") Object param1,
+                                           @AresRequestParam(name = "param2") Object param2,
+                                           @AresRequestParam(name = "param3") Object param3);
 
     @AresMethod(path = "/requestBody")
     String requestBodyWithoutAnnotation(Object param1);
@@ -95,10 +94,10 @@ public interface TestClient {
     String requestBodyString(@AresRequestBody Object param1);
 
     @AresMethod(path = "/requestBody")
-    String requestBodyJson(@AresRequestBody(serializeType = SerializeType.json) Object param1);
+    String requestBodyJson(@AresRequestBody Object param1);
 
     @AresMethod(path = "/requestBody")
-    String requestBodyWithOneMoreParam(@AresRequestBody(serializeType = SerializeType.json) Object param1,
+    String requestBodyWithOneMoreParam(@AresRequestBody Object param1,
                                        @AresRequestParam(name = "param2") Object param2);
 
     @AresMethod(path = "/oneRequestParamOneRequestBody")
@@ -113,14 +112,14 @@ public interface TestClient {
     Map<String, Person> oneRequestParamOneRequestBodyMissingBothAnnotation(Object param1,
                                                                            Object requestBody);
 
-    @AresMethod(path = "/oneRequestParamOneRequestBody", responseDeserializeType = SerializeType.json)
+    @AresMethod(path = "/oneRequestParamOneRequestBody")
     Map<String, Person> oneRequestParamOneRequestBody(@AresRequestParam(name = "param1") Object param1,
                                                       @AresRequestBody Object requestBody);
 
-    @AresMethod(path = "/oneRequestParamOneRequestBody", responseDeserializeType = SerializeType.json)
+    @AresMethod(path = "/oneRequestParamOneRequestBody")
     Map<String, Person> oneRequestParamOneRequestBodyWithOneMoreParam(@AresRequestParam(name = "param1") Object param1,
                                                                       @AresRequestBody Object requestBody,
-                                                                      @AresRequestParam(name = "param2", serializeType = SerializeType.json) Object param2);
+                                                                      @AresRequestParam(name = "param2") Object param2);
 
     @AresMethod(path = "/nullableQueryParamAndRequestBody")
     String nullableQueryParamAndRequestBody(@AresRequestParam(name = "param1") Object param1,
@@ -130,10 +129,19 @@ public interface TestClient {
     void nullableQueryParamAndRequestBodyVoidReturn1(@AresRequestParam(name = "param1") Object param1,
                                                      @AresRequestBody Object requestBody);
 
-    @AresMethod(path = "/nullableQueryParamAndRequestBody", responseDeserializeType = SerializeType.json)
+    @AresMethod(path = "/nullableQueryParamAndRequestBody")
     void nullableQueryParamAndRequestBodyVoidReturn2(@AresRequestParam(name = "param1") Object param1,
                                                      @AresRequestBody Object requestBody);
 
     @AresMethod(path = "/returnNull")
     String returnNull();
+
+    @AresMethod(path = "/primitiveBoolean")
+    boolean primitiveBooleanWithPrimitivePrimitive(@AresRequestParam(name = "param1") boolean param1);
+
+    @AresMethod(path = "/primitiveBoolean")
+    boolean primitiveBooleanWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Boolean param1);
+
+    @AresMethod(path = "/primitiveBoolean")
+    Boolean primitiveBooleanWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") boolean param1);
 }

@@ -68,4 +68,16 @@ public class TestController {
     public String returnNull() {
         return null;
     }
+
+    @RequestMapping("/primitiveBoolean")
+    @ResponseBody
+    public boolean boolean1(@RequestParam(value = "param1", required = false) boolean param1) {
+        return param1;
+    }
+
+    @RequestMapping("/primitiveWrapperBoolean")
+    @ResponseBody
+    public Boolean boolean2(@RequestParam(value = "param1", required = false) Boolean param1) {
+        return param1;
+    }
 }
