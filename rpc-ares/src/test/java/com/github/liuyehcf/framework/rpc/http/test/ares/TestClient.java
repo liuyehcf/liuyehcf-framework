@@ -136,6 +136,9 @@ public interface TestClient {
     @AresMethod(path = "/returnNull")
     String returnNull();
 
+    @AresMethod(path = "/wrongPath")
+    String wrongPath();
+
     // boolean
     @AresMethod(path = "/primitiveBoolean")
     boolean primitiveBooleanWithPrimitivePrimitive(@AresRequestParam(name = "param1") boolean param1);

@@ -362,6 +362,17 @@ public class TestMain extends BaseConfig {
     }
 
     @Test
+    public void wrongPath() {
+        try {
+            testClient.wrongPath();
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().contains("Not Found"));
+            return;
+        }
+        throw new Error();
+    }
+
+    @Test
     public void primitiveBoolean() {
         //primitive
         Assert.assertFalse(testClient.primitiveBooleanWithPrimitivePrimitive(false));

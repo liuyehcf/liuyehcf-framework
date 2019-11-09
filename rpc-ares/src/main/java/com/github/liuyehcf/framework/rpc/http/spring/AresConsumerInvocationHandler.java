@@ -215,17 +215,6 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                     }
                 }
                 return Byte.valueOf(entity);
-            } else if (char.class.equals(type)
-                    || Character.class.equals(type)) {
-                if (isEmpty) {
-                    if (isPrimitive) {
-                        return '\0';
-                    } else {
-                        return null;
-                    }
-                }
-                Assert.assertEquals(1, entity.length(), "char string contains one more char");
-                return entity.charAt(0);
             } else if (short.class.equals(type)
                     || Short.class.equals(type)) {
                 if (isEmpty) {
