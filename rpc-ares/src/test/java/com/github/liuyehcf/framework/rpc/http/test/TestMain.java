@@ -402,12 +402,10 @@ public class TestMain extends BaseConfig {
 
         Assert.assertEquals(value = (byte) random.nextInt(), testClient.primitiveByteWithPrimitivePrimitive(value));
 
-        Assert.assertEquals((byte) 0, testClient.primitiveByteWithPrimitiveWrapperPrimitive(null));
         Assert.assertEquals(value = (byte) random.nextInt(), testClient.primitiveByteWithPrimitiveWrapperPrimitive(value));
 
         Assert.assertEquals(value = (byte) random.nextInt(), (byte) testClient.primitiveByteWithPrimitivePrimitiveWrapper(value));
 
-        Assert.assertEquals((byte) 0, (byte) testClient.primitiveByteWithPrimitiveWrapperPrimitiveWrapper(null));
         Assert.assertEquals(value = (byte) random.nextInt(), (byte) testClient.primitiveByteWithPrimitiveWrapperPrimitiveWrapper(value));
 
 
