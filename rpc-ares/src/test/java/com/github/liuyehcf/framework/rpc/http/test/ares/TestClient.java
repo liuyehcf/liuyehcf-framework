@@ -5,13 +5,15 @@ import com.github.liuyehcf.framework.rpc.http.AresRequestBody;
 import com.github.liuyehcf.framework.rpc.http.AresRequestParam;
 import com.github.liuyehcf.framework.rpc.http.test.model.Person;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Map;
 
 /**
  * @author chenfeng.hcf
  * @date 2019/11/8
  */
-//@SuppressWarnings("all")
+@SuppressWarnings("all")
 public interface TestClient {
 
     @AresMethod(path = "/zeroRequestParam")
@@ -313,4 +315,12 @@ public interface TestClient {
 
     @AresMethod(path = "/primitiveWrapperDouble")
     Double primitiveWrapperDoubleWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Double param1);
+
+    // bigInteger
+    @AresMethod(path = "/bigInteger")
+    BigInteger bigInteger(@AresRequestParam(name = "param1") BigInteger param1);
+
+    // bigDecimal
+    @AresMethod(path = "/bigDecimal")
+    BigDecimal bigDecimal(@AresRequestParam(name = "param1") BigDecimal param1);
 }

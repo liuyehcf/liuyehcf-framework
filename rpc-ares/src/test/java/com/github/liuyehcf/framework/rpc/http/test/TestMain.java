@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Map;
 import java.util.Random;
 
@@ -560,5 +562,19 @@ public class TestMain extends BaseConfig {
 
         Assert.assertNull(testClient.primitiveWrapperDoubleWithPrimitiveWrapperPrimitiveWrapper(null));
         Assert.assertEquals(value = random.nextDouble(), testClient.primitiveWrapperDoubleWithPrimitiveWrapperPrimitiveWrapper(value), 1e-10);
+    }
+
+    @Test
+    public void bigInteger() {
+        BigInteger bigInteger = new BigInteger(Long.toString(random.nextLong()));
+        Assert.assertNull(testClient.bigInteger(null));
+        Assert.assertEquals(bigInteger, testClient.bigInteger(bigInteger));
+    }
+
+    @Test
+    public void bigDecimal() {
+        BigDecimal bigDecimal = new BigDecimal(Double.toString(random.nextDouble()));
+        Assert.assertNull(testClient.bigDecimal(null));
+        Assert.assertEquals(bigDecimal, testClient.bigDecimal(bigDecimal));
     }
 }

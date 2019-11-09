@@ -28,7 +28,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -167,8 +166,6 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             return value.toString();
         } else if (String.class.equals(type)) {
             return (String) value;
-        } else if (Date.class.equals(type)) {
-            return Long.toString(((Date) value).getTime());
         } else if (BigInteger.class.equals(type)) {
             return value.toString();
         } else if (BigDecimal.class.equals(type)) {
@@ -275,8 +272,6 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 return null;
             } else if (String.class.equals(type)) {
                 return entity;
-            } else if (Date.class.equals(type)) {
-                return new Date(Long.parseLong(entity));
             } else if (BigInteger.class.equals(type)) {
                 return new BigInteger(entity);
             } else if (BigDecimal.class.equals(type)) {

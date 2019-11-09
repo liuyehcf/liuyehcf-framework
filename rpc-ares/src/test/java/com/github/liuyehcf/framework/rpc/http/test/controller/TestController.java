@@ -5,6 +5,8 @@ import com.github.liuyehcf.framework.rpc.http.test.model.Person;
 import com.google.common.collect.Maps;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Map;
 
 /**
@@ -150,6 +152,18 @@ public class TestController {
     @RequestMapping("/primitiveWrapperDouble")
     @ResponseBody
     public Double primitiveWrapperDouble(@RequestParam(value = "param1", required = false) Double param1) {
+        return param1;
+    }
+
+    @RequestMapping("/bigInteger")
+    @ResponseBody
+    public BigInteger bigInteger(@RequestParam(value = "param1", required = false) BigInteger param1) {
+        return param1;
+    }
+
+    @RequestMapping("/bigDecimal")
+    @ResponseBody
+    public BigDecimal bigDecimal(@RequestParam(value = "param1", required = false) BigDecimal param1) {
         return param1;
     }
 }
