@@ -5,14 +5,8 @@ package com.github.liuyehcf.framework.rpc.http.constant;
  * @date 2019/11/8
  */
 public enum SerializeType {
-
     /**
-     * using toString method of Object
-     */
-    string,
-
-    /**
-     * using fastjson to serialize
+     * using json to serialize
      */
     json,
 }

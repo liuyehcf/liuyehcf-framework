@@ -24,10 +24,7 @@ public interface TestClient {
     @AresMethod(path = "/zeroRequestParam")
     String zeroRequestParam();
 
-    @AresMethod(path = "/zeroRequestParam", responseDeserializeType = SerializeType.json)
-    String zeroRequestParamWithWrongDeserializeType();
-
-    @AresMethod(path = "/oneRequestParam", responseDeserializeType = SerializeType.string)
+    @AresMethod(path = "/oneRequestParam")
     String oneRequestParamMissingParam();
 
     @AresMethod(path = "/oneRequestParam")
@@ -37,11 +34,8 @@ public interface TestClient {
     String oneRequestParamWithBothAnnotation(@AresRequestParam(name = "param1")
                                              @AresRequestBody Object param);
 
-    @AresMethod(path = "/oneRequestParam", responseDeserializeType = SerializeType.string)
-    String oneRequestParamWithRequestBody(@AresRequestBody(serializeType = SerializeType.json) Object param);
-
     @AresMethod(path = "/oneRequestParam")
-    String oneRequestParamWithStringSerializeType(@AresRequestParam(name = "param1") Object param);
+    String oneRequestParamWithRequestBody(@AresRequestBody(serializeType = SerializeType.json) Object param);
 
     @AresMethod(path = "/oneRequestParam")
     String oneRequestParamWithJsonSerializeType(@AresRequestParam(name = "param1", serializeType = SerializeType.json) Object param);
@@ -49,9 +43,6 @@ public interface TestClient {
     @AresMethod(path = "/oneRequestParam")
     String oneRequestParamWithOneMoreParam(@AresRequestParam(name = "param1", serializeType = SerializeType.json) Object param,
                                            @AresRequestParam(name = "param2", serializeType = SerializeType.json) Object param2);
-
-    @AresMethod(path = "/oneRequestParam", responseDeserializeType = SerializeType.json)
-    String oneRequestParamWithWrongDeserializeType(@AresRequestParam(name = "param1", serializeType = SerializeType.json) Object param);
 
     @AresMethod(path = "/twoRequestParam")
     String twoRequestParamMissingFirstAnnotation(Object param1,
@@ -90,21 +81,9 @@ public interface TestClient {
                                          @AresRequestParam(name = "param2", serializeType = SerializeType.json) Object param2);
 
     @AresMethod(path = "/twoRequestParam")
-    String twoRequestParamWithJsonString(@AresRequestParam(name = "param1", serializeType = SerializeType.json) Object param1,
-                                         @AresRequestParam(name = "param2") Object param2);
-
-    @AresMethod(path = "/twoRequestParam")
-    String twoRequestParamWithJsonJson(@AresRequestParam(name = "param1", serializeType = SerializeType.json) Object param1,
-                                       @AresRequestParam(name = "param2", serializeType = SerializeType.json) Object param2);
-
-    @AresMethod(path = "/twoRequestParam")
     String twoRequestParamWithOneMoreParam(@AresRequestParam(name = "param1", serializeType = SerializeType.json) Object param1,
                                            @AresRequestParam(name = "param2", serializeType = SerializeType.json) Object param2,
                                            @AresRequestParam(name = "param3", serializeType = SerializeType.json) Object param3);
-
-    @AresMethod(path = "/twoRequestParam", responseDeserializeType = SerializeType.json)
-    String twoRequestParamWithWrongDeserializeType(@AresRequestParam(name = "param1") Object param1,
-                                                   @AresRequestParam(name = "param2") Object param2);
 
     @AresMethod(path = "/requestBody")
     String requestBodyWithoutAnnotation(Object param1);
@@ -122,9 +101,6 @@ public interface TestClient {
     String requestBodyWithOneMoreParam(@AresRequestBody(serializeType = SerializeType.json) Object param1,
                                        @AresRequestParam(name = "param2") Object param2);
 
-    @AresMethod(path = "/requestBody", responseDeserializeType = SerializeType.json)
-    String requestBodyWithWrongDeserializeType(@AresRequestBody(serializeType = SerializeType.json) Object param1);
-
     @AresMethod(path = "/oneRequestParamOneRequestBody")
     Map<String, Person> oneRequestParamOneRequestBodyMissingFirstAnnotation(Object param1,
                                                                             @AresRequestBody Object requestBody);
@@ -136,10 +112,6 @@ public interface TestClient {
     @AresMethod(path = "/oneRequestParamOneRequestBody")
     Map<String, Person> oneRequestParamOneRequestBodyMissingBothAnnotation(Object param1,
                                                                            Object requestBody);
-
-    @AresMethod(path = "/oneRequestParamOneRequestBody")
-    Map<String, Person> oneRequestParamOneRequestBodyWithWrongDeserializeType(@AresRequestParam(name = "param1") Object param1,
-                                                                              @AresRequestBody Object requestBody);
 
     @AresMethod(path = "/oneRequestParamOneRequestBody", responseDeserializeType = SerializeType.json)
     Map<String, Person> oneRequestParamOneRequestBody(@AresRequestParam(name = "param1") Object param1,

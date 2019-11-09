@@ -36,17 +36,6 @@ public class TestMain extends BaseConfig {
     }
 
     @Test
-    public void zeroRequestParamWithWrongDeserializeType() {
-        try {
-            testClient.zeroRequestParamWithWrongDeserializeType();
-        } catch (Exception e) {
-            Assert.assertEquals("failed to parse json object from: zeroRequestParam()[]", e.getMessage());
-            return;
-        }
-        throw new Error();
-    }
-
-    @Test
     public void oneRequestParamMissingParam() {
         try {
             testClient.oneRequestParamMissingParam();
@@ -95,17 +84,6 @@ public class TestMain extends BaseConfig {
     }
 
     @Test
-    public void oneRequestParamWithStringSerializeType() {
-        String result = testClient.oneRequestParamWithStringSerializeType(Person.builder()
-                .country("China")
-                .name("hechenfeng")
-                .age(18)
-                .build());
-
-        Assert.assertEquals("oneRequestParam(Person(country=China, name=hechenfeng, age=18))[]", result);
-    }
-
-    @Test
     public void oneRequestParamWithJsonSerializeType() {
         String result = testClient.oneRequestParamWithJsonSerializeType(Person.builder()
                 .country("China")
@@ -125,21 +103,6 @@ public class TestMain extends BaseConfig {
                 .build(), "hello");
 
         Assert.assertEquals("oneRequestParam({\"age\":18,\"country\":\"China\",\"name\":\"hechenfeng\"})[]", result);
-    }
-
-    @Test
-    public void oneRequestParamWithWrongDeserializeType() {
-        try {
-            testClient.oneRequestParamWithWrongDeserializeType(Person.builder()
-                    .country("China")
-                    .name("hechenfeng")
-                    .age(18)
-                    .build());
-        } catch (Exception e) {
-            Assert.assertEquals("failed to parse json object from: oneRequestParam({\"age\":18,\"country\":\"China\",\"name\":\"hechenfeng\"})[]", e.getMessage());
-            return;
-        }
-        throw new Error();
     }
 
     @Test
@@ -239,28 +202,6 @@ public class TestMain extends BaseConfig {
     }
 
     @Test
-    public void twoRequestParamWithJsonString() {
-        String result = testClient.twoRequestParamWithJsonString("hello", Person.builder()
-                .country("China")
-                .name("hechenfeng")
-                .age(18)
-                .build());
-
-        Assert.assertEquals("twoRequestParam(\"hello\", Person(country=China, name=hechenfeng, age=18))[]", result);
-    }
-
-    @Test
-    public void twoRequestParamWithJsonJson() {
-        String result = testClient.twoRequestParamWithJsonJson("hello", Person.builder()
-                .country("China")
-                .name("hechenfeng")
-                .age(18)
-                .build());
-
-        Assert.assertEquals("twoRequestParam(\"hello\", {\"age\":18,\"country\":\"China\",\"name\":\"hechenfeng\"})[]", result);
-    }
-
-    @Test
     public void twoRequestParamWithOneMoreParam() {
         String result = testClient.twoRequestParamWithOneMoreParam("hello", Person.builder()
                 .country("China")
@@ -268,22 +209,7 @@ public class TestMain extends BaseConfig {
                 .age(18)
                 .build(), "null");
 
-        Assert.assertEquals("twoRequestParam(\"hello\", {\"age\":18,\"country\":\"China\",\"name\":\"hechenfeng\"})[]", result);
-    }
-
-    @Test
-    public void twoRequestParamWithWrongDeserializeType() {
-        try {
-            testClient.twoRequestParamWithWrongDeserializeType("hello", Person.builder()
-                    .country("China")
-                    .name("hechenfeng")
-                    .age(18)
-                    .build());
-        } catch (Exception e) {
-            Assert.assertEquals("failed to parse json object from: twoRequestParam(hello, Person(country=China, name=hechenfeng, age=18))[]", e.getMessage());
-            return;
-        }
-        throw new Error();
+        Assert.assertEquals("twoRequestParam(hello, {\"age\":18,\"country\":\"China\",\"name\":\"hechenfeng\"})[]", result);
     }
 
     @Test
@@ -335,17 +261,6 @@ public class TestMain extends BaseConfig {
     }
 
     @Test
-    public void requestBodyWithWrongDeserializeType() {
-        try {
-            testClient.requestBodyWithWrongDeserializeType("hello");
-        } catch (Exception e) {
-            Assert.assertEquals("failed to parse json object from: requestBody()[\"hello\"]", e.getMessage());
-            return;
-        }
-        throw new Error();
-    }
-
-    @Test
     public void oneRequestParamOneRequestBodyMissingFirstAnnotation() {
         try {
             testClient.oneRequestParamOneRequestBodyMissingFirstAnnotation("hello", "world");
@@ -373,17 +288,6 @@ public class TestMain extends BaseConfig {
             testClient.oneRequestParamOneRequestBodyMissingBothAnnotation("hello", "world");
         } catch (Exception e) {
             Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresRequestBody'", e.getMessage());
-            return;
-        }
-        throw new Error();
-    }
-
-    @Test
-    public void oneRequestParamOneRequestBodyWithWrongDeserializeType() {
-        try {
-            testClient.oneRequestParamOneRequestBodyWithWrongDeserializeType("hello", "world");
-        } catch (Exception e) {
-            Assert.assertEquals("java.lang.String cannot be cast to java.util.Map", e.getMessage());
             return;
         }
         throw new Error();
@@ -451,6 +355,6 @@ public class TestMain extends BaseConfig {
 
     @Test
     public void returnNull() {
-        Assert.assertEquals("", testClient.returnNull());
+        Assert.assertNull(testClient.returnNull());
     }
 }

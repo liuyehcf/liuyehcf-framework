@@ -11,6 +11,7 @@ import com.github.liuyehcf.framework.rpc.http.constant.SerializeType;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -25,11 +26,12 @@ import org.springframework.core.annotation.AnnotationUtils;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Date;
 import java.util.Map;
 
 /**
- * todo 如果接收方的方法返回值是void，但实际并不是
- *
  * @author chenfeng.hcf
  * @date 2019/11/8
  */
@@ -108,37 +110,19 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         if (MapUtils.isNotEmpty(params.queryParams)) {
             for (Map.Entry<String, Param> entry : params.queryParams.entrySet()) {
                 Param param = entry.getValue();
-                switch (param.serializeType) {
-                    case string:
-                        if (param.target != null) {
-                            uriBuilder.addParameter(entry.getKey(), param.target.toString());
-                        }
-                        break;
-                    case json:
-                        if (param.target != null) {
-                            uriBuilder.addParameter(entry.getKey(), JSON.toJSONString(param.target));
-                        }
-                        break;
-                    default:
-                        throw new UnsupportedOperationException(String.format("unexpected query parameter serialize type '%s'", param.serializeType));
+
+                String content = serialize(param.target, param.serializeType);
+                if (content != null) {
+                    uriBuilder.addParameter(entry.getKey(), content);
                 }
             }
         }
 
         if (params.requestBody != null) {
-            switch (params.requestBody.serializeType) {
-                case string:
-                    if (params.requestBody.target != null) {
-                        builder.setEntity(new ByteArrayEntity(params.requestBody.target.toString().getBytes()));
-                    }
-                    break;
-                case json:
-                    if (params.requestBody.target != null) {
-                        builder.setEntity(new ByteArrayEntity(JSON.toJSONBytes(params.requestBody.target)));
-                    }
-                    break;
-                default:
-                    throw new UnsupportedOperationException(String.format("unexpected request body serialize type '%s'", params.requestBody.serializeType));
+            String content = serialize(params.requestBody.target, params.requestBody.serializeType);
+
+            if (content != null) {
+                builder.setEntity(new ByteArrayEntity(content.getBytes()));
             }
         }
 
@@ -163,48 +147,166 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                         entity));
             }
 
-            if (void.class.equals(method.getReturnType()) || Void.class.equals(method.getReturnType())) {
-                return null;
-            } else if (ClassUtils.isPrimitiveOrWrapper(method.getReturnType())) {
-                if (boolean.class.equals(method.getReturnType())
-                        || Boolean.class.equals(method.getReturnType())) {
-                    return Boolean.valueOf(entity);
-                } else if (byte.class.equals(method.getReturnType())
-                        || Byte.class.equals(method.getReturnType())) {
-                    return Byte.valueOf(entity);
-                } else if (short.class.equals(method.getReturnType())
-                        || Short.class.equals(method.getReturnType())) {
-                    return Short.valueOf(entity);
-                } else if (int.class.equals(method.getReturnType())
-                        || Integer.class.equals(method.getReturnType())) {
-                    return Integer.valueOf(entity);
-                } else if (long.class.equals(method.getReturnType())
-                        || Long.class.equals(method.getReturnType())) {
-                    return Long.valueOf(entity);
-                } else if (float.class.equals(method.getReturnType())
-                        || Float.class.equals(method.getReturnType())) {
-                    return Float.valueOf(entity);
-                } else if (double.class.equals(method.getReturnType())
-                        || Double.class.equals(method.getReturnType())) {
-                    return Double.valueOf(entity);
-                }
-            }
+            return deserialize(entity, responseDeserializeType, method);
 
-            switch (responseDeserializeType) {
-                case string:
-                    return entity;
-                case json:
-                    try {
-                        return JSON.parseObject(entity, method.getGenericReturnType());
-                    } catch (Exception e) {
-                        throw new AresException("failed to parse json object from: " + entity);
-                    }
-                default:
-                    throw new UnsupportedOperationException(String.format("unexpected response body deserialize type '%s'", responseDeserializeType));
-            }
         } finally {
             if (response != null) {
                 EntityUtils.consumeQuietly(response.getEntity());
+            }
+        }
+    }
+
+    private String serialize(Object value, SerializeType serializeType) {
+        if (value == null) {
+            return null;
+        }
+
+        Class<?> type = value.getClass();
+
+        if (ClassUtils.isPrimitiveOrWrapper(type)) {
+            return value.toString();
+        } else if (Date.class.equals(type)) {
+            return Long.toString(((Date) value).getTime());
+        } else if (BigInteger.class.equals(type)) {
+            return value.toString();
+        } else if (BigDecimal.class.equals(type)) {
+            return value.toString();
+        } else if (type.isEnum()) {
+            return value.toString();
+        } else if (String.class.equals(type)) {
+            return (String) value;
+        } else {
+            switch (serializeType) {
+                case json:
+                    try {
+                        return JSON.toJSONString(value);
+                    } catch (Exception e) {
+                        throw new AresException("failed to serialize object to json string: " + type.getName());
+                    }
+                default:
+                    throw new UnsupportedOperationException(String.format("unexpected serialize type '%s'", serializeType));
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Object deserialize(String entity, SerializeType serializeType, Method method) {
+        Class<?> type = method.getReturnType();
+        if (void.class.equals(type) || Void.class.equals(type)) {
+            return null;
+        } else if (ClassUtils.isPrimitiveOrWrapper(type)) {
+            boolean isPrimitive = type.isPrimitive();
+            boolean isEmpty = StringUtils.EMPTY.equals(entity);
+            if (boolean.class.equals(type)
+                    || Boolean.class.equals(type)) {
+                if (isEmpty) {
+                    if (isPrimitive) {
+                        return false;
+                    } else {
+                        return null;
+                    }
+                }
+                return Boolean.valueOf(entity);
+            } else if (byte.class.equals(type)
+                    || Byte.class.equals(type)) {
+                if (isEmpty) {
+                    if (isPrimitive) {
+                        return (byte) 0;
+                    } else {
+                        return null;
+                    }
+                }
+                return Byte.valueOf(entity);
+            } else if (char.class.equals(type)
+                    || Character.class.equals(type)) {
+                if (isEmpty) {
+                    if (isPrimitive) {
+                        return '\0';
+                    } else {
+                        return null;
+                    }
+                }
+                Assert.assertEquals(1, entity.length(), "char string contains one more char");
+                return entity.charAt(0);
+            } else if (short.class.equals(type)
+                    || Short.class.equals(type)) {
+                if (isEmpty) {
+                    if (isPrimitive) {
+                        return (short) 0;
+                    } else {
+                        return null;
+                    }
+                }
+                return Short.valueOf(entity);
+            } else if (int.class.equals(type)
+                    || Integer.class.equals(type)) {
+                if (isEmpty) {
+                    if (isPrimitive) {
+                        return 0;
+                    } else {
+                        return null;
+                    }
+                }
+                return Integer.valueOf(entity);
+            } else if (long.class.equals(type)
+                    || Long.class.equals(type)) {
+                if (isEmpty) {
+                    if (isPrimitive) {
+                        return 0L;
+                    } else {
+                        return null;
+                    }
+                }
+                return Long.valueOf(entity);
+            } else if (float.class.equals(type)
+                    || Float.class.equals(type)) {
+                if (isEmpty) {
+                    if (isPrimitive) {
+                        return 0f;
+                    } else {
+                        return null;
+                    }
+                }
+                return Float.valueOf(entity);
+            } else if (double.class.equals(type)
+                    || Double.class.equals(type)) {
+                if (isEmpty) {
+                    if (isPrimitive) {
+                        return 0d;
+                    } else {
+                        return null;
+                    }
+                }
+                return Double.valueOf(entity);
+            } else {
+                throw new UnsupportedOperationException("unsupported primitive(or wrapper) type");
+            }
+        } else {
+            boolean isEmpty = StringUtils.EMPTY.equals(entity);
+
+            if (isEmpty) {
+                return null;
+            } else if (Date.class.equals(type)) {
+                return new Date(Long.parseLong(entity));
+            } else if (BigInteger.class.equals(type)) {
+                return new BigInteger(entity);
+            } else if (BigDecimal.class.equals(type)) {
+                return new BigDecimal(entity);
+            } else if (type.isEnum()) {
+                return Enum.valueOf((Class) type, entity);
+            } else if (String.class.equals(type)) {
+                return entity;
+            } else {
+                switch (serializeType) {
+                    case json:
+                        try {
+                            return JSON.parseObject(entity, method.getGenericReturnType());
+                        } catch (Exception e) {
+                            throw new AresException("failed to parse json object from: " + entity);
+                        }
+                    default:
+                        throw new UnsupportedOperationException(String.format("unexpected serialize type '%s'", serializeType));
+                }
             }
         }
     }

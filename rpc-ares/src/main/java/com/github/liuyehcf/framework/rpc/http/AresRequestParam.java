@@ -23,5 +23,5 @@ public @interface AresRequestParam {
     /**
      * serialize type
      */
-    SerializeType serializeType() default SerializeType.string;
+    SerializeType serializeType() default SerializeType.json;
 }

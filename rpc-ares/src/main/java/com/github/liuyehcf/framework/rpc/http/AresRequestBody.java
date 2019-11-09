@@ -18,5 +18,5 @@ public @interface AresRequestBody {
     /**
      * serialize type
      */
-    SerializeType serializeType() default SerializeType.string;
+    SerializeType serializeType() default SerializeType.json;
 }

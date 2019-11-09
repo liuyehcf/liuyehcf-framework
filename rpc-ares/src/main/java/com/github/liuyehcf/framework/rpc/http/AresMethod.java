@@ -31,5 +31,5 @@ public @interface AresMethod {
     /**
      * deserialize type of response body
      */
-    SerializeType responseDeserializeType() default SerializeType.string;
+    SerializeType responseDeserializeType() default SerializeType.json;
 }
