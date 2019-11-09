@@ -509,4 +509,30 @@ public class TestMain extends BaseConfig {
         Assert.assertNull(testClient.primitiveWrapperLongWithPrimitiveWrapperPrimitiveWrapper(null));
         Assert.assertEquals(value = random.nextLong(), (long) testClient.primitiveWrapperLongWithPrimitiveWrapperPrimitiveWrapper(value));
     }
+
+    @Test
+    public void primitiveFloat() {
+        //primitive
+        float value;
+
+        Assert.assertEquals(value = random.nextFloat(), testClient.primitiveFloatWithPrimitivePrimitive(value), 1e-10);
+
+        Assert.assertEquals(value = random.nextFloat(), testClient.primitiveFloatWithPrimitiveWrapperPrimitive(value), 1e-10);
+
+        Assert.assertEquals(value = random.nextFloat(), testClient.primitiveFloatWithPrimitivePrimitiveWrapper(value), 1e-10);
+
+        Assert.assertEquals(value = random.nextFloat(), testClient.primitiveFloatWithPrimitiveWrapperPrimitiveWrapper(value), 1e-10);
+
+
+        // primitive wrapper
+        Assert.assertEquals(value = random.nextFloat(), testClient.primitiveWrapperFloatWithPrimitivePrimitive(value), 1e-10);
+
+        Assert.assertEquals(0, testClient.primitiveWrapperFloatWithPrimitiveWrapperPrimitive(null), 1e-10);
+        Assert.assertEquals(value = random.nextFloat(), testClient.primitiveWrapperFloatWithPrimitiveWrapperPrimitive(value), 1e-10);
+
+        Assert.assertEquals(value = random.nextFloat(), testClient.primitiveWrapperFloatWithPrimitivePrimitiveWrapper(value), 1e-10);
+
+        Assert.assertNull(testClient.primitiveWrapperFloatWithPrimitiveWrapperPrimitiveWrapper(null));
+        Assert.assertEquals(value = random.nextFloat(), testClient.primitiveWrapperFloatWithPrimitiveWrapperPrimitiveWrapper(value), 1e-10);
+    }
 }

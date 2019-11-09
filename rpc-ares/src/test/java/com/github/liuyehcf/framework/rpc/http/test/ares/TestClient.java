@@ -263,4 +263,29 @@ public interface TestClient {
 
     @AresMethod(path = "/primitiveWrapperLong")
     Long primitiveWrapperLongWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Long param1);
+
+    // float
+    @AresMethod(path = "/primitiveFloat")
+    float primitiveFloatWithPrimitivePrimitive(@AresRequestParam(name = "param1") float param1);
+
+    @AresMethod(path = "/primitiveFloat")
+    float primitiveFloatWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Float param1);
+
+    @AresMethod(path = "/primitiveFloat")
+    Float primitiveFloatWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") float param1);
+
+    @AresMethod(path = "/primitiveFloat")
+    Float primitiveFloatWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Float param1);
+
+    @AresMethod(path = "/primitiveWrapperFloat")
+    float primitiveWrapperFloatWithPrimitivePrimitive(@AresRequestParam(name = "param1") float param1);
+
+    @AresMethod(path = "/primitiveWrapperFloat")
+    float primitiveWrapperFloatWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Float param1);
+
+    @AresMethod(path = "/primitiveWrapperFloat")
+    Float primitiveWrapperFloatWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") float param1);
+
+    @AresMethod(path = "/primitiveWrapperFloat")
+    Float primitiveWrapperFloatWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Float param1);
 }
