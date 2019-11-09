@@ -1,10 +1,10 @@
 package com.github.liuyehcf.framework.rpc.maple.spring;
 
+import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rpc.maple.MapleConst;
 import com.github.liuyehcf.framework.rpc.maple.MapleConsumer;
 import com.github.liuyehcf.framework.rpc.maple.MapleSpringConsumerBean;
 import com.github.liuyehcf.framework.rpc.maple.register.DefaultServiceMeta;
-import com.github.liuyehcf.framework.rpc.maple.util.Assert;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;

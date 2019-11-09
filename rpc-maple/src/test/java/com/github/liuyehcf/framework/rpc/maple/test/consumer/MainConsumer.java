@@ -1,13 +1,13 @@
 package com.github.liuyehcf.framework.rpc.maple.test.consumer;
 
 
+import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rpc.maple.MapleConst;
 import com.github.liuyehcf.framework.rpc.maple.MapleSpringConsumerBean;
 import com.github.liuyehcf.framework.rpc.maple.register.DefaultServiceMeta;
 import com.github.liuyehcf.framework.rpc.maple.register.ZookeeperConfigClient;
 import com.github.liuyehcf.framework.rpc.maple.test.common.BizRequest;
 import com.github.liuyehcf.framework.rpc.maple.test.common.GreetService;
-import com.github.liuyehcf.framework.rpc.maple.util.Assert;
 import com.github.liuyehcf.framework.rpc.maple.util.JavaBeanInitializer;
 import com.github.liuyehcf.framework.rpc.maple.util.TimeUtils;
 
