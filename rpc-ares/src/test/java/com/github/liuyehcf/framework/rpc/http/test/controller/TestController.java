@@ -104,4 +104,16 @@ public class TestController {
     public Short primitiveWrapperShort(@RequestParam(value = "param1", required = false) Short param1) {
         return param1;
     }
+
+    @RequestMapping("/primitiveInteger")
+    @ResponseBody
+    public int primitiveInteger(@RequestParam(value = "param1", required = false) int param1) {
+        return param1;
+    }
+
+    @RequestMapping("/primitiveWrapperInteger")
+    @ResponseBody
+    public Integer primitiveWrapperInteger(@RequestParam(value = "param1", required = false) Integer param1) {
+        return param1;
+    }
 }

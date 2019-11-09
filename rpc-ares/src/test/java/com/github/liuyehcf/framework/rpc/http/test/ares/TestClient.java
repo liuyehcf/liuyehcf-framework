@@ -213,4 +213,29 @@ public interface TestClient {
 
     @AresMethod(path = "/primitiveWrapperShort")
     Short primitiveWrapperShortWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Short param1);
+
+    // integer
+    @AresMethod(path = "/primitiveInteger")
+    int primitiveIntegerWithPrimitivePrimitive(@AresRequestParam(name = "param1") int param1);
+
+    @AresMethod(path = "/primitiveInteger")
+    int primitiveIntegerWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Integer param1);
+
+    @AresMethod(path = "/primitiveInteger")
+    Integer primitiveIntegerWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") int param1);
+
+    @AresMethod(path = "/primitiveInteger")
+    Integer primitiveIntegerWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Integer param1);
+
+    @AresMethod(path = "/primitiveWrapperInteger")
+    int primitiveWrapperIntegerWithPrimitivePrimitive(@AresRequestParam(name = "param1") int param1);
+
+    @AresMethod(path = "/primitiveWrapperInteger")
+    int primitiveWrapperIntegerWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Integer param1);
+
+    @AresMethod(path = "/primitiveWrapperInteger")
+    Integer primitiveWrapperIntegerWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") int param1);
+
+    @AresMethod(path = "/primitiveWrapperInteger")
+    Integer primitiveWrapperIntegerWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Integer param1);
 }
