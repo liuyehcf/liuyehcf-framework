@@ -7,11 +7,8 @@ import com.github.liuyehcf.framework.rpc.maple.register.ServiceAddress;
 import lombok.Data;
 
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.ServerSocket;
-import java.util.Enumeration;
 
 /**
  * @author hechenfeng
@@ -36,21 +33,10 @@ public abstract class ProviderAddress {
 
     private static String getLocalIp() {
         try {
-            final Enumeration allNetInterfaces = NetworkInterface.getNetworkInterfaces();
-            while (allNetInterfaces.hasMoreElements()) {
-                final NetworkInterface netInterface = (NetworkInterface) allNetInterfaces.nextElement();
-                final Enumeration addresses = netInterface.getInetAddresses();
-                while (addresses.hasMoreElements()) {
-                    final InetAddress ip = (InetAddress) addresses.nextElement();
-                    if (ip instanceof Inet4Address) {
-                        return ip.getHostAddress();
-                    }
-                }
-            }
+            return InetAddress.getLocalHost().getHostAddress();
         } catch (Exception e) {
             throw new MapleException(MapleException.Code.NETWORK, "get local ip failed", e);
         }
-        throw new MapleException(MapleException.Code.NETWORK, "get local ip failed");
     }
 
     private static int getAnyUnusedPort() throws IOException {
