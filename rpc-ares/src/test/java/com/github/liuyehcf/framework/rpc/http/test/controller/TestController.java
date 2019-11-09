@@ -140,4 +140,16 @@ public class TestController {
     public Float primitiveWrapperFloat(@RequestParam(value = "param1", required = false) Float param1) {
         return param1;
     }
+
+    @RequestMapping("/primitiveDouble")
+    @ResponseBody
+    public double primitiveDouble(@RequestParam(value = "param1", required = false) double param1) {
+        return param1;
+    }
+
+    @RequestMapping("/primitiveWrapperDouble")
+    @ResponseBody
+    public Double primitiveWrapperDouble(@RequestParam(value = "param1", required = false) Double param1) {
+        return param1;
+    }
 }

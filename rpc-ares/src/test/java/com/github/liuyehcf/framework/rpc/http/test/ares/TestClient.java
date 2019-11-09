@@ -288,4 +288,29 @@ public interface TestClient {
 
     @AresMethod(path = "/primitiveWrapperFloat")
     Float primitiveWrapperFloatWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Float param1);
+
+    // double
+    @AresMethod(path = "/primitiveDouble")
+    double primitiveDoubleWithPrimitivePrimitive(@AresRequestParam(name = "param1") double param1);
+
+    @AresMethod(path = "/primitiveDouble")
+    double primitiveDoubleWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Double param1);
+
+    @AresMethod(path = "/primitiveDouble")
+    Double primitiveDoubleWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") double param1);
+
+    @AresMethod(path = "/primitiveDouble")
+    Double primitiveDoubleWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Double param1);
+
+    @AresMethod(path = "/primitiveWrapperDouble")
+    double primitiveWrapperDoubleWithPrimitivePrimitive(@AresRequestParam(name = "param1") double param1);
+
+    @AresMethod(path = "/primitiveWrapperDouble")
+    double primitiveWrapperDoubleWithPrimitiveWrapperPrimitive(@AresRequestParam(name = "param1") Double param1);
+
+    @AresMethod(path = "/primitiveWrapperDouble")
+    Double primitiveWrapperDoubleWithPrimitivePrimitiveWrapper(@AresRequestParam(name = "param1") double param1);
+
+    @AresMethod(path = "/primitiveWrapperDouble")
+    Double primitiveWrapperDoubleWithPrimitiveWrapperPrimitiveWrapper(@AresRequestParam(name = "param1") Double param1);
 }
