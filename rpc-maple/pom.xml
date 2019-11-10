@@ -6,10 +6,10 @@
 
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>rpc-maple</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
-    <name>rpc-mapple</name>
-    <description>rpc mapple</description>
+    <name>rpc-maple</name>
+    <description>rpc maple</description>
     <url>https://github.com/liuyehcf/liuyehcf-framework</url>
 
     <licenses>
@@ -131,7 +131,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>rpc-mapple</finalName>
+        <finalName>rpc-maple</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
