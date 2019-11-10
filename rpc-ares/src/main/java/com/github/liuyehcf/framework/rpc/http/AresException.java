@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.rpc.http;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2019/11/8
  */
 public class AresException extends RuntimeException {

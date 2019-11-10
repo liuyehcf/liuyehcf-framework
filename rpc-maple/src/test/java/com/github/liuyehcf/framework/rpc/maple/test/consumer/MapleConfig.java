@@ -5,7 +5,7 @@ import com.github.liuyehcf.framework.rpc.maple.test.common.GreetService;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/22
  */
 @Configuration

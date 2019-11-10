@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/22
  */
 @SpringBootApplication(scanBasePackages = {"com.github.liuyehcf.framework.rpc.maple.test.provider"})

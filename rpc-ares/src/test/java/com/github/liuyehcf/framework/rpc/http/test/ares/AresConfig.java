@@ -4,7 +4,7 @@ import com.github.liuyehcf.framework.rpc.http.AresConsumer;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2019/11/8
  */
 @Configuration

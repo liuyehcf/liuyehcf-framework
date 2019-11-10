@@ -12,7 +12,7 @@ import com.github.liuyehcf.framework.rpc.maple.test.provider.service.GreetServic
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/23
  */
 public class MainProvider {

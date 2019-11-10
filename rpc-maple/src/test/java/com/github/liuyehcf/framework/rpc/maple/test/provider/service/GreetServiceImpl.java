@@ -12,7 +12,7 @@ import com.github.liuyehcf.framework.rpc.maple.test.common.MapleResult;
 import com.github.liuyehcf.framework.rpc.maple.util.JavaBeanInitializer;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/22
  */
 @MapleProvider(serviceInterface = GreetService.class, serviceGroup = "${maple.provider.group}", serviceVersion = "${maple.provider.version}")

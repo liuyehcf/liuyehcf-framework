@@ -15,7 +15,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/23
  */
 public class MainConsumer {

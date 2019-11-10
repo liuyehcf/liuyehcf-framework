@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.rpc.maple.test.common;
 
 /**
- * @author chenlu
+ * @author hechenfeng
  * @date 2019/3/22
  */
 public interface GreetService {
