@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.rpc.http.test;
+package com.github.liuyehcf.framework.rpc.ares.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

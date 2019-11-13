@@ -1,7 +1,7 @@
-package com.github.liuyehcf.framework.rpc.http.test;
+package com.github.liuyehcf.framework.rpc.ares.test;
 
-import com.github.liuyehcf.framework.rpc.http.test.ares.TestClient;
-import com.github.liuyehcf.framework.rpc.http.test.model.Person;
+import com.github.liuyehcf.framework.rpc.ares.test.ares.TestClient;
+import com.github.liuyehcf.framework.rpc.ares.test.model.Person;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -52,7 +52,7 @@ public class TestMain extends BaseConfig {
     }
 
     @Test
-    public void oneRequestParamWituoutParamAnnotation() {
+    public void oneRequestParamWithoutParamAnnotation() {
         try {
             testClient.oneRequestParamWituoutParamAnnotation(null);
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.oneRequestParamWithBothAnnotation(null);
         } catch (Exception e) {
-            Assert.assertEquals("parameter contains both '@AresRequestParam' and '@AresRequestBody'", e.getMessage());
+            Assert.assertEquals("parameter contains more than one of ares annotations", e.getMessage());
             return;
         }
         throw new Error();
@@ -186,7 +186,6 @@ public class TestMain extends BaseConfig {
         }
         throw new Error();
     }
-
 
     @Test
     public void twoRequestParamWithStringString() {
@@ -356,6 +355,16 @@ public class TestMain extends BaseConfig {
     @Test
     public void nullableQueryParamAndRequestBodyVoidReturn2() {
         testClient.nullableQueryParamAndRequestBodyVoidReturn2("null", "null");
+    }
+
+    @Test
+    public void differentPathVariable() {
+        Assert.assertEquals("/differentPathVariable/abc/def", testClient.differentPathVariable("abc", "def"));
+    }
+
+    @Test
+    public void samePathVariable() {
+        Assert.assertEquals("/samePathVariable/abc/abc", testClient.samePathVariable("abc"));
     }
 
     @Test

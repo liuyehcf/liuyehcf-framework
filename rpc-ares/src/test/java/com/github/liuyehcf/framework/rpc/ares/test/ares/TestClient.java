@@ -1,9 +1,10 @@
-package com.github.liuyehcf.framework.rpc.http.test.ares;
+package com.github.liuyehcf.framework.rpc.ares.test.ares;
 
-import com.github.liuyehcf.framework.rpc.http.AresMethod;
-import com.github.liuyehcf.framework.rpc.http.AresRequestBody;
-import com.github.liuyehcf.framework.rpc.http.AresRequestParam;
-import com.github.liuyehcf.framework.rpc.http.test.model.Person;
+import com.github.liuyehcf.framework.rpc.ares.AresMethod;
+import com.github.liuyehcf.framework.rpc.ares.AresPathVariable;
+import com.github.liuyehcf.framework.rpc.ares.AresRequestBody;
+import com.github.liuyehcf.framework.rpc.ares.AresRequestParam;
+import com.github.liuyehcf.framework.rpc.ares.test.model.Person;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -134,6 +135,13 @@ public interface TestClient {
     @AresMethod(path = "/nullableQueryParamAndRequestBody")
     void nullableQueryParamAndRequestBodyVoidReturn2(@AresRequestParam(name = "param1") Object param1,
                                                      @AresRequestBody Object requestBody);
+
+    @AresMethod(path = "/differentPathVariable/{one}/{another}")
+    String differentPathVariable(@AresPathVariable(name = "one") String one,
+                                 @AresPathVariable(name = "another") String another);
+
+    @AresMethod(path = "/samePathVariable/{one}/{one}")
+    String samePathVariable(@AresPathVariable(name = "one") String one);
 
     @AresMethod(path = "/returnNull")
     String returnNull();

@@ -1,7 +1,7 @@
-package com.github.liuyehcf.framework.rpc.http.test.controller;
+package com.github.liuyehcf.framework.rpc.ares.test.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.github.liuyehcf.framework.rpc.http.test.model.Person;
+import com.github.liuyehcf.framework.rpc.ares.test.model.Person;
 import com.google.common.collect.Maps;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,6 +63,18 @@ public class TestController {
         } else {
             return "both not null";
         }
+    }
+
+    @RequestMapping("/differentPathVariable/{one}/{another}")
+    @ResponseBody
+    public String differentPathVariable(@PathVariable(value = "one") String one, @PathVariable(value = "another") String another) {
+        return String.format("/differentPathVariable/%s/%s", one, another);
+    }
+
+    @RequestMapping("/samePathVariable/{one}/{one}")
+    @ResponseBody
+    public String samePathVariable(@PathVariable(value = "one") String one) {
+        return String.format("/samePathVariable/%s/%s", one, one);
     }
 
     @RequestMapping("/returnNull")

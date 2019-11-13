@@ -1,14 +1,13 @@
-package com.github.liuyehcf.framework.rpc.http.spring;
+package com.github.liuyehcf.framework.rpc.ares.spring;
 
 import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
-import com.github.liuyehcf.framework.rpc.http.AresException;
-import com.github.liuyehcf.framework.rpc.http.AresMethod;
-import com.github.liuyehcf.framework.rpc.http.AresRequestBody;
-import com.github.liuyehcf.framework.rpc.http.AresRequestParam;
-import com.github.liuyehcf.framework.rpc.http.constant.HttpMethod;
-import com.github.liuyehcf.framework.rpc.http.constant.SerializeType;
+import com.github.liuyehcf.framework.rpc.ares.*;
+import com.github.liuyehcf.framework.rpc.ares.constant.HttpMethod;
+import com.github.liuyehcf.framework.rpc.ares.constant.SerializeType;
+import com.github.liuyehcf.framework.rpc.ares.util.PathUtils;
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,14 +37,16 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
     private final HttpClient httpClient;
     private final RequestConfig requestConfig;
+    private final Gson gson;
 
     private final String schema;
     private final String host;
     private final int port;
 
-    AresConsumerInvocationHandler(HttpClient httpClient, RequestConfig requestConfig, String schema, String host, int port) {
+    AresConsumerInvocationHandler(HttpClient httpClient, RequestConfig requestConfig, Gson gson, String schema, String host, int port) {
         this.httpClient = httpClient;
         this.requestConfig = requestConfig;
+        this.gson = gson;
         this.schema = schema;
         this.host = host;
         this.port = port;
@@ -58,16 +59,34 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
         String path = aresMethodAnnotation.path();
         HttpMethod httpMethod = aresMethodAnnotation.method();
-        SerializeType responseDeserializeType = aresMethodAnnotation.responseDeserializeType();
 
-        Params params = parseQueryParams(method.getParameters(), args);
+        path = renderPath(path, method.getParameters(), args);
+        HttpParams httpParams = parseParams(method.getParameters(), args);
+        HttpRequestBase httpRequest = buildRequest(path, httpMethod, httpParams);
 
-        HttpRequestBase httpRequest = buildRequest(path, httpMethod, params);
-
-        return doInvoke(httpRequest, method, responseDeserializeType);
+        return doInvoke(httpRequest, method, aresMethodAnnotation.responseDeserializeType());
     }
 
-    private Params parseQueryParams(Parameter[] parameters, Object[] args) {
+    private String renderPath(String path, Parameter[] parameters, Object[] args) {
+        Map<String, String> context = Maps.newHashMap();
+
+        for (int i = 0; i < parameters.length; i++) {
+            Parameter parameter = parameters[i];
+            AresPathVariable aresPathVariable = AnnotationUtils.getAnnotation(parameter, AresPathVariable.class);
+
+            if (aresPathVariable == null) {
+                continue;
+            }
+
+            String name = aresPathVariable.name();
+            SerializeType serializeType = aresPathVariable.serializeType();
+            context.put(name, serialize(args[i], serializeType));
+        }
+
+        return PathUtils.render(path, context);
+    }
+
+    private HttpParams parseParams(Parameter[] parameters, Object[] args) {
         Map<String, Param> queryParams = Maps.newHashMap();
 
         boolean hasRequestBody = false;
@@ -75,12 +94,15 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
         for (int i = 0; i < parameters.length; i++) {
             Parameter parameter = parameters[i];
+            AresPathVariable aresPathVariable = AnnotationUtils.getAnnotation(parameter, AresPathVariable.class);
             AresRequestParam aresRequestParam = AnnotationUtils.getAnnotation(parameter, AresRequestParam.class);
             AresRequestBody aresRequestBody = AnnotationUtils.getAnnotation(parameter, AresRequestBody.class);
 
-            if (aresRequestParam != null &&
-                    aresRequestBody != null) {
-                throw new AresException("parameter contains both '@AresRequestParam' and '@AresRequestBody'");
+            if (aresPathVariable != null && aresRequestParam != null && aresRequestBody != null
+                    || aresPathVariable != null && aresRequestParam != null
+                    || aresPathVariable != null && aresRequestBody != null
+                    || aresRequestParam != null && aresRequestBody != null) {
+                throw new AresException("parameter contains more than one of ares annotations");
             } else if (aresRequestParam != null) {
                 if (queryParams.containsKey(aresRequestParam.name())) {
                     throw new AresException(String.format("duplicate query parameter '%s'", aresRequestParam.name()));
@@ -91,14 +113,16 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 hasRequestBody = true;
                 requestBody = new Param(args[i], aresRequestBody.serializeType());
             } else {
-                throw new AresException("parameter missing '@AresRequestParam' or '@AresRequestBody'");
+                if (aresPathVariable == null) {
+                    throw new AresException("parameter missing '@AresRequestParam' or '@AresRequestBody'");
+                }
             }
         }
 
-        return new Params(queryParams, requestBody);
+        return new HttpParams(queryParams, requestBody);
     }
 
-    private HttpRequestBase buildRequest(String path, HttpMethod httpMethod, Params params) throws Exception {
+    private HttpRequestBase buildRequest(String path, HttpMethod httpMethod, HttpParams httpParams) throws Exception {
         RequestBuilder builder = RequestBuilder.create(httpMethod.name());
 
         URIBuilder uriBuilder = new URIBuilder();
@@ -106,8 +130,8 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         uriBuilder.setHost(host);
         uriBuilder.setPort(port);
         uriBuilder.setPath(path);
-        if (MapUtils.isNotEmpty(params.queryParams)) {
-            for (Map.Entry<String, Param> entry : params.queryParams.entrySet()) {
+        if (MapUtils.isNotEmpty(httpParams.queryParams)) {
+            for (Map.Entry<String, Param> entry : httpParams.queryParams.entrySet()) {
                 Param param = entry.getValue();
 
                 String content = serialize(param.target, param.serializeType);
@@ -117,8 +141,8 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             }
         }
 
-        if (params.requestBody != null) {
-            String content = serialize(params.requestBody.target, params.requestBody.serializeType);
+        if (httpParams.requestBody != null) {
+            String content = serialize(httpParams.requestBody.target, httpParams.requestBody.serializeType);
 
             if (content != null) {
                 builder.setEntity(new ByteArrayEntity(content.getBytes()));
@@ -172,11 +196,17 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             return value.toString();
         } else {
             switch (serializeType) {
-                case json:
+                case fastjson:
                     try {
                         return JSON.toJSONString(value);
                     } catch (Exception e) {
-                        throw new AresException("failed to serialize object to json string: " + type.getName());
+                        throw new AresException("failed to serialize object to json string: " + type.getName(), e);
+                    }
+                case gson:
+                    try {
+                        return gson.toJson(value);
+                    } catch (Exception e) {
+                        throw new AresException("failed to serialize object to json string: " + type.getName(), e);
                     }
                 default:
                     throw new UnsupportedOperationException(String.format("unexpected serialize type '%s'", serializeType));
@@ -278,11 +308,17 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 return new BigDecimal(entity);
             } else {
                 switch (serializeType) {
-                    case json:
+                    case fastjson:
                         try {
                             return JSON.parseObject(entity, method.getGenericReturnType());
                         } catch (Exception e) {
-                            throw new AresException("failed to parse json object from: " + entity);
+                            throw new AresException("failed to parse json object from: " + entity, e);
+                        }
+                    case gson:
+                        try {
+                            return gson.fromJson(entity, method.getGenericReturnType());
+                        } catch (Exception e) {
+                            throw new AresException("failed to parse json object from: " + entity, e);
                         }
                     default:
                         throw new UnsupportedOperationException(String.format("unexpected serialize type '%s'", serializeType));
@@ -291,11 +327,11 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         }
     }
 
-    private static final class Params {
+    private static final class HttpParams {
         private final Map<String, Param> queryParams;
         private final Param requestBody;
 
-        private Params(Map<String, Param> queryParams, Param requestBody) {
+        private HttpParams(Map<String, Param> queryParams, Param requestBody) {
             this.queryParams = queryParams;
             this.requestBody = requestBody;
         }

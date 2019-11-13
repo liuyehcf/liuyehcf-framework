@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.rpc.http;
+package com.github.liuyehcf.framework.rpc.ares;
 
 /**
  * @author hechenfeng

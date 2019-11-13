@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.rpc.http.constant;
+package com.github.liuyehcf.framework.rpc.ares.constant;
 
 /**
  * @author hechenfeng

@@ -1,5 +1,6 @@
-package com.github.liuyehcf.framework.rpc.http.spring;
+package com.github.liuyehcf.framework.rpc.ares.spring;
 
+import com.google.gson.Gson;
 import lombok.Data;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -20,6 +21,8 @@ public class AresSpringConsumerBean implements FactoryBean, InitializingBean {
     private HttpClient httpClient;
     @Resource
     private RequestConfig requestConfig;
+    @Resource
+    private Gson gson;
 
     private Object target;
     private Class<?> objectType;
@@ -46,6 +49,6 @@ public class AresSpringConsumerBean implements FactoryBean, InitializingBean {
         this.target = Proxy.newProxyInstance(
                 this.getClass().getClassLoader(),
                 new Class<?>[]{objectType},
-                new AresConsumerInvocationHandler(httpClient, requestConfig, schema, host, port));
+                new AresConsumerInvocationHandler(httpClient, requestConfig, gson, schema, host, port));
     }
 }

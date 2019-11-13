@@ -1,7 +1,7 @@
-package com.github.liuyehcf.framework.rpc.http;
+package com.github.liuyehcf.framework.rpc.ares;
 
-import com.github.liuyehcf.framework.rpc.http.constant.HttpMethod;
-import com.github.liuyehcf.framework.rpc.http.constant.SerializeType;
+import com.github.liuyehcf.framework.rpc.ares.constant.HttpMethod;
+import com.github.liuyehcf.framework.rpc.ares.constant.SerializeType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -31,5 +31,5 @@ public @interface AresMethod {
     /**
      * deserialize type of response body
      */
-    SerializeType responseDeserializeType() default SerializeType.json;
+    SerializeType responseDeserializeType() default SerializeType.fastjson;
 }

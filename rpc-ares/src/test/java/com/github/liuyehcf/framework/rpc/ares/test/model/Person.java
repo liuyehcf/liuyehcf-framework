@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.rpc.http.test.model;
+package com.github.liuyehcf.framework.rpc.ares.test.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

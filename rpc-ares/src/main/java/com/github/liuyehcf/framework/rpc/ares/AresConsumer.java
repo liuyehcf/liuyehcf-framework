@@ -1,6 +1,6 @@
-package com.github.liuyehcf.framework.rpc.http;
+package com.github.liuyehcf.framework.rpc.ares;
 
-import com.github.liuyehcf.framework.rpc.http.constant.SchemaType;
+import com.github.liuyehcf.framework.rpc.ares.constant.SchemaType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

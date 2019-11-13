@@ -1,6 +1,6 @@
-package com.github.liuyehcf.framework.rpc.http;
+package com.github.liuyehcf.framework.rpc.ares;
 
-import com.github.liuyehcf.framework.rpc.http.constant.SerializeType;
+import com.github.liuyehcf.framework.rpc.ares.constant.SerializeType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,19 +9,19 @@ import java.lang.annotation.Target;
 
 /**
  * @author hechenfeng
- * @date 2019/11/8
+ * @date 2019/11/11
  */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AresRequestParam {
+public @interface AresPathVariable {
 
     /**
-     * request param name
+     * path variable name
      */
     String name();
 
     /**
      * serialize type
      */
-    SerializeType serializeType() default SerializeType.json;
+    SerializeType serializeType() default SerializeType.fastjson;
 }

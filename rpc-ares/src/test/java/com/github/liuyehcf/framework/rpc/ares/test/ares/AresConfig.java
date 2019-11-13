@@ -1,6 +1,6 @@
-package com.github.liuyehcf.framework.rpc.http.test.ares;
+package com.github.liuyehcf.framework.rpc.ares.test.ares;
 
-import com.github.liuyehcf.framework.rpc.http.AresConsumer;
+import com.github.liuyehcf.framework.rpc.ares.AresConsumer;
 import org.springframework.context.annotation.Configuration;
 
 /**
