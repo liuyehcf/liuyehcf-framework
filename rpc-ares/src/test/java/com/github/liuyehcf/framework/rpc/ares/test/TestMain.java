@@ -1,7 +1,9 @@
 package com.github.liuyehcf.framework.rpc.ares.test;
 
+import com.github.liuyehcf.framework.rpc.ares.constant.SchemaType;
 import com.github.liuyehcf.framework.rpc.ares.test.ares.TestClient;
 import com.github.liuyehcf.framework.rpc.ares.test.model.Person;
+import com.github.liuyehcf.framework.rpc.ares.util.AresContext;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -585,5 +587,219 @@ public class TestMain extends BaseConfig {
         BigDecimal bigDecimal = new BigDecimal(Double.toString(random.nextDouble()));
         Assert.assertNull(testClient.bigDecimal(null));
         Assert.assertEquals(bigDecimal, testClient.bigDecimal(bigDecimal));
+    }
+
+    @Test
+    public void testEndpointNull() {
+        try {
+            AresContext.setEndpoint(null, null, null);
+            String result = testClient.zeroRequestParamWithOneMoreParam("hello");
+            Assert.assertEquals("zeroRequestParam()[]", result);
+        } finally {
+            AresContext.removeEndpoint();
+        }
+    }
+
+    @Test
+    public void testEndpointSchema() {
+        try {
+            AresContext.setEndpoint(SchemaType.https, null, null);
+            testClient.zeroRequestParamWithOneMoreParam("hello");
+        } catch (Exception e) {
+            Assert.assertEquals("http request error, url=https://127.0.0.1:9999/zeroRequestParam?param1=hello; message=Unrecognized SSL message, plaintext connection?", e.getMessage());
+            return;
+        } finally {
+            AresContext.removeEndpoint();
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointHost() {
+        try {
+            AresContext.setEndpoint(null, "unknown", null);
+            testClient.zeroRequestParamWithOneMoreParam("hello");
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().startsWith("http request error, url=http://unknown:9999/zeroRequestParam?param1=hello; message=unknown"));
+            return;
+        } finally {
+            AresContext.removeEndpoint();
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointPort() {
+        try {
+            AresContext.setEndpoint(null, null, 12345);
+            testClient.zeroRequestParamWithOneMoreParam("hello");
+        } catch (Exception e) {
+            Assert.assertEquals("http request error, url=http://127.0.0.1:12345/zeroRequestParam?param1=hello; message=Connect to 127.0.0.1:12345 [/127.0.0.1] failed: Connection refused (Connection refused)", e.getMessage());
+            return;
+        } finally {
+            AresContext.removeEndpoint();
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointSchemaHost() {
+        try {
+            AresContext.setEndpoint(SchemaType.https, "unknown", null);
+            testClient.zeroRequestParamWithOneMoreParam("hello");
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().startsWith("http request error, url=https://unknown:9999/zeroRequestParam?param1=hello; message=unknown"));
+            return;
+        } finally {
+            AresContext.removeEndpoint();
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointSchemaPort() {
+        try {
+            AresContext.setEndpoint(SchemaType.https, null, 12345);
+            testClient.zeroRequestParamWithOneMoreParam("hello");
+        } catch (Exception e) {
+            Assert.assertEquals("http request error, url=https://127.0.0.1:12345/zeroRequestParam?param1=hello; message=Connect to 127.0.0.1:12345 [/127.0.0.1] failed: Connection refused (Connection refused)", e.getMessage());
+            return;
+        } finally {
+            AresContext.removeEndpoint();
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointHostPort() {
+        try {
+            AresContext.setEndpoint(null, "unknown", 12345);
+            testClient.zeroRequestParamWithOneMoreParam("hello");
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().startsWith("http request error, url=http://unknown:12345/zeroRequestParam?param1=hello; message=unknown"));
+            return;
+        } finally {
+            AresContext.removeEndpoint();
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointSchemaHostPort() {
+        try {
+            AresContext.setEndpoint(SchemaType.https, "unknown", 12345);
+            testClient.zeroRequestParamWithOneMoreParam("hello");
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().startsWith("http request error, url=https://unknown:12345/zeroRequestParam?param1=hello; message=unknown"));
+            return;
+        } finally {
+            AresContext.removeEndpoint();
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointSchemaLambda() {
+        try {
+            AresContext.invokeWithEndpoint(SchemaType.https, null, null, () ->
+                    testClient.zeroRequestParamWithOneMoreParam("hello")
+            );
+        } catch (Exception e) {
+            Assert.assertEquals("http request error, url=https://127.0.0.1:9999/zeroRequestParam?param1=hello; message=Unrecognized SSL message, plaintext connection?", e.getMessage());
+            return;
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointHostLambda() {
+        try {
+            AresContext.invokeWithEndpoint(null, "unknown", null, () ->
+                    testClient.zeroRequestParamWithOneMoreParam("hello")
+            );
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().startsWith("http request error, url=http://unknown:9999/zeroRequestParam?param1=hello; message=unknown"));
+            return;
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointPortLambda() {
+        try {
+            AresContext.invokeWithEndpoint(null, null, 12345, () ->
+                    testClient.zeroRequestParamWithOneMoreParam("hello")
+            );
+        } catch (Exception e) {
+            Assert.assertEquals("http request error, url=http://127.0.0.1:12345/zeroRequestParam?param1=hello; message=Connect to 127.0.0.1:12345 [/127.0.0.1] failed: Connection refused (Connection refused)", e.getMessage());
+            return;
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointSchemaHostLambda() {
+        try {
+            AresContext.invokeWithEndpoint(SchemaType.https, "unknown", null, () ->
+                    testClient.zeroRequestParamWithOneMoreParam("hello")
+            );
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().startsWith("http request error, url=https://unknown:9999/zeroRequestParam?param1=hello; message=unknown"));
+            return;
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointSchemaPortLambda() {
+        try {
+            AresContext.invokeWithEndpoint(SchemaType.https, null, 12345, () ->
+                    testClient.zeroRequestParamWithOneMoreParam("hello")
+            );
+        } catch (Exception e) {
+            Assert.assertEquals("http request error, url=https://127.0.0.1:12345/zeroRequestParam?param1=hello; message=Connect to 127.0.0.1:12345 [/127.0.0.1] failed: Connection refused (Connection refused)", e.getMessage());
+            return;
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointHostPortLambda() {
+        try {
+            AresContext.invokeWithEndpoint(null, "unknown", 12345, () ->
+                    testClient.zeroRequestParamWithOneMoreParam("hello")
+            );
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().startsWith("http request error, url=http://unknown:12345/zeroRequestParam?param1=hello; message=unknown"));
+            return;
+        }
+
+        throw new Error();
+    }
+
+    @Test
+    public void testEndpointSchemaHostPortLambda() {
+        try {
+            AresContext.invokeWithEndpoint(SchemaType.https, "unknown", 12345, () ->
+                    testClient.zeroRequestParamWithOneMoreParam("hello")
+            );
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().startsWith("http request error, url=https://unknown:12345/zeroRequestParam?param1=hello; message=unknown"));
+            return;
+        }
+
+        throw new Error();
     }
 }

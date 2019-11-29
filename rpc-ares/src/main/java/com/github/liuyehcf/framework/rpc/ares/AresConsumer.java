@@ -18,7 +18,7 @@ public @interface AresConsumer {
     /**
      * http schema
      */
-    SchemaType schema() default SchemaType.HTTP;
+    SchemaType schema() default SchemaType.http;
 
     /**
      * http host

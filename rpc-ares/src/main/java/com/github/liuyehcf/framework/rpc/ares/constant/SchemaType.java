@@ -9,10 +9,10 @@ public enum SchemaType {
     /**
      * http
      */
-    HTTP,
+    http,
 
     /**
      * https
      */
-    HTTPS
+    https
 }

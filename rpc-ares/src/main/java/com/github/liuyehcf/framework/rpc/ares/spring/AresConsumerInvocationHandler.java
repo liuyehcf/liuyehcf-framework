@@ -5,6 +5,7 @@ import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.rpc.ares.*;
 import com.github.liuyehcf.framework.rpc.ares.constant.HttpMethod;
 import com.github.liuyehcf.framework.rpc.ares.constant.SerializeType;
+import com.github.liuyehcf.framework.rpc.ares.util.AresContext;
 import com.github.liuyehcf.framework.rpc.ares.util.PathUtils;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -125,10 +126,27 @@ class AresConsumerInvocationHandler implements InvocationHandler {
     private HttpRequestBase buildRequest(String path, HttpMethod httpMethod, HttpParams httpParams) throws Exception {
         RequestBuilder builder = RequestBuilder.create(httpMethod.name());
 
+        AresContext.Endpoint endpoint = AresContext.getEndpoint();
+
         URIBuilder uriBuilder = new URIBuilder();
-        uriBuilder.setScheme(schema);
-        uriBuilder.setHost(host);
-        uriBuilder.setPort(port);
+        if (endpoint != null && endpoint.getSchema() != null) {
+            uriBuilder.setScheme(endpoint.getSchema().name());
+        } else {
+            uriBuilder.setScheme(schema);
+        }
+
+        if (endpoint != null && StringUtils.isNotBlank(endpoint.getHost())) {
+            uriBuilder.setHost(endpoint.getHost());
+        } else {
+            uriBuilder.setHost(host);
+        }
+
+        if (endpoint != null && endpoint.getPort() != null) {
+            uriBuilder.setPort(endpoint.getPort());
+        } else {
+            uriBuilder.setPort(port);
+        }
+
         uriBuilder.setPath(path);
         if (MapUtils.isNotEmpty(httpParams.queryParams)) {
             for (Map.Entry<String, Param> entry : httpParams.queryParams.entrySet()) {
@@ -157,21 +175,29 @@ class AresConsumerInvocationHandler implements InvocationHandler {
     private Object doInvoke(HttpRequestBase httpRequest, Method method, SerializeType responseDeserializeType) throws Exception {
         httpRequest.setConfig(requestConfig);
 
+        String url = null;
         HttpResponse response = null;
         try {
+            url = httpRequest.getURI().toASCIIString();
             response = httpClient.execute(httpRequest);
             int statusCode = response.getStatusLine().getStatusCode();
 
             String entity = new String(EntityUtils.toByteArray(response.getEntity()));
 
             if (HttpStatus.SC_OK != statusCode) {
-                throw new AresException(String.format("http request failed, code=%d; message=%s",
+                throw new AresException(String.format("http request failed, url=%s; code=%d; message=%s",
+                        url,
                         statusCode,
                         entity));
             }
 
             return deserialize(entity, responseDeserializeType, method);
 
+        } catch (AresException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new AresException(String.format("http request error, url=%s; message=%s",
+                    url, e.getMessage()), e);
         } finally {
             if (response != null) {
                 EntityUtils.consumeQuietly(response.getEntity());
