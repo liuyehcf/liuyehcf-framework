@@ -27,6 +27,7 @@ public abstract class BeanUtils {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     private static Object doClone(Object bean, LinkedList<Object> visited) throws Exception {
         if (bean == null) {
             return null;
@@ -80,7 +81,7 @@ public abstract class BeanUtils {
         return clone;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static Map doCloneMap(Map map, LinkedList<Object> visited) throws Exception {
         Map clone = map.getClass().newInstance();
 
@@ -94,7 +95,7 @@ public abstract class BeanUtils {
         return clone;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static Collection doCloneCollection(Collection col, LinkedList<Object> visited) throws Exception {
         Collection clone = col.getClass().newInstance();
 
@@ -125,7 +126,7 @@ public abstract class BeanUtils {
         return clone;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static List<PropertyInfo> getAllProperties(Object bean) throws Exception {
         List<PropertyInfo> properties = Lists.newArrayList();
 

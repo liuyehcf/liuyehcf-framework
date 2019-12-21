@@ -2571,12 +2571,12 @@ public class TestBeanCloneUtils {
             return b;
         }
 
-        public void setB(boolean b) {
-            this.b = b;
-        }
-
         public Boolean getB() {
             return B;
+        }
+
+        public void setB(boolean b) {
+            this.b = b;
         }
 
         public void setB(Boolean b) {
