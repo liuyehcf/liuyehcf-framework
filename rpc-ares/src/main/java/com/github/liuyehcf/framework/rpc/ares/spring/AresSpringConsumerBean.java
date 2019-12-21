@@ -15,7 +15,7 @@ import java.lang.reflect.Proxy;
  * @date 2019/11/8
  */
 @Data
-public class AresSpringConsumerBean implements FactoryBean, InitializingBean {
+public class AresSpringConsumerBean implements FactoryBean<Object>, InitializingBean {
 
     @Resource
     private HttpClient httpClient;
