@@ -23,6 +23,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.RejectedExecutionException;
@@ -60,6 +61,7 @@ public class DefaultOperationContext implements OperationContext {
                                    boolean isSingleLink,
                                    String instanceId,
                                    Map<String, Object> env,
+                                   List<Attribute> attributes,
                                    AtomicLong executionIdGenerator,
                                    Promise<ExecutionInstance> promise) {
         this(engine,
@@ -69,7 +71,7 @@ public class DefaultOperationContext implements OperationContext {
                 rule,
                 isSingleLink,
                 false,
-                new DefaultExecutionInstance(instanceId, rule, env),
+                new DefaultExecutionInstance(instanceId, rule, env, attributes),
                 null,
                 new AtomicBoolean(false),
                 new AtomicBoolean(false),

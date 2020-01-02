@@ -1,14 +1,15 @@
 package com.github.liuyehcf.framework.rule.engine.test.runtime.trace;
 
+import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.expression.engine.utils.EnvBuilder;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
 import com.github.liuyehcf.framework.rule.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
-import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
-import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionLink;
-import com.github.liuyehcf.framework.rule.engine.runtime.statistics.Trace;
+import com.github.liuyehcf.framework.rule.engine.runtime.statistics.*;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -133,6 +134,204 @@ public class TestAttrTrace extends TestTraceBase {
 
             trace = executionLink.getTraces().get(4);
             assertPrintAction(trace, "xixi");
+        });
+    }
+
+    @Test
+    public void testAttr4() {
+        Rule rule = compile("{\n" +
+                "    printAction(content=\"test\")" +
+                "}");
+
+        executeTimes(() -> {
+            Map<String, Object> env = EnvBuilder.builder()
+                    .build();
+
+            Promise<ExecutionInstance> promise = startRule(rule, env, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "test");
+
+            Assert.assertTrue(executionInstance.getAttributes().isEmpty());
+        });
+    }
+
+    @Test
+    public void testAttr5() {
+        Rule rule = compile("{\n" +
+                "    printAction(content=\"test\")" +
+                "}");
+
+        executeTimes(() -> {
+            Map<String, Object> env = EnvBuilder.builder()
+                    .build();
+
+            List<Attribute> attributes = Lists.newArrayList();
+            Promise<ExecutionInstance> promise = startRule(rule, env, attributes);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "test");
+
+            Assert.assertTrue(executionInstance.getAttributes().isEmpty());
+        });
+    }
+
+    public void testAttr6() {
+        Rule rule = compile("{\n" +
+                "    printAction(content=\"test\")" +
+                "}");
+
+        executeTimes(() -> {
+            Map<String, Object> env = EnvBuilder.builder()
+                    .build();
+
+            List<Attribute> attributes = Lists.newArrayList();
+            attributes.add(null);
+            attributes.add(new DefaultAttribute("a", "b"));
+            Promise<ExecutionInstance> promise = startRule(rule, env, attributes);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "test");
+
+            Assert.assertEquals(1, executionInstance.getAttributes().size());
+            Attribute attribute = executionInstance.getAttributes().get("a");
+            Assert.assertEquals("a", attribute.getName());
+            Assert.assertEquals("b", attribute.getValue());
+        });
+    }
+
+    public void testAttr7() {
+        Rule rule = compile("{\n" +
+                "    printAction(content=\"test\")" +
+                "}");
+
+        executeTimes(() -> {
+            Map<String, Object> env = EnvBuilder.builder()
+                    .build();
+
+            List<Attribute> attributes = Lists.newArrayList();
+            attributes.add(null);
+            attributes.add(new DefaultAttribute("a", "b"));
+            attributes.add(new DefaultAttribute("a", "b"));
+            Promise<ExecutionInstance> promise = startRule(rule, env, attributes);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "test");
+
+            Assert.assertEquals(1, executionInstance.getAttributes().size());
+            Attribute attribute = executionInstance.getAttributes().get("a");
+            Assert.assertEquals("a", attribute.getName());
+            Assert.assertEquals("b", attribute.getValue());
+        });
+    }
+
+    public void testAttr8() {
+        Rule rule = compile("{\n" +
+                "    printAction(content=\"test\")" +
+                "}");
+
+        executeTimes(() -> {
+            Map<String, Object> env = EnvBuilder.builder()
+                    .build();
+
+            List<Attribute> attributes = Lists.newArrayList();
+            attributes.add(null);
+            attributes.add(new DefaultAttribute("a", "b"));
+            attributes.add(new DefaultAttribute("c", "d"));
+            attributes.add(null);
+            attributes.add(new DefaultAttribute("a", "b"));
+            Promise<ExecutionInstance> promise = startRule(rule, env, attributes);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "test");
+
+            Assert.assertEquals(2, executionInstance.getAttributes().size());
+            Attribute attribute = executionInstance.getAttributes().get("a");
+            Assert.assertEquals("a", attribute.getName());
+            Assert.assertEquals("b", attribute.getValue());
+            attribute = executionInstance.getAttributes().get("c");
+            Assert.assertEquals("c", attribute.getName());
+            Assert.assertEquals("d", attribute.getValue());
         });
     }
 }

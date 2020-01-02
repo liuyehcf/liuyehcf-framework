@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.rule.engine.runtime;
 
 import com.github.liuyehcf.framework.compile.engine.CompileResult;
 import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.rule.engine.ExecutionCondition;
 import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.RuleErrorCode;
 import com.github.liuyehcf.framework.rule.engine.RuleException;
@@ -236,33 +237,33 @@ public class DefaultRuleEngine implements RuleEngine {
     }
 
     @Override
-    public final Promise<ExecutionInstance> startRule(Rule rule, Map<String, Object> env) {
-        return doStart(() -> rule, null, env, null);
-    }
+    public Promise<ExecutionInstance> startRule(ExecutionCondition executionCondition) {
+        Promise<ExecutionInstance> promise = new RulePromise();
 
-    @Override
-    public final Promise<ExecutionInstance> startRule(Rule rule, String instanceId, Map<String, Object> env) {
-        return doStart(() -> rule, instanceId, env, null);
-    }
+        try {
+            Rule rule = executionCondition.getRule();
+            if (rule == null) {
+                rule = doCompile(executionCondition.getDsl());
+            }
+            rule.init();
 
-    @Override
-    public final Promise<ExecutionInstance> startRule(Rule rule, String instanceId, Map<String, Object> env, AtomicLong executionIdGenerator) {
-        return doStart(() -> rule, instanceId, env, executionIdGenerator);
-    }
+            Map<String, Object> env = executionCondition.getEnv();
+            AtomicLong executionIdGenerator = executionCondition.getExecutionIdGenerator();
 
-    @Override
-    public final Promise<ExecutionInstance> startRule(String dsl, Map<String, Object> env) {
-        return doStart(() -> doCompile(dsl), null, env, null);
-    }
+            OperationContext operationContext = new DefaultOperationContext(this,
+                    rule,
+                    TopoUtils.isSingleLinkRule(rule),
+                    executionCondition.getInstanceId(),
+                    env == null ? Maps.newHashMap() : env,
+                    executionCondition.getAttributes(),
+                    executionIdGenerator == null ? new AtomicLong(0) : executionIdGenerator,
+                    promise);
+            operationContext.executeAsync(new GlobalBeforeListenerOperation(operationContext));
+        } catch (Throwable e) {
+            promise.tryFailure(e);
+        }
 
-    @Override
-    public final Promise<ExecutionInstance> startRule(String dsl, String instanceId, Map<String, Object> env) {
-        return doStart(() -> doCompile(dsl), instanceId, env, null);
-    }
-
-    @Override
-    public final Promise<ExecutionInstance> startRule(String dsl, String instanceId, Map<String, Object> env, AtomicLong executionIdGenerator) {
-        return doStart(() -> doCompile(dsl), instanceId, env, executionIdGenerator);
+        return promise;
     }
 
     @Override
@@ -291,26 +292,5 @@ public class DefaultRuleEngine implements RuleEngine {
         }
 
         return compile.getResult();
-    }
-
-    private Promise<ExecutionInstance> doStart(Callable<Rule> callable, String instanceId, Map<String, Object> env, AtomicLong executionIdGenerator) {
-        Promise<ExecutionInstance> promise = new RulePromise();
-
-        try {
-            Rule rule = callable.call();
-            rule.init();
-            OperationContext operationContext = new DefaultOperationContext(this,
-                    rule,
-                    TopoUtils.isSingleLinkRule(rule),
-                    instanceId,
-                    env == null ? Maps.newHashMap() : env,
-                    executionIdGenerator == null ? new AtomicLong(0) : executionIdGenerator,
-                    promise);
-            operationContext.executeAsync(new GlobalBeforeListenerOperation(operationContext));
-        } catch (Throwable e) {
-            promise.tryFailure(e);
-        }
-
-        return promise;
     }
 }

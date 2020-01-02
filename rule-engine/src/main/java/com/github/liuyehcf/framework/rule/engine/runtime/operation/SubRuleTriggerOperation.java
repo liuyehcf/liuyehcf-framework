@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.rule.engine.runtime.operation;
 
+import com.github.liuyehcf.framework.rule.engine.ExecutionCondition;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
 import com.github.liuyehcf.framework.rule.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.rule.engine.util.CloneUtils;
@@ -26,10 +27,10 @@ class SubRuleTriggerOperation extends AbstractOperation<Void> {
 
     private void continueSubRule() {
         context.getEngine().startRule(
-                subRule,
-                context.getExecutionInstance().getId(),
-                CloneUtils.cloneEnv(context.getEngine(), context.getLinkEnv()),
-                context.getExecutionIdGenerator()
+                new ExecutionCondition(subRule)
+                        .instanceId(context.getExecutionInstance().getId())
+                        .env(CloneUtils.cloneEnv(context.getEngine(), context.getLinkEnv()))
+                        .executionIdGenerator(context.getExecutionIdGenerator())
         ).addListener(new SubRuleMergeOperation(context, subRule, System.nanoTime()));
     }
 }

@@ -1,11 +1,13 @@
 package com.github.liuyehcf.framework.rule.engine.test.runtime;
 
+import com.github.liuyehcf.framework.rule.engine.ExecutionCondition;
 import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.model.Rule;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
 import com.github.liuyehcf.framework.rule.engine.runtime.DefaultRuleEngine;
 import com.github.liuyehcf.framework.rule.engine.runtime.config.RuleProperties;
 import com.github.liuyehcf.framework.rule.engine.runtime.constant.EnvCloneType;
+import com.github.liuyehcf.framework.rule.engine.runtime.statistics.Attribute;
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.action.*;
 import com.github.liuyehcf.framework.rule.engine.test.runtime.condition.*;
@@ -132,10 +134,18 @@ public class TestRuntimeBase {
 
     protected Promise<ExecutionInstance> startRule(String content, Map<String, Object> env) {
         System.out.println(content);
-        return engine.startRule(content, env);
+        return engine.startRule(new ExecutionCondition(content)
+                .env(env));
     }
 
     protected Promise<ExecutionInstance> startRule(Rule rule, Map<String, Object> env) {
-        return engine.startRule(rule, env);
+        return engine.startRule(new ExecutionCondition(rule)
+                .env(env));
+    }
+
+    protected Promise<ExecutionInstance> startRule(Rule rule, Map<String, Object> env, List<Attribute> attributes) {
+        return engine.startRule(new ExecutionCondition(rule)
+                .env(env)
+                .attributes(attributes));
     }
 }

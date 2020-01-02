@@ -26,7 +26,7 @@ public class DefaultExecutionInstance implements ExecutionInstance {
     private final long startNanos = System.nanoTime();
     private long endNanos;
 
-    public DefaultExecutionInstance(String id, Rule rule, Map<String, Object> env) {
+    public DefaultExecutionInstance(String id, Rule rule, Map<String, Object> env, List<Attribute> attributes) {
         Assert.assertNotNull(rule, "rule");
         Assert.assertNotNull(env, "env");
         if (id == null) {
@@ -36,6 +36,13 @@ public class DefaultExecutionInstance implements ExecutionInstance {
         }
         this.rule = rule;
         this.env = env;
+        if (attributes != null) {
+            for (Attribute attribute : attributes) {
+                if (attribute != null) {
+                    this.attributes.put(attribute.getName(), attribute);
+                }
+            }
+        }
     }
 
     @Override

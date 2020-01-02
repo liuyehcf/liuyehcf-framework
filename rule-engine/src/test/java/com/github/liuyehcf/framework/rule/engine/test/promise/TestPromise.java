@@ -286,7 +286,7 @@ public class TestPromise {
         Promise<ExecutionInstance> promise = new RulePromise();
         long start = System.currentTimeMillis();
 
-        Assert.assertTrue(promise.trySuccess(new DefaultExecutionInstance(null, new DefaultRule("1", "2", new Start("a")), Maps.newHashMap())));
+        Assert.assertTrue(promise.trySuccess(new DefaultExecutionInstance(null, new DefaultRule("1", "2", new Start("a")), Maps.newHashMap(), null)));
 
         Assert.assertNotNull(promise.get(300, TimeUnit.MILLISECONDS));
         long end = System.currentTimeMillis();
@@ -386,7 +386,7 @@ public class TestPromise {
     private void sleepThenTrySuccess(Promise<ExecutionInstance> promise, int milliseconds) {
         try {
             TimeUnit.MILLISECONDS.sleep(milliseconds);
-            Assert.assertTrue(promise.trySuccess(new DefaultExecutionInstance(null, new DefaultRule("1", "2", new Start("a")), Maps.newHashMap())));
+            Assert.assertTrue(promise.trySuccess(new DefaultExecutionInstance(null, new DefaultRule("1", "2", new Start("a")), Maps.newHashMap(), null)));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

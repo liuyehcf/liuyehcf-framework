@@ -11,10 +11,8 @@ import com.github.liuyehcf.framework.rule.engine.runtime.delegate.interceptor.De
 import com.github.liuyehcf.framework.rule.engine.runtime.statistics.ExecutionInstance;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author hechenfeng
@@ -171,60 +169,10 @@ public interface RuleEngine {
     /**
      * start rule
      *
-     * @param rule rule
-     * @param env  rule environment
+     * @param executionCondition rule's execution condition
      * @return promise
      */
-    Promise<ExecutionInstance> startRule(Rule rule, Map<String, Object> env);
-
-    /**
-     * start rule with specified instanceId
-     *
-     * @param rule       rule
-     * @param instanceId specified instanceId
-     * @param env        rule environment
-     * @return promise
-     */
-    Promise<ExecutionInstance> startRule(Rule rule, String instanceId, Map<String, Object> env);
-
-    /**
-     * compile and start rule with specified instanceId and executionIdGenerator
-     *
-     * @param rule       rule
-     * @param instanceId specified instanceId
-     * @param env        rule environment
-     * @return promise
-     */
-    Promise<ExecutionInstance> startRule(Rule rule, String instanceId, Map<String, Object> env, AtomicLong executionIdGenerator);
-
-    /**
-     * compile and start rule
-     *
-     * @param dsl rule dsl
-     * @param env rule environment
-     * @return promise
-     */
-    Promise<ExecutionInstance> startRule(String dsl, Map<String, Object> env);
-
-    /**
-     * compile and start rule with specified instanceId
-     *
-     * @param dsl        rule dsl
-     * @param instanceId specified instanceId
-     * @param env        rule environment
-     * @return promise
-     */
-    Promise<ExecutionInstance> startRule(String dsl, String instanceId, Map<String, Object> env);
-
-    /**
-     * compile and start rule with specified instanceId and executionIdGenerator
-     *
-     * @param dsl        rule dsl
-     * @param instanceId specified instanceId
-     * @param env        rule environment
-     * @return promise
-     */
-    Promise<ExecutionInstance> startRule(String dsl, String instanceId, Map<String, Object> env, AtomicLong executionIdGenerator);
+    Promise<ExecutionInstance> startRule(ExecutionCondition executionCondition);
 
     /**
      * shutdown the whole rule engine gracefully
