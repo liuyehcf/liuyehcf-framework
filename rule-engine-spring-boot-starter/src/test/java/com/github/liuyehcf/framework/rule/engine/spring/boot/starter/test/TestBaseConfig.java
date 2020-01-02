@@ -1,6 +1,7 @@
 package com.github.liuyehcf.framework.rule.engine.spring.boot.starter.test;
 
 import com.alibaba.fastjson.JSON;
+import com.github.liuyehcf.framework.rule.engine.ExecutionCondition;
 import com.github.liuyehcf.framework.rule.engine.RuleEngine;
 import com.github.liuyehcf.framework.rule.engine.RuleException;
 import com.github.liuyehcf.framework.rule.engine.promise.Promise;
@@ -29,22 +30,22 @@ public class TestBaseConfig {
 
     @Test
     public void testComponentAnnotation() {
-        Promise<ExecutionInstance> promise = defaultRuleEngine.startRule("{\n" +
+        Promise<ExecutionInstance> promise = defaultRuleEngine.startRule(new ExecutionCondition("{\n" +
                 "    if(componentCondition(output=true)){\n" +
                 "        componentAction()[componentListener(event=\"before\")]\n" +
                 "    }\n" +
-                "}", null);
+                "}"));
 
         System.out.println(JSON.toJSONString(promise.get()));
     }
 
     @Test
     public void testDelegateAnnotation() {
-        Promise<ExecutionInstance> promise = defaultRuleEngine.startRule("{\n" +
+        Promise<ExecutionInstance> promise = defaultRuleEngine.startRule(new ExecutionCondition("{\n" +
                 "    if(multi.name.condition(output=true)){\n" +
                 "        multi/name/action()[multi.name.listener(event=\"before\"), multi/name/listener(event=\"success\")]\n" +
                 "    }\n" +
-                "}", null);
+                "}"));
 
         System.out.println(JSON.toJSONString(promise.get()));
     }
@@ -52,9 +53,9 @@ public class TestBaseConfig {
     @Test
     public void testMisMatchAction() {
         try {
-            Promise<ExecutionInstance> promise = defaultRuleEngine.startRule("{\n" +
+            Promise<ExecutionInstance> promise = defaultRuleEngine.startRule(new ExecutionCondition("{\n" +
                     "    specialAction()\n" +
-                    "}", null);
+                    "}"));
 
             promise.get();
         } catch (RuleException e) {
@@ -67,11 +68,11 @@ public class TestBaseConfig {
     @Test
     public void testMisMatchCondition() {
         try {
-            Promise<ExecutionInstance> promise = defaultRuleEngine.startRule("{\n" +
+            Promise<ExecutionInstance> promise = defaultRuleEngine.startRule(new ExecutionCondition("{\n" +
                     "    if(specialCondition()){\n" +
                     "        specialAction()\n" +
                     "    }\n" +
-                    "}", null);
+                    "}"));
 
             promise.get();
         } catch (RuleException e) {
@@ -84,11 +85,11 @@ public class TestBaseConfig {
     @Test
     public void testMisMatchListener() {
         try {
-            Promise<ExecutionInstance> promise = defaultRuleEngine.startRule("{\n" +
+            Promise<ExecutionInstance> promise = defaultRuleEngine.startRule(new ExecutionCondition("{\n" +
                     "    if(specialCondition()[specialListener(event=\"before\")]){\n" +
                     "        specialAction()\n" +
                     "    }\n" +
-                    "}", null);
+                    "}"));
 
             promise.get();
         } catch (RuleException e) {
@@ -100,11 +101,11 @@ public class TestBaseConfig {
 
     @Test
     public void testSpecialRule() {
-        Promise<ExecutionInstance> promise = specialRuleEngine.startRule("{\n" +
+        Promise<ExecutionInstance> promise = specialRuleEngine.startRule(new ExecutionCondition("{\n" +
                 "    if(specialCondition()[specialListener(event=\"before\")]){\n" +
                 "        specialAction()\n" +
                 "    }\n" +
-                "}", null);
+                "}"));
 
         System.out.println(promise.get());
     }
