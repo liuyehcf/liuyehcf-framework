@@ -13,8 +13,8 @@
         <module>compile-engine</module>
         <module>language-hua</module>
         <module>expression-engine</module>
-        <module>rule-engine</module>
-        <module>rule-engine-spring-boot-starter</module>
+        <module>flow-engine</module>
+        <module>flow-engine-spring-boot-starter</module>
         <module>rpc-maple</module>
         <module>rpc-ares</module>
     </modules>
