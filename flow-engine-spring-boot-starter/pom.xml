@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.liuyehcf</groupId>
-    <artifactId>rule-engine-spring-boot-starter</artifactId>
+    <artifactId>flow-engine-spring-boot-starter</artifactId>
     <version>1.3.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>rule-engine-spring-boot-starter</name>
-    <description>rule engine spring boot starter</description>
+    <name>flow-engine-spring-boot-starter</name>
+    <description>flow engine spring boot starter</description>
     <url>https://github.com/liuyehcf/liuyehcf-framework</url>
 
     <licenses>
@@ -58,7 +58,7 @@
     <dependencies>
         <dependency>
             <groupId>com.github.liuyehcf</groupId>
-            <artifactId>rule-engine</artifactId>
+            <artifactId>flow-engine</artifactId>
             <version>1.3.0-SNAPSHOT</version>
         </dependency>
 
@@ -92,7 +92,7 @@
     </dependencies>
 
     <build>
-        <finalName>rule-engine-spring-boot-starter</finalName>
+        <finalName>flow-engine-spring-boot-starter</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
