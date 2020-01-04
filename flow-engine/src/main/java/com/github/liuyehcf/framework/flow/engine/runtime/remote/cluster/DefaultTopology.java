@@ -17,7 +17,11 @@ import java.util.concurrent.atomic.AtomicLong;
 public class DefaultTopology implements Topology {
 
     private final MemberConfig selfConfig;
-    private final Map<String, Member> members = Maps.newHashMap();
+    /**
+     * although the methods of modifying members are under synchronized, the iterator of members is beyond synchronized
+     * therefore, if it is a normal HashMap, it is still possible throwing ConcurrentModificationException when traversing members with iterators
+     */
+    private final Map<String, Member> members = Maps.newConcurrentMap();
     private final AtomicLong memberIdCnt = new AtomicLong(0L);
     private final AtomicLong transactionId = new AtomicLong(0L);
     private volatile boolean isLeaderValid = false;
