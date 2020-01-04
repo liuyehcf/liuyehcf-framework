@@ -1,12 +1,12 @@
 # BUG
 
-1. 当一个规则只有一个condition，且抛出了linkExecutionException的时候，算不算到达叶子节点？
+1. 当一个流只有一个condition，且抛出了linkExecutionException的时候，算不算到达叶子节点？
 
 # FEATURE
 
 1. ListenerEvent.failure 的拓扑以及trace测试用例
 2. if() 的trace以及拓扑测试用例
-3. 规则引擎线程的拒绝策略要做限制
+3. 流引擎线程的拒绝策略要做限制
 4. 拦截器是否执行到的测试用例
 5. DefaultFlowEngine的构造方法
 6. @ActionBean等注解，增加flowEngine过滤，根据匹配结果注册到不同的flowEngine实例中去
@@ -29,7 +29,7 @@
 
 __要解决的问题__
 
-1. 灰度发布时，由于重启导致的规则执行中断的问题，需要在另一台机器上重新执行
+1. 灰度发布时，由于重启导致的流执行中断的问题，需要在另一台机器上重新执行
 1. 集群中的节点如何感知其他节点的存在
 1. 一致性问题
 
