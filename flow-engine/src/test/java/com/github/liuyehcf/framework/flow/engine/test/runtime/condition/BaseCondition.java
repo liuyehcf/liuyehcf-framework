@@ -25,7 +25,7 @@ public abstract class BaseCondition implements ConditionDelegate {
 
     @Override
     public boolean isAsync() {
-        return IS_CONDITION_ASYNC;
+        return IS_CONDITION_ASYNC.get();
     }
 
     @Override

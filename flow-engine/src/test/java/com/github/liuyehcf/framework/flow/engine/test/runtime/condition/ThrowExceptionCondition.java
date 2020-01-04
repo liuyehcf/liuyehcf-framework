@@ -12,7 +12,7 @@ public class ThrowExceptionCondition extends BaseCondition {
 
     @Override
     public boolean onCondition(ConditionContext context) {
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println("execute throwExceptionCondition.");
         }
         throw new RuntimeException("throw exception condition");

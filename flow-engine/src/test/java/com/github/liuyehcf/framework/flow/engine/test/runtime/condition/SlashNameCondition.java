@@ -15,7 +15,7 @@ public class SlashNameCondition extends BaseCondition {
 
     @Override
     public boolean onCondition(ConditionContext context) {
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println(getClass().getSimpleName());
         }
         return output.getValue();

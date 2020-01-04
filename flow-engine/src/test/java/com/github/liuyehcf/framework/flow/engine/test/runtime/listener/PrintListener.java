@@ -33,7 +33,7 @@ public class PrintListener extends BaseListener {
             BEFORE_COUNTER.get(namespace).incrementAndGet();
         }
 
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println(String.format("execute printListener. content=%s", content));
         }
     }
@@ -48,7 +48,7 @@ public class PrintListener extends BaseListener {
             SUCCESS_COUNTER.get(namespace).incrementAndGet();
         }
 
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println(String.format("execute printListener. content=%s", content));
         }
     }
@@ -63,7 +63,7 @@ public class PrintListener extends BaseListener {
             FAILURE_COUNTER.get(namespace).incrementAndGet();
         }
 
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println(String.format("execute printListener. content=%s", content));
         }
     }

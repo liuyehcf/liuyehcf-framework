@@ -12,21 +12,21 @@ public class DotNameListener extends BaseListener {
 
     @Override
     public void onBefore(ListenerContext context) {
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println(getClass().getSimpleName());
         }
     }
 
     @Override
     public void onSuccess(ListenerContext context, Object result) {
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println(getClass().getSimpleName());
         }
     }
 
     @Override
     public void onFailure(ListenerContext context, Throwable cause) {
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println(getClass().getSimpleName());
         }
     }

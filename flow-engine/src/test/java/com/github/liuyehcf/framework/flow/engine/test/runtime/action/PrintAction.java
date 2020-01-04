@@ -18,7 +18,7 @@ public class PrintAction extends BaseAction {
     public void onAction(ActionContext context) {
         String content = this.content.getValue();
         Assert.assertNotNull(content);
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println(String.format("execute printAction. content=%s", content));
         }
     }

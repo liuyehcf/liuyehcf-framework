@@ -24,7 +24,7 @@ public class ThrowLinkTerminateListener extends BaseListener {
 
     @Override
     public void onBefore(ListenerContext context) {
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println("execute throwLinkTerminateListener.");
         }
 
@@ -38,7 +38,7 @@ public class ThrowLinkTerminateListener extends BaseListener {
 
     @Override
     public void onSuccess(ListenerContext context, Object result) {
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println("execute throwLinkTerminateListener.");
         }
 
@@ -52,7 +52,7 @@ public class ThrowLinkTerminateListener extends BaseListener {
 
     @Override
     public void onFailure(ListenerContext context, Throwable cause) {
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println("execute throwLinkTerminateListener.");
         }
 

@@ -26,7 +26,7 @@ public abstract class BaseAction implements ActionDelegate {
 
     @Override
     public boolean isAsync() {
-        return IS_ACTION_ASYNC;
+        return IS_ACTION_ASYNC.get();
     }
 
     @Override

@@ -25,7 +25,7 @@ public abstract class BaseListener implements ListenerDelegate {
 
     @Override
     public boolean isAsync() {
-        return IS_LISTENER_ASYNC;
+        return IS_LISTENER_ASYNC.get();
     }
 
     @Override

@@ -23,7 +23,7 @@ public class PrintCondition extends BaseCondition {
     public boolean onCondition(ConditionContext context) {
         String content = this.content.getValue();
         Assert.assertNotNull(content);
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println(String.format("execute printCondition. content=%s. output=%b", content, output.getValue()));
         }
         return output.getValue();

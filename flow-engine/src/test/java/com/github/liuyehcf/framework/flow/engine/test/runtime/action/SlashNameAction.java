@@ -12,7 +12,7 @@ public class SlashNameAction extends BaseAction {
 
     @Override
     public void onAction(ActionContext context) {
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             System.out.println(getClass().getSimpleName());
         }
     }

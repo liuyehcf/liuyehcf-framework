@@ -33,12 +33,11 @@ public class TestRuntimeBase {
     public static final int ACTION_TIMEOUT = 0;
     public static final int CONDITION_TIMEOUT = 0;
     public static final int LISTENER_TIMEOUT = 0;
-
-    public static final boolean STD_OUT_SWITCH = false;
-    public static final boolean IS_ACTION_ASYNC = true;
-    public static final boolean IS_CONDITION_ASYNC = true;
-    public static final boolean IS_LISTENER_ASYNC = true;
+    public static final Switch STD_OUT_SWITCH = new Switch(() -> false);
     protected static final Random RANDOM = new Random();
+    public static final Switch IS_ACTION_ASYNC = new Switch(RANDOM::nextBoolean);
+    public static final Switch IS_CONDITION_ASYNC = new Switch(RANDOM::nextBoolean);
+    public static final Switch IS_LISTENER_ASYNC = new Switch(RANDOM::nextBoolean);
     protected static final int EXECUTE_TIMES = 1;
     protected static final FlowEngine engine;
     private static ExecutorService EXECUTOR = new ThreadPoolExecutor(16, 16, 5L, TimeUnit.SECONDS,
@@ -87,7 +86,7 @@ public class TestRuntimeBase {
 
         engine.registerDelegateInterceptorFactory(ActionRegexInterceptor::new);
 
-        if (STD_OUT_SWITCH) {
+        if (STD_OUT_SWITCH.get()) {
             engine.registerDelegateInterceptorFactory(EmptyInterceptor::new);
             engine.registerDelegateInterceptorFactory(LogInterceptor::new);
         }
