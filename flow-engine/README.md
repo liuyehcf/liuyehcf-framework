@@ -1051,17 +1051,42 @@ public interface DelegateInvocation {
 }
 ```
 
-# 6 Spring-Boot-Starter
+# 6 数据统计
+
+1. 流执行链路：有多少条并行链路就会有多少个执行链路
+1. 执行trace：每个执行链路中包含多个节点trace
+    * 唯一的执行id
+    * 执行节点名称
+    * 执行节点参数
+    * 执行节点起始时间
+    * 执行节点结束时间
+    * 执行节点变更的变量集
+    * 执行中捕获的异常
+    * 执行节点的attribute集合
+
+# 7 Spring-Boot-Starter
 
 集成了Spring-Boot-Start，无需任何配置即可集成流引擎
 
-## 6.1 配置`ActionDelegate`
+__maven依赖__
+
+```xml
+<dependency>
+    <groupId>com.github.liuyehcf</groupId>
+    <artifactId>flow-engine-spring-boot-starter</artifactId>
+    <version>1.4.0</version>
+</dependency>
+```
+
+## 7.1 配置`ActionDelegate`
 
 1. Spring提供的`@Component`以及相关注解，那么节点的名称就是Bean的名称
 1. `@ActionBean`注解，那么节点名称就是`ActionBean.name()`
 * 如果配置了`DelegateField`，那么该`Bean`的类型务必标注成`@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)`
 
 ```java
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ActionContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.DelegateField;
@@ -1071,7 +1096,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author hechenfeng
- * @date 2019/7/10
+ * @date 2020/1/4
  */
 @Component(value = "printAction")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -1085,18 +1110,20 @@ public class PrintAction implements ActionDelegate {
 
     @Override
     public void onAction(ActionContext context) {
-        System.out.println(String.format("printAction. content=%s", content.getValue()));
+        System.out.println("printAction. content=" + content.getValue());
     }
 }
 ```
 
-## 6.2 配置`ConditionDelegate`
+## 7.2 配置`ConditionDelegate`
 
 1. Spring提供的`@Component`以及相关注解，那么节点的名称就是Bean的名称
 1. `@ConditionBean`注解，那么节点名称就是`ConditionBean.name()`
 * 如果配置了`DelegateField`，那么该`Bean`的类型务必标注成`@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)`
 
 ```java
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ConditionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ConditionContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.DelegateField;
@@ -1106,7 +1133,7 @@ import org.springframework.context.annotation.Scope;
 
 /**
  * @author hechenfeng
- * @date 2019/7/10
+ * @date 2020/1/4
  */
 @ConditionBean(names = "printCondition")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -1120,19 +1147,21 @@ public class PrintCondition implements ConditionDelegate {
 
     @Override
     public boolean onCondition(ConditionContext conditionContext) throws Exception {
-        System.out.println(String.format("printCondition. content=%s", content.getValue()));
+        System.out.println("printCondition. content=" + content.getValue());
         return true;
     }
 }
 ```
 
-## 6.3 配置`ListenerDelegate`
+## 7.3 配置`ListenerDelegate`
 
 1. Spring提供的`@Component`以及相关注解，那么节点的名称就是Bean的名称
 1. `@ListenerBean`注解，那么节点名称就是`ListenerBean.name()`
 * 如果配置了`DelegateField`，那么该`Bean`的类型务必标注成`@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)`
 
 ```java
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ListenerDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ListenerContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.DelegateField;
@@ -1142,7 +1171,7 @@ import org.springframework.context.annotation.Scope;
 
 /**
  * @author hechenfeng
- * @date 2019/7/10
+ * @date 2020/1/4
  */
 @ListenerBean(names = "printListener")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -1171,12 +1200,13 @@ public class PrintListener implements ListenerDelegate {
 }
 ```
 
-## 6.4 配置`DelegateInterceptor`
+## 7.4 配置`DelegateInterceptor`
 
 __配置`DelegateInterceptor`__，可以用`@Scope`注解指定拦截器的先后顺序，其行为与Spring-Aop一致
 
 ```java
-import com.alibaba.fastjson.JSON;
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInterceptor;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInvocation;
 import org.springframework.core.annotation.Order;
@@ -1184,80 +1214,164 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author hechenfeng
- * @date 2019/7/10
+ * @date 2020/1/4
  */
 @Component
-@Order(value = 20)
-public class MyDelegateInterceptor1 implements DelegateInterceptor {
+@Order(value = 1)
+public class DelegateInterceptorOrder1 implements DelegateInterceptor {
     @Override
     public Object invoke(DelegateInvocation delegateInvocation) throws Throwable {
-        System.err.println("enter MyDelegateInterceptor1");
-
-        System.err.println(delegateInvocation.getExecutableContext().getFlowId());
-        System.err.println(delegateInvocation.getExecutableContext().getFlowName());
-        System.err.println(delegateInvocation.getExecutableContext().getInstanceId());
-        System.err.println(delegateInvocation.getExecutableContext().getName());
-        System.err.println(delegateInvocation.getType());
-        System.err.println(JSON.toJSONString(delegateInvocation.getArgumentNames()));
-        System.err.println(JSON.toJSONString(delegateInvocation.getArgumentValues()));
+        System.out.println("enter DelegateInterceptorOrder1");
 
         Object proceed = delegateInvocation.proceed();
 
-        System.err.println("exit MyDelegateInterceptor1");
+        System.out.println("exit DelegateInterceptorOrder1");
         return proceed;
     }
 }
 ```
 
-# 7 数据统计
+```Java
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
 
-1. 流执行链路：有多少条并行链路就会有多少个执行链路
-1. 执行trace：每个执行链路中包含多个节点trace
-    * 唯一的执行id
-    * 执行节点名称
-    * 执行节点参数
-    * 执行节点起始时间
-    * 执行节点结束时间
-    * 执行节点变更的变量集
-    * 执行中捕获的异常
-    * 执行节点的attribute集合
+import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInterceptor;
+import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInvocation;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
-# 8 最佳实践
+/**
+ * @author hechenfeng
+ * @date 2020/1/4
+ */
+@Component
+@Order(value = 2)
+public class DelegateInterceptorOrder2 implements DelegateInterceptor {
+    @Override
+    public Object invoke(DelegateInvocation delegateInvocation) throws Throwable {
+        System.out.println("enter DelegateInterceptorOrder2");
 
-## 8.1 非spring环境
+        Object proceed = delegateInvocation.proceed();
+
+        System.out.println("exit DelegateInterceptorOrder2");
+        return proceed;
+    }
+}
+```
+
+## 7.5 执行
+
+```Java
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+
+import com.alibaba.fastjson.JSON;
+import com.github.liuyehcf.framework.flow.engine.ExecutionCondition;
+import com.github.liuyehcf.framework.flow.engine.FlowEngine;
+import com.github.liuyehcf.framework.flow.engine.promise.Promise;
+import com.github.liuyehcf.framework.flow.engine.promise.PromiseListener;
+import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+
+/**
+ * @author hechenfeng
+ * @date 2020/1/4
+ */
+@SpringBootApplication(scanBasePackages = {"com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo"})
+public class DemoApplication {
+
+    @Resource
+    private FlowEngine flowEngine;
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class);
+    }
+
+    @PostConstruct
+    public void flow() {
+        String dsl = "{\n" +
+                "   if(printCondition(content=\"hello, \")) {\n" +
+                "       printAction(content=\"hechenfeng\")\n" +
+                "   }\n" +
+                "}";
+
+        Promise<ExecutionInstance> promise = flowEngine.startFlow(new ExecutionCondition(dsl));
+
+        // 注册监听
+        promise.addListener(new PromiseListener<ExecutionInstance>() {
+            @Override
+            public void operationComplete(Promise<ExecutionInstance> promise) {
+                System.out.println("trigger promise listener");
+                if (promise.isSuccess()) {
+                    System.out.println(JSON.toJSONString(promise.get()));
+                } else if (promise.isFailure() && promise.cause() != null) {
+                    promise.cause().printStackTrace();
+                }
+            }
+        });
+    }
+}
+```
+
+__输出__
+
+```
+enter DelegateInterceptorOrder1
+enter DelegateInterceptorOrder2
+printCondition. content=hello, 
+exit DelegateInterceptorOrder2
+exit DelegateInterceptorOrder1
+enter DelegateInterceptorOrder1
+enter DelegateInterceptorOrder2
+printAction. content=hechenfeng
+exit DelegateInterceptorOrder2
+exit DelegateInterceptorOrder1
+trigger promise listener
+{"attributes":{},"endNanos":130950394558207,"env":{},"flow":{"elements":[{"flow":{"$ref":"$.flow"},"id":"1","linkType":"NORMAL","listeners":[],"predecessors":[],"successors":[{"argumentNames":["content"],"argumentValues":["hello, "],"flow":{"$ref":"$.flow"},"id":"2","linkType":"NORMAL","listeners":[],"name":"printCondition","predecessors":[{"$ref":"$.flow.elements[0]"}],"successors":[{"argumentNames":["content"],"argumentValues":["hechenfeng"],"flow":{"$ref":"$.flow"},"id":"3","linkType":"TRUE","listeners":[],"name":"printAction","predecessors":[{"$ref":"$.flow.elements[0].successors[0]"}],"successors":[],"type":"ACTION"}],"type":"CONDITION"}],"type":"START"},{"$ref":"$.flow.elements[0].successors[0]"},{"$ref":"$.flow.elements[0].successors[0].successors[0]"}],"ends":[{"$ref":"$.flow.elements[0].successors[0].successors[0]"}],"events":[],"id":"1eb957f6-28b9-47a4-8d90-42f9a51bd288","linkType":"NORMAL","listeners":[],"predecessors":[],"start":{"$ref":"$.flow.elements[0]"},"successors":[],"type":"SUB_FLOW"},"id":"0eabbeb5-2d58-49d3-b394-6278792ea5a1","links":[{"env":{"$ref":"$.env"},"id":"4fec831e-d4fc-4590-b3ee-e8556dabed16","traces":[{"endNanos":130950330901847,"executionId":0,"id":"1","startNanos":130950330901656,"type":"START"},{"arguments":[{"name":"content","value":"hello, "}],"attributes":{},"endNanos":130950384768008,"executionId":1,"id":"2","name":"printCondition","propertyUpdates":[],"result":true,"startNanos":130950382076234,"type":"CONDITION"},{"arguments":[{"name":"content","value":"hechenfeng"}],"attributes":{},"endNanos":130950392885723,"executionId":2,"id":"3","name":"printAction","propertyUpdates":[],"startNanos":130950392665989,"type":"ACTION"}]}],"startNanos":130950323375971,"traces":[],"unreachableLinks":[]}
+```
+
+# 8 非Spring环境
+
+__maven依赖__
 
 ```xml
 <dependency>
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>flow-engine</artifactId>
-    <version>1.2.0</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
-## 8.2 示例
+__示例代码__
 
 ```java
+package com.github.liuyehcf.framework.flow.engine.test.demo;
+
 import com.alibaba.fastjson.JSON;
-import com.github.liuyehcf.framework.flow.engine.FlowEngine;
+import com.github.liuyehcf.framework.flow.engine.ExecutionCondition;
 import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.promise.PromiseListener;
+import com.github.liuyehcf.framework.flow.engine.runtime.DefaultFlowEngine;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ActionContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.DelegateField;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInterceptor;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInvocation;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
-import com.google.common.collect.Maps;
 
 /**
  * @author hechenfeng
- * @date 2019/7/10
+ * @date 2020/1/4
  */
-public class TestMain {
+public class ReadmeDemo {
     public static void main(String[] args) {
 
+        DefaultFlowEngine flowEngine = new DefaultFlowEngine();
+
         // 注册一个action
-        FlowEngine.registerActionDelegateFactory("greetAction", () -> {
+        flowEngine.registerActionDelegateFactory("greetAction", () -> {
             return new ActionDelegate() {
 
                 private DelegateField name;
@@ -1270,7 +1384,7 @@ public class TestMain {
         });
 
         // 注册一个interceptor
-        FlowEngine.registerDelegateInterceptorFactory(() ->
+        flowEngine.registerDelegateInterceptorFactory(() ->
                 new DelegateInterceptor() {
                     @Override
                     public Object invoke(DelegateInvocation delegateInvocation) throws Throwable {
@@ -1296,7 +1410,7 @@ public class TestMain {
                 "    greetAction(name=\"hechenfeng\")\n" +
                 "}";
 
-        Promise<ExecutionInstance> promise = FlowEngine.startFlow(dsl, Maps.newHashMap());
+        Promise<ExecutionInstance> promise = flowEngine.startFlow(new ExecutionCondition(dsl));
 
         // 注册监听
         promise.addListener(new PromiseListener<ExecutionInstance>() {
@@ -1321,27 +1435,15 @@ __输出__
 
 ```
 enter MyDelegateInterceptor
-431c0e69-361c-469b-813e-1abadbb441ba
+f973394c-bd17-4a0b-a3e4-a2424b04cb69
 null
-2ed97aef-eed5-4d4b-8e41-397d1813bd64
+c7f43bc1-8817-4910-9b93-8118d77ab073
 greetAction
-Hello, hechenfeng. This is flow engine!
 argumentNames=["name"]
 argumentValues=["hechenfeng"]
 attributes={}
 exit MyDelegateInterceptor
+Hello, hechenfeng. This is flow engine!
 trigger promise listener
-{"attributes":{},"endNanos":42968801169067,"id":"2ed97aef-eed5-4d4b-8e41-397d1813bd64","links":[{"env":{},"id":"ebb321f7-027d-4865-b25e-9c01544dfa35","traces":[{"endNanos":42968711375424,"executionId":0,"id":"1","startNanos":42968711375275,"type":"START"},{"arguments":[{"name":"name","value":"hechenfeng"}],"attributes":{},"endNanos":42968793883525,"executionId":1,"id":"2","name":"greetAction","propertyUpdates":[],"startNanos":42968719847516,"type":"ACTION"}]}],"flow":{"elements":[{"id":"1","listeners":[],"predecessors":[],"flow":{"$ref":"$.flow"},"successors":[{"argumentNames":["name"],"argumentValues":["hechenfeng"],"id":"2","linkType":"NORMAL","listeners":[],"name":"greetAction","predecessors":[{"$ref":"$.flow.elements[0]"}],"flow":{"$ref":"$.flow"},"successors":[],"type":"ACTION"}],"type":"START"},{"$ref":"$.flow.elements[0].successors[0]"}],"ends":[{"$ref":"$.flow.elements[0].successors[0]"}],"events":[],"id":"431c0e69-361c-469b-813e-1abadbb441ba","linkType":"NORMAL","listeners":[],"predecessors":[],"start":{"$ref":"$.flow.elements[0]"},"successors":[],"type":"SUB_FLOW"},"startNanos":42968706815634,"unreachableLinks":[]}
-```
-
-## 8.3 spring环境
-
-__maven依赖__
-
-```xml
-<dependency>
-    <groupId>com.github.liuyehcf</groupId>
-    <artifactId>flow-engine-spring-boot-starter</artifactId>
-    <version>1.4.0</version>
-</dependency>
+{"attributes":{},"endNanos":130993705245766,"env":{},"flow":{"elements":[{"flow":{"$ref":"$.flow"},"id":"1","linkType":"NORMAL","listeners":[],"predecessors":[],"successors":[{"argumentNames":["name"],"argumentValues":["hechenfeng"],"flow":{"$ref":"$.flow"},"id":"2","linkType":"NORMAL","listeners":[],"name":"greetAction","predecessors":[{"$ref":"$.flow.elements[0]"}],"successors":[],"type":"ACTION"}],"type":"START"},{"$ref":"$.flow.elements[0].successors[0]"}],"ends":[{"$ref":"$.flow.elements[0].successors[0]"}],"events":[],"id":"f973394c-bd17-4a0b-a3e4-a2424b04cb69","linkType":"NORMAL","listeners":[],"predecessors":[],"start":{"$ref":"$.flow.elements[0]"},"successors":[],"type":"SUB_FLOW"},"id":"c7f43bc1-8817-4910-9b93-8118d77ab073","links":[{"env":{"$ref":"$.env"},"id":"04b9a393-6aff-4319-a1a7-51f0fb0bf09f","traces":[{"endNanos":130993622339221,"executionId":0,"id":"1","startNanos":130993622339079,"type":"START"},{"arguments":[{"name":"name","value":"hechenfeng"}],"attributes":{},"endNanos":130993700330180,"executionId":1,"id":"2","name":"greetAction","propertyUpdates":[],"startNanos":130993634145425,"type":"ACTION"}]}],"startNanos":130993609203348,"traces":[],"unreachableLinks":[]}
 ```
