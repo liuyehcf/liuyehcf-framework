@@ -576,6 +576,14 @@ public class TestMain extends BaseConfig {
     }
 
     @Test
+    public void primitiveBytes() {
+        byte[] data = {1, 2, 3, 4, 5};
+
+        byte[] result = testClient.primitiveBytes(data);
+        Assert.assertArrayEquals(data, result);
+    }
+
+    @Test
     public void bigInteger() {
         BigInteger bigInteger = new BigInteger(Long.toString(random.nextLong()));
         Assert.assertNull(testClient.bigInteger(null));

@@ -10,6 +10,7 @@ import com.github.liuyehcf.framework.rpc.ares.util.PathUtils;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
@@ -28,6 +29,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -99,8 +101,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             AresRequestParam aresRequestParam = AnnotationUtils.getAnnotation(parameter, AresRequestParam.class);
             AresRequestBody aresRequestBody = AnnotationUtils.getAnnotation(parameter, AresRequestBody.class);
 
-            if (aresPathVariable != null && aresRequestParam != null && aresRequestBody != null
-                    || aresPathVariable != null && aresRequestParam != null
+            if (aresPathVariable != null && aresRequestParam != null
                     || aresPathVariable != null && aresRequestBody != null
                     || aresRequestParam != null && aresRequestBody != null) {
                 throw new AresException("parameter contains more than one of ares annotations");
@@ -160,10 +161,14 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         }
 
         if (httpParams.requestBody != null) {
-            String content = serialize(httpParams.requestBody.target, httpParams.requestBody.serializeType);
+            if (httpParams.requestBody.target instanceof byte[]) {
+                builder.setEntity(new ByteArrayEntity((byte[]) httpParams.requestBody.target));
+            } else {
+                String content = serialize(httpParams.requestBody.target, httpParams.requestBody.serializeType);
 
-            if (content != null) {
-                builder.setEntity(new ByteArrayEntity(content.getBytes()));
+                if (content != null) {
+                    builder.setEntity(new ByteArrayEntity(content.getBytes()));
+                }
             }
         }
 
@@ -172,7 +177,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         return (HttpRequestBase) builder.build();
     }
 
-    private Object doInvoke(HttpRequestBase httpRequest, Method method, SerializeType responseDeserializeType) throws Exception {
+    private Object doInvoke(HttpRequestBase httpRequest, Method method, SerializeType responseDeserializeType) {
         httpRequest.setConfig(requestConfig);
 
         String url = null;
@@ -182,17 +187,14 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             response = httpClient.execute(httpRequest);
             int statusCode = response.getStatusLine().getStatusCode();
 
-            String entity = new String(EntityUtils.toByteArray(response.getEntity()));
-
             if (HttpStatus.SC_OK != statusCode) {
                 throw new AresException(String.format("http request failed, url=%s; code=%d; message=%s",
                         url,
                         statusCode,
-                        entity));
+                        EntityUtils.toString(response.getEntity())));
             }
 
-            return deserialize(entity, responseDeserializeType, method);
-
+            return deserialize(EntityUtils.toByteArray(response.getEntity()), responseDeserializeType, method);
         } catch (AresException e) {
             throw e;
         } catch (Throwable e) {
@@ -240,14 +242,15 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private Object deserialize(String entity, SerializeType serializeType, Method method) {
+    private Object deserialize(byte[] entity, SerializeType serializeType, Method method) {
         Class<?> type = method.getReturnType();
         if (void.class.equals(type) || Void.class.equals(type)) {
             return null;
+        } else if (byte[].class.equals(type)) {
+            return entity;
         } else if (ClassUtils.isPrimitiveOrWrapper(type)) {
             boolean isPrimitive = type.isPrimitive();
-            boolean isEmpty = StringUtils.EMPTY.equals(entity);
+            boolean isEmpty = ArrayUtils.isEmpty(entity);
             if (boolean.class.equals(type)
                     || Boolean.class.equals(type)) {
                 if (isEmpty) {
@@ -257,7 +260,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                         return null;
                     }
                 }
-                return Boolean.valueOf(entity);
+                return Boolean.valueOf(new String(entity, Charset.defaultCharset()));
             } else if (byte.class.equals(type)
                     || Byte.class.equals(type)) {
                 if (isEmpty) {
@@ -267,7 +270,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                         return null;
                     }
                 }
-                return Byte.valueOf(entity);
+                return Byte.valueOf(new String(entity, Charset.defaultCharset()));
             } else if (short.class.equals(type)
                     || Short.class.equals(type)) {
                 if (isEmpty) {
@@ -277,7 +280,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                         return null;
                     }
                 }
-                return Short.valueOf(entity);
+                return Short.valueOf(new String(entity, Charset.defaultCharset()));
             } else if (int.class.equals(type)
                     || Integer.class.equals(type)) {
                 if (isEmpty) {
@@ -287,7 +290,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                         return null;
                     }
                 }
-                return Integer.valueOf(entity);
+                return Integer.valueOf(new String(entity, Charset.defaultCharset()));
             } else if (long.class.equals(type)
                     || Long.class.equals(type)) {
                 if (isEmpty) {
@@ -297,7 +300,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                         return null;
                     }
                 }
-                return Long.valueOf(entity);
+                return Long.valueOf(new String(entity, Charset.defaultCharset()));
             } else if (float.class.equals(type)
                     || Float.class.equals(type)) {
                 if (isEmpty) {
@@ -307,7 +310,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                         return null;
                     }
                 }
-                return Float.valueOf(entity);
+                return Float.valueOf(new String(entity, Charset.defaultCharset()));
             } else if (double.class.equals(type)
                     || Double.class.equals(type)) {
                 if (isEmpty) {
@@ -317,34 +320,35 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                         return null;
                     }
                 }
-                return Double.valueOf(entity);
+                return Double.valueOf(new String(entity, Charset.defaultCharset()));
             } else {
                 throw new UnsupportedOperationException("unsupported primitive(or wrapper) type");
             }
         } else {
-            boolean isEmpty = StringUtils.EMPTY.equals(entity);
+            boolean isEmpty = ArrayUtils.isEmpty(entity);
 
             if (isEmpty) {
                 return null;
             } else if (String.class.equals(type)) {
-                return entity;
+                return new String(entity, Charset.defaultCharset());
             } else if (BigInteger.class.equals(type)) {
-                return new BigInteger(entity);
+                return new BigInteger(new String(entity, Charset.defaultCharset()));
             } else if (BigDecimal.class.equals(type)) {
-                return new BigDecimal(entity);
+                return new BigDecimal(new String(entity, Charset.defaultCharset()));
             } else {
+                String entityString = new String(entity, Charset.defaultCharset());
                 switch (serializeType) {
                     case fastjson:
                         try {
-                            return JSON.parseObject(entity, method.getGenericReturnType());
+                            return JSON.parseObject(entityString, method.getGenericReturnType());
                         } catch (Exception e) {
-                            throw new AresException("failed to parse json object from: " + entity, e);
+                            throw new AresException("failed to parse json object from: " + entityString, e);
                         }
                     case gson:
                         try {
-                            return gson.fromJson(entity, method.getGenericReturnType());
+                            return gson.fromJson(entityString, method.getGenericReturnType());
                         } catch (Exception e) {
-                            throw new AresException("failed to parse json object from: " + entity, e);
+                            throw new AresException("failed to parse json object from: " + entityString, e);
                         }
                     default:
                         throw new UnsupportedOperationException(String.format("unexpected serialize type '%s'", serializeType));

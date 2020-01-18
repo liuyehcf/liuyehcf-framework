@@ -78,5 +78,6 @@ public class ReadmeDemo {
 
         // 同步阻塞等待流执行完毕
         promise.sync();
+        flowEngine.shutdown();
     }
 }

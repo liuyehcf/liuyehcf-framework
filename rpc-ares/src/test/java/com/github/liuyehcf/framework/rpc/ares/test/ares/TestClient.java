@@ -331,4 +331,7 @@ public interface TestClient {
     // bigDecimal
     @AresMethod(path = "/bigDecimal")
     BigDecimal bigDecimal(@AresRequestParam(name = "param1") BigDecimal param1);
+
+    @AresMethod(path = "primitiveBytes")
+    byte[] primitiveBytes(@AresRequestBody byte[] data);
 }

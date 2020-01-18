@@ -178,4 +178,10 @@ public class TestController {
     public BigDecimal bigDecimal(@RequestParam(value = "param1", required = false) BigDecimal param1) {
         return param1;
     }
+
+    @RequestMapping("/primitiveBytes")
+    @ResponseBody
+    public byte[] primitiveBytes(@RequestBody byte[] data) {
+        return data;
+    }
 }
