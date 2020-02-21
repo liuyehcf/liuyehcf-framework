@@ -164,6 +164,7 @@ public class DefaultTopology implements Topology {
 
     @Override
     public synchronized final void syncFrom(Topology otherTopology) {
+        // todo peer测没有某个member，但是本地有，不移除的话，identifier仍然是不同的，会一直触发topologySync
         for (Member member : members.values()) {
             if (!otherTopology.hasMember(member)) {
                 addOrReplaceMember(member.clone(null, MemberRole.follower, MemberStatus.unreachable));

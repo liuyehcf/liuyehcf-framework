@@ -36,7 +36,6 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 /**
  * @author hechenfeng
@@ -44,7 +43,7 @@ import java.util.stream.Collectors;
  */
 public class DefaultClusterEventLoop implements ClusterEventLoop {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultClusterEventLoop.class);
 
     private final EventLoopGroup serverBossGroup = new NioEventLoopGroup(1);
     private final EventLoopGroup serverWorkerGroup = new NioEventLoopGroup();
@@ -469,14 +468,10 @@ public class DefaultClusterEventLoop implements ClusterEventLoop {
 
         receivedFirstStateVotes.add(vote);
 
-        int acceptNum = receivedFirstStateVotes.stream()
-                .filter(Vote::isAccept)
-                .collect(Collectors.toList())
-                .size();
-        int rejectNum = receivedFirstStateVotes.stream()
-                .filter(Vote::isReject)
-                .collect(Collectors.toList())
-                .size();
+        int acceptNum = (int) receivedFirstStateVotes.stream()
+                .filter(Vote::isAccept).count();
+        int rejectNum = (int) receivedFirstStateVotes.stream()
+                .filter(Vote::isReject).count();
 
         boolean isFirstStateElectionAccepted = StatisticsUtils.isAccept(acceptNum, activeNum);
         boolean isFirstStateElectionRejected = StatisticsUtils.isReject(rejectNum, activeNum);
@@ -583,14 +578,10 @@ public class DefaultClusterEventLoop implements ClusterEventLoop {
 
         receivedSecondStateVotes.add(vote);
 
-        int acceptNum = receivedSecondStateVotes.stream()
-                .filter(Vote::isAccept)
-                .collect(Collectors.toList())
-                .size();
-        int rejectNum = receivedSecondStateVotes.stream()
-                .filter(Vote::isReject)
-                .collect(Collectors.toList())
-                .size();
+        int acceptNum = (int) receivedSecondStateVotes.stream()
+                .filter(Vote::isAccept).count();
+        int rejectNum = (int) receivedSecondStateVotes.stream()
+                .filter(Vote::isReject).count();
 
         boolean isSecondStateElectionAccepted = StatisticsUtils.isAccept(acceptNum, activeNum);
         boolean isSecondStateElectionRejected = StatisticsUtils.isReject(rejectNum, activeNum);

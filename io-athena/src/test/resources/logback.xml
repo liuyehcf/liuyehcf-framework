@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="NORMAL_LOG_PATTERN"
+              value="%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%highlight(%-5p)] --- %cyan(%m%n)"/>
+
+    <appender name="SYNC-CONSOLE-STANDARD" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${NORMAL_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <appender name="ASYNC-CONSOLE-STANDARD" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="SYNC-CONSOLE-STANDARD"/>
+    </appender>
+
+    <logger name="com.github.liuyehcf.framework.io.athena" additivity="false" level="INFO">
+        <appender-ref ref="ASYNC-CONSOLE-STANDARD"/>
+    </logger>
+
+    <root level="ERROR">
+        <appender-ref ref="ASYNC-CONSOLE-STANDARD"/>
+    </root>
+</configuration>
