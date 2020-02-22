@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.flow.engine.dsl;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.compile.engine.cfg.lr.Context;
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.model.AttrName;
 import com.github.liuyehcf.framework.flow.engine.model.*;
 import com.github.liuyehcf.framework.flow.engine.model.activity.Action;

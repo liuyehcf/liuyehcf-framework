@@ -8,7 +8,7 @@ import com.github.liuyehcf.framework.language.hua.core.bytecode.sl.*;
 
 import java.math.BigInteger;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTrue;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertTrue;
 import static com.github.liuyehcf.framework.language.hua.compile.definition.Constant.NORMAL_BOOLEAN_FALSE;
 import static com.github.liuyehcf.framework.language.hua.compile.definition.Constant.NORMAL_BOOLEAN_TRUE;
 

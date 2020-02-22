@@ -3,7 +3,7 @@ package com.github.liuyehcf.framework.language.hua.compile.definition.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTrue;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertTrue;
 import static com.github.liuyehcf.framework.language.hua.compile.definition.Constant.*;
 
 /**

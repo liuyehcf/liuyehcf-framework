@@ -6,7 +6,7 @@
 
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>language-hua</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
     <name>language-hua</name>
     <description>language hua</description>
@@ -46,12 +46,12 @@
         <dependency>
             <groupId>com.github.liuyehcf</groupId>
             <artifactId>compile-engine</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.60</version>
+            <version>1.2.62</version>
         </dependency>
         <dependency>
             <groupId>commons-cli</groupId>

@@ -8,8 +8,8 @@ import com.github.liuyehcf.framework.language.hua.core.VariableSymbol;
 import com.github.liuyehcf.framework.language.hua.core.bytecode.sl.*;
 import com.github.liuyehcf.framework.language.hua.core.bytecode.sm._dup2;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertFalse;
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertNotNull;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertFalse;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertNotNull;
 import static com.github.liuyehcf.framework.language.hua.compile.definition.Constant.*;
 import static com.github.liuyehcf.framework.language.hua.compile.definition.GrammarDefinition.NORMAL_ASSIGN;
 

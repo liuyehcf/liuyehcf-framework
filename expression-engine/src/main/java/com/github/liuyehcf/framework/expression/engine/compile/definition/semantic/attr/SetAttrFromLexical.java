@@ -4,7 +4,7 @@ import com.github.liuyehcf.framework.expression.engine.compile.CompilerContext;
 import com.github.liuyehcf.framework.expression.engine.compile.definition.model.AttrName;
 import com.github.liuyehcf.framework.expression.engine.compile.definition.semantic.AbstractSemanticAction;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertNotNull;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertNotNull;
 
 /**
  * 设置综合属性，来源于词法分析器

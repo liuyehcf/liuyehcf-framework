@@ -7,7 +7,7 @@ import com.github.liuyehcf.framework.expression.engine.core.bytecode.ir._invokes
 import com.github.liuyehcf.framework.expression.engine.core.function.Function;
 import com.github.liuyehcf.framework.expression.engine.utils.FunctionUtils;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertNotNull;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertNotNull;
 
 /**
  * 方法调用

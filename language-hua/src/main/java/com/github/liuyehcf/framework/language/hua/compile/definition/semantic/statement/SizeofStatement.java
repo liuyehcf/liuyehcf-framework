@@ -7,7 +7,7 @@ import com.github.liuyehcf.framework.language.hua.compile.definition.semantic.Ab
 import com.github.liuyehcf.framework.language.hua.core.VariableSymbol;
 import com.github.liuyehcf.framework.language.hua.core.bytecode.cp._sizeof;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTrue;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertTrue;
 
 /**
  * sizeof语句

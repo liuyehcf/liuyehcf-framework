@@ -6,7 +6,7 @@ import com.github.liuyehcf.framework.language.hua.compile.definition.model.Type;
 import com.github.liuyehcf.framework.language.hua.compile.definition.semantic.AbstractSemanticAction;
 import com.github.liuyehcf.framework.language.hua.core.VariableSymbol;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertNotNull;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertNotNull;
 
 /**
  * 创建一个变量，记录类型、宽度、偏移量等信息

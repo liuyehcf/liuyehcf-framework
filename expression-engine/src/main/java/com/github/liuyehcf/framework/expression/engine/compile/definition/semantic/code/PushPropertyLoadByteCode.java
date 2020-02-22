@@ -1,6 +1,6 @@
 package com.github.liuyehcf.framework.expression.engine.compile.definition.semantic.code;
 
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.expression.engine.compile.CompilerContext;
 import com.github.liuyehcf.framework.expression.engine.compile.definition.model.AttrName;
 import com.github.liuyehcf.framework.expression.engine.compile.definition.semantic.AbstractSemanticAction;

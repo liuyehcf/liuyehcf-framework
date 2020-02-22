@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertFalse;
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertNotNull;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertFalse;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertNotNull;
 
 /**
  * 方法信息

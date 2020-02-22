@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.delegate.context;
 
 import com.alibaba.fastjson.JSON;
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.flow.engine.FlowErrorCode;
 import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.github.liuyehcf.framework.flow.engine.model.Element;

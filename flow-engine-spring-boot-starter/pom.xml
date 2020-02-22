@@ -6,7 +6,7 @@
 
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>flow-engine-spring-boot-starter</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <packaging>jar</packaging>
     <name>flow-engine-spring-boot-starter</name>
     <description>flow engine spring boot starter</description>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.github.liuyehcf</groupId>
             <artifactId>flow-engine</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1</version>
         </dependency>
 
         <dependency>

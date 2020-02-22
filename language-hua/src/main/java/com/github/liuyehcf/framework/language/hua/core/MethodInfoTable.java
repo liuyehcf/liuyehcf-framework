@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertFalse;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertFalse;
 import static com.github.liuyehcf.framework.language.hua.core.SystemMethod.SYSTEM_METHOD_POOL;
 
 /**

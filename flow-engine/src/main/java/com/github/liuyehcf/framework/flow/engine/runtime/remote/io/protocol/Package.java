@@ -1,6 +1,6 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.remote.io.protocol;
 
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.flow.engine.util.ByteUtils;
 import org.apache.commons.lang3.ArrayUtils;
 

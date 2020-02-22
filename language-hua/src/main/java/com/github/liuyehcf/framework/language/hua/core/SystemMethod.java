@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTrue;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertTrue;
 import static com.github.liuyehcf.framework.language.hua.compile.definition.Constant.*;
 
 /**

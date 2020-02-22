@@ -7,8 +7,8 @@ import com.github.liuyehcf.framework.language.hua.compile.definition.semantic.Ab
 import com.github.liuyehcf.framework.language.hua.core.VariableSymbol;
 import com.github.liuyehcf.framework.language.hua.core.bytecode.cp._iinc;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertEquals;
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertNotNull;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertEquals;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertNotNull;
 
 /**
  * 自增字节码回填

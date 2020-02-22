@@ -1,6 +1,6 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.statistics;
 
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.flow.engine.model.IDGenerator;
 import com.google.common.collect.Lists;
 

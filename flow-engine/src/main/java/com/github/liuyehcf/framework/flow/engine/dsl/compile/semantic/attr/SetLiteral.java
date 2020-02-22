@@ -8,7 +8,7 @@ import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.AbstractSe
 
 import java.math.BigInteger;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTrue;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertTrue;
 
 /**
  * @author hechenfeng

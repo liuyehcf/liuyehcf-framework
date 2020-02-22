@@ -6,7 +6,7 @@ import com.github.liuyehcf.framework.language.hua.runtime.HeapMemoryManagement;
 import com.github.liuyehcf.framework.language.hua.runtime.Reference;
 import com.github.liuyehcf.framework.language.hua.runtime.RuntimeContext;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTrue;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertTrue;
 
 /**
  * 多维数组创建指令，指定的维度是第一维

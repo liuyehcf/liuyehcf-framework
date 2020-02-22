@@ -1,6 +1,6 @@
 package com.github.liuyehcf.framework.rpc.maple.spring;
 
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.rpc.maple.MapleConst;
 import com.github.liuyehcf.framework.rpc.maple.MapleProvider;
 import com.github.liuyehcf.framework.rpc.maple.MapleSpringProviderBean;

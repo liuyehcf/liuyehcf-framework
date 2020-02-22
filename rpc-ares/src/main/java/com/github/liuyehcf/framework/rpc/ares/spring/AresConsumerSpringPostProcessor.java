@@ -1,6 +1,6 @@
 package com.github.liuyehcf.framework.rpc.ares.spring;
 
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.rpc.ares.AresConsumer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;

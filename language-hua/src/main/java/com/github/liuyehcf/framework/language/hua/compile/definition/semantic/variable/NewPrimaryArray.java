@@ -8,8 +8,8 @@ import com.github.liuyehcf.framework.language.hua.core.bytecode.oc._anewarray;
 import com.github.liuyehcf.framework.language.hua.core.bytecode.oc._multianewarray;
 import com.github.liuyehcf.framework.language.hua.core.bytecode.oc._newarray;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertFalse;
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTrue;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertFalse;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertTrue;
 import static com.github.liuyehcf.framework.language.hua.compile.definition.Constant.*;
 
 /**

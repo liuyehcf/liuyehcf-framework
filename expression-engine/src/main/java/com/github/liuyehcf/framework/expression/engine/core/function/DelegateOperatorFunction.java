@@ -1,6 +1,6 @@
 package com.github.liuyehcf.framework.expression.engine.core.function;
 
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.expression.engine.core.model.OperatorType;
 import com.github.liuyehcf.framework.expression.engine.runtime.ExpressionValue;
 

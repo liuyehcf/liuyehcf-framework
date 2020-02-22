@@ -9,7 +9,7 @@ import com.github.liuyehcf.framework.language.hua.core.bytecode.ir._return;
 
 import java.util.List;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTrue;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertTrue;
 
 /**
  * 退出方法标记

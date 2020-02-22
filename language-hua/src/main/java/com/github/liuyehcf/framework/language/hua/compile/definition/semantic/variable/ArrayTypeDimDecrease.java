@@ -5,7 +5,7 @@ import com.github.liuyehcf.framework.language.hua.compile.definition.model.AttrN
 import com.github.liuyehcf.framework.language.hua.compile.definition.model.Type;
 import com.github.liuyehcf.framework.language.hua.compile.definition.semantic.AbstractSemanticAction;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTrue;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertTrue;
 
 /**
  * 数组类型降维

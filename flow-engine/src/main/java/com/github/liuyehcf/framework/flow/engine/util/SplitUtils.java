@@ -1,6 +1,6 @@
 package com.github.liuyehcf.framework.flow.engine.util;
 
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.google.common.collect.Lists;
 
 import java.util.List;

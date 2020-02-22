@@ -1,9 +1,9 @@
 package com.github.liuyehcf.framework.rpc.maple.test.consumer;
 
 import com.alibaba.fastjson.JSON;
+import com.github.liuyehcf.framework.common.tools.bean.JavaBeanInitializer;
 import com.github.liuyehcf.framework.rpc.maple.test.common.BizRequest;
 import com.github.liuyehcf.framework.rpc.maple.test.common.GreetService;
-import com.github.liuyehcf.framework.rpc.maple.util.JavaBeanInitializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

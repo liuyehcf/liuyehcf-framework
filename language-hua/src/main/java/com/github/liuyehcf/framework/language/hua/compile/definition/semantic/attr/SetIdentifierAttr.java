@@ -5,7 +5,7 @@ import com.github.liuyehcf.framework.language.hua.compile.definition.model.AttrN
 import com.github.liuyehcf.framework.language.hua.compile.definition.semantic.AbstractSemanticAction;
 import com.github.liuyehcf.framework.language.hua.core.VariableSymbol;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertNotNull;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertNotNull;
 
 /**
  * 根据标志符名称，设置IDENTIFIER_NAME、TYPE属性

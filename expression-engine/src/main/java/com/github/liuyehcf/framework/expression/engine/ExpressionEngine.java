@@ -1,6 +1,6 @@
 package com.github.liuyehcf.framework.expression.engine;
 
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.expression.engine.compile.ExpressionCompiler;
 import com.github.liuyehcf.framework.expression.engine.core.ExpressionCode;
 import com.github.liuyehcf.framework.expression.engine.core.ExpressionException;

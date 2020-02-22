@@ -6,7 +6,7 @@ import com.github.liuyehcf.framework.language.hua.runtime.HeapMemoryManagement;
 import com.github.liuyehcf.framework.language.hua.runtime.Reference;
 import com.github.liuyehcf.framework.language.hua.runtime.RuntimeContext;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertFalse;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertFalse;
 
 /**
  * 一维数组创建指令

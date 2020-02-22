@@ -1,6 +1,6 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.config;
 
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.flow.engine.runtime.constant.EnvCloneType;
 import com.github.liuyehcf.framework.flow.engine.runtime.remote.cluster.ClusterConfig;
 import com.github.liuyehcf.framework.flow.engine.runtime.remote.cluster.MemberConfig;

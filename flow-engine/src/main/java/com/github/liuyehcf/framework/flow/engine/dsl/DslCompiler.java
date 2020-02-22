@@ -1,9 +1,9 @@
 package com.github.liuyehcf.framework.flow.engine.dsl;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.compile.engine.cfg.lr.Context;
 import com.github.liuyehcf.framework.compile.engine.cfg.lr.LALR;
 import com.github.liuyehcf.framework.compile.engine.grammar.definition.SemanticAction;
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.model.IDGenerator;
 import com.google.common.collect.Lists;

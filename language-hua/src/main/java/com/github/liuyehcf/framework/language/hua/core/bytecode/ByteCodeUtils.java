@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertFalse;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertFalse;
 
 /**
  * ByteCode工具类
