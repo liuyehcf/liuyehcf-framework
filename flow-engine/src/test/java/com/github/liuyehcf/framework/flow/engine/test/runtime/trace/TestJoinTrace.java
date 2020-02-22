@@ -1,10 +1,10 @@
 package com.github.liuyehcf.framework.flow.engine.test.runtime.trace;
 
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.expression.engine.utils.EnvBuilder;
 import com.github.liuyehcf.framework.flow.engine.model.ElementType;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.model.listener.ListenerEvent;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionLink;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.PropertyUpdateType;

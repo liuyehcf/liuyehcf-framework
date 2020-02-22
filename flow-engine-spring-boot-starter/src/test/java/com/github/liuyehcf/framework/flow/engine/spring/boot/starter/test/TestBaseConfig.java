@@ -1,10 +1,10 @@
 package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test;
 
 import com.alibaba.fastjson.JSON;
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.ExecutionCondition;
 import com.github.liuyehcf.framework.flow.engine.FlowEngine;
 import com.github.liuyehcf.framework.flow.engine.FlowException;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
 import org.junit.Assert;
 import org.junit.Test;

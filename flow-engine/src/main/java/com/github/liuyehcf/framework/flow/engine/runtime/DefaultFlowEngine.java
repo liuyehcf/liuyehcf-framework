@@ -1,6 +1,7 @@
 package com.github.liuyehcf.framework.flow.engine.runtime;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.compile.engine.CompileResult;
 import com.github.liuyehcf.framework.flow.engine.ExecutionCondition;
 import com.github.liuyehcf.framework.flow.engine.FlowEngine;
@@ -9,7 +10,6 @@ import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.github.liuyehcf.framework.flow.engine.dsl.DslCompiler;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.promise.FlowPromise;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.config.FlowProperties;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ConditionDelegate;

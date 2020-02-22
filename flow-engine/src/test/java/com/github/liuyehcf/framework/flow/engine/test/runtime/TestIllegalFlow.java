@@ -1,11 +1,11 @@
 package com.github.liuyehcf.framework.flow.engine.test.runtime;
 
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.model.DefaultFlow;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 import com.github.liuyehcf.framework.flow.engine.model.Start;
 import com.github.liuyehcf.framework.flow.engine.model.activity.DefaultAction;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
 import org.junit.Test;
 

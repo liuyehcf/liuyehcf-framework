@@ -1,9 +1,9 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.operation;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateResult;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.UnsafeDelegateInvocation;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;

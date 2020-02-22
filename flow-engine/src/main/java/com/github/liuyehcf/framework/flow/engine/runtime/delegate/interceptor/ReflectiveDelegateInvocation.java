@@ -1,6 +1,7 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.FlowErrorCode;
 import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.github.liuyehcf.framework.flow.engine.model.Element;
@@ -8,7 +9,6 @@ import com.github.liuyehcf.framework.flow.engine.model.ElementType;
 import com.github.liuyehcf.framework.flow.engine.model.Executable;
 import com.github.liuyehcf.framework.flow.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.flow.engine.model.listener.ListenerEvent;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ConditionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.Delegate;

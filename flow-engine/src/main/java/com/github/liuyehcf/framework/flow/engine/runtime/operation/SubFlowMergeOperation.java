@@ -1,11 +1,11 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.operation;
 
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
+import com.github.liuyehcf.framework.common.tools.promise.PromiseListener;
 import com.github.liuyehcf.framework.flow.engine.FlowErrorCode;
 import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.model.LinkType;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
-import com.github.liuyehcf.framework.flow.engine.promise.PromiseListener;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.*;
 import com.github.liuyehcf.framework.flow.engine.util.CloneUtils;

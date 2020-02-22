@@ -1,15 +1,9 @@
-package com.github.liuyehcf.framework.flow.engine.test.promise;
+package com.github.liuyehcf.framework.common.tools.test;
 
+import com.github.liuyehcf.framework.common.tools.promise.AbstractPromise;
 import com.github.liuyehcf.framework.common.tools.promise.Promise;
-import com.github.liuyehcf.framework.flow.engine.FlowErrorCode;
-import com.github.liuyehcf.framework.flow.engine.FlowException;
-import com.github.liuyehcf.framework.flow.engine.model.DefaultFlow;
-import com.github.liuyehcf.framework.flow.engine.model.Start;
-import com.github.liuyehcf.framework.flow.engine.promise.FlowPromise;
-import com.github.liuyehcf.framework.flow.engine.runtime.statistics.DefaultExecutionInstance;
-import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
+import com.github.liuyehcf.framework.common.tools.promise.PromiseException;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,7 +18,7 @@ public class TestPromise {
 
     @Test
     public void testSync1() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
         Assert.assertTrue(promise.trySuccess(null));
 
@@ -36,7 +30,7 @@ public class TestPromise {
 
     @Test
     public void testSync2() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -51,7 +45,7 @@ public class TestPromise {
 
     @Test
     public void testSync3() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
         Assert.assertTrue(promise.tryFailure(null));
 
@@ -63,7 +57,7 @@ public class TestPromise {
 
     @Test
     public void testSync4() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -78,7 +72,7 @@ public class TestPromise {
 
     @Test
     public void testSyn5() throws Exception {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -103,7 +97,7 @@ public class TestPromise {
 
     @Test
     public void testAwait1() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         Assert.assertTrue(promise.trySuccess(null));
@@ -116,7 +110,7 @@ public class TestPromise {
 
     @Test
     public void testAwait2() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -131,7 +125,7 @@ public class TestPromise {
 
     @Test
     public void testAwait3() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -146,7 +140,7 @@ public class TestPromise {
 
     @Test
     public void testAwait4() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         Assert.assertTrue(promise.tryFailure(null));
@@ -159,7 +153,7 @@ public class TestPromise {
 
     @Test
     public void testAwait5() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -174,7 +168,7 @@ public class TestPromise {
 
     @Test
     public void testAwait6() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -189,7 +183,7 @@ public class TestPromise {
 
     @Test
     public void testGet1() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
         Assert.assertTrue(promise.trySuccess(null));
 
@@ -201,7 +195,7 @@ public class TestPromise {
 
     @Test
     public void testGet2() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -216,14 +210,14 @@ public class TestPromise {
 
     @Test
     public void testGet3() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
         Assert.assertTrue(promise.tryFailure(null));
 
         try {
             promise.get();
-        } catch (FlowException e) {
-            Assert.assertEquals(FlowErrorCode.PROMISE, e.getCode());
+        } catch (PromiseException e) {
+            // ignore exception
         }
         long end = System.currentTimeMillis();
 
@@ -232,7 +226,7 @@ public class TestPromise {
 
     @Test
     public void testGet4() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -241,17 +235,17 @@ public class TestPromise {
 
         try {
             promise.get();
-        } catch (FlowException e) {
-            Assert.assertEquals(FlowErrorCode.PROMISE, e.getCode());
+        } catch (PromiseException e) {
+            // ignore exception
         }
         long end = System.currentTimeMillis();
 
         Assert.assertTrue(Math.abs(end - start - 300) < 100);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = PromiseException.class)
     public void testFailedAndGet() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
 
         promise.tryFailure(null);
 
@@ -260,7 +254,7 @@ public class TestPromise {
 
     @Test
     public void testGetConcurrent() throws Exception {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
 
         List<Thread> threads = Lists.newArrayList();
 
@@ -283,10 +277,10 @@ public class TestPromise {
 
     @Test
     public void testGetAwait1() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
-        Assert.assertTrue(promise.trySuccess(new DefaultExecutionInstance(null, new DefaultFlow("1", "2", new Start("a")), Maps.newHashMap(), null)));
+        Assert.assertTrue(promise.trySuccess(new Object()));
 
         Assert.assertNotNull(promise.get(300, TimeUnit.MILLISECONDS));
         long end = System.currentTimeMillis();
@@ -296,7 +290,7 @@ public class TestPromise {
 
     @Test
     public void testGetAwait2() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -311,7 +305,7 @@ public class TestPromise {
 
     @Test
     public void testGetAwait3() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -320,8 +314,8 @@ public class TestPromise {
 
         try {
             promise.get(100, TimeUnit.MILLISECONDS);
-        } catch (FlowException e) {
-            Assert.assertEquals(FlowErrorCode.PROMISE, e.getCode());
+        } catch (PromiseException e) {
+            // ignore exception
         }
         long end = System.currentTimeMillis();
 
@@ -330,15 +324,15 @@ public class TestPromise {
 
     @Test
     public void testGetAwait4() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         Assert.assertTrue(promise.tryFailure(null));
 
         try {
             promise.get(300, TimeUnit.MILLISECONDS);
-        } catch (FlowException e) {
-            Assert.assertEquals(FlowErrorCode.PROMISE, e.getCode());
+        } catch (PromiseException e) {
+            // ignore exception
         }
         long end = System.currentTimeMillis();
 
@@ -347,7 +341,7 @@ public class TestPromise {
 
     @Test
     public void testGetAwait5() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -356,8 +350,8 @@ public class TestPromise {
 
         try {
             promise.get(300, TimeUnit.MILLISECONDS);
-        } catch (FlowException e) {
-            Assert.assertEquals(FlowErrorCode.PROMISE, e.getCode());
+        } catch (PromiseException e) {
+            // ignore exception
         }
         long end = System.currentTimeMillis();
 
@@ -366,7 +360,7 @@ public class TestPromise {
 
     @Test
     public void testGetAwait6() {
-        Promise<ExecutionInstance> promise = new FlowPromise();
+        Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
 
         executeAsync(() ->
@@ -375,24 +369,24 @@ public class TestPromise {
 
         try {
             promise.get(100, TimeUnit.MILLISECONDS);
-        } catch (FlowException e) {
-            Assert.assertEquals(FlowErrorCode.PROMISE, e.getCode());
+        } catch (PromiseException e) {
+            // ignore exception
         }
         long end = System.currentTimeMillis();
 
         Assert.assertTrue(Math.abs(end - start - 100) < 100);
     }
 
-    private void sleepThenTrySuccess(Promise<ExecutionInstance> promise, int milliseconds) {
+    private void sleepThenTrySuccess(Promise<Object> promise, int milliseconds) {
         try {
             TimeUnit.MILLISECONDS.sleep(milliseconds);
-            Assert.assertTrue(promise.trySuccess(new DefaultExecutionInstance(null, new DefaultFlow("1", "2", new Start("a")), Maps.newHashMap(), null)));
+            Assert.assertTrue(promise.trySuccess(new Object()));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    private void sleepThenTryFailure(Promise<ExecutionInstance> promise, int milliseconds) {
+    private void sleepThenTryFailure(Promise<Object> promise, int milliseconds) {
         try {
             TimeUnit.MILLISECONDS.sleep(milliseconds);
             Assert.assertTrue(promise.tryFailure(null));
@@ -403,5 +397,9 @@ public class TestPromise {
 
     private void executeAsync(Runnable runnable) {
         new Thread(runnable).start();
+    }
+
+    private static final class TPromise extends AbstractPromise<Object> {
+
     }
 }

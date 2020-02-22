@@ -1,6 +1,8 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.operation;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
+import com.github.liuyehcf.framework.common.tools.promise.PromiseListener;
 import com.github.liuyehcf.framework.flow.engine.FlowErrorCode;
 import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.github.liuyehcf.framework.flow.engine.model.ElementType;
@@ -8,8 +10,6 @@ import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 import com.github.liuyehcf.framework.flow.engine.model.Node;
 import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.flow.engine.model.gateway.ExclusiveGateway;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
-import com.github.liuyehcf.framework.flow.engine.promise.PromiseListener;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.promise.ConditionPromise;
 

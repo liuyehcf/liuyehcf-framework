@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.operation;
 
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.model.Element;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.model.Node;
@@ -8,7 +9,6 @@ import com.github.liuyehcf.framework.flow.engine.model.activity.Action;
 import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.flow.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.flow.engine.model.listener.Listener;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionLink;

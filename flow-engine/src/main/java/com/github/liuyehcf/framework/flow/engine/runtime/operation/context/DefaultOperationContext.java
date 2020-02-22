@@ -1,6 +1,7 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.operation.context;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.FlowEngine;
 import com.github.liuyehcf.framework.flow.engine.FlowErrorCode;
 import com.github.liuyehcf.framework.flow.engine.FlowException;
@@ -10,7 +11,6 @@ import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.flow.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.flow.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.flow.engine.model.listener.ListenerScope;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.DefaultActionContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.DefaultConditionContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.DefaultListenerContext;

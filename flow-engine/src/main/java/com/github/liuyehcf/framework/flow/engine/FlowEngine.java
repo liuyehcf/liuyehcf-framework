@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.flow.engine;
 
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.config.FlowProperties;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ConditionDelegate;

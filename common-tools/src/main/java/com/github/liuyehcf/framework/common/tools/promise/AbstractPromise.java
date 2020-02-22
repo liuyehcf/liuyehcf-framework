@@ -30,32 +30,32 @@ public abstract class AbstractPromise<T> implements Promise<T> {
     private volatile Throwable cause;
 
     @Override
-    public boolean isCancelled() {
+    public final boolean isCancelled() {
         return isCanceled;
     }
 
     @Override
-    public boolean isDone() {
+    public final boolean isDone() {
         return isDone;
     }
 
     @Override
-    public boolean isSuccess() {
+    public final boolean isSuccess() {
         return isSuccess;
     }
 
     @Override
-    public boolean isFailure() {
+    public final boolean isFailure() {
         return isFailure;
     }
 
     @Override
-    public Throwable cause() {
+    public final Throwable cause() {
         return cause;
     }
 
     @Override
-    public boolean tryCancel() {
+    public final boolean tryCancel() {
         if (isDone()) {
             return false;
         }
@@ -78,7 +78,7 @@ public abstract class AbstractPromise<T> implements Promise<T> {
     }
 
     @Override
-    public boolean trySuccess(T outcome) {
+    public final boolean trySuccess(T outcome) {
         if (isDone()) {
             return false;
         }
@@ -101,7 +101,7 @@ public abstract class AbstractPromise<T> implements Promise<T> {
     }
 
     @Override
-    public boolean tryFailure(Throwable cause) {
+    public final boolean tryFailure(Throwable cause) {
         if (isDone()) {
             return false;
         }
@@ -124,7 +124,7 @@ public abstract class AbstractPromise<T> implements Promise<T> {
     }
 
     @Override
-    public Promise<T> addListener(PromiseListener<T> listener) {
+    public final Promise<T> addListener(PromiseListener<T> listener) {
         addListener0(listener);
 
         if (isDone()) {
@@ -135,7 +135,7 @@ public abstract class AbstractPromise<T> implements Promise<T> {
     }
 
     @Override
-    public void sync() {
+    public final void sync() {
         if (isDone()) {
             return;
         }
@@ -153,7 +153,7 @@ public abstract class AbstractPromise<T> implements Promise<T> {
     }
 
     @Override
-    public boolean await(long timeout, TimeUnit unit) {
+    public final boolean await(long timeout, TimeUnit unit) {
         if (isDone()) {
             return true;
         }
@@ -170,7 +170,7 @@ public abstract class AbstractPromise<T> implements Promise<T> {
     }
 
     @Override
-    public T get() {
+    public final T get() {
         if (isDone()) {
             return report(false);
         }
@@ -188,7 +188,7 @@ public abstract class AbstractPromise<T> implements Promise<T> {
     }
 
     @Override
-    public T get(long timeout, TimeUnit unit) {
+    public final T get(long timeout, TimeUnit unit) {
         if (isDone()) {
             return report(false);
         }

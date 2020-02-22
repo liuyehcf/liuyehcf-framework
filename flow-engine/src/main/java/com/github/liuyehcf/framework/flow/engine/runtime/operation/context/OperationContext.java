@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.operation.context;
 
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.FlowEngine;
 import com.github.liuyehcf.framework.flow.engine.model.Element;
 import com.github.liuyehcf.framework.flow.engine.model.Executable;
@@ -7,7 +8,6 @@ import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.model.Node;
 import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.flow.engine.model.gateway.JoinGateway;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.UnsafeDelegateInvocation;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.AbstractOperation;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;

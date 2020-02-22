@@ -1,10 +1,10 @@
 package com.github.liuyehcf.framework.flow.engine.test.runtime.trace;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.expression.engine.utils.EnvBuilder;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.model.listener.ListenerEvent;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.*;
 import com.google.common.collect.Lists;
 import org.junit.Test;

@@ -1,9 +1,9 @@
 package com.github.liuyehcf.framework.flow.engine.test.runtime;
 
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.ExecutionCondition;
 import com.github.liuyehcf.framework.flow.engine.FlowEngine;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
-import com.github.liuyehcf.framework.flow.engine.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.runtime.DefaultFlowEngine;
 import com.github.liuyehcf.framework.flow.engine.runtime.config.FlowProperties;
 import com.github.liuyehcf.framework.flow.engine.runtime.constant.EnvCloneType;
