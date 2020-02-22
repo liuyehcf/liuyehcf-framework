@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 @SpringBootApplication(scanBasePackages = {"com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo"})
 public class DemoApplication {
 
-    @Resource
+    @Resource(name = "defaultFlowEngine")
     private FlowEngine flowEngine;
 
     public static void main(String[] args) {

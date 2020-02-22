@@ -1,6 +1,5 @@
-package com.github.liuyehcf.framework.expression.engine.utils;
+package com.github.liuyehcf.framework.common.tools.collection;
 
-import com.github.liuyehcf.framework.expression.engine.core.ExpressionException;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
@@ -42,7 +41,7 @@ public class EnvBuilder {
                 cur = (Map<String, Object>) entryValue;
             } catch (ClassCastException e) {
                 String propertyPrefix = getPropertyPrefix(segments, i);
-                throw new ExpressionException(propertyPrefix + "='" + (entryValue == null ? null : entryValue.getClass().getName()) + "' is incompatible with 'java.util.Map<String, Object>'");
+                throw new RuntimeException(propertyPrefix + "='" + entryValue.getClass().getName() + "' is incompatible with 'java.util.Map<String, Object>'");
             }
         }
 
@@ -61,7 +60,6 @@ public class EnvBuilder {
         return sb.toString();
     }
 
-    @SuppressWarnings("unchecked")
     public Map<String, Object> build() {
         return map;
     }

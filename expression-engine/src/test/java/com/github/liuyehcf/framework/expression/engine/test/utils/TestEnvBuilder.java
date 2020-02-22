@@ -1,8 +1,7 @@
 package com.github.liuyehcf.framework.expression.engine.test.utils;
 
-import com.github.liuyehcf.framework.expression.engine.core.ExpressionException;
+import com.github.liuyehcf.framework.common.tools.collection.EnvBuilder;
 import com.github.liuyehcf.framework.expression.engine.test.TestBase;
-import com.github.liuyehcf.framework.expression.engine.utils.EnvBuilder;
 import com.google.common.collect.Maps;
 import org.junit.Test;
 
@@ -32,12 +31,12 @@ public class TestEnvBuilder extends TestBase {
     public void case3() {
         expectedException(
                 () -> EnvBuilder.builder().put("a.b", 1).put("a.b.c", 3).build(),
-                ExpressionException.class,
+                RuntimeException.class,
                 "a.b='java.lang.Integer' is incompatible with 'java.util.Map<String, Object>'");
 
         expectedException(
                 () -> EnvBuilder.builder().put("a", 1).put("a.b.c", 3).build(),
-                ExpressionException.class,
+                RuntimeException.class,
                 "a='java.lang.Integer' is incompatible with 'java.util.Map<String, Object>'");
 
         EnvBuilder.builder().put("a", null).put("a.b", 3).build();
