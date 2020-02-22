@@ -19,8 +19,6 @@ import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.De
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.GlobalBeforeListenerOperation;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.DefaultOperationContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;
-import com.github.liuyehcf.framework.flow.engine.runtime.remote.io.ClusterEventLoop;
-import com.github.liuyehcf.framework.flow.engine.runtime.remote.io.DefaultClusterEventLoop;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.flow.engine.util.TopoUtils;
 import com.google.common.collect.Lists;
@@ -68,11 +66,6 @@ public class DefaultFlowEngine implements FlowEngine {
     private final ExecutorService executor;
     private final ScheduledExecutorService scheduledExecutor;
 
-    /**
-     * cluster event loop, used for cluster mode
-     */
-    private final ClusterEventLoop clusterEventLoop;
-
     public DefaultFlowEngine(FlowProperties properties, ExecutorService executor, ScheduledExecutorService scheduledExecutor) {
         if (properties == null) {
             this.properties = new FlowProperties();
@@ -98,12 +91,6 @@ public class DefaultFlowEngine implements FlowEngine {
                     new ThreadPoolExecutor.DiscardPolicy());
         } else {
             this.scheduledExecutor = scheduledExecutor;
-        }
-
-        if (getProperties().isClusterMode()) {
-            clusterEventLoop = new DefaultClusterEventLoop(this);
-        } else {
-            clusterEventLoop = null;
         }
     }
 
@@ -270,18 +257,12 @@ public class DefaultFlowEngine implements FlowEngine {
     public final void shutdown() {
         executor.shutdown();
         scheduledExecutor.shutdown();
-        if (clusterEventLoop != null) {
-            clusterEventLoop.shutdown();
-        }
     }
 
     @Override
     public final void shutdownNow() {
         executor.shutdownNow();
         scheduledExecutor.shutdownNow();
-        if (clusterEventLoop != null) {
-            clusterEventLoop.shutdown();
-        }
     }
 
     private Flow doCompile(String dsl) {

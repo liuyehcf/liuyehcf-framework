@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.flow.engine.test.runtime;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.liuyehcf.framework.common.tools.bean.BeanUtils;
-import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -880,7 +879,7 @@ public class TestBeanCloneUtils {
                 "string");
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testWithNonNoArgsConstructor() {
         TestBeanWithNonNoArgsConstrcutor origin = new TestBeanWithNonNoArgsConstrcutor(1);
 
@@ -1055,7 +1054,7 @@ public class TestBeanCloneUtils {
         Arrays.deepEquals(outerArray, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceArray1() {
         Pair<Object[], Integer> innerPair = createArray(1);
         Object[] innerArray = innerPair.getKey();
@@ -1070,7 +1069,7 @@ public class TestBeanCloneUtils {
         BeanUtils.clone(outerArray);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceArray2() {
         Pair<Object[], Integer> innerPair = createArray(1);
         Object[] innerArray = innerPair.getKey();
@@ -1091,7 +1090,7 @@ public class TestBeanCloneUtils {
         BeanUtils.clone(outerArray);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceArray3() {
         Pair<Object[], Integer> innerPair = createArray(1);
         Object[] innerArray = innerPair.getKey();
@@ -1225,7 +1224,7 @@ public class TestBeanCloneUtils {
         Assert.assertFalse(clonedMiddleMap.get("map") == clone.get("map"));
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMap1() {
         Map<String, Object> innerMap = Maps.newHashMap();
         fillMap(innerMap);
@@ -1239,7 +1238,7 @@ public class TestBeanCloneUtils {
         BeanUtils.clone(outerMap);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMap2() {
         Map<String, Object> innerMap = Maps.newHashMap();
         fillMap(innerMap);
@@ -1257,7 +1256,7 @@ public class TestBeanCloneUtils {
         BeanUtils.clone(outerMap);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMap3() {
         Map<String, Object> innerMap = Maps.newHashMap();
         fillMap(innerMap);
@@ -1358,7 +1357,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(outerList, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceCollection1() {
         List<Object> innterList = Lists.newArrayList();
         fillList(innterList);
@@ -1371,7 +1370,7 @@ public class TestBeanCloneUtils {
         BeanUtils.clone(outerList);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceCollection2() {
         List<Object> innterList = Lists.newArrayList();
         fillList(innterList);
@@ -1389,7 +1388,7 @@ public class TestBeanCloneUtils {
         BeanUtils.clone(outerList);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceCollection3() {
         List<Object> innterList = Lists.newArrayList();
         fillList(innterList);
@@ -1534,7 +1533,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(list, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean1() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1553,7 +1552,7 @@ public class TestBeanCloneUtils {
         BeanUtils.clone(bean);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean2() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1571,7 +1570,7 @@ public class TestBeanCloneUtils {
         BeanUtils.clone(bean);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean3() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1589,7 +1588,7 @@ public class TestBeanCloneUtils {
         BeanUtils.clone(bean);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean4() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1615,7 +1614,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(bean, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean5() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1641,7 +1640,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(bean, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean6() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1667,7 +1666,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(bean, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean7() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1687,7 +1686,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(map, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean8() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1707,7 +1706,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(map, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean9() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1727,7 +1726,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(map, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean10() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1751,7 +1750,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(map, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean11() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1775,7 +1774,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(map, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean12() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1799,7 +1798,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(map, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean13() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1819,7 +1818,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(list, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean14() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1839,7 +1838,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(list, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean15() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1859,7 +1858,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(list, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean16() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1884,7 +1883,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(list, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean17() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
@@ -1909,7 +1908,7 @@ public class TestBeanCloneUtils {
         Assert.assertEquals(list, clone);
     }
 
-    @Test(expected = FlowException.class)
+    @Test(expected = RuntimeException.class)
     public void testReferenceMapCollectionBean18() {
         Map<String, Object> map = Maps.newHashMap();
         fillMap(map);
