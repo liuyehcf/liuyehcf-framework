@@ -1,15 +1,15 @@
 package com.github.liuyehcf.framework.compile.engine.rg.nfa;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.compile.engine.grammar.definition.Symbol;
 import com.github.liuyehcf.framework.compile.engine.rg.utils.EscapedUtils;
 import com.github.liuyehcf.framework.compile.engine.rg.utils.SymbolUtils;
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.compile.engine.utils.ListUtils;
 import com.github.liuyehcf.framework.compile.engine.utils.Pair;
 
 import java.util.*;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertNotNull;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertNotNull;
 
 /**
  * <p>Nfa自动机构造器</p>

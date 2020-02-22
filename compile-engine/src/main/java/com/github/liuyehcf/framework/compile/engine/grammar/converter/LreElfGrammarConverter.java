@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertFalse;
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTrue;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertFalse;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertTrue;
 
 /**
  * 左递归消除以及提取左公因子文法转换 LRE：Left recursive elimination ELF：Extract Left Factory

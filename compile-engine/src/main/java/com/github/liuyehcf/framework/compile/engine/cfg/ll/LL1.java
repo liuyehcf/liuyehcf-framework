@@ -1,6 +1,7 @@
 package com.github.liuyehcf.framework.compile.engine.cfg.ll;
 
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.compile.engine.CompileResult;
 import com.github.liuyehcf.framework.compile.engine.cfg.AbstractCfgCompiler;
 import com.github.liuyehcf.framework.compile.engine.cfg.lexical.LexicalAnalyzer;
@@ -9,7 +10,6 @@ import com.github.liuyehcf.framework.compile.engine.grammar.converter.GrammarCon
 import com.github.liuyehcf.framework.compile.engine.grammar.converter.LreElfGrammarConverter;
 import com.github.liuyehcf.framework.compile.engine.grammar.converter.MergeGrammarConverter;
 import com.github.liuyehcf.framework.compile.engine.grammar.definition.*;
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.compile.engine.utils.SetUtils;
 
 import java.io.Serializable;
@@ -54,7 +54,6 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T>, Ser
         checkIsLegal();
     }
 
-    @SuppressWarnings("unchecked")
     private void calculateSelect() {
 
         for (Symbol a : this.grammar.getNonTerminators()) {
@@ -130,6 +129,7 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T>, Ser
             for (Symbol selectedSymbol : entry.getValue()) {
                 if (selectedSymbol.equals(tokenId)) {
                     ppSelected = entry.getKey();
+                    break;
                 }
             }
         }

@@ -4,8 +4,8 @@ import com.github.liuyehcf.framework.compile.engine.grammar.definition.Symbol;
 
 import java.util.LinkedList;
 
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertNull;
-import static com.github.liuyehcf.framework.compile.engine.utils.Assert.assertTrue;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertNull;
+import static com.github.liuyehcf.framework.common.tools.asserts.Assert.assertTrue;
 
 /**
  * Future 语法树栈

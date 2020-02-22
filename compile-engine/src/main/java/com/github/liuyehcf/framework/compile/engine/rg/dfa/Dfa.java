@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.compile.engine.rg.dfa;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.compile.engine.GrammarHolder;
 import com.github.liuyehcf.framework.compile.engine.grammar.definition.Grammar;
 import com.github.liuyehcf.framework.compile.engine.grammar.definition.Symbol;
@@ -8,7 +9,6 @@ import com.github.liuyehcf.framework.compile.engine.rg.Pattern;
 import com.github.liuyehcf.framework.compile.engine.rg.nfa.Nfa;
 import com.github.liuyehcf.framework.compile.engine.rg.nfa.NfaClosure;
 import com.github.liuyehcf.framework.compile.engine.rg.nfa.NfaState;
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 
 import java.util.*;
 

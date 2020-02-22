@@ -1,8 +1,8 @@
 package com.github.liuyehcf.framework.compile.engine.cfg.lr;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.compile.engine.grammar.definition.PrimaryProduction;
 import com.github.liuyehcf.framework.compile.engine.grammar.definition.Symbol;
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 
 import java.io.Serializable;
 import java.util.*;

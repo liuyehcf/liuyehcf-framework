@@ -1,8 +1,8 @@
 package com.github.liuyehcf.framework.compile.engine.rg.dfa;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.compile.engine.rg.Matcher;
 import com.github.liuyehcf.framework.compile.engine.rg.utils.SymbolUtils;
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,11 +1,11 @@
 package com.github.liuyehcf.framework.compile.engine.rg.nfa;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.compile.engine.GrammarHolder;
 import com.github.liuyehcf.framework.compile.engine.grammar.definition.Grammar;
 import com.github.liuyehcf.framework.compile.engine.rg.Matcher;
 import com.github.liuyehcf.framework.compile.engine.rg.Pattern;
 import com.github.liuyehcf.framework.compile.engine.rg.utils.GrammarUtils;
-import com.github.liuyehcf.framework.compile.engine.utils.Assert;
 import com.github.liuyehcf.framework.compile.engine.utils.Pair;
 
 /**

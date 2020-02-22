@@ -6,7 +6,7 @@
 
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>compile-engine</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
     <name>compile-engine</name>
     <description>compile engine</description>
@@ -44,9 +44,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.9</version>
+            <groupId>com.github.liuyehcf</groupId>
+            <artifactId>common-tools</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>

@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.rpc.maple.util;
+package com.github.liuyehcf.framework.common.tools.bean;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -13,13 +13,13 @@ public class JavaBeanInitializer {
     private static final Double DOUBLE_DEFAULT_VALUE = 2.0D;
     private static final String STRING_DEFAULT_VALUE = "default";
 
-    private static final Map<Class, Object> DEFAULT_VALUE_OF_BASIC_CLASS = new HashMap<>();
+    private static final Map<Class<?>, Object> DEFAULT_VALUE_OF_BASIC_CLASS = new HashMap<>();
 
     private static final String SET_METHOD_PREFIX = "set";
     private static final Integer SET_METHOD_PARAM_COUNT = 1;
-    private static final Class SET_METHOD_RETURN_TYPE = void.class;
+    private static final Class<?> SET_METHOD_RETURN_TYPE = void.class;
 
-    private static final Set<Class> CONTAINER_CLASS_SET = new HashSet<>();
+    private static final Set<Class<?>> CONTAINER_CLASS_SET = new HashSet<>();
     private static final Integer CONTAINER_DEFAULT_SIZE = 3;
 
     static {
@@ -104,10 +104,10 @@ public class JavaBeanInitializer {
         if (type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
 
-            Class clazz = (Class) parameterizedType.getRawType();
+            Class<?> clazz = (Class<?>) parameterizedType.getRawType();
 
             // 通过Class可以拿到泛型形参，但无法拿到泛型实参
-            TypeVariable[] typeVariables = clazz.getTypeParameters();
+            TypeVariable<?>[] typeVariables = clazz.getTypeParameters();
 
             // 通过ParameterizedType可以拿到泛型实参，通过继承结构保留泛型实参
             Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
@@ -134,7 +134,7 @@ public class JavaBeanInitializer {
     }
 
     private String getNameOfTypeVariable(Type typeVariable) {
-        return ((TypeVariable) typeVariable).getName();
+        return ((TypeVariable<?>) typeVariable).getName();
     }
 
     /**
@@ -143,7 +143,7 @@ public class JavaBeanInitializer {
     private Object doCreateJavaBean() {
         if (type instanceof Class) {
             // 创建非泛型实例
-            return createJavaBeanWithClass((Class) type);
+            return createJavaBeanWithClass((Class<?>) type);
         } else if (type instanceof ParameterizedType) {
             // 创建泛型实例
             return createJavaBeanWithGenericType((ParameterizedType) type);
@@ -155,7 +155,7 @@ public class JavaBeanInitializer {
     /**
      * 通过普通的Class创建JavaBean
      */
-    private Object createJavaBeanWithClass(Class clazz) {
+    private Object createJavaBeanWithClass(Class<?> clazz) {
 
         if (DEFAULT_VALUE_OF_BASIC_CLASS.containsKey(clazz)) {
             return DEFAULT_VALUE_OF_BASIC_CLASS.get(clazz);
@@ -182,7 +182,7 @@ public class JavaBeanInitializer {
      */
     private Object createJavaBeanWithGenericType(ParameterizedType type) {
 
-        Class clazz = (Class) type.getRawType();
+        Class<?> clazz = (Class<?>) type.getRawType();
 
         Object obj = createInstance(clazz);
 
@@ -206,7 +206,7 @@ public class JavaBeanInitializer {
     /**
      * 通过反射创建实例
      */
-    private Object createInstance(Class clazz) {
+    private Object createInstance(Class<?> clazz) {
         Object obj;
         try {
             obj = clazz.newInstance();
@@ -219,7 +219,7 @@ public class JavaBeanInitializer {
     /**
      * 返回所有set方法
      */
-    private List<Method> getSetMethods(Class clazz) {
+    private List<Method> getSetMethods(Class<?> clazz) {
         List<Method> setMethods = new ArrayList<>();
         Method[] methods = clazz.getMethods();
 
@@ -240,7 +240,7 @@ public class JavaBeanInitializer {
         try {
             if (paramType instanceof Class) {
                 // 普通参数
-                setDefaultValueOfNormal(obj, method, (Class) paramType);
+                setDefaultValueOfNormal(obj, method, (Class<?>) paramType);
             } else if (paramType instanceof ParameterizedType) {
                 // 泛型实参
                 setDefaultValueOfGeneric(obj, method, (ParameterizedType) paramType);
@@ -262,7 +262,7 @@ public class JavaBeanInitializer {
     /**
      * set方法参数是普通的类型
      */
-    private void setDefaultValueOfNormal(Object obj, Method method, Class paramClass) throws IllegalAccessException, InvocationTargetException {
+    private void setDefaultValueOfNormal(Object obj, Method method, Class<?> paramClass) throws IllegalAccessException, InvocationTargetException {
         if (DEFAULT_VALUE_OF_BASIC_CLASS.containsKey(paramClass)) {
             // 填充基本类型
             method.invoke(obj, DEFAULT_VALUE_OF_BASIC_CLASS.get(paramClass));
@@ -279,7 +279,7 @@ public class JavaBeanInitializer {
      * set方法的参数是泛型
      */
     private void setDefaultValueOfGeneric(Object obj, Method method, ParameterizedType paramType) throws IllegalAccessException, InvocationTargetException {
-        Class clazz = (Class) paramType.getRawType();
+        Class<?> clazz = (Class<?>) paramType.getRawType();
 
         if (instanceOfContainer(clazz)) {
             // 如果是容器的话，特殊处理一下
@@ -293,19 +293,18 @@ public class JavaBeanInitializer {
     /**
      * 判断是否是容器类型
      */
-    private boolean instanceOfContainer(Class clazz) {
+    private boolean instanceOfContainer(Class<?> clazz) {
         return CONTAINER_CLASS_SET.contains(clazz);
     }
 
     /**
      * 为几种不同的容器设置默认值，由于容器没有set方法，走默认逻辑就会得到一个空的容器。因此为容器填充一个值
      */
-    @SuppressWarnings("unchecked")
     private void setDefaultValueForContainer(Object obj, Method method, ParameterizedType paramType) throws IllegalAccessException, InvocationTargetException {
-        Class clazz = (Class) paramType.getRawType();
+        Class<?> clazz = (Class<?>) paramType.getRawType();
 
         if (List.class.equals(clazz)) {
-            List list = new ArrayList();
+            List<Object> list = new ArrayList<>();
 
             Type genericParam = paramType.getActualTypeArguments()[0];
 
@@ -315,7 +314,7 @@ public class JavaBeanInitializer {
 
             method.invoke(obj, list);
         } else if (Set.class.equals(clazz)) {
-            Set set = new HashSet();
+            Set<Object> set = new HashSet<>();
 
             Type genericParam = paramType.getActualTypeArguments()[0];
 
@@ -325,7 +324,7 @@ public class JavaBeanInitializer {
 
             method.invoke(obj, set);
         } else if (Queue.class.equals(clazz)) {
-            Queue queue = new LinkedList();
+            Queue<Object> queue = new LinkedList<>();
 
             Type genericParam = paramType.getActualTypeArguments()[0];
 
@@ -335,7 +334,7 @@ public class JavaBeanInitializer {
 
             method.invoke(obj, queue);
         } else if (Map.class.equals(clazz)) {
-            Map map = new HashMap();
+            Map<Object, Object> map = new HashMap<>();
 
             Type genericParam1 = paramType.getActualTypeArguments()[0];
             Type genericParam2 = paramType.getActualTypeArguments()[1];
@@ -370,9 +369,7 @@ public class JavaBeanInitializer {
         protected TypeReference() {
             Type superClass = getClass().getGenericSuperclass();
 
-            Type type = ((ParameterizedType) superClass).getActualTypeArguments()[0];
-
-            this.type = type;
+            this.type = ((ParameterizedType) superClass).getActualTypeArguments()[0];
         }
 
         public final Type getType() {
