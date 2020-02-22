@@ -1,8 +1,8 @@
 package com.github.liuyehcf.framework.flow.engine.test.remote;
 
+import com.github.liuyehcf.framework.common.tools.collection.SplitUtils;
 import com.github.liuyehcf.framework.flow.engine.FlowEngine;
 import com.github.liuyehcf.framework.flow.engine.runtime.config.FlowProperties;
-import com.github.liuyehcf.framework.flow.engine.util.SplitUtils;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 

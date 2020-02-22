@@ -1,7 +1,5 @@
-package com.github.liuyehcf.framework.flow.engine.util;
+package com.github.liuyehcf.framework.common.tools.bean;
 
-import com.github.liuyehcf.framework.flow.engine.FlowErrorCode;
-import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassUtils;
@@ -23,7 +21,7 @@ public abstract class BeanUtils {
         try {
             return (T) doClone(bean, Lists.newLinkedList());
         } catch (Exception e) {
-            throw new FlowException(FlowErrorCode.SERIALIZE, e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -313,7 +311,7 @@ public abstract class BeanUtils {
 
     private static void pushReference(LinkedList<Object> visited, Object bean) {
         if (containsReference(visited, bean)) {
-            throw new FlowException(FlowErrorCode.SERIALIZE, "bean clone does not support mutual reference");
+            throw new RuntimeException("bean clone does not support mutual reference");
         }
 
         visited.push(bean);

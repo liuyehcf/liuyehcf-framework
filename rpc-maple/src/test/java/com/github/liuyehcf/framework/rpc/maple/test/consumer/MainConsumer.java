@@ -3,15 +3,16 @@ package com.github.liuyehcf.framework.rpc.maple.test.consumer;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.common.tools.bean.JavaBeanInitializer;
+import com.github.liuyehcf.framework.common.tools.time.TimeUnitUtils;
 import com.github.liuyehcf.framework.rpc.maple.MapleConst;
 import com.github.liuyehcf.framework.rpc.maple.MapleSpringConsumerBean;
 import com.github.liuyehcf.framework.rpc.maple.register.DefaultServiceMeta;
 import com.github.liuyehcf.framework.rpc.maple.register.ZookeeperConfigClient;
 import com.github.liuyehcf.framework.rpc.maple.test.common.BizRequest;
 import com.github.liuyehcf.framework.rpc.maple.test.common.GreetService;
-import com.github.liuyehcf.framework.rpc.maple.util.TimeUtils;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -66,7 +67,7 @@ public class MainConsumer {
         }
 
         while (true) {
-            TimeUtils.sleepMillis(1000);
+            TimeUnitUtils.sleep(1000, TimeUnit.MILLISECONDS);
             System.out.println("tps=" + cnt.get());
             cnt.set(0);
         }

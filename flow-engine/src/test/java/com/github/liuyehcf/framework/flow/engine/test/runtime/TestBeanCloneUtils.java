@@ -2,8 +2,8 @@ package com.github.liuyehcf.framework.flow.engine.test.runtime;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.github.liuyehcf.framework.common.tools.bean.BeanUtils;
 import com.github.liuyehcf.framework.flow.engine.FlowException;
-import com.github.liuyehcf.framework.flow.engine.util.BeanUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.tuple.ImmutablePair;

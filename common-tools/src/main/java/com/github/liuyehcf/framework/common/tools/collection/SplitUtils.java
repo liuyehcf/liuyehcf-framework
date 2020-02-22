@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.flow.engine.util;
+package com.github.liuyehcf.framework.common.tools.collection;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.google.common.collect.Lists;
@@ -17,7 +17,7 @@ public abstract class SplitUtils {
 
         final List<List<T>> segments = Lists.newArrayList();
 
-        int left = 0, right = segmentSize < list.size() ? segmentSize : list.size();
+        int left = 0, right = Math.min(segmentSize, list.size());
 
         while (right < list.size()) {
             final List<T> segment = Lists.newArrayList(list.subList(left, right));
