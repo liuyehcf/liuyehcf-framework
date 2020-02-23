@@ -442,6 +442,13 @@ public class TestEnvoy {
     }
 
     @Test
+    public void testContinuesShutdown() {
+        for (int i = 1; i <= TOTAL_NUM; i++) {
+            testContinuesShutdown(i);
+        }
+    }
+
+    @Test
     public void testContinuesLeaderElection() {
         for (int i = 1; i <= TOTAL_NUM; i++) {
             testContinuesLeaderElection(i);
@@ -741,6 +748,50 @@ public class TestEnvoy {
         envoys.forEach(Envoy::start);
         TimeUnitUtils.sleep(15, TimeUnit.SECONDS);
         assertEnvoyEquals(null, totalNum, envoys);
+
+        after();
+    }
+
+    private void testContinuesShutdown(int totalNum) {
+        LOGGER.error("totalNum={}", totalNum);
+        int majority = NumberUtils.majorityOf(totalNum);
+        int version = 0;
+        List<Integer> seedIndexes = Lists.newArrayList(1);
+
+        // start concurrently, no leader conflict because of one seed
+        List<Envoy> envoys = Lists.newArrayList();
+        for (int i = 0; i < totalNum; i++) {
+            envoys.add(createEnvoy(totalNum,
+                    i + 1, seedIndexes,
+                    1,
+                    2,
+                    3,
+                    2));
+        }
+        envoys.forEach(Envoy::start);
+        TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+        assertEnvoyEquals(++version, totalNum, envoys);
+
+        Collections.shuffle(envoys);
+        Iterator<Envoy> iterator = envoys.iterator();
+        int activeNum = envoys.size();
+        while (envoys.size() > majority) {
+            activeNum--;
+            Envoy envoy = iterator.next();
+            if (Member.isValidLeader(envoy.getCluster().getSelf())) {
+                LOGGER.error("offline leader [{}]; activeNum={}; totalNum={}", envoy.getCluster().getSelf(), activeNum, totalNum);
+                envoy.stop();
+                iterator.remove();
+                TimeUnitUtils.sleep(9, TimeUnit.SECONDS);
+                assertEnvoyEquals(++version, activeNum, envoys);
+            } else {
+                LOGGER.error("offline follower [{}]; activeNum={}; totalNum={}", envoy.getCluster().getSelf(), activeNum, totalNum);
+                envoy.stop();
+                iterator.remove();
+                TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+                assertEnvoyEquals(version, activeNum, envoys);
+            }
+        }
 
         after();
     }

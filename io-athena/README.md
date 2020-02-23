@@ -404,8 +404,4 @@ ClusterAlignment 只能同步 active的节点?
 
 ## TODO
 
-1. ByteBufUtils重复
-1. ByteUtils重复
-1. @date日期，@author
 1. 节点重启的测试用例
-1. 普通节点continue shutdown的测试用例
