@@ -17,6 +17,16 @@
 
 # 如何使用
 
+__引入maven依赖__
+
+```xml
+<dependency>
+    <groupId>com.github.liuyehcf</groupId>
+    <artifactId>rpc-ares</artifactId>
+    <version>1.0.6</version>
+</dependency>
+```
+
 `rpc-ares`集成了`spring-boot-starter`，在`spring-boot`的应用中使用它非常便捷
 
 __第一步：定义接口__
@@ -24,7 +34,7 @@ __第一步：定义接口__
 比如有个系统提供了查询用户信息的http-api，请求示例如下
 
 ```
-curl http://192.168.0.1:8080/user/query?id=12345
+curl http://192.168.0.1:8080/user/get?id=12345
 
 {
     "id":12345,
@@ -40,7 +50,7 @@ curl http://192.168.0.1:8080/user/query?id=12345
 * 在方法入参上使用注解`AresRequestParam`，指明入参名字
 
 ```Java
-package com.github.liuyehcf.framework.rpc.ares.test.readme;
+package com.github.liuyehcf.framework.rpc.ares.readme;
 
 import com.github.liuyehcf.framework.rpc.ares.AresMethod;
 import com.github.liuyehcf.framework.rpc.ares.AresRequestParam;
@@ -87,6 +97,16 @@ public interface UserService {
         public void setAge(Integer age) {
             this.age = age;
         }
+
+        @Override
+        public String toString() {
+            return "UserInfo{" +
+                    "id=" + id +
+                    ", firstName='" + firstName + '\'' +
+                    ", lastName='" + lastName + '\'' +
+                    ", age=" + age +
+                    '}';
+        }
     }
 }
 ```
@@ -97,9 +117,10 @@ __第二步：创建代理类的实例__
 
 * 定义一个字段，其类型为第一步定义的接口
 * 在字段上标记注解`AresConsumer`，并指明提供该api的server的`host`以及`port`。该参数的配置支持Spring占位符，例如`host = "${xxx.yyy}"`
+    * 这里我填的是`127.0.0.1`和`8080`，因为我在本地的8080端口启动了一个`http-server`，提供了`user/get`的api
 
 ```Java
-package com.github.liuyehcf.framework.rpc.ares.test.readme;
+package com.github.liuyehcf.framework.rpc.ares.readme;
 
 import com.github.liuyehcf.framework.rpc.ares.AresConsumer;
 import org.springframework.context.annotation.Configuration;
@@ -107,7 +128,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfiguration {
 
-    @AresConsumer(host = "192.168.0.1", port = "8080")
+    @AresConsumer(host = "127.0.0.1", port = "8080")
     private UserService userService;
 }
 ```
@@ -115,10 +136,11 @@ public class BeanConfiguration {
 __第三步：在其他业务Bean中使用该接口进行http的调用__
 
 ```Java
-package com.github.liuyehcf.framework.rpc.ares.test.readme;
+package com.github.liuyehcf.framework.rpc.ares.readme;
 
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 @Component
@@ -127,8 +149,10 @@ public class BizComponent {
     @Resource
     private UserService userService;
 
+    @PostConstruct
     public void business() {
         UserService.UserInfo user = userService.getUser(1);
+        System.out.println(user);
     }
 }
 ```
