@@ -401,7 +401,3 @@ ClusterAlignment 只能同步 active的节点?
 1. 处理joining流程的这个leader收到了LeaderRelieve
 1. 由于member不是active状态，因此没有给这个member发送ReJoinCluster
 1. 所以这个节点在超过3个ttlTimeout之后，会重新尝试加入集群
-
-## TODO
-
-1. 节点重启的测试用例

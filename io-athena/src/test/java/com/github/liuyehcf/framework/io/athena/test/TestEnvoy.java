@@ -463,6 +463,13 @@ public class TestEnvoy {
     }
 
     @Test
+    public void testContinuesReboot() {
+        for (int i = 3; i <= TOTAL_NUM; i++) {
+            testContinuesReboot(i);
+        }
+    }
+
+    @Test
     public void testRecoverFromMinority() {
         for (int i = 3; i <= TOTAL_NUM; i++) {
             testRecoverFromMinority(i);
@@ -897,6 +904,57 @@ public class TestEnvoy {
         }
         TimeUnitUtils.sleep(9, TimeUnit.SECONDS);
         assertEnvoyEquals(2, majority, envoys);
+
+        after();
+    }
+
+    private void testContinuesReboot(int totalNum) {
+        LOGGER.error("totalNum={}", totalNum);
+        int version = 0;
+        List<Integer> seedIndexes = Lists.newArrayList(1, 2);
+
+        // seed1 start first, then others start concurrently
+        List<Envoy> envoys = Lists.newArrayList();
+        for (int i = 0; i < totalNum; i++) {
+            envoys.add(createEnvoy(totalNum,
+                    i + 1, seedIndexes,
+                    1,
+                    2,
+                    3,
+                    2));
+        }
+        envoys.get(0).start();
+        TimeUnitUtils.sleep(2, TimeUnit.SECONDS);
+        envoys.forEach(Envoy::start);
+        TimeUnitUtils.sleep(3, TimeUnit.SECONDS);
+        assertEnvoyEquals(++version, totalNum, envoys);
+
+        Collections.shuffle(envoys);
+        for (int i = 0; i < envoys.size(); i++) {
+            Envoy envoy = envoys.get(i);
+
+            // shutdown
+            if (Member.isValidLeader(envoy.getCluster().getSelf())) {
+                LOGGER.error("offline leader [{}]; activeNum={}; totalNum={}", envoy.getCluster().getSelf(), totalNum - 1, totalNum);
+                envoy.stop();
+                TimeUnitUtils.sleep(9, TimeUnit.SECONDS);
+                List<Envoy> envoysCopy = Lists.newArrayList(envoys);
+                envoysCopy.remove(envoy);
+                assertEnvoyEquals(++version, totalNum - 1, envoysCopy);
+            } else {
+                LOGGER.error("offline follower [{}]; activeNum={}; totalNum={}", envoy.getCluster().getSelf(), totalNum - 1, totalNum);
+                envoy.stop();
+                TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+                List<Envoy> envoysCopy = Lists.newArrayList(envoys);
+                envoysCopy.remove(envoy);
+                assertEnvoyEquals(version, totalNum - 1, envoysCopy);
+            }
+
+            // restart
+            envoy.start();
+            TimeUnitUtils.sleep(2, TimeUnit.SECONDS);
+            assertEnvoyEquals(version, totalNum, envoys);
+        }
 
         after();
     }
