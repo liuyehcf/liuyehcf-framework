@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.rpc.ares.test.readme;
+package com.github.liuyehcf.framework.rpc.ares.readme;
 
 import com.github.liuyehcf.framework.rpc.ares.AresMethod;
 import com.github.liuyehcf.framework.rpc.ares.AresRequestParam;
@@ -44,6 +44,16 @@ public interface UserService {
 
         public void setAge(Integer age) {
             this.age = age;
+        }
+
+        @Override
+        public String toString() {
+            return "UserInfo{" +
+                    "id=" + id +
+                    ", firstName='" + firstName + '\'' +
+                    ", lastName='" + lastName + '\'' +
+                    ", age=" + age +
+                    '}';
         }
     }
 }
