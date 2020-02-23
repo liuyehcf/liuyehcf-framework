@@ -9,7 +9,7 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>io-athena</name>
-    <description>io-athena</description>
+    <description>io athena</description>
 
     <dependencies>
         <dependency>
@@ -65,7 +65,7 @@
     </dependencies>
 
     <build>
-        <finalName>io-athena</finalName>
+        <finalName>${artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -119,7 +119,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>rpc-maple</finalName>
+        <finalName>${artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

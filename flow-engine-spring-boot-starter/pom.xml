@@ -92,7 +92,7 @@
     </dependencies>
 
     <build>
-        <finalName>flow-engine-spring-boot-starter</finalName>
+        <finalName>${artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
