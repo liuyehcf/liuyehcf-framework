@@ -25,6 +25,24 @@ abstract class ProgramProductions {
              */
             Production.create(
                     /*
+                     * <programs> →  ( <flow name>, <flow id> ) <mark create flow> <block> <epsilon or global listeners>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(PROGRAMS),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
+                                    Symbol.createNonTerminator(FLOW_NAME),
+                                    Symbol.createTerminator(NORMAL_COMMA),
+                                    Symbol.createNonTerminator(FLOW_ID),
+                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(MARK_CREATE_FLOW),
+                                    Symbol.createNonTerminator(BLOCK),
+                                    Symbol.createNonTerminator(EPSILON_OR_GLOBAL_LISTENERS)
+                            ),
+                            new AddGlobalListeners(),
+                            new AttrFilter()
+                    ),
+                    /*
                      * <programs> →  <mark create flow> <block> <epsilon or global listeners>
                      */
                     PrimaryProduction.create(

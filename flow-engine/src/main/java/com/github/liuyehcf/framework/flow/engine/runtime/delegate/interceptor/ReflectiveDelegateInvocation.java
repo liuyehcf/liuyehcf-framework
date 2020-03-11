@@ -144,6 +144,7 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
 
     @Override
     public final Object proceed() throws Throwable {
+        long startTimestamp = System.currentTimeMillis();
         long startNanos = System.nanoTime();
         Throwable cause = null;
         Object result = null;
@@ -165,7 +166,7 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
             throw e;
         } finally {
             if (--stackCnt == 0) {
-                recordTrace(result, cause, startNanos);
+                recordTrace(result, cause, startTimestamp, startNanos);
             }
         }
     }
@@ -238,7 +239,7 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
         }
     }
 
-    private void recordTrace(Object result, Throwable cause, long startNanos) {
+    private void recordTrace(Object result, Throwable cause, long startTimestamp, long startNanos) {
         List<PropertyUpdate> propertyUpdates = executableContext.getPropertyUpdates();
         Map<String, Attribute> attributes = executableContext.getLocalAttributes();
 
@@ -258,8 +259,9 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
                 propertyUpdates,
                 attributes,
                 cause,
-                startNanos,
-                System.nanoTime()
+                startTimestamp,
+                System.currentTimeMillis(),
+                System.nanoTime() - startNanos
         );
 
         if (executable instanceof Listener

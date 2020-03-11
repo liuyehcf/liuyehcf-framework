@@ -28,6 +28,7 @@ class JoinGatewayOperation extends AbstractOperation<Void> {
     }
 
     private void continueSuccessListener() throws Throwable {
+        long timestamp = System.currentTimeMillis();
         context.addTraceToExecutionLink(new DefaultTrace(
                 context.getNextExecutionId(),
                 joinGateway.getId(),
@@ -38,8 +39,9 @@ class JoinGatewayOperation extends AbstractOperation<Void> {
                 null,
                 null,
                 null,
-                System.nanoTime(),
-                System.nanoTime()));
+                timestamp,
+                timestamp,
+                0));
         context.markElementFinished(joinGateway);
 
         invokeNodeSuccessListeners(joinGateway, null, this::continueForward);

@@ -20,8 +20,8 @@ class FlowSegment extends DefaultFlow {
     private final LinkedList<LinkType> linkTypeStack = Lists.newLinkedList();
     private final LinkedList<JoinScope> joinScopeStack = Lists.newLinkedList();
 
-    FlowSegment(String id, Start start, LinkType linkType) {
-        super(null, id, linkType, start);
+    FlowSegment(String name, String id, Start start, LinkType linkType) {
+        super(name, id, linkType, start);
         nodeStack.push(start);
         linkTypeStack.push(LinkType.NORMAL);
     }

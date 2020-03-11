@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.flow.engine.test.dsl;
 
 import com.github.liuyehcf.framework.compile.engine.CompileResult;
 import com.github.liuyehcf.framework.flow.engine.dsl.DslCompiler;
+import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,14 +12,15 @@ import org.junit.Test;
  */
 public class TestGrammar {
 
-    private void compile(String input) {
+    private Flow compile(String input) {
         System.out.println(input);
-        CompileResult<?> result = DslCompiler.getInstance().compile(input);
+        CompileResult<Flow> result = DslCompiler.getInstance().compile(input);
 
         if (result.getError() != null) {
             result.getError().printStackTrace();
         }
         Assert.assertTrue(result.isSuccess());
+        return result.getResult();
     }
 
     @Test
@@ -3709,6 +3711,35 @@ public class TestGrammar {
                 "        }\n" +
                 "    }\n" +
                 "}");
+    }
+
+    @Test
+    public void testFlowNameAndFlowId() {
+        Flow flow;
+
+        flow = compile("(aaa,bbb){\n" +
+                "    nodeA()\n" +
+                "}");
+        Assert.assertEquals("aaa", flow.getName());
+        Assert.assertEquals("bbb", flow.getId());
+
+        flow = compile("(aaa,bbb-bb-ccc){\n" +
+                "    nodeA()\n" +
+                "}");
+        Assert.assertEquals("aaa", flow.getName());
+        Assert.assertEquals("bbb-bb-ccc", flow.getId());
+
+        flow = compile("(aaa-bb-ccc,bbb){\n" +
+                "    nodeA()\n" +
+                "}");
+        Assert.assertEquals("aaa-bb-ccc", flow.getName());
+        Assert.assertEquals("bbb", flow.getId());
+
+        flow = compile("(aaa-bb-ccc,aaa-bb-ccc){\n" +
+                "    nodeA()\n" +
+                "}");
+        Assert.assertEquals("aaa-bb-ccc", flow.getName());
+        Assert.assertEquals("aaa-bb-ccc", flow.getId());
     }
 
     @Test

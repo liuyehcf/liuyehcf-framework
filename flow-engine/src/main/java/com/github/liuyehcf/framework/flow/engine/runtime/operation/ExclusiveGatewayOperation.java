@@ -25,6 +25,7 @@ class ExclusiveGatewayOperation extends AbstractOperation<Void> {
     }
 
     private void continueSuccessListener() throws Throwable {
+        long timestamp = System.currentTimeMillis();
         context.addTraceToExecutionLink(new DefaultTrace(
                 context.getNextExecutionId(),
                 exclusiveGateway.getId(),
@@ -35,8 +36,9 @@ class ExclusiveGatewayOperation extends AbstractOperation<Void> {
                 null,
                 null,
                 null,
-                System.nanoTime(),
-                System.nanoTime())
+                timestamp,
+                timestamp,
+                0)
         );
 
         invokeNodeSuccessListeners(exclusiveGateway, null, this::continueForward);

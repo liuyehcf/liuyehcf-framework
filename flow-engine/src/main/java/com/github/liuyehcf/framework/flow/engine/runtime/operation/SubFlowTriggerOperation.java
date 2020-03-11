@@ -31,6 +31,6 @@ class SubFlowTriggerOperation extends AbstractOperation<Void> {
                         .instanceId(context.getExecutionInstance().getId())
                         .env(CloneUtils.cloneEnv(context.getEngine(), context.getLinkEnv()))
                         .executionIdGenerator(context.getExecutionIdGenerator())
-        ).addListener(new SubFlowMergeOperation(context, subFlow, System.nanoTime()));
+        ).addListener(new SubFlowMergeOperation(context, subFlow, System.currentTimeMillis(), System.nanoTime()));
     }
 }

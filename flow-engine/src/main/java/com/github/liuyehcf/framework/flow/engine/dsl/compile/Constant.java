@@ -55,6 +55,8 @@ class Constant {
     static final String EPSILON_OR_GLOBAL_LISTENERS = "<epsilon or global listeners>";
 
     static final String JOIN_MODE = "<join mode>";
+    static final String FLOW_NAME = "<flow name>";
+    static final String FLOW_ID = "<flow id>";
     static final String ACTION_NAME = "<action name>";
     static final String CONDITION_NAME = "<condition name>";
     static final String LISTENER_NAME = "<listener name>";
@@ -91,6 +93,7 @@ class Constant {
     static final String REGEX_IDENTIFIER = "@identifier";
     static final String REGEX_DOT_IDENTIFIER = "@dotIdentifier";
     static final String REGEX_SLASH_IDENTIFIER = "@slashIdentifier";
+    static final String REGEX_STRIKETHROUGH_IDENTIFIER = "@strikethroughIdentifier";
 
     /**
      * key word

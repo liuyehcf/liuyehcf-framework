@@ -63,6 +63,64 @@ abstract class TokenProductions {
 
 
             /*
+             * <flow name>
+             */
+            Production.create(
+                    /*
+                     * <flow name> → @identifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOW_NAME),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.FLOW_NAME, 0),
+                            new AttrFilter(AttrName.FLOW_NAME)
+                    ),
+                    /*
+                     * <flow name> → @strikethroughIdentifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOW_NAME),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_STRIKETHROUGH_IDENTIFIER)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.FLOW_NAME, 0),
+                            new AttrFilter(AttrName.FLOW_NAME)
+                    )
+            ),
+
+
+            /*
+             * <flow id>
+             */
+            Production.create(
+                    /*
+                     * <flow id> → @identifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOW_ID),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_IDENTIFIER)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.FLOW_ID, 0),
+                            new AttrFilter(AttrName.FLOW_ID)
+                    ),
+                    /*
+                     * <flow id> → @strikethroughIdentifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOW_ID),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_STRIKETHROUGH_IDENTIFIER)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.FLOW_ID, 0),
+                            new AttrFilter(AttrName.FLOW_ID)
+                    )
+            ),
+
+
+            /*
              * <action name>
              */
             Production.create(

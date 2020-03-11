@@ -231,12 +231,23 @@ public class CompilerContext extends Context {
         return subFlow;
     }
 
-    public void pushFlow(boolean isSubFlow) {
+    public void pushFlow(boolean isSubFlow, String flowName, String flowId) {
         if (isSubFlow) {
             LinkType linkType = peekFlow().peekLinkType();
-            flowStack.push(new FlowSegment(generateUUID(), new Start(generateId()), linkType));
+            FlowSegment peek = peekFlow();
+            String segmentFlowName = peek.getName();
+            String segmentFlowId = generateId();
+            flowStack.push(new FlowSegment(segmentFlowName, segmentFlowId, new Start(generateId()), linkType));
         } else {
-            flowStack.push(new FlowSegment(generateUUID(), new Start(generateId()), LinkType.NORMAL));
+            String segmentFlowName = flowName;
+            String segmentFlowId = flowId;
+            if (segmentFlowName == null) {
+                segmentFlowName = generateUUID();
+            }
+            if (segmentFlowId == null) {
+                segmentFlowId = generateUUID();
+            }
+            flowStack.push(new FlowSegment(segmentFlowName, segmentFlowId, new Start(generateId()), LinkType.NORMAL));
         }
     }
 

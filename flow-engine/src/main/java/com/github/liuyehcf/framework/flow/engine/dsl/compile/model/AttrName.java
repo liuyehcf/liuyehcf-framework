@@ -23,6 +23,16 @@ public enum AttrName {
     LISTENER_LIST,
 
     /**
+     * flow name
+     */
+    FLOW_NAME,
+
+    /**
+     * flow id
+     */
+    FLOW_ID,
+
+    /**
      * action name
      */
     ACTION_NAME,

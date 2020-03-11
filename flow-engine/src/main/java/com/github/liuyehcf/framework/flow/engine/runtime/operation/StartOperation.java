@@ -19,6 +19,7 @@ class StartOperation extends AbstractOperation<Void> {
     void operate() {
         Start start = context.getFlow().getStart();
 
+        long timestamp = System.currentTimeMillis();
         context.addTraceToExecutionLink(new DefaultTrace(
                 context.getNextExecutionId(),
                 start.getId(),
@@ -29,8 +30,9 @@ class StartOperation extends AbstractOperation<Void> {
                 null,
                 null,
                 null,
-                System.nanoTime(),
-                System.nanoTime()));
+                timestamp,
+                timestamp,
+                0));
         context.markElementFinished(start);
 
         forward(LinkType.NORMAL, start.getSuccessors());

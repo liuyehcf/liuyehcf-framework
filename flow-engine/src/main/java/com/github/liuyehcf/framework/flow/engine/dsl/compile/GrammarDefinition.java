@@ -42,6 +42,7 @@ public class GrammarDefinition {
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_ASSIGN), "=")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_DOT_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*(\\.[a-zA-Z_]([a-zA-Z_]|[0-9])*)+")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_SLASH_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*(/[a-zA-Z_]([a-zA-Z_]|[0-9])*)+")
+            .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_STRIKETHROUGH_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*(-[a-zA-Z_]([a-zA-Z_]|[0-9])*)+")
             .addRegexMorpheme(Symbol.createRegexTerminator(REGEX_IDENTIFIER), "[a-zA-Z_]([a-zA-Z_]|[0-9])*")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_TRUE), "true")
             .addKeyWordMorpheme(Symbol.createTerminator(NORMAL_BOOLEAN_FALSE), "false")

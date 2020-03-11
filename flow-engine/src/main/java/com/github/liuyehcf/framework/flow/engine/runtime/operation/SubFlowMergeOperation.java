@@ -21,12 +21,14 @@ import java.util.List;
 class SubFlowMergeOperation extends AbstractOperation<Void> implements PromiseListener<ExecutionInstance> {
 
     private final Flow subFlow;
+    private final long startTimestamp;
     private final long startNanos;
     private Promise<ExecutionInstance> subFlowPromise;
 
-    SubFlowMergeOperation(OperationContext context, Flow subFlow, long startNanos) {
+    SubFlowMergeOperation(OperationContext context, Flow subFlow, long startTimestamp, long startNanos) {
         super(context);
         this.subFlow = subFlow;
+        this.startTimestamp = startTimestamp;
         this.startNanos = startNanos;
     }
 
@@ -41,7 +43,7 @@ class SubFlowMergeOperation extends AbstractOperation<Void> implements PromiseLi
         context.setNode(subFlow);
 
         if (!subFlowPromise.isSuccess()) {
-            Trace subFlowErrorTrace = createErrorSubFlowTrace(startNanos, subFlowPromise.cause());
+            Trace subFlowErrorTrace = createErrorSubFlowTrace(subFlowPromise.cause());
             ExecutionLink subFlowErrorExecutionLink = mergeSubTraceAndCurLink(subFlowErrorTrace);
             context.getExecutionInstance().addUnreachableLink(subFlowErrorExecutionLink);
             if (subFlowPromise.cause() != null) {
@@ -67,6 +69,7 @@ class SubFlowMergeOperation extends AbstractOperation<Void> implements PromiseLi
             context.executeAsync(new SubFlowOperation(
                     context.cloneLinkedContext(appendSubFlowTracesToCurrentLink(subExecutionInstance, mergedSubReachableLink)),
                     subFlow,
+                    startTimestamp,
                     startNanos,
                     LinkType.TRUE)
             );
@@ -77,12 +80,13 @@ class SubFlowMergeOperation extends AbstractOperation<Void> implements PromiseLi
                     context.cloneLinkedContext(appendSubFlowTracesToCurrentLink(subExecutionInstance,
                             mergedSubUnreachableLink)),
                     subFlow,
+                    startTimestamp,
                     startNanos,
                     LinkType.FALSE));
         }
     }
 
-    private Trace createErrorSubFlowTrace(long startNanos, Throwable cause) {
+    private Trace createErrorSubFlowTrace(Throwable cause) {
         return new DefaultTrace(
                 context.getNextExecutionId(),
                 subFlow.getId(),
@@ -93,8 +97,9 @@ class SubFlowMergeOperation extends AbstractOperation<Void> implements PromiseLi
                 null,
                 null,
                 cause,
-                startNanos,
-                System.nanoTime());
+                startTimestamp,
+                System.currentTimeMillis(),
+                System.nanoTime() - startNanos);
     }
 
     private ExecutionLink mergeSubTraceAndCurLink(Trace trace) {

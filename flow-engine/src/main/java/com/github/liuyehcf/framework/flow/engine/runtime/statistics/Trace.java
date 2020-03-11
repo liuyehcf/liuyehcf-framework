@@ -67,12 +67,17 @@ public interface Trace {
     Throwable getCause();
 
     /**
-     * start nanos
+     * start timestamp
      */
-    long getStartNanos();
+    long getStartTimestamp();
 
     /**
-     * end nanos
+     * end timestamp
      */
-    long getEndNanos();
+    long getEndTimestamp();
+
+    /**
+     * use nano
+     */
+    long getUseTimeNano();
 }

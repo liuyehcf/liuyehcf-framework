@@ -13,13 +13,15 @@ import com.github.liuyehcf.framework.flow.engine.runtime.statistics.DefaultTrace
 class SubFlowOperation extends AbstractOperation<Void> {
 
     private final Flow subFlow;
+    private final long startTimestamp;
     private final long startNanos;
     private final LinkType linkType;
     private final LinkType reverseLinkType;
 
-    SubFlowOperation(OperationContext context, Flow subFlow, long startNanos, LinkType linkType) {
+    SubFlowOperation(OperationContext context, Flow subFlow, long startTimestamp, long startNanos, LinkType linkType) {
         super(context);
         this.subFlow = subFlow;
+        this.startTimestamp = startTimestamp;
         this.startNanos = startNanos;
         if (LinkType.TRUE.equals(linkType)) {
             this.linkType = LinkType.TRUE;
@@ -45,8 +47,9 @@ class SubFlowOperation extends AbstractOperation<Void> {
                 null,
                 null,
                 null,
-                startNanos,
-                System.nanoTime()));
+                startTimestamp,
+                System.currentTimeMillis(),
+                System.nanoTime() - startNanos));
 
         invokeNodeSuccessListeners(subFlow, LinkType.TRUE.equals(linkType), this::continueForward);
     }

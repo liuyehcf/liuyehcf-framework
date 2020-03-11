@@ -52,11 +52,6 @@ public class DefaultTrace implements Trace {
     private final Map<String, Attribute> attributes;
 
     /**
-     * start nanos
-     */
-    private final long startNanos;
-
-    /**
      * executable's result
      */
     private final Object result;
@@ -67,13 +62,23 @@ public class DefaultTrace implements Trace {
     private final Throwable cause;
 
     /**
-     * end nanos
+     * start timestamp
      */
-    private final long endNanos;
+    private final long startTimestamp;
+
+    /**
+     * end timestamp
+     */
+    private final long endTimestamp;
+
+    /**
+     * use time in nano seconds
+     */
+    private final long useTimeNano;
 
     public DefaultTrace(long executionId, String id, ElementType type, String name, List<Argument> arguments, Object result,
                         List<PropertyUpdate> propertyUpdates, Map<String, Attribute> attributes, Throwable cause,
-                        long startNanos, long endNanos) {
+                        long startTimestamp, long endTimestamp, long useTimeNano) {
         Assert.assertNotNull(id, "id");
         Assert.assertNotNull(type, "type");
 
@@ -86,8 +91,9 @@ public class DefaultTrace implements Trace {
         this.propertyUpdates = propertyUpdates;
         this.attributes = attributes;
         this.cause = cause;
-        this.startNanos = startNanos;
-        this.endNanos = endNanos;
+        this.startTimestamp = startTimestamp;
+        this.endTimestamp = endTimestamp;
+        this.useTimeNano = useTimeNano;
     }
 
     @Override
@@ -137,13 +143,18 @@ public class DefaultTrace implements Trace {
     }
 
     @Override
-    public final long getStartNanos() {
-        return startNanos;
+    public final long getStartTimestamp() {
+        return startTimestamp;
     }
 
     @Override
-    public final long getEndNanos() {
-        return endNanos;
+    public final long getEndTimestamp() {
+        return endTimestamp;
+    }
+
+    @Override
+    public final long getUseTimeNano() {
+        return useTimeNano;
     }
 
     @Override
