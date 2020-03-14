@@ -5,6 +5,7 @@ import com.github.liuyehcf.framework.rpc.ares.test.model.Person;
 import com.google.common.collect.Maps;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
@@ -33,6 +34,19 @@ public class TestController {
     public String twoRequestParam(@RequestParam("param1") String param1,
                                   @RequestParam("param2") String param2) {
         return String.format("twoRequestParam(%s, %s)[]", param1, param2);
+    }
+
+    @RequestMapping("/oneRequestHeader")
+    @ResponseBody
+    public String oneRequestHeader(@RequestHeader("header1") String header1) {
+        return String.format("oneRequestHeader(%s)[]", header1);
+    }
+
+    @RequestMapping("/twoRequestHeader")
+    @ResponseBody
+    public String twoRequestHeader(@RequestHeader("header1") String header1,
+                                   @RequestHeader("header2") String header2) {
+        return String.format("twoRequestHeader(%s, %s)[]", header1, header2);
     }
 
     @RequestMapping("/requestBody")
@@ -81,6 +95,11 @@ public class TestController {
     @ResponseBody
     public String returnNull() {
         return null;
+    }
+
+    @RequestMapping("/customizeContentType")
+    public String customizeContentType(HttpServletRequest request) {
+        return request.getContentType();
     }
 
     @RequestMapping("/primitiveBoolean")

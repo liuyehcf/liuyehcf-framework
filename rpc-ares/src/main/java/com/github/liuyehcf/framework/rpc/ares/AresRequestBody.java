@@ -16,6 +16,13 @@ import java.lang.annotation.Target;
 public @interface AresRequestBody {
 
     /**
+     * content type
+     *
+     * @see org.apache.http.entity.ContentType
+     */
+    String contentType() default "application/json; charset=UTF-8";
+
+    /**
      * serialize type
      */
     SerializeType serializeType() default SerializeType.fastjson;

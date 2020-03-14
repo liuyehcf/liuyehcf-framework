@@ -21,6 +21,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 
@@ -100,7 +101,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             Parameter parameter = parameters[i];
             AresPathVariable aresPathVariable = AnnotationUtils.getAnnotation(parameter, AresPathVariable.class);
             AresRequestParam aresRequestParam = AnnotationUtils.getAnnotation(parameter, AresRequestParam.class);
-            AresHeader aresHeader = AnnotationUtils.getAnnotation(parameter, AresHeader.class);
+            AresRequestHeader aresRequestHeader = AnnotationUtils.getAnnotation(parameter, AresRequestHeader.class);
             AresRequestBody aresRequestBody = AnnotationUtils.getAnnotation(parameter, AresRequestBody.class);
 
             int annotationNum = 0;
@@ -110,7 +111,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             if (aresRequestParam != null) {
                 annotationNum++;
             }
-            if (aresHeader != null) {
+            if (aresRequestHeader != null) {
                 annotationNum++;
             }
             if (aresRequestBody != null) {
@@ -123,16 +124,16 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 if (queryParams.containsKey(aresRequestParam.name())) {
                     throw new AresException(String.format("duplicate query parameter '%s'", aresRequestParam.name()));
                 }
-                queryParams.put(aresRequestParam.name(), new Param(args[i], aresRequestParam.serializeType()));
-            } else if (aresHeader != null) {
-                if (headers.containsKey(aresHeader.name())) {
-                    throw new AresException(String.format("duplicate header '%s'", aresHeader.name()));
+                queryParams.put(aresRequestParam.name(), new Param(args[i], null, aresRequestParam.serializeType()));
+            } else if (aresRequestHeader != null) {
+                if (headers.containsKey(aresRequestHeader.name())) {
+                    throw new AresException(String.format("duplicate header '%s'", aresRequestHeader.name()));
                 }
-                headers.put(aresHeader.name(), new Param(args[i], aresHeader.serializeType()));
+                headers.put(aresRequestHeader.name(), new Param(args[i], null, aresRequestHeader.serializeType()));
             } else if (aresRequestBody != null) {
                 Assert.assertFalse(hasRequestBody, "more than one '@AresRequestBody'");
                 hasRequestBody = true;
-                requestBody = new Param(args[i], aresRequestBody.serializeType());
+                requestBody = new Param(args[i], aresRequestBody.contentType(), aresRequestBody.serializeType());
             } else {
                 if (aresPathVariable == null) {
                     throw new AresException("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'");
@@ -197,7 +198,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 String content = serialize(httpParams.requestBody.target, httpParams.requestBody.serializeType);
 
                 if (content != null) {
-                    builder.setEntity(new ByteArrayEntity(content.getBytes()));
+                    builder.setEntity(new ByteArrayEntity(content.getBytes(), ContentType.parse(httpParams.requestBody.contentType)));
                 }
             }
         }
@@ -401,10 +402,12 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
     private static final class Param {
         private final Object target;
+        private final String contentType;
         private final SerializeType serializeType;
 
-        private Param(Object target, SerializeType serializeType) {
+        private Param(Object target, String contentType, SerializeType serializeType) {
             this.target = target;
+            this.contentType = contentType;
             this.serializeType = serializeType;
         }
     }

@@ -1,9 +1,6 @@
 package com.github.liuyehcf.framework.rpc.ares.test.ares;
 
-import com.github.liuyehcf.framework.rpc.ares.AresMethod;
-import com.github.liuyehcf.framework.rpc.ares.AresPathVariable;
-import com.github.liuyehcf.framework.rpc.ares.AresRequestBody;
-import com.github.liuyehcf.framework.rpc.ares.AresRequestParam;
+import com.github.liuyehcf.framework.rpc.ares.*;
 import com.github.liuyehcf.framework.rpc.ares.test.model.Person;
 
 import java.math.BigDecimal;
@@ -87,6 +84,13 @@ public interface TestClient {
                                            @AresRequestParam(name = "param2") Object param2,
                                            @AresRequestParam(name = "param3") Object param3);
 
+    @AresMethod(path = "oneRequestHeader")
+    String oneRequestHeader(@AresRequestHeader(name = "header1") String header1);
+
+    @AresMethod(path = "twoRequestHeader")
+    String twoRequestHeader(@AresRequestHeader(name = "header1") String header1,
+                            @AresRequestHeader(name = "header2") Object header2);
+
     @AresMethod(path = "/requestBody")
     String requestBodyWithoutAnnotation(Object param1);
 
@@ -148,6 +152,10 @@ public interface TestClient {
 
     @AresMethod(path = "/wrongPath")
     String wrongPath();
+
+    @AresMethod(path = "/customizeContentType")
+    String customizeContentType(@AresRequestHeader(name = "contentType") String contentType,
+                                @AresRequestBody(contentType = "application/test1; charset=UTF-8") String text);
 
     // boolean
     @AresMethod(path = "/primitiveBoolean")

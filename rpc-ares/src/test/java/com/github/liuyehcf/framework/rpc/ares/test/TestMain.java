@@ -219,6 +219,31 @@ public class TestMain extends BaseConfig {
     }
 
     @Test
+    public void testOneRequestHeader() {
+        String result = testClient.oneRequestHeader("hello");
+
+        Assert.assertEquals("oneRequestHeader(hello)[]", result);
+    }
+
+    @Test
+    public void twoOneRequestHeader() {
+        String result = testClient.twoRequestHeader("hello", "world");
+
+        Assert.assertEquals("twoRequestHeader(hello, world)[]", result);
+    }
+
+    @Test
+    public void twoOneRequestHeaderWithJson() {
+        String result = testClient.twoRequestHeader("hello", Person.builder()
+                .country("China")
+                .name("hechenfeng")
+                .age(18)
+                .build());
+
+        Assert.assertEquals("twoRequestHeader(hello, {\"age\":18,\"country\":\"China\",\"name\":\"hechenfeng\"})[]", result);
+    }
+
+    @Test
     public void requestBodyWithoutAnnotation() {
         try {
             testClient.requestBodyWithoutAnnotation("hello");
@@ -372,6 +397,15 @@ public class TestMain extends BaseConfig {
     @Test
     public void returnNull() {
         Assert.assertNull(testClient.returnNull());
+    }
+
+    @Test
+    public void customizeContentType() {
+        String result = testClient.customizeContentType(null, "hello");
+        Assert.assertEquals("application/test1; charset=UTF-8", result);
+
+        result = testClient.customizeContentType("application/test2; charset=UTF-8", "hello");
+        Assert.assertEquals("application/test1; charset=UTF-8", result);
     }
 
     @Test
