@@ -2,7 +2,7 @@ package com.github.liuyehcf.framework.rpc.maple.test.provider.service;
 
 
 import com.alibaba.fastjson.JSON;
-import com.github.liuyehcf.framework.common.tools.bean.JavaBeanInitializer;
+import com.github.liuyehcf.framework.common.tools.bean.BeanFiller;
 import com.github.liuyehcf.framework.rpc.maple.MapleProvider;
 import com.github.liuyehcf.framework.rpc.maple.netty.provider.ProviderAddress;
 import com.github.liuyehcf.framework.rpc.maple.register.ServiceAddress;
@@ -30,7 +30,7 @@ public class GreetServiceImpl implements GreetService {
 
         System.err.println(String.format("address=%s, request=%s", JSON.toJSONString(address), JSON.toJSONString(request)));
 
-        MapleResult<BizResponse> response = JavaBeanInitializer.createJavaBean(new JavaBeanInitializer.TypeReference<MapleResult<BizResponse>>() {
+        MapleResult<BizResponse> response = BeanFiller.fill(new BeanFiller.TypeReference<MapleResult<BizResponse>>() {
         });
 
         System.err.println(String.format("response=%s", JSON.toJSONString(response)));

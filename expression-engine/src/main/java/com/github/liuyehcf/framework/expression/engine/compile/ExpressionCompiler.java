@@ -5,6 +5,7 @@ import com.github.liuyehcf.framework.compile.engine.CompileResult;
 import com.github.liuyehcf.framework.compile.engine.cfg.lr.Context;
 import com.github.liuyehcf.framework.compile.engine.cfg.lr.LALR;
 import com.github.liuyehcf.framework.compile.engine.grammar.definition.SemanticAction;
+import com.github.liuyehcf.framework.expression.engine.compile.definition.semantic.AbstractSemanticAction;
 import com.github.liuyehcf.framework.expression.engine.compile.optimize.OptimizerPipeline;
 import com.github.liuyehcf.framework.expression.engine.compile.optimize.impl.ConstantExpressionOptimizer;
 import com.github.liuyehcf.framework.expression.engine.compile.optimize.impl.ControlTransferOptimizer;
@@ -121,15 +122,14 @@ public class ExpressionCompiler extends LALR<ExpressionCode> {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         protected void onReduction(Context context) {
-            List<SemanticAction> semanticActions = context.getRawPrimaryProduction().getSemanticActions();
+            List<SemanticAction<?>> semanticActions = context.getRawPrimaryProduction().getSemanticActions();
             if (semanticActions == null) {
                 return;
             }
 
-            for (SemanticAction semanticAction : semanticActions) {
-                semanticAction.onAction(new CompilerContext(context, expressionCode));
+            for (SemanticAction<?> semanticAction : semanticActions) {
+                ((AbstractSemanticAction) semanticAction).onAction(new CompilerContext(context, expressionCode));
             }
         }
 

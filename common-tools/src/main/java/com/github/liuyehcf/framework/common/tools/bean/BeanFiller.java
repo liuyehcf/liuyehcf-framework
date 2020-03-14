@@ -3,7 +3,7 @@ package com.github.liuyehcf.framework.common.tools.bean;
 import java.lang.reflect.*;
 import java.util.*;
 
-public class JavaBeanInitializer {
+public class BeanFiller {
     private static final Byte BYTE_DEFAULT_VALUE = 1;
     private static final Character CHAR_DEFAULT_VALUE = 'a';
     private static final Short SHORT_DEFAULT_VALUE = 2;
@@ -64,7 +64,7 @@ public class JavaBeanInitializer {
      */
     private Map<String, Type> genericTypes;
 
-    private JavaBeanInitializer(Type type, Map<String, Type> superClassGenericTypes) {
+    private BeanFiller(Type type, Map<String, Type> superClassGenericTypes) {
         this.type = type;
         genericTypes = new HashMap<>();
         init(superClassGenericTypes);
@@ -74,17 +74,17 @@ public class JavaBeanInitializer {
      * 唯一对外接口
      */
     @SuppressWarnings("unchecked")
-    public static <T> T createJavaBean(TypeReference<T> typeReference) {
+    public static <T> T fill(TypeReference<T> typeReference) {
         if (typeReference == null) {
             throw new NullPointerException();
         }
-        return (T) createJavaBean(typeReference.getType(), null, null);
+        return (T) fill(typeReference.getType(), null, null);
     }
 
     /**
      * 初始化JavaBean
      */
-    private static Object createJavaBean(Type type, Map<String, Type> superClassGenericTypes, Type superType) {
+    private static Object fill(Type type, Map<String, Type> superClassGenericTypes, Type superType) {
         if (type == null) {
             throw new NullPointerException();
         }
@@ -92,7 +92,7 @@ public class JavaBeanInitializer {
         if (type.equals(superType)) {
             return null;
         }
-        return new JavaBeanInitializer(type, superClassGenericTypes)
+        return new BeanFiller(type, superClassGenericTypes)
                 .doCreateJavaBean();
     }
 
@@ -271,7 +271,7 @@ public class JavaBeanInitializer {
             method.invoke(obj, STRING_DEFAULT_VALUE + getFieldName(method));
         } else {
             // 填充其他类型
-            method.invoke(obj, createJavaBean(paramClass, genericTypes, type));
+            method.invoke(obj, fill(paramClass, genericTypes, type));
         }
     }
 
@@ -286,7 +286,7 @@ public class JavaBeanInitializer {
             setDefaultValueForContainer(obj, method, paramType);
         } else {
             // 其他类型
-            method.invoke(obj, createJavaBean(paramType, genericTypes, type));
+            method.invoke(obj, fill(paramType, genericTypes, type));
         }
     }
 
@@ -357,9 +357,9 @@ public class JavaBeanInitializer {
 
     private Object createJavaBeanWithTypeVariable(Type type) {
         if (type instanceof TypeVariable) {
-            return createJavaBean(genericTypes.get(getNameOfTypeVariable(type)), genericTypes, this.type);
+            return fill(genericTypes.get(getNameOfTypeVariable(type)), genericTypes, this.type);
         } else {
-            return createJavaBean(type, genericTypes, this.type);
+            return fill(type, genericTypes, this.type);
         }
     }
 

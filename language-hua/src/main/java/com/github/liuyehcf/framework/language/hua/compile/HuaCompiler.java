@@ -242,12 +242,12 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
 
         @Override
         protected void onReduction(Context context) {
-            List<SemanticAction> semanticActions = context.getRawPrimaryProduction().getSemanticActions();
+            List<SemanticAction<?>> semanticActions = context.getRawPrimaryProduction().getSemanticActions();
             if (semanticActions == null) {
                 return;
             }
 
-            for (SemanticAction semanticAction : semanticActions) {
+            for (SemanticAction<?> semanticAction : semanticActions) {
                 ((AbstractSemanticAction) semanticAction).onAction(new CompilerContext(context, constantPool, methodInfoTable));
             }
         }

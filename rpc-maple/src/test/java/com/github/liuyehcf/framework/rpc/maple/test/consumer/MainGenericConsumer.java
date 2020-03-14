@@ -2,7 +2,7 @@ package com.github.liuyehcf.framework.rpc.maple.test.consumer;
 
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
-import com.github.liuyehcf.framework.common.tools.bean.JavaBeanInitializer;
+import com.github.liuyehcf.framework.common.tools.bean.BeanFiller;
 import com.github.liuyehcf.framework.common.tools.time.TimeUtils;
 import com.github.liuyehcf.framework.rpc.maple.GenericService;
 import com.github.liuyehcf.framework.rpc.maple.MapleConst;
@@ -41,7 +41,7 @@ public class MainGenericConsumer {
         consumerBean.afterPropertiesSet();
 
         GenericService genericService = (GenericService) consumerBean.getTarget();
-        BizRequest request = JavaBeanInitializer.createJavaBean(new JavaBeanInitializer.TypeReference<BizRequest>() {
+        BizRequest request = BeanFiller.fill(new BeanFiller.TypeReference<BizRequest>() {
         });
 
         AtomicInteger cnt = new AtomicInteger();

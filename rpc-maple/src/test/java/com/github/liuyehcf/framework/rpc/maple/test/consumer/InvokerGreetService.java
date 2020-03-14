@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.rpc.maple.test.consumer;
 
 import com.alibaba.fastjson.JSON;
-import com.github.liuyehcf.framework.common.tools.bean.JavaBeanInitializer;
+import com.github.liuyehcf.framework.common.tools.bean.BeanFiller;
 import com.github.liuyehcf.framework.rpc.maple.test.common.BizRequest;
 import com.github.liuyehcf.framework.rpc.maple.test.common.GreetService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class InvokerGreetService {
     public void init() {
         log.error(greetService.sayHello("liuye"));
 
-        log.error(JSON.toJSONString(greetService.request(JavaBeanInitializer.createJavaBean(new JavaBeanInitializer.TypeReference<BizRequest>() {
+        log.error(JSON.toJSONString(greetService.request(BeanFiller.fill(new BeanFiller.TypeReference<BizRequest>() {
         }))));
 
         log.error(JSON.toJSONString(greetService.request(null)));

@@ -54,14 +54,13 @@ public class CalculatorCompiler extends LALR<CalculatorCode> {
 
         @Override
         protected void onReduction(Context context) {
-            List<SemanticAction> semanticActions = context.getRawPrimaryProduction().getSemanticActions();
+            List<SemanticAction<?>> semanticActions = context.getRawPrimaryProduction().getSemanticActions();
             if (semanticActions == null) {
                 return;
             }
 
-            for (SemanticAction semanticAction : semanticActions) {
-                AbstractSemanticAction abstractSemanticAction = (AbstractSemanticAction) semanticAction;
-                abstractSemanticAction.onAction(new CompilerContext(context, calculatorCode));
+            for (SemanticAction<?> semanticAction : semanticActions) {
+                ((AbstractSemanticAction) semanticAction).onAction(new CompilerContext(context, calculatorCode));
             }
         }
     }

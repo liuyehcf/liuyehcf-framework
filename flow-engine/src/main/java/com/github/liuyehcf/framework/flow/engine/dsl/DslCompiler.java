@@ -4,6 +4,7 @@ import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.compile.engine.cfg.lr.Context;
 import com.github.liuyehcf.framework.compile.engine.cfg.lr.LALR;
 import com.github.liuyehcf.framework.compile.engine.grammar.definition.SemanticAction;
+import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.AbstractSemanticAction;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.model.IDGenerator;
 import com.google.common.collect.Lists;
@@ -74,15 +75,14 @@ public class DslCompiler extends LALR<Flow> {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         protected void onReduction(Context context) {
-            List<SemanticAction> semanticActions = context.getRawPrimaryProduction().getSemanticActions();
+            List<SemanticAction<?>> semanticActions = context.getRawPrimaryProduction().getSemanticActions();
             if (semanticActions == null) {
                 return;
             }
 
-            for (SemanticAction semanticAction : semanticActions) {
-                semanticAction.onAction(new CompilerContext(context, flowStack, idGenerator));
+            for (SemanticAction<?> semanticAction : semanticActions) {
+                ((AbstractSemanticAction) semanticAction).onAction(new CompilerContext(context, flowStack, idGenerator));
             }
         }
     }
