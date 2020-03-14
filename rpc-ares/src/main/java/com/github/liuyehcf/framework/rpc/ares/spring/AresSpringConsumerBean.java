@@ -1,6 +1,7 @@
 package com.github.liuyehcf.framework.rpc.ares.spring;
 
-import com.google.gson.Gson;
+import com.github.liuyehcf.framework.rpc.ares.ObjectToBytesCodes;
+import com.github.liuyehcf.framework.rpc.ares.ObjectToStringCodes;
 import lombok.Data;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Proxy;
+import java.util.List;
 
 /**
  * @author hechenfeng
@@ -21,9 +23,9 @@ public class AresSpringConsumerBean implements FactoryBean<Object>, Initializing
     private HttpClient httpClient;
     @Resource
     private RequestConfig requestConfig;
-    @Resource
-    private Gson gson;
 
+    private List<ObjectToStringCodes<?>> stringCodes;
+    private List<ObjectToBytesCodes<?>> byteCodes;
     private Object target;
     private Class<?> objectType;
     private String schema;
@@ -49,6 +51,6 @@ public class AresSpringConsumerBean implements FactoryBean<Object>, Initializing
         this.target = Proxy.newProxyInstance(
                 this.getClass().getClassLoader(),
                 new Class<?>[]{objectType},
-                new AresConsumerInvocationHandler(httpClient, requestConfig, gson, schema, host, port));
+                new AresConsumerInvocationHandler(httpClient, requestConfig, stringCodes, byteCodes, schema, host, port));
     }
 }

@@ -1,17 +1,14 @@
 package com.github.liuyehcf.framework.rpc.ares.spring;
 
-import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.rpc.ares.*;
 import com.github.liuyehcf.framework.rpc.ares.constant.HttpMethod;
-import com.github.liuyehcf.framework.rpc.ares.constant.SerializeType;
 import com.github.liuyehcf.framework.rpc.ares.util.AresContext;
 import com.github.liuyehcf.framework.rpc.ares.util.PathUtils;
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -28,10 +25,10 @@ import org.springframework.core.annotation.AnnotationUtils;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.nio.charset.Charset;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author hechenfeng
@@ -41,16 +38,21 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
     private final HttpClient httpClient;
     private final RequestConfig requestConfig;
-    private final Gson gson;
+
+    private final List<ObjectToStringCodes<?>> stringCodes;
+    private final List<ObjectToBytesCodes<?>> byteCodes;
 
     private final String schema;
     private final String host;
     private final int port;
 
-    AresConsumerInvocationHandler(HttpClient httpClient, RequestConfig requestConfig, Gson gson, String schema, String host, int port) {
+    AresConsumerInvocationHandler(HttpClient httpClient, RequestConfig requestConfig,
+                                  List<ObjectToStringCodes<?>> stringCodes, List<ObjectToBytesCodes<?>> byteCodes,
+                                  String schema, String host, int port) {
         this.httpClient = httpClient;
         this.requestConfig = requestConfig;
-        this.gson = gson;
+        this.stringCodes = stringCodes;
+        this.byteCodes = byteCodes;
         this.schema = schema;
         this.host = host;
         this.port = port;
@@ -68,7 +70,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         HttpParams httpParams = parseParams(method.getParameters(), args);
         HttpRequestBase httpRequest = buildRequest(path, httpMethod, httpParams);
 
-        return doInvoke(httpRequest, method, aresMethodAnnotation.responseDeserializeType());
+        return doInvoke(httpRequest, method);
     }
 
     private String renderPath(String path, Parameter[] parameters, Object[] args) {
@@ -83,19 +85,19 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             }
 
             String name = aresPathVariable.name();
-            SerializeType serializeType = aresPathVariable.serializeType();
-            context.put(name, serialize(args[i], serializeType));
+            context.put(name, stringEncode(args[i]));
         }
 
         return PathUtils.render(path, context);
     }
 
     private HttpParams parseParams(Parameter[] parameters, Object[] args) {
-        Map<String, Param> queryParams = Maps.newHashMap();
-        Map<String, Param> headers = Maps.newHashMap();
+        Map<String, Object> queryParams = Maps.newHashMap();
+        Map<String, Object> headers = Maps.newHashMap();
 
         boolean hasRequestBody = false;
-        Param requestBody = null;
+        Object requestBody = null;
+        String contentType = null;
 
         for (int i = 0; i < parameters.length; i++) {
             Parameter parameter = parameters[i];
@@ -124,16 +126,17 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 if (queryParams.containsKey(aresRequestParam.name())) {
                     throw new AresException(String.format("duplicate query parameter '%s'", aresRequestParam.name()));
                 }
-                queryParams.put(aresRequestParam.name(), new Param(args[i], null, aresRequestParam.serializeType()));
+                queryParams.put(aresRequestParam.name(), args[i]);
             } else if (aresRequestHeader != null) {
                 if (headers.containsKey(aresRequestHeader.name())) {
                     throw new AresException(String.format("duplicate header '%s'", aresRequestHeader.name()));
                 }
-                headers.put(aresRequestHeader.name(), new Param(args[i], null, aresRequestHeader.serializeType()));
+                headers.put(aresRequestHeader.name(), args[i]);
             } else if (aresRequestBody != null) {
                 Assert.assertFalse(hasRequestBody, "more than one '@AresRequestBody'");
                 hasRequestBody = true;
-                requestBody = new Param(args[i], aresRequestBody.contentType(), aresRequestBody.serializeType());
+                requestBody = args[i];
+                contentType = aresRequestBody.contentType();
             } else {
                 if (aresPathVariable == null) {
                     throw new AresException("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'");
@@ -141,7 +144,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             }
         }
 
-        return new HttpParams(queryParams, headers, requestBody);
+        return new HttpParams(queryParams, headers, requestBody, contentType);
     }
 
     private HttpRequestBase buildRequest(String path, HttpMethod httpMethod, HttpParams httpParams) throws Exception {
@@ -169,22 +172,22 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         }
 
         uriBuilder.setPath(path);
-        if (MapUtils.isNotEmpty(httpParams.queryParams)) {
-            for (Map.Entry<String, Param> entry : httpParams.queryParams.entrySet()) {
-                Param param = entry.getValue();
+        if (MapUtils.isNotEmpty(httpParams.requestParams)) {
+            for (Map.Entry<String, Object> entry : httpParams.requestParams.entrySet()) {
+                Object requestParam = entry.getValue();
 
-                String content = serialize(param.target, param.serializeType);
+                String content = stringEncode(requestParam);
                 if (content != null) {
                     uriBuilder.addParameter(entry.getKey(), content);
                 }
             }
         }
 
-        if (MapUtils.isNotEmpty(httpParams.headers)) {
-            for (Map.Entry<String, Param> entry : httpParams.headers.entrySet()) {
-                Param param = entry.getValue();
+        if (MapUtils.isNotEmpty(httpParams.requestHeaders)) {
+            for (Map.Entry<String, Object> entry : httpParams.requestHeaders.entrySet()) {
+                Object requestHeader = entry.getValue();
 
-                String content = serialize(param.target, param.serializeType);
+                String content = stringEncode(requestHeader);
                 if (content != null) {
                     builder.addHeader(entry.getKey(), content);
                 }
@@ -192,14 +195,16 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         }
 
         if (httpParams.requestBody != null) {
-            if (httpParams.requestBody.target instanceof byte[]) {
-                builder.setEntity(new ByteArrayEntity((byte[]) httpParams.requestBody.target));
-            } else {
-                String content = serialize(httpParams.requestBody.target, httpParams.requestBody.serializeType);
+            byte[] bytes = byteEncode(httpParams.requestBody);
 
-                if (content != null) {
-                    builder.setEntity(new ByteArrayEntity(content.getBytes(), ContentType.parse(httpParams.requestBody.contentType)));
+            if (bytes != null) {
+                ContentType contentType;
+                if (StringUtils.isBlank(httpParams.contentType)) {
+                    contentType = null;
+                } else {
+                    contentType = ContentType.parse(httpParams.contentType);
                 }
+                builder.setEntity(new ByteArrayEntity(bytes, contentType));
             }
         }
 
@@ -208,7 +213,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         return (HttpRequestBase) builder.build();
     }
 
-    private Object doInvoke(HttpRequestBase httpRequest, Method method, SerializeType responseDeserializeType) {
+    private Object doInvoke(HttpRequestBase httpRequest, Method method) {
         httpRequest.setConfig(requestConfig);
 
         String url = null;
@@ -225,7 +230,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                         EntityUtils.toString(response.getEntity())));
             }
 
-            return deserialize(EntityUtils.toByteArray(response.getEntity()), responseDeserializeType, method);
+            return byteDecode(EntityUtils.toByteArray(response.getEntity()), method.getGenericReturnType());
         } catch (AresException e) {
             throw e;
         } catch (Throwable e) {
@@ -238,177 +243,87 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         }
     }
 
-    private String serialize(Object value, SerializeType serializeType) {
-        if (value == null) {
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private String stringEncode(Object obj) {
+        if (obj == null) {
             return null;
         }
 
-        Class<?> type = value.getClass();
-
-        if (ClassUtils.isPrimitiveOrWrapper(type)) {
-            return value.toString();
-        } else if (String.class.equals(type)) {
-            return (String) value;
-        } else if (BigInteger.class.equals(type)) {
-            return value.toString();
-        } else if (BigDecimal.class.equals(type)) {
-            return value.toString();
-        } else {
-            switch (serializeType) {
-                case fastjson:
-                    try {
-                        return JSON.toJSONString(value);
-                    } catch (Exception e) {
-                        throw new AresException("failed to serialize object to json string: " + type.getName(), e);
-                    }
-                case gson:
-                    try {
-                        return gson.toJson(value);
-                    } catch (Exception e) {
-                        throw new AresException("failed to serialize object to json string: " + type.getName(), e);
-                    }
-                default:
-                    throw new UnsupportedOperationException(String.format("unexpected serialize type '%s'", serializeType));
+        if (CollectionUtils.isNotEmpty(stringCodes)) {
+            for (ObjectToStringCodes codes : stringCodes) {
+                if (codes == null) {
+                    continue;
+                }
+                if (!codes.matchPlain(obj)) {
+                    continue;
+                }
+                return codes.encode(obj);
             }
         }
+
+        return Objects.toString(obj);
     }
 
-    private Object deserialize(byte[] entity, SerializeType serializeType, Method method) {
-        Class<?> type = method.getReturnType();
-        if (void.class.equals(type) || Void.class.equals(type)) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private byte[] byteEncode(Object obj) {
+        if (obj == null) {
             return null;
-        } else if (byte[].class.equals(type)) {
-            return entity;
-        } else if (ClassUtils.isPrimitiveOrWrapper(type)) {
-            boolean isPrimitive = type.isPrimitive();
-            boolean isEmpty = ArrayUtils.isEmpty(entity);
-            if (boolean.class.equals(type)
-                    || Boolean.class.equals(type)) {
-                if (isEmpty) {
-                    if (isPrimitive) {
-                        return false;
-                    } else {
-                        return null;
-                    }
-                }
-                return Boolean.valueOf(new String(entity, Charset.defaultCharset()));
-            } else if (byte.class.equals(type)
-                    || Byte.class.equals(type)) {
-                if (isEmpty) {
-                    if (isPrimitive) {
-                        return (byte) 0;
-                    } else {
-                        return null;
-                    }
-                }
-                return Byte.valueOf(new String(entity, Charset.defaultCharset()));
-            } else if (short.class.equals(type)
-                    || Short.class.equals(type)) {
-                if (isEmpty) {
-                    if (isPrimitive) {
-                        return (short) 0;
-                    } else {
-                        return null;
-                    }
-                }
-                return Short.valueOf(new String(entity, Charset.defaultCharset()));
-            } else if (int.class.equals(type)
-                    || Integer.class.equals(type)) {
-                if (isEmpty) {
-                    if (isPrimitive) {
-                        return 0;
-                    } else {
-                        return null;
-                    }
-                }
-                return Integer.valueOf(new String(entity, Charset.defaultCharset()));
-            } else if (long.class.equals(type)
-                    || Long.class.equals(type)) {
-                if (isEmpty) {
-                    if (isPrimitive) {
-                        return 0L;
-                    } else {
-                        return null;
-                    }
-                }
-                return Long.valueOf(new String(entity, Charset.defaultCharset()));
-            } else if (float.class.equals(type)
-                    || Float.class.equals(type)) {
-                if (isEmpty) {
-                    if (isPrimitive) {
-                        return 0f;
-                    } else {
-                        return null;
-                    }
-                }
-                return Float.valueOf(new String(entity, Charset.defaultCharset()));
-            } else if (double.class.equals(type)
-                    || Double.class.equals(type)) {
-                if (isEmpty) {
-                    if (isPrimitive) {
-                        return 0d;
-                    } else {
-                        return null;
-                    }
-                }
-                return Double.valueOf(new String(entity, Charset.defaultCharset()));
-            } else {
-                throw new UnsupportedOperationException("unsupported primitive(or wrapper) type");
-            }
-        } else {
-            boolean isEmpty = ArrayUtils.isEmpty(entity);
+        }
 
-            if (isEmpty) {
-                return null;
-            } else if (String.class.equals(type)) {
-                return new String(entity, Charset.defaultCharset());
-            } else if (BigInteger.class.equals(type)) {
-                return new BigInteger(new String(entity, Charset.defaultCharset()));
-            } else if (BigDecimal.class.equals(type)) {
-                return new BigDecimal(new String(entity, Charset.defaultCharset()));
-            } else {
-                String entityString = new String(entity, Charset.defaultCharset());
-                switch (serializeType) {
-                    case fastjson:
-                        try {
-                            return JSON.parseObject(entityString, method.getGenericReturnType());
-                        } catch (Exception e) {
-                            throw new AresException("failed to parse json object from: " + entityString, e);
-                        }
-                    case gson:
-                        try {
-                            return gson.fromJson(entityString, method.getGenericReturnType());
-                        } catch (Exception e) {
-                            throw new AresException("failed to parse json object from: " + entityString, e);
-                        }
-                    default:
-                        throw new UnsupportedOperationException(String.format("unexpected serialize type '%s'", serializeType));
+        if (CollectionUtils.isNotEmpty(byteCodes)) {
+            for (ObjectToBytesCodes codes : byteCodes) {
+                if (codes == null) {
+                    continue;
                 }
+                if (!codes.matchPlain(obj)) {
+                    continue;
+                }
+                return codes.encode(obj);
             }
         }
+
+        String text = stringEncode(obj);
+        if (text == null) {
+            return null;
+        }
+        return text.getBytes();
+    }
+
+    private Object byteDecode(byte[] bytes, Type targetType) {
+        if (ArrayUtils.isEmpty(bytes)) {
+            return null;
+        }
+
+        if (CollectionUtils.isNotEmpty(byteCodes)) {
+            for (ObjectToBytesCodes<?> codes : byteCodes) {
+                if (codes == null) {
+                    continue;
+                }
+                if (!codes.matchPlainType(targetType)) {
+                    continue;
+                }
+                return codes.decode(bytes, targetType);
+            }
+        }
+
+        if (Objects.equals(String.class, targetType)) {
+            return new String(bytes);
+        }
+
+        throw new AresException("cannot find ObjectToByteCodes compatible with '" + targetType.getTypeName() + "'");
     }
 
     private static final class HttpParams {
-        private final Map<String, Param> queryParams;
-        private final Map<String, Param> headers;
-        private final Param requestBody;
-
-        private HttpParams(Map<String, Param> queryParams, Map<String, Param> headers, Param requestBody) {
-            this.queryParams = queryParams;
-            this.headers = headers;
-            this.requestBody = requestBody;
-        }
-    }
-
-    private static final class Param {
-        private final Object target;
+        private final Map<String, Object> requestParams;
+        private final Map<String, Object> requestHeaders;
+        private final Object requestBody;
         private final String contentType;
-        private final SerializeType serializeType;
 
-        private Param(Object target, String contentType, SerializeType serializeType) {
-            this.target = target;
+        private HttpParams(Map<String, Object> requestParams, Map<String, Object> requestHeaders, Object requestBody, String contentType) {
+            this.requestParams = requestParams;
+            this.requestHeaders = requestHeaders;
+            this.requestBody = requestBody;
             this.contentType = contentType;
-            this.serializeType = serializeType;
         }
     }
 }

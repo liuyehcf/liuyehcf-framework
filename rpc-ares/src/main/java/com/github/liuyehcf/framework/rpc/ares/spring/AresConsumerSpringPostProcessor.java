@@ -2,6 +2,8 @@ package com.github.liuyehcf.framework.rpc.ares.spring;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.rpc.ares.AresConsumer;
+import com.github.liuyehcf.framework.rpc.ares.ObjectToBytesCodes;
+import com.github.liuyehcf.framework.rpc.ares.ObjectToStringCodes;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -14,6 +16,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * @author hechenfeng
@@ -25,6 +28,16 @@ public class AresConsumerSpringPostProcessor implements BeanFactoryPostProcessor
     private static final String FIELD_SCHEMA = "schema";
     private static final String FIELD_HOST = "host";
     private static final String FIELD_PORT = "port";
+    private static final String FIELD_STRING_CODES = "stringCodes";
+    private static final String FIELD_BYTE_CODES = "byteCodes";
+
+    private final List<ObjectToStringCodes<?>> stringCodes;
+    private final List<ObjectToBytesCodes<?>> byteCodes;
+
+    public AresConsumerSpringPostProcessor(List<ObjectToStringCodes<?>> stringCodes, List<ObjectToBytesCodes<?>> byteCodes) {
+        this.stringCodes = stringCodes;
+        this.byteCodes = byteCodes;
+    }
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -62,6 +75,8 @@ public class AresConsumerSpringPostProcessor implements BeanFactoryPostProcessor
 
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(AresSpringConsumerBean.class);
 
+        builder.addPropertyValue(FIELD_STRING_CODES, stringCodes);
+        builder.addPropertyValue(FIELD_BYTE_CODES, byteCodes);
         builder.addPropertyValue(FIELD_OBJECT_TYPE, fieldType);
         builder.addPropertyValue(FIELD_SCHEMA, schema);
         builder.addPropertyValue(FIELD_HOST, domain);

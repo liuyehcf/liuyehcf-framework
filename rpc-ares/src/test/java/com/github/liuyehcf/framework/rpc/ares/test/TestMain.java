@@ -441,7 +441,6 @@ public class TestMain extends BaseConfig {
         Assert.assertFalse(testClient.primitiveWrapperBooleanWithPrimitivePrimitive(false));
         Assert.assertTrue(testClient.primitiveWrapperBooleanWithPrimitivePrimitive(true));
 
-        Assert.assertFalse(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitive(null));
         Assert.assertFalse(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitive(false));
         Assert.assertTrue(testClient.primitiveWrapperBooleanWithPrimitiveWrapperPrimitive(true));
 
@@ -470,7 +469,6 @@ public class TestMain extends BaseConfig {
         // primitive wrapper
         Assert.assertEquals(value = (byte) random.nextInt(), testClient.primitiveWrapperByteWithPrimitivePrimitive(value));
 
-        Assert.assertEquals((byte) 0, testClient.primitiveWrapperByteWithPrimitiveWrapperPrimitive(null));
         Assert.assertEquals(value = (byte) random.nextInt(), testClient.primitiveWrapperByteWithPrimitiveWrapperPrimitive(value));
 
         Assert.assertEquals(value = (byte) random.nextInt(), (byte) testClient.primitiveWrapperByteWithPrimitivePrimitiveWrapper(value));
@@ -496,7 +494,6 @@ public class TestMain extends BaseConfig {
         // primitive wrapper
         Assert.assertEquals(value = (short) random.nextInt(), testClient.primitiveWrapperShortWithPrimitivePrimitive(value));
 
-        Assert.assertEquals((short) 0, testClient.primitiveWrapperShortWithPrimitiveWrapperPrimitive(null));
         Assert.assertEquals(value = (short) random.nextInt(), testClient.primitiveWrapperShortWithPrimitiveWrapperPrimitive(value));
 
         Assert.assertEquals(value = (short) random.nextInt(), (short) testClient.primitiveWrapperShortWithPrimitivePrimitiveWrapper(value));
@@ -522,7 +519,6 @@ public class TestMain extends BaseConfig {
         // primitive wrapper
         Assert.assertEquals(value = random.nextInt(), testClient.primitiveWrapperIntegerWithPrimitivePrimitive(value));
 
-        Assert.assertEquals(0, testClient.primitiveWrapperIntegerWithPrimitiveWrapperPrimitive(null));
         Assert.assertEquals(value = random.nextInt(), testClient.primitiveWrapperIntegerWithPrimitiveWrapperPrimitive(value));
 
         Assert.assertEquals(value = random.nextInt(), (int) testClient.primitiveWrapperIntegerWithPrimitivePrimitiveWrapper(value));
@@ -548,7 +544,6 @@ public class TestMain extends BaseConfig {
         // primitive wrapper
         Assert.assertEquals(value = random.nextLong(), testClient.primitiveWrapperLongWithPrimitivePrimitive(value));
 
-        Assert.assertEquals(0, testClient.primitiveWrapperLongWithPrimitiveWrapperPrimitive(null));
         Assert.assertEquals(value = random.nextLong(), testClient.primitiveWrapperLongWithPrimitiveWrapperPrimitive(value));
 
         Assert.assertEquals(value = random.nextLong(), (long) testClient.primitiveWrapperLongWithPrimitivePrimitiveWrapper(value));
@@ -574,7 +569,6 @@ public class TestMain extends BaseConfig {
         // primitive wrapper
         Assert.assertEquals(value = random.nextFloat(), testClient.primitiveWrapperFloatWithPrimitivePrimitive(value), 1e-10);
 
-        Assert.assertEquals(0, testClient.primitiveWrapperFloatWithPrimitiveWrapperPrimitive(null), 1e-10);
         Assert.assertEquals(value = random.nextFloat(), testClient.primitiveWrapperFloatWithPrimitiveWrapperPrimitive(value), 1e-10);
 
         Assert.assertEquals(value = random.nextFloat(), testClient.primitiveWrapperFloatWithPrimitivePrimitiveWrapper(value), 1e-10);
@@ -600,7 +594,6 @@ public class TestMain extends BaseConfig {
         // primitive wrapper
         Assert.assertEquals(value = random.nextDouble(), testClient.primitiveWrapperDoubleWithPrimitivePrimitive(value), 1e-10);
 
-        Assert.assertEquals(0, testClient.primitiveWrapperDoubleWithPrimitiveWrapperPrimitive(null), 1e-10);
         Assert.assertEquals(value = random.nextDouble(), testClient.primitiveWrapperDoubleWithPrimitiveWrapperPrimitive(value), 1e-10);
 
         Assert.assertEquals(value = random.nextDouble(), testClient.primitiveWrapperDoubleWithPrimitivePrimitiveWrapper(value), 1e-10);

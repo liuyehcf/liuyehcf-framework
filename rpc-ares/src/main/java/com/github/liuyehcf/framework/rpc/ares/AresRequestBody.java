@@ -1,7 +1,5 @@
 package com.github.liuyehcf.framework.rpc.ares;
 
-import com.github.liuyehcf.framework.rpc.ares.constant.SerializeType;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -21,9 +19,4 @@ public @interface AresRequestBody {
      * @see org.apache.http.entity.ContentType
      */
     String contentType() default "application/json; charset=UTF-8";
-
-    /**
-     * serialize type
-     */
-    SerializeType serializeType() default SerializeType.fastjson;
 }

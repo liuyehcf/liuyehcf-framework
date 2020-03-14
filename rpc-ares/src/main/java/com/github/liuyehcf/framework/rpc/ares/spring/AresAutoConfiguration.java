@@ -1,9 +1,9 @@
 package com.github.liuyehcf.framework.rpc.ares.spring;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.github.liuyehcf.framework.rpc.ares.ObjectToBytesCodes;
+import com.github.liuyehcf.framework.rpc.ares.ObjectToStringCodes;
+import com.github.liuyehcf.framework.rpc.ares.codes.*;
 import lombok.Data;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.http.NoHttpResponseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -61,28 +61,68 @@ public class AresAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public Gson gson(@Autowired List<AresJsonSerializer> serializers,
-                     @Autowired List<AresJsonDeserializer> deserializers) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-
-        if (CollectionUtils.isNotEmpty(serializers)) {
-            for (AresJsonSerializer serializer : serializers) {
-                gsonBuilder.registerTypeAdapter(serializer.getType(), serializer.getSerializer());
-            }
-        }
-
-        if (CollectionUtils.isNotEmpty(deserializers)) {
-            for (AresJsonDeserializer deserializer : deserializers) {
-                gsonBuilder.registerTypeAdapter(deserializer.getType(), deserializer.getDeserializer());
-            }
-        }
-
-        return gsonBuilder.create();
+    public BeanFactoryPostProcessor aresConsumerSpringPostProcessor(@Autowired List<ObjectToStringCodes<?>> stringCodes,
+                                                                    @Autowired List<ObjectToBytesCodes<?>> byteCodes) {
+        return new AresConsumerSpringPostProcessor(stringCodes, byteCodes);
     }
 
     @Bean
-    public BeanFactoryPostProcessor aresConsumerSpringPostProcessor() {
-        return new AresConsumerSpringPostProcessor();
+    public BytesToBytesCodes bytesToByteCodes() {
+        return new BytesToBytesCodes();
+    }
+
+    @Bean
+    public BooleanToBytesCodes booleanToBytesCodes() {
+        return new BooleanToBytesCodes();
+    }
+
+    @Bean
+    public ByteToBytesCodes byteToByteCodes() {
+        return new ByteToBytesCodes();
+    }
+
+    @Bean
+    public ShortToBytesCodes shortToByteCodes() {
+        return new ShortToBytesCodes();
+    }
+
+    @Bean
+    public IntToBytesCodes intToByteCodes() {
+        return new IntToBytesCodes();
+    }
+
+    @Bean
+    public LongToBytesCodes longToByteCodes() {
+        return new LongToBytesCodes();
+    }
+
+    @Bean
+    public FloatToBytesCodes floatToByteCodes() {
+        return new FloatToBytesCodes();
+    }
+
+    @Bean
+    public DoubleToBytesCodes doubleToByteCodes() {
+        return new DoubleToBytesCodes();
+    }
+
+    @Bean
+    public VoidToBytesCodes voidToBytesCodes() {
+        return new VoidToBytesCodes();
+    }
+
+    @Bean
+    public MapToBytesCodes mapToBytesCodes() {
+        return new MapToBytesCodes();
+    }
+
+    @Bean
+    public BigIntegerToBytesCodes bigIntegerToBytesCodes() {
+        return new BigIntegerToBytesCodes();
+    }
+
+    @Bean
+    public BigDecimalToBytesCodes bigDecimalToBytesCodes() {
+        return new BigDecimalToBytesCodes();
     }
 }

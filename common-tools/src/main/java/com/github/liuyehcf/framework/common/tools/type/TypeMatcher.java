@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.io.athena.processor;
+package com.github.liuyehcf.framework.common.tools.type;
 
 import java.lang.reflect.*;
 
