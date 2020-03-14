@@ -316,13 +316,7 @@ public class NfaMatcher implements Matcher {
             } else if (o1.getFirst() > o2.getFirst()) {
                 return 1;
             } else {
-                if (o1.getSecond() < o2.getSecond()) {
-                    return -1;
-                } else if (o1.getSecond() > o2.getSecond()) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+                return o1.getSecond().compareTo(o2.getSecond());
             }
         });
 

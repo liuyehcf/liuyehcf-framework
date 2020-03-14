@@ -45,7 +45,7 @@ public class CharIdentifier implements TokenIdentifier {
             if (1 < remainInput.length() && remainInput.charAt(1) == '\\') {
                 if (3 < remainInput.length() && ESCAPE_CHARS.containsKey(remainInput.charAt(2)) && remainInput.charAt(3) == '\'') {
                     tokenContext.setMoveLength(4);
-                    return new Token(id, "\'" + (char) (int) ESCAPE_CHARS.get(remainInput.charAt(2)) + "\'");
+                    return new Token(id, "'" + (char) (int) ESCAPE_CHARS.get(remainInput.charAt(2)) + "'");
                 } else {
                     return null;
                 }

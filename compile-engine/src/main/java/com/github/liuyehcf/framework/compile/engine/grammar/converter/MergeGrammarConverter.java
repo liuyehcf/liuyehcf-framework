@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 合并具有相同左部的产生式的文法转换器
@@ -62,10 +61,7 @@ public class MergeGrammarConverter extends AbstractGrammarConverter implements S
 
         return Grammar.create(
                 originalGrammar.getStart(),
-                productionMap.entrySet()
-                        .stream()
-                        .map(Map.Entry::getValue)
-                        .collect(Collectors.toList())
+                new ArrayList<>(productionMap.values())
         );
     }
 }

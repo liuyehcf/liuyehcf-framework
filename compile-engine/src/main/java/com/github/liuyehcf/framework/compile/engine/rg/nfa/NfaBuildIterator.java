@@ -72,11 +72,11 @@ public class NfaBuildIterator {
     }
 
     private StackUnion createStackUnitWithNfaClosure(NfaClosure nfaClosure) {
-        return this.new StackUnion(nfaClosure);
+        return new StackUnion(nfaClosure);
     }
 
     private StackUnion createStackUnitWithParallelGroup() {
-        return this.new StackUnion(null);
+        return new StackUnion(null);
     }
 
     private void moveForward() {
@@ -967,7 +967,7 @@ public class NfaBuildIterator {
     /**
      * 栈元素，元素为NfaClosure，或者一个占位符 当nfaClosure不为空时，就持有了一个NfaClosure 当nfaClosure为空时，即遇到'|'符号，压入了一个占位符
      */
-    private class StackUnion {
+    private static class StackUnion {
         private NfaClosure nfaClosure;
 
         private StackUnion(NfaClosure nfaClosure) {

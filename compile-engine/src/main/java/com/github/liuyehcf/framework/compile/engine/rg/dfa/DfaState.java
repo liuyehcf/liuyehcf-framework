@@ -55,8 +55,7 @@ public class DfaState {
     private Set<Integer> groupReceive = new HashSet<>();
 
     static DfaState createDfaStateWithNfaStates(List<NfaState> nfaStates) {
-        LinkedList<NfaState> stack = new LinkedList<>();
-        stack.addAll(nfaStates);
+        LinkedList<NfaState> stack = new LinkedList<>(nfaStates);
 
         DfaState dfaState = new DfaState();
         dfaState.addNfaStates(nfaStates);

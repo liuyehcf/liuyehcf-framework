@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.compile.engine.grammar.definition;
 
 import com.github.liuyehcf.framework.compile.engine.utils.ListUtils;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -121,7 +122,7 @@ public class SymbolString implements Comparable<SymbolString>, Serializable {
     }
 
     @Override
-    public int compareTo(SymbolString o) {
+    public int compareTo(@Nonnull SymbolString o) {
         int res;
         int i = 0;
         while (i < this.symbols.size()

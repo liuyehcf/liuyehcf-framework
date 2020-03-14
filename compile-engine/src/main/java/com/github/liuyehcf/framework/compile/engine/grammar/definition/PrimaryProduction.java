@@ -29,10 +29,10 @@ public class PrimaryProduction implements Comparable<PrimaryProduction>, Seriali
     /**
      * 当前产生式的规约操作（针对LR文法）
      */
-    private final List<SemanticAction> semanticActions;
+    private final List<SemanticAction<?>> semanticActions;
 
     public PrimaryProduction(Symbol left, SymbolString right,
-                             List<SemanticAction> semanticActions) {
+                             List<SemanticAction<?>> semanticActions) {
         this.left = left;
         this.right = right;
         if (semanticActions == null) {
@@ -42,13 +42,13 @@ public class PrimaryProduction implements Comparable<PrimaryProduction>, Seriali
         }
     }
 
-    public static PrimaryProduction create(Symbol left, SymbolString right, SemanticAction semanticAction,
-                                           SemanticAction... semanticActions) {
+    public static PrimaryProduction create(Symbol left, SymbolString right, SemanticAction<?> semanticAction,
+                                           SemanticAction<?>... semanticActions) {
         return create(left, right, ListUtils.of(semanticAction, ListUtils.of(semanticActions)));
     }
 
     public static PrimaryProduction create(Symbol left, SymbolString right,
-                                           List<SemanticAction> semanticActions) {
+                                           List<SemanticAction<?>> semanticActions) {
         return new PrimaryProduction(left, right, semanticActions);
     }
 
@@ -60,7 +60,7 @@ public class PrimaryProduction implements Comparable<PrimaryProduction>, Seriali
         return right;
     }
 
-    public List<SemanticAction> getSemanticActions() {
+    public List<SemanticAction<?>> getSemanticActions() {
         return semanticActions;
     }
 
