@@ -29,6 +29,13 @@ public @interface AresMethod {
     HttpMethod method() default HttpMethod.GET;
 
     /**
+     * content type
+     *
+     * @see org.apache.http.entity.ContentType
+     */
+    String contentType() default "application/json; charset=UTF-8";
+
+    /**
      * deserialize type of response body
      */
     SerializeType responseDeserializeType() default SerializeType.fastjson;

@@ -91,6 +91,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
     private HttpParams parseParams(Parameter[] parameters, Object[] args) {
         Map<String, Param> queryParams = Maps.newHashMap();
+        Map<String, Param> headers = Maps.newHashMap();
 
         boolean hasRequestBody = false;
         Param requestBody = null;
@@ -99,29 +100,47 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             Parameter parameter = parameters[i];
             AresPathVariable aresPathVariable = AnnotationUtils.getAnnotation(parameter, AresPathVariable.class);
             AresRequestParam aresRequestParam = AnnotationUtils.getAnnotation(parameter, AresRequestParam.class);
+            AresHeader aresHeader = AnnotationUtils.getAnnotation(parameter, AresHeader.class);
             AresRequestBody aresRequestBody = AnnotationUtils.getAnnotation(parameter, AresRequestBody.class);
 
-            if (aresPathVariable != null && aresRequestParam != null
-                    || aresPathVariable != null && aresRequestBody != null
-                    || aresRequestParam != null && aresRequestBody != null) {
+            int annotationNum = 0;
+            if (aresPathVariable != null) {
+                annotationNum++;
+            }
+            if (aresRequestParam != null) {
+                annotationNum++;
+            }
+            if (aresHeader != null) {
+                annotationNum++;
+            }
+            if (aresRequestBody != null) {
+                annotationNum++;
+            }
+
+            if (annotationNum > 1) {
                 throw new AresException("parameter contains more than one of ares annotations");
             } else if (aresRequestParam != null) {
                 if (queryParams.containsKey(aresRequestParam.name())) {
                     throw new AresException(String.format("duplicate query parameter '%s'", aresRequestParam.name()));
                 }
                 queryParams.put(aresRequestParam.name(), new Param(args[i], aresRequestParam.serializeType()));
+            } else if (aresHeader != null) {
+                if (headers.containsKey(aresHeader.name())) {
+                    throw new AresException(String.format("duplicate header '%s'", aresHeader.name()));
+                }
+                headers.put(aresHeader.name(), new Param(args[i], aresHeader.serializeType()));
             } else if (aresRequestBody != null) {
                 Assert.assertFalse(hasRequestBody, "more than one '@AresRequestBody'");
                 hasRequestBody = true;
                 requestBody = new Param(args[i], aresRequestBody.serializeType());
             } else {
                 if (aresPathVariable == null) {
-                    throw new AresException("parameter missing '@AresRequestParam' or '@AresRequestBody'");
+                    throw new AresException("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'");
                 }
             }
         }
 
-        return new HttpParams(queryParams, requestBody);
+        return new HttpParams(queryParams, headers, requestBody);
     }
 
     private HttpRequestBase buildRequest(String path, HttpMethod httpMethod, HttpParams httpParams) throws Exception {
@@ -156,6 +175,17 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 String content = serialize(param.target, param.serializeType);
                 if (content != null) {
                     uriBuilder.addParameter(entry.getKey(), content);
+                }
+            }
+        }
+
+        if (MapUtils.isNotEmpty(httpParams.headers)) {
+            for (Map.Entry<String, Param> entry : httpParams.headers.entrySet()) {
+                Param param = entry.getValue();
+
+                String content = serialize(param.target, param.serializeType);
+                if (content != null) {
+                    builder.addHeader(entry.getKey(), content);
                 }
             }
         }
@@ -359,10 +389,12 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
     private static final class HttpParams {
         private final Map<String, Param> queryParams;
+        private final Map<String, Param> headers;
         private final Param requestBody;
 
-        private HttpParams(Map<String, Param> queryParams, Param requestBody) {
+        private HttpParams(Map<String, Param> queryParams, Map<String, Param> headers, Param requestBody) {
             this.queryParams = queryParams;
+            this.headers = headers;
             this.requestBody = requestBody;
         }
     }

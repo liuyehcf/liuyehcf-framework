@@ -58,7 +58,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.oneRequestParamWituoutParamAnnotation(null);
         } catch (Exception e) {
-            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresRequestBody'", e.getMessage());
+            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
         throw new Error();
@@ -117,7 +117,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.twoRequestParamMissingFirstAnnotation("param1", "param2");
         } catch (Exception e) {
-            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresRequestBody'", e.getMessage());
+            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
         throw new Error();
@@ -128,7 +128,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.twoRequestParamMissingSecondAnnotation("param1", "param2");
         } catch (Exception e) {
-            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresRequestBody'", e.getMessage());
+            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
         throw new Error();
@@ -139,7 +139,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.twoRequestParamMissingBothAnnotation("param1", "param2");
         } catch (Exception e) {
-            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresRequestBody'", e.getMessage());
+            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
         throw new Error();
@@ -223,7 +223,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.requestBodyWithoutAnnotation("hello");
         } catch (Exception e) {
-            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresRequestBody'", e.getMessage());
+            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
         throw new Error();
@@ -271,7 +271,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.oneRequestParamOneRequestBodyMissingFirstAnnotation("hello", "world");
         } catch (Exception e) {
-            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresRequestBody'", e.getMessage());
+            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
         throw new Error();
@@ -282,7 +282,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.oneRequestParamOneRequestBodyMissingSecondAnnotation("hello", "world");
         } catch (Exception e) {
-            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresRequestBody'", e.getMessage());
+            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
         throw new Error();
@@ -293,7 +293,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.oneRequestParamOneRequestBodyMissingBothAnnotation("hello", "world");
         } catch (Exception e) {
-            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresRequestBody'", e.getMessage());
+            Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
         throw new Error();

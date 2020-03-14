@@ -15,5 +15,5 @@ import java.lang.reflect.Type;
 public class AresJsonSerializer {
 
     private Type type;
-    private JsonSerializer serializer;
+    private JsonSerializer<?> serializer;
 }
