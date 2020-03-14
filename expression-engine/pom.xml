@@ -6,7 +6,7 @@
 
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>expression-engine</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
     <name>expression-engine</name>
     <description>expression engine</description>
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.github.liuyehcf</groupId>
             <artifactId>compile-engine</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
