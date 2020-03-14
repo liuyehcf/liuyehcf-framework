@@ -19,6 +19,7 @@ import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.Execut
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ListenerContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.factory.Factory;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.DefaultDelegateField;
+import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.FieldCondition;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.*;
 import com.github.liuyehcf.framework.flow.engine.util.PlaceHolderUtils;
@@ -286,7 +287,7 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
                 continue;
             }
 
-            argumentValue = parsePlaceHolderIfNecessary(argumentValue);
+            argumentValue = parsePlaceHolderIfNecessary(delegate, argumentName, argumentValue);
 
             this.argumentNames[actualIndex] = argumentName;
             this.argumentValues[actualIndex] = argumentValue;
@@ -298,12 +299,33 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
         injectMissingDelegateFields(delegate);
     }
 
-    private Object parsePlaceHolderIfNecessary(Object originValue) {
+    private Object parsePlaceHolderIfNecessary(Delegate delegate, String fieldName, Object originValue) {
+        if (originValue == null) {
+            return null;
+        }
         if (!(originValue instanceof String)) {
             return originValue;
         }
+        if (delegate instanceof ListenerDelegate
+                && Listener.ARGUMENT_NAME_EVENT.equals(fieldName)) {
+            return originValue;
+        }
 
-        return PlaceHolderUtils.parsePlaceHolder(executableContext.getEnv(), (String) originValue);
+        Method setMethod = ReflectionUtils.getDelegateFieldSetMethod(delegate, fieldName);
+        if (setMethod != null) {
+            FieldCondition annotation = setMethod.getAnnotation(FieldCondition.class);
+            if (annotation == null || annotation.parsePlaceHolder()) {
+                return PlaceHolderUtils.parsePlaceHolder(executableContext.getEnv(), (String) originValue);
+            }
+            return originValue;
+        }
+
+        Field field = ReflectionUtils.getDelegateField(delegate, fieldName);
+        FieldCondition annotation = field.getAnnotation(FieldCondition.class);
+        if (annotation == null || annotation.parsePlaceHolder()) {
+            return PlaceHolderUtils.parsePlaceHolder(executableContext.getEnv(), (String) originValue);
+        }
+        return originValue;
     }
 
     private void injectMissingDelegateFields(Delegate delegate) {

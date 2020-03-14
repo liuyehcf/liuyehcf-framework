@@ -53,6 +53,7 @@ public class TestRuntimeBase {
         engine.registerActionDelegateFactory("printAction", PrintAction::new);
         engine.registerActionDelegateFactory("throwExceptionAction", ThrowExceptionAction::new);
         engine.registerActionDelegateFactory("throwLinkTerminateAction", ThrowLinkTerminateAction::new);
+        engine.registerActionDelegateFactory("fieldConditionAction", FieldConditionAction::new);
         engine.registerActionDelegateFactory("getPropertyAction", GetPropertyAction::new);
         engine.registerActionDelegateFactory("setPropertyAction", SetPropertyAction::new);
         engine.registerActionDelegateFactory("missingArgumentAction", MissingArgumentAction::new);
