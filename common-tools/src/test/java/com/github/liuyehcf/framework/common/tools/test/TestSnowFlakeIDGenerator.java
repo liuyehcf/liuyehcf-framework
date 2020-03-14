@@ -2,7 +2,7 @@ package com.github.liuyehcf.framework.common.tools.test;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.common.tools.number.SnowFlakeIDGenerator;
-import com.github.liuyehcf.framework.common.tools.time.TimeUnitUtils;
+import com.github.liuyehcf.framework.common.tools.time.TimeUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.junit.Test;
@@ -40,9 +40,9 @@ public class TestSnowFlakeIDGenerator {
             futures.add(future);
         }
 
-        TimeUnitUtils.sleep(10, TimeUnit.SECONDS);
+        TimeUtils.sleep(10, TimeUnit.SECONDS);
         executorService.shutdownNow();
-        TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+        TimeUtils.sleep(1, TimeUnit.SECONDS);
 
         for (Future<Void> future : futures) {
             Assert.assertNull(future.get());

@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.flow.engine.test.runtime.trace;
 
+import com.github.liuyehcf.framework.common.tools.time.TimeUtils;
 import com.github.liuyehcf.framework.flow.engine.FlowErrorCode;
 import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.github.liuyehcf.framework.flow.engine.model.ElementType;
@@ -9,7 +10,6 @@ import com.github.liuyehcf.framework.flow.engine.test.runtime.TestRuntimeBase;
 import org.junit.Assert;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 /**
@@ -632,10 +632,6 @@ public class TestTraceBase extends TestRuntimeBase {
     }
 
     private void sleep(int seconds) {
-        try {
-            TimeUnit.SECONDS.sleep(seconds);
-        } catch (InterruptedException e) {
-            // ignore
-        }
+        TimeUtils.sleep(seconds);
     }
 }

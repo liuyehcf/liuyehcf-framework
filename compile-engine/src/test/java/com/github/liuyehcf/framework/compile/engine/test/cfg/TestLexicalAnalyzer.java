@@ -28,7 +28,7 @@ public class TestLexicalAnalyzer {
 
     @Test
     public void testLexicalAnalyze1() {
-        LexicalAnalyzer analyzer = DefaultLexicalAnalyzer.Builder.builder()
+        LexicalAnalyzer analyzer = DefaultLexicalAnalyzer.Builder.create()
                 .addNormalMorpheme(Symbol.createTerminator("int"), "int")
                 .addRegexMorpheme(Symbol.createRegexTerminator("id"), getIdRegex())
                 .addNormalMorpheme(Symbol.createTerminator("="), "=")

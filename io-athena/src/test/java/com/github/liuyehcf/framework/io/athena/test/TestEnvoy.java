@@ -1,7 +1,7 @@
 package com.github.liuyehcf.framework.io.athena.test;
 
 import com.github.liuyehcf.framework.common.tools.number.NumberUtils;
-import com.github.liuyehcf.framework.common.tools.time.TimeUnitUtils;
+import com.github.liuyehcf.framework.common.tools.time.TimeUtils;
 import com.github.liuyehcf.framework.io.athena.*;
 import com.github.liuyehcf.framework.io.athena.event.*;
 import com.google.common.collect.Lists;
@@ -220,7 +220,7 @@ public class TestEnvoy {
                 AthenaConfig.DEFAULT_RETRY_INTERVAL);
         envoySeed.start();
 
-        TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+        TimeUtils.sleep(1, TimeUnit.SECONDS);
 
         Envoy normal = createEnvoy(7,
                 2, Lists.newArrayList(1),
@@ -241,7 +241,7 @@ public class TestEnvoy {
             envoy.start();
         }
 
-        TimeUnitUtils.sleep(6, TimeUnit.SECONDS);
+        TimeUtils.sleep(6, TimeUnit.SECONDS);
         // this time all the followers haven't send LeaderKeepAlive
         assertCnt(1,
                 7, 7,
@@ -256,7 +256,7 @@ public class TestEnvoy {
                 0, 0,
                 0, 0);
 
-        TimeUnitUtils.sleep(4, TimeUnit.SECONDS);
+        TimeUtils.sleep(4, TimeUnit.SECONDS);
         // this time all the followers have send LeaderKeepAlive
         assertCnt(1,
                 7, 7,
@@ -283,7 +283,7 @@ public class TestEnvoy {
                 AthenaConfig.DEFAULT_RETRY_INTERVAL);
         envoy1.start();
 
-        TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+        TimeUtils.sleep(1, TimeUnit.SECONDS);
 
         // member 2
         Envoy envoy2 = createEnvoy(3,
@@ -294,7 +294,7 @@ public class TestEnvoy {
                 AthenaConfig.DEFAULT_RETRY_INTERVAL);
         envoy2.start();
 
-        TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+        TimeUtils.sleep(1, TimeUnit.SECONDS);
 
         // member 3
         Envoy envoy3 = createEnvoy(3,
@@ -305,7 +305,7 @@ public class TestEnvoy {
                 AthenaConfig.DEFAULT_RETRY_INTERVAL);
         envoy3.start();
 
-        TimeUnitUtils.sleep(10, TimeUnit.SECONDS);
+        TimeUtils.sleep(10, TimeUnit.SECONDS);
 
         assertCnt(1,
                 3, 4,
@@ -338,7 +338,7 @@ public class TestEnvoy {
                 AthenaConfig.DEFAULT_RETRY_INTERVAL);
         envoy1.start();
 
-        TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+        TimeUtils.sleep(1, TimeUnit.SECONDS);
 
         Envoy envoy2 = createEnvoy(3,
                 2, Lists.newArrayList(1),
@@ -348,7 +348,7 @@ public class TestEnvoy {
                 AthenaConfig.DEFAULT_RETRY_INTERVAL);
         envoy2.start();
 
-        TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+        TimeUtils.sleep(1, TimeUnit.SECONDS);
 
         Envoy envoy3 = createEnvoy(3,
                 3, Lists.newArrayList(1),
@@ -358,11 +358,11 @@ public class TestEnvoy {
                 AthenaConfig.DEFAULT_RETRY_INTERVAL);
         envoy3.start();
 
-        TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+        TimeUtils.sleep(1, TimeUnit.SECONDS);
 
         envoy1.stop();
 
-        TimeUnitUtils.sleep(15, TimeUnit.SECONDS);
+        TimeUtils.sleep(15, TimeUnit.SECONDS);
 
         assertCnt(1,
                 3, 3,
@@ -492,9 +492,9 @@ public class TestEnvoy {
                 2);
 
         envoy1.start();
-        TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+        TimeUtils.sleep(1, TimeUnit.SECONDS);
         envoy2.start();
-        TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+        TimeUtils.sleep(1, TimeUnit.SECONDS);
 
         AtomicLong count = new AtomicLong();
         envoy2.registerReceiver(ReceiverBuilder.create()
@@ -510,7 +510,7 @@ public class TestEnvoy {
         Address address = Address.of(AthenaConfig.DEFAULT_HOST, 10002);
         for (int i = 0; i < 20000; i++) {
             if (envoy1.whisper(address, new byte[NumberUtils._1M])) {
-                TimeUnitUtils.sleep(10, TimeUnit.MILLISECONDS);
+                TimeUtils.sleep(10, TimeUnit.MILLISECONDS);
             }
         }
 
@@ -535,7 +535,7 @@ public class TestEnvoy {
             Envoy envoy = envoys.get(i);
             LOGGER.error("[{}] start, index={}; totalNum={}", envoy.getCluster().getSelf(), i + 1, totalNum);
             envoy.start();
-            TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+            TimeUtils.sleep(1, TimeUnit.SECONDS);
         }
         assertEnvoyEquals(1, totalNum, envoys);
 
@@ -544,7 +544,7 @@ public class TestEnvoy {
             Envoy envoy = envoys.get(i);
             LOGGER.error("[{}] stop, index={}; totalNum={}", envoy.getCluster().getSelf(), i + 1, totalNum);
             envoy.stop();
-            TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+            TimeUtils.sleep(5, TimeUnit.SECONDS);
         }
         for (int i = 0; i < totalNum; i++) {
             assertCnt(i + 1,
@@ -577,9 +577,9 @@ public class TestEnvoy {
             Envoy envoy = envoys.get(i);
             LOGGER.error("[{}] start, index={}; totalNum={}", envoy.getCluster().getSelf(), i + 1, totalNum);
             envoy.start();
-            TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+            TimeUtils.sleep(1, TimeUnit.SECONDS);
         }
-        TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+        TimeUtils.sleep(5, TimeUnit.SECONDS);
         assertEnvoyEquals(1, totalNum, envoys);
 
         after();
@@ -603,14 +603,14 @@ public class TestEnvoy {
         Envoy envoy = envoys.get(0);
         LOGGER.error("[{}] start, index={}; totalNum={}", envoy.getCluster().getSelf(), 1, totalNum);
         envoy.start();
-        TimeUnitUtils.sleep(2, TimeUnit.SECONDS);
+        TimeUtils.sleep(2, TimeUnit.SECONDS);
         // start followers
         for (int i = 1; i < totalNum; i++) {
             envoy = envoys.get(i);
             LOGGER.error("[{}] start, index={}; totalNum={}", envoy.getCluster().getSelf(), i + 1, totalNum);
             envoy.start();
         }
-        TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+        TimeUtils.sleep(5, TimeUnit.SECONDS);
         assertEnvoyEquals(1, totalNum, envoys);
 
         after();
@@ -636,12 +636,12 @@ public class TestEnvoy {
             LOGGER.error("[{}] start, index={}; totalNum={}", envoy.getCluster().getSelf(), i + 1, totalNum);
             envoy.start();
         }
-        TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+        TimeUtils.sleep(1, TimeUnit.SECONDS);
         // start seed
         Envoy envoy = envoys.get(0);
         LOGGER.error("[{}] start, index={}; totalNum={}", envoy.getCluster().getSelf(), 1, totalNum);
         envoy.start();
-        TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+        TimeUtils.sleep(5, TimeUnit.SECONDS);
         assertEnvoyEquals(1, totalNum, envoys);
 
         after();
@@ -662,7 +662,7 @@ public class TestEnvoy {
                     2));
         }
         envoys.forEach(Envoy::start);
-        TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+        TimeUtils.sleep(5, TimeUnit.SECONDS);
         assertEnvoyEquals(null, totalNum, envoys);
 
         after();
@@ -696,7 +696,7 @@ public class TestEnvoy {
                     2));
         }
         envoys.forEach(Envoy::start);
-        TimeUnitUtils.sleep(15, TimeUnit.SECONDS);
+        TimeUtils.sleep(15, TimeUnit.SECONDS);
         assertEnvoyEquals(null, totalNum, envoys);
 
         after();
@@ -724,9 +724,9 @@ public class TestEnvoy {
             Envoy envoy = envoys.get(i);
             LOGGER.error("[{}] start, index={}; totalNum={}", envoy.getCluster().getSelf(), i + 1, totalNum);
             envoy.start();
-            TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+            TimeUtils.sleep(1, TimeUnit.SECONDS);
         }
-        TimeUnitUtils.sleep(3, TimeUnit.SECONDS);
+        TimeUtils.sleep(3, TimeUnit.SECONDS);
         assertEnvoyEquals(1, totalNum, envoys);
 
         after();
@@ -753,7 +753,7 @@ public class TestEnvoy {
                     2));
         }
         envoys.forEach(Envoy::start);
-        TimeUnitUtils.sleep(15, TimeUnit.SECONDS);
+        TimeUtils.sleep(15, TimeUnit.SECONDS);
         assertEnvoyEquals(null, totalNum, envoys);
 
         after();
@@ -776,7 +776,7 @@ public class TestEnvoy {
                     2));
         }
         envoys.forEach(Envoy::start);
-        TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+        TimeUtils.sleep(5, TimeUnit.SECONDS);
         assertEnvoyEquals(++version, totalNum, envoys);
 
         Collections.shuffle(envoys);
@@ -789,13 +789,13 @@ public class TestEnvoy {
                 LOGGER.error("offline leader [{}]; activeNum={}; totalNum={}", envoy.getCluster().getSelf(), activeNum, totalNum);
                 envoy.stop();
                 iterator.remove();
-                TimeUnitUtils.sleep(9, TimeUnit.SECONDS);
+                TimeUtils.sleep(9, TimeUnit.SECONDS);
                 assertEnvoyEquals(++version, activeNum, envoys);
             } else {
                 LOGGER.error("offline follower [{}]; activeNum={}; totalNum={}", envoy.getCluster().getSelf(), activeNum, totalNum);
                 envoy.stop();
                 iterator.remove();
-                TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+                TimeUtils.sleep(5, TimeUnit.SECONDS);
                 assertEnvoyEquals(version, activeNum, envoys);
             }
         }
@@ -820,7 +820,7 @@ public class TestEnvoy {
                     2));
         }
         envoys.forEach(Envoy::start);
-        TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+        TimeUtils.sleep(5, TimeUnit.SECONDS);
         assertEnvoyEquals(++version, totalNum, envoys);
 
         // continues stop leader
@@ -839,7 +839,7 @@ public class TestEnvoy {
             LOGGER.error("offline leader [{}]; activeNum={}; totalNum={}", envoy.getCluster().getSelf(), activeNum, totalNum);
             envoy.stop();
             envoys.remove(leaderIndex);
-            TimeUnitUtils.sleep(9, TimeUnit.SECONDS);
+            TimeUtils.sleep(9, TimeUnit.SECONDS);
             assertEnvoyEquals(++version, activeNum, envoys);
         }
 
@@ -857,7 +857,7 @@ public class TestEnvoy {
         LOGGER.error("offline leader [{}]", envoy.getCluster().getSelf());
         envoy.stop();
         envoys.remove(leaderIndex);
-        TimeUnitUtils.sleep(9, TimeUnit.SECONDS);
+        TimeUtils.sleep(9, TimeUnit.SECONDS);
         for (Envoy envoy1 : envoys) {
             Assert.assertNull(envoy1.getCluster().getLeader());
         }
@@ -882,7 +882,7 @@ public class TestEnvoy {
                     2));
         }
         envoys.forEach(Envoy::start);
-        TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+        TimeUtils.sleep(5, TimeUnit.SECONDS);
         assertEnvoyEquals(1, totalNum, envoys);
 
         // stop leader
@@ -902,7 +902,7 @@ public class TestEnvoy {
             iterator.remove();
             i++;
         }
-        TimeUnitUtils.sleep(9, TimeUnit.SECONDS);
+        TimeUtils.sleep(9, TimeUnit.SECONDS);
         assertEnvoyEquals(2, majority, envoys);
 
         after();
@@ -924,9 +924,9 @@ public class TestEnvoy {
                     2));
         }
         envoys.get(0).start();
-        TimeUnitUtils.sleep(2, TimeUnit.SECONDS);
+        TimeUtils.sleep(2, TimeUnit.SECONDS);
         envoys.forEach(Envoy::start);
-        TimeUnitUtils.sleep(3, TimeUnit.SECONDS);
+        TimeUtils.sleep(3, TimeUnit.SECONDS);
         assertEnvoyEquals(++version, totalNum, envoys);
 
         Collections.shuffle(envoys);
@@ -937,14 +937,14 @@ public class TestEnvoy {
             if (Member.isValidLeader(envoy.getCluster().getSelf())) {
                 LOGGER.error("offline leader [{}]; activeNum={}; totalNum={}", envoy.getCluster().getSelf(), totalNum - 1, totalNum);
                 envoy.stop();
-                TimeUnitUtils.sleep(9, TimeUnit.SECONDS);
+                TimeUtils.sleep(9, TimeUnit.SECONDS);
                 List<Envoy> envoysCopy = Lists.newArrayList(envoys);
                 envoysCopy.remove(envoy);
                 assertEnvoyEquals(++version, totalNum - 1, envoysCopy);
             } else {
                 LOGGER.error("offline follower [{}]; activeNum={}; totalNum={}", envoy.getCluster().getSelf(), totalNum - 1, totalNum);
                 envoy.stop();
-                TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+                TimeUtils.sleep(5, TimeUnit.SECONDS);
                 List<Envoy> envoysCopy = Lists.newArrayList(envoys);
                 envoysCopy.remove(envoy);
                 assertEnvoyEquals(version, totalNum - 1, envoysCopy);
@@ -952,7 +952,7 @@ public class TestEnvoy {
 
             // restart
             envoy.start();
-            TimeUnitUtils.sleep(2, TimeUnit.SECONDS);
+            TimeUtils.sleep(2, TimeUnit.SECONDS);
             assertEnvoyEquals(version, totalNum, envoys);
         }
 
@@ -976,7 +976,7 @@ public class TestEnvoy {
         envoys.add(envoy1);
         envoy1.start();
 
-        TimeUnitUtils.sleep(1, TimeUnit.SECONDS);
+        TimeUtils.sleep(1, TimeUnit.SECONDS);
 
         for (int i = 1; i < totalNum; i++) {
             envoys.add(createEnvoy(totalNum,
@@ -989,7 +989,7 @@ public class TestEnvoy {
 
         envoys.forEach(Envoy::start);
 
-        TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+        TimeUtils.sleep(5, TimeUnit.SECONDS);
 
         assertEnvoyEquals(1, totalNum, envoys);
 
@@ -998,14 +998,14 @@ public class TestEnvoy {
         LOGGER.error("offline leader [{}]", envoy1.getCluster().getSelf());
         envoy1.stop();
 
-        TimeUnitUtils.sleep(9, TimeUnit.SECONDS);
+        TimeUtils.sleep(9, TimeUnit.SECONDS);
 
         // another leader must elected
         assertEnvoyEquals(2, totalNum - 1, envoys.subList(1, envoys.size()));
 
         // restart envoy1, it will join the cluster through envoy2(another seed)
         envoy1.start();
-        TimeUnitUtils.sleep(5, TimeUnit.SECONDS);
+        TimeUtils.sleep(5, TimeUnit.SECONDS);
 
         assertEnvoyEquals(2, totalNum, envoys);
 
@@ -1048,7 +1048,7 @@ public class TestEnvoy {
         }
 
         // after 3 * ttlTimeout seed will make itself as leader,and other members rejoin the cluster
-        TimeUnitUtils.sleep(15, TimeUnit.SECONDS);
+        TimeUtils.sleep(15, TimeUnit.SECONDS);
 
         Assert.assertEquals(majority - 1, envoys.size());
 

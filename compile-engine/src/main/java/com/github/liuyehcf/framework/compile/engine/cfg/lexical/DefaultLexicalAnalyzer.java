@@ -58,7 +58,7 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer, Serializab
 
         }
 
-        public static Builder builder() {
+        public static Builder create() {
             return new Builder();
         }
 

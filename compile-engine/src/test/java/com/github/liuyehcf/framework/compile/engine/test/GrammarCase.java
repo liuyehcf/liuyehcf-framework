@@ -96,7 +96,7 @@ public abstract class GrammarCase {
                 )
         );
 
-        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.create()
                 .addNormalMorpheme(Symbol.createTerminator("("), "(")
                 .addNormalMorpheme(Symbol.createTerminator(")"), ")")
                 .addNormalMorpheme(Symbol.createTerminator("+"), "+")
@@ -127,7 +127,7 @@ public abstract class GrammarCase {
      */
     public static abstract class LL1_2 {
 
-        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.create()
                 .addNormalMorpheme(Symbol.createTerminator("program "), "program ")
                 .addNormalMorpheme(Symbol.createTerminator(":"), ":")
                 .addNormalMorpheme(Symbol.createTerminator(";"), ";")
@@ -369,7 +369,7 @@ public abstract class GrammarCase {
                 )
         );
 
-        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.create()
                 .addNormalMorpheme(Symbol.createTerminator("a"), "a")
                 .addNormalMorpheme(Symbol.createTerminator("ab"), "ab")
                 .addNormalMorpheme(Symbol.createTerminator("abc"), "abc")
@@ -442,7 +442,7 @@ public abstract class GrammarCase {
                 )
         );
 
-        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.create()
                 .addNormalMorpheme(Symbol.createTerminator("a"), "a")
                 .addNormalMorpheme(Symbol.createTerminator("b"), "b")
                 .build();
@@ -530,7 +530,7 @@ public abstract class GrammarCase {
                 )
         );
 
-        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.create()
                 .addNormalMorpheme(Symbol.createTerminator("("), "(")
                 .addNormalMorpheme(Symbol.createTerminator(")"), ")")
                 .addNormalMorpheme(Symbol.createTerminator("*"), "*")
@@ -605,7 +605,7 @@ public abstract class GrammarCase {
                 )
         );
 
-        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.create()
                 .addNormalMorpheme(Symbol.createTerminator("a"), "a")
                 .addNormalMorpheme(Symbol.createTerminator("b"), "b")
                 .addNormalMorpheme(Symbol.createTerminator("d"), "d")
@@ -681,7 +681,7 @@ public abstract class GrammarCase {
                 )
         );
 
-        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.create()
                 .addNormalMorpheme(Symbol.createTerminator("*"), "*")
                 .addNormalMorpheme(Symbol.createTerminator("="), "=")
                 .addRegexMorpheme(Symbol.createRegexTerminator("id"), TestLexicalAnalyzer.getIdRegex())
@@ -918,7 +918,7 @@ public abstract class GrammarCase {
                         )
                 )
         );
-        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.create()
                 .addNormalMorpheme(Symbol.createTerminator("&&"), "&&")
                 .addNormalMorpheme(Symbol.createTerminator("||"), "||")
                 .addNormalMorpheme(Symbol.createTerminator("("), "(")
@@ -1141,7 +1141,7 @@ public abstract class GrammarCase {
 
         );
 
-        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.create()
                 .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")
                 .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES), ")")
                 .addNormalMorpheme(Symbol.createTerminator(NORMAL_MUL_ASSIGN), "*=")
@@ -1207,7 +1207,7 @@ public abstract class GrammarCase {
                         )
                 )
         );
-        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+        public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.create()
                 .addNormalMorpheme(Symbol.createTerminator("*"), "*")
                 .addNormalMorpheme(Symbol.createTerminator("="), "=")
                 .addRegexMorpheme(Symbol.createRegexTerminator("id"), TestLexicalAnalyzer.getIdRegex())

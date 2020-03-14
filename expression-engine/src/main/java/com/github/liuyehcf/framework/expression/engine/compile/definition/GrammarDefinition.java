@@ -41,7 +41,7 @@ public abstract class GrammarDefinition {
     );
 
 
-    public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.builder()
+    public static LexicalAnalyzer LEXICAL_ANALYZER = DefaultLexicalAnalyzer.Builder.create()
             .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_INTEGER_LITERAL), new IntegerIdentifier())
             .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_FLOATING_POINT_LITERAL), new FloatIdentifier())
             .addTokenOperator(Symbol.createIdentifierTerminator(TokenProductions.IDENTIFIER_STRING_LITERAL), new ExpressionStringIdentifier())

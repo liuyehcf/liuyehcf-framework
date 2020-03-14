@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  * @author hechenfeng
  * @date 2020/2/16
  */
-public abstract class TimeUnitUtils {
+public abstract class TimeUtils {
 
     public static void sleep(long timeout, TimeUnit timeUnit) {
         Assert.assertNotNull(timeUnit, "timeUnit");
@@ -18,5 +18,9 @@ public abstract class TimeUnitUtils {
         } catch (InterruptedException e) {
             // ignore
         }
+    }
+
+    public static void sleep(long timeout) {
+        sleep(timeout, TimeUnit.SECONDS);
     }
 }
