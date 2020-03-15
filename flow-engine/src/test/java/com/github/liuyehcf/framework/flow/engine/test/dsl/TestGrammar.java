@@ -3741,6 +3741,19 @@ public class TestGrammar {
         Assert.assertEquals("aaa-bb-ccc", flow.getName());
         Assert.assertEquals("aaa-bb-ccc", flow.getId());
 
+        flow = compile("(aaa.bb.ccc,aaa.bb.ccc){\n" +
+                "    nodeA()\n" +
+                "}");
+        Assert.assertEquals("aaa.bb.ccc", flow.getName());
+        Assert.assertEquals("aaa.bb.ccc", flow.getId());
+
+        flow = compile("(aaa/bb/ccc,aaa/bb/ccc){\n" +
+                "    nodeA()\n" +
+                "}");
+        Assert.assertEquals("aaa/bb/ccc", flow.getName());
+        Assert.assertEquals("aaa/bb/ccc", flow.getId());
+
+
         flow = compile("(,){\n" +
                 "    nodeA()\n" +
                 "}");

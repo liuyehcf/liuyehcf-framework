@@ -60,6 +60,7 @@ public class TestRuntimeBase {
         engine.registerActionDelegateFactory("setTraceAttrAction", SetTraceAttrAction::new);
         engine.registerActionDelegateFactory("dot.name.action", DotNameAction::new);
         engine.registerActionDelegateFactory("slash/name/action", SlashNameAction::new);
+        engine.registerActionDelegateFactory("dash-name-action", DashNameAction::new);
         engine.registerActionDelegateFactory("sleepAction", SleepAction::new);
 
         engine.registerConditionDelegateFactory("printCondition", PrintCondition::new);
@@ -71,6 +72,7 @@ public class TestRuntimeBase {
         engine.registerConditionDelegateFactory("setTraceAttrCondition", SetTraceAttrCondition::new);
         engine.registerConditionDelegateFactory("dot.name.condition", DotNameCondition::new);
         engine.registerConditionDelegateFactory("slash/name/condition", SlashNameCondition::new);
+        engine.registerConditionDelegateFactory("dash-name-condition", DashNameCondition::new);
         engine.registerConditionDelegateFactory("sleepCondition", SleepCondition::new);
 
         engine.registerListenerDelegateFactory("printListener", PrintListener::new);
@@ -80,6 +82,7 @@ public class TestRuntimeBase {
         engine.registerListenerDelegateFactory("setTraceAttrListener", SetTraceAttrListener::new);
         engine.registerListenerDelegateFactory("dot.name.listener", DotNameListener::new);
         engine.registerListenerDelegateFactory("slash/name/listener", SlashNameListener::new);
+        engine.registerListenerDelegateFactory("dash-name-listener", DashNameListener::new);
         engine.registerListenerDelegateFactory("throwExceptionListener", ThrowExceptionListener::new);
         engine.registerListenerDelegateFactory("throwLinkTerminateListener", ThrowLinkTerminateListener::new);
         engine.registerListenerDelegateFactory("successResultListener", SuccessResultListener::new);

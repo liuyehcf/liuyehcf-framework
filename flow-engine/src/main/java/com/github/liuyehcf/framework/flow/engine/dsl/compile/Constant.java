@@ -93,7 +93,7 @@ class Constant {
     static final String REGEX_IDENTIFIER = "@identifier";
     static final String REGEX_DOT_IDENTIFIER = "@dotIdentifier";
     static final String REGEX_SLASH_IDENTIFIER = "@slashIdentifier";
-    static final String REGEX_STRIKETHROUGH_IDENTIFIER = "@strikethroughIdentifier";
+    static final String REGEX_DASH_IDENTIFIER = "@dashIdentifier";
 
     /**
      * key word

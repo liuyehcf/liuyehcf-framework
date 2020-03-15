@@ -88,12 +88,34 @@ abstract class TokenProductions {
                             new AttrFilter(AttrName.FLOW_NAME)
                     ),
                     /*
-                     * <flow name> → @strikethroughIdentifier
+                     * <flow name> → @dotIdentifier
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FLOW_NAME),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_STRIKETHROUGH_IDENTIFIER)
+                                    Symbol.createRegexTerminator(REGEX_DOT_IDENTIFIER)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.FLOW_NAME, 0),
+                            new AttrFilter(AttrName.FLOW_NAME)
+                    ),
+                    /*
+                     * <flow name> → @slashIdentifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOW_NAME),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_SLASH_IDENTIFIER)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.FLOW_NAME, 0),
+                            new AttrFilter(AttrName.FLOW_NAME)
+                    ),
+                    /*
+                     * <flow name> → @dashIdentifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOW_NAME),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_DASH_IDENTIFIER)
                             ),
                             new SetAttrFromLexical(0, AttrName.FLOW_NAME, 0),
                             new AttrFilter(AttrName.FLOW_NAME)
@@ -127,12 +149,34 @@ abstract class TokenProductions {
                             new AttrFilter(AttrName.FLOW_ID)
                     ),
                     /*
-                     * <flow id> → @strikethroughIdentifier
+                     * <flow id> → @dotIdentifier
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(FLOW_ID),
                             SymbolString.create(
-                                    Symbol.createRegexTerminator(REGEX_STRIKETHROUGH_IDENTIFIER)
+                                    Symbol.createRegexTerminator(REGEX_DOT_IDENTIFIER)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.FLOW_ID, 0),
+                            new AttrFilter(AttrName.FLOW_ID)
+                    ),
+                    /*
+                     * <flow id> → @slashIdentifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOW_ID),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_SLASH_IDENTIFIER)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.FLOW_ID, 0),
+                            new AttrFilter(AttrName.FLOW_ID)
+                    ),
+                    /*
+                     * <flow id> → @dashIdentifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOW_ID),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_DASH_IDENTIFIER)
                             ),
                             new SetAttrFromLexical(0, AttrName.FLOW_ID, 0),
                             new AttrFilter(AttrName.FLOW_ID)
@@ -176,6 +220,17 @@ abstract class TokenProductions {
                             ),
                             new SetAttrFromLexical(0, AttrName.ACTION_NAME, 0),
                             new AttrFilter(AttrName.ACTION_NAME)
+                    ),
+                    /*
+                     * <action name> → @dashIdentifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(ACTION_NAME),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_DASH_IDENTIFIER)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.ACTION_NAME, 0),
+                            new AttrFilter(AttrName.ACTION_NAME)
                     )
             ),
 
@@ -216,6 +271,17 @@ abstract class TokenProductions {
                             ),
                             new SetAttrFromLexical(0, AttrName.CONDITION_NAME, 0),
                             new AttrFilter(AttrName.CONDITION_NAME)
+                    ),
+                    /*
+                     * <condition name> → @dashIdentifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(CONDITION_NAME),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_DASH_IDENTIFIER)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.CONDITION_NAME, 0),
+                            new AttrFilter(AttrName.CONDITION_NAME)
                     )
             ),
 
@@ -253,6 +319,17 @@ abstract class TokenProductions {
                             Symbol.createNonTerminator(LISTENER_NAME),
                             SymbolString.create(
                                     Symbol.createRegexTerminator(REGEX_SLASH_IDENTIFIER)
+                            ),
+                            new SetAttrFromLexical(0, AttrName.LISTENER_NAME, 0),
+                            new AttrFilter(AttrName.LISTENER_NAME)
+                    ),
+                    /*
+                     * <listener name> → @dashIdentifier
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(LISTENER_NAME),
+                            SymbolString.create(
+                                    Symbol.createRegexTerminator(REGEX_DASH_IDENTIFIER)
                             ),
                             new SetAttrFromLexical(0, AttrName.LISTENER_NAME, 0),
                             new AttrFilter(AttrName.LISTENER_NAME)
