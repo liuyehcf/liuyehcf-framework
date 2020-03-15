@@ -37,7 +37,7 @@ public class CollectionIncludeFunction extends Function {
             }
             return ExpressionValue.valueOf(false);
         } else if (array instanceof Collection) {
-            return ExpressionValue.valueOf(((Collection) array).contains(value));
+            return ExpressionValue.valueOf(((Collection<?>) array).contains(value));
         } else {
             throw createTypeIllegalException(1, array);
         }

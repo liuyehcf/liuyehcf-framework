@@ -48,9 +48,9 @@ public class _aaload extends Load {
         Object item;
 
         if (array instanceof List) {
-            item = ((List) array).get((int) (long) index);
+            item = ((List<?>) array).get((int) (long) index);
         } else if (array instanceof Map) {
-            item = ((Map) array).get(index);
+            item = ((Map<?, ?>) array).get(index);
         } else if (array.getClass().isArray()) {
             item = Array.get(array, (int) (long) index);
         } else {

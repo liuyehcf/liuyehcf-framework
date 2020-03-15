@@ -157,7 +157,6 @@ public abstract class ExpressionEngine {
 
         // LOAD ushr operator functions
         addOperatorFunction(new UshrOperatorFunctionForLong());
-
     }
 
     private static void initOption() {
@@ -332,7 +331,6 @@ public abstract class ExpressionEngine {
      * @param <T>            return type
      * @return execution result
      */
-    @SuppressWarnings("unchecked")
     public static <T> T execute(ExpressionCode expressionCode, Map<String, Object> env) {
         return expressionCode.execute(env);
     }

@@ -27,7 +27,7 @@ public class CollectionSizeFunction extends Function {
         if (array.getClass().isArray()) {
             return ExpressionValue.valueOf(Array.getLength(array));
         } else if (array instanceof Collection) {
-            return ExpressionValue.valueOf(((Collection) array).size());
+            return ExpressionValue.valueOf(((Collection<?>) array).size());
         } else {
             throw createTypeIllegalException(1, array);
         }

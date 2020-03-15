@@ -1,9 +1,5 @@
 package com.github.liuyehcf.framework.expression.engine.compile.definition.semantic.attr;
 
-/**
- * @author hechenfeng
- * @date 2018/10/1
- */
 
 import com.github.liuyehcf.framework.expression.engine.compile.CompilerContext;
 import com.github.liuyehcf.framework.expression.engine.compile.definition.model.AttrName;

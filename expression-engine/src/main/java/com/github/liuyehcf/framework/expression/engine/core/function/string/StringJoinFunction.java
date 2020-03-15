@@ -36,11 +36,11 @@ public class StringJoinFunction extends Function {
         StringBuilder sb = new StringBuilder();
 
         if (segments instanceof Collection) {
-            if (((Collection) segments).size() == 0) {
+            if (((Collection<?>) segments).size() == 0) {
                 return ExpressionValue.valueOf(EMPTY);
             }
 
-            Iterator iterator = ((Collection) segments).iterator();
+            Iterator<?> iterator = ((Collection<?>) segments).iterator();
             sb.append(ToStringUtils.toString(iterator.next()));
             while (iterator.hasNext()) {
                 sb.append(ToStringUtils.toString(separator))

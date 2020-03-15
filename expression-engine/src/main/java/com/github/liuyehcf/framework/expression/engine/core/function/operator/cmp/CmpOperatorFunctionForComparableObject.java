@@ -21,8 +21,7 @@ public class CmpOperatorFunctionForComparableObject extends CmpOperatorFunction 
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public ExpressionValue call(ExpressionValue arg1, ExpressionValue arg2) {
-        return ExpressionValue.valueOf(((Comparable) arg1.getValue()).compareTo(arg2.getValue()));
+        return ExpressionValue.valueOf(((Comparable<?>) arg1.getValue()).compareTo(arg2.getValue()));
     }
 }

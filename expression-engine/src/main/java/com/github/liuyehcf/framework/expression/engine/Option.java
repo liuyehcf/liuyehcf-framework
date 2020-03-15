@@ -13,5 +13,5 @@ public enum Option {
     /**
      * 是否进行代码优化
      */
-    OPTIMIZE_CODE;
+    OPTIMIZE_CODE
 }

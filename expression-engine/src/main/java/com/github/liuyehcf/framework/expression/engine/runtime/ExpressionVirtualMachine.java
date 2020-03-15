@@ -44,7 +44,6 @@ public class ExpressionVirtualMachine implements RuntimeContext {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public ExpressionValue pop() {
         return operatorStack.pop();
     }
@@ -60,7 +59,6 @@ public class ExpressionVirtualMachine implements RuntimeContext {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Object getProperty(String propertyName) {
         try {
             return PropertyUtils.getProperty(env, propertyName);
