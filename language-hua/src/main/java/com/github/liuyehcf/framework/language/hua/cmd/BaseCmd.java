@@ -63,9 +63,7 @@ class BaseCmd {
     String[] getRemainArgs() {
         String[] remainArgs = new String[args.length - argIndex];
 
-        for (int i = 0; i < remainArgs.length; i++) {
-            remainArgs[i] = args[argIndex + i];
-        }
+        System.arraycopy(args, argIndex, remainArgs, 0, remainArgs.length);
 
         return remainArgs;
     }

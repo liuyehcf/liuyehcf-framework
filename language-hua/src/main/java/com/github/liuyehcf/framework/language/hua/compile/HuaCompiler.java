@@ -10,7 +10,6 @@ import com.github.liuyehcf.framework.language.hua.core.bytecode.ByteCode;
 import com.github.liuyehcf.framework.language.hua.core.bytecode.cf.ControlTransfer;
 import com.github.liuyehcf.framework.language.hua.core.bytecode.cf._goto;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -38,7 +37,6 @@ public class HuaCompiler extends LALR<IntermediateInfo> implements Serializable 
 
     public static HuaCompiler getHuaCompiler() {
         HuaCompiler huaCompiler;
-        File compilerFile = null;
 
         /*
          * 首先从序列化文件中加载编译器

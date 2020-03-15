@@ -46,12 +46,10 @@ public class ControlTransferByteCodeBackFillWithLoop extends AbstractSemanticAct
     public void onAction(CompilerContext context) {
         List<ControlTransfer> codes;
 
-        switch (backFillType) {
-            case TRUE:
-                codes = context.getAttr(backFillStackOffset, AttrName.TRUE_BYTE_CODE);
-                break;
-            default:
-                throw new UnsupportedOperationException();
+        if (backFillType == BackFillType.TRUE) {
+            codes = context.getAttr(backFillStackOffset, AttrName.TRUE_BYTE_CODE);
+        } else {
+            throw new UnsupportedOperationException();
         }
 
         int codeOffset = context.getAttr(loopStackOffset, AttrName.CODE_OFFSET);

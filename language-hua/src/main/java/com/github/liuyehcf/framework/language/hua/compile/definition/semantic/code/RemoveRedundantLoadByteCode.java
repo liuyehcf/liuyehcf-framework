@@ -61,7 +61,6 @@ public class RemoveRedundantLoadByteCode extends AbstractSemanticAction {
                 byteCodes.remove(byteCodes.size() - 2);
                 break;
             case ASSIGNMENT:
-                break;
             case METHOD_INVOCATION:
                 break;
             default:

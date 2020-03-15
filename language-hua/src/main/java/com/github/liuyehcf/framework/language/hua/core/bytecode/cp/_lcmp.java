@@ -31,13 +31,7 @@ public class _lcmp extends Compute {
         long value1 = context.popLong();
 
         int result;
-        if (value1 == value2) {
-            result = 0;
-        } else if (value1 > value2) {
-            result = 1;
-        } else {
-            result = -1;
-        }
+        result = Long.compare(value1, value2);
 
         context.push(result);
         context.increaseCodeOffset();

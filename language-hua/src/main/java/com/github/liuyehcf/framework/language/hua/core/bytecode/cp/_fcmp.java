@@ -31,13 +31,7 @@ public class _fcmp extends Compute {
         float value1 = context.popFloat();
 
         int result;
-        if (value1 == value2) {
-            result = 0;
-        } else if (value1 > value2) {
-            result = 1;
-        } else {
-            result = -1;
-        }
+        result = Float.compare(value1, value2);
 
         context.push(result);
         context.increaseCodeOffset();

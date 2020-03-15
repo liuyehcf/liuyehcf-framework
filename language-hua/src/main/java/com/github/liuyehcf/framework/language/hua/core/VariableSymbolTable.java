@@ -45,7 +45,6 @@ public class VariableSymbolTable {
         namespaceMap = new LinkedHashMap<>(16);
         nameMap = new LinkedHashMap<>(16);
 
-        assertFalse(namespaceMap.containsKey(currentNamespace.getId()));
         namespaceMap.put(currentNamespace.getId(), currentNamespace);
         nameMap.put(currentNamespace, new LinkedHashMap<>());
     }

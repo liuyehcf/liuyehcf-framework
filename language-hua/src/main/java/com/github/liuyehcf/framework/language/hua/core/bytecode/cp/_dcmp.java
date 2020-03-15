@@ -31,13 +31,7 @@ public class _dcmp extends Compute {
         double value1 = context.popDouble();
 
         int result;
-        if (value1 == value2) {
-            result = 0;
-        } else if (value1 > value2) {
-            result = 1;
-        } else {
-            result = -1;
-        }
+        result = Double.compare(value1, value2);
 
         context.push(result);
         context.increaseCodeOffset();

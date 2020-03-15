@@ -22,11 +22,6 @@ public class Huap extends BaseCmd {
      */
     private String filePath;
 
-    /**
-     * Hua编译后的中间形式
-     */
-    private IntermediateInfo intermediateInfo;
-
     private Huap(String[] args) {
         super(args);
         registerOption("f", "source", false, true, "Source(.hclass) file path", (optValue) -> filePath = optValue);
@@ -61,7 +56,7 @@ public class Huap extends BaseCmd {
     }
 
     private void parse() {
-        intermediateInfo = load(filePath);
+        IntermediateInfo intermediateInfo = load(filePath);
 
         System.out.println("Compiled from \"Huap.java\"\n");
 

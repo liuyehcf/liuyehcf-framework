@@ -10,6 +10,7 @@ import com.github.liuyehcf.framework.language.hua.compile.definition.semantic.Ab
  * @date 2018/6/7
  */
 public class EnterMethod extends AbstractSemanticAction {
+
     @Override
     public void onAction(CompilerContext context) {
         context.enterMethod();
