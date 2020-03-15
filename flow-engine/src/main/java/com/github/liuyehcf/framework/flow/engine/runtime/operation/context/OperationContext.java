@@ -223,14 +223,14 @@ public interface OperationContext {
      *
      * @param operation the specified operation
      */
-    void executeSync(AbstractOperation operation);
+    void executeSync(AbstractOperation<?> operation);
 
     /**
      * execute operation async
      *
      * @param operation the specified operation
      */
-    void executeAsync(AbstractOperation operation);
+    void executeAsync(AbstractOperation<?> operation);
 
     /**
      * add execution trace to current execution link

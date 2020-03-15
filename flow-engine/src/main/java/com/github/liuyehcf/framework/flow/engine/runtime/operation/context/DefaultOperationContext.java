@@ -348,12 +348,12 @@ public class DefaultOperationContext implements OperationContext {
     }
 
     @Override
-    public final void executeSync(AbstractOperation operation) {
+    public final void executeSync(AbstractOperation<?> operation) {
         operation.run();
     }
 
     @Override
-    public final void executeAsync(AbstractOperation operation) {
+    public final void executeAsync(AbstractOperation<?> operation) {
         try {
             engine.getExecutor().execute(operation);
         } catch (RejectedExecutionException e) {
