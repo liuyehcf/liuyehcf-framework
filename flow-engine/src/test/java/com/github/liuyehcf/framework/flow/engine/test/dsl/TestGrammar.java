@@ -3740,6 +3740,24 @@ public class TestGrammar {
                 "}");
         Assert.assertEquals("aaa-bb-ccc", flow.getName());
         Assert.assertEquals("aaa-bb-ccc", flow.getId());
+
+        flow = compile("(,){\n" +
+                "    nodeA()\n" +
+                "}");
+        Assert.assertEquals(36, flow.getName().length());
+        Assert.assertEquals(36, flow.getId().length());
+
+        flow = compile("(null,){\n" +
+                "    nodeA()\n" +
+                "}");
+        Assert.assertEquals("null", flow.getName());
+        Assert.assertEquals(36, flow.getId().length());
+
+        flow = compile("(,null){\n" +
+                "    nodeA()\n" +
+                "}");
+        Assert.assertEquals(36, flow.getName().length());
+        Assert.assertEquals("null", flow.getId());
     }
 
     @Test

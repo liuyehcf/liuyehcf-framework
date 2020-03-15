@@ -67,6 +67,16 @@ abstract class TokenProductions {
              */
             Production.create(
                     /*
+                     * <flow name> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOW_NAME),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new AttrFilter(AttrName.FLOW_NAME)
+                    ),
+                    /*
                      * <flow name> → @identifier
                      */
                     PrimaryProduction.create(
@@ -95,6 +105,16 @@ abstract class TokenProductions {
              * <flow id>
              */
             Production.create(
+                    /*
+                     * <flow id> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(FLOW_ID),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new AttrFilter(AttrName.FLOW_ID)
+                    ),
                     /*
                      * <flow id> → @identifier
                      */

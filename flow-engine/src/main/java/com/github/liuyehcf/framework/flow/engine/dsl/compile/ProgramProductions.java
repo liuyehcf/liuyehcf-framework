@@ -63,7 +63,7 @@ abstract class ProgramProductions {
              */
             Production.create(
                     /*
-                     * <mark create flow> → → ε
+                     * <mark create flow> → ε
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(MARK_CREATE_FLOW),
