@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import sun.net.ConnectionResetException;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @ConfigurationProperties(prefix = "ares.http.config")
@@ -63,6 +64,8 @@ public class AresAutoConfiguration {
     @Bean
     public BeanFactoryPostProcessor aresConsumerSpringPostProcessor(@Autowired List<ObjectToStringCodes<?>> stringCodes,
                                                                     @Autowired List<ObjectToBytesCodes<?>> byteCodes) {
+        Collections.sort(stringCodes);
+        Collections.sort(byteCodes);
         return new AresConsumerSpringPostProcessor(stringCodes, byteCodes);
     }
 

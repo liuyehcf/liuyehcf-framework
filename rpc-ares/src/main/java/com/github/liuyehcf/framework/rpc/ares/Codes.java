@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.rpc.ares;
 
 import com.github.liuyehcf.framework.common.tools.type.TypeMatcher;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
@@ -62,10 +63,7 @@ public abstract class Codes<PLAIN, CIPHER> implements Comparable<Codes<?, ?>> {
     public abstract PLAIN decode(CIPHER obj, Type expectedPlainType);
 
     @Override
-    public int compareTo(Codes<?, ?> o) {
-        if (o == null) {
-            return 1;
-        }
-        return order() - o.order();
+    public int compareTo(@Nonnull Codes<?, ?> o) {
+        return Integer.compare(o.order(), this.order());
     }
 }
