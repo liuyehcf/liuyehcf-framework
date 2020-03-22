@@ -115,8 +115,18 @@ public class AresAutoConfiguration {
     }
 
     @Bean
+    public StringToBytesCodes stringToBytesCodes() {
+        return new StringToBytesCodes();
+    }
+
+    @Bean
     public MapToBytesCodes mapToBytesCodes() {
         return new MapToBytesCodes();
+    }
+
+    @Bean
+    public PojoToBytesCodes pojoToBytesCodes() {
+        return new PojoToBytesCodes();
     }
 
     @Bean

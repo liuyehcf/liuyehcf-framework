@@ -86,8 +86,8 @@ public class TestOrder {
 
         Assert.assertEquals(1, stringCodes.get(0).order());
         Assert.assertEquals(0, stringCodes.get(1).order());
-        Assert.assertEquals(-1, stringCodes.get(2).order());
-        Assert.assertEquals(Integer.MIN_VALUE, stringCodes.get(3).order());
+        Assert.assertEquals(0, stringCodes.get(2).order());
+        Assert.assertEquals(-1, stringCodes.get(3).order());
     }
 
     @Test
@@ -143,7 +143,7 @@ public class TestOrder {
         bytesCodes.add(new ObjectToBytesCodes<Object>() {
             @Override
             public int order() {
-                return 0;
+                return Integer.MIN_VALUE;
             }
 
             @Override

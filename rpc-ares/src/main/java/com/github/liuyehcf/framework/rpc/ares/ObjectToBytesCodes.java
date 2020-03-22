@@ -10,7 +10,7 @@ public abstract class ObjectToBytesCodes<INPUT> extends Codes<INPUT, byte[]> {
 
     @Override
     public int order() {
-        return Integer.MIN_VALUE;
+        return 0;
     }
 
     @Override

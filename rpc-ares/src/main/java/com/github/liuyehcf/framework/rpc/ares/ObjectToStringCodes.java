@@ -10,7 +10,7 @@ public abstract class ObjectToStringCodes<INPUT> extends Codes<INPUT, String> {
 
     @Override
     public int order() {
-        return Integer.MIN_VALUE;
+        return 0;
     }
 
     @Override
