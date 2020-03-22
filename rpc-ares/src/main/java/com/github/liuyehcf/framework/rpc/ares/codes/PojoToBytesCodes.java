@@ -17,6 +17,16 @@ public class PojoToBytesCodes extends ObjectToBytesCodes<Object> {
     }
 
     @Override
+    public boolean matchDecode(Type type) {
+        return true;
+    }
+
+    @Override
+    public boolean matchEncode(Object obj) {
+        return true;
+    }
+
+    @Override
     public byte[] encode(Object obj) {
         return JSON.toJSONBytes(obj);
     }

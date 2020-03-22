@@ -254,7 +254,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 if (codes == null) {
                     continue;
                 }
-                if (!codes.matchPlain(obj)) {
+                if (!codes.matchEncode(obj)) {
                     continue;
                 }
                 return codes.encode(obj);
@@ -275,7 +275,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 if (codes == null) {
                     continue;
                 }
-                if (!codes.matchPlain(obj)) {
+                if (!codes.matchEncode(obj)) {
                     continue;
                 }
                 return codes.encode(obj);
@@ -299,15 +299,11 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 if (codes == null) {
                     continue;
                 }
-                if (!codes.matchPlainType(targetType)) {
+                if (!codes.matchDecode(targetType)) {
                     continue;
                 }
                 return codes.decode(bytes, targetType);
             }
-        }
-
-        if (Objects.equals(String.class, targetType)) {
-            return new String(bytes);
         }
 
         throw new AresException("cannot find ObjectToByteCodes compatible with '" + targetType.getTypeName() + "'");

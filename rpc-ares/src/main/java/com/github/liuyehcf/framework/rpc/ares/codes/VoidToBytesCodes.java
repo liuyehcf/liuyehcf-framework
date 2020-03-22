@@ -11,11 +11,11 @@ import java.lang.reflect.Type;
 public class VoidToBytesCodes extends ObjectToBytesCodes<Void> {
 
     @Override
-    public boolean matchPlainType(Type type) {
+    public boolean matchDecode(Type type) {
         if (void.class.equals(type)) {
             return true;
         }
-        return super.matchPlainType(type);
+        return super.matchDecode(type);
     }
 
     @Override

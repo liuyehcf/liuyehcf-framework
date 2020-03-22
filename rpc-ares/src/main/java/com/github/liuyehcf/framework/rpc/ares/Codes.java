@@ -15,31 +15,17 @@ public abstract class Codes<PLAIN, CIPHER> implements Comparable<Codes<?, ?>> {
     private final Class<?> plainType;
     private final TypeMatcher plainMatcher;
 
-    private final Class<?> cipherType;
-    private final TypeMatcher cipherMatcher;
-
     protected Codes() {
         plainType = TypeMatcher.fetchType(this, Codes.class, "PLAIN");
         this.plainMatcher = TypeMatcher.create(plainType);
-
-        cipherType = TypeMatcher.fetchType(this, Codes.class, "CIPHER");
-        this.cipherMatcher = TypeMatcher.create(cipherType);
     }
 
-    public boolean matchPlainType(Type type) {
+    public boolean matchDecode(Type type) {
         return Objects.equals(this.plainType, type);
     }
 
-    public boolean matchPlain(Object obj) {
+    public boolean matchEncode(Object obj) {
         return plainMatcher.match(obj);
-    }
-
-    public boolean matchCipherType(Type type) {
-        return Objects.equals(this.cipherType, type);
-    }
-
-    public boolean matchCipher(Object obj) {
-        return cipherMatcher.match(obj);
     }
 
     /**
