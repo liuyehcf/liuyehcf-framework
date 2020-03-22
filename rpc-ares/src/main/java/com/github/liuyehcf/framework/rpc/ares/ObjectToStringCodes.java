@@ -14,8 +14,8 @@ public abstract class ObjectToStringCodes<INPUT> extends Codes<INPUT, String> {
     }
 
     @Override
-    public abstract String encode(INPUT obj);
+    public abstract String encode(INPUT plainObj);
 
     @Override
-    public abstract INPUT decode(String obj, Type expectedPlainType);
+    public abstract INPUT decode(String cipherObj, Type plainType);
 }

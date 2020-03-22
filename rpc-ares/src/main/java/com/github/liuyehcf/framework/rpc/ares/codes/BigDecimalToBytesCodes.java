@@ -12,12 +12,12 @@ import java.math.BigDecimal;
 public class BigDecimalToBytesCodes extends ObjectToBytesCodes<BigDecimal> {
 
     @Override
-    public byte[] encode(BigDecimal obj) {
-        return obj.toString().getBytes();
+    public byte[] encode(BigDecimal plainObj) {
+        return plainObj.toString().getBytes();
     }
 
     @Override
-    public BigDecimal decode(byte[] obj, Type expectedPlainType) {
-        return new BigDecimal(new String(obj));
+    public BigDecimal decode(byte[] cipherObj, Type plainType) {
+        return new BigDecimal(new String(cipherObj));
     }
 }

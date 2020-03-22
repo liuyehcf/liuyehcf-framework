@@ -11,20 +11,20 @@ import java.lang.reflect.Type;
 public class DoubleToBytesCodes extends ObjectToBytesCodes<Double> {
 
     @Override
-    public boolean matchDecodeType(Type expectedPlainType) {
-        if (double.class.equals(expectedPlainType)) {
+    public boolean matchDecodeType(Type plainType) {
+        if (double.class.equals(plainType)) {
             return true;
         }
-        return super.matchDecodeType(expectedPlainType);
+        return super.matchDecodeType(plainType);
     }
 
     @Override
-    public byte[] encode(Double obj) {
-        return Double.toString(obj).getBytes();
+    public byte[] encode(Double plainObj) {
+        return Double.toString(plainObj).getBytes();
     }
 
     @Override
-    public Double decode(byte[] obj, Type expectedPlainType) {
-        return Double.parseDouble(new String(obj));
+    public Double decode(byte[] cipherObj, Type plainType) {
+        return Double.parseDouble(new String(cipherObj));
     }
 }

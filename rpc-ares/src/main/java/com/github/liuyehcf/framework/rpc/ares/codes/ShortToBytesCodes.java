@@ -11,20 +11,20 @@ import java.lang.reflect.Type;
 public class ShortToBytesCodes extends ObjectToBytesCodes<Short> {
 
     @Override
-    public boolean matchDecodeType(Type expectedPlainType) {
-        if (short.class.equals(expectedPlainType)) {
+    public boolean matchDecodeType(Type plainType) {
+        if (short.class.equals(plainType)) {
             return true;
         }
-        return super.matchDecodeType(expectedPlainType);
+        return super.matchDecodeType(plainType);
     }
 
     @Override
-    public byte[] encode(Short obj) {
-        return Short.toString(obj).getBytes();
+    public byte[] encode(Short plainObj) {
+        return Short.toString(plainObj).getBytes();
     }
 
     @Override
-    public Short decode(byte[] obj, Type expectedPlainType) {
-        return Short.parseShort(new String(obj));
+    public Short decode(byte[] cipherObj, Type plainType) {
+        return Short.parseShort(new String(cipherObj));
     }
 }

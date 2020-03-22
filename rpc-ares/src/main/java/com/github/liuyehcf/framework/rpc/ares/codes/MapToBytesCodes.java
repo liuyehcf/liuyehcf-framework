@@ -13,20 +13,20 @@ import java.util.Map;
 public class MapToBytesCodes extends ObjectToBytesCodes<Map<String, ?>> {
 
     @Override
-    public boolean matchDecodeType(Type expectedPlainType) {
-        if (expectedPlainType.getTypeName().startsWith(Map.class.getName())) {
+    public boolean matchDecodeType(Type plainType) {
+        if (plainType.getTypeName().startsWith(Map.class.getName())) {
             return true;
         }
-        return super.matchDecodeType(expectedPlainType);
+        return super.matchDecodeType(plainType);
     }
 
     @Override
-    public byte[] encode(Map<String, ?> obj) {
-        return JSON.toJSONBytes(obj);
+    public byte[] encode(Map<String, ?> plainObj) {
+        return JSON.toJSONBytes(plainObj);
     }
 
     @Override
-    public Map<String, ?> decode(byte[] obj, Type expectedPlainType) {
-        return JSON.parseObject(obj, expectedPlainType);
+    public Map<String, ?> decode(byte[] cipherObj, Type plainType) {
+        return JSON.parseObject(cipherObj, plainType);
     }
 }

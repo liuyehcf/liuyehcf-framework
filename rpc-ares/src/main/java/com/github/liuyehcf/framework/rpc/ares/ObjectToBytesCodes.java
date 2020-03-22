@@ -14,8 +14,8 @@ public abstract class ObjectToBytesCodes<INPUT> extends Codes<INPUT, byte[]> {
     }
 
     @Override
-    public abstract byte[] encode(INPUT obj);
+    public abstract byte[] encode(INPUT plainObj);
 
     @Override
-    public abstract INPUT decode(byte[] obj, Type expectedPlainType);
+    public abstract INPUT decode(byte[] cipherObj, Type plainType);
 }

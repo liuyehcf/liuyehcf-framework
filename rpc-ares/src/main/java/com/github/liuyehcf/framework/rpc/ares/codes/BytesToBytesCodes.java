@@ -11,12 +11,12 @@ import java.lang.reflect.Type;
 public class BytesToBytesCodes extends ObjectToBytesCodes<byte[]> {
 
     @Override
-    public byte[] encode(byte[] obj) {
-        return obj;
+    public byte[] encode(byte[] plainObj) {
+        return plainObj;
     }
 
     @Override
-    public byte[] decode(byte[] obj, Type expectedPlainType) {
-        return obj;
+    public byte[] decode(byte[] cipherObj, Type plainType) {
+        return cipherObj;
     }
 }

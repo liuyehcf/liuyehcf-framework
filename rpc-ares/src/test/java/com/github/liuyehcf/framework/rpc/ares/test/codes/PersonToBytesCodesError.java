@@ -14,12 +14,12 @@ import java.lang.reflect.Type;
 public class PersonToBytesCodesError extends ObjectToBytesCodes<Person> {
 
     @Override
-    public byte[] encode(Person obj) {
+    public byte[] encode(Person plainObj) {
         throw new RuntimeException();
     }
 
     @Override
-    public Person decode(byte[] obj, Type expectedPlainType) {
+    public Person decode(byte[] cipherObj, Type plainType) {
         throw new RuntimeException();
     }
 }

@@ -20,12 +20,12 @@ public class PersonToBytesCodes extends ObjectToBytesCodes<Person> {
     }
 
     @Override
-    public byte[] encode(Person obj) {
-        return JSON.toJSONBytes(obj);
+    public byte[] encode(Person plainObj) {
+        return JSON.toJSONBytes(plainObj);
     }
 
     @Override
-    public Person decode(byte[] obj, Type expectedPlainType) {
-        return JSON.parseObject(obj, Person.class);
+    public Person decode(byte[] cipherObj, Type plainType) {
+        return JSON.parseObject(cipherObj, Person.class);
     }
 }

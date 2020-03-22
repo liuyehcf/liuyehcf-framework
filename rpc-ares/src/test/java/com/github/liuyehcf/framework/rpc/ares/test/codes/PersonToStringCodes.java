@@ -20,12 +20,12 @@ public class PersonToStringCodes extends ObjectToStringCodes<Person> {
     }
 
     @Override
-    public String encode(Person obj) {
-        return JSON.toJSONString(obj);
+    public String encode(Person plainObj) {
+        return JSON.toJSONString(plainObj);
     }
 
     @Override
-    public Person decode(String obj, Type expectedPlainType) {
-        return JSON.parseObject(obj, expectedPlainType);
+    public Person decode(String cipherObj, Type plainType) {
+        return JSON.parseObject(cipherObj, plainType);
     }
 }

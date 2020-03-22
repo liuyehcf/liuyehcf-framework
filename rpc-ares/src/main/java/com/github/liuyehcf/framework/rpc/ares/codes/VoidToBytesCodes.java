@@ -11,20 +11,20 @@ import java.lang.reflect.Type;
 public class VoidToBytesCodes extends ObjectToBytesCodes<Void> {
 
     @Override
-    public boolean matchDecodeType(Type expectedPlainType) {
-        if (void.class.equals(expectedPlainType)) {
+    public boolean matchDecodeType(Type plainType) {
+        if (void.class.equals(plainType)) {
             return true;
         }
-        return super.matchDecodeType(expectedPlainType);
+        return super.matchDecodeType(plainType);
     }
 
     @Override
-    public byte[] encode(Void obj) {
+    public byte[] encode(Void plainObj) {
         return null;
     }
 
     @Override
-    public Void decode(byte[] obj, Type expectedPlainType) {
+    public Void decode(byte[] cipherObj, Type plainType) {
         return null;
     }
 }

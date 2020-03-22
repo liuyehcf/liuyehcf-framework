@@ -11,20 +11,20 @@ import java.lang.reflect.Type;
 public class FloatToBytesCodes extends ObjectToBytesCodes<Float> {
 
     @Override
-    public boolean matchDecodeType(Type expectedPlainType) {
-        if (float.class.equals(expectedPlainType)) {
+    public boolean matchDecodeType(Type plainType) {
+        if (float.class.equals(plainType)) {
             return true;
         }
-        return super.matchDecodeType(expectedPlainType);
+        return super.matchDecodeType(plainType);
     }
 
     @Override
-    public byte[] encode(Float obj) {
-        return Float.toString(obj).getBytes();
+    public byte[] encode(Float plainObj) {
+        return Float.toString(plainObj).getBytes();
     }
 
     @Override
-    public Float decode(byte[] obj, Type expectedPlainType) {
-        return Float.parseFloat(new String(obj));
+    public Float decode(byte[] cipherObj, Type plainType) {
+        return Float.parseFloat(new String(cipherObj));
     }
 }

@@ -11,20 +11,20 @@ import java.lang.reflect.Type;
 public class BooleanToBytesCodes extends ObjectToBytesCodes<Boolean> {
 
     @Override
-    public boolean matchDecodeType(Type expectedPlainType) {
-        if (boolean.class.equals(expectedPlainType)) {
+    public boolean matchDecodeType(Type plainType) {
+        if (boolean.class.equals(plainType)) {
             return true;
         }
-        return super.matchDecodeType(expectedPlainType);
+        return super.matchDecodeType(plainType);
     }
 
     @Override
-    public byte[] encode(Boolean obj) {
-        return Boolean.toString(obj).getBytes();
+    public byte[] encode(Boolean plainObj) {
+        return Boolean.toString(plainObj).getBytes();
     }
 
     @Override
-    public Boolean decode(byte[] obj, Type expectedPlainType) {
-        return Boolean.parseBoolean(new String(obj));
+    public Boolean decode(byte[] cipherObj, Type plainType) {
+        return Boolean.parseBoolean(new String(cipherObj));
     }
 }

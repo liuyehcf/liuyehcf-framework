@@ -17,22 +17,22 @@ public class PojoToBytesCodes extends ObjectToBytesCodes<Object> {
     }
 
     @Override
-    public boolean matchDecodeType(Type expectedPlainType) {
+    public boolean matchDecodeType(Type plainType) {
         return true;
     }
 
     @Override
-    public boolean matchEncodeObject(Object obj) {
+    public boolean matchEncodeObject(Object plainObj) {
         return true;
     }
 
     @Override
-    public byte[] encode(Object obj) {
-        return JSON.toJSONBytes(obj);
+    public byte[] encode(Object plainObj) {
+        return JSON.toJSONBytes(plainObj);
     }
 
     @Override
-    public Object decode(byte[] obj, Type expectedPlainType) {
-        return JSON.parseObject(obj, expectedPlainType);
+    public Object decode(byte[] cipherObj, Type plainType) {
+        return JSON.parseObject(cipherObj, plainType);
     }
 }

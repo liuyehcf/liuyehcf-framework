@@ -21,46 +21,44 @@ public abstract class Codes<PLAIN, CIPHER> implements Comparable<Codes<?, ?>> {
     }
 
     /**
-     * bytes --decode--> target object
-     * if the target object matches the expectedPlainType
-     * then use decode method to decode
-     *
-     * @param expectedPlainType expected plain type
-     */
-    public boolean matchDecodeType(Type expectedPlainType) {
-        return Objects.equals(this.plainType, expectedPlainType);
-    }
-
-    /**
-     * source object --encode--> bytes
-     * if the source object matches the codes
-     * then use encode method to encode
-     *
-     * @param obj source object
-     */
-    public boolean matchEncodeObject(Object obj) {
-        return plainMatcher.match(obj);
-    }
-
-    /**
      * order of this codes
      */
     public abstract int order();
 
     /**
-     * encode plain to cipher
+     * this method decide whether use encode method
      *
-     * @param obj object to be encoded
+     * @param plainObj plain object to be encoded
+     * @see this#encode(Object)
      */
-    public abstract CIPHER encode(PLAIN obj);
+    public boolean matchEncodeObject(Object plainObj) {
+        return plainMatcher.match(plainObj);
+    }
 
     /**
-     * decode cipher to plain
+     * this method decide whether use decode method
      *
-     * @param obj               object to be decoded
-     * @param expectedPlainType expected plaint
+     * @param plainType the type of plain object
+     * @see this#decode(Object, Type)
      */
-    public abstract PLAIN decode(CIPHER obj, Type expectedPlainType);
+    public boolean matchDecodeType(Type plainType) {
+        return Objects.equals(this.plainType, plainType);
+    }
+
+    /**
+     * encode plain object to cipher object
+     *
+     * @param plainObj plain object to be encoded
+     */
+    public abstract CIPHER encode(PLAIN plainObj);
+
+    /**
+     * decode cipher object to plain object
+     *
+     * @param cipherObj cipher object to be decoded
+     * @param plainType expected type of plain object
+     */
+    public abstract PLAIN decode(CIPHER cipherObj, Type plainType);
 
     @Override
     public int compareTo(@Nonnull Codes<?, ?> o) {

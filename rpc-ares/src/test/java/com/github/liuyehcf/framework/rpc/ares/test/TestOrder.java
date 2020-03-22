@@ -26,12 +26,12 @@ public class TestOrder {
             }
 
             @Override
-            public String encode(Object obj) {
+            public String encode(Object plainObj) {
                 return null;
             }
 
             @Override
-            public Object decode(String obj, Type expectedPlainType) {
+            public Object decode(String cipherObj, Type plainType) {
                 return null;
             }
         });
@@ -43,12 +43,12 @@ public class TestOrder {
             }
 
             @Override
-            public String encode(Object obj) {
+            public String encode(Object plainObj) {
                 return null;
             }
 
             @Override
-            public Object decode(String obj, Type expectedPlainType) {
+            public Object decode(String cipherObj, Type plainType) {
                 return null;
             }
         });
@@ -60,24 +60,24 @@ public class TestOrder {
             }
 
             @Override
-            public String encode(Object obj) {
+            public String encode(Object plainObj) {
                 return null;
             }
 
             @Override
-            public Object decode(String obj, Type expectedPlainType) {
+            public Object decode(String cipherObj, Type plainType) {
                 return null;
             }
         });
 
         stringCodes.add(new ObjectToStringCodes<Object>() {
             @Override
-            public String encode(Object obj) {
+            public String encode(Object plainObj) {
                 return null;
             }
 
             @Override
-            public Object decode(String obj, Type expectedPlainType) {
+            public Object decode(String cipherObj, Type plainType) {
                 return null;
             }
         });
@@ -96,12 +96,12 @@ public class TestOrder {
 
         bytesCodes.add(new ObjectToBytesCodes<Object>() {
             @Override
-            public byte[] encode(Object obj) {
+            public byte[] encode(Object plainObj) {
                 return new byte[0];
             }
 
             @Override
-            public Object decode(byte[] obj, Type expectedPlainType) {
+            public Object decode(byte[] cipherObj, Type plainType) {
                 return null;
             }
         });
@@ -113,12 +113,12 @@ public class TestOrder {
             }
 
             @Override
-            public byte[] encode(Object obj) {
+            public byte[] encode(Object plainObj) {
                 return new byte[0];
             }
 
             @Override
-            public Object decode(byte[] obj, Type expectedPlainType) {
+            public Object decode(byte[] cipherObj, Type plainType) {
                 return null;
             }
         });
@@ -130,12 +130,12 @@ public class TestOrder {
             }
 
             @Override
-            public byte[] encode(Object obj) {
+            public byte[] encode(Object plainObj) {
                 return new byte[0];
             }
 
             @Override
-            public Object decode(byte[] obj, Type expectedPlainType) {
+            public Object decode(byte[] cipherObj, Type plainType) {
                 return null;
             }
         });
@@ -147,12 +147,12 @@ public class TestOrder {
             }
 
             @Override
-            public byte[] encode(Object obj) {
+            public byte[] encode(Object plainObj) {
                 return new byte[0];
             }
 
             @Override
-            public Object decode(byte[] obj, Type expectedPlainType) {
+            public Object decode(byte[] cipherObj, Type plainType) {
                 return null;
             }
         });

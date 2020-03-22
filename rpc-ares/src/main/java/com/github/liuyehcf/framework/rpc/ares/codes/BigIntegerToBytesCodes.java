@@ -12,12 +12,12 @@ import java.math.BigInteger;
 public class BigIntegerToBytesCodes extends ObjectToBytesCodes<BigInteger> {
 
     @Override
-    public byte[] encode(BigInteger obj) {
-        return obj.toString().getBytes();
+    public byte[] encode(BigInteger plainObj) {
+        return plainObj.toString().getBytes();
     }
 
     @Override
-    public BigInteger decode(byte[] obj, Type expectedPlainType) {
-        return new BigInteger(new String(obj));
+    public BigInteger decode(byte[] cipherObj, Type plainType) {
+        return new BigInteger(new String(cipherObj));
     }
 }

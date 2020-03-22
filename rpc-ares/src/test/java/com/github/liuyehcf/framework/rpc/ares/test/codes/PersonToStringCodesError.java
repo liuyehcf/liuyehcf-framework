@@ -14,12 +14,12 @@ import java.lang.reflect.Type;
 public class PersonToStringCodesError extends ObjectToStringCodes<Person> {
 
     @Override
-    public String encode(Person obj) {
+    public String encode(Person plainObj) {
         throw new RuntimeException();
     }
 
     @Override
-    public Person decode(String obj, Type expectedPlainType) {
+    public Person decode(String cipherObj, Type plainType) {
         throw new RuntimeException();
     }
 }
