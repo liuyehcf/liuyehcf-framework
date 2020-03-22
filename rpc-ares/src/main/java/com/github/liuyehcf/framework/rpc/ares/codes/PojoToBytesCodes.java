@@ -17,12 +17,12 @@ public class PojoToBytesCodes extends ObjectToBytesCodes<Object> {
     }
 
     @Override
-    public boolean matchDecode(Type type) {
+    public boolean matchDecodeType(Type type) {
         return true;
     }
 
     @Override
-    public boolean matchEncode(Object obj) {
+    public boolean matchEncodeObject(Object obj) {
         return true;
     }
 

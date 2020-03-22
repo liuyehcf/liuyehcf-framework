@@ -13,11 +13,11 @@ import java.util.Map;
 public class MapToBytesCodes extends ObjectToBytesCodes<Map<String, ?>> {
 
     @Override
-    public boolean matchDecode(Type type) {
+    public boolean matchDecodeType(Type type) {
         if (type.getTypeName().startsWith(Map.class.getName())) {
             return true;
         }
-        return super.matchDecode(type);
+        return super.matchDecodeType(type);
     }
 
     @Override

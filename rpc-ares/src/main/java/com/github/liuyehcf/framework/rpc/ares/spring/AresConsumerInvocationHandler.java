@@ -254,7 +254,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 if (codes == null) {
                     continue;
                 }
-                if (!codes.matchEncode(obj)) {
+                if (!codes.matchEncodeObject(obj)) {
                     continue;
                 }
                 return codes.encode(obj);
@@ -275,7 +275,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 if (codes == null) {
                     continue;
                 }
-                if (!codes.matchEncode(obj)) {
+                if (!codes.matchEncodeObject(obj)) {
                     continue;
                 }
                 return codes.encode(obj);
@@ -299,7 +299,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 if (codes == null) {
                     continue;
                 }
-                if (!codes.matchDecode(targetType)) {
+                if (!codes.matchDecodeType(targetType)) {
                     continue;
                 }
                 return codes.decode(bytes, targetType);

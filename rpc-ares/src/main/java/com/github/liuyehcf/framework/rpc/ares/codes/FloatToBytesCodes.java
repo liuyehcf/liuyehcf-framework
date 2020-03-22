@@ -11,11 +11,11 @@ import java.lang.reflect.Type;
 public class FloatToBytesCodes extends ObjectToBytesCodes<Float> {
 
     @Override
-    public boolean matchDecode(Type type) {
+    public boolean matchDecodeType(Type type) {
         if (float.class.equals(type)) {
             return true;
         }
-        return super.matchDecode(type);
+        return super.matchDecodeType(type);
     }
 
     @Override

@@ -20,11 +20,11 @@ public abstract class Codes<PLAIN, CIPHER> implements Comparable<Codes<?, ?>> {
         this.plainMatcher = TypeMatcher.create(plainType);
     }
 
-    public boolean matchDecode(Type type) {
+    public boolean matchDecodeType(Type type) {
         return Objects.equals(this.plainType, type);
     }
 
-    public boolean matchEncode(Object obj) {
+    public boolean matchEncodeObject(Object obj) {
         return plainMatcher.match(obj);
     }
 
