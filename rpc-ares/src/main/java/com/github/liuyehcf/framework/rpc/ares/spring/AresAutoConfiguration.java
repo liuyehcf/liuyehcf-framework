@@ -69,72 +69,72 @@ public class AresAutoConfiguration {
         return new AresConsumerSpringPostProcessor(stringCodes, byteCodes);
     }
 
-    @Bean
+    @Bean(name = "aresBytesToBytesCodes")
     public BytesToBytesCodes bytesToByteCodes() {
         return new BytesToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresBooleanToBytesCodes")
     public BooleanToBytesCodes booleanToBytesCodes() {
         return new BooleanToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresByteToBytesCodes")
     public ByteToBytesCodes byteToByteCodes() {
         return new ByteToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresShortToBytesCodes")
     public ShortToBytesCodes shortToByteCodes() {
         return new ShortToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresIntToBytesCodes")
     public IntToBytesCodes intToByteCodes() {
         return new IntToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresLongToBytesCodes")
     public LongToBytesCodes longToByteCodes() {
         return new LongToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresFloatToBytesCodes")
     public FloatToBytesCodes floatToByteCodes() {
         return new FloatToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresDoubleToBytesCodes")
     public DoubleToBytesCodes doubleToByteCodes() {
         return new DoubleToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresVoidToBytesCodes")
     public VoidToBytesCodes voidToBytesCodes() {
         return new VoidToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresStringToBytesCodes")
     public StringToBytesCodes stringToBytesCodes() {
         return new StringToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresMapToBytesCodes")
     public MapToBytesCodes mapToBytesCodes() {
         return new MapToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresPojoToBytesCodes")
     public PojoToBytesCodes pojoToBytesCodes() {
         return new PojoToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresBigIntegerToBytesCodes")
     public BigIntegerToBytesCodes bigIntegerToBytesCodes() {
         return new BigIntegerToBytesCodes();
     }
 
-    @Bean
+    @Bean(name = "aresBigDecimalToBytesCodes")
     public BigDecimalToBytesCodes bigDecimalToBytesCodes() {
         return new BigDecimalToBytesCodes();
     }
