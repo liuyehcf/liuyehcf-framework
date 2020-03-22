@@ -11,11 +11,11 @@ import java.lang.reflect.Type;
 public class LongToBytesCodes extends ObjectToBytesCodes<Long> {
 
     @Override
-    public boolean matchDecodeType(Type type) {
-        if (long.class.equals(type)) {
+    public boolean matchDecodeType(Type expectedPlainType) {
+        if (long.class.equals(expectedPlainType)) {
             return true;
         }
-        return super.matchDecodeType(type);
+        return super.matchDecodeType(expectedPlainType);
     }
 
     @Override

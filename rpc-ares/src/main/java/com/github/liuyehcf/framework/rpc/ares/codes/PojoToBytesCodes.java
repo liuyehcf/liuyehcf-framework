@@ -17,7 +17,7 @@ public class PojoToBytesCodes extends ObjectToBytesCodes<Object> {
     }
 
     @Override
-    public boolean matchDecodeType(Type type) {
+    public boolean matchDecodeType(Type expectedPlainType) {
         return true;
     }
 

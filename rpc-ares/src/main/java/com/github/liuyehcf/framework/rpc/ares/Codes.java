@@ -20,10 +20,24 @@ public abstract class Codes<PLAIN, CIPHER> implements Comparable<Codes<?, ?>> {
         this.plainMatcher = TypeMatcher.create(plainType);
     }
 
-    public boolean matchDecodeType(Type type) {
-        return Objects.equals(this.plainType, type);
+    /**
+     * bytes --decode--> target object
+     * if the target object matches the expectedPlainType
+     * then use decode method to decode
+     *
+     * @param expectedPlainType expected plain type
+     */
+    public boolean matchDecodeType(Type expectedPlainType) {
+        return Objects.equals(this.plainType, expectedPlainType);
     }
 
+    /**
+     * source object --encode--> bytes
+     * if the source object matches the codes
+     * then use encode method to encode
+     *
+     * @param obj source object
+     */
     public boolean matchEncodeObject(Object obj) {
         return plainMatcher.match(obj);
     }

@@ -11,11 +11,11 @@ import java.lang.reflect.Type;
 public class ShortToBytesCodes extends ObjectToBytesCodes<Short> {
 
     @Override
-    public boolean matchDecodeType(Type type) {
-        if (short.class.equals(type)) {
+    public boolean matchDecodeType(Type expectedPlainType) {
+        if (short.class.equals(expectedPlainType)) {
             return true;
         }
-        return super.matchDecodeType(type);
+        return super.matchDecodeType(expectedPlainType);
     }
 
     @Override
