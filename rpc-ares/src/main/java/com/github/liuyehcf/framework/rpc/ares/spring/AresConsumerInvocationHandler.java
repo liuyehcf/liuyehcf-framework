@@ -65,10 +65,11 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
         String path = aresMethodAnnotation.path();
         HttpMethod httpMethod = aresMethodAnnotation.method();
+        String acceptContentType = aresMethodAnnotation.acceptContentType();
 
         path = renderPath(path, method.getParameters(), args);
         HttpParams httpParams = parseParams(method.getParameters(), args);
-        HttpRequestBase httpRequest = buildRequest(path, httpMethod, httpParams);
+        HttpRequestBase httpRequest = buildRequest(path, httpMethod, acceptContentType, httpParams);
 
         return doInvoke(httpRequest, method);
     }
@@ -147,7 +148,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         return new HttpParams(queryParams, headers, requestBody, contentType);
     }
 
-    private HttpRequestBase buildRequest(String path, HttpMethod httpMethod, HttpParams httpParams) throws Exception {
+    private HttpRequestBase buildRequest(String path, HttpMethod httpMethod, String acceptContentType, HttpParams httpParams) throws Exception {
         RequestBuilder builder = RequestBuilder.create(httpMethod.name());
 
         AresContext.Endpoint endpoint = AresContext.getEndpoint();
@@ -182,6 +183,8 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 }
             }
         }
+
+        builder.addHeader("Accept", acceptContentType);
 
         if (MapUtils.isNotEmpty(httpParams.requestHeaders)) {
             for (Map.Entry<String, Object> entry : httpParams.requestHeaders.entrySet()) {

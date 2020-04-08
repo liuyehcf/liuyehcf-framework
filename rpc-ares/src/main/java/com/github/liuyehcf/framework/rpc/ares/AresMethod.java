@@ -26,4 +26,9 @@ public @interface AresMethod {
      * @see HttpMethod
      */
     HttpMethod method() default HttpMethod.GET;
+
+    /**
+     * accept content type
+     */
+    String acceptContentType() default "*/*";
 }
