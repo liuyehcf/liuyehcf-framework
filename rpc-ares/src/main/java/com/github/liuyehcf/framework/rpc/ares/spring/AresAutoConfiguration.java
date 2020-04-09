@@ -1,8 +1,9 @@
 package com.github.liuyehcf.framework.rpc.ares.spring;
 
-import com.github.liuyehcf.framework.rpc.ares.ObjectToBytesCodes;
-import com.github.liuyehcf.framework.rpc.ares.ObjectToStringCodes;
-import com.github.liuyehcf.framework.rpc.ares.codes.*;
+import com.github.liuyehcf.framework.rpc.ares.ParamsConverter;
+import com.github.liuyehcf.framework.rpc.ares.RequestBodyConverter;
+import com.github.liuyehcf.framework.rpc.ares.ResponseBodyConverter;
+import com.github.liuyehcf.framework.rpc.ares.converters.*;
 import lombok.Data;
 import org.apache.http.NoHttpResponseException;
 import org.apache.http.client.HttpClient;
@@ -62,80 +63,153 @@ public class AresAutoConfiguration {
     }
 
     @Bean
-    public BeanFactoryPostProcessor aresConsumerSpringPostProcessor(@Autowired List<ObjectToStringCodes<?>> stringCodes,
-                                                                    @Autowired List<ObjectToBytesCodes<?>> byteCodes) {
-        Collections.sort(stringCodes);
-        Collections.sort(byteCodes);
-        return new AresConsumerSpringPostProcessor(stringCodes, byteCodes);
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public BeanFactoryPostProcessor aresConsumerSpringPostProcessor(@Autowired List<ParamsConverter<?>> paramsConverters,
+                                                                    @Autowired List<RequestBodyConverter<?>> requestBodyConverters,
+                                                                    @Autowired List<ResponseBodyConverter<?>> responseBodyConverters) {
+        Collections.sort((List<? extends Comparable>) paramsConverters);
+        Collections.sort((List<? extends Comparable>) requestBodyConverters);
+        Collections.sort((List<? extends Comparable>) responseBodyConverters);
+        return new AresConsumerSpringPostProcessor(paramsConverters, requestBodyConverters, responseBodyConverters);
     }
 
-    @Bean(name = "aresBytesToBytesCodes")
-    public BytesToBytesCodes bytesToByteCodes() {
-        return new BytesToBytesCodes();
+    @Bean(name = "aresBigDecimalRequestBodyConverter")
+    public BigDecimalRequestBodyConverter bigDecimalRequestBodyConverter() {
+        return new BigDecimalRequestBodyConverter();
     }
 
-    @Bean(name = "aresBooleanToBytesCodes")
-    public BooleanToBytesCodes booleanToBytesCodes() {
-        return new BooleanToBytesCodes();
+    @Bean(name = "aresBigDecimalResponseBodyConverter")
+    public BigDecimalResponseBodyConverter bigDecimalResponseBodyConverter() {
+        return new BigDecimalResponseBodyConverter();
     }
 
-    @Bean(name = "aresByteToBytesCodes")
-    public ByteToBytesCodes byteToByteCodes() {
-        return new ByteToBytesCodes();
+    @Bean(name = "aresBigIntegerRequestBodyConverter")
+    public BigIntegerRequestBodyConverter bigIntegerRequestBodyConverter() {
+        return new BigIntegerRequestBodyConverter();
     }
 
-    @Bean(name = "aresShortToBytesCodes")
-    public ShortToBytesCodes shortToByteCodes() {
-        return new ShortToBytesCodes();
+    @Bean(name = "aresBigIntegerResponseBodyConverter")
+    public BigIntegerResponseBodyConverter bigIntegerResponseBodyConverter() {
+        return new BigIntegerResponseBodyConverter();
     }
 
-    @Bean(name = "aresIntToBytesCodes")
-    public IntToBytesCodes intToByteCodes() {
-        return new IntToBytesCodes();
+    @Bean(name = "aresBooleanRequestBodyConverter")
+    public BooleanRequestBodyConverter booleanRequestBodyConverter() {
+        return new BooleanRequestBodyConverter();
     }
 
-    @Bean(name = "aresLongToBytesCodes")
-    public LongToBytesCodes longToByteCodes() {
-        return new LongToBytesCodes();
+    @Bean(name = "aresBooleanResponseBodyConverter")
+    public BooleanResponseBodyConverter booleanResponseBodyConverter() {
+        return new BooleanResponseBodyConverter();
     }
 
-    @Bean(name = "aresFloatToBytesCodes")
-    public FloatToBytesCodes floatToByteCodes() {
-        return new FloatToBytesCodes();
+    @Bean(name = "aresByteRequestBodyConverter")
+    public ByteRequestBodyConverter byteRequestBodyConverter() {
+        return new ByteRequestBodyConverter();
     }
 
-    @Bean(name = "aresDoubleToBytesCodes")
-    public DoubleToBytesCodes doubleToByteCodes() {
-        return new DoubleToBytesCodes();
+    @Bean(name = "aresByteResponseBodyConverter")
+    public ByteResponseBodyConverter byteResponseBodyConverter() {
+        return new ByteResponseBodyConverter();
     }
 
-    @Bean(name = "aresVoidToBytesCodes")
-    public VoidToBytesCodes voidToBytesCodes() {
-        return new VoidToBytesCodes();
+    @Bean(name = "aresBytesRequestBodyConverter")
+    public BytesRequestBodyConverter bytesRequestBodyConverter() {
+        return new BytesRequestBodyConverter();
     }
 
-    @Bean(name = "aresStringToBytesCodes")
-    public StringToBytesCodes stringToBytesCodes() {
-        return new StringToBytesCodes();
+    @Bean(name = "aresBytesResponseBodyConverter")
+    public BytesResponseBodyConverter bytesResponseBodyConverter() {
+        return new BytesResponseBodyConverter();
     }
 
-    @Bean(name = "aresMapToBytesCodes")
-    public MapToBytesCodes mapToBytesCodes() {
-        return new MapToBytesCodes();
+    @Bean(name = "aresDoubleRequestBodyConverter")
+    public DoubleRequestBodyConverter doubleRequestBodyConverter() {
+        return new DoubleRequestBodyConverter();
     }
 
-    @Bean(name = "aresPojoToBytesCodes")
-    public PojoToBytesCodes pojoToBytesCodes() {
-        return new PojoToBytesCodes();
+    @Bean(name = "aresDoubleResponseBodyConverter")
+    public DoubleResponseBodyConverter doubleResponseBodyConverter() {
+        return new DoubleResponseBodyConverter();
     }
 
-    @Bean(name = "aresBigIntegerToBytesCodes")
-    public BigIntegerToBytesCodes bigIntegerToBytesCodes() {
-        return new BigIntegerToBytesCodes();
+    @Bean(name = "aresFloatRequestBodyConverter")
+    public FloatRequestBodyConverter floatRequestBodyConverter() {
+        return new FloatRequestBodyConverter();
     }
 
-    @Bean(name = "aresBigDecimalToBytesCodes")
-    public BigDecimalToBytesCodes bigDecimalToBytesCodes() {
-        return new BigDecimalToBytesCodes();
+    @Bean(name = "aresFloatResponseBodyConverter")
+    public FloatResponseBodyConverter floatResponseBodyConverter() {
+        return new FloatResponseBodyConverter();
+    }
+
+    @Bean(name = "aresIntegerRequestBodyConverter")
+    public IntegerRequestBodyConverter integerRequestBodyConverter() {
+        return new IntegerRequestBodyConverter();
+    }
+
+    @Bean(name = "aresIntegerResponseBodyConverter")
+    public IntegerResponseBodyConverter integerResponseBodyConverter() {
+        return new IntegerResponseBodyConverter();
+    }
+
+    @Bean(name = "aresLongRequestBodyConverter")
+    public LongRequestBodyConverter longRequestBodyConverter() {
+        return new LongRequestBodyConverter();
+    }
+
+    @Bean(name = "aresLongResponseBodyConverter")
+    public LongResponseBodyConverter longResponseBodyConverter() {
+        return new LongResponseBodyConverter();
+    }
+
+    @Bean(name = "aresMapRequestBodyConverter")
+    public MapRequestBodyConverter mapRequestBodyConverter() {
+        return new MapRequestBodyConverter();
+    }
+
+    @Bean(name = "aresMapResponseBodyConverter")
+    public MapResponseBodyConverter mapResponseBodyConverter() {
+        return new MapResponseBodyConverter();
+    }
+
+    @Bean(name = "aresPojoRequestBodyConverter")
+    public PojoRequestBodyConverter pojoRequestBodyConverter() {
+        return new PojoRequestBodyConverter();
+    }
+
+    @Bean(name = "aresPojoResponseBodyConverter")
+    public PojoResponseBodyConverter pojoResponseBodyConverter() {
+        return new PojoResponseBodyConverter();
+    }
+
+    @Bean(name = "aresShortRequestBodyConverter")
+    public ShortRequestBodyConverter shortRequestBodyConverter() {
+        return new ShortRequestBodyConverter();
+    }
+
+    @Bean(name = "aresShortResponseBodyConverter")
+    public ShortResponseBodyConverter shortResponseBodyConverter() {
+        return new ShortResponseBodyConverter();
+    }
+
+    @Bean(name = "aresStringRequestBodyConverter")
+    public StringRequestBodyConverter stringRequestBodyConverter() {
+        return new StringRequestBodyConverter();
+    }
+
+    @Bean(name = "aresStringResponseBodyConverter")
+    public StringResponseBodyConverter stringResponseBodyConverter() {
+        return new StringResponseBodyConverter();
+    }
+
+    @Bean(name = "aresVoidRequestBodyConverter")
+    public VoidRequestBodyConverter voidRequestBodyConverter() {
+        return new VoidRequestBodyConverter();
+    }
+
+    @Bean(name = "aresVoidResponseBodyConverter")
+    public VoidResponseBodyConverter voidResponseBodyConverter() {
+        return new VoidResponseBodyConverter();
     }
 }

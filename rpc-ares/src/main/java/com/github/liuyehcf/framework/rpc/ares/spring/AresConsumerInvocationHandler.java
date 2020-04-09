@@ -39,20 +39,24 @@ class AresConsumerInvocationHandler implements InvocationHandler {
     private final HttpClient httpClient;
     private final RequestConfig requestConfig;
 
-    private final List<ObjectToStringCodes<?>> stringCodes;
-    private final List<ObjectToBytesCodes<?>> byteCodes;
+    private final List<ParamsConverter<?>> paramsConverters;
+    private final List<RequestBodyConverter<?>> requestBodyConverters;
+    private final List<ResponseBodyConverter<?>> responseBodyConverters;
 
     private final String schema;
     private final String host;
     private final int port;
 
     AresConsumerInvocationHandler(HttpClient httpClient, RequestConfig requestConfig,
-                                  List<ObjectToStringCodes<?>> stringCodes, List<ObjectToBytesCodes<?>> byteCodes,
+                                  List<ParamsConverter<?>> paramsConverters,
+                                  List<RequestBodyConverter<?>> requestBodyConverters,
+                                  List<ResponseBodyConverter<?>> responseBodyConverters,
                                   String schema, String host, int port) {
         this.httpClient = httpClient;
         this.requestConfig = requestConfig;
-        this.stringCodes = stringCodes;
-        this.byteCodes = byteCodes;
+        this.paramsConverters = paramsConverters;
+        this.requestBodyConverters = requestBodyConverters;
+        this.responseBodyConverters = responseBodyConverters;
         this.schema = schema;
         this.host = host;
         this.port = port;
@@ -252,15 +256,15 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             return null;
         }
 
-        if (CollectionUtils.isNotEmpty(stringCodes)) {
-            for (ObjectToStringCodes codes : stringCodes) {
-                if (codes == null) {
+        if (CollectionUtils.isNotEmpty(paramsConverters)) {
+            for (ParamsConverter converter : paramsConverters) {
+                if (converter == null) {
                     continue;
                 }
-                if (!codes.matchEncodeObject(obj)) {
+                if (!converter.match(obj, String.class)) {
                     continue;
                 }
-                return codes.encode(obj);
+                return converter.convert(obj, String.class);
             }
         }
 
@@ -273,15 +277,15 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             return null;
         }
 
-        if (CollectionUtils.isNotEmpty(byteCodes)) {
-            for (ObjectToBytesCodes codes : byteCodes) {
-                if (codes == null) {
+        if (CollectionUtils.isNotEmpty(requestBodyConverters)) {
+            for (RequestBodyConverter converter : requestBodyConverters) {
+                if (converter == null) {
                     continue;
                 }
-                if (!codes.matchEncodeObject(obj)) {
+                if (!converter.match(obj, byte[].class)) {
                     continue;
                 }
-                return codes.encode(obj);
+                return converter.convert(obj, byte[].class);
             }
         }
 
@@ -297,15 +301,15 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             return null;
         }
 
-        if (CollectionUtils.isNotEmpty(byteCodes)) {
-            for (ObjectToBytesCodes<?> codes : byteCodes) {
-                if (codes == null) {
+        if (CollectionUtils.isNotEmpty(responseBodyConverters)) {
+            for (ResponseBodyConverter<?> converter : responseBodyConverters) {
+                if (converter == null) {
                     continue;
                 }
-                if (!codes.matchDecodeType(targetType)) {
+                if (!converter.match(bytes, targetType)) {
                     continue;
                 }
-                return codes.decode(bytes, targetType);
+                return converter.convert(bytes, targetType);
             }
         }
 

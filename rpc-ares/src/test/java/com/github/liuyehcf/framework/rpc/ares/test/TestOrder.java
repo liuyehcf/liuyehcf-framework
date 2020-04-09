@@ -1,8 +1,9 @@
 package com.github.liuyehcf.framework.rpc.ares.test;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
-import com.github.liuyehcf.framework.rpc.ares.ObjectToBytesCodes;
-import com.github.liuyehcf.framework.rpc.ares.ObjectToStringCodes;
+import com.github.liuyehcf.framework.rpc.ares.ParamsConverter;
+import com.github.liuyehcf.framework.rpc.ares.RequestBodyConverter;
+import com.github.liuyehcf.framework.rpc.ares.ResponseBodyConverter;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 
@@ -17,151 +18,165 @@ import java.util.List;
 public class TestOrder {
 
     @Test
-    public void testStringCodes() {
-        List<ObjectToStringCodes<Object>> stringCodes = Lists.newArrayList();
-        stringCodes.add(new ObjectToStringCodes<Object>() {
+    public void testParamsConverter() {
+        List<ParamsConverter<Object>> paramsConverters = Lists.newArrayList();
+        paramsConverters.add(new ParamsConverter<Object>() {
             @Override
             public int order() {
                 return -1;
             }
 
             @Override
-            public String encode(Object plainObj) {
-                return null;
-            }
-
-            @Override
-            public Object decode(String cipherObj, Type plainType) {
+            public String convert(Object input, Type outputType) {
                 return null;
             }
         });
 
-        stringCodes.add(new ObjectToStringCodes<Object>() {
+        paramsConverters.add(new ParamsConverter<Object>() {
             @Override
             public int order() {
                 return 0;
             }
 
             @Override
-            public String encode(Object plainObj) {
-                return null;
-            }
-
-            @Override
-            public Object decode(String cipherObj, Type plainType) {
+            public String convert(Object input, Type outputType) {
                 return null;
             }
         });
 
-        stringCodes.add(new ObjectToStringCodes<Object>() {
+        paramsConverters.add(new ParamsConverter<Object>() {
             @Override
             public int order() {
                 return 1;
             }
 
             @Override
-            public String encode(Object plainObj) {
-                return null;
-            }
-
-            @Override
-            public Object decode(String cipherObj, Type plainType) {
+            public String convert(Object input, Type outputType) {
                 return null;
             }
         });
 
-        stringCodes.add(new ObjectToStringCodes<Object>() {
+        paramsConverters.add(new ParamsConverter<Object>() {
             @Override
-            public String encode(Object plainObj) {
-                return null;
-            }
-
-            @Override
-            public Object decode(String cipherObj, Type plainType) {
+            public String convert(Object input, Type outputType) {
                 return null;
             }
         });
 
-        Collections.sort(stringCodes);
+        Collections.sort(paramsConverters);
 
-        Assert.assertEquals(1, stringCodes.get(0).order());
-        Assert.assertEquals(0, stringCodes.get(1).order());
-        Assert.assertEquals(0, stringCodes.get(2).order());
-        Assert.assertEquals(-1, stringCodes.get(3).order());
+        Assert.assertEquals(1, paramsConverters.get(0).order());
+        Assert.assertEquals(0, paramsConverters.get(1).order());
+        Assert.assertEquals(0, paramsConverters.get(2).order());
+        Assert.assertEquals(-1, paramsConverters.get(3).order());
     }
 
     @Test
-    public void testByteCodes() {
-        List<ObjectToBytesCodes<Object>> bytesCodes = Lists.newArrayList();
-
-        bytesCodes.add(new ObjectToBytesCodes<Object>() {
+    public void testRequestConverter() {
+        List<RequestBodyConverter<Object>> requestBodyConverters = Lists.newArrayList();
+        requestBodyConverters.add(new RequestBodyConverter<Object>() {
             @Override
-            public byte[] encode(Object plainObj) {
-                return new byte[0];
+            public int order() {
+                return -1;
             }
 
             @Override
-            public Object decode(byte[] cipherObj, Type plainType) {
+            public byte[] convert(Object input, Type outputType) {
+                return new byte[0];
+            }
+        });
+
+        requestBodyConverters.add(new RequestBodyConverter<Object>() {
+            @Override
+            public int order() {
+                return 0;
+            }
+
+            @Override
+            public byte[] convert(Object input, Type outputType) {
+                return new byte[0];
+            }
+        });
+
+        requestBodyConverters.add(new RequestBodyConverter<Object>() {
+            @Override
+            public int order() {
+                return 1;
+            }
+
+            @Override
+            public byte[] convert(Object input, Type outputType) {
+                return new byte[0];
+            }
+        });
+
+        requestBodyConverters.add(new RequestBodyConverter<Object>() {
+            @Override
+            public byte[] convert(Object input, Type outputType) {
+                return new byte[0];
+            }
+        });
+
+        Collections.sort(requestBodyConverters);
+
+        Assert.assertEquals(1, requestBodyConverters.get(0).order());
+        Assert.assertEquals(0, requestBodyConverters.get(1).order());
+        Assert.assertEquals(0, requestBodyConverters.get(2).order());
+        Assert.assertEquals(-1, requestBodyConverters.get(3).order());
+    }
+
+    @Test
+    public void testResponseConverter() {
+        List<ResponseBodyConverter<Object>> responseBodyConverters = Lists.newArrayList();
+
+        responseBodyConverters.add(new ResponseBodyConverter<Object>() {
+            @Override
+            public Object convert(byte[] input, Type outputType) {
                 return null;
             }
         });
 
-        bytesCodes.add(new ObjectToBytesCodes<Object>() {
+        responseBodyConverters.add(new ResponseBodyConverter<Object>() {
             @Override
             public int order() {
                 return Integer.MAX_VALUE;
             }
 
             @Override
-            public byte[] encode(Object plainObj) {
-                return new byte[0];
-            }
-
-            @Override
-            public Object decode(byte[] cipherObj, Type plainType) {
+            public Object convert(byte[] input, Type outputType) {
                 return null;
             }
         });
 
-        bytesCodes.add(new ObjectToBytesCodes<Object>() {
+        responseBodyConverters.add(new ResponseBodyConverter<Object>() {
             @Override
             public int order() {
                 return 200;
             }
 
             @Override
-            public byte[] encode(Object plainObj) {
-                return new byte[0];
-            }
-
-            @Override
-            public Object decode(byte[] cipherObj, Type plainType) {
+            public Object convert(byte[] input, Type outputType) {
                 return null;
             }
         });
 
-        bytesCodes.add(new ObjectToBytesCodes<Object>() {
+        responseBodyConverters.add(new ResponseBodyConverter<Object>() {
             @Override
             public int order() {
                 return Integer.MIN_VALUE;
             }
 
             @Override
-            public byte[] encode(Object plainObj) {
-                return new byte[0];
-            }
-
-            @Override
-            public Object decode(byte[] cipherObj, Type plainType) {
+            public Object convert(byte[] input, Type outputType) {
                 return null;
             }
         });
 
-        Collections.sort(bytesCodes);
+        Collections.sort(responseBodyConverters);
 
-        Assert.assertEquals(Integer.MAX_VALUE, bytesCodes.get(0).order());
-        Assert.assertEquals(200, bytesCodes.get(1).order());
-        Assert.assertEquals(0, bytesCodes.get(2).order());
-        Assert.assertEquals(Integer.MIN_VALUE, bytesCodes.get(3).order());
+        Assert.assertEquals(Integer.MAX_VALUE, responseBodyConverters.get(0).order());
+        Assert.assertEquals(200, responseBodyConverters.get(1).order());
+        Assert.assertEquals(0, responseBodyConverters.get(2).order());
+        Assert.assertEquals(Integer.MIN_VALUE, responseBodyConverters.get(3).order());
     }
 }

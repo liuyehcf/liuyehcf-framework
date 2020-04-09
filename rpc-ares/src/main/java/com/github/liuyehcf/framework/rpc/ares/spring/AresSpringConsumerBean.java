@@ -1,7 +1,8 @@
 package com.github.liuyehcf.framework.rpc.ares.spring;
 
-import com.github.liuyehcf.framework.rpc.ares.ObjectToBytesCodes;
-import com.github.liuyehcf.framework.rpc.ares.ObjectToStringCodes;
+import com.github.liuyehcf.framework.rpc.ares.ParamsConverter;
+import com.github.liuyehcf.framework.rpc.ares.RequestBodyConverter;
+import com.github.liuyehcf.framework.rpc.ares.ResponseBodyConverter;
 import lombok.Data;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -24,8 +25,9 @@ public class AresSpringConsumerBean implements FactoryBean<Object>, Initializing
     @Resource
     private RequestConfig requestConfig;
 
-    private List<ObjectToStringCodes<?>> stringCodes;
-    private List<ObjectToBytesCodes<?>> byteCodes;
+    private List<ParamsConverter<?>> paramsConverters;
+    private List<RequestBodyConverter<?>> requestBodyConverters;
+    private List<ResponseBodyConverter<?>> responseBodyConverters;
     private Object target;
     private Class<?> objectType;
     private String schema;
@@ -51,6 +53,6 @@ public class AresSpringConsumerBean implements FactoryBean<Object>, Initializing
         this.target = Proxy.newProxyInstance(
                 this.getClass().getClassLoader(),
                 new Class<?>[]{objectType},
-                new AresConsumerInvocationHandler(httpClient, requestConfig, stringCodes, byteCodes, schema, host, port));
+                new AresConsumerInvocationHandler(httpClient, requestConfig, paramsConverters, requestBodyConverters, responseBodyConverters, schema, host, port));
     }
 }

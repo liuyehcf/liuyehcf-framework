@@ -1,6 +1,6 @@
 package com.github.liuyehcf.framework.rpc.ares.test.codes;
 
-import com.github.liuyehcf.framework.rpc.ares.ObjectToBytesCodes;
+import com.github.liuyehcf.framework.rpc.ares.ResponseBodyConverter;
 import com.github.liuyehcf.framework.rpc.ares.test.model.Person;
 import org.springframework.stereotype.Component;
 
@@ -8,18 +8,18 @@ import java.lang.reflect.Type;
 
 /**
  * @author hechenfeng
- * @date 2020/3/21
+ * @date 2020/4/10
  */
 @Component
-public class PersonToBytesCodesError extends ObjectToBytesCodes<Person> {
+public class PersonResponseBodyConverterError extends ResponseBodyConverter<Person> {
 
     @Override
-    public byte[] encode(Person plainObj) {
+    public Person convert(byte[] input, Type outputType) {
         throw new RuntimeException();
     }
 
     @Override
-    public Person decode(byte[] cipherObj, Type plainType) {
-        throw new RuntimeException();
+    public int order() {
+        return -1;
     }
 }

@@ -2,8 +2,9 @@ package com.github.liuyehcf.framework.rpc.ares.spring;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.rpc.ares.AresConsumer;
-import com.github.liuyehcf.framework.rpc.ares.ObjectToBytesCodes;
-import com.github.liuyehcf.framework.rpc.ares.ObjectToStringCodes;
+import com.github.liuyehcf.framework.rpc.ares.ParamsConverter;
+import com.github.liuyehcf.framework.rpc.ares.RequestBodyConverter;
+import com.github.liuyehcf.framework.rpc.ares.ResponseBodyConverter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -28,15 +29,18 @@ public class AresConsumerSpringPostProcessor implements BeanFactoryPostProcessor
     private static final String FIELD_SCHEMA = "schema";
     private static final String FIELD_HOST = "host";
     private static final String FIELD_PORT = "port";
-    private static final String FIELD_STRING_CODES = "stringCodes";
-    private static final String FIELD_BYTE_CODES = "byteCodes";
+    private static final String FIELD_PARAMS_CONVERTERS = "paramsConverters";
+    private static final String FIELD_REQUEST_BODY_CONVERTERS = "requestBodyConverters";
+    private static final String FIELD_RESPONSE_BODY_CONVERTERS = "responseBodyConverters";
 
-    private final List<ObjectToStringCodes<?>> stringCodes;
-    private final List<ObjectToBytesCodes<?>> byteCodes;
+    private final List<ParamsConverter<?>> paramsConverters;
+    private final List<RequestBodyConverter<?>> requestBodyConverters;
+    private final List<ResponseBodyConverter<?>> responseBodyConverters;
 
-    public AresConsumerSpringPostProcessor(List<ObjectToStringCodes<?>> stringCodes, List<ObjectToBytesCodes<?>> byteCodes) {
-        this.stringCodes = stringCodes;
-        this.byteCodes = byteCodes;
+    public AresConsumerSpringPostProcessor(List<ParamsConverter<?>> paramsConverters, List<RequestBodyConverter<?>> requestBodyConverters, List<ResponseBodyConverter<?>> responseBodyConverters) {
+        this.paramsConverters = paramsConverters;
+        this.requestBodyConverters = requestBodyConverters;
+        this.responseBodyConverters = responseBodyConverters;
     }
 
     @Override
@@ -75,8 +79,9 @@ public class AresConsumerSpringPostProcessor implements BeanFactoryPostProcessor
 
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(AresSpringConsumerBean.class);
 
-        builder.addPropertyValue(FIELD_STRING_CODES, stringCodes);
-        builder.addPropertyValue(FIELD_BYTE_CODES, byteCodes);
+        builder.addPropertyValue(FIELD_PARAMS_CONVERTERS, paramsConverters);
+        builder.addPropertyValue(FIELD_REQUEST_BODY_CONVERTERS, requestBodyConverters);
+        builder.addPropertyValue(FIELD_RESPONSE_BODY_CONVERTERS, responseBodyConverters);
         builder.addPropertyValue(FIELD_OBJECT_TYPE, fieldType);
         builder.addPropertyValue(FIELD_SCHEMA, schema);
         builder.addPropertyValue(FIELD_HOST, domain);
