@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.rpc.ares.converters;
+package com.github.liuyehcf.framework.rpc.ares.converters.reqbody;
 
 import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.rpc.ares.RequestBodyConverter;

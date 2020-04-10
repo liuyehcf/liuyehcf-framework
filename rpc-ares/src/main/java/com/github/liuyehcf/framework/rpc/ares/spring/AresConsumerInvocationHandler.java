@@ -28,7 +28,6 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author hechenfeng
@@ -90,7 +89,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             }
 
             String name = aresPathVariable.name();
-            context.put(name, stringEncode(args[i]));
+            context.put(name, convertParamToString(args[i]));
         }
 
         return PathUtils.render(path, context);
@@ -181,7 +180,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             for (Map.Entry<String, Object> entry : httpParams.requestParams.entrySet()) {
                 Object requestParam = entry.getValue();
 
-                String content = stringEncode(requestParam);
+                String content = convertParamToString(requestParam);
                 if (content != null) {
                     uriBuilder.addParameter(entry.getKey(), content);
                 }
@@ -194,7 +193,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             for (Map.Entry<String, Object> entry : httpParams.requestHeaders.entrySet()) {
                 Object requestHeader = entry.getValue();
 
-                String content = stringEncode(requestHeader);
+                String content = convertParamToString(requestHeader);
                 if (content != null) {
                     builder.addHeader(entry.getKey(), content);
                 }
@@ -202,7 +201,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         }
 
         if (httpParams.requestBody != null) {
-            byte[] bytes = byteEncode(httpParams.requestBody);
+            byte[] bytes = convertRequestBodyToBytes(httpParams.requestBody);
 
             if (bytes != null) {
                 ContentType contentType;
@@ -237,7 +236,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                         EntityUtils.toString(response.getEntity())));
             }
 
-            return byteDecode(EntityUtils.toByteArray(response.getEntity()), method.getGenericReturnType());
+            return convertBytesToResponseBody(EntityUtils.toByteArray(response.getEntity()), method.getGenericReturnType());
         } catch (AresException e) {
             throw e;
         } catch (Throwable e) {
@@ -251,7 +250,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private String stringEncode(Object obj) {
+    private String convertParamToString(Object obj) {
         if (obj == null) {
             return null;
         }
@@ -268,11 +267,11 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             }
         }
 
-        return Objects.toString(obj);
+        throw new AresException(String.format("no ParamsConverter matches type %s", obj.getClass().getName()));
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private byte[] byteEncode(Object obj) {
+    private byte[] convertRequestBodyToBytes(Object obj) {
         if (obj == null) {
             return null;
         }
@@ -289,14 +288,10 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             }
         }
 
-        String text = stringEncode(obj);
-        if (text == null) {
-            return null;
-        }
-        return text.getBytes();
+        throw new AresException(String.format("no RequestBodyConverter matches type %s", obj.getClass().getName()));
     }
 
-    private Object byteDecode(byte[] bytes, Type targetType) {
+    private Object convertBytesToResponseBody(byte[] bytes, Type targetType) {
         if (ArrayUtils.isEmpty(bytes)) {
             return null;
         }
@@ -313,7 +308,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             }
         }
 
-        throw new AresException("cannot find ObjectToByteCodes compatible with '" + targetType.getTypeName() + "'");
+        throw new AresException(String.format("no ResponseBodyConverter matches type %s", targetType.getTypeName()));
     }
 
     private static final class HttpParams {

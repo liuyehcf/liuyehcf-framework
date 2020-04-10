@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.rpc.ares.converters;
+package com.github.liuyehcf.framework.rpc.ares.converters.resbody;
 
 import com.github.liuyehcf.framework.rpc.ares.ResponseBodyConverter;
 
@@ -8,16 +8,16 @@ import java.lang.reflect.Type;
  * @author hechenfeng
  * @date 2020/4/9
  */
-public class LongResponseBodyConverter extends ResponseBodyConverter<Long> {
+public class FloatResponseBodyConverter extends ResponseBodyConverter<Float> {
 
     @Override
-    public Long convert(byte[] input, Type outputType) {
-        return Long.parseLong(new String(input));
+    public Float convert(byte[] input, Type outputType) {
+        return Float.parseFloat(new String(input));
     }
 
     @Override
     protected boolean matchOutputType(Type outputType) {
-        if (long.class.equals(outputType)) {
+        if (float.class.equals(outputType)) {
             return true;
         }
         return super.matchOutputType(outputType);

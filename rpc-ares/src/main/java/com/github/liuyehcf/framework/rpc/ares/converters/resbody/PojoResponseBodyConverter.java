@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.rpc.ares.converters;
+package com.github.liuyehcf.framework.rpc.ares.converters.resbody;
 
 import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.rpc.ares.ResponseBodyConverter;
@@ -18,7 +18,7 @@ public class PojoResponseBodyConverter extends ResponseBodyConverter<Object> {
 
     @Override
     public int order() {
-        return -128;
+        return -1024;
     }
 
     @Override
