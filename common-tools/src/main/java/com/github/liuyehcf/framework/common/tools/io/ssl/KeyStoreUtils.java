@@ -1,11 +1,21 @@
 package com.github.liuyehcf.framework.common.tools.io.ssl;
 
+import com.github.liuyehcf.framework.common.tools.number.NumberUtils;
+import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.X509v3CertificateBuilder;
+import org.bouncycastle.operator.ContentSigner;
+import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import sun.security.tools.keytool.CertAndKeyGen;
 import sun.security.x509.X500Name;
 
-import java.security.Key;
-import java.security.KeyStore;
+import java.io.ByteArrayInputStream;
+import java.math.BigInteger;
+import java.security.*;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Date;
 
 /**
  * @author hechenfeng
@@ -81,6 +91,57 @@ public class KeyStoreUtils {
                             getOrDefault(subjectName, DEFAULT_SUBJECT_NAME)),
                     getOrDefault(validation, DEFAULT_VALIDATION)
             );
+            X509Certificate[] certChain = new X509Certificate[]{cert};
+            keyStore.setKeyEntry(
+                    getOrDefault(alias, DEFAULT_ALIAS),
+                    privateKey,
+                    getOrDefault(password, DEFAULT_PASSWORD).toCharArray(),
+                    certChain
+            );
+
+            return keyStore;
+        } catch (
+                Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static KeyStore createKeyStoreContainingSelfSignedCertWithBouncyCastleLib(String keyStoreType,
+                                                                                     String encryptAlgorithm,
+                                                                                     String hashAlgorithm,
+                                                                                     Integer keyLength,
+                                                                                     String subjectName,
+                                                                                     Long validation,
+                                                                                     String alias,
+                                                                                     String password) {
+        try {
+            // init the key store
+            KeyStore keyStore = KeyStore.getInstance(getOrDefault(keyStoreType, DEFAULT_KEY_STORE_TYPE));
+            keyStore.load(null, null);
+
+            // create private entry and cert chain
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(getOrDefault(encryptAlgorithm, DEFAULT_ENCRYPT_ALGORITHM));
+            keyPairGenerator.initialize(getOrDefault(keyLength, DEFAULT_KEY_LENGTH));
+            KeyPair keyPair = keyPairGenerator.generateKeyPair();
+            PublicKey publicKey = keyPair.getPublic();
+            PrivateKey privateKey = keyPair.getPrivate();
+
+            org.bouncycastle.asn1.x500.X500Name x500Name = new org.bouncycastle.asn1.x500.X500Name(getOrDefault(subjectName, DEFAULT_SUBJECT_NAME));
+            SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo
+                    .getInstance(new ASN1InputStream(publicKey.getEncoded()).readObject());
+            X509v3CertificateBuilder certificateBuilder = new X509v3CertificateBuilder(
+                    x500Name,
+                    BigInteger.valueOf(System.currentTimeMillis()),
+                    new Date(),
+                    new Date(System.currentTimeMillis() + NumberUtils._1K * getOrDefault(validation, DEFAULT_VALIDATION)),
+                    x500Name,
+                    subjectPublicKeyInfo);
+            ContentSigner sigGen = new JcaContentSignerBuilder(getOrDefault(hashAlgorithm, DEFAULT_HASH_ALGORITHM)).build(privateKey);
+            X509CertificateHolder holder = certificateBuilder.build(sigGen);
+            X509Certificate cert = (X509Certificate) CertificateFactory
+                    .getInstance("X509")
+                    .generateCertificate(new ByteArrayInputStream(holder.getEncoded()));
+
             X509Certificate[] certChain = new X509Certificate[]{cert};
             keyStore.setKeyEntry(
                     getOrDefault(alias, DEFAULT_ALIAS),

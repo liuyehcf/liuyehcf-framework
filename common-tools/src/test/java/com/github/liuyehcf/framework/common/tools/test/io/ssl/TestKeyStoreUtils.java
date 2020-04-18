@@ -16,6 +16,7 @@ import io.netty.handler.timeout.IdleStateHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -29,8 +30,50 @@ import java.util.concurrent.TimeUnit;
 public class TestKeyStoreUtils {
 
     @Test
-    public void test() throws Exception {
-        ChannelFuture channelFuture = HttpServer.start();
+    public void testSaveKeyStore() throws Exception {
+        KeyStore keyStore1 = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithSunLib(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+        keyStore1.store(new FileOutputStream("/tmp/keystore1"), "123456".toCharArray());
+
+        KeyStore keyStore2 = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithBouncyCastleLib(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+        keyStore2.store(new FileOutputStream("/tmp/keystore2"), "123456".toCharArray());
+    }
+
+    @Test
+    public void testSunLib() throws Exception {
+        ChannelFuture channelFuture = HttpServer.start(true);
+
+        TimeUtils.sleep(1);
+
+        Process exec = Runtime.getRuntime().exec("curl https://localhost:8080 -k -s");
+        InputStream inputStream = exec.getInputStream();
+        exec.waitFor();
+
+        byte[] bytes = new byte[inputStream.available()];
+        Assert.assertEquals(bytes.length, inputStream.read(bytes));
+
+        Assert.assertEquals("hello world", new String(bytes));
+
+        channelFuture.channel().close();
+        channelFuture.sync();
+    }
+
+    @Test
+    public void testBouncyCastleLib() throws Exception {
+        ChannelFuture channelFuture = HttpServer.start(false);
 
         TimeUtils.sleep(1);
 
@@ -51,11 +94,21 @@ public class TestKeyStoreUtils {
         private static final String HOST = "localhost";
         private static final int PORT = 8080;
 
-        private static final KeyStore KEY_STORE;
+        private static final KeyStore KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_SUN_LIB;
+        private static final KeyStore KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_BOUNCY_CASTLE_LIB;
 
         static {
             try {
-                KEY_STORE = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithSunLib(null,
+                KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_SUN_LIB = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithSunLib(null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
+
+                KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_BOUNCY_CASTLE_LIB = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithBouncyCastleLib(null,
                         null,
                         null,
                         null,
@@ -68,7 +121,7 @@ public class TestKeyStoreUtils {
             }
         }
 
-        public static ChannelFuture start() throws Exception {
+        public static ChannelFuture start(boolean usingSunLibToCreateCert) throws Exception {
             final EventLoopGroup boss = new NioEventLoopGroup();
             final EventLoopGroup worker = new NioEventLoopGroup();
 
@@ -80,7 +133,11 @@ public class TestKeyStoreUtils {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             pipeline.addLast(new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
-                            pipeline.addLast(createSslHandlerUsingNetty(pipeline));
+                            if (usingSunLibToCreateCert) {
+                                pipeline.addLast(createSslHandlerUsingNetty(pipeline, KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_SUN_LIB));
+                            } else {
+                                pipeline.addLast(createSslHandlerUsingNetty(pipeline, KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_BOUNCY_CASTLE_LIB));
+                            }
                             pipeline.addLast(new HttpServerCodec());
                             pipeline.addLast(new HttpObjectAggregator(NumberUtils._1K));
                             pipeline.addLast(new ChunkedWriteHandler());
@@ -97,9 +154,9 @@ public class TestKeyStoreUtils {
             return future.channel().closeFuture();
         }
 
-        private static ChannelHandler createSslHandlerUsingNetty(ChannelPipeline pipeline) throws Exception {
-            PrivateKey key = (PrivateKey) KEY_STORE.getKey(KeyStoreUtils.DEFAULT_ALIAS, KeyStoreUtils.DEFAULT_PASSWORD.toCharArray());
-            X509Certificate certificate = (X509Certificate) KEY_STORE.getCertificate(KeyStoreUtils.DEFAULT_ALIAS);
+        private static ChannelHandler createSslHandlerUsingNetty(ChannelPipeline pipeline, KeyStore keyStore) throws Exception {
+            PrivateKey key = (PrivateKey) keyStore.getKey(KeyStoreUtils.DEFAULT_ALIAS, KeyStoreUtils.DEFAULT_PASSWORD.toCharArray());
+            X509Certificate certificate = (X509Certificate) keyStore.getCertificate(KeyStoreUtils.DEFAULT_ALIAS);
 
             return SslContextBuilder.forServer(key, certificate).build()
                     .newHandler(pipeline.channel().alloc(), HOST, PORT);
