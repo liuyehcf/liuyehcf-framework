@@ -86,27 +86,22 @@ public class TestKeyStoreUtils {
     }
 
     @Test
-    public void testSunLib() throws Exception {
-        ChannelFuture channelFuture = HttpServer.start(true);
-
-        TimeUtils.sleep(1);
-
-        Process exec = Runtime.getRuntime().exec("curl https://localhost:8080 -k -s");
-        InputStream inputStream = exec.getInputStream();
-        exec.waitFor();
-
-        byte[] bytes = new byte[inputStream.available()];
-        Assert.assertEquals(bytes.length, inputStream.read(bytes));
-
-        Assert.assertEquals("hello world", new String(bytes));
-
-        channelFuture.channel().close();
-        channelFuture.sync();
+    public void testSunLibSelfSignedCert() throws Exception {
+        testHttpServer(1);
     }
 
     @Test
-    public void testBouncyCastleLib() throws Exception {
-        ChannelFuture channelFuture = HttpServer.start(false);
+    public void testBouncyCastleLibSelfSignedCert() throws Exception {
+        testHttpServer(2);
+    }
+
+    @Test
+    public void testBouncyCastleLibSiteCert() throws Exception {
+        testHttpServer(3);
+    }
+
+    private void testHttpServer(int mode) throws Exception {
+        ChannelFuture channelFuture = HttpServer.start(mode);
 
         TimeUtils.sleep(1);
 
@@ -129,6 +124,7 @@ public class TestKeyStoreUtils {
 
         private static final KeyStore KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_SUN_LIB;
         private static final KeyStore KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_BOUNCY_CASTLE_LIB;
+        private static final KeyStore KEY_STORE_CONTAINING_SITE_CERT_WITH_BOUNCY_CASTLE_LIB;
 
         static {
             try {
@@ -149,12 +145,45 @@ public class TestKeyStoreUtils {
                         null,
                         null,
                         null);
+
+                KEY_STORE_CONTAINING_SITE_CERT_WITH_BOUNCY_CASTLE_LIB = getSiteCertKeyStore();
             } catch (Exception e) {
                 throw new Error(e);
             }
         }
 
-        public static ChannelFuture start(boolean usingSunLibToCreateCert) throws Exception {
+        private static KeyStore getSiteCertKeyStore() {
+            try {
+                // create empty keystore without keystore password
+                KeyStore keyStore = KeyStore.getInstance(KeyStoreUtils.DEFAULT_KEY_STORE_TYPE);
+                keyStore.load(null, null);
+
+                KeyPair rootKeyPair = KeyStoreUtils.createKeyPair(null, null);
+                PrivateKey rootPrivateKey = rootKeyPair.getPrivate();
+                PublicKey rootPublicKey = rootKeyPair.getPublic();
+                X509Certificate rootCert = KeyStoreUtils.x509SelfSign(rootPrivateKey,
+                        rootPublicKey,
+                        null,
+                        null,
+                        null);
+
+                KeyPair keyPair = KeyStoreUtils.createKeyPair(null, null);
+                PublicKey publicKey = keyPair.getPublic();
+                PrivateKey privateKey = keyPair.getPrivate();
+                X509Certificate cert = KeyStoreUtils.x509Sign(rootPrivateKey, rootCert, publicKey, "CN=liuyehcf", null, null);
+
+                keyStore.setKeyEntry(KeyStoreUtils.DEFAULT_KEY_ALIAS,
+                        privateKey,
+                        KeyStoreUtils.DEFAULT_KEY_PASSWORD.toCharArray(),
+                        new X509Certificate[]{cert});
+
+                return keyStore;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public static ChannelFuture start(int certMode) throws Exception {
             final EventLoopGroup boss = new NioEventLoopGroup();
             final EventLoopGroup worker = new NioEventLoopGroup();
 
@@ -166,10 +195,14 @@ public class TestKeyStoreUtils {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             pipeline.addLast(new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
-                            if (usingSunLibToCreateCert) {
+                            if (certMode == 1) {
                                 pipeline.addLast(createSslHandlerUsingNetty(pipeline, KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_SUN_LIB));
-                            } else {
+                            } else if (certMode == 2) {
                                 pipeline.addLast(createSslHandlerUsingNetty(pipeline, KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_BOUNCY_CASTLE_LIB));
+                            } else if (certMode == 3) {
+                                pipeline.addLast(createSslHandlerUsingNetty(pipeline, KEY_STORE_CONTAINING_SITE_CERT_WITH_BOUNCY_CASTLE_LIB));
+                            } else {
+                                throw new UnsupportedOperationException();
                             }
                             pipeline.addLast(new HttpServerCodec());
                             pipeline.addLast(new HttpObjectAggregator((int) NumberUtils.THOUSAND));
