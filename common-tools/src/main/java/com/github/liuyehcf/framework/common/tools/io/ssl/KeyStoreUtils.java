@@ -29,8 +29,8 @@ public class KeyStoreUtils {
     public static final int DEFAULT_KEY_LENGTH = 2048;
     public static final String DEFAULT_SUBJECT_NAME = "CN=ROOT";
     public static final long DEFAULT_VALIDATION = 365 * 24 * 3600;
-    public static final String DEFAULT_ALIAS = "ALIAS";
-    public static final String DEFAULT_PASSWORD = "PASSWORD";
+    public static final String DEFAULT_ALIAS = "ROOT";
+    public static final String DEFAULT_PASSWORD = "123456";
 
     /**
      * create keystore containing self signed cert with sun library
@@ -54,17 +54,25 @@ public class KeyStoreUtils {
      * </plugin>
      *
      * @param keyStoreType     type of keyStore
-     *                         optional value 'PKCS12' (default if null)
+     *                         optional value 'PKCS12'
      *                         optional value 'JKS'
+     *                         default value is 'PKCS12'
      * @param encryptAlgorithm type of encrypt algorithm
-     *                         optional value 'RSA' (default if null)
+     *                         optional value 'RSA'
+     *                         default value is 'RSA'
      * @param hashAlgorithm    type of hash algorithm
      *                         optional value 'SHA1WithRSA'
+     *                         default value is 'SHA1WithRSA'
      * @param keyLength        length of key, recommend at least 2048 for security
+     *                         default value is '2048'
      * @param subjectName      subject name of root
+     *                         default value is 'CN=ROOT'
      * @param validation       validity of cert in seconds
+     *                         default value is '365 * 24 * 3600'
      * @param alias            alias of cert in keystore
+     *                         default value is 'ROOT'
      * @param password         password of cert in keystore
+     *                         default value is '123456'
      */
     public static KeyStore createKeyStoreContainingSelfSignedCertWithSunLib(String keyStoreType,
                                                                             String encryptAlgorithm,
@@ -106,6 +114,30 @@ public class KeyStoreUtils {
         }
     }
 
+    /**
+     * create keystore containing self signed cert with sun library
+     *
+     * @param keyStoreType     type of keyStore
+     *                         optional value 'PKCS12'
+     *                         optional value 'JKS'
+     *                         default value is 'PKCS12'
+     * @param encryptAlgorithm type of encrypt algorithm
+     *                         optional value 'RSA'
+     *                         default value is 'RSA'
+     * @param hashAlgorithm    type of hash algorithm
+     *                         optional value 'SHA1WithRSA'
+     *                         default value is 'SHA1WithRSA'
+     * @param keyLength        length of key, recommend at least 2048 for security
+     *                         default value is '2048'
+     * @param subjectName      subject name of root
+     *                         default value is 'CN=ROOT'
+     * @param validation       validity of cert in seconds
+     *                         default value is '365 * 24 * 3600'
+     * @param alias            alias of cert in keystore
+     *                         default value is 'ROOT'
+     * @param password         password of cert in keystore
+     *                         default value is '123456'
+     */
     public static KeyStore createKeyStoreContainingSelfSignedCertWithBouncyCastleLib(String keyStoreType,
                                                                                      String encryptAlgorithm,
                                                                                      String hashAlgorithm,
