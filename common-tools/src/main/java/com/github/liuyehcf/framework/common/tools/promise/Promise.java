@@ -10,15 +10,14 @@ public interface Promise<T> {
 
     /**
      * Returns {@code true} if this task was cancelled before it completed
-     * normally.
      *
      * @return {@code true} if this task was cancelled before it completed
      */
     boolean isCancelled();
 
     /**
-     * Returns {@code true} if this task completed.
-     * Both success or failure
+     * Returns {@code true} if this task completed
+     * Success, failure and cancellation are all complete
      *
      * @return {@code true} if this task completed
      */
@@ -46,7 +45,8 @@ public interface Promise<T> {
     Throwable cause();
 
     /**
-     * Attempts to cancel execution of this flow.
+     * Attempts to cancel execution of this task and notifies all
+     * listeners if this promise isn't done
      *
      * @return {@code false} if the task is already completed
      * {@code true} otherwise
@@ -56,6 +56,9 @@ public interface Promise<T> {
     /**
      * Marks this promise as a success and notifies all
      * listeners if this promise isn't done
+     *
+     * @return {@code false} if the task is already completed
+     * {@code true} otherwise
      */
     boolean trySuccess(T outcome);
 
@@ -74,7 +77,6 @@ public interface Promise<T> {
 
     /**
      * Waits for this promise until it is done, and rethrows the cause of the failure if this promise
-     * failed.
      */
     void sync();
 
@@ -89,15 +91,13 @@ public interface Promise<T> {
 
     /**
      * Waits if necessary for the computation to complete, and then
-     * retrieves its result.
-     *
-     * @return ExecutionInstance
+     * retrieves its result, if available
      */
     T get();
 
     /**
      * Waits if necessary for at most the given time for the computation
-     * to complete, and then retrieves its result, if available.
+     * to complete, and then retrieves its result, if available
      *
      * @return {@code true} if and only if the promise was completed within
      * the specified time limit

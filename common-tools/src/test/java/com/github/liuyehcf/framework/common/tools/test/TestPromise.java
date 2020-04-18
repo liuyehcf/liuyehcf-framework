@@ -377,10 +377,23 @@ public class TestPromise {
         Assert.assertTrue(Math.abs(end - start - 100) < 100);
     }
 
+    @Test
+    public void testCancel() {
+        Promise<Object> promise = new TPromise();
+
+        Assert.assertTrue(promise.tryCancel());
+        Assert.assertFalse(promise.tryCancel());
+        Assert.assertFalse(promise.trySuccess(null));
+        Assert.assertFalse(promise.tryFailure(null));
+    }
+
     private void sleepThenTrySuccess(Promise<Object> promise, int milliseconds) {
         try {
             TimeUnit.MILLISECONDS.sleep(milliseconds);
             Assert.assertTrue(promise.trySuccess(new Object()));
+            Assert.assertFalse(promise.trySuccess(new Object()));
+            Assert.assertFalse(promise.tryFailure(null));
+            Assert.assertFalse(promise.tryCancel());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -390,6 +403,9 @@ public class TestPromise {
         try {
             TimeUnit.MILLISECONDS.sleep(milliseconds);
             Assert.assertTrue(promise.tryFailure(null));
+            Assert.assertFalse(promise.tryFailure(null));
+            Assert.assertFalse(promise.trySuccess(null));
+            Assert.assertFalse(promise.tryCancel());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

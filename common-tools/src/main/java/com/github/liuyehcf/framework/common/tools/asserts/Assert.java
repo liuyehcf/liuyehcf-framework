@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.common.tools.asserts;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -42,17 +43,17 @@ public abstract class Assert {
         assertFalse(condition, () -> null);
     }
 
-    public static void assertNotNull(Object obj, Callable<String> loader) {
+    public static void assertNotNull(@Nullable Object obj, Callable<String> loader) {
         if (obj == null) {
             throw new NullPointerException(lazyLoad(loader));
         }
     }
 
-    public static void assertNotNull(Object obj, String description) {
+    public static void assertNotNull(@Nullable Object obj, String description) {
         assertNotNull(obj, () -> description);
     }
 
-    public static void assertNotNull(Object obj) {
+    public static void assertNotNull(@Nullable Object obj) {
         assertNotNull(obj, () -> null);
     }
 
