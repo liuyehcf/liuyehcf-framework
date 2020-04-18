@@ -55,7 +55,7 @@ public class TestKeyStoreUtils {
 
         static {
             try {
-                KEY_STORE = KeyStoreUtils.createMemoryKeyStore(null,
+                KEY_STORE = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithSunLib(null,
                         null,
                         null,
                         null,

@@ -23,7 +23,7 @@ public class KeyStoreUtils {
     public static final String DEFAULT_PASSWORD = "PASSWORD";
 
     /**
-     * create memory keystore
+     * create keystore containing self signed cert with sun library
      *
      * @param keyStoreType     type of keyStore
      *                         optional value 'PKCS12' (default if null)
@@ -38,14 +38,14 @@ public class KeyStoreUtils {
      * @param alias            alias of cert in keystore
      * @param password         password of cert in keystore
      */
-    public static KeyStore createMemoryKeyStore(String keyStoreType,
-                                                String encryptAlgorithm,
-                                                String hashAlgorithm,
-                                                Integer keyLength,
-                                                String subjectName,
-                                                Long validation,
-                                                String alias,
-                                                String password) {
+    public static KeyStore createKeyStoreContainingSelfSignedCertWithSunLib(String keyStoreType,
+                                                                            String encryptAlgorithm,
+                                                                            String hashAlgorithm,
+                                                                            Integer keyLength,
+                                                                            String subjectName,
+                                                                            Long validation,
+                                                                            String alias,
+                                                                            String password) {
         try {
             // init the key store
             KeyStore keyStore = KeyStore.getInstance(getOrDefault(keyStoreType, DEFAULT_KEY_STORE_TYPE));
