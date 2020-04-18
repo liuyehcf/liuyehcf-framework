@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.common.tools.test;
+package com.github.liuyehcf.framework.common.tools.test.number;
 
 import com.github.liuyehcf.framework.common.tools.number.NumberUtils;
 import com.google.common.collect.Lists;

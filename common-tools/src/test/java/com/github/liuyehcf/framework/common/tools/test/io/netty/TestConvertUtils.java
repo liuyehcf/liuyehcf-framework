@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.common.tools.test;
+package com.github.liuyehcf.framework.common.tools.test.io.netty;
 
 import com.github.liuyehcf.framework.common.tools.io.netty.ConvertUtils;
 import io.netty.buffer.ByteBuf;

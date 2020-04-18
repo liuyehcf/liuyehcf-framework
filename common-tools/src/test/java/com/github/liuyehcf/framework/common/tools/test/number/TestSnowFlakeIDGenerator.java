@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.common.tools.test;
+package com.github.liuyehcf.framework.common.tools.test.number;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.common.tools.number.SnowFlakeIDGenerator;

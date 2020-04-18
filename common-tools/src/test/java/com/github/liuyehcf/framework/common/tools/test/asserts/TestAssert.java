@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.common.tools.test;
+package com.github.liuyehcf.framework.common.tools.test.asserts;
 
 import org.junit.Assert;
 import org.junit.Test;

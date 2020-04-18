@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.common.tools.test;
+package com.github.liuyehcf.framework.common.tools.test.promise;
 
 import com.github.liuyehcf.framework.common.tools.promise.AbstractPromise;
 import com.github.liuyehcf.framework.common.tools.promise.Promise;
