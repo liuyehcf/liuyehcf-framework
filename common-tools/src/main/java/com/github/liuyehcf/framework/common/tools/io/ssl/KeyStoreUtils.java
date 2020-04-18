@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.common.tools.io.ssl;
 
+import com.github.liuyehcf.framework.common.tools.bean.OptionalUtils;
 import com.github.liuyehcf.framework.common.tools.number.NumberUtils;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
@@ -31,6 +32,8 @@ public class KeyStoreUtils {
     public static final long DEFAULT_VALIDATION = 365 * 24 * 3600;
     public static final String DEFAULT_ALIAS = "ROOT";
     public static final String DEFAULT_PASSWORD = "123456";
+
+    private static final String CERTIFICATE_TYPE = "X509";
 
     /**
      * create keystore containing self signed cert with sun library
@@ -74,6 +77,7 @@ public class KeyStoreUtils {
      * @param password         password of cert in keystore
      *                         default value is '123456'
      */
+    @SuppressWarnings("Duplicates")
     public static KeyStore createKeyStoreContainingSelfSignedCertWithSunLib(String keyStoreType,
                                                                             String encryptAlgorithm,
                                                                             String hashAlgorithm,
@@ -82,34 +86,41 @@ public class KeyStoreUtils {
                                                                             Long validation,
                                                                             String alias,
                                                                             String password) {
+        keyStoreType = OptionalUtils.getOrDefault(keyStoreType, DEFAULT_KEY_STORE_TYPE);
+        encryptAlgorithm = OptionalUtils.getOrDefault(encryptAlgorithm, DEFAULT_ENCRYPT_ALGORITHM);
+        hashAlgorithm = OptionalUtils.getOrDefault(hashAlgorithm, DEFAULT_HASH_ALGORITHM);
+        keyLength = OptionalUtils.getOrDefault(keyLength, DEFAULT_KEY_LENGTH);
+        subjectName = OptionalUtils.getOrDefault(subjectName, DEFAULT_SUBJECT_NAME);
+        validation = OptionalUtils.getOrDefault(validation, DEFAULT_VALIDATION);
+        alias = OptionalUtils.getOrDefault(alias, DEFAULT_ALIAS);
+        password = OptionalUtils.getOrDefault(password, DEFAULT_PASSWORD);
+
         try {
             // init the key store
-            KeyStore keyStore = KeyStore.getInstance(getOrDefault(keyStoreType, DEFAULT_KEY_STORE_TYPE));
+            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
             keyStore.load(null, null);
 
             // create private entry and cert chain
             CertAndKeyGen gen = new CertAndKeyGen(
-                    getOrDefault(encryptAlgorithm, DEFAULT_ENCRYPT_ALGORITHM),
-                    getOrDefault(hashAlgorithm, DEFAULT_HASH_ALGORITHM)
+                    encryptAlgorithm,
+                    hashAlgorithm
             );
-            gen.generate(getOrDefault(keyLength, DEFAULT_KEY_LENGTH));
+            gen.generate(keyLength);
             Key privateKey = gen.getPrivateKey();
             X509Certificate cert = gen.getSelfCertificate(
-                    new X500Name(
-                            getOrDefault(subjectName, DEFAULT_SUBJECT_NAME)),
-                    getOrDefault(validation, DEFAULT_VALIDATION)
+                    new X500Name(subjectName),
+                    validation
             );
             X509Certificate[] certChain = new X509Certificate[]{cert};
             keyStore.setKeyEntry(
-                    getOrDefault(alias, DEFAULT_ALIAS),
+                    alias,
                     privateKey,
-                    getOrDefault(password, DEFAULT_PASSWORD).toCharArray(),
+                    password.toCharArray(),
                     certChain
             );
 
             return keyStore;
-        } catch (
-                Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -138,6 +149,7 @@ public class KeyStoreUtils {
      * @param password         password of cert in keystore
      *                         default value is '123456'
      */
+    @SuppressWarnings("Duplicates")
     public static KeyStore createKeyStoreContainingSelfSignedCertWithBouncyCastleLib(String keyStoreType,
                                                                                      String encryptAlgorithm,
                                                                                      String hashAlgorithm,
@@ -146,53 +158,54 @@ public class KeyStoreUtils {
                                                                                      Long validation,
                                                                                      String alias,
                                                                                      String password) {
+        keyStoreType = OptionalUtils.getOrDefault(keyStoreType, DEFAULT_KEY_STORE_TYPE);
+        encryptAlgorithm = OptionalUtils.getOrDefault(encryptAlgorithm, DEFAULT_ENCRYPT_ALGORITHM);
+        hashAlgorithm = OptionalUtils.getOrDefault(hashAlgorithm, DEFAULT_HASH_ALGORITHM);
+        keyLength = OptionalUtils.getOrDefault(keyLength, DEFAULT_KEY_LENGTH);
+        subjectName = OptionalUtils.getOrDefault(subjectName, DEFAULT_SUBJECT_NAME);
+        validation = OptionalUtils.getOrDefault(validation, DEFAULT_VALIDATION);
+        alias = OptionalUtils.getOrDefault(alias, DEFAULT_ALIAS);
+        password = OptionalUtils.getOrDefault(password, DEFAULT_PASSWORD);
+
         try {
             // init the key store
-            KeyStore keyStore = KeyStore.getInstance(getOrDefault(keyStoreType, DEFAULT_KEY_STORE_TYPE));
+            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
             keyStore.load(null, null);
 
             // create private entry and cert chain
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(getOrDefault(encryptAlgorithm, DEFAULT_ENCRYPT_ALGORITHM));
-            keyPairGenerator.initialize(getOrDefault(keyLength, DEFAULT_KEY_LENGTH));
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(encryptAlgorithm);
+            keyPairGenerator.initialize(keyLength);
             KeyPair keyPair = keyPairGenerator.generateKeyPair();
             PublicKey publicKey = keyPair.getPublic();
             PrivateKey privateKey = keyPair.getPrivate();
 
-            org.bouncycastle.asn1.x500.X500Name x500Name = new org.bouncycastle.asn1.x500.X500Name(getOrDefault(subjectName, DEFAULT_SUBJECT_NAME));
+            org.bouncycastle.asn1.x500.X500Name x500Name = new org.bouncycastle.asn1.x500.X500Name(subjectName);
             SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo
                     .getInstance(new ASN1InputStream(publicKey.getEncoded()).readObject());
             X509v3CertificateBuilder certificateBuilder = new X509v3CertificateBuilder(
                     x500Name,
                     BigInteger.valueOf(System.currentTimeMillis()),
                     new Date(),
-                    new Date(System.currentTimeMillis() + NumberUtils._1K * getOrDefault(validation, DEFAULT_VALIDATION)),
+                    new Date(System.currentTimeMillis() + NumberUtils._1K * validation),
                     x500Name,
                     subjectPublicKeyInfo);
-            ContentSigner sigGen = new JcaContentSignerBuilder(getOrDefault(hashAlgorithm, DEFAULT_HASH_ALGORITHM)).build(privateKey);
+            ContentSigner sigGen = new JcaContentSignerBuilder(hashAlgorithm).build(privateKey);
             X509CertificateHolder holder = certificateBuilder.build(sigGen);
             X509Certificate cert = (X509Certificate) CertificateFactory
-                    .getInstance("X509")
+                    .getInstance(CERTIFICATE_TYPE)
                     .generateCertificate(new ByteArrayInputStream(holder.getEncoded()));
 
             X509Certificate[] certChain = new X509Certificate[]{cert};
             keyStore.setKeyEntry(
-                    getOrDefault(alias, DEFAULT_ALIAS),
+                    alias,
                     privateKey,
-                    getOrDefault(password, DEFAULT_PASSWORD).toCharArray(),
+                    password.toCharArray(),
                     certChain
             );
 
             return keyStore;
-        } catch (
-                Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static <T> T getOrDefault(T obj, T defaultObj) {
-        if (obj == null) {
-            return defaultObj;
-        }
-        return obj;
     }
 }
