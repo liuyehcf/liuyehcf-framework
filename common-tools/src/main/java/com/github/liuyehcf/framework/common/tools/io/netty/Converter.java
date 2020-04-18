@@ -116,11 +116,11 @@ public abstract class Converter<T1, T2, T3, T4> {
         void consume(I data);
     }
 
-    public static abstract class AbstractByteBufConsumer implements Consumer<ByteBuf> {
+    public static abstract class ByteBufConsumer implements Consumer<ByteBuf> {
 
         private final int maxSegmentSize;
 
-        public AbstractByteBufConsumer(int maxSegmentSize) {
+        public ByteBufConsumer(int maxSegmentSize) {
             Assert.assertTrue(maxSegmentSize > 0, "maxSegmentSize must be positive");
             this.maxSegmentSize = maxSegmentSize;
         }
