@@ -46,8 +46,8 @@ public class TestKeyStoreUtils {
         certificate = (X509Certificate) keyStore.getCertificate(KeyStoreUtils.DEFAULT_KEY_ALIAS);
         notBefore = certificate.getNotBefore();
         notAfter = certificate.getNotAfter();
-        Assert.assertTrue(Math.abs(System.currentTimeMillis() - notBefore.getTime()) < 1000);
-        Assert.assertTrue(Math.abs(new Date(System.currentTimeMillis() + NumberUtils.THOUSAND * 86400 * 365L).getTime() - notAfter.getTime()) < 1000);
+        Assert.assertTrue(Math.abs(System.currentTimeMillis() - notBefore.getTime()) < 2000);
+        Assert.assertTrue(Math.abs(new Date(System.currentTimeMillis() + NumberUtils.THOUSAND * 86400 * 365L).getTime() - notAfter.getTime()) < 2000);
 
         keyStore = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithBouncyCastleLib(null,
                 null,
@@ -60,8 +60,8 @@ public class TestKeyStoreUtils {
         certificate = (X509Certificate) keyStore.getCertificate(KeyStoreUtils.DEFAULT_KEY_ALIAS);
         notBefore = certificate.getNotBefore();
         notAfter = certificate.getNotAfter();
-        Assert.assertTrue(Math.abs(System.currentTimeMillis() - notBefore.getTime()) < 1000);
-        Assert.assertTrue(Math.abs(new Date(System.currentTimeMillis() + NumberUtils.THOUSAND * 86400 * 365L).getTime() - notAfter.getTime()) < 1000);
+        Assert.assertTrue(Math.abs(System.currentTimeMillis() - notBefore.getTime()) < 2000);
+        Assert.assertTrue(Math.abs(new Date(System.currentTimeMillis() + NumberUtils.THOUSAND * 86400 * 365L).getTime() - notAfter.getTime()) < 2000);
     }
 
     @Test

@@ -175,14 +175,12 @@ public class KeyStoreUtils {
             keyStore.load(null, null);
 
             // create private key and public key
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(encryptAlgorithm);
-            keyPairGenerator.initialize(keyLength);
-            KeyPair keyPair = keyPairGenerator.generateKeyPair();
+            KeyPair keyPair = createKeyPair(encryptAlgorithm, keyLength);
             PublicKey publicKey = keyPair.getPublic();
             PrivateKey privateKey = keyPair.getPrivate();
 
             // create self signed cert
-            X509Certificate cert = x509Sign(privateKey, subjectName, publicKey, subjectName, hashAlgorithm, validation);
+            X509Certificate cert = x509SelfSign(privateKey, publicKey, subjectName, hashAlgorithm, validation);
 
             // save private key and self signed cert to keystore with keyAlias and keyPassword
             keyStore.setKeyEntry(
@@ -193,6 +191,16 @@ public class KeyStoreUtils {
             );
 
             return keyStore;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static KeyPair createKeyPair(String encryptAlgorithm, Integer keyLength) {
+        try {
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(encryptAlgorithm);
+            keyPairGenerator.initialize(keyLength);
+            return keyPairGenerator.generateKeyPair();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -218,6 +226,14 @@ public class KeyStoreUtils {
         Assert.assertNotNull(rootCert, "rootCert");
 
         return x509Sign(rootPrivateKey, rootCert.getSubjectDN().getName(), publicKey, subjectName, hashAlgorithm, validation);
+    }
+
+    public static X509Certificate x509SelfSign(PrivateKey privateKey,
+                                               PublicKey publicKey,
+                                               String subjectName,
+                                               String hashAlgorithm,
+                                               Long validation) {
+        return x509Sign(privateKey, subjectName, publicKey, subjectName, hashAlgorithm, validation);
     }
 
     /**
