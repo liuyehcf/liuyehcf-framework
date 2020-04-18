@@ -96,11 +96,11 @@ public class KeyStoreUtils {
         keyPassword = OptionalUtils.getOrDefault(keyPassword, DEFAULT_KEY_PASSWORD);
 
         try {
-            // init the key store
+            // create empty keystore without keystore password
             KeyStore keyStore = KeyStore.getInstance(keyStoreType);
             keyStore.load(null, null);
 
-            // create private entry and cert chain
+            // create private key and self signed cert
             CertAndKeyGen gen = new CertAndKeyGen(
                     encryptAlgorithm,
                     hashAlgorithm
@@ -111,12 +111,13 @@ public class KeyStoreUtils {
                     new X500Name(subjectName),
                     validation
             );
-            X509Certificate[] certChain = new X509Certificate[]{cert};
+
+            // save private key and self signed cert to keystore with keyAlias and keyPassword
             keyStore.setKeyEntry(
                     keyAlias,
                     privateKey,
                     keyPassword.toCharArray(),
-                    certChain
+                    new X509Certificate[]{cert}
             );
 
             return keyStore;
@@ -168,17 +169,18 @@ public class KeyStoreUtils {
         keyPassword = OptionalUtils.getOrDefault(keyPassword, DEFAULT_KEY_PASSWORD);
 
         try {
-            // init the key store
+            // create empty keystore without keystore password
             KeyStore keyStore = KeyStore.getInstance(keyStoreType);
             keyStore.load(null, null);
 
-            // create private entry and cert chain
+            // create private key and public key
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(encryptAlgorithm);
             keyPairGenerator.initialize(keyLength);
             KeyPair keyPair = keyPairGenerator.generateKeyPair();
             PublicKey publicKey = keyPair.getPublic();
             PrivateKey privateKey = keyPair.getPrivate();
 
+            // create self signed cert
             org.bouncycastle.asn1.x500.X500Name x500Name = new org.bouncycastle.asn1.x500.X500Name(subjectName);
             SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo
                     .getInstance(new ASN1InputStream(publicKey.getEncoded()).readObject());
@@ -195,12 +197,12 @@ public class KeyStoreUtils {
                     .getInstance(CERTIFICATE_TYPE)
                     .generateCertificate(new ByteArrayInputStream(holder.getEncoded()));
 
-            X509Certificate[] certChain = new X509Certificate[]{cert};
+            // save private key and self signed cert to keystore with keyAlias and keyPassword
             keyStore.setKeyEntry(
                     keyAlias,
                     privateKey,
                     keyPassword.toCharArray(),
-                    certChain
+                    new X509Certificate[]{cert}
             );
 
             return keyStore;
