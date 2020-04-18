@@ -1,15 +1,16 @@
 package com.github.liuyehcf.framework.common.tools.io.ssl;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.common.tools.bean.OptionalUtils;
 import com.github.liuyehcf.framework.common.tools.number.NumberUtils;
 import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import sun.security.tools.keytool.CertAndKeyGen;
-import sun.security.x509.X500Name;
 
 import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
@@ -108,7 +109,7 @@ public class KeyStoreUtils {
             gen.generate(keyLength);
             Key privateKey = gen.getPrivateKey();
             X509Certificate cert = gen.getSelfCertificate(
-                    new X500Name(subjectName),
+                    new sun.security.x509.X500Name(subjectName),
                     validation
             );
 
@@ -181,21 +182,7 @@ public class KeyStoreUtils {
             PrivateKey privateKey = keyPair.getPrivate();
 
             // create self signed cert
-            org.bouncycastle.asn1.x500.X500Name x500Name = new org.bouncycastle.asn1.x500.X500Name(subjectName);
-            SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo
-                    .getInstance(new ASN1InputStream(publicKey.getEncoded()).readObject());
-            X509v3CertificateBuilder certificateBuilder = new X509v3CertificateBuilder(
-                    x500Name,
-                    BigInteger.valueOf(System.currentTimeMillis()),
-                    new Date(),
-                    new Date(System.currentTimeMillis() + NumberUtils.THOUSAND * validation),
-                    x500Name,
-                    subjectPublicKeyInfo);
-            ContentSigner sigGen = new JcaContentSignerBuilder(hashAlgorithm).build(privateKey);
-            X509CertificateHolder holder = certificateBuilder.build(sigGen);
-            X509Certificate cert = (X509Certificate) CertificateFactory
-                    .getInstance(CERTIFICATE_TYPE)
-                    .generateCertificate(new ByteArrayInputStream(holder.getEncoded()));
+            X509Certificate cert = x509Sign(privateKey, subjectName, publicKey, subjectName, hashAlgorithm, validation);
 
             // save private key and self signed cert to keystore with keyAlias and keyPassword
             keyStore.setKeyEntry(
@@ -206,6 +193,77 @@ public class KeyStoreUtils {
             );
 
             return keyStore;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * sign with root private key and root cert
+     *
+     * @param rootPrivateKey private key of root
+     * @param rootCert       cert of root
+     * @param publicKey      public key to be signed
+     * @param subjectName    subject name to be signed
+     * @param hashAlgorithm  hash algorithm
+     * @param validation     validation in seconds
+     * @return X509Certificate
+     */
+    public static X509Certificate x509Sign(PrivateKey rootPrivateKey,
+                                           X509Certificate rootCert,
+                                           PublicKey publicKey,
+                                           String subjectName,
+                                           String hashAlgorithm,
+                                           Long validation) {
+        Assert.assertNotNull(rootCert, "rootCert");
+
+        return x509Sign(rootPrivateKey, rootCert.getSubjectDN().getName(), publicKey, subjectName, hashAlgorithm, validation);
+    }
+
+    /**
+     * sign with root private key and root cert
+     *
+     * @param rootPrivateKey  private key of root
+     * @param rootSubjectName subject name of root
+     * @param publicKey       public key to be signed
+     * @param subjectName     subject name to be signed
+     * @param hashAlgorithm   hash algorithm
+     * @param validation      validation in seconds
+     * @return X509Certificate
+     */
+    public static X509Certificate x509Sign(PrivateKey rootPrivateKey,
+                                           String rootSubjectName,
+                                           PublicKey publicKey,
+                                           String subjectName,
+                                           String hashAlgorithm,
+                                           Long validation) {
+        Assert.assertNotNull(rootPrivateKey, "rootPrivateKey");
+        Assert.assertNotNull(rootSubjectName, "rootSubjectName");
+        Assert.assertNotNull(publicKey, "publicKey");
+        Assert.assertNotNull(subjectName, "subjectName");
+        Assert.assertNotNull(hashAlgorithm, "hashAlgorithm");
+        Assert.assertNotNull(validation, "validation");
+
+        try {
+            X500Name issuer = new X500Name(rootSubjectName);
+            X500Name subject = new X500Name(subjectName);
+
+            SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo.getInstance(
+                    new ASN1InputStream(publicKey.getEncoded()
+                    ).readObject());
+            X509v3CertificateBuilder certificateBuilder = new X509v3CertificateBuilder(
+                    issuer,
+                    BigInteger.valueOf(System.currentTimeMillis()),
+                    new Date(),
+                    new Date(System.currentTimeMillis() + NumberUtils.THOUSAND * validation),
+                    subject,
+                    subjectPublicKeyInfo);
+            ContentSigner sigGen = new JcaContentSignerBuilder(hashAlgorithm).build(rootPrivateKey);
+            X509CertificateHolder holder = certificateBuilder.build(sigGen);
+
+            return (X509Certificate) CertificateFactory
+                    .getInstance(CERTIFICATE_TYPE)
+                    .generateCertificate(new ByteArrayInputStream(holder.getEncoded()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
