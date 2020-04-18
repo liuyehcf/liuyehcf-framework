@@ -41,7 +41,7 @@ public abstract class Converter<T1, T2, T3, T4> {
         channel = new EmbeddedChannel();
     }
 
-    public final void outboundConvert(T3 msg, Consumer<T2> inboundConsumer, Consumer<T4> outboundConsumer) {
+    public final void writeOutbound(T3 msg, Consumer<T2> inboundConsumer, Consumer<T4> outboundConsumer) {
         channel.writeOneOutbound(msg).addListener(future -> {
             if (!future.isSuccess()) {
                 ReferenceCountUtil.release(msg);
@@ -52,7 +52,7 @@ public abstract class Converter<T1, T2, T3, T4> {
         callBothConsumersIfNecessary(inboundConsumer, outboundConsumer);
     }
 
-    public final void inboundConvert(T1 msg, Consumer<T2> inboundConsumer, Consumer<T4> outboundConsumer) {
+    public final void writeInbound(T1 msg, Consumer<T2> inboundConsumer, Consumer<T4> outboundConsumer) {
         channel.writeOneInbound(msg).addListener(future -> {
             if (!future.isSuccess()) {
                 ReferenceCountUtil.release(msg);
