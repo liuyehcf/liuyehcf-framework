@@ -24,14 +24,14 @@ public interface Promise<T> {
     boolean isDone();
 
     /**
-     * Returns {@code true} if this task succeeded.
+     * Returns {@code true} if this task succeeded
      *
      * @return {@code true} if this task succeeded
      */
     boolean isSuccess();
 
     /**
-     * Returns {@code true} if this task failed.
+     * Returns {@code true} if this task failed
      *
      * @return {@code true} if this task failed
      */
@@ -69,7 +69,7 @@ public interface Promise<T> {
     boolean tryFailure(Throwable cause);
 
     /**
-     * Add the specified listener to this promise.
+     * Adds the specified listener to this promise
      *
      * @param listener listener
      */
@@ -81,8 +81,7 @@ public interface Promise<T> {
     void sync();
 
     /**
-     * Waits for this promise to be completed within the
-     * specified time limit.
+     * Waits for this promise to be completed within the specified time limit
      *
      * @return {@code true} if and only if the promise was completed within
      * the specified time limit
