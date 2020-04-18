@@ -30,8 +30,8 @@ public class KeyStoreUtils {
     public static final int DEFAULT_KEY_LENGTH = 2048;
     public static final String DEFAULT_SUBJECT_NAME = "CN=ROOT";
     public static final long DEFAULT_VALIDATION = 365 * 24 * 3600;
-    public static final String DEFAULT_ALIAS = "ROOT";
-    public static final String DEFAULT_PASSWORD = "123456";
+    public static final String DEFAULT_KEY_ALIAS = "ROOT";
+    public static final String DEFAULT_KEY_PASSWORD = "123456";
 
     private static final String CERTIFICATE_TYPE = "X509";
 
@@ -72,9 +72,9 @@ public class KeyStoreUtils {
      *                         default value is 'CN=ROOT'
      * @param validation       validity of cert in seconds
      *                         default value is '365 * 24 * 3600'
-     * @param alias            alias of cert in keystore
+     * @param keyAlias         alias of key in keystore
      *                         default value is 'ROOT'
-     * @param password         password of cert in keystore
+     * @param keyPassword      password of key in keystore
      *                         default value is '123456'
      */
     @SuppressWarnings("Duplicates")
@@ -84,16 +84,16 @@ public class KeyStoreUtils {
                                                                             Integer keyLength,
                                                                             String subjectName,
                                                                             Long validation,
-                                                                            String alias,
-                                                                            String password) {
+                                                                            String keyAlias,
+                                                                            String keyPassword) {
         keyStoreType = OptionalUtils.getOrDefault(keyStoreType, DEFAULT_KEY_STORE_TYPE);
         encryptAlgorithm = OptionalUtils.getOrDefault(encryptAlgorithm, DEFAULT_ENCRYPT_ALGORITHM);
         hashAlgorithm = OptionalUtils.getOrDefault(hashAlgorithm, DEFAULT_HASH_ALGORITHM);
         keyLength = OptionalUtils.getOrDefault(keyLength, DEFAULT_KEY_LENGTH);
         subjectName = OptionalUtils.getOrDefault(subjectName, DEFAULT_SUBJECT_NAME);
         validation = OptionalUtils.getOrDefault(validation, DEFAULT_VALIDATION);
-        alias = OptionalUtils.getOrDefault(alias, DEFAULT_ALIAS);
-        password = OptionalUtils.getOrDefault(password, DEFAULT_PASSWORD);
+        keyAlias = OptionalUtils.getOrDefault(keyAlias, DEFAULT_KEY_ALIAS);
+        keyPassword = OptionalUtils.getOrDefault(keyPassword, DEFAULT_KEY_PASSWORD);
 
         try {
             // init the key store
@@ -113,9 +113,9 @@ public class KeyStoreUtils {
             );
             X509Certificate[] certChain = new X509Certificate[]{cert};
             keyStore.setKeyEntry(
-                    alias,
+                    keyAlias,
                     privateKey,
-                    password.toCharArray(),
+                    keyPassword.toCharArray(),
                     certChain
             );
 
@@ -144,9 +144,9 @@ public class KeyStoreUtils {
      *                         default value is 'CN=ROOT'
      * @param validation       validity of cert in seconds
      *                         default value is '365 * 24 * 3600'
-     * @param alias            alias of cert in keystore
+     * @param keyAlias         alias of key in keystore
      *                         default value is 'ROOT'
-     * @param password         password of cert in keystore
+     * @param keyPassword      password of key in keystore
      *                         default value is '123456'
      */
     @SuppressWarnings("Duplicates")
@@ -156,16 +156,16 @@ public class KeyStoreUtils {
                                                                                      Integer keyLength,
                                                                                      String subjectName,
                                                                                      Long validation,
-                                                                                     String alias,
-                                                                                     String password) {
+                                                                                     String keyAlias,
+                                                                                     String keyPassword) {
         keyStoreType = OptionalUtils.getOrDefault(keyStoreType, DEFAULT_KEY_STORE_TYPE);
         encryptAlgorithm = OptionalUtils.getOrDefault(encryptAlgorithm, DEFAULT_ENCRYPT_ALGORITHM);
         hashAlgorithm = OptionalUtils.getOrDefault(hashAlgorithm, DEFAULT_HASH_ALGORITHM);
         keyLength = OptionalUtils.getOrDefault(keyLength, DEFAULT_KEY_LENGTH);
         subjectName = OptionalUtils.getOrDefault(subjectName, DEFAULT_SUBJECT_NAME);
         validation = OptionalUtils.getOrDefault(validation, DEFAULT_VALIDATION);
-        alias = OptionalUtils.getOrDefault(alias, DEFAULT_ALIAS);
-        password = OptionalUtils.getOrDefault(password, DEFAULT_PASSWORD);
+        keyAlias = OptionalUtils.getOrDefault(keyAlias, DEFAULT_KEY_ALIAS);
+        keyPassword = OptionalUtils.getOrDefault(keyPassword, DEFAULT_KEY_PASSWORD);
 
         try {
             // init the key store
@@ -197,9 +197,9 @@ public class KeyStoreUtils {
 
             X509Certificate[] certChain = new X509Certificate[]{cert};
             keyStore.setKeyEntry(
-                    alias,
+                    keyAlias,
                     privateKey,
-                    password.toCharArray(),
+                    keyPassword.toCharArray(),
                     certChain
             );
 

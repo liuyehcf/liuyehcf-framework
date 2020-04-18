@@ -16,11 +16,10 @@ import io.netty.handler.timeout.IdleStateHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.net.ssl.KeyManagerFactory;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
-import java.security.PrivateKey;
-import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -155,10 +154,10 @@ public class TestKeyStoreUtils {
         }
 
         private static ChannelHandler createSslHandlerUsingNetty(ChannelPipeline pipeline, KeyStore keyStore) throws Exception {
-            PrivateKey key = (PrivateKey) keyStore.getKey(KeyStoreUtils.DEFAULT_ALIAS, KeyStoreUtils.DEFAULT_PASSWORD.toCharArray());
-            X509Certificate certificate = (X509Certificate) keyStore.getCertificate(KeyStoreUtils.DEFAULT_ALIAS);
+            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            keyManagerFactory.init(keyStore, KeyStoreUtils.DEFAULT_KEY_PASSWORD.toCharArray());
 
-            return SslContextBuilder.forServer(key, certificate).build()
+            return SslContextBuilder.forServer(keyManagerFactory).build()
                     .newHandler(pipeline.channel().alloc(), HOST, PORT);
         }
     }
