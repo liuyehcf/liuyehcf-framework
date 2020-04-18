@@ -196,7 +196,20 @@ public class KeyStoreUtils {
         }
     }
 
+    /**
+     * create key pair
+     *
+     * @param encryptAlgorithm type of encrypt algorithm
+     *                         optional value 'RSA'
+     *                         default value is 'RSA'
+     * @param keyLength        length of key, recommend at least 2048 for security
+     *                         default value is '2048'
+     * @return KeyPair
+     */
     public static KeyPair createKeyPair(String encryptAlgorithm, Integer keyLength) {
+        encryptAlgorithm = OptionalUtils.getOrDefault(encryptAlgorithm, DEFAULT_ENCRYPT_ALGORITHM);
+        keyLength = OptionalUtils.getOrDefault(keyLength, DEFAULT_KEY_LENGTH);
+
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(encryptAlgorithm);
             keyPairGenerator.initialize(keyLength);
@@ -225,14 +238,31 @@ public class KeyStoreUtils {
                                            Long validation) {
         Assert.assertNotNull(rootCert, "rootCert");
 
+        subjectName = OptionalUtils.getOrDefault(subjectName, DEFAULT_SUBJECT_NAME);
+        hashAlgorithm = OptionalUtils.getOrDefault(hashAlgorithm, DEFAULT_HASH_ALGORITHM);
+        validation = OptionalUtils.getOrDefault(validation, DEFAULT_VALIDATION);
+
         return x509Sign(rootPrivateKey, rootCert.getSubjectDN().getName(), publicKey, subjectName, hashAlgorithm, validation);
     }
 
+    /**
+     * @param privateKey    self private key
+     * @param publicKey     self public key
+     * @param subjectName   subject name
+     * @param hashAlgorithm hash algorithm
+     * @param validation    validation in seconds
+     * @return X509Certificate
+     */
     public static X509Certificate x509SelfSign(PrivateKey privateKey,
                                                PublicKey publicKey,
                                                String subjectName,
                                                String hashAlgorithm,
                                                Long validation) {
+
+        subjectName = OptionalUtils.getOrDefault(subjectName, DEFAULT_SUBJECT_NAME);
+        hashAlgorithm = OptionalUtils.getOrDefault(hashAlgorithm, DEFAULT_HASH_ALGORITHM);
+        validation = OptionalUtils.getOrDefault(validation, DEFAULT_VALIDATION);
+
         return x509Sign(privateKey, subjectName, publicKey, subjectName, hashAlgorithm, validation);
     }
 
@@ -247,12 +277,12 @@ public class KeyStoreUtils {
      * @param validation      validation in seconds
      * @return X509Certificate
      */
-    public static X509Certificate x509Sign(PrivateKey rootPrivateKey,
-                                           String rootSubjectName,
-                                           PublicKey publicKey,
-                                           String subjectName,
-                                           String hashAlgorithm,
-                                           Long validation) {
+    private static X509Certificate x509Sign(PrivateKey rootPrivateKey,
+                                            String rootSubjectName,
+                                            PublicKey publicKey,
+                                            String subjectName,
+                                            String hashAlgorithm,
+                                            Long validation) {
         Assert.assertNotNull(rootPrivateKey, "rootPrivateKey");
         Assert.assertNotNull(rootSubjectName, "rootSubjectName");
         Assert.assertNotNull(publicKey, "publicKey");

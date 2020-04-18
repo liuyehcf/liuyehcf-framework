@@ -18,7 +18,10 @@ import org.junit.Test;
 
 import javax.net.ssl.KeyManagerFactory;
 import java.io.InputStream;
+import java.security.KeyPair;
 import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -62,6 +65,24 @@ public class TestKeyStoreUtils {
         notAfter = certificate.getNotAfter();
         Assert.assertTrue(Math.abs(System.currentTimeMillis() - notBefore.getTime()) < 2000);
         Assert.assertTrue(Math.abs(new Date(System.currentTimeMillis() + NumberUtils.THOUSAND * 86400 * 365L).getTime() - notAfter.getTime()) < 2000);
+    }
+
+    @Test
+    public void testSign() {
+        KeyPair rootKeyPair = KeyStoreUtils.createKeyPair(null, null);
+        PrivateKey rootPrivateKey = rootKeyPair.getPrivate();
+        PublicKey rootPublicKey = rootKeyPair.getPublic();
+        X509Certificate rootCert = KeyStoreUtils.x509SelfSign(rootPrivateKey,
+                rootPublicKey,
+                null,
+                null,
+                null);
+
+        KeyPair keyPair = KeyStoreUtils.createKeyPair(null, null);
+        PublicKey publicKey = keyPair.getPublic();
+        X509Certificate cert = KeyStoreUtils.x509Sign(rootPrivateKey, rootCert, publicKey, "CN=liuyehcf", null, null);
+
+        System.out.println(cert);
     }
 
     @Test
