@@ -186,7 +186,7 @@ public class KeyStoreUtils {
                     x500Name,
                     BigInteger.valueOf(System.currentTimeMillis()),
                     new Date(),
-                    new Date(System.currentTimeMillis() + NumberUtils._1K * validation),
+                    new Date(System.currentTimeMillis() + NumberUtils.THOUSAND * validation),
                     x500Name,
                     subjectPublicKeyInfo);
             ContentSigner sigGen = new JcaContentSignerBuilder(hashAlgorithm).build(privateKey);

@@ -10,15 +10,15 @@ import java.util.Collection;
  */
 public abstract class NumberUtils {
 
-    public static final int _1K = 1000;
-    public static final int _1M = _1K * _1K;
-    public static final int _1G = _1K * _1M;
-    public static final long _1T = (long) _1K * _1G;
+    public static final long THOUSAND = 1000;
+    public static final long MILLION = THOUSAND * THOUSAND;
+    public static final long BILLION = MILLION * THOUSAND;
+    public static final long TRILLION = BILLION * THOUSAND;
 
-    public static final int _1K_BINARY = 1024;
-    public static final int _1M_BINARY = _1K_BINARY * _1K_BINARY;
-    public static final int _1G_BINARY = _1K_BINARY * _1M_BINARY;
-    public static final long _1T_BINARY = (long) _1K_BINARY * _1G_BINARY;
+    public static final long K = 1024;
+    public static final long M = K * K;
+    public static final long G = K * M;
+    public static final long T = K * G;
 
     /**
      * majority of totalNum

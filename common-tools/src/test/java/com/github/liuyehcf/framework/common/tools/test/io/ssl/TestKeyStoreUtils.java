@@ -17,9 +17,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.net.ssl.KeyManagerFactory;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
+import java.security.cert.X509Certificate;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,17 +31,11 @@ public class TestKeyStoreUtils {
 
     @Test
     public void testSaveKeyStore() throws Exception {
-        KeyStore keyStore1 = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithSunLib(null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
-        keyStore1.store(new FileOutputStream("/tmp/keystore1"), "123456".toCharArray());
+        KeyStore keyStore;
+        X509Certificate certificate;
+        Date notBefore, notAfter;
 
-        KeyStore keyStore2 = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithBouncyCastleLib(null,
+        keyStore = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithSunLib(null,
                 null,
                 null,
                 null,
@@ -48,7 +43,25 @@ public class TestKeyStoreUtils {
                 null,
                 null,
                 null);
-        keyStore2.store(new FileOutputStream("/tmp/keystore2"), "123456".toCharArray());
+        certificate = (X509Certificate) keyStore.getCertificate(KeyStoreUtils.DEFAULT_KEY_ALIAS);
+        notBefore = certificate.getNotBefore();
+        notAfter = certificate.getNotAfter();
+        Assert.assertTrue(Math.abs(System.currentTimeMillis() - notBefore.getTime()) < 1000);
+        Assert.assertTrue(Math.abs(new Date(System.currentTimeMillis() + NumberUtils.THOUSAND * 86400 * 365L).getTime() - notAfter.getTime()) < 1000);
+
+        keyStore = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithBouncyCastleLib(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+        certificate = (X509Certificate) keyStore.getCertificate(KeyStoreUtils.DEFAULT_KEY_ALIAS);
+        notBefore = certificate.getNotBefore();
+        notAfter = certificate.getNotAfter();
+        Assert.assertTrue(Math.abs(System.currentTimeMillis() - notBefore.getTime()) < 1000);
+        Assert.assertTrue(Math.abs(new Date(System.currentTimeMillis() + NumberUtils.THOUSAND * 86400 * 365L).getTime() - notAfter.getTime()) < 1000);
     }
 
     @Test
@@ -138,7 +151,7 @@ public class TestKeyStoreUtils {
                                 pipeline.addLast(createSslHandlerUsingNetty(pipeline, KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_BOUNCY_CASTLE_LIB));
                             }
                             pipeline.addLast(new HttpServerCodec());
-                            pipeline.addLast(new HttpObjectAggregator(NumberUtils._1K));
+                            pipeline.addLast(new HttpObjectAggregator((int) NumberUtils.THOUSAND));
                             pipeline.addLast(new ChunkedWriteHandler());
                             pipeline.addLast(new ServerHandler());
                         }

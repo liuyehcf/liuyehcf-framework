@@ -16,15 +16,15 @@ public class TestNumberUtils {
 
     @Test
     public void testValue() {
-        Assert.assertEquals(1000, NumberUtils._1K);
-        Assert.assertEquals(1000 * 1000, NumberUtils._1M);
-        Assert.assertEquals(1000 * 1000 * 1000, NumberUtils._1G);
-        Assert.assertEquals(1000 * 1000 * 1000 * 1000L, NumberUtils._1T);
+        Assert.assertEquals(1000, NumberUtils.THOUSAND);
+        Assert.assertEquals(1000 * 1000, NumberUtils.MILLION);
+        Assert.assertEquals(1000 * 1000 * 1000, NumberUtils.BILLION);
+        Assert.assertEquals(1000 * 1000 * 1000 * 1000L, NumberUtils.TRILLION);
 
-        Assert.assertEquals(1024, NumberUtils._1K_BINARY);
-        Assert.assertEquals(1024 * 1024, NumberUtils._1M_BINARY);
-        Assert.assertEquals(1024 * 1024 * 1024, NumberUtils._1G_BINARY);
-        Assert.assertEquals(1024 * 1024 * 1024 * 1024L, NumberUtils._1T_BINARY);
+        Assert.assertEquals(1024, NumberUtils.K);
+        Assert.assertEquals(1024 * 1024, NumberUtils.M);
+        Assert.assertEquals(1024 * 1024 * 1024, NumberUtils.G);
+        Assert.assertEquals(1024 * 1024 * 1024 * 1024L, NumberUtils.T);
     }
 
     @Test
@@ -53,11 +53,11 @@ public class TestNumberUtils {
 
     @Test
     public void testAverage() {
-        double average = NumberUtils.average(Collections.singletonList(NumberUtils._1T));
-        Assert.assertEquals(NumberUtils._1T, average, 1e-10);
+        double average = NumberUtils.average(Collections.singletonList(NumberUtils.TRILLION));
+        Assert.assertEquals(NumberUtils.TRILLION, average, 1e-10);
 
-        average = NumberUtils.average(Sets.newHashSet(NumberUtils._1T, 0d));
-        Assert.assertEquals(NumberUtils._1T / 2.0, average, 1e-10);
+        average = NumberUtils.average(Sets.newHashSet(NumberUtils.TRILLION, 0d));
+        Assert.assertEquals(NumberUtils.TRILLION / 2.0, average, 1e-10);
 
         average = NumberUtils.average(Lists.newArrayList(0, 1L, 2D));
         Assert.assertEquals(1, average, 1e-10);
@@ -65,7 +65,7 @@ public class TestNumberUtils {
 
     @Test
     public void testStandardDeviation() {
-        double standardDeviation = NumberUtils.standardDeviation(Collections.singletonList(NumberUtils._1T));
+        double standardDeviation = NumberUtils.standardDeviation(Collections.singletonList(NumberUtils.TRILLION));
         Assert.assertEquals(0, standardDeviation, 1e-10);
 
         standardDeviation = NumberUtils.standardDeviation(Lists.newArrayList(0, 1L, 2D));
