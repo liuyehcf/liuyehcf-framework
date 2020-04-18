@@ -24,6 +24,24 @@ public class KeyStoreUtils {
 
     /**
      * create keystore containing self signed cert with sun library
+     * <p>
+     * add the following settings to pom.xml, otherwise compile error may occur
+     * <plugin>
+     * <groupId>org.apache.maven.plugins</groupId>
+     * <artifactId>maven-compiler-plugin</artifactId>
+     * <version>3.6.0</version>
+     * <configuration>
+     * <source>1.8</source>
+     * <target>1.8</target>
+     * <encoding>UTF-8</encoding>
+     * <compilerArguments>
+     * <!-- otherwise cannot find sun.security.tools.keytool.CertAndKeyGen -->
+     * <verbose/>
+     * <bootclasspath>${java.home}/lib/rt.jar${path.separator}${java.home}/lib/jce.jar
+     * </bootclasspath>
+     * </compilerArguments>
+     * </configuration>
+     * </plugin>
      *
      * @param keyStoreType     type of keyStore
      *                         optional value 'PKCS12' (default if null)
