@@ -9,12 +9,15 @@ import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
+import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import sun.security.tools.keytool.CertAndKeyGen;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.*;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -121,7 +124,13 @@ public class KeyStoreUtils {
             );
 
             return keyStore;
-        } catch (Exception e) {
+        } catch (IOException
+                | KeyStoreException
+                | InvalidKeyException
+                | CertificateException
+                | SignatureException
+                | NoSuchAlgorithmException
+                | NoSuchProviderException e) {
             throw new RuntimeException(e);
         }
     }
@@ -189,7 +198,7 @@ public class KeyStoreUtils {
             );
 
             return keyStore;
-        } catch (Exception e) {
+        } catch (KeyStoreException e) {
             throw new RuntimeException(e);
         }
     }
@@ -211,7 +220,10 @@ public class KeyStoreUtils {
             keyStore.load(null, null);
 
             return keyStore;
-        } catch (Exception e) {
+        } catch (IOException
+                | KeyStoreException
+                | CertificateException
+                | NoSuchAlgorithmException e) {
             throw new RuntimeException();
         }
     }
@@ -234,7 +246,7 @@ public class KeyStoreUtils {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(encryptAlgorithm);
             keyPairGenerator.initialize(keyLength);
             return keyPairGenerator.generateKeyPair();
-        } catch (Exception e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
@@ -330,7 +342,9 @@ public class KeyStoreUtils {
             return (X509Certificate) CertificateFactory
                     .getInstance(CERTIFICATE_TYPE)
                     .generateCertificate(new ByteArrayInputStream(holder.getEncoded()));
-        } catch (Exception e) {
+        } catch (IOException
+                | CertificateException
+                | OperatorCreationException e) {
             throw new RuntimeException(e);
         }
     }
