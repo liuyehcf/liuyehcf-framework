@@ -63,15 +63,8 @@ public abstract class Converter<T1, T2, T3, T4> {
         callBothConsumersIfNecessary(inboundConsumer, outboundConsumer);
     }
 
-    public final void close() {
-        try {
-            channel.flushOutbound();
-            channel.flushInbound();
-
-            callBothConsumersIfNecessary(null, null);
-        } finally {
-            channel.finishAndReleaseAll();
-        }
+    public void close() {
+        channel.finishAndReleaseAll();
     }
 
     private void callBothConsumersIfNecessary(Consumer<T2> inboundConsumer, Consumer<T4> outboundConsumer) {

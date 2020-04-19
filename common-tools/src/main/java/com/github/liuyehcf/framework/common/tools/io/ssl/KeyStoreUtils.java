@@ -98,8 +98,7 @@ public class KeyStoreUtils {
 
         try {
             // create empty keystore without keystore password
-            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-            keyStore.load(null, null);
+            KeyStore keyStore = createKeyStore(keyStoreType);
 
             // create private key and self signed cert
             CertAndKeyGen gen = new CertAndKeyGen(
@@ -171,8 +170,7 @@ public class KeyStoreUtils {
 
         try {
             // create empty keystore without keystore password
-            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-            keyStore.load(null, null);
+            KeyStore keyStore = createKeyStore(keyStoreType);
 
             // create private key and public key
             KeyPair keyPair = createKeyPair(encryptAlgorithm, keyLength);
@@ -193,6 +191,28 @@ public class KeyStoreUtils {
             return keyStore;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * create empty key store
+     *
+     * @param keyStoreType type of keyStore
+     *                     optional value 'PKCS12'
+     *                     optional value 'JKS'
+     *                     default value is 'PKCS12'
+     * @return KeyStore
+     */
+    public static KeyStore createKeyStore(String keyStoreType) {
+        keyStoreType = OptionalUtils.getOrDefault(keyStoreType, DEFAULT_KEY_STORE_TYPE);
+        try {
+            // create empty keystore without keystore password
+            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+            keyStore.load(null, null);
+
+            return keyStore;
+        } catch (Exception e) {
+            throw new RuntimeException();
         }
     }
 

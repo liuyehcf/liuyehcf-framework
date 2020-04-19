@@ -86,22 +86,60 @@ public class TestKeyStoreUtils {
     }
 
     @Test
-    public void testSunLibSelfSignedCert() throws Exception {
-        testHttpServer(1);
+    public void testSunLibSelfSignedCertPKCS12() throws Exception {
+        testHttpServer(KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithSunLib(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
     }
 
     @Test
-    public void testBouncyCastleLibSelfSignedCert() throws Exception {
-        testHttpServer(2);
+    public void testSunLibSelfSignedCertJKS() throws Exception {
+        testHttpServer(KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithSunLib("JKS",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
+    }
+
+    @Test
+    public void testBouncyCastleLibSelfSignedCertPKCS12() throws Exception {
+        testHttpServer(KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithBouncyCastleLib(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
+    }
+
+    @Test
+    public void testBouncyCastleLibSelfSignedCertJKS() throws Exception {
+        testHttpServer(KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithBouncyCastleLib("JKS",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
     }
 
     @Test
     public void testBouncyCastleLibSiteCert() throws Exception {
-        testHttpServer(3);
+        testHttpServer(getSiteCertKeyStore());
     }
 
-    private void testHttpServer(int mode) throws Exception {
-        ChannelFuture channelFuture = HttpServer.start(mode);
+    private void testHttpServer(KeyStore keyStore) throws Exception {
+        ChannelFuture channelFuture = HttpServer.start(keyStore);
 
         TimeUtils.sleep(1);
 
@@ -118,72 +156,42 @@ public class TestKeyStoreUtils {
         channelFuture.sync();
     }
 
+    private KeyStore getSiteCertKeyStore() {
+        try {
+            // create empty keystore without keystore password
+            KeyStore keyStore = KeyStore.getInstance(KeyStoreUtils.DEFAULT_KEY_STORE_TYPE);
+            keyStore.load(null, null);
+
+            KeyPair rootKeyPair = KeyStoreUtils.createKeyPair(null, null);
+            PrivateKey rootPrivateKey = rootKeyPair.getPrivate();
+            PublicKey rootPublicKey = rootKeyPair.getPublic();
+            X509Certificate rootCert = KeyStoreUtils.x509SelfSign(rootPrivateKey,
+                    rootPublicKey,
+                    null,
+                    null,
+                    null);
+
+            KeyPair keyPair = KeyStoreUtils.createKeyPair(null, null);
+            PublicKey publicKey = keyPair.getPublic();
+            PrivateKey privateKey = keyPair.getPrivate();
+            X509Certificate cert = KeyStoreUtils.x509Sign(rootPrivateKey, rootCert, publicKey, "CN=liuyehcf", null, null);
+
+            keyStore.setKeyEntry(KeyStoreUtils.DEFAULT_KEY_ALIAS,
+                    privateKey,
+                    KeyStoreUtils.DEFAULT_KEY_PASSWORD.toCharArray(),
+                    new X509Certificate[]{cert});
+
+            return keyStore;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final class HttpServer {
         private static final String HOST = "localhost";
         private static final int PORT = 8080;
 
-        private static final KeyStore KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_SUN_LIB;
-        private static final KeyStore KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_BOUNCY_CASTLE_LIB;
-        private static final KeyStore KEY_STORE_CONTAINING_SITE_CERT_WITH_BOUNCY_CASTLE_LIB;
-
-        static {
-            try {
-                KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_SUN_LIB = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithSunLib(null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null);
-
-                KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_BOUNCY_CASTLE_LIB = KeyStoreUtils.createKeyStoreContainingSelfSignedCertWithBouncyCastleLib(null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null);
-
-                KEY_STORE_CONTAINING_SITE_CERT_WITH_BOUNCY_CASTLE_LIB = getSiteCertKeyStore();
-            } catch (Exception e) {
-                throw new Error(e);
-            }
-        }
-
-        private static KeyStore getSiteCertKeyStore() {
-            try {
-                // create empty keystore without keystore password
-                KeyStore keyStore = KeyStore.getInstance(KeyStoreUtils.DEFAULT_KEY_STORE_TYPE);
-                keyStore.load(null, null);
-
-                KeyPair rootKeyPair = KeyStoreUtils.createKeyPair(null, null);
-                PrivateKey rootPrivateKey = rootKeyPair.getPrivate();
-                PublicKey rootPublicKey = rootKeyPair.getPublic();
-                X509Certificate rootCert = KeyStoreUtils.x509SelfSign(rootPrivateKey,
-                        rootPublicKey,
-                        null,
-                        null,
-                        null);
-
-                KeyPair keyPair = KeyStoreUtils.createKeyPair(null, null);
-                PublicKey publicKey = keyPair.getPublic();
-                PrivateKey privateKey = keyPair.getPrivate();
-                X509Certificate cert = KeyStoreUtils.x509Sign(rootPrivateKey, rootCert, publicKey, "CN=liuyehcf", null, null);
-
-                keyStore.setKeyEntry(KeyStoreUtils.DEFAULT_KEY_ALIAS,
-                        privateKey,
-                        KeyStoreUtils.DEFAULT_KEY_PASSWORD.toCharArray(),
-                        new X509Certificate[]{cert});
-
-                return keyStore;
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        public static ChannelFuture start(int certMode) throws Exception {
+        public static ChannelFuture start(KeyStore keyStore) throws Exception {
             final EventLoopGroup boss = new NioEventLoopGroup();
             final EventLoopGroup worker = new NioEventLoopGroup();
 
@@ -195,15 +203,7 @@ public class TestKeyStoreUtils {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             pipeline.addLast(new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
-                            if (certMode == 1) {
-                                pipeline.addLast(createSslHandlerUsingNetty(pipeline, KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_SUN_LIB));
-                            } else if (certMode == 2) {
-                                pipeline.addLast(createSslHandlerUsingNetty(pipeline, KEY_STORE_CONTAINING_SELF_SIGNED_CERT_WITH_BOUNCY_CASTLE_LIB));
-                            } else if (certMode == 3) {
-                                pipeline.addLast(createSslHandlerUsingNetty(pipeline, KEY_STORE_CONTAINING_SITE_CERT_WITH_BOUNCY_CASTLE_LIB));
-                            } else {
-                                throw new UnsupportedOperationException();
-                            }
+                            pipeline.addLast(createSslHandlerUsingNetty(pipeline, keyStore));
                             pipeline.addLast(new HttpServerCodec());
                             pipeline.addLast(new HttpObjectAggregator((int) NumberUtils.THOUSAND));
                             pipeline.addLast(new ChunkedWriteHandler());
