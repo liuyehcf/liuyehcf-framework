@@ -24,7 +24,7 @@
         <connection>scm:git:git@github.com:liuyehcf/liuyehcf-framework.git</connection>
         <developerConnection>scm:git:git@github.com:liuyehcf/liuyehcf-framework.git</developerConnection>
         <url>git@github.com:liuyehcf/liuyehcf-framework.git</url>
-        <tag>1.0.0</tag>
+        <tag>common-tools-1.0.4</tag>
     </scm>
 
     <developers>
