@@ -285,6 +285,9 @@ public class DefaultPromise<T> implements Promise<T> {
     }
 
     protected RuntimeException reportFailure(Throwable cause) {
+        if (cause instanceof PromiseException) {
+            return (PromiseException) cause;
+        }
         return new PromiseException("promise failed", cause);
     }
 
