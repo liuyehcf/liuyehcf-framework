@@ -289,8 +289,8 @@ public class DefaultPromise<T> implements Promise<T> {
     }
 
     protected RuntimeException reportUnknownError(Throwable cause) {
-        if (cause instanceof RuntimeException) {
-            return (RuntimeException) cause;
+        if (cause instanceof PromiseException) {
+            return (PromiseException) cause;
         }
         return new PromiseException("unknown error", cause);
     }

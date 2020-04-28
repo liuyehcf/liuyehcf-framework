@@ -8,8 +8,6 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 
 /**
- * 断言工具类
- *
  * @author hechenfeng
  * @date 2018/04/16
  */
@@ -22,11 +20,13 @@ public abstract class Assert {
     }
 
     public static void assertTrue(boolean condition, String description) {
-        assertTrue(condition, () -> description);
+        if (!condition) {
+            throw new IllegalArgumentException(description);
+        }
     }
 
     public static void assertTrue(boolean condition) {
-        assertTrue(condition, () -> null);
+        assertTrue(condition, (String) null);
     }
 
     public static void assertFalse(boolean condition, Callable<String> loader) {
@@ -36,11 +36,13 @@ public abstract class Assert {
     }
 
     public static void assertFalse(boolean condition, String description) {
-        assertFalse(condition, () -> description);
+        if (condition) {
+            throw new IllegalArgumentException(description);
+        }
     }
 
     public static void assertFalse(boolean condition) {
-        assertFalse(condition, () -> null);
+        assertFalse(condition, (String) null);
     }
 
     public static void assertNotNull(@Nullable Object obj, Callable<String> loader) {
@@ -50,11 +52,13 @@ public abstract class Assert {
     }
 
     public static void assertNotNull(@Nullable Object obj, String description) {
-        assertNotNull(obj, () -> description);
+        if (obj == null) {
+            throw new NullPointerException(description);
+        }
     }
 
     public static void assertNotNull(@Nullable Object obj) {
-        assertNotNull(obj, () -> null);
+        assertNotNull(obj, (String) null);
     }
 
     public static void assertNull(Object obj, Callable<String> loader) {
@@ -64,11 +68,13 @@ public abstract class Assert {
     }
 
     public static void assertNull(Object obj, String description) {
-        assertNull(obj, () -> description);
+        if (obj != null) {
+            throw new IllegalArgumentException(description);
+        }
     }
 
     public static void assertNull(Object obj) {
-        assertNull(obj, () -> null);
+        assertNull(obj, (String) null);
     }
 
     public static void assertNotBlank(String s, Callable<String> loader) {
@@ -78,11 +84,13 @@ public abstract class Assert {
     }
 
     public static void assertNotBlank(String s, String description) {
-        assertNotBlank(s, () -> description);
+        if (StringUtils.isBlank(s)) {
+            throw new IllegalArgumentException(description);
+        }
     }
 
     public static void assertNotBlank(String s) {
-        assertNotBlank(s, () -> null);
+        assertNotBlank(s, (String) null);
     }
 
     public static void assertBlank(String s, Callable<String> loader) {
@@ -92,11 +100,13 @@ public abstract class Assert {
     }
 
     public static void assertBlank(String s, String description) {
-        assertBlank(s, () -> description);
+        if (StringUtils.isNotBlank(s)) {
+            throw new IllegalArgumentException(description);
+        }
     }
 
     public static void assertBlank(String s) {
-        assertBlank(s, () -> null);
+        assertBlank(s, (String) null);
     }
 
     public static void assertEmpty(Collection<?> collection, Callable<String> loader) {
@@ -106,11 +116,13 @@ public abstract class Assert {
     }
 
     public static void assertEmpty(Collection<?> collection, String description) {
-        assertEmpty(collection, () -> description);
+        if (collection != null && !collection.isEmpty()) {
+            throw new IllegalArgumentException(description);
+        }
     }
 
     public static void assertEmpty(Collection<?> collection) {
-        assertEmpty(collection, () -> null);
+        assertEmpty(collection, (String) null);
     }
 
     public static void assertNotEmpty(Collection<?> collection, Callable<String> loader) {
@@ -120,11 +132,13 @@ public abstract class Assert {
     }
 
     public static void assertNotEmpty(Collection<?> collection, String description) {
-        assertNotEmpty(collection, () -> description);
+        if (collection == null || collection.isEmpty()) {
+            throw new IllegalArgumentException(description);
+        }
     }
 
     public static void assertNotEmpty(Collection<?> collection) {
-        assertNotEmpty(collection, () -> null);
+        assertNotEmpty(collection, (String) null);
     }
 
     public static void assertEquals(Object obj1, Object obj2, Callable<String> loader) {
@@ -134,11 +148,13 @@ public abstract class Assert {
     }
 
     public static void assertEquals(Object obj1, Object obj2, String description) {
-        assertEquals(obj1, obj2, () -> description);
+        if (!Objects.equals(obj1, obj2)) {
+            throw new IllegalArgumentException(description);
+        }
     }
 
     public static void assertEquals(Object obj1, Object obj2) {
-        assertEquals(obj1, obj2, () -> null);
+        assertEquals(obj1, obj2, (String) null);
     }
 
     public static void assertNotEquals(Object obj1, Object obj2, Callable<String> loader) {
@@ -148,11 +164,13 @@ public abstract class Assert {
     }
 
     public static void assertNotEquals(Object obj1, Object obj2, String description) {
-        assertNotEquals(obj1, obj2, () -> description);
+        if (Objects.equals(obj1, obj2)) {
+            throw new IllegalArgumentException(description);
+        }
     }
 
     public static void assertNotEquals(Object obj1, Object obj2) {
-        assertNotEquals(obj1, obj2, () -> null);
+        assertNotEquals(obj1, obj2, (String) null);
     }
 
     private static String lazyLoad(Callable<String> callable) {

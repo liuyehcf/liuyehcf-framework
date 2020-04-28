@@ -6,7 +6,7 @@
 
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>common-tools</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <packaging>jar</packaging>
     <name>common-tools</name>
     <description>common tools</description>
@@ -24,7 +24,7 @@
         <connection>scm:git:git@github.com:liuyehcf/liuyehcf-framework.git</connection>
         <developerConnection>scm:git:git@github.com:liuyehcf/liuyehcf-framework.git</developerConnection>
         <url>git@github.com:liuyehcf/liuyehcf-framework.git</url>
-        <tag>common-tools-1.0.5</tag>
+        <tag>common-tools-1.0.6</tag>
     </scm>
 
     <developers>
