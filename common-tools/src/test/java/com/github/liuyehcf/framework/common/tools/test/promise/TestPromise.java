@@ -1,6 +1,6 @@
 package com.github.liuyehcf.framework.common.tools.test.promise;
 
-import com.github.liuyehcf.framework.common.tools.promise.AbstractPromise;
+import com.github.liuyehcf.framework.common.tools.promise.DefaultPromise;
 import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.common.tools.promise.PromiseException;
 import com.google.common.collect.Lists;
@@ -387,6 +387,50 @@ public class TestPromise {
         Assert.assertFalse(promise.tryFailure(null));
     }
 
+    @Test
+    public void testPromiseCancel() {
+        Promise<Object> promise = new TPromise();
+
+        promise.tryCancel();
+        try {
+            promise.get();
+        } catch (PromiseException e) {
+            Assert.assertEquals("promise canceled", e.getMessage());
+            return;
+        }
+
+        throw new RuntimeException();
+    }
+
+    @Test
+    public void testPromiseTimeout() {
+        Promise<Object> promise = new TPromise();
+
+        try {
+            promise.get(1, TimeUnit.MILLISECONDS);
+        } catch (PromiseException e) {
+            Assert.assertEquals("promise timeout", e.getMessage());
+            return;
+        }
+
+        throw new RuntimeException();
+    }
+
+    @Test
+    public void testPromiseFailure() {
+        Promise<Object> promise = new TPromise();
+
+        try {
+            promise.tryFailure(null);
+            promise.get();
+        } catch (PromiseException e) {
+            Assert.assertEquals("promise failed", e.getMessage());
+            return;
+        }
+
+        throw new RuntimeException();
+    }
+
     private void sleepThenTrySuccess(Promise<Object> promise, int milliseconds) {
         try {
             TimeUnit.MILLISECONDS.sleep(milliseconds);
@@ -415,7 +459,7 @@ public class TestPromise {
         new Thread(runnable).start();
     }
 
-    private static final class TPromise extends AbstractPromise<Object> {
+    private static final class TPromise extends DefaultPromise<Object> {
 
     }
 }

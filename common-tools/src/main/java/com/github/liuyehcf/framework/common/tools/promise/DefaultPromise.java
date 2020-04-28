@@ -15,9 +15,9 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author hechenfeng
  * @date 2019/4/28
  */
-public abstract class AbstractPromise<T> implements Promise<T> {
+public class DefaultPromise<T> implements Promise<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractPromise.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultPromise.class);
 
     private final List<PromiseListenerWrapper<T>> listeners = Lists.newCopyOnWriteArrayList();
     private final ReentrantLock waitLock = new ReentrantLock();
@@ -229,8 +229,8 @@ public abstract class AbstractPromise<T> implements Promise<T> {
         try {
             waitLock.lock();
             return callable.call();
-        } catch (InterruptedException | ExecutionException e) {
-            throw createException(e);
+        } catch (Throwable e) {
+            throw reportUnknownError(e);
         } finally {
             waitLock.unlock();
         }
@@ -266,26 +266,33 @@ public abstract class AbstractPromise<T> implements Promise<T> {
         }
 
         if (isCancelled()) {
-            throw createException("promise canceled");
+            throw reportCancel();
         }
 
         if (isTimeout) {
-            throw createException("promise timeout");
+            throw reportTimeout();
         }
 
-        throw createException("promise failed", cause());
+        throw reportFailure(cause());
     }
 
-    protected RuntimeException createException(Throwable cause) {
-        return new PromiseException(cause);
+    protected RuntimeException reportCancel() {
+        return new PromiseException("promise canceled");
     }
 
-    protected RuntimeException createException(String description) {
-        return new PromiseException(description);
+    protected RuntimeException reportTimeout() {
+        return new PromiseException("promise timeout");
     }
 
-    protected RuntimeException createException(String description, Throwable cause) {
-        return new PromiseException(description, cause);
+    protected RuntimeException reportFailure(Throwable cause) {
+        return new PromiseException("promise failed", cause);
+    }
+
+    protected RuntimeException reportUnknownError(Throwable cause) {
+        if (cause instanceof RuntimeException) {
+            return (RuntimeException) cause;
+        }
+        return new PromiseException("unknown error", cause);
     }
 
     private interface InterruptCallable<T> {
