@@ -103,9 +103,9 @@ public class TestController {
         return request.getContentType();
     }
 
-    @RequestMapping("/status404")
-    public void status404(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        response.sendError(404, "not found");
+    @RequestMapping("/status405")
+    public void status404(HttpServletResponse response) throws Exception {
+        response.sendError(405, "not found");
     }
 
     @RequestMapping("/primitiveBoolean")

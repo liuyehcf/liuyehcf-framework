@@ -426,9 +426,9 @@ public class TestMain extends BaseConfig {
     }
 
     @Test
-    public void status404() {
+    public void status405() {
         try {
-            testClient.status404();
+            testClient.status405();
         } catch (Exception e) {
             Assert.assertEquals(e.getClass(), AresException.class);
             Throwable cause = e.getCause();
