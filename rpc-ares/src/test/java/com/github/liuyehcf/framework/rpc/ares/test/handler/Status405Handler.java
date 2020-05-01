@@ -12,11 +12,11 @@ import java.lang.reflect.Method;
  * @date 2020/5/1
  */
 @Component
-public class Status404Handler extends ResponseHandler {
+public class Status405Handler extends ResponseHandler {
 
     @Override
     public boolean match(HttpUriRequest request, HttpResponse response, Method method) {
-        return response.getStatusLine().getStatusCode() == 404;
+        return response.getStatusLine().getStatusCode() == 405;
     }
 
     @Override
