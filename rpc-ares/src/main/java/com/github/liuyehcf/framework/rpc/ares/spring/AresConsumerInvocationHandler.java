@@ -85,9 +85,9 @@ class AresConsumerInvocationHandler implements InvocationHandler {
 
         path = renderPath(path, method.getParameters(), args);
         HttpParams httpParams = parseParams(method.getParameters(), args);
-        HttpRequestBase httpRequest = buildRequest(path, httpMethod, acceptContentType, httpParams);
+        HttpRequestBase request = buildRequest(path, httpMethod, acceptContentType, httpParams);
 
-        return doInvoke(httpRequest, method);
+        return doInvoke(request, method);
     }
 
     private String renderPath(String path, Parameter[] parameters, Object[] args) {
