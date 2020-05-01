@@ -1,10 +1,7 @@
 package com.github.liuyehcf.framework.rpc.ares.spring;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
-import com.github.liuyehcf.framework.rpc.ares.AresConsumer;
-import com.github.liuyehcf.framework.rpc.ares.ParamsConverter;
-import com.github.liuyehcf.framework.rpc.ares.RequestBodyConverter;
-import com.github.liuyehcf.framework.rpc.ares.ResponseBodyConverter;
+import com.github.liuyehcf.framework.rpc.ares.*;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -32,15 +29,21 @@ public class AresConsumerSpringPostProcessor implements BeanFactoryPostProcessor
     private static final String FIELD_PARAMS_CONVERTERS = "paramsConverters";
     private static final String FIELD_REQUEST_BODY_CONVERTERS = "requestBodyConverters";
     private static final String FIELD_RESPONSE_BODY_CONVERTERS = "responseBodyConverters";
+    private static final String FIELD_RESPONSE_HANDLERS = "responseHandlers";
 
     private final List<ParamsConverter<?>> paramsConverters;
     private final List<RequestBodyConverter<?>> requestBodyConverters;
     private final List<ResponseBodyConverter<?>> responseBodyConverters;
+    private final List<ResponseHandler> responseHandlers;
 
-    public AresConsumerSpringPostProcessor(List<ParamsConverter<?>> paramsConverters, List<RequestBodyConverter<?>> requestBodyConverters, List<ResponseBodyConverter<?>> responseBodyConverters) {
+    public AresConsumerSpringPostProcessor(List<ParamsConverter<?>> paramsConverters,
+                                           List<RequestBodyConverter<?>> requestBodyConverters,
+                                           List<ResponseBodyConverter<?>> responseBodyConverters,
+                                           List<ResponseHandler> responseHandlers) {
         this.paramsConverters = paramsConverters;
         this.requestBodyConverters = requestBodyConverters;
         this.responseBodyConverters = responseBodyConverters;
+        this.responseHandlers = responseHandlers;
     }
 
     @Override
@@ -82,6 +85,7 @@ public class AresConsumerSpringPostProcessor implements BeanFactoryPostProcessor
         builder.addPropertyValue(FIELD_PARAMS_CONVERTERS, paramsConverters);
         builder.addPropertyValue(FIELD_REQUEST_BODY_CONVERTERS, requestBodyConverters);
         builder.addPropertyValue(FIELD_RESPONSE_BODY_CONVERTERS, responseBodyConverters);
+        builder.addPropertyValue(FIELD_RESPONSE_HANDLERS, responseHandlers);
         builder.addPropertyValue(FIELD_OBJECT_TYPE, fieldType);
         builder.addPropertyValue(FIELD_SCHEMA, schema);
         builder.addPropertyValue(FIELD_HOST, domain);

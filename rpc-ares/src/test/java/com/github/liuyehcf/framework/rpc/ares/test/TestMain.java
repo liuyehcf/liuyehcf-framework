@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.rpc.ares.test;
 
+import com.github.liuyehcf.framework.rpc.ares.AresException;
 import com.github.liuyehcf.framework.rpc.ares.constant.SchemaType;
 import com.github.liuyehcf.framework.rpc.ares.test.ares.TestClient;
 import com.github.liuyehcf.framework.rpc.ares.test.model.Person;
@@ -47,6 +48,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.oneRequestParamMissingParam();
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().contains("Required String parameter 'param1' is not present"));
             return;
         }
@@ -58,6 +60,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.oneRequestParamWituoutParamAnnotation(null);
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
@@ -69,6 +72,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.oneRequestParamWithBothAnnotation(null);
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("parameter contains more than one of ares annotations", e.getMessage());
             return;
         }
@@ -84,6 +88,7 @@ public class TestMain extends BaseConfig {
                     .age(18)
                     .build());
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().contains("Required String parameter 'param1' is not present"));
             return;
         }
@@ -117,6 +122,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.twoRequestParamMissingFirstAnnotation("param1", "param2");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
@@ -128,6 +134,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.twoRequestParamMissingSecondAnnotation("param1", "param2");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
@@ -139,6 +146,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.twoRequestParamMissingBothAnnotation("param1", "param2");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
@@ -150,6 +158,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.twoRequestParamWithFirstBody("param1", "param2");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().contains("Required String parameter 'param1' is not present"));
             return;
         }
@@ -161,6 +170,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.twoRequestParamWithSecondBody("param1", "param2");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().contains("Required String parameter 'param2"));
             return;
         }
@@ -172,6 +182,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.twoRequestParamWithBothBody("param1", "param2");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("more than one '@AresRequestBody'", e.getMessage());
             return;
         }
@@ -183,6 +194,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.twoRequestParamWithDuplicateQueryParam("param1", "param2");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("duplicate query parameter 'param1'", e.getMessage());
             return;
         }
@@ -248,6 +260,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.requestBodyWithoutAnnotation("hello");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
@@ -259,6 +272,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.requestBodyWithParam("hello");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().contains("Required request body is missing"));
             return;
         }
@@ -296,6 +310,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.oneRequestParamOneRequestBodyMissingFirstAnnotation("hello", "world");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
@@ -307,6 +322,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.oneRequestParamOneRequestBodyMissingSecondAnnotation("hello", "world");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
@@ -318,6 +334,7 @@ public class TestMain extends BaseConfig {
         try {
             testClient.oneRequestParamOneRequestBodyMissingBothAnnotation("hello", "world");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("parameter missing '@AresRequestParam' or '@AresHeader' or '@AresRequestBody'", e.getMessage());
             return;
         }
@@ -409,10 +426,25 @@ public class TestMain extends BaseConfig {
     }
 
     @Test
+    public void status404() {
+        try {
+            testClient.status404();
+        } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
+            Throwable cause = e.getCause();
+            Assert.assertEquals(cause.getClass(), RuntimeException.class);
+            Assert.assertTrue(cause.getMessage().contains("not found"));
+            return;
+        }
+        throw new RuntimeException();
+    }
+
+    @Test
     public void wrongPath() {
         try {
             testClient.wrongPath();
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().contains("Not Found"));
             return;
         }
@@ -641,6 +673,7 @@ public class TestMain extends BaseConfig {
             AresContext.setEndpoint(SchemaType.https, null, null);
             testClient.zeroRequestParamWithOneMoreParam("hello");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("http request error, url=https://127.0.0.1:9999/zeroRequestParam?param1=hello; message=Unrecognized SSL message, plaintext connection?", e.getMessage());
             return;
         } finally {
@@ -656,6 +689,7 @@ public class TestMain extends BaseConfig {
             AresContext.setEndpoint(null, "unknown", null);
             testClient.zeroRequestParamWithOneMoreParam("hello");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().startsWith("http request error, url=http://unknown:9999/zeroRequestParam?param1=hello; message=unknown"));
             return;
         } finally {
@@ -671,6 +705,7 @@ public class TestMain extends BaseConfig {
             AresContext.setEndpoint(null, null, 12345);
             testClient.zeroRequestParamWithOneMoreParam("hello");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("http request error, url=http://127.0.0.1:12345/zeroRequestParam?param1=hello; message=Connect to 127.0.0.1:12345 [/127.0.0.1] failed: Connection refused (Connection refused)", e.getMessage());
             return;
         } finally {
@@ -686,6 +721,7 @@ public class TestMain extends BaseConfig {
             AresContext.setEndpoint(SchemaType.https, "unknown", null);
             testClient.zeroRequestParamWithOneMoreParam("hello");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().startsWith("http request error, url=https://unknown:9999/zeroRequestParam?param1=hello; message=unknown"));
             return;
         } finally {
@@ -701,6 +737,7 @@ public class TestMain extends BaseConfig {
             AresContext.setEndpoint(SchemaType.https, null, 12345);
             testClient.zeroRequestParamWithOneMoreParam("hello");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("http request error, url=https://127.0.0.1:12345/zeroRequestParam?param1=hello; message=Connect to 127.0.0.1:12345 [/127.0.0.1] failed: Connection refused (Connection refused)", e.getMessage());
             return;
         } finally {
@@ -716,6 +753,7 @@ public class TestMain extends BaseConfig {
             AresContext.setEndpoint(null, "unknown", 12345);
             testClient.zeroRequestParamWithOneMoreParam("hello");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().startsWith("http request error, url=http://unknown:12345/zeroRequestParam?param1=hello; message=unknown"));
             return;
         } finally {
@@ -731,6 +769,7 @@ public class TestMain extends BaseConfig {
             AresContext.setEndpoint(SchemaType.https, "unknown", 12345);
             testClient.zeroRequestParamWithOneMoreParam("hello");
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().startsWith("http request error, url=https://unknown:12345/zeroRequestParam?param1=hello; message=unknown"));
             return;
         } finally {
@@ -747,6 +786,7 @@ public class TestMain extends BaseConfig {
                     testClient.zeroRequestParamWithOneMoreParam("hello")
             );
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("http request error, url=https://127.0.0.1:9999/zeroRequestParam?param1=hello; message=Unrecognized SSL message, plaintext connection?", e.getMessage());
             return;
         }
@@ -761,6 +801,7 @@ public class TestMain extends BaseConfig {
                     testClient.zeroRequestParamWithOneMoreParam("hello")
             );
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().startsWith("http request error, url=http://unknown:9999/zeroRequestParam?param1=hello; message=unknown"));
             return;
         }
@@ -775,6 +816,7 @@ public class TestMain extends BaseConfig {
                     testClient.zeroRequestParamWithOneMoreParam("hello")
             );
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("http request error, url=http://127.0.0.1:12345/zeroRequestParam?param1=hello; message=Connect to 127.0.0.1:12345 [/127.0.0.1] failed: Connection refused (Connection refused)", e.getMessage());
             return;
         }
@@ -789,6 +831,7 @@ public class TestMain extends BaseConfig {
                     testClient.zeroRequestParamWithOneMoreParam("hello")
             );
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().startsWith("http request error, url=https://unknown:9999/zeroRequestParam?param1=hello; message=unknown"));
             return;
         }
@@ -803,6 +846,7 @@ public class TestMain extends BaseConfig {
                     testClient.zeroRequestParamWithOneMoreParam("hello")
             );
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertEquals("http request error, url=https://127.0.0.1:12345/zeroRequestParam?param1=hello; message=Connect to 127.0.0.1:12345 [/127.0.0.1] failed: Connection refused (Connection refused)", e.getMessage());
             return;
         }
@@ -817,6 +861,7 @@ public class TestMain extends BaseConfig {
                     testClient.zeroRequestParamWithOneMoreParam("hello")
             );
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().startsWith("http request error, url=http://unknown:12345/zeroRequestParam?param1=hello; message=unknown"));
             return;
         }
@@ -831,6 +876,7 @@ public class TestMain extends BaseConfig {
                     testClient.zeroRequestParamWithOneMoreParam("hello")
             );
         } catch (Exception e) {
+            Assert.assertEquals(e.getClass(), AresException.class);
             Assert.assertTrue(e.getMessage().startsWith("http request error, url=https://unknown:12345/zeroRequestParam?param1=hello; message=unknown"));
             return;
         }

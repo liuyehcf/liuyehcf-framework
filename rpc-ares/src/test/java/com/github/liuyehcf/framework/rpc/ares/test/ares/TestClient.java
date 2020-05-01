@@ -157,6 +157,9 @@ public interface TestClient {
     String customizeContentType(@AresRequestHeader(name = "contentType") String contentType,
                                 @AresRequestBody(contentType = "application/test1; charset=UTF-8") String text);
 
+    @AresMethod(path = "/status404")
+    Object status404();
+
     // boolean
     @AresMethod(path = "/primitiveBoolean")
     boolean primitiveBooleanWithPrimitivePrimitive(@AresRequestParam(name = "param1") boolean param1);

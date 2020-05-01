@@ -3,6 +3,7 @@ package com.github.liuyehcf.framework.rpc.ares.spring;
 import com.github.liuyehcf.framework.rpc.ares.ParamsConverter;
 import com.github.liuyehcf.framework.rpc.ares.RequestBodyConverter;
 import com.github.liuyehcf.framework.rpc.ares.ResponseBodyConverter;
+import com.github.liuyehcf.framework.rpc.ares.ResponseHandler;
 import com.github.liuyehcf.framework.rpc.ares.converters.params.ObjectParamsConverter;
 import com.github.liuyehcf.framework.rpc.ares.converters.reqbody.*;
 import com.github.liuyehcf.framework.rpc.ares.converters.resbody.*;
@@ -72,11 +73,12 @@ public class AresAutoConfiguration {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public BeanFactoryPostProcessor aresConsumerSpringPostProcessor(@Autowired List<ParamsConverter<?>> paramsConverters,
                                                                     @Autowired List<RequestBodyConverter<?>> requestBodyConverters,
-                                                                    @Autowired List<ResponseBodyConverter<?>> responseBodyConverters) {
+                                                                    @Autowired List<ResponseBodyConverter<?>> responseBodyConverters,
+                                                                    @Autowired List<ResponseHandler> responseHandlers) {
         Collections.sort((List<? extends Comparable>) paramsConverters);
         Collections.sort((List<? extends Comparable>) requestBodyConverters);
         Collections.sort((List<? extends Comparable>) responseBodyConverters);
-        return new AresConsumerSpringPostProcessor(paramsConverters, requestBodyConverters, responseBodyConverters);
+        return new AresConsumerSpringPostProcessor(paramsConverters, requestBodyConverters, responseBodyConverters, responseHandlers);
     }
 
     @ConditionalOnProperty(prefix = "ares.http.config", name = "enableDefaultParamsConverters", havingValue = "false", matchIfMissing = true)

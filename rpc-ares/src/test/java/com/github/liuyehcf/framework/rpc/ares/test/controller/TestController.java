@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
@@ -100,6 +101,11 @@ public class TestController {
     @RequestMapping("/customizeContentType")
     public String customizeContentType(HttpServletRequest request) {
         return request.getContentType();
+    }
+
+    @RequestMapping("/status404")
+    public void status404(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.sendError(404, "not found");
     }
 
     @RequestMapping("/primitiveBoolean")

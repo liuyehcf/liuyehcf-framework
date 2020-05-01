@@ -1,11 +1,11 @@
 package com.github.liuyehcf.framework.rpc.ares.spring;
 
-import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.rpc.ares.*;
 import com.github.liuyehcf.framework.rpc.ares.constant.HttpMethod;
 import com.github.liuyehcf.framework.rpc.ares.util.AresContext;
 import com.github.liuyehcf.framework.rpc.ares.util.PathUtils;
 import com.google.common.collect.Maps;
+import com.google.common.net.HttpHeaders;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -15,17 +15,21 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -35,12 +39,15 @@ import java.util.Map;
  */
 class AresConsumerInvocationHandler implements InvocationHandler {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AresConsumerInvocationHandler.class);
+
     private final HttpClient httpClient;
     private final RequestConfig requestConfig;
 
     private final List<ParamsConverter<?>> paramsConverters;
     private final List<RequestBodyConverter<?>> requestBodyConverters;
     private final List<ResponseBodyConverter<?>> responseBodyConverters;
+    private final List<ResponseHandler> responseHandlers;
 
     private final String schema;
     private final String host;
@@ -50,12 +57,16 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                                   List<ParamsConverter<?>> paramsConverters,
                                   List<RequestBodyConverter<?>> requestBodyConverters,
                                   List<ResponseBodyConverter<?>> responseBodyConverters,
+                                  List<ResponseHandler> responseHandlers,
                                   String schema, String host, int port) {
         this.httpClient = httpClient;
         this.requestConfig = requestConfig;
         this.paramsConverters = paramsConverters;
         this.requestBodyConverters = requestBodyConverters;
         this.responseBodyConverters = responseBodyConverters;
+        this.responseHandlers = responseHandlers;
+        this.responseHandlers.add(this.new DefaultResponseHandler());
+        Collections.sort(this.responseHandlers);
         this.schema = schema;
         this.host = host;
         this.port = port;
@@ -64,7 +75,9 @@ class AresConsumerInvocationHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         AresMethod aresMethodAnnotation = AnnotationUtils.getAnnotation(method, AresMethod.class);
-        Assert.assertNotNull(aresMethodAnnotation, "http consumer missing AresMethod");
+        if (aresMethodAnnotation == null) {
+            throw new AresException("http consumer missing AresMethod");
+        }
 
         String path = aresMethodAnnotation.path();
         HttpMethod httpMethod = aresMethodAnnotation.method();
@@ -137,7 +150,9 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                 }
                 headers.put(aresRequestHeader.name(), args[i]);
             } else if (aresRequestBody != null) {
-                Assert.assertFalse(hasRequestBody, "more than one '@AresRequestBody'");
+                if (hasRequestBody) {
+                    throw new AresException("more than one '@AresRequestBody'");
+                }
                 hasRequestBody = true;
                 requestBody = args[i];
                 contentType = aresRequestBody.contentType();
@@ -187,7 +202,8 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             }
         }
 
-        builder.addHeader("Accept", acceptContentType);
+        builder.addHeader(HttpHeaders.ACCEPT, acceptContentType);
+        builder.addHeader(HttpHeaders.HOST, String.format("%s:%d", uriBuilder.getHost(), uriBuilder.getPort()));
 
         if (MapUtils.isNotEmpty(httpParams.requestHeaders)) {
             for (Map.Entry<String, Object> entry : httpParams.requestHeaders.entrySet()) {
@@ -219,29 +235,28 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         return (HttpRequestBase) builder.build();
     }
 
-    private Object doInvoke(HttpRequestBase httpRequest, Method method) {
-        httpRequest.setConfig(requestConfig);
+    private Object doInvoke(HttpRequestBase request, Method method) throws Exception {
+        request.setConfig(requestConfig);
 
-        String url = null;
+        String uri = null;
         HttpResponse response = null;
         try {
-            url = httpRequest.getURI().toASCIIString();
-            response = httpClient.execute(httpRequest);
-            int statusCode = response.getStatusLine().getStatusCode();
+            uri = request.getURI().toASCIIString();
+            response = httpClient.execute(request);
 
-            if (HttpStatus.SC_OK != statusCode) {
-                throw new AresException(String.format("http request failed, url=%s; code=%d; message=%s",
-                        url,
-                        statusCode,
-                        EntityUtils.toString(response.getEntity())));
+            for (ResponseHandler responseHandler : responseHandlers) {
+                if (responseHandler.match(request, response, method)) {
+                    return responseHandler.process(request, response, method);
+                }
             }
 
-            return convertBytesToResponseBody(EntityUtils.toByteArray(response.getEntity()), method.getGenericReturnType());
+            throw new AresException(String.format("missing response handler, uri=%s", uri));
         } catch (AresException e) {
             throw e;
         } catch (Throwable e) {
+            LOGGER.error("http request error, url={}; message={}", uri, e.getMessage(), e);
             throw new AresException(String.format("http request error, url=%s; message=%s",
-                    url, e.getMessage()), e);
+                    uri, e.getMessage()), e);
         } finally {
             if (response != null) {
                 EntityUtils.consumeQuietly(response.getEntity());
@@ -322,6 +337,35 @@ class AresConsumerInvocationHandler implements InvocationHandler {
             this.requestHeaders = requestHeaders;
             this.requestBody = requestBody;
             this.contentType = contentType;
+        }
+    }
+
+    private final class DefaultResponseHandler extends ResponseHandler {
+
+        @Override
+        public boolean match(HttpUriRequest request, HttpResponse response, Method method) {
+            return true;
+        }
+
+        @Override
+        public Object process(HttpUriRequest request, HttpResponse response, Method method) throws Exception {
+            String uri = request.getURI().toASCIIString();
+            int statusCode = response.getStatusLine().getStatusCode();
+            String reasonPhrase = response.getStatusLine().getReasonPhrase();
+            if (HttpStatus.SC_OK != statusCode) {
+                throw new AresException(String.format("http request failed, uri=%s; code=%d; reasonPhrase=%s; message=%s",
+                        uri,
+                        statusCode,
+                        reasonPhrase,
+                        EntityUtils.toString(response.getEntity())));
+            }
+
+            return convertBytesToResponseBody(EntityUtils.toByteArray(response.getEntity()), method.getGenericReturnType());
+        }
+
+        @Override
+        public int order() {
+            return -1024;
         }
     }
 }
