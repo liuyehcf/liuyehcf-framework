@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.rpc.ares.spring;
 
 import com.github.liuyehcf.framework.rpc.ares.*;
 import com.github.liuyehcf.framework.rpc.ares.constant.HttpMethod;
+import com.github.liuyehcf.framework.rpc.ares.constant.SchemaType;
 import com.github.liuyehcf.framework.rpc.ares.util.AresContext;
 import com.github.liuyehcf.framework.rpc.ares.util.PathUtils;
 import com.google.common.collect.Maps;
@@ -203,7 +204,12 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         }
 
         builder.addHeader(HttpHeaders.ACCEPT, acceptContentType);
-        builder.addHeader(HttpHeaders.HOST, String.format("%s:%d", uriBuilder.getHost(), uriBuilder.getPort()));
+        if (SchemaType.http.name().equalsIgnoreCase(schema) && port == 80
+                || SchemaType.https.name().equalsIgnoreCase(schema) && port == 443) {
+            builder.addHeader(HttpHeaders.HOST, uriBuilder.getHost());
+        } else {
+            builder.addHeader(HttpHeaders.HOST, String.format("%s:%d", uriBuilder.getHost(), uriBuilder.getPort()));
+        }
 
         if (MapUtils.isNotEmpty(httpParams.requestHeaders)) {
             for (Map.Entry<String, Object> entry : httpParams.requestHeaders.entrySet()) {
@@ -235,7 +241,7 @@ class AresConsumerInvocationHandler implements InvocationHandler {
         return (HttpRequestBase) builder.build();
     }
 
-    private Object doInvoke(HttpRequestBase request, Method method) throws Exception {
+    private Object doInvoke(HttpRequestBase request, Method method) {
         request.setConfig(requestConfig);
 
         String uri = null;
@@ -360,7 +366,13 @@ class AresConsumerInvocationHandler implements InvocationHandler {
                         EntityUtils.toString(response.getEntity())));
             }
 
-            return convertBytesToResponseBody(EntityUtils.toByteArray(response.getEntity()), method.getGenericReturnType());
+            byte[] responseBody;
+            if (response.getEntity() == null) {
+                responseBody = new byte[0];
+            } else {
+                responseBody = EntityUtils.toByteArray(response.getEntity());
+            }
+            return convertBytesToResponseBody(responseBody, method.getGenericReturnType());
         }
 
         @Override

@@ -78,7 +78,7 @@ public class AresConsumerSpringPostProcessor implements BeanFactoryPostProcessor
 
         Assert.assertNotBlank(schema, "'@AresConsumer' missing schema");
         Assert.assertNotBlank(domain, "'@AresConsumer' missing domain");
-        Assert.assertNotNull(port, "'@AresConsumer' missing port");
+        Assert.assertNotBlank(port, "'@AresConsumer' missing port");
 
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(AresSpringConsumerBean.class);
 

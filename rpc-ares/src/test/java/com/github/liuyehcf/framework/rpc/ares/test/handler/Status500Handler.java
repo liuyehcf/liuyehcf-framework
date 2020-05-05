@@ -12,15 +12,15 @@ import java.lang.reflect.Method;
  * @date 2020/5/1
  */
 @Component
-public class Status405Handler extends ResponseHandler {
+public class Status500Handler extends ResponseHandler {
 
     @Override
     public boolean match(HttpUriRequest request, HttpResponse response, Method method) {
-        return response.getStatusLine().getStatusCode() == 405;
+        return response.getStatusLine().getStatusCode() == 500;
     }
 
     @Override
     public Object process(HttpUriRequest request, HttpResponse response, Method method) {
-        throw new RuntimeException("not found");
+        throw new RuntimeException("server error");
     }
 }

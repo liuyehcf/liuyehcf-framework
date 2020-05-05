@@ -11,5 +11,11 @@ import org.springframework.context.annotation.Configuration;
 public class AresConfig {
 
     @AresConsumer(host = "127.0.0.1", port = "${server.port}")
-    private TestClient testClient;
+    private FeatureClient featureClient;
+
+    @AresConsumer(host = "127.0.0.1", port = "${server.port}")
+    private TypeClient typeClient;
+
+    @AresConsumer(host = "127.0.0.1", port = "${server.port}")
+    private MethodClient methodClient;
 }

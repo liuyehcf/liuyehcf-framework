@@ -39,15 +39,5 @@ public enum HttpMethod {
     /**
      * delete
      */
-    DELETE,
-
-    /**
-     * trace
-     */
-    TRACE,
-
-    /**
-     * connect
-     */
-    CONNECT
+    DELETE
 }
