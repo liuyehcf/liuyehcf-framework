@@ -454,7 +454,7 @@ __`sub flow`的监听：我们可以为`sub flow`配置`global`以及`node`级�
 
 ## 2.7 异常
 
-对于`Executable`，包括`Action`、`Listener`、`Listener`
+对于`Executable`，包括`Action`、`Condition`、`Listener`
 
 * 如果在执行时抛出了`LinkExecutionTerminateException`异常，那么该节点的后续节点都会被标记为不可达，流仍然处于正常状态
 * 如果在执行时抛出了其他异常，那么流执行进入异常状态，即该流的所有分支所有节点终止执行，且`promise.isFailure`为true

@@ -302,7 +302,7 @@ public class DefaultOperationContext implements OperationContext {
                     executable,
                     engine.getActionDelegate(executable.getName()),
                     this,
-                    new DefaultActionContext(action, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
+                    new DefaultActionContext(action, promise, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
                     engine.getDelegateInterceptorFactories());
         } else if (executable instanceof Condition) {
             Condition condition = (Condition) executable;
@@ -312,7 +312,7 @@ public class DefaultOperationContext implements OperationContext {
                     executable,
                     engine.getConditionDelegate(executable.getName()),
                     this,
-                    new DefaultConditionContext(condition, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
+                    new DefaultConditionContext(condition, promise, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes()),
                     engine.getDelegateInterceptorFactories());
         } else if (executable instanceof Listener) {
             Listener listener = (Listener) executable;
@@ -323,7 +323,7 @@ public class DefaultOperationContext implements OperationContext {
                         executable,
                         engine.getListenerDelegate(executable.getName()),
                         this,
-                        new DefaultListenerContext(listener, instanceId, linkId, executionId, executionInstance.getEnv(), executionInstance.getAttributes(), listener.getScope()),
+                        new DefaultListenerContext(listener, promise, instanceId, linkId, executionId, executionInstance.getEnv(), executionInstance.getAttributes(), listener.getScope()),
                         engine.getDelegateInterceptorFactories());
             } else if (ListenerScope.node.equals((listener).getScope())) {
                 return new ReflectiveDelegateInvocation(
@@ -332,7 +332,7 @@ public class DefaultOperationContext implements OperationContext {
                         executable,
                         engine.getListenerDelegate(executable.getName()),
                         this,
-                        new DefaultListenerContext(listener, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), listener.getScope()),
+                        new DefaultListenerContext(listener, promise, instanceId, linkId, executionId, getLinkEnv(), executionInstance.getAttributes(), listener.getScope()),
                         engine.getDelegateInterceptorFactories());
             } else {
                 throw new UnsupportedOperationException("unexpected listener scope");

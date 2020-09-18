@@ -7,20 +7,31 @@ import com.github.liuyehcf.framework.flow.engine.FlowException;
  * @author hechenfeng
  * @date 2019/4/28
  */
-public abstract class AbstractPromise<T> extends com.github.liuyehcf.framework.common.tools.promise.AbstractPromise<T> {
+public abstract class AbstractPromise<T> extends com.github.liuyehcf.framework.common.tools.promise.DefaultPromise<T> {
 
     @Override
-    protected final RuntimeException createException(Throwable cause) {
-        return new FlowException(FlowErrorCode.PROMISE, cause);
+    protected RuntimeException reportCancel() {
+        return new FlowException(FlowErrorCode.PROMISE, "promise cancel");
     }
 
     @Override
-    protected final RuntimeException createException(String description) {
-        return new FlowException(FlowErrorCode.PROMISE, description);
+    protected RuntimeException reportTimeout() {
+        return new FlowException(FlowErrorCode.PROMISE, "promise timeout");
     }
 
     @Override
-    protected final RuntimeException createException(String description, Throwable cause) {
-        return new FlowException(FlowErrorCode.PROMISE, description, cause);
+    protected RuntimeException reportFailure(Throwable cause) {
+        if (cause instanceof FlowException) {
+            return (FlowException) cause;
+        }
+        return new FlowException(FlowErrorCode.PROMISE, "promise failed", cause);
+    }
+
+    @Override
+    protected RuntimeException reportUnknownError(Throwable cause) {
+        if (cause instanceof FlowException) {
+            return (FlowException) cause;
+        }
+        return new FlowException(FlowErrorCode.PROMISE, "unknown", cause);
     }
 }

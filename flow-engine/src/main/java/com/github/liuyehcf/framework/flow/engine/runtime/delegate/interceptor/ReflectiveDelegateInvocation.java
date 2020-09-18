@@ -157,11 +157,10 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
             if (index < chains.size()) {
                 DelegateInterceptor delegateInterceptor = chains.get(index++);
                 result = delegateInterceptor.invoke(this);
-                return result;
             } else {
                 result = doInvoke();
-                return result;
             }
+            return result;
         } catch (Throwable e) {
             cause = e;
             throw e;

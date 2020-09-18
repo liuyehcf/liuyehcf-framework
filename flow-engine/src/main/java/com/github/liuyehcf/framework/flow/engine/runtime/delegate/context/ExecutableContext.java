@@ -1,8 +1,10 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.delegate.context;
 
+import com.github.liuyehcf.framework.common.tools.promise.PromiseListener;
 import com.github.liuyehcf.framework.flow.engine.model.Element;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.Attribute;
+import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.PropertyUpdate;
 
 import java.util.List;
@@ -186,4 +188,11 @@ public interface ExecutableContext<E extends Element> {
      * @return attributes
      */
     Map<String, Attribute> getGlobalAttributes();
+
+    /**
+     * add promise to flow promise
+     *
+     * @param listener flow listener
+     */
+    void addFlowPromiseListener(PromiseListener<ExecutionInstance> listener);
 }

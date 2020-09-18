@@ -2,6 +2,8 @@ package com.github.liuyehcf.framework.flow.engine.runtime.delegate.context;
 
 import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
+import com.github.liuyehcf.framework.common.tools.promise.Promise;
+import com.github.liuyehcf.framework.common.tools.promise.PromiseListener;
 import com.github.liuyehcf.framework.flow.engine.FlowErrorCode;
 import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.github.liuyehcf.framework.flow.engine.model.Element;
@@ -26,6 +28,7 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractExecutableContext.class);
 
     final Element element;
+    private final Promise<ExecutionInstance> promise;
     private final Flow flow;
     private final String instanceId;
     private final String linkId;
@@ -35,14 +38,16 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
     private final Map<String, Attribute> globalAttributes;
     private final List<PropertyUpdate> propertyUpdates = Lists.newCopyOnWriteArrayList();
 
-    AbstractExecutableContext(Element element, String instanceId, String linkId, long executionId,
+    AbstractExecutableContext(Element element, Promise<ExecutionInstance> promise, String instanceId, String linkId, long executionId,
                               Map<String, Object> env, Map<String, Attribute> globalAttributes) {
         Assert.assertNotNull(element, "element");
+        Assert.assertNotNull(promise, "promise");
         Assert.assertNotNull(instanceId, "instanceId");
         Assert.assertNotNull(linkId, "linkId");
         Assert.assertNotNull(env, "env");
         Assert.assertNotNull(globalAttributes, "globalAttributes");
         this.element = element;
+        this.promise = promise;
         this.flow = this.element.getFlow();
         this.instanceId = instanceId;
         this.linkId = linkId;
@@ -184,5 +189,10 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
     @Override
     public final Map<String, Attribute> getGlobalAttributes() {
         return globalAttributes;
+    }
+
+    @Override
+    public final void addFlowPromiseListener(PromiseListener<ExecutionInstance> listener) {
+        promise.addListener(listener);
     }
 }
