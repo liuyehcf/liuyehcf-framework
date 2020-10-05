@@ -874,17 +874,146 @@ public class TestPauseTrace extends TestTraceBase {
 
     @Test
     public void testBeforeListenerPauseSuccessWithNode() {
+        Flow flow = compile(
+                "{\n" +
+                        "    printAction(content=\"actionA\") [\n" +
+                        "        pauseListener(event=\"before\" , pause=${timeout}, isCancel=false, isSuccess=true, cause=${cause})\n" +
+                        "    ]\n" +
+                        "}");
 
+        executeTimes(() -> {
+            long timeout = RANDOM.nextInt(100);
+
+            Promise<ExecutionInstance> promise = startFlow(flow, EnvBuilder
+                    .builder()
+                    .put("timeout", timeout)
+                    .build());
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPauseListener(trace, timeout, false, true, null, ListenerEvent.before);
+            long timestamp1 = trace.getStartTimestamp();
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+            long timestamp2 = trace.getStartTimestamp();
+
+            Assert.assertTrue(timestamp2 - timestamp1 >= timeout);
+        }, 100);
     }
 
     @Test
     public void testSuccessListenerPauseSuccessWithListener() {
+        Flow flow = compile(
+                "{\n" +
+                        "    printAction(content=\"actionA\") [\n" +
+                        "        pauseListener(event=\"success\" , pause=${timeout}, isCancel=false, isSuccess=true, cause=${cause}),\n" +
+                        "        printListener(event=\"success\" , content=\"listenerA\")\n" +
+                        "    ]\n" +
+                        "}");
 
+        executeTimes(() -> {
+            long timeout = RANDOM.nextInt(100);
+
+            Promise<ExecutionInstance> promise = startFlow(flow, EnvBuilder
+                    .builder()
+                    .put("timeout", timeout)
+                    .build());
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertPauseListener(trace, timeout, false, true, null, ListenerEvent.success);
+            long timestamp1 = trace.getStartTimestamp();
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintListener(trace, "listenerA", ListenerEvent.success);
+            long timestamp2 = trace.getStartTimestamp();
+
+            Assert.assertTrue(timestamp2 - timestamp1 >= timeout);
+        }, 100);
     }
 
     @Test
     public void testSuccessListenerPauseSuccessWithNode() {
+        Flow flow = compile(
+                "{\n" +
+                        "    printAction(content=\"actionA\") [\n" +
+                        "        pauseListener(event=\"success\" , pause=${timeout}, isCancel=false, isSuccess=true, cause=${cause})\n" +
+                        "    ] {\n" +
+                        "        printAction(content=\"actionB\")\n" +
+                        "    }\n" +
+                        "}");
 
+        executeTimes(() -> {
+            long timeout = RANDOM.nextInt(100);
+
+            Promise<ExecutionInstance> promise = startFlow(flow, EnvBuilder
+                    .builder()
+                    .put("timeout", timeout)
+                    .build());
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertPauseListener(trace, timeout, false, true, null, ListenerEvent.success);
+            long timestamp1 = trace.getStartTimestamp();
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+            long timestamp2 = trace.getStartTimestamp();
+
+            Assert.assertTrue(timestamp2 - timestamp1 >= timeout);
+        }, 100);
     }
 
     @Test
