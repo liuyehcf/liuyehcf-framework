@@ -24,9 +24,9 @@ public class DefaultExecutionInstance implements ExecutionInstance {
     private final List<Trace> traces = Lists.newCopyOnWriteArrayList();
     private final Map<String, Attribute> attributes = Maps.newConcurrentMap();
     private final long startTimestamp = System.currentTimeMillis();
-    private final long startNano = System.nanoTime();
+    private final long startNanos = System.nanoTime();
     private long endTimestamp;
-    private long endNano;
+    private long endNanos;
 
     public DefaultExecutionInstance(String id, Flow flow, Map<String, Object> env, List<Attribute> attributes) {
         Assert.assertNotNull(flow, "flow");
@@ -125,12 +125,12 @@ public class DefaultExecutionInstance implements ExecutionInstance {
     }
 
     @Override
-    public final long getUseTimeNano() {
-        return endNano - startNano;
+    public final long getUseTimeNanos() {
+        return endNanos - startNanos;
     }
 
     public final void setEndTime() {
-        this.endNano = System.nanoTime();
+        this.endNanos = System.nanoTime();
         this.endTimestamp = System.currentTimeMillis();
     }
 }

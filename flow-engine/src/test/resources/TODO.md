@@ -4,7 +4,6 @@
 1. ListenerEvent.failure 的拓扑以及trace测试用例
 1. if() 的trace以及拓扑测试用例
 1. 流引擎线程的拒绝策略要做限制
-1. trace引入startTimestamp以及endTimestamp、useTimeNano、删除startNano、endNano
 
 # test
 

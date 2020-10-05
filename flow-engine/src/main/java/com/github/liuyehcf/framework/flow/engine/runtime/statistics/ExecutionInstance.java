@@ -95,5 +95,5 @@ public interface ExecutionInstance {
     /**
      * use time in nano seconds
      */
-    long getUseTimeNano();
+    long getUseTimeNanos();
 }
