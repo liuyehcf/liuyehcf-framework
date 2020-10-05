@@ -8,6 +8,7 @@ import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.model.Node;
 import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.flow.engine.model.gateway.JoinGateway;
+import com.github.liuyehcf.framework.flow.engine.promise.ExecutionLinkPausePromise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.UnsafeDelegateInvocation;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.AbstractOperation;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
@@ -245,6 +246,16 @@ public interface OperationContext {
      * @param trace trace
      */
     void addTraceToExecutionInstance(Trace trace);
+
+    /**
+     * set execution link pause promise
+     */
+    void setExecutionLinkPausePromise(ExecutionLinkPausePromise executionLinkPausePromise);
+
+    /**
+     * get execution link pause promise
+     */
+    ExecutionLinkPausePromise getAndResetExecutionLinkPausePromise();
 
     /**
      * clone context and add link to instance

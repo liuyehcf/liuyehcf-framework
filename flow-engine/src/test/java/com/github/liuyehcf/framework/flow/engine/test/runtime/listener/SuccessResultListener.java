@@ -4,6 +4,8 @@ import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.Listen
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.DelegateField;
 import org.junit.Assert;
 
+import static com.github.liuyehcf.framework.flow.engine.test.runtime.TestRuntimeBase.PAUSE_SWITCH;
+
 /**
  * @author hechenfeng
  * @date 2019/7/19
@@ -19,6 +21,10 @@ public class SuccessResultListener extends BaseListener {
 
     @Override
     public void onSuccess(ListenerContext context, Object result) {
+        if (PAUSE_SWITCH.get()) {
+            context.pauseExecutionLink().trySuccess(null);
+        }
+
         Assert.assertEquals(this.result.getValue(), result);
     }
 

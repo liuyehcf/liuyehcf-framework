@@ -7,6 +7,8 @@ import com.google.common.collect.Sets;
 
 import java.util.Set;
 
+import static com.github.liuyehcf.framework.flow.engine.test.runtime.TestRuntimeBase.PAUSE_SWITCH;
+
 /**
  * @author hechenfeng
  * @date 2019/8/30
@@ -22,6 +24,10 @@ public class ScopeListener extends BaseListener {
 
     @Override
     public void onBefore(ListenerContext context) {
+        if (PAUSE_SWITCH.get()) {
+            context.pauseExecutionLink().trySuccess(null);
+        }
+
         IS_BEFORE_TRIGGERED.add(namespace.getValue());
         Assert.assertNotNull(context.getListenerScope(), "listener scope is null");
         Assert.assertEquals(context.getListenerScope().name(), scope.getValue(), "listener scope mismatch");
@@ -29,6 +35,10 @@ public class ScopeListener extends BaseListener {
 
     @Override
     public void onSuccess(ListenerContext context, Object result) {
+        if (PAUSE_SWITCH.get()) {
+            context.pauseExecutionLink().trySuccess(null);
+        }
+
         IS_SUCCESS_TRIGGERED.add(namespace.getValue());
         Assert.assertNotNull(context.getListenerScope(), "listener scope is null");
         Assert.assertEquals(context.getListenerScope().name(), scope.getValue(), "listener scope mismatch");
@@ -36,6 +46,10 @@ public class ScopeListener extends BaseListener {
 
     @Override
     public void onFailure(ListenerContext context, Throwable cause) {
+        if (PAUSE_SWITCH.get()) {
+            context.pauseExecutionLink().trySuccess(null);
+        }
+
         IS_FAILURE_TRIGGERED.add(namespace.getValue());
         Assert.assertNotNull(context.getListenerScope(), "listener scope is null");
         Assert.assertEquals(context.getListenerScope().name(), scope.getValue(), "listener scope mismatch");

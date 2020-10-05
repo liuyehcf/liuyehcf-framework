@@ -4,6 +4,7 @@ import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.Condit
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.DelegateField;
 import org.junit.Assert;
 
+import static com.github.liuyehcf.framework.flow.engine.test.runtime.TestRuntimeBase.PAUSE_SWITCH;
 import static com.github.liuyehcf.framework.flow.engine.test.runtime.TestRuntimeBase.STD_OUT_SWITCH;
 
 /**
@@ -21,6 +22,10 @@ public class PrintCondition extends BaseCondition {
 
     @Override
     public boolean onCondition(ConditionContext context) {
+        if (PAUSE_SWITCH.get()) {
+            context.pauseExecutionLink().trySuccess(null);
+        }
+
         String content = this.content.getValue();
         Assert.assertNotNull(content);
         if (STD_OUT_SWITCH.get()) {

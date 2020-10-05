@@ -4,6 +4,7 @@ import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
+import com.github.liuyehcf.framework.flow.engine.promise.ExecutionLinkPausePromise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateResult;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.UnsafeDelegateInvocation;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;
@@ -71,6 +72,17 @@ class ConditionOperation extends AbstractOperation<Boolean> {
     }
 
     private void continueSuccessListener() throws Throwable {
+        ExecutionLinkPausePromise executionLinkPausePromise = context.getAndResetExecutionLinkPausePromise();
+        if (executionLinkPausePromise != null) {
+            executionLinkPausePromise.addListener(promise -> processAsyncPromise(promise,
+                    this::doContinueSuccessListener,
+                    null));
+        } else {
+            doContinueSuccessListener();
+        }
+    }
+
+    private void doContinueSuccessListener() throws Throwable {
         if (delegateResult.isAsync()) {
             conditionOutput = (boolean) delegateResult.getDelegatePromise().get();
         } else {

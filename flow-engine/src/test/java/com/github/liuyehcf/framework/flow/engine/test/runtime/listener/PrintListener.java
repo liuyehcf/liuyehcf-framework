@@ -8,6 +8,7 @@ import org.junit.Assert;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.github.liuyehcf.framework.flow.engine.test.runtime.TestRuntimeBase.PAUSE_SWITCH;
 import static com.github.liuyehcf.framework.flow.engine.test.runtime.TestRuntimeBase.STD_OUT_SWITCH;
 
 /**
@@ -25,6 +26,10 @@ public class PrintListener extends BaseListener {
 
     @Override
     public void onBefore(ListenerContext context) {
+        if (PAUSE_SWITCH.get()) {
+            context.pauseExecutionLink().trySuccess(null);
+        }
+
         String content = this.content.getValue();
         Assert.assertNotNull(content);
 
@@ -40,6 +45,10 @@ public class PrintListener extends BaseListener {
 
     @Override
     public void onSuccess(ListenerContext context, Object result) {
+        if (PAUSE_SWITCH.get()) {
+            context.pauseExecutionLink().trySuccess(null);
+        }
+
         String content = this.content.getValue();
         Assert.assertNotNull(content);
 
@@ -55,6 +64,10 @@ public class PrintListener extends BaseListener {
 
     @Override
     public void onFailure(ListenerContext context, Throwable cause) {
+        if (PAUSE_SWITCH.get()) {
+            context.pauseExecutionLink().trySuccess(null);
+        }
+
         String content = this.content.getValue();
         Assert.assertNotNull(content);
 

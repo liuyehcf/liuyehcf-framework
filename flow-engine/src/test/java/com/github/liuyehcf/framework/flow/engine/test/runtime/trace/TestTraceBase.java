@@ -100,6 +100,42 @@ public class TestTraceBase extends TestRuntimeBase {
         }
     }
 
+    protected void assertPauseAction(Trace trace, long timeout, boolean isCancel, boolean isSuccess, Class<? extends Throwable> errorClass) {
+        Argument argument;
+
+        Assert.assertEquals(ElementType.ACTION, trace.getType());
+        Assert.assertEquals("pauseAction", trace.getName());
+        Assert.assertEquals(4, trace.getArguments().size());
+        argument = trace.getArguments().get(0);
+        Assert.assertEquals("pause", argument.getName());
+        Assert.assertEquals(timeout, argument.getValue());
+        argument = trace.getArguments().get(1);
+        Assert.assertEquals("isCancel", argument.getName());
+        Assert.assertEquals(isCancel, argument.getValue());
+        argument = trace.getArguments().get(2);
+        Assert.assertEquals("isSuccess", argument.getName());
+        Assert.assertEquals(isSuccess, argument.getValue());
+        argument = trace.getArguments().get(3);
+        Assert.assertEquals("cause", argument.getName());
+        if (errorClass != null) {
+            Assert.assertEquals(errorClass, argument.getValue().getClass());
+        }
+
+        Assert.assertNull(trace.getResult());
+        Assert.assertEquals(0, trace.getPropertyUpdates().size());
+        Assert.assertEquals(0, trace.getAttributes().size());
+        Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
+        Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(trace.getUseTimeNano() >= 0);
+        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof FlowException);
+            Assert.assertEquals(FlowErrorCode.FLOW_ALREADY_FINISHED, ((FlowException) cause).getCode());
+        }
+    }
+
     protected void assertPrintAction(Trace trace, String content) {
         Argument argument;
 
@@ -196,6 +232,45 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertEquals(name, propertyUpdate.getName());
         Assert.assertEquals(value, propertyUpdate.getNewValue());
         Assert.assertEquals(oldValue, propertyUpdate.getOldValue());
+        Assert.assertEquals(0, trace.getAttributes().size());
+        Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
+        Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(trace.getUseTimeNano() >= 0);
+        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof FlowException);
+            Assert.assertEquals(FlowErrorCode.FLOW_ALREADY_FINISHED, ((FlowException) cause).getCode());
+        }
+    }
+
+    protected void assertPauseCondition(Trace trace, long timeout, boolean isCancel, boolean isSuccess, Class<? extends Throwable> errorClass, boolean output) {
+        Argument argument;
+
+        Assert.assertEquals(ElementType.CONDITION, trace.getType());
+        Assert.assertEquals("pauseCondition", trace.getName());
+        Assert.assertEquals(5, trace.getArguments().size());
+        argument = trace.getArguments().get(0);
+        Assert.assertEquals("pause", argument.getName());
+        Assert.assertEquals(timeout, argument.getValue());
+        argument = trace.getArguments().get(1);
+        Assert.assertEquals("isCancel", argument.getName());
+        Assert.assertEquals(isCancel, argument.getValue());
+        argument = trace.getArguments().get(2);
+        Assert.assertEquals("isSuccess", argument.getName());
+        Assert.assertEquals(isSuccess, argument.getValue());
+        argument = trace.getArguments().get(3);
+        Assert.assertEquals("cause", argument.getName());
+        if (errorClass != null) {
+            Assert.assertEquals(errorClass, argument.getValue().getClass());
+        }
+        argument = trace.getArguments().get(4);
+        Assert.assertEquals("output", argument.getName());
+        Assert.assertEquals(output, argument.getValue());
+
+        Assert.assertEquals(output, trace.getResult());
+        Assert.assertEquals(0, trace.getPropertyUpdates().size());
         Assert.assertEquals(0, trace.getAttributes().size());
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
@@ -570,6 +645,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertEquals(finishedSize, executionInstance.getLinks().size());
         Assert.assertEquals(unFinishedSize, executionInstance.getUnreachableLinks().size());
         Assert.assertEquals(traceNum, executionInstance.getTraces().size());
+        Assert.assertTrue(executionInstance.getEndTimestamp() >= executionInstance.getStartTimestamp());
+        Assert.assertTrue(executionInstance.getEndTimestamp() - executionInstance.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(System.currentTimeMillis() - executionInstance.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(executionInstance.getUseTimeNano() >= 0);
+        Assert.assertTrue(executionInstance.getUseTimeNano() < MAX_USETIME_NANO);
 
         for (ExecutionLink link : executionInstance.getLinks()) {
             List<Trace> traces = link.getTraces();
@@ -588,6 +668,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(executionInstance.getUnreachableLinks().size() >= minUnfinishedSize
                 && executionInstance.getUnreachableLinks().size() <= maxUnfinishedSize);
         Assert.assertEquals(traceNum, executionInstance.getTraces().size());
+        Assert.assertTrue(executionInstance.getEndTimestamp() >= executionInstance.getStartTimestamp());
+        Assert.assertTrue(executionInstance.getEndTimestamp() - executionInstance.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(System.currentTimeMillis() - executionInstance.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(executionInstance.getUseTimeNano() >= 0);
+        Assert.assertTrue(executionInstance.getUseTimeNano() < MAX_USETIME_NANO);
 
         for (ExecutionLink link : executionInstance.getLinks()) {
             List<Trace> traces = link.getTraces();

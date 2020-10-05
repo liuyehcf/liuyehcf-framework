@@ -4,6 +4,7 @@ import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.Action
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.DelegateField;
 import org.junit.Assert;
 
+import static com.github.liuyehcf.framework.flow.engine.test.runtime.TestRuntimeBase.PAUSE_SWITCH;
 import static com.github.liuyehcf.framework.flow.engine.test.runtime.TestRuntimeBase.STD_OUT_SWITCH;
 
 /**
@@ -16,6 +17,10 @@ public class PrintAction extends BaseAction {
 
     @Override
     public void onAction(ActionContext context) {
+        if (PAUSE_SWITCH.get()) {
+            context.pauseExecutionLink().trySuccess(null);
+        }
+
         String content = this.content.getValue();
         Assert.assertNotNull(content);
         if (STD_OUT_SWITCH.get()) {

@@ -9,6 +9,7 @@ import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.github.liuyehcf.framework.flow.engine.model.Element;
 import com.github.liuyehcf.framework.flow.engine.model.Executable;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
+import com.github.liuyehcf.framework.flow.engine.promise.ExecutionLinkPausePromise;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -37,6 +38,7 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
     private final Map<String, Attribute> localAttributes = Maps.newConcurrentMap();
     private final Map<String, Attribute> globalAttributes;
     private final List<PropertyUpdate> propertyUpdates = Lists.newCopyOnWriteArrayList();
+    private volatile ExecutionLinkPausePromise executionLinkPausePromise;
 
     AbstractExecutableContext(Element element, Promise<ExecutionInstance> promise, String instanceId, String linkId, long executionId,
                               Map<String, Object> env, Map<String, Attribute> globalAttributes) {
@@ -194,5 +196,23 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
     @Override
     public final void addFlowPromiseListener(PromiseListener<ExecutionInstance> listener) {
         promise.addListener(listener);
+    }
+
+    @Override
+    public final ExecutionLinkPausePromise pauseExecutionLink() {
+        if (executionLinkPausePromise != null) {
+            return executionLinkPausePromise;
+        }
+        synchronized (this) {
+            if (executionLinkPausePromise != null) {
+                return executionLinkPausePromise;
+            }
+            executionLinkPausePromise = new ExecutionLinkPausePromise();
+            return executionLinkPausePromise;
+        }
+    }
+
+    public ExecutionLinkPausePromise getExecutionLinkPausePromise() {
+        return executionLinkPausePromise;
     }
 }

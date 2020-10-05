@@ -83,17 +83,17 @@ public interface ExecutionInstance {
     Map<String, Attribute> getAttributes();
 
     /**
-     * get start nanos of this execution
+     * get start timestamp of this execution
      */
-    long getStartNanos();
+    long getStartTimestamp();
 
     /**
-     * get end nanos of this execution
+     * get end timestamp of this execution
      */
-    long getEndNanos();
+    long getEndTimestamp();
 
     /**
-     * set end nanos of this execution
+     * use time in nano seconds
      */
-    void setEndNanos(long endNanos);
+    long getUseTimeNano();
 }

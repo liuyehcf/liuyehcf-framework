@@ -1,0 +1,81 @@
+package com.github.liuyehcf.framework.flow.engine.test.runtime.listener;
+
+import com.github.liuyehcf.framework.common.tools.time.TimeUtils;
+import com.github.liuyehcf.framework.flow.engine.promise.ExecutionLinkPausePromise;
+import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ListenerContext;
+import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.DelegateField;
+
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author hechenfeng
+ * @date 2020/10/2
+ */
+public class PauseListener extends BaseListener {
+
+    private DelegateField pause;
+    private DelegateField isCancel;
+    private DelegateField isSuccess;
+    private DelegateField cause;
+
+    public void setPause(DelegateField pause) {
+        this.pause = pause;
+    }
+
+    public void setIsCancel(DelegateField isCancel) {
+        this.isCancel = isCancel;
+    }
+
+    public void setIsSuccess(DelegateField isSuccess) {
+        this.isSuccess = isSuccess;
+    }
+
+    public void setCause(DelegateField cause) {
+        this.cause = cause;
+    }
+
+    @Override
+    public void onBefore(ListenerContext context) {
+        ExecutionLinkPausePromise promise = context.pauseExecutionLink();
+        getAsyncExecutor().execute(() -> {
+            TimeUtils.sleep(pause.getValue(), TimeUnit.MILLISECONDS);
+            if (isCancel.getValueOrDefault(false)) {
+                promise.tryCancel();
+            } else if (isSuccess.getValueOrDefault(false)) {
+                promise.trySuccess(null);
+            } else {
+                promise.tryFailure(cause.getValue());
+            }
+        });
+    }
+
+    @Override
+    public void onSuccess(ListenerContext context, Object result) {
+        ExecutionLinkPausePromise promise = context.pauseExecutionLink();
+        getAsyncExecutor().execute(() -> {
+            TimeUtils.sleep(pause.getValue(), TimeUnit.MILLISECONDS);
+            if (isCancel.getValueOrDefault(false)) {
+                promise.tryCancel();
+            } else if (isSuccess.getValueOrDefault(false)) {
+                promise.trySuccess(null);
+            } else {
+                promise.tryFailure(cause.getValue());
+            }
+        });
+    }
+
+    @Override
+    public void onFailure(ListenerContext context, Throwable cause) {
+        ExecutionLinkPausePromise promise = context.pauseExecutionLink();
+        getAsyncExecutor().execute(() -> {
+            TimeUtils.sleep(pause.getValue(), TimeUnit.MILLISECONDS);
+            if (isCancel.getValueOrDefault(false)) {
+                promise.tryCancel();
+            } else if (isSuccess.getValueOrDefault(false)) {
+                promise.trySuccess(null);
+            } else {
+                promise.tryFailure(this.cause.getValue());
+            }
+        });
+    }
+}

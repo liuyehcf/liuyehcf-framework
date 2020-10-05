@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2020/5/2
  */
 @RestController

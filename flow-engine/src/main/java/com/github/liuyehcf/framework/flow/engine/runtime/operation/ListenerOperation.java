@@ -3,6 +3,7 @@ package com.github.liuyehcf.framework.flow.engine.runtime.operation;
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.model.listener.Listener;
+import com.github.liuyehcf.framework.flow.engine.promise.ExecutionLinkPausePromise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateResult;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.UnsafeDelegateInvocation;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;
@@ -68,6 +69,17 @@ class ListenerOperation extends AbstractOperation<Void> {
     }
 
     private void continueNextListener() {
+        ExecutionLinkPausePromise executionLinkPausePromise = context.getAndResetExecutionLinkPausePromise();
+        if (executionLinkPausePromise != null) {
+            executionLinkPausePromise.addListener(promise -> processAsyncPromise(promise,
+                    this::doContinueNextListener,
+                    null));
+        } else {
+            doContinueNextListener();
+        }
+    }
+
+    private void doContinueNextListener() {
         context.markElementFinished(listener);
 
         if (offset + 1 < listeners.size()) {

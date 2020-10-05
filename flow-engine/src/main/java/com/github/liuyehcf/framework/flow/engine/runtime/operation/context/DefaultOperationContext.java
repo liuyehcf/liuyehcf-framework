@@ -11,6 +11,7 @@ import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.flow.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.flow.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.flow.engine.model.listener.ListenerScope;
+import com.github.liuyehcf.framework.flow.engine.promise.ExecutionLinkPausePromise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.DefaultActionContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.DefaultConditionContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.DefaultListenerContext;
@@ -54,7 +55,8 @@ public class DefaultOperationContext implements OperationContext {
     private final Map<String, Set<String>> joinGatewayReachedLinkIds;
     private final Set<String> aggregatedJoinGatewayIds;
     private final AtomicLong executionIdGenerator;
-    private Node node;
+    private volatile Node node;
+    private volatile ExecutionLinkPausePromise executionLinkPausePromise;
 
     public DefaultOperationContext(FlowEngine engine,
                                    Flow flow,
@@ -369,6 +371,18 @@ public class DefaultOperationContext implements OperationContext {
     @Override
     public final void addTraceToExecutionInstance(Trace trace) {
         executionInstance.addTrace(trace);
+    }
+
+    @Override
+    public void setExecutionLinkPausePromise(ExecutionLinkPausePromise executionLinkPausePromise) {
+        this.executionLinkPausePromise = executionLinkPausePromise;
+    }
+
+    @Override
+    public ExecutionLinkPausePromise getAndResetExecutionLinkPausePromise() {
+        ExecutionLinkPausePromise executionLinkPausePromise = this.executionLinkPausePromise;
+        this.executionLinkPausePromise = null;
+        return executionLinkPausePromise;
     }
 
     @Override

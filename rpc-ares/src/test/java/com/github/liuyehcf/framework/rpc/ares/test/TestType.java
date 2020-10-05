@@ -10,7 +10,7 @@ import java.math.BigInteger;
 import java.util.Random;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2020/5/2
  */
 public class TestType extends BaseConfig {
