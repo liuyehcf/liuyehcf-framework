@@ -10,6 +10,7 @@ import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.flow.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.flow.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;
+import com.github.liuyehcf.framework.flow.engine.runtime.statistics.DefaultExecutionInstance;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionLink;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.Trace;
@@ -89,7 +90,7 @@ class FinishOperation extends AbstractOperation<Void> {
     }
 
     private void finishFlowPromise() {
-        context.getExecutionInstance().setEndNanos(System.nanoTime());
+        ((DefaultExecutionInstance) context.getExecutionInstance()).setEndTime();
 
         Promise<ExecutionInstance> promise = context.getPromise();
         promise.trySuccess(context.getExecutionInstance());

@@ -8,7 +8,7 @@ import org.junit.Test;
 import javax.annotation.Resource;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2020/5/2
  */
 public class TestMethod extends BaseConfig {

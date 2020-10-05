@@ -23,7 +23,9 @@ public class DefaultExecutionInstance implements ExecutionInstance {
     private final List<ExecutionLink> unreachableLinks = Lists.newCopyOnWriteArrayList();
     private final List<Trace> traces = Lists.newCopyOnWriteArrayList();
     private final Map<String, Attribute> attributes = Maps.newConcurrentMap();
+    private final long startTimestamp = System.currentTimeMillis();
     private final long startNanos = System.nanoTime();
+    private long endTimestamp;
     private long endNanos;
 
     public DefaultExecutionInstance(String id, Flow flow, Map<String, Object> env, List<Attribute> attributes) {
@@ -113,17 +115,22 @@ public class DefaultExecutionInstance implements ExecutionInstance {
     }
 
     @Override
-    public final long getStartNanos() {
-        return startNanos;
+    public final long getStartTimestamp() {
+        return startTimestamp;
     }
 
     @Override
-    public final long getEndNanos() {
-        return endNanos;
+    public final long getEndTimestamp() {
+        return endTimestamp;
     }
 
     @Override
-    public final void setEndNanos(long endNanos) {
-        this.endNanos = endNanos;
+    public final long getUseTimeNanos() {
+        return endNanos - startNanos;
+    }
+
+    public final void setEndTime() {
+        this.endNanos = System.nanoTime();
+        this.endTimestamp = System.currentTimeMillis();
     }
 }

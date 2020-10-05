@@ -16,10 +16,7 @@ import com.github.liuyehcf.framework.flow.engine.runtime.exception.InstanceExecu
 import com.github.liuyehcf.framework.flow.engine.runtime.exception.LinkExecutionTerminateException;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.promise.ListenerPromise;
-import com.github.liuyehcf.framework.flow.engine.runtime.statistics.DefaultExecutionLink;
-import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionLink;
-import com.github.liuyehcf.framework.flow.engine.runtime.statistics.PropertyUpdate;
-import com.github.liuyehcf.framework.flow.engine.runtime.statistics.Trace;
+import com.github.liuyehcf.framework.flow.engine.runtime.statistics.*;
 import com.github.liuyehcf.framework.flow.engine.util.CloneUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -65,21 +62,22 @@ public abstract class AbstractOperation<T> implements Runnable {
 
     abstract void operate() throws Throwable;
 
-    final void processAsyncPromise(Promise promise, Runnable continuation, ExceptionHandler exceptionHandler) {
+    final void processAsyncPromise(Promise<?> promise, Runnable continuation, ExceptionHandler exceptionHandler) {
         execute(() -> {
             if (promise.isSuccess()) {
                 if (continuation != null) {
                     continuation.run();
                 }
             } else {
+                Throwable cause = getCauseOf(promise);
                 if (optPromise != null) {
-                    optPromise.tryFailure(promise.cause());
+                    optPromise.tryFailure(cause);
                 }
 
                 if (exceptionHandler != null) {
-                    exceptionHandler.handleException(promise.cause());
+                    exceptionHandler.handleException(cause);
                 } else {
-                    throwCause(promise.cause());
+                    throwCause(cause);
                 }
             }
         });
@@ -109,7 +107,7 @@ public abstract class AbstractOperation<T> implements Runnable {
 
         // guarantee all parallel execution link created before execution
         // avoid remaining executing links(this link should be moved to unreachable links, but not) when FinishOperation finished
-        List<AbstractOperation> asyncOperations = Lists.newArrayList();
+        List<AbstractOperation<?>> asyncOperations = Lists.newArrayList();
 
         asyncOperations.add(new ContinueOperation(this.context, firstNextNode));
 
@@ -147,7 +145,15 @@ public abstract class AbstractOperation<T> implements Runnable {
                 null,
                 cause,
                 rethrowContinuation,
-                promise -> processAsyncPromise(promise, rethrowContinuation, (e) -> rethrowContinuation.run()));
+                promise -> processAsyncPromise(promise, rethrowContinuation, (e) -> {
+                    if (e instanceof LinkExecutionTerminateException) {
+                        // exception cannot degrade
+                        // avoid the exception degradation when the exception of node is normal exception and the exception of listener is LinkExecutionTerminateException
+                        throwCause(cause);
+                    } else {
+                        throwCause(e);
+                    }
+                }));
     }
 
     final void invokeGlobalBeforeListeners(Runnable continuation) throws Throwable {
@@ -165,7 +171,7 @@ public abstract class AbstractOperation<T> implements Runnable {
                             if (promise.cause() == null) {
                                 throw new FlowException(FlowErrorCode.PROMISE, "promise failed");
                             } else if (promise.cause() instanceof LinkExecutionTerminateException) {
-                                context.getExecutionInstance().setEndNanos(System.nanoTime());
+                                ((DefaultExecutionInstance) context.getExecutionInstance()).setEndTime();
                                 context.getPromise().trySuccess(context.getExecutionInstance());
                                 throw new InstanceExecutionTerminateException();
                             } else {
@@ -175,7 +181,7 @@ public abstract class AbstractOperation<T> implements Runnable {
                     })
             );
         } catch (LinkExecutionTerminateException e) {
-            context.getExecutionInstance().setEndNanos(System.nanoTime());
+            ((DefaultExecutionInstance) context.getExecutionInstance()).setEndTime();
             context.getPromise().trySuccess(context.getExecutionInstance());
 
             throw new InstanceExecutionTerminateException(e);
@@ -227,10 +233,15 @@ public abstract class AbstractOperation<T> implements Runnable {
                 }));
     }
 
-    final void throwCause(Throwable cause) throws Throwable {
-        throw cause == null ?
+    final Throwable getCauseOf(Promise<?> promise) {
+        Throwable cause = promise.cause();
+        return cause == null ?
                 new FlowException(FlowErrorCode.PROMISE, "promise failed") :
                 cause;
+    }
+
+    final void throwCause(Throwable cause) throws Throwable {
+        throw cause;
     }
 
     final int getUnreachableNumOfJoinGateway(JoinGateway joinGateway) {

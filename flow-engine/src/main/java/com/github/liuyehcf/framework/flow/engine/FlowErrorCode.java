@@ -31,8 +31,8 @@ public enum FlowErrorCode {
     FLOW_ALREADY_FINISHED("081", "FLOW_ALREADY_FINISHED"),
     ;
 
-    private String code;
-    private String scope;
+    private final String code;
+    private final String scope;
 
     FlowErrorCode(String code, String scope) {
         this.code = code;

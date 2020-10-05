@@ -35,12 +35,13 @@ public class TestRuntimeBase {
     public static final int LISTENER_TIMEOUT = 0;
     public static final Switch STD_OUT_SWITCH = new Switch(() -> false);
     protected static final Random RANDOM = new Random();
+    public static final Switch PAUSE_SWITCH = new Switch(RANDOM::nextBoolean);
     public static final Switch IS_ACTION_ASYNC = new Switch(RANDOM::nextBoolean);
     public static final Switch IS_CONDITION_ASYNC = new Switch(RANDOM::nextBoolean);
     public static final Switch IS_LISTENER_ASYNC = new Switch(RANDOM::nextBoolean);
     protected static final int EXECUTE_TIMES = 1;
     protected static final FlowEngine engine;
-    private static ExecutorService EXECUTOR = new ThreadPoolExecutor(16, 16, 5L, TimeUnit.SECONDS,
+    private static final ExecutorService EXECUTOR = new ThreadPoolExecutor(16, 16, 5L, TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(1024),
             new ThreadFactoryBuilder().setNameFormat("FLOW-ENGINE-TEST-t-%d").build(),
             new ThreadPoolExecutor.CallerRunsPolicy());
@@ -50,43 +51,48 @@ public class TestRuntimeBase {
         properties.setEnvCloneType(EnvCloneType.hessian);
         engine = new DefaultFlowEngine(properties);
 
-        engine.registerActionDelegateFactory("printAction", PrintAction::new);
-        engine.registerActionDelegateFactory("throwExceptionAction", ThrowExceptionAction::new);
-        engine.registerActionDelegateFactory("throwLinkTerminateAction", ThrowLinkTerminateAction::new);
+        engine.registerActionDelegateFactory("dash-name-action", DashNameAction::new);
+        engine.registerActionDelegateFactory("dot.name.action", DotNameAction::new);
         engine.registerActionDelegateFactory("fieldConditionAction", FieldConditionAction::new);
         engine.registerActionDelegateFactory("getPropertyAction", GetPropertyAction::new);
-        engine.registerActionDelegateFactory("setPropertyAction", SetPropertyAction::new);
+        engine.registerActionDelegateFactory("markAction", MarkAction::new);
         engine.registerActionDelegateFactory("missingArgumentAction", MissingArgumentAction::new);
+        engine.registerActionDelegateFactory("pauseAction", PauseAction::new);
+        engine.registerActionDelegateFactory("printAction", PrintAction::new);
+        engine.registerActionDelegateFactory("setPropertyAction", SetPropertyAction::new);
         engine.registerActionDelegateFactory("setTraceAttrAction", SetTraceAttrAction::new);
-        engine.registerActionDelegateFactory("dot.name.action", DotNameAction::new);
         engine.registerActionDelegateFactory("slash/name/action", SlashNameAction::new);
-        engine.registerActionDelegateFactory("dash-name-action", DashNameAction::new);
         engine.registerActionDelegateFactory("sleepAction", SleepAction::new);
+        engine.registerActionDelegateFactory("throwExceptionAction", ThrowExceptionAction::new);
+        engine.registerActionDelegateFactory("throwLinkTerminateAction", ThrowLinkTerminateAction::new);
 
+        engine.registerConditionDelegateFactory("dash-name-condition", DashNameCondition::new);
+        engine.registerConditionDelegateFactory("dot.name.condition", DotNameCondition::new);
+        engine.registerConditionDelegateFactory("getPropertyCondition", GetPropertyCondition::new);
+        engine.registerConditionDelegateFactory("missingArgumentCondition", MissingArgumentCondition::new);
+        engine.registerConditionDelegateFactory("pauseCondition", PauseCondition::new);
         engine.registerConditionDelegateFactory("printCondition", PrintCondition::new);
+        engine.registerConditionDelegateFactory("setPropertyCondition", SetPropertyCondition::new);
+        engine.registerConditionDelegateFactory("setTraceAttrCondition", SetTraceAttrCondition::new);
+        engine.registerConditionDelegateFactory("slash/name/condition", SlashNameCondition::new);
+        engine.registerConditionDelegateFactory("sleepCondition", SleepCondition::new);
         engine.registerConditionDelegateFactory("throwExceptionCondition", ThrowExceptionCondition::new);
         engine.registerConditionDelegateFactory("throwLinkTerminateCondition", ThrowLinkTerminateCondition::new);
-        engine.registerConditionDelegateFactory("getPropertyCondition", GetPropertyCondition::new);
-        engine.registerConditionDelegateFactory("setPropertyCondition", SetPropertyCondition::new);
-        engine.registerConditionDelegateFactory("missingArgumentCondition", MissingArgumentCondition::new);
-        engine.registerConditionDelegateFactory("setTraceAttrCondition", SetTraceAttrCondition::new);
-        engine.registerConditionDelegateFactory("dot.name.condition", DotNameCondition::new);
-        engine.registerConditionDelegateFactory("slash/name/condition", SlashNameCondition::new);
-        engine.registerConditionDelegateFactory("dash-name-condition", DashNameCondition::new);
-        engine.registerConditionDelegateFactory("sleepCondition", SleepCondition::new);
 
-        engine.registerListenerDelegateFactory("printListener", PrintListener::new);
-        engine.registerListenerDelegateFactory("getPropertyListener", GetPropertyListener::new);
-        engine.registerListenerDelegateFactory("setPropertyListener", SetPropertyListener::new);
-        engine.registerListenerDelegateFactory("missingArgumentListener", MissingArgumentListener::new);
-        engine.registerListenerDelegateFactory("setTraceAttrListener", SetTraceAttrListener::new);
-        engine.registerListenerDelegateFactory("dot.name.listener", DotNameListener::new);
-        engine.registerListenerDelegateFactory("slash/name/listener", SlashNameListener::new);
         engine.registerListenerDelegateFactory("dash-name-listener", DashNameListener::new);
+        engine.registerListenerDelegateFactory("dot.name.listener", DotNameListener::new);
+        engine.registerListenerDelegateFactory("getPropertyListener", GetPropertyListener::new);
+        engine.registerListenerDelegateFactory("markListener", MarkListener::new);
+        engine.registerListenerDelegateFactory("missingArgumentListener", MissingArgumentListener::new);
+        engine.registerListenerDelegateFactory("pauseListener", PauseListener::new);
+        engine.registerListenerDelegateFactory("printListener", PrintListener::new);
+        engine.registerListenerDelegateFactory("scopeListener", ScopeListener::new);
+        engine.registerListenerDelegateFactory("setPropertyListener", SetPropertyListener::new);
+        engine.registerListenerDelegateFactory("setTraceAttrListener", SetTraceAttrListener::new);
+        engine.registerListenerDelegateFactory("slash/name/listener", SlashNameListener::new);
+        engine.registerListenerDelegateFactory("successResultListener", SuccessResultListener::new);
         engine.registerListenerDelegateFactory("throwExceptionListener", ThrowExceptionListener::new);
         engine.registerListenerDelegateFactory("throwLinkTerminateListener", ThrowLinkTerminateListener::new);
-        engine.registerListenerDelegateFactory("successResultListener", SuccessResultListener::new);
-        engine.registerListenerDelegateFactory("scopeListener", ScopeListener::new);
 
         engine.registerDelegateInterceptorFactory(ActionRegexInterceptor::new);
 
@@ -100,7 +106,9 @@ public class TestRuntimeBase {
         if (promise.isFailure()) {
             Throwable cause = promise.cause();
             if (cause != null) {
-                cause.printStackTrace();
+                if (STD_OUT_SWITCH.get()) {
+                    cause.printStackTrace();
+                }
             }
         }
 

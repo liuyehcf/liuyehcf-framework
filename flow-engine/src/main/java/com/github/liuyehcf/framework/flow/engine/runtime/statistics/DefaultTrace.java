@@ -74,11 +74,11 @@ public class DefaultTrace implements Trace {
     /**
      * use time in nano seconds
      */
-    private final long useTimeNano;
+    private final long useTimeNanos;
 
     public DefaultTrace(long executionId, String id, ElementType type, String name, List<Argument> arguments, Object result,
                         List<PropertyUpdate> propertyUpdates, Map<String, Attribute> attributes, Throwable cause,
-                        long startTimestamp, long endTimestamp, long useTimeNano) {
+                        long startTimestamp, long endTimestamp, long useTimeNanos) {
         Assert.assertNotNull(id, "id");
         Assert.assertNotNull(type, "type");
 
@@ -93,7 +93,7 @@ public class DefaultTrace implements Trace {
         this.cause = cause;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
-        this.useTimeNano = useTimeNano;
+        this.useTimeNanos = useTimeNanos;
     }
 
     @Override
@@ -153,8 +153,8 @@ public class DefaultTrace implements Trace {
     }
 
     @Override
-    public final long getUseTimeNano() {
-        return useTimeNano;
+    public final long getUseTimeNanos() {
+        return useTimeNanos;
     }
 
     @Override

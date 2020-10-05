@@ -9,14 +9,12 @@ import com.github.liuyehcf.framework.flow.engine.model.ElementType;
 import com.github.liuyehcf.framework.flow.engine.model.Executable;
 import com.github.liuyehcf.framework.flow.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.flow.engine.model.listener.ListenerEvent;
+import com.github.liuyehcf.framework.flow.engine.promise.ExecutionLinkPausePromise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ConditionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.Delegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ListenerDelegate;
-import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ActionContext;
-import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ConditionContext;
-import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ExecutableContext;
-import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ListenerContext;
+import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.*;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.factory.Factory;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.DefaultDelegateField;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.FieldCondition;
@@ -167,6 +165,7 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
         } finally {
             if (--stackCnt == 0) {
                 recordTrace(result, cause, startTimestamp, startNanos);
+                recordPausePromise();
             }
         }
     }
@@ -270,6 +269,11 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
         } else {
             operationContext.addTraceToExecutionLink(trace);
         }
+    }
+
+    private void recordPausePromise() {
+        ExecutionLinkPausePromise executionLinkPausePromise = ((AbstractExecutableContext<? extends Element>) getExecutableContext()).getExecutionLinkPausePromise();
+        operationContext.setExecutionLinkPausePromise(executionLinkPausePromise);
     }
 
     private void injectDelegateFields(Executable executable, Delegate delegate) {

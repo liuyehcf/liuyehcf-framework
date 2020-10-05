@@ -4,7 +4,7 @@ import com.github.liuyehcf.framework.rpc.ares.AresMethod;
 import com.github.liuyehcf.framework.rpc.ares.constant.HttpMethod;
 
 /**
- * @author chenfeng.hcf
+ * @author hechenfeng
  * @date 2020/5/2
  */
 public interface MethodClient {

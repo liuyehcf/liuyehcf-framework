@@ -77,7 +77,7 @@ public interface Trace {
     long getEndTimestamp();
 
     /**
-     * use nano
+     * use time in nano seconds
      */
-    long getUseTimeNano();
+    long getUseTimeNanos();
 }

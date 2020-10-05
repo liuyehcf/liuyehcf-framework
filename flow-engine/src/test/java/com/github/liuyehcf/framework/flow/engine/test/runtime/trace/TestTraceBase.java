@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class TestTraceBase extends TestRuntimeBase {
 
     private static final long MAX_TIMESTAMP_OFFSET = 2000;
-    private static final long MAX_USETIME_NANO = 2000 * 1000 * 1000;
+    private static final long MAX_USETIME_NANOS = 2000 * 1000 * 1000;
 
     protected void assertStart(Trace trace) {
         Assert.assertEquals(ElementType.START, trace.getType());
@@ -31,7 +31,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getAttributes());
         Assert.assertEquals(trace.getEndTimestamp(), trace.getStartTimestamp());
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertEquals(0, trace.getUseTimeNano());
+        Assert.assertEquals(0, trace.getUseTimeNanos());
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -63,8 +63,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -91,8 +91,44 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof FlowException);
+            Assert.assertEquals(FlowErrorCode.FLOW_ALREADY_FINISHED, ((FlowException) cause).getCode());
+        }
+    }
+
+    protected void assertPauseAction(Trace trace, long timeout, boolean isCancel, boolean isSuccess, Class<? extends Throwable> errorClass) {
+        Argument argument;
+
+        Assert.assertEquals(ElementType.ACTION, trace.getType());
+        Assert.assertEquals("pauseAction", trace.getName());
+        Assert.assertEquals(4, trace.getArguments().size());
+        argument = trace.getArguments().get(0);
+        Assert.assertEquals("pause", argument.getName());
+        Assert.assertEquals(timeout, argument.getValue());
+        argument = trace.getArguments().get(1);
+        Assert.assertEquals("isCancel", argument.getName());
+        Assert.assertEquals(isCancel, argument.getValue());
+        argument = trace.getArguments().get(2);
+        Assert.assertEquals("isSuccess", argument.getName());
+        Assert.assertEquals(isSuccess, argument.getValue());
+        argument = trace.getArguments().get(3);
+        Assert.assertEquals("cause", argument.getName());
+        if (errorClass != null) {
+            Assert.assertEquals(errorClass, argument.getValue().getClass());
+        }
+
+        Assert.assertNull(trace.getResult());
+        Assert.assertEquals(0, trace.getPropertyUpdates().size());
+        Assert.assertEquals(0, trace.getAttributes().size());
+        Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
+        Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -115,8 +151,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -146,8 +182,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -165,8 +201,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         if (trace.getCause() == null) {
             sleep(1);
         }
@@ -200,8 +236,47 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof FlowException);
+            Assert.assertEquals(FlowErrorCode.FLOW_ALREADY_FINISHED, ((FlowException) cause).getCode());
+        }
+    }
+
+    protected void assertPauseCondition(Trace trace, long timeout, boolean isCancel, boolean isSuccess, Class<? extends Throwable> errorClass, boolean output) {
+        Argument argument;
+
+        Assert.assertEquals(ElementType.CONDITION, trace.getType());
+        Assert.assertEquals("pauseCondition", trace.getName());
+        Assert.assertEquals(5, trace.getArguments().size());
+        argument = trace.getArguments().get(0);
+        Assert.assertEquals("pause", argument.getName());
+        Assert.assertEquals(timeout, argument.getValue());
+        argument = trace.getArguments().get(1);
+        Assert.assertEquals("isCancel", argument.getName());
+        Assert.assertEquals(isCancel, argument.getValue());
+        argument = trace.getArguments().get(2);
+        Assert.assertEquals("isSuccess", argument.getName());
+        Assert.assertEquals(isSuccess, argument.getValue());
+        argument = trace.getArguments().get(3);
+        Assert.assertEquals("cause", argument.getName());
+        if (errorClass != null) {
+            Assert.assertEquals(errorClass, argument.getValue().getClass());
+        }
+        argument = trace.getArguments().get(4);
+        Assert.assertEquals("output", argument.getName());
+        Assert.assertEquals(output, argument.getValue());
+
+        Assert.assertEquals(output, trace.getResult());
+        Assert.assertEquals(0, trace.getPropertyUpdates().size());
+        Assert.assertEquals(0, trace.getAttributes().size());
+        Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
+        Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -245,8 +320,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -279,8 +354,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -298,8 +373,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         if (trace.getCause() == null) {
             sleep(1);
         }
@@ -325,8 +400,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -361,8 +436,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -392,8 +467,46 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof FlowException);
+            Assert.assertEquals(FlowErrorCode.FLOW_ALREADY_FINISHED, ((FlowException) cause).getCode());
+        }
+    }
+
+    protected void assertPauseListener(Trace trace, long timeout, boolean isCancel, boolean isSuccess, Class<? extends Throwable> errorClass, ListenerEvent event) {
+        Argument argument;
+
+        Assert.assertEquals(ElementType.LISTENER, trace.getType());
+        Assert.assertEquals("pauseListener", trace.getName());
+        Assert.assertEquals(5, trace.getArguments().size());
+        argument = trace.getArguments().get(0);
+        Assert.assertEquals("event", argument.getName());
+        Assert.assertEquals(event.name(), argument.getValue());
+        argument = trace.getArguments().get(1);
+        Assert.assertEquals("pause", argument.getName());
+        Assert.assertEquals(timeout, argument.getValue());
+        argument = trace.getArguments().get(2);
+        Assert.assertEquals("isCancel", argument.getName());
+        Assert.assertEquals(isCancel, argument.getValue());
+        argument = trace.getArguments().get(3);
+        Assert.assertEquals("isSuccess", argument.getName());
+        Assert.assertEquals(isSuccess, argument.getValue());
+        argument = trace.getArguments().get(4);
+        Assert.assertEquals("cause", argument.getName());
+        if (errorClass != null) {
+            Assert.assertEquals(errorClass, argument.getValue().getClass());
+        }
+        Assert.assertNull(trace.getResult());
+        Assert.assertEquals(0, trace.getPropertyUpdates().size());
+        Assert.assertEquals(0, trace.getAttributes().size());
+        Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
+        Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -419,8 +532,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -443,8 +556,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         if (trace.getCause() == null) {
             sleep(1);
         }
@@ -476,8 +589,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -504,8 +617,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -523,7 +636,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Throwable cause = trace.getCause();
         Assert.assertEquals(trace.getEndTimestamp(), trace.getStartTimestamp());
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertEquals(0, trace.getUseTimeNano());
+        Assert.assertEquals(0, trace.getUseTimeNanos());
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
             Assert.assertEquals(FlowErrorCode.FLOW_ALREADY_FINISHED, ((FlowException) cause).getCode());
@@ -539,7 +652,7 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertNull(trace.getAttributes());
         Assert.assertEquals(trace.getEndTimestamp(), trace.getStartTimestamp());
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertEquals(0, trace.getUseTimeNano());
+        Assert.assertEquals(0, trace.getUseTimeNanos());
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -557,8 +670,8 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
         Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
         Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
-        Assert.assertTrue(trace.getUseTimeNano() >= 0);
-        Assert.assertTrue(trace.getUseTimeNano() < MAX_USETIME_NANO);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
         Throwable cause = trace.getCause();
         if (cause != null) {
             Assert.assertTrue(cause instanceof FlowException);
@@ -570,6 +683,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertEquals(finishedSize, executionInstance.getLinks().size());
         Assert.assertEquals(unFinishedSize, executionInstance.getUnreachableLinks().size());
         Assert.assertEquals(traceNum, executionInstance.getTraces().size());
+        Assert.assertTrue(executionInstance.getEndTimestamp() >= executionInstance.getStartTimestamp());
+        Assert.assertTrue(executionInstance.getEndTimestamp() - executionInstance.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(System.currentTimeMillis() - executionInstance.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(executionInstance.getUseTimeNanos() >= 0);
+        Assert.assertTrue(executionInstance.getUseTimeNanos() < MAX_USETIME_NANOS);
 
         for (ExecutionLink link : executionInstance.getLinks()) {
             List<Trace> traces = link.getTraces();
@@ -588,6 +706,11 @@ public class TestTraceBase extends TestRuntimeBase {
         Assert.assertTrue(executionInstance.getUnreachableLinks().size() >= minUnfinishedSize
                 && executionInstance.getUnreachableLinks().size() <= maxUnfinishedSize);
         Assert.assertEquals(traceNum, executionInstance.getTraces().size());
+        Assert.assertTrue(executionInstance.getEndTimestamp() >= executionInstance.getStartTimestamp());
+        Assert.assertTrue(executionInstance.getEndTimestamp() - executionInstance.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(System.currentTimeMillis() - executionInstance.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(executionInstance.getUseTimeNanos() >= 0);
+        Assert.assertTrue(executionInstance.getUseTimeNanos() < MAX_USETIME_NANOS);
 
         for (ExecutionLink link : executionInstance.getLinks()) {
             List<Trace> traces = link.getTraces();

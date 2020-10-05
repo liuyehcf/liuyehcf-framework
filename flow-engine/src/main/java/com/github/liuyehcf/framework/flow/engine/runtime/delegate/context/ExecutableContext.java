@@ -3,6 +3,7 @@ package com.github.liuyehcf.framework.flow.engine.runtime.delegate.context;
 import com.github.liuyehcf.framework.common.tools.promise.PromiseListener;
 import com.github.liuyehcf.framework.flow.engine.model.Element;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
+import com.github.liuyehcf.framework.flow.engine.promise.ExecutionLinkPausePromise;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.Attribute;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.PropertyUpdate;
@@ -195,4 +196,13 @@ public interface ExecutableContext<E extends Element> {
      * @param listener flow listener
      */
     void addFlowPromiseListener(PromiseListener<ExecutionInstance> listener);
+
+    /**
+     * pause the execution of current link after
+     * delegate itself and all wrapped interceptors finished
+     * which can restart execution of current link
+     * <p>
+     * the interface is reentrant, and one or more calls have the same effect
+     */
+    ExecutionLinkPausePromise pauseExecutionLink();
 }
