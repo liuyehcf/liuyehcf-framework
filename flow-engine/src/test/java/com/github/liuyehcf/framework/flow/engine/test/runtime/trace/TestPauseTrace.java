@@ -1164,9 +1164,33 @@ public class TestPauseTrace extends TestTraceBase {
         }, 100);
     }
 
+    // todo 问题在于，当throwLinkTerminateAction抛出异常后，将节点标记为不可达的动作与pause同步进行了，以至于流程结束的动作早于pause 被 Cancel
     @Test
     public void testFailureListenerPauseCancelWithListener() {
+        Flow flow = compile(
+                "{\n" +
+                        "    throwLinkTerminateAction() [\n" +
+                        "        pauseListener(event=\"failure\" , pause=${timeout}, isCancel=true, isSuccess=false, cause=${cause}),\n" +
+                        "        markListener(event=\"failure\" , id=${id})\n" +
+                        "    ]\n" +
+                        "}");
 
+        executeTimes(() -> {
+            long timeout = RANDOM.nextInt(100);
+            String id = UUID.randomUUID().toString();
+
+            Promise<ExecutionInstance> promise = startFlow(flow, EnvBuilder
+                    .builder()
+                    .put("timeout", timeout)
+                    .put("id", id)
+                    .build());
+
+            promise.sync();
+
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertFalse(MarkListener.FAILURE_CACHE.contains(id));
+        }, 100);
     }
 
     @Test
