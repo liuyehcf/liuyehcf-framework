@@ -476,6 +476,44 @@ public class TestTraceBase extends TestRuntimeBase {
         }
     }
 
+    protected void assertPauseListener(Trace trace, long timeout, boolean isCancel, boolean isSuccess, Class<? extends Throwable> errorClass, ListenerEvent event) {
+        Argument argument;
+
+        Assert.assertEquals(ElementType.LISTENER, trace.getType());
+        Assert.assertEquals("pauseListener", trace.getName());
+        Assert.assertEquals(5, trace.getArguments().size());
+        argument = trace.getArguments().get(0);
+        Assert.assertEquals("event", argument.getName());
+        Assert.assertEquals(event.name(), argument.getValue());
+        argument = trace.getArguments().get(1);
+        Assert.assertEquals("pause", argument.getName());
+        Assert.assertEquals(timeout, argument.getValue());
+        argument = trace.getArguments().get(2);
+        Assert.assertEquals("isCancel", argument.getName());
+        Assert.assertEquals(isCancel, argument.getValue());
+        argument = trace.getArguments().get(3);
+        Assert.assertEquals("isSuccess", argument.getName());
+        Assert.assertEquals(isSuccess, argument.getValue());
+        argument = trace.getArguments().get(4);
+        Assert.assertEquals("cause", argument.getName());
+        if (errorClass != null) {
+            Assert.assertEquals(errorClass, argument.getValue().getClass());
+        }
+        Assert.assertNull(trace.getResult());
+        Assert.assertEquals(0, trace.getPropertyUpdates().size());
+        Assert.assertEquals(0, trace.getAttributes().size());
+        Assert.assertTrue(trace.getEndTimestamp() >= trace.getStartTimestamp());
+        Assert.assertTrue(trace.getEndTimestamp() - trace.getStartTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(System.currentTimeMillis() - trace.getEndTimestamp() < MAX_TIMESTAMP_OFFSET);
+        Assert.assertTrue(trace.getUseTimeNanos() >= 0);
+        Assert.assertTrue(trace.getUseTimeNanos() < MAX_USETIME_NANOS);
+        Throwable cause = trace.getCause();
+        if (cause != null) {
+            Assert.assertTrue(cause instanceof FlowException);
+            Assert.assertEquals(FlowErrorCode.FLOW_ALREADY_FINISHED, ((FlowException) cause).getCode());
+        }
+    }
+
     protected void assertPrintListener(Trace trace, String content, ListenerEvent event) {
         Argument argument;
 
