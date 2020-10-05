@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.flow.engine.test.runtime.condition;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.common.tools.time.TimeUtils;
 import com.github.liuyehcf.framework.flow.engine.promise.ExecutionLinkPausePromise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ConditionContext;
@@ -42,6 +43,7 @@ public class PauseCondition extends BaseCondition {
     @Override
     public boolean onCondition(ConditionContext context) {
         ExecutionLinkPausePromise promise = context.pauseExecutionLink();
+        Assert.assertEquals(promise, context.pauseExecutionLink());
         getAsyncExecutor().execute(() -> {
             TimeUtils.sleep(pause.getValue(), TimeUnit.MILLISECONDS);
             if (isCancel.getValueOrDefault(false)) {

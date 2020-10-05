@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.flow.engine.test.runtime.listener;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.common.tools.time.TimeUtils;
 import com.github.liuyehcf.framework.flow.engine.promise.ExecutionLinkPausePromise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ListenerContext;
@@ -37,6 +38,7 @@ public class PauseListener extends BaseListener {
     @Override
     public void onBefore(ListenerContext context) {
         ExecutionLinkPausePromise promise = context.pauseExecutionLink();
+        Assert.assertEquals(promise, context.pauseExecutionLink());
         getAsyncExecutor().execute(() -> {
             TimeUtils.sleep(pause.getValue(), TimeUnit.MILLISECONDS);
             if (isCancel.getValueOrDefault(false)) {
@@ -52,6 +54,7 @@ public class PauseListener extends BaseListener {
     @Override
     public void onSuccess(ListenerContext context, Object result) {
         ExecutionLinkPausePromise promise = context.pauseExecutionLink();
+        Assert.assertEquals(promise, context.pauseExecutionLink());
         getAsyncExecutor().execute(() -> {
             TimeUtils.sleep(pause.getValue(), TimeUnit.MILLISECONDS);
             if (isCancel.getValueOrDefault(false)) {
@@ -67,6 +70,7 @@ public class PauseListener extends BaseListener {
     @Override
     public void onFailure(ListenerContext context, Throwable cause) {
         ExecutionLinkPausePromise promise = context.pauseExecutionLink();
+        Assert.assertEquals(promise, context.pauseExecutionLink());
         getAsyncExecutor().execute(() -> {
             TimeUtils.sleep(pause.getValue(), TimeUnit.MILLISECONDS);
             if (isCancel.getValueOrDefault(false)) {
