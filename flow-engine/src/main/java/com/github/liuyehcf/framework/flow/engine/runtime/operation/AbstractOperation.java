@@ -69,14 +69,15 @@ public abstract class AbstractOperation<T> implements Runnable {
                     continuation.run();
                 }
             } else {
+                Throwable cause = getCauseOf(promise);
                 if (optPromise != null) {
-                    optPromise.tryFailure(promise.cause());
+                    optPromise.tryFailure(cause);
                 }
 
                 if (exceptionHandler != null) {
-                    exceptionHandler.handleException(promise.cause());
+                    exceptionHandler.handleException(cause);
                 } else {
-                    throwCause(promise.cause());
+                    throwCause(cause);
                 }
             }
         });
@@ -144,7 +145,15 @@ public abstract class AbstractOperation<T> implements Runnable {
                 null,
                 cause,
                 rethrowContinuation,
-                promise -> processAsyncPromise(promise, rethrowContinuation, (e) -> rethrowContinuation.run()));
+                promise -> processAsyncPromise(promise, rethrowContinuation, (e) -> {
+                    if (e instanceof LinkExecutionTerminateException) {
+                        // exception cannot degrade
+                        // avoid the exception degradation when the exception of node is normal exception and the exception of listener is LinkExecutionTerminateException
+                        throwCause(cause);
+                    } else {
+                        throwCause(e);
+                    }
+                }));
     }
 
     final void invokeGlobalBeforeListeners(Runnable continuation) throws Throwable {
@@ -224,10 +233,15 @@ public abstract class AbstractOperation<T> implements Runnable {
                 }));
     }
 
-    final void throwCause(Throwable cause) throws Throwable {
-        throw cause == null ?
+    final Throwable getCauseOf(Promise<?> promise) {
+        Throwable cause = promise.cause();
+        return cause == null ?
                 new FlowException(FlowErrorCode.PROMISE, "promise failed") :
                 cause;
+    }
+
+    final void throwCause(Throwable cause) throws Throwable {
+        throw cause;
     }
 
     final int getUnreachableNumOfJoinGateway(JoinGateway joinGateway) {

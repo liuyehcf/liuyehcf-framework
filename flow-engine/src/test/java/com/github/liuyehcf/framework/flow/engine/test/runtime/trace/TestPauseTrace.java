@@ -1164,7 +1164,6 @@ public class TestPauseTrace extends TestTraceBase {
         }, 100);
     }
 
-    // todo 问题在于，当throwLinkTerminateAction抛出异常后，将节点标记为不可达的动作与pause同步进行了，以至于流程结束的动作早于pause 被 Cancel
     @Test
     public void testFailureListenerPauseCancelWithListener() {
         Flow flow = compile(
