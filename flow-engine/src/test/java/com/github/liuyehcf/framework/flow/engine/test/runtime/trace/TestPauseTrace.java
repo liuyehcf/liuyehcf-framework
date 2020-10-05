@@ -8,6 +8,7 @@ import com.github.liuyehcf.framework.flow.engine.runtime.exception.LinkExecution
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionLink;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.Trace;
+import com.github.liuyehcf.framework.flow.engine.test.runtime.action.MarkAction;
 import com.github.liuyehcf.framework.flow.engine.test.runtime.listener.MarkListener;
 import org.junit.Assert;
 import org.junit.Test;
@@ -1058,4 +1059,81 @@ public class TestPauseTrace extends TestTraceBase {
             Assert.assertTrue(timestamp2 - timestamp1 >= timeout);
         }, 100);
     }
+
+    @Test
+    public void testBeforeListenerPauseCancelWithListener() {
+        Flow flow = compile(
+                "{\n" +
+                        "    printAction(content=\"actionA\") [\n" +
+                        "        pauseListener(event=\"before\" , pause=${timeout}, isCancel=true, isSuccess=false, cause=${cause}),\n" +
+                        "        markListener(event=\"before\" , id=${id})\n" +
+                        "    ]\n" +
+                        "}");
+
+        executeTimes(() -> {
+            long timeout = RANDOM.nextInt(100);
+            String id = UUID.randomUUID().toString();
+
+            Promise<ExecutionInstance> promise = startFlow(flow, EnvBuilder
+                    .builder()
+                    .put("timeout", timeout)
+                    .put("id", id)
+                    .build());
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertFalse(MarkListener.SUCCESS_CACHE.contains(id));
+            Assert.assertFalse(MarkListener.FAILURE_CACHE.contains(id));
+        }, 100);
+    }
+
+    @Test
+    public void testBeforeListenerPauseCancelWithNode() {
+        Flow flow = compile(
+                "{\n" +
+                        "    printAction(content=\"actionA\") [pauseListener(event=\"before\" , pause=${timeout}, isCancel=true, isSuccess=false, cause=${cause})] {\n" +
+                        "        markAction(id=${id})\n" +
+                        "    }\n" +
+                        "}\n");
+
+        executeTimes(() -> {
+            long timeout = RANDOM.nextInt(100);
+            String id = UUID.randomUUID().toString();
+
+            Promise<ExecutionInstance> promise = startFlow(flow, EnvBuilder
+                    .builder()
+                    .put("timeout", timeout)
+                    .put("id", id)
+                    .build());
+
+            promise.sync();
+            assertPromise(promise, false, true, false, true);
+
+            Assert.assertFalse(MarkAction.CACHE.contains(id));
+            Assert.assertFalse(MarkAction.CACHE.contains(id));
+        }, 100);
+    }
+
+    @Test
+    public void testSuccessListenerPauseCancelWithListener() {
+
+    }
+
+    @Test
+    public void testSuccessListenerPauseCancelWithNode() {
+
+    }
+
+    @Test
+    public void testFailureListenerPauseCancelWithListener() {
+
+    }
+
+    @Test
+    public void testFailureListenerPauseCancelWithNode() {
+
+    }
+
+    // global listener
 }

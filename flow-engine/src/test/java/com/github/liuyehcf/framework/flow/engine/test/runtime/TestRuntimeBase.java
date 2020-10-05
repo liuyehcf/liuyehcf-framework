@@ -55,6 +55,7 @@ public class TestRuntimeBase {
         engine.registerActionDelegateFactory("dot.name.action", DotNameAction::new);
         engine.registerActionDelegateFactory("fieldConditionAction", FieldConditionAction::new);
         engine.registerActionDelegateFactory("getPropertyAction", GetPropertyAction::new);
+        engine.registerActionDelegateFactory("markAction", MarkAction::new);
         engine.registerActionDelegateFactory("missingArgumentAction", MissingArgumentAction::new);
         engine.registerActionDelegateFactory("pauseAction", PauseAction::new);
         engine.registerActionDelegateFactory("printAction", PrintAction::new);
