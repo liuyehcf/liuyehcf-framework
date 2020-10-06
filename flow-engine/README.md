@@ -37,6 +37,7 @@
     * PromiseListener
     * DelegateInterceptor
     * DelegateField
+    * ExecutionLink的暂停与重启
     * 线程池隔离
     * 异步执行超时设置
 1. __集成Spring-Boot-Starter__
@@ -223,6 +224,9 @@ __event: Listener触发时机__
     * 对于`JoinGateway`、`ExclusiveGateway`这类节点，由于不包含执行逻辑，意味着不可能抛出异常，因此必然触发`success`监听
 1. `failure`: 当依附的节点抛出异常时，会触发该类型的监听
     * 该类型的监听只能用于感知异常情况，但无法处理异常。换言之，在该监听处理完毕之后，该异常仍然会向上层继续抛出
+    * 如果在监听的处理逻辑中抛出了异常，那么此时会存在两个异常，一个是依附节点抛出的异常（称为`original-exception`，另一个是监听抛出的异常（称为`listener-exception`），那么最后抛出的异常遵循以下逻辑
+        1. 如果监听抛出的异常是`LinkExecutionTerminateException`时，那么最终抛出的异常就是`original-exception`
+        1. 否则，抛出的异常就是`listener-exception`
 
 __scope: Listener的范围__
 
@@ -953,6 +957,20 @@ __流触发后会通过线程池全异步执行，提供promise用于感知流�
 
 __可以基于Promise配置监听，当流正常或者异常终止时，会触发监听。类似Netty的ChannelFuture/ChannelPromise__
 
+1. 当`Promise`完成时，每个`PromiseListener`会按照添加的顺序依次执行，并且仅执行一次
+1. 无论`PromiseListener`的添加时机（可能在`Promise`完成前添加，也可能在`Promise`完成后添加），都会确保在当`Promise`完成时触发所有的`PromiseListener`
+
+## 4.3 ExecutionLink的暂停与重启
+
+流引擎提供了暂停与重启ExecutionLink的能力，我们可以通过`ExecutableContext#pauseExecutionLink`来暂停当前的执行分支，该方法会返回一个`ExecutionLinkPausePromise`对象，后续可以通过`ExecutionLinkPausePromise#trySuccess(null)`方法来进行执行分支的重启，当然你也可以调用`ExecutionLinkPausePromise#tryCancel`来取消暂停（这会导致整个flow执行异常），或者调用`ExecutionLinkPausePromise#tryFailure(exception)`来抛出异常（当异常类型是`LinkExecutionTerminateException`时，可以终止当前分支的执行；否则会导致整个flow执行异常）
+
+__要注意的是，暂停并不会当前影响`Delegate`（`Action`、`Condition`、`Listener`）以及所有`DelegateInterceptor`的执行，这两者是不可分的原子执行单元。当前执行分支的暂停点为：下一个`Element`开始前，示意图如下：__
+
+* `elementA`：可以是`Action`、`Condition`、`Listener`
+* `elementB`：可以是`Action`、`Condition`、`Listener`、`JoinGateway`、`ExclusiveGateway`、`SubFlow`
+
+![pause_example](images/pause_example.png)
+
 # 5 拦截器
 
 流引擎提供了类似spring-aop的拦截器机制，核心接口包括`DelegateInterceptor`以及`DelegateInvocation`，通过拦截器，我们可以轻松地实现一些业务能力，执行统计、日志打印等
@@ -1074,7 +1092,7 @@ __maven依赖__
 <dependency>
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>flow-engine-spring-boot-starter</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.3</version>
 </dependency>
 ```
 
@@ -1340,7 +1358,7 @@ __maven依赖__
 <dependency>
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>flow-engine</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.3</version>
 </dependency>
 ```
 
