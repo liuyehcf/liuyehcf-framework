@@ -1,3 +1,22 @@
+   * [设计](#设计)
+      * [符号说明](#符号说明)
+      * [事件处理机制](#事件处理机制)
+         * [发送校验原则](#发送校验原则)
+         * [接收校验原则](#接收校验原则)
+      * [状态机](#状态机)
+      * [集群规范](#集群规范)
+   * [流程](#流程)
+      * [普通节点加入流程(NORMAL_JOINING_PROCESS)](#普通节点加入流程normal_joining_process)
+      * [种子节点加入流程(SEED_JOINING_PROCESS)](#种子节点加入流程seed_joining_process)
+      * [leader冲突检测处理流程(LEADER_CONFLICT_PROCESS)](#leader冲突检测处理流程leader_conflict_process)
+      * [leader选举](#leader选举)
+      * [节点握手冲突](#节点握手冲突)
+   * [异常case](#异常case)
+      * [case1](#case1)
+      * [case2](#case2)
+      * [case3](#case3)
+      * [case4](#case4)
+
 # 设计
 
 ## 符号说明
