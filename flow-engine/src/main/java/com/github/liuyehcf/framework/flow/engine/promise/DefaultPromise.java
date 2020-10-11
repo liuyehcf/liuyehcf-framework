@@ -7,7 +7,7 @@ import com.github.liuyehcf.framework.flow.engine.FlowException;
  * @author hechenfeng
  * @date 2019/4/28
  */
-public abstract class AbstractPromise<T> extends com.github.liuyehcf.framework.common.tools.promise.DefaultPromise<T> {
+public class DefaultPromise<T> extends com.github.liuyehcf.framework.common.tools.promise.DefaultPromise<T> {
 
     @Override
     protected RuntimeException reportCancel() {

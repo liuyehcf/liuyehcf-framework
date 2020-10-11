@@ -6,5 +6,5 @@ import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionIns
  * @author hechenfeng
  * @date 2019/5/9
  */
-public class FlowPromise extends AbstractPromise<ExecutionInstance> {
+public class FlowPromise extends DefaultPromise<ExecutionInstance> {
 }
