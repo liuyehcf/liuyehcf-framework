@@ -1145,7 +1145,7 @@ __maven依赖__
 * 如果配置了`DelegateField`，那么该`Bean`的类型务必标注成`@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)`
 
 ```java
-package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.demo;
 
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ActionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ActionContext;
@@ -1182,7 +1182,7 @@ public class PrintAction implements ActionDelegate {
 * 如果配置了`DelegateField`，那么该`Bean`的类型务必标注成`@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)`
 
 ```java
-package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.demo;
 
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ConditionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ConditionContext;
@@ -1220,7 +1220,7 @@ public class PrintCondition implements ConditionDelegate {
 * 如果配置了`DelegateField`，那么该`Bean`的类型务必标注成`@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)`
 
 ```java
-package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.demo;
 
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ListenerDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ListenerContext;
@@ -1265,7 +1265,7 @@ public class PrintListener implements ListenerDelegate {
 __配置`DelegateInterceptor`__，可以用`@Scope`注解指定拦截器的先后顺序，其行为与Spring-Aop一致
 
 ```java
-package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.demo;
 
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInterceptor;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInvocation;
@@ -1292,7 +1292,7 @@ public class DelegateInterceptorOrder1 implements DelegateInterceptor {
 ```
 
 ```Java
-package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.demo;
 
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInterceptor;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInvocation;
@@ -1321,7 +1321,7 @@ public class DelegateInterceptorOrder2 implements DelegateInterceptor {
 ## 7.5 执行
 
 ```Java
-package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.demo;
 
 import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.common.tools.promise.Promise;
@@ -1339,7 +1339,7 @@ import javax.annotation.Resource;
  * @author hechenfeng
  * @date 2020/1/4
  */
-@SpringBootApplication(scanBasePackages = {"com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo"})
+@SpringBootApplication(scanBasePackages = {"com.github.liuyehcf.framework.flow.engine.spring.boot.starter.demo"})
 public class DemoApplication {
 
     @Resource
