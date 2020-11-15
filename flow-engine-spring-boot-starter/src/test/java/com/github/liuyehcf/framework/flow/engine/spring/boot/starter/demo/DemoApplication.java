@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.demo;
 
 import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.common.tools.promise.Promise;
@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * @author hechenfeng
  * @date 2020/1/4
  */
-@SpringBootApplication(scanBasePackages = {"com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo"})
+@SpringBootApplication(scanBasePackages = {"com.github.liuyehcf.framework.flow.engine.spring.boot.starter.demo"})
 public class DemoApplication {
 
     @Resource

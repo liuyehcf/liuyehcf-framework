@@ -1,4 +1,4 @@
-package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.demo;
+package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.demo;
 
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInterceptor;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.DelegateInvocation;
