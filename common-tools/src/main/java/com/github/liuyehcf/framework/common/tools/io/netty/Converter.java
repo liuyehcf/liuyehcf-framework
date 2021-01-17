@@ -75,7 +75,7 @@ public abstract class Converter<T1, T2, T3, T4> {
                     inboundConsumer.consume(inboundData);
                 }
             } finally {
-                ReferenceCountUtil.release(inboundData);
+                CommonUtils.releaseAll(inboundData);
             }
         }
 
@@ -86,7 +86,7 @@ public abstract class Converter<T1, T2, T3, T4> {
                     outboundConsumer.consume(outboundData);
                 }
             } finally {
-                ReferenceCountUtil.release(outboundData);
+                CommonUtils.releaseAll(outboundData);
             }
         }
     }
@@ -128,7 +128,7 @@ public abstract class Converter<T1, T2, T3, T4> {
                 try {
                     consumeSegment(index++, segment);
                 } finally {
-                    ReferenceCountUtil.release(segment);
+                    CommonUtils.releaseAll(segment);
                 }
             }
         }

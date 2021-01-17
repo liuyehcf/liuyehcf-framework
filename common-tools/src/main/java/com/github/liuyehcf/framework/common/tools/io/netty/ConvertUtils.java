@@ -15,7 +15,7 @@ import io.netty.util.ReferenceCountUtil;
  * @author hechenfeng
  * @date 2020/4/18
  */
-public class ConvertUtils {
+public abstract class ConvertUtils {
 
     public static ByteBuf convertRequest2ByteBuf(FullHttpRequest msg, boolean needRetain) {
         EmbeddedChannel ch = new EmbeddedChannel(new HttpRequestEncoder());
