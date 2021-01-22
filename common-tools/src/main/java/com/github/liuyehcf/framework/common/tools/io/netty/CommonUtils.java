@@ -9,9 +9,16 @@ import io.netty.util.ReferenceCounted;
  */
 public abstract class CommonUtils {
 
-    public static void releaseAll(Object msg) {
+    public static int getRefCnt(Object msg) {
         if (msg instanceof ReferenceCounted) {
-            while (((ReferenceCounted) msg).refCnt() > 0) {
+            return ((ReferenceCounted) msg).refCnt();
+        }
+        return -1;
+    }
+
+    public static void releaseToExpectedRefCnt(Object msg, int expectedRefCnt) {
+        if (msg instanceof ReferenceCounted) {
+            while (((ReferenceCounted) msg).refCnt() >= expectedRefCnt) {
                 ReferenceCountUtil.release(msg);
             }
         } else {
