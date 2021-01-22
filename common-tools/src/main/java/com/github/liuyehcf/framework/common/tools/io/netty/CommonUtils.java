@@ -24,7 +24,7 @@ public abstract class CommonUtils {
                 ReferenceCountUtil.release(msg);
                 int curRefCnt = ref.refCnt();
                 // EmptyByteBuf
-                if (curRefCnt == oldRefCnt) {
+                if (curRefCnt >= oldRefCnt) {
                     break;
                 }
                 oldRefCnt = curRefCnt;
