@@ -18,8 +18,16 @@ public abstract class CommonUtils {
 
     public static void releaseToExpectedRefCnt(Object msg, int expectedRefCnt) {
         if (msg instanceof ReferenceCounted) {
-            while (((ReferenceCounted) msg).refCnt() >= expectedRefCnt) {
+            ReferenceCounted ref = (ReferenceCounted) msg;
+            int oldRefCnt = ref.refCnt();
+            while (oldRefCnt >= expectedRefCnt) {
                 ReferenceCountUtil.release(msg);
+                int curRefCnt = ref.refCnt();
+                // EmptyByteBuf
+                if (curRefCnt == oldRefCnt) {
+                    break;
+                }
+                oldRefCnt = curRefCnt;
             }
         } else {
             ReferenceCountUtil.release(msg);
