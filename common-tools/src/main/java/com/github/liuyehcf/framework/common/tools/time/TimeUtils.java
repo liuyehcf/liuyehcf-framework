@@ -16,7 +16,8 @@ public abstract class TimeUtils {
         try {
             timeUnit.sleep(timeout);
         } catch (InterruptedException e) {
-            // ignore
+            // ignore exception but restore status
+            Thread.currentThread().interrupt();
         }
     }
 

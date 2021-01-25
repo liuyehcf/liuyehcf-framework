@@ -3,12 +3,14 @@ package com.github.liuyehcf.framework.common.tools.test.promise;
 import com.github.liuyehcf.framework.common.tools.promise.DefaultPromise;
 import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.common.tools.promise.PromiseException;
+import com.github.liuyehcf.framework.common.tools.time.TimeUtils;
 import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author hechenfeng
@@ -93,6 +95,32 @@ public class TestPromise {
         long end = System.currentTimeMillis();
 
         Assert.assertTrue(Math.abs(end - start - 300) < 100);
+    }
+
+    @Test
+    public void testSyn6() throws Exception {
+        Promise<Object> promise = new TPromise();
+        long start = System.currentTimeMillis();
+
+        AtomicReference<Exception> exception = new AtomicReference<>();
+        Thread thread = new Thread(() -> {
+            try {
+                promise.sync();
+            } catch (Exception e) {
+                if (!(e.getCause() instanceof InterruptedException)) {
+                    exception.compareAndSet(null, e);
+                }
+            }
+        });
+        thread.start();
+
+        TimeUtils.sleep(100, TimeUnit.MILLISECONDS);
+        thread.interrupt();
+        thread.join();
+        long end = System.currentTimeMillis();
+
+        Assert.assertNull(exception.get());
+        Assert.assertTrue(Math.abs(end - start - 300) < 200);
     }
 
     @Test
@@ -182,6 +210,32 @@ public class TestPromise {
     }
 
     @Test
+    public void testAwait7() throws Exception {
+        Promise<Object> promise = new TPromise();
+        long start = System.currentTimeMillis();
+
+        AtomicReference<Exception> exception = new AtomicReference<>();
+        Thread thread = new Thread(() -> {
+            try {
+                promise.await(1, TimeUnit.DAYS);
+            } catch (Exception e) {
+                if (!(e.getCause() instanceof InterruptedException)) {
+                    exception.compareAndSet(null, e);
+                }
+            }
+        });
+        thread.start();
+
+        TimeUtils.sleep(100, TimeUnit.MILLISECONDS);
+        thread.interrupt();
+        thread.join();
+        long end = System.currentTimeMillis();
+
+        Assert.assertNull(exception.get());
+        Assert.assertTrue(Math.abs(end - start - 300) < 200);
+    }
+
+    @Test
     public void testGet1() {
         Promise<Object> promise = new TPromise();
         long start = System.currentTimeMillis();
@@ -241,6 +295,32 @@ public class TestPromise {
         long end = System.currentTimeMillis();
 
         Assert.assertTrue(Math.abs(end - start - 300) < 100);
+    }
+
+    @Test
+    public void testGet5() throws Exception {
+        Promise<Object> promise = new TPromise();
+        long start = System.currentTimeMillis();
+
+        AtomicReference<Exception> exception = new AtomicReference<>();
+        Thread thread = new Thread(() -> {
+            try {
+                promise.get();
+            } catch (Exception e) {
+                if (!(e.getCause() instanceof InterruptedException)) {
+                    exception.compareAndSet(null, e);
+                }
+            }
+        });
+        thread.start();
+
+        TimeUtils.sleep(100, TimeUnit.MILLISECONDS);
+        thread.interrupt();
+        thread.join();
+        long end = System.currentTimeMillis();
+
+        Assert.assertNull(exception.get());
+        Assert.assertTrue(Math.abs(end - start - 300) < 200);
     }
 
     @Test(expected = PromiseException.class)
@@ -375,6 +455,32 @@ public class TestPromise {
         long end = System.currentTimeMillis();
 
         Assert.assertTrue(Math.abs(end - start - 100) < 100);
+    }
+
+    @Test
+    public void testGetAwait7() throws Exception {
+        Promise<Object> promise = new TPromise();
+        long start = System.currentTimeMillis();
+
+        AtomicReference<Exception> exception = new AtomicReference<>();
+        Thread thread = new Thread(() -> {
+            try {
+                promise.get(1, TimeUnit.DAYS);
+            } catch (Exception e) {
+                if (!(e.getCause() instanceof InterruptedException)) {
+                    exception.compareAndSet(null, e);
+                }
+            }
+        });
+        thread.start();
+
+        TimeUtils.sleep(100, TimeUnit.MILLISECONDS);
+        thread.interrupt();
+        thread.join();
+        long end = System.currentTimeMillis();
+
+        Assert.assertNull(exception.get());
+        Assert.assertTrue(Math.abs(end - start - 300) < 200);
     }
 
     @Test

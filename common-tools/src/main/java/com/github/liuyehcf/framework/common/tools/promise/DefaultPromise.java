@@ -229,6 +229,8 @@ public class DefaultPromise<T> implements Promise<T> {
         try {
             waitLock.lock();
             return callable.call();
+        } catch (InterruptedException e) {
+            throw new PromiseException("interrupt", e);
         } catch (Throwable e) {
             throw reportUnknownError(e);
         } finally {

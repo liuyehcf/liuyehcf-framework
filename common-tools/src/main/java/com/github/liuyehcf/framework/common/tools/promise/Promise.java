@@ -9,43 +9,43 @@ import java.util.concurrent.TimeUnit;
 public interface Promise<T> {
 
     /**
-     * Returns {@code true} if this task was cancelled before it completed
+     * returns {@code true} if this task was cancelled before it completed
      *
      * @return {@code true} if this task was cancelled before it completed
      */
     boolean isCancelled();
 
     /**
-     * Returns {@code true} if this task completed
-     * Success, failure and cancellation are all complete
+     * returns {@code true} if this task completed
+     * success, failure and cancellation are all complete
      *
      * @return {@code true} if this task completed
      */
     boolean isDone();
 
     /**
-     * Returns {@code true} if this task succeeded
+     * returns {@code true} if this task succeeded
      *
      * @return {@code true} if this task succeeded
      */
     boolean isSuccess();
 
     /**
-     * Returns {@code true} if this task failed
+     * returns {@code true} if this task failed
      *
      * @return {@code true} if this task failed
      */
     boolean isFailure();
 
     /**
-     * Returns the cause of the failure
+     * returns the cause of the failure
      *
      * @return the cause of the failure
      */
     Throwable cause();
 
     /**
-     * Attempts to cancel execution of this task and notifies all
+     * attempts to cancel execution of this task and notifies all
      * listeners if this promise isn't done
      *
      * @return {@code false} if the task is already completed
@@ -54,7 +54,7 @@ public interface Promise<T> {
     boolean tryCancel();
 
     /**
-     * Marks this promise as a success and notifies all
+     * marks this promise as a success and notifies all
      * listeners if this promise isn't done
      *
      * @return {@code false} if the task is already completed
@@ -63,25 +63,27 @@ public interface Promise<T> {
     boolean trySuccess(T outcome);
 
     /**
-     * Marks this promise as a failure and notifies all
+     * marks this promise as a failure and notifies all
      * listeners if this promise isn't done
      */
     boolean tryFailure(Throwable cause);
 
     /**
-     * Adds the specified listener to this promise
+     * adds the specified listener to this promise
      *
      * @param listener listener
      */
     Promise<T> addListener(PromiseListener<T> listener);
 
     /**
-     * Waits for this promise until it is done, and rethrows the cause of the failure if this promise
+     * waits for this promise until it is done, and rethrows the cause of the failure if this promise
+     * this method can be interrupted, but the {@link InterruptedException} was wrapped in outer Exception
      */
     void sync();
 
     /**
-     * Waits for this promise to be completed within the specified time limit
+     * waits for this promise to be completed within the specified time limit
+     * this method can be interrupted, but the {@link InterruptedException} was wrapped in outer Exception
      *
      * @return {@code true} if and only if the promise was completed within
      * the specified time limit
@@ -89,14 +91,16 @@ public interface Promise<T> {
     boolean await(long timeout, TimeUnit unit);
 
     /**
-     * Waits if necessary for the computation to complete, and then
+     * waits if necessary for the computation to complete, and then
      * retrieves its result, if available
+     * this method can be interrupted, but the {@link InterruptedException} was wrapped in outer Exception
      */
     T get();
 
     /**
-     * Waits if necessary for at most the given time for the computation
+     * waits if necessary for at most the given time for the computation
      * to complete, and then retrieves its result, if available
+     * this method can be interrupted, but the {@link InterruptedException} was wrapped in outer Exception
      *
      * @return {@code true} if and only if the promise was completed within
      * the specified time limit
