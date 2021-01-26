@@ -70,27 +70,23 @@ public abstract class Converter<T1, T2, T3, T4> {
     private void callBothConsumersIfNecessary(Consumer<T2> inboundConsumer, Consumer<T4> outboundConsumer) {
         T2 inboundData;
         while ((inboundData = readInbound()) != null) {
-            int expectedCnt = -1;
             try {
-                expectedCnt = CommonUtils.getRefCnt(inboundData);
                 if (inboundConsumer != null) {
                     inboundConsumer.consume(inboundData);
                 }
             } finally {
-                CommonUtils.releaseToExpectedRefCnt(inboundData, expectedCnt);
+                ReferenceCountUtil.release(inboundData);
             }
         }
 
         T4 outboundData;
         while ((outboundData = readOutbound()) != null) {
-            int expectedCnt = -1;
             try {
-                expectedCnt = CommonUtils.getRefCnt(outboundData);
                 if (outboundConsumer != null) {
                     outboundConsumer.consume(outboundData);
                 }
             } finally {
-                CommonUtils.releaseToExpectedRefCnt(outboundData, expectedCnt);
+                ReferenceCountUtil.release(outboundData);
             }
         }
     }
@@ -129,12 +125,10 @@ public abstract class Converter<T1, T2, T3, T4> {
             while (data.readableBytes() > 0) {
                 int readNum = Math.min(data.readableBytes(), maxSegmentSize);
                 ByteBuf segment = data.readBytes(readNum);
-                int expectedCnt = -1;
                 try {
-                    expectedCnt = CommonUtils.getRefCnt(segment);
                     consumeSegment(index++, segment);
                 } finally {
-                    CommonUtils.releaseToExpectedRefCnt(segment, expectedCnt);
+                    ReferenceCountUtil.release(segment);
                 }
             }
         }
