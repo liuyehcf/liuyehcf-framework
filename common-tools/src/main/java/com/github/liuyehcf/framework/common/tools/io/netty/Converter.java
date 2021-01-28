@@ -42,22 +42,14 @@ public abstract class Converter<T1, T2, T3, T4> {
     }
 
     public final void writeOutbound(T3 msg, Consumer<T2> inboundConsumer, Consumer<T4> outboundConsumer) {
-        channel.writeOneOutbound(msg).addListener(future -> {
-            if (!future.isSuccess()) {
-                ReferenceCountUtil.release(msg);
-            }
-        });
+        channel.writeOneOutbound(msg);
         channel.flushOutbound();
 
         callBothConsumersIfNecessary(inboundConsumer, outboundConsumer);
     }
 
     public final void writeInbound(T1 msg, Consumer<T2> inboundConsumer, Consumer<T4> outboundConsumer) {
-        channel.writeOneInbound(msg).addListener(future -> {
-            if (!future.isSuccess()) {
-                ReferenceCountUtil.release(msg);
-            }
-        });
+        channel.writeOneInbound(msg);
         channel.flushInbound();
 
         callBothConsumersIfNecessary(inboundConsumer, outboundConsumer);
