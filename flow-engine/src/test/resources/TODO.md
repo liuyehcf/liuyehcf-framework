@@ -7,6 +7,7 @@
 
 # TODO
 
+1. 反编译时，要判断flow是否可以转换成dsl，因为dsl一定是flow，而flow不一定是dsl
 failure的异常处理原则：
 1. 异常可以升级，但是不能降级
     * 当failure-Listener抛出LinkExecutionTerminateException时，以Listener依附的节点抛出的异常为主

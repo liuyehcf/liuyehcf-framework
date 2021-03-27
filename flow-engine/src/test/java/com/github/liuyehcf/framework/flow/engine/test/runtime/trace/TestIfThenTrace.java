@@ -617,6 +617,69 @@ public class TestIfThenTrace extends TestTraceBase {
     }
 
     @Test
+    public void testIfNestedInJoinWithOtherTrueSuccessors() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))&{\n" +
+                "            printAction(content=\"actionA\")&,\n" +
+                "            printAction(content=\"actionB\")& {\n" +
+                "                printAction(content=\"actionC\")&{\n" +
+                "                    printAction(content=\"actionD\")&\n" +
+                "                }\n" +
+                "            },\n" +
+                "            printAction(content=\"actionE\") {\n" +
+                "                printAction(content=\"actionF\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 9);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "action[A-F]");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "action[A-F]");
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "action[A-F]");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "action[A-F]");
+
+            trace = executionLink.getTraces().get(6);
+            assertPrintAction(trace, "action[A-F]");
+
+            trace = executionLink.getTraces().get(7);
+            assertPrintAction(trace, "action[A-F]");
+
+            trace = executionLink.getTraces().get(8);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
     public void testSingleIfNestedInSelect() {
         Flow flow = compile("{\n" +
                 "    select {\n" +

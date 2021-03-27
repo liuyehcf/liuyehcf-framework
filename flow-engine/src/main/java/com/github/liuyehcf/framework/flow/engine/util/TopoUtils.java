@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.flow.engine.util;
 
 import com.github.liuyehcf.framework.flow.engine.model.ElementType;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
+import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 import com.github.liuyehcf.framework.flow.engine.model.Node;
 import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
 import com.google.common.collect.Lists;
@@ -9,7 +10,6 @@ import com.google.common.collect.Lists;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @author hechenfeng
@@ -40,13 +40,9 @@ public abstract class TopoUtils {
             List<Node> successors = node.getSuccessors();
 
             if (node instanceof Condition) {
-                List<Node> trueSuccessors = successors.stream()
-                        .filter((successor) -> successor.getLinkType().isTrue())
-                        .collect(Collectors.toList());
+                List<Node> trueSuccessors = node.getSuccessors(LinkType.TRUE);
 
-                List<Node> falseSuccessors = successors.stream()
-                        .filter((successor) -> successor.getLinkType().isFalse())
-                        .collect(Collectors.toList());
+                List<Node> falseSuccessors = node.getSuccessors(LinkType.FALSE);
 
                 if (trueSuccessors.size() > 1 || falseSuccessors.size() > 1) {
                     return false;

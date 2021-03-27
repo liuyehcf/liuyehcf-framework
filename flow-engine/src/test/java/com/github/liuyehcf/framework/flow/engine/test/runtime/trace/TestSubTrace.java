@@ -778,9 +778,9 @@ public class TestSubTrace extends TestTraceBase {
     public void testSubNestedInJoin() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub {\n" +
+                "        sub &{\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }&\n" +
+                "        }\n" +
                 "    }\n" +
                 "}");
 
@@ -819,12 +819,52 @@ public class TestSubTrace extends TestTraceBase {
     }
 
     @Test
+    public void testSubNestedInJoinReverse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~&{\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
     public void testSubNestedInJoinThen() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub {\n" +
+                "        sub& {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }&\n" +
+                "        }\n" +
                 "    } then {\n" +
                 "        sub {\n" +
                 "            printAction(content=\"actionB\")\n" +
@@ -870,6 +910,50 @@ public class TestSubTrace extends TestTraceBase {
             assertPrintAction(trace, "actionB");
 
             trace = executionLink.getTraces().get(7);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testSubNestedInJoinThenReverse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        }\n" +
+                "    } then {\n" +
+                "        sub {\n" +
+                "            printAction(content=\"actionB\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
             assertFlow(trace);
         });
     }

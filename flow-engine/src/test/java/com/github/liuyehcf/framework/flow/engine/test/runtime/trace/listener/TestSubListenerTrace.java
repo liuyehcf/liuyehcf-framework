@@ -849,9 +849,9 @@ public class TestSubListenerTrace extends TestTraceBase {
     public void testSubNestedInJoinWithSubAndGlobalListener() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub {\n" +
+                "        sub & {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")] &\n" +
+                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]\n" +
                 "    }\n" +
                 "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
 
@@ -901,12 +901,64 @@ public class TestSubListenerTrace extends TestTraceBase {
     }
 
     @Test
+    public void testSubNestedInJoinWithSubReverseAndGlobalListener() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]\n" +
+                "    }\n" +
+                "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerC", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerD", ListenerEvent.success);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(2);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+
+            trace = executionLink.getTraces().get(5);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
     public void testSubNestedInJoinThenWithSubAndGlobalListener() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub {\n" +
+                "        sub & {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")] &\n" +
+                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]\n" +
                 "    } then {\n" +
                 "        sub {\n" +
                 "            printAction(content=\"actionB\")\n" +
@@ -970,6 +1022,62 @@ public class TestSubListenerTrace extends TestTraceBase {
             assertPrintListener(trace, "listenerD", ListenerEvent.success);
 
             trace = executionLink.getTraces().get(11);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testSubNestedInJoinThenWithSubReverseAndGlobalListener() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]\n" +
+                "    } then {\n" +
+                "        sub {\n" +
+                "            printAction(content=\"actionB\")\n" +
+                "        }[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]\n" +
+                "    }\n" +
+                "}[printListener(event=\"before\", content=\"listenerE\"), printListener(event=\"success\", content=\"listenerF\")]");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 2);
+
+            trace = executionInstance.getTraces().get(0);
+            assertPrintListener(trace, "listenerE", ListenerEvent.before);
+
+            trace = executionInstance.getTraces().get(1);
+            assertPrintListener(trace, "listenerF", ListenerEvent.success);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintListener(trace, "listenerA", ListenerEvent.before);
+
+            trace = executionLink.getTraces().get(2);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintListener(trace, "listenerB", ListenerEvent.success);
+
+            trace = executionLink.getTraces().get(5);
             assertFlow(trace);
         });
     }

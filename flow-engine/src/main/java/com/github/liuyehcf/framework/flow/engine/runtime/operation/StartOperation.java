@@ -35,6 +35,6 @@ class StartOperation extends AbstractOperation<Void> {
                 0));
         context.markElementFinished(start);
 
-        forward(LinkType.NORMAL, start.getSuccessors());
+        forward(start, LinkType.NORMAL);
     }
 }

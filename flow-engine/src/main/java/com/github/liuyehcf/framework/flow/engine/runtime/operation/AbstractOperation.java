@@ -95,8 +95,8 @@ public abstract class AbstractOperation<T> implements Runnable {
         return false;
     }
 
-    final void forward(LinkType linkType, List<Node> successors) {
-        List<Node> actualSuccessors = getSuccessorsByLinkType(linkType, successors);
+    final void forward(Node node, LinkType linkType) {
+        List<Node> actualSuccessors = node.getSuccessors(linkType);
 
         if (actualSuccessors.isEmpty()) {
             context.executeAsync(new FinishOperation(this.context));
@@ -247,7 +247,9 @@ public abstract class AbstractOperation<T> implements Runnable {
     final int getUnreachableNumOfJoinGateway(JoinGateway joinGateway) {
         int numOfUnreachable = 0;
         for (Node predecessor : joinGateway.getPredecessors()) {
-            if (predecessor instanceof Condition) {
+            if (predecessor instanceof Condition || predecessor instanceof Flow) {
+                LinkType linkType = predecessor.getLinkType(joinGateway);
+
                 // in case of exclusive gateway, remaining conditions are unreachable
                 if (context.isNodeUnreachable(predecessor)) {
                     numOfUnreachable++;
@@ -255,11 +257,13 @@ public abstract class AbstractOperation<T> implements Runnable {
                     Boolean output;
 
                     // in case of not execute yet or output is true
-                    // if this condition is going to be unreachable, then JoinGatewayMergeOperation is bound to trigger again
+                    // if this conditional is going to be unreachable, then JoinGatewayMergeOperation is bound to trigger again
                     // because MarkConditionSuccessorUnreachableOperation will do compensate operation(MarkConditionSuccessorUnreachableOperation#isSoftJoinGatewayUnreachable)
-                    if ((output = context.getConditionOutput((Condition) predecessor)) != null
-                            && !output) {
-                        numOfUnreachable++;
+                    if ((output = context.getConditionalOutput(predecessor)) != null) {
+                        if (Objects.equals(LinkType.TRUE, linkType) && !output
+                                || Objects.equals(LinkType.FALSE, linkType) && output) {
+                            numOfUnreachable++;
+                        }
                     }
                 }
             } else if (context.isNodeUnreachable(predecessor)) {
@@ -365,22 +369,6 @@ public abstract class AbstractOperation<T> implements Runnable {
         return listeners;
     }
 
-    private List<Node> getSuccessorsByLinkType(LinkType linkType, List<Node> successors) {
-        if (LinkType.NORMAL.equals(linkType)) {
-            return successors;
-        }
-
-        List<Node> actualSuccessors = Lists.newArrayList();
-
-        for (Node successor : successors) {
-            if (Objects.equals(linkType, successor.getLinkType())) {
-                actualSuccessors.add(successor);
-            }
-        }
-
-        return actualSuccessors;
-    }
-
     private void invokeListeners(List<Listener> listeners, Object result, Throwable cause, Runnable continuation, PromiseListener<Void> promiseListener) throws Throwable {
         if (CollectionUtils.isEmpty(listeners)) {
             if (continuation != null) {
@@ -411,8 +399,16 @@ public abstract class AbstractOperation<T> implements Runnable {
                 break;
             }
         }
+        if (splitPos == -1) {
+            Assert.assertNotEquals(sourceTraces.size(), targetTraces.size(), "size of trace of merged link is the same");
 
-        Assert.assertFalse(splitPos == -1);
+            // do not need merge
+            if (targetTraces.size() > sourceTraces.size()) {
+                return;
+            }
+
+            splitPos = minSize;
+        }
 
         for (int i = splitPos; i < sourceTraces.size(); i++) {
             Trace sourceTrace = sourceTraces.get(i);

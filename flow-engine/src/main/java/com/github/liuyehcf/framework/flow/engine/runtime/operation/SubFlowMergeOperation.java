@@ -5,7 +5,6 @@ import com.github.liuyehcf.framework.common.tools.promise.PromiseListener;
 import com.github.liuyehcf.framework.flow.engine.FlowErrorCode;
 import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
-import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.*;
 import com.github.liuyehcf.framework.flow.engine.util.CloneUtils;
@@ -71,7 +70,7 @@ class SubFlowMergeOperation extends AbstractOperation<Void> implements PromiseLi
                     subFlow,
                     startTimestamp,
                     startNanos,
-                    LinkType.TRUE)
+                    true)
             );
         } else {
             ExecutionLink mergedSubUnreachableLink = mergeLinks(subExecutionInstance.getUnreachableLinks());
@@ -82,7 +81,7 @@ class SubFlowMergeOperation extends AbstractOperation<Void> implements PromiseLi
                     subFlow,
                     startTimestamp,
                     startNanos,
-                    LinkType.FALSE));
+                    false));
         }
     }
 

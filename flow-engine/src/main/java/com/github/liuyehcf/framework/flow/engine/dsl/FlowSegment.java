@@ -1,5 +1,6 @@
 package com.github.liuyehcf.framework.flow.engine.dsl;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.flow.engine.model.DefaultFlow;
 import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 import com.github.liuyehcf.framework.flow.engine.model.Node;
@@ -16,12 +17,15 @@ class FlowSegment extends DefaultFlow {
 
     private static final long serialVersionUID = 672756188946202754L;
 
+    private final LinkType linkType;
     private final LinkedList<Node> nodeStack = Lists.newLinkedList();
     private final LinkedList<LinkType> linkTypeStack = Lists.newLinkedList();
     private final LinkedList<JoinScope> joinScopeStack = Lists.newLinkedList();
 
     FlowSegment(String name, String id, Start start, LinkType linkType) {
-        super(name, id, linkType, start);
+        super(name, id, start);
+        Assert.assertNotNull(linkType, "linkType");
+        this.linkType = linkType;
         nodeStack.push(start);
         linkTypeStack.push(LinkType.NORMAL);
     }
@@ -60,5 +64,9 @@ class FlowSegment extends DefaultFlow {
 
     void pushJoinScope(JoinScope joinScope) {
         joinScopeStack.push(joinScope);
+    }
+
+    LinkType getLinkType() {
+        return linkType;
     }
 }

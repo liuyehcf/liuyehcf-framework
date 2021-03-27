@@ -2,7 +2,6 @@ package com.github.liuyehcf.framework.flow.engine.model.gateway;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.flow.engine.model.ElementType;
-import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 
 /**
  * @author hechenfeng
@@ -15,7 +14,7 @@ public class DefaultJoinGateway extends AbstractGateway implements JoinGateway {
     private final JoinMode joinMode;
 
     public DefaultJoinGateway(String id, JoinMode joinMode) {
-        super(id, LinkType.TRUE);
+        super(id);
         Assert.assertNotNull(joinMode, "joinMode");
         this.joinMode = joinMode;
     }

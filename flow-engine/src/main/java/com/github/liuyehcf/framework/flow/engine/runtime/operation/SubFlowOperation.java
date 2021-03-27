@@ -1,6 +1,5 @@
 package com.github.liuyehcf.framework.flow.engine.runtime.operation;
 
-import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.OperationContext;
@@ -15,19 +14,20 @@ class SubFlowOperation extends AbstractOperation<Void> {
     private final Flow subFlow;
     private final long startTimestamp;
     private final long startNanos;
+    private final boolean subFlowOutput;
     private final LinkType linkType;
     private final LinkType reverseLinkType;
 
-    SubFlowOperation(OperationContext context, Flow subFlow, long startTimestamp, long startNanos, LinkType linkType) {
+    SubFlowOperation(OperationContext context, Flow subFlow, long startTimestamp, long startNanos, boolean subFlowOutput) {
         super(context);
         this.subFlow = subFlow;
         this.startTimestamp = startTimestamp;
         this.startNanos = startNanos;
-        if (LinkType.TRUE.equals(linkType)) {
+        this.subFlowOutput = subFlowOutput;
+        if (subFlowOutput) {
             this.linkType = LinkType.TRUE;
             reverseLinkType = LinkType.FALSE;
         } else {
-            Assert.assertEquals(LinkType.FALSE, linkType);
             this.linkType = LinkType.FALSE;
             reverseLinkType = LinkType.TRUE;
         }
@@ -56,8 +56,9 @@ class SubFlowOperation extends AbstractOperation<Void> {
 
     private void continueForward() {
         context.markElementFinished(subFlow);
+        context.setConditionalOutput(subFlow, subFlowOutput);
 
         context.executeAsync(new MarkSuccessorUnreachableOperation(context.cloneMarkContext(), subFlow, reverseLinkType));
-        forward(linkType, subFlow.getSuccessors());
+        forward(subFlow, linkType);
     }
 }

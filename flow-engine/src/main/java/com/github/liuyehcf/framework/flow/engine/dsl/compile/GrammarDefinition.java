@@ -30,6 +30,7 @@ public class GrammarDefinition {
             .addTokenOperator(Symbol.createIdentifierTerminator(IDENTIFIER_FLOATING_POINT_LITERAL), new FloatIdentifier())
             .addTokenOperator(Symbol.createIdentifierTerminator(IDENTIFIER_STRING_LITERAL), new StringIdentifier())
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_DOLLAR), "$")
+            .addNormalMorpheme(Symbol.createTerminator(NORMAL_BIT_REVERSE + NORMAL_BIT_AND), "~&")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_BIT_AND), "&")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_BIT_OR), "|")
             .addNormalMorpheme(Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES), "(")

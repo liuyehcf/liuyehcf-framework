@@ -13,6 +13,7 @@ import com.github.liuyehcf.framework.flow.engine.model.listener.DefaultListener;
 import com.github.liuyehcf.framework.flow.engine.model.listener.Listener;
 import com.github.liuyehcf.framework.flow.engine.model.listener.ListenerEvent;
 import com.github.liuyehcf.framework.flow.engine.model.listener.ListenerScope;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -87,7 +88,6 @@ public class CompilerContext extends Context {
         if (argumentNameList == null && argumentValueList == null) {
             action = new DefaultAction(
                     generateId(),
-                    flow.peekLinkType(),
                     actionName,
                     new String[0],
                     new Object[0]
@@ -97,14 +97,13 @@ public class CompilerContext extends Context {
         } else {
             action = new DefaultAction(
                     generateId(),
-                    flow.peekLinkType(),
                     actionName,
                     argumentNameList.toArray(new String[0]),
                     argumentValueList.toArray(new Object[0])
             );
         }
 
-        preNode.addSuccessor(action);
+        preNode.addSuccessor(action, flow.peekLinkType());
         action.addPredecessor(preNode);
 
         bindFlow(action, flow);
@@ -121,7 +120,6 @@ public class CompilerContext extends Context {
         if (argumentNameList == null && argumentValueList == null) {
             condition = new DefaultCondition(
                     generateId(),
-                    flow.peekLinkType(),
                     conditionName,
                     new String[0],
                     new Object[0]
@@ -131,7 +129,6 @@ public class CompilerContext extends Context {
         } else {
             condition = new DefaultCondition(
                     generateId(),
-                    flow.peekLinkType(),
                     conditionName,
                     argumentNameList.toArray(new String[0]),
                     argumentValueList.toArray(new Object[0])
@@ -140,7 +137,7 @@ public class CompilerContext extends Context {
 
         Node preNode = flow.peekNode();
 
-        preNode.addSuccessor(condition);
+        preNode.addSuccessor(condition, flow.peekLinkType());
         condition.addPredecessor(preNode);
 
         bindFlow(condition, flow);
@@ -179,11 +176,11 @@ public class CompilerContext extends Context {
     public ExclusiveGateway addExclusiveGateway() {
         FlowSegment flow = peekFlow();
 
-        ExclusiveGateway exclusiveGateway = new DefaultExclusiveGateway(generateId(), flow.peekLinkType());
+        ExclusiveGateway exclusiveGateway = new DefaultExclusiveGateway(generateId());
 
         Node preNode = flow.peekNode();
 
-        preNode.addSuccessor(exclusiveGateway);
+        preNode.addSuccessor(exclusiveGateway, flow.peekLinkType());
         exclusiveGateway.addPredecessor(preNode);
 
         bindFlow(exclusiveGateway, flow);
@@ -201,9 +198,9 @@ public class CompilerContext extends Context {
 
         Assert.assertFalse(joinScope.getJoinNodes().isEmpty(), "unreachable join gateway");
 
-        for (Node joinNode : joinScope.getJoinNodes()) {
-            joinNode.addSuccessor(joinGateway);
-            joinGateway.addPredecessor(joinNode);
+        for (Pair<Node, LinkType> joinNode : joinScope.getJoinNodes()) {
+            joinNode.getKey().addSuccessor(joinGateway, joinNode.getValue());
+            joinGateway.addPredecessor(joinNode.getKey());
         }
 
         bindFlow(joinGateway, flow);
@@ -213,31 +210,14 @@ public class CompilerContext extends Context {
         return joinGateway;
     }
 
-    public Flow addSubFlow() {
-        FlowSegment subFlow = flowStack.pop();
-
-        FlowSegment flow = peekFlow();
-
-        Node pointerNode = flow.peekNode();
-
-        pointerNode.addSuccessor(subFlow);
-        subFlow.addPredecessor(pointerNode);
-
-        bindFlow(subFlow, flow);
-        pushNode(subFlow);
-
-        flowStack.push(subFlow);
-
-        return subFlow;
-    }
-
-    public void pushFlow(boolean isSubFlow, String flowName, String flowId) {
+    public void pushFlow(boolean isSubFlow, String flowName, String flowId, LinkType joinMarkLinkType) {
+        FlowSegment flow;
         if (isSubFlow) {
             LinkType linkType = peekFlow().peekLinkType();
             FlowSegment peek = peekFlow();
             String segmentFlowName = peek.getName();
             String segmentFlowId = generateId();
-            flowStack.push(new FlowSegment(segmentFlowName, segmentFlowId, new Start(generateId()), linkType));
+            flow = new FlowSegment(segmentFlowName, segmentFlowId, new Start(generateId()), linkType);
         } else {
             String segmentFlowName = flowName;
             String segmentFlowId = flowId;
@@ -247,12 +227,31 @@ public class CompilerContext extends Context {
             if (segmentFlowId == null) {
                 segmentFlowId = generateUUID();
             }
-            flowStack.push(new FlowSegment(segmentFlowName, segmentFlowId, new Start(generateId()), LinkType.NORMAL));
+            flow = new FlowSegment(segmentFlowName, segmentFlowId, new Start(generateId()), LinkType.NORMAL);
         }
+
+        if (isSubFlow) {
+            FlowSegment peekFlow = peekFlow();
+            Node peekNode = peekFlow.peekNode();
+            peekNode.addSuccessor(flow, flow.getLinkType());
+            flow.addPredecessor(peekNode);
+            pushNode(flow);
+            if (joinMarkLinkType != null) {
+                addJoinNode(flow, joinMarkLinkType);
+            }
+        }
+        flowStack.push(flow);
     }
 
-    public void popFlow() {
-        flowStack.pop();
+    public void bindSubFlow() {
+        FlowSegment subFlow = popFlow();
+        FlowSegment flow = peekFlow();
+        bindFlow(subFlow, flow);
+        flowStack.push(subFlow);
+    }
+
+    public FlowSegment popFlow() {
+        return flowStack.pop();
     }
 
     private FlowSegment peekFlow() {
@@ -281,9 +280,10 @@ public class CompilerContext extends Context {
         return joinScope;
     }
 
-    public void addJoinNode(Node node) {
+    public void addJoinNode(Node node, LinkType linkType) {
         Assert.assertNotNull(node, "node");
-        peekJoinScope().addJoinNode(node);
+        Assert.assertNotNull(linkType, "linkType");
+        peekJoinScope().addJoinNode(node, linkType);
     }
 
     public void pushLinkType(LinkType linkType) {

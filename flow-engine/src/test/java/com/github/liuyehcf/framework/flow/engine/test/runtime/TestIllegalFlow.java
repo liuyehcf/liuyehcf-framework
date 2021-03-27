@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.flow.engine.test.runtime;
 import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.model.DefaultFlow;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
-import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 import com.github.liuyehcf.framework.flow.engine.model.Start;
 import com.github.liuyehcf.framework.flow.engine.model.activity.DefaultAction;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
@@ -30,7 +29,7 @@ public class TestIllegalFlow extends TestRuntimeBase {
     public void test2() {
         Flow flow = new DefaultFlow("test", "test", new Start("start"));
 
-        flow.addElement(new DefaultAction("action", LinkType.NORMAL, "action", new String[]{}, new Object[]{}));
+        flow.addElement(new DefaultAction("action", "action", new String[]{}, new Object[]{}));
 
         Promise<ExecutionInstance> promise = startFlow(flow, null)
                 .addListener((p) -> {

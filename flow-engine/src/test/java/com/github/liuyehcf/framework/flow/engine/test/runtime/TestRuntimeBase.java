@@ -3,6 +3,7 @@ package com.github.liuyehcf.framework.flow.engine.test.runtime;
 import com.github.liuyehcf.framework.common.tools.promise.Promise;
 import com.github.liuyehcf.framework.flow.engine.ExecutionCondition;
 import com.github.liuyehcf.framework.flow.engine.FlowEngine;
+import com.github.liuyehcf.framework.flow.engine.model.ElementType;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.runtime.DefaultFlowEngine;
 import com.github.liuyehcf.framework.flow.engine.runtime.config.FlowProperties;
@@ -21,6 +22,7 @@ import org.junit.Assert;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.*;
 
@@ -138,9 +140,13 @@ public class TestRuntimeBase {
         }
     }
 
-    protected Flow compile(String content) {
-        System.out.println(content);
-        return engine.compile(content);
+    protected Flow compile(String dsl) {
+        System.out.println(dsl);
+        Flow flow = engine.compile(dsl);
+        String rebuildDsl = flow.getDsl();
+        Flow rebuildFlow = engine.compile(rebuildDsl);
+        Assert.assertTrue(isSame(flow, rebuildFlow));
+        return flow;
     }
 
     protected Promise<ExecutionInstance> startFlow(String content, Map<String, Object> env) {
@@ -158,5 +164,44 @@ public class TestRuntimeBase {
         return engine.startFlow(new ExecutionCondition(flow)
                 .env(env)
                 .attributes(attributes));
+    }
+
+    private boolean isSame(Flow flow1, Flow flow2) {
+        for (ElementType elementType : ElementType.values()) {
+            long count1 = flow1.getElements().stream()
+                    .filter(e -> Objects.equals(elementType, e.getType()))
+                    .count();
+
+            long count2 = flow2.getElements().stream()
+                    .filter(e -> Objects.equals(elementType, e.getType()))
+                    .count();
+
+            if (count1 != count2) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private String simplify(String dsl) {
+        StringBuilder buffer = new StringBuilder();
+        boolean inStringContext = false;
+        for (char c : dsl.toCharArray()) {
+            if (c == '\"') {
+                buffer.append(c);
+                inStringContext = !inStringContext;
+                continue;
+            }
+            if (inStringContext) {
+                buffer.append(c);
+            } else {
+                if (c == ' ' || c == '\n' || c == '\t') {
+                    continue;
+                }
+                buffer.append(c);
+            }
+        }
+        return buffer.toString();
     }
 }

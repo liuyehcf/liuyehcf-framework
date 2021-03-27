@@ -244,13 +244,13 @@ public class DefaultOperationContext implements OperationContext {
     }
 
     @Override
-    public final void setConditionOutput(Condition condition, boolean output) {
-        conditionOutputs.put(condition.getId(), output);
+    public final void setConditionalOutput(Node node, boolean output) {
+        conditionOutputs.put(node.getId(), output);
     }
 
     @Override
-    public final Boolean getConditionOutput(Condition condition) {
-        return conditionOutputs.get(condition.getId());
+    public final Boolean getConditionalOutput(Node node) {
+        return conditionOutputs.get(node.getId());
     }
 
     @Override

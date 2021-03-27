@@ -48,6 +48,6 @@ class JoinGatewayOperation extends AbstractOperation<Void> {
     }
 
     private void continueForward() {
-        forward(LinkType.NORMAL, joinGateway.getSuccessors());
+        forward(joinGateway, LinkType.NORMAL);
     }
 }

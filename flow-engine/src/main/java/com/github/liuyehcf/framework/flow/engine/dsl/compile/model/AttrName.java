@@ -80,5 +80,10 @@ public enum AttrName {
     /**
      * join mode
      */
-    JOIN_MODE;
+    JOIN_MODE,
+
+    /**
+     * join mark
+     */
+    JOIN_MARK
 }

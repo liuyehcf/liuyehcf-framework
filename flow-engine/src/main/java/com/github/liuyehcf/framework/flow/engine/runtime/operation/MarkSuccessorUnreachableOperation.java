@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -70,16 +69,14 @@ class MarkSuccessorUnreachableOperation extends AbstractOperation<Void> {
     private List<Node> getDirectUnreachableSuccessors() {
         List<Node> unreachableDirectSuccessors = Lists.newArrayList();
 
-        for (Node successor : node.getSuccessors()) {
-            if (Objects.equals(unReachableLinkType, successor.getLinkType())) {
-                if (successor instanceof JoinGateway) {
-                    if (!isJoinGatewayUnreachable((JoinGateway) successor)) {
-                        continue;
-                    }
+        for (Node successor : node.getSuccessors(unReachableLinkType)) {
+            if (successor instanceof JoinGateway) {
+                if (!isJoinGatewayUnreachable((JoinGateway) successor)) {
+                    continue;
                 }
-
-                unreachableDirectSuccessors.add(successor);
             }
+
+            unreachableDirectSuccessors.add(successor);
         }
 
         return unreachableDirectSuccessors;

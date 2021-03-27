@@ -14,6 +14,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author hechenfeng
@@ -640,6 +641,1887 @@ public class TestJoinTrace extends TestTraceBase {
 
             trace = executionLink.getTraces().get(7);
             assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinActionWithJoinMarkAndNormalSuccessors() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        printAction(content=\"actionA\")& {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinActionWithJoinMarkAndJoinSuccessors() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        printAction(content=\"actionA\")& {\n" +
+                "            printAction(content=\"actionB\")& {\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}\n");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionC");
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSingleIfWithTrueJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSingleIfWithTrueJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSingleIfWithFalseJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSingleIfWithFalseJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 2, 0);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenElseWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenElseWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenElseWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenElseWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            for (int i = 0; i < 2; i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 3);
+
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(1);
+                assertPrintCondition(trace, "conditionA", false);
+
+                trace = executionLink.getTraces().get(2);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionC");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 2, 0);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinIfThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 1, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionC");
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubWithTrueJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubWithTrueJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubWithFalseJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubWithFalseJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+
+            trace = executionLink.getTraces().get(6);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 2, 0);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionD");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+
+            trace = executionLink.getTraces().get(6);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionD");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                assertJoinGateway(trace);
+            } else {
+                assertPrintAction(trace, "actionD");
+            }
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 2, 0);
+        });
+    }
+
+    @Test
+    public void testHardAndJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 1, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionD");
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
         });
     }
 
@@ -1624,6 +3506,1965 @@ public class TestJoinTrace extends TestTraceBase {
     }
 
     @Test
+    public void testSoftAndJoinActionWithJoinMarkAndNormalSuccessors() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        printAction(content=\"actionA\")& {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinActionWithJoinMarkAndJoinSuccessors() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        printAction(content=\"actionA\")& {\n" +
+                "            printAction(content=\"actionB\")& {\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}\n");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionC");
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSingleIfWithTrueJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSingleIfWithTrueJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSingleIfWithFalseJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSingleIfWithFalseJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenElseWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenElseWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenElseWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenElseWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            for (int i = 0; i < 2; i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 3);
+
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(1);
+                assertPrintCondition(trace, "conditionA", false);
+
+                trace = executionLink.getTraces().get(2);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionC");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinIfThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            for (int i = 0; i < 2; i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 3);
+
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(1);
+                assertPrintCondition(trace, "conditionA", false);
+
+                trace = executionLink.getTraces().get(2);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionC");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubWithTrueJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubWithTrueJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubWithFalseJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubWithFalseJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+
+            trace = executionLink.getTraces().get(6);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+
+            trace = executionLink.getTraces().get(6);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionD");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+
+            trace = executionLink.getTraces().get(6);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionD");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                assertJoinGateway(trace);
+            } else {
+                assertPrintAction(trace, "actionD");
+            }
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+
+            trace = executionLink.getTraces().get(6);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSoftAndJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            for (int i = 0; i < 2; i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 5);
+
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(1);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(2);
+                assertPrintCondition(trace, "conditionA", false);
+
+                trace = executionLink.getTraces().get(3);
+                assertFlow(trace);
+
+                trace = executionLink.getTraces().get(4);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionD");
+                }
+            }
+        });
+    }
+
+    @Test
     public void testOrJoinSingle() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
@@ -2524,6 +6365,1975 @@ public class TestJoinTrace extends TestTraceBase {
             env = executionLink.getEnv();
             Assert.assertEquals(1, env.size());
             Assert.assertTrue(env.containsKey("e"));
+        });
+    }
+
+    @Test
+    public void testOrJoinJoinActionWithJoinMarkAndNormalSuccessors() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        printAction(content=\"actionA\")& {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testOrJoinActionWithJoinMarkAndJoinSuccessors() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        printAction(content=\"actionA\")& {\n" +
+                "            printAction(content=\"actionB\")& {\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}\n");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 2, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            for (int i = 2; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[BC]");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinSingleIfWithTrueJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinSingleIfWithTrueJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testOrJoinSingleIfWithFalseJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+        });
+    }
+
+    @Test
+    public void testOrJoinSingleIfWithFalseJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 2, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            for (int i = 2; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[AB]");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 2);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 1, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            for (int i = 3; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionB");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenElseWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenElseWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 2, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            for (int i = 2; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[AB]");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenElseWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenElseWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\") {\n" +
+                "                printAction(content=\"actionB\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            for (int i = 0; i < 2; i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 3);
+
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(1);
+                assertPrintCondition(trace, "conditionA", false);
+
+                trace = executionLink.getTraces().get(2);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionC");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=true))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 1, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            for (int i = 3; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionB");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinIfThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        if(printCondition(content=\"conditionA\", output=false))~& {\n" +
+                "            printAction(content=\"actionA\")& {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionC\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            for (int i = 0; i < 2; i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 3);
+
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(1);
+                assertPrintCondition(trace, "conditionA", false);
+
+                trace = executionLink.getTraces().get(2);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionC");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinSubWithTrueJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinSubWithTrueJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinSubWithFalseJoinMarkOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinSubWithFalseJoinMarkOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 2, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            for (int i = 4; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[BC]");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 1, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            for (int i = 5; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionC");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = findLink(executionInstance, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+
+            executionLink = findLink(executionInstance, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionD");
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub & {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 2, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            for (int i = 4; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[BC]");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub & {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionD");
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionC");
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\"){\n" +
+                "                printAction(content=\"actionC\")\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            trace = executionLink.getTraces().get(4);
+            if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                assertJoinGateway(trace);
+            } else {
+                assertPrintAction(trace, "actionD");
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub ~& {\n" +
+                "            printAction(content=\"actionA\")\n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 1, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(3);
+            assertFlow(trace);
+
+            for (int i = 4; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[BC]");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testOrJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        sub ~& {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                printAction(content=\"actionA\")\n" +
+                "            } \n" +
+                "        } then {\n" +
+                "            printAction(content=\"actionB\")&{\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }\n" +
+                "        } else {\n" +
+                "            printAction(content=\"actionD\")\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 2, 0, 0);
+
+            for (int i = 0; i < 2; i++) {
+                executionLink = executionInstance.getLinks().get(i);
+                assertExecutionLink(executionLink, 5);
+
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(1);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(2);
+                assertPrintCondition(trace, "conditionA", false);
+
+                trace = executionLink.getTraces().get(3);
+                assertFlow(trace);
+
+                trace = executionLink.getTraces().get(4);
+                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionD");
+                }
+            }
         });
     }
 

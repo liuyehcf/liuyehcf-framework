@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.flow.engine.model;
 
 import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
+import com.github.liuyehcf.framework.flow.engine.dsl.DslDecompiler;
 import com.github.liuyehcf.framework.flow.engine.model.activity.Action;
 import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.flow.engine.model.event.Event;
@@ -32,11 +33,7 @@ public class DefaultFlow extends AbstractNode implements Flow {
     private final AtomicBoolean init = new AtomicBoolean(false);
 
     public DefaultFlow(String name, String id, Start start) {
-        this(name, id, LinkType.NORMAL, start);
-    }
-
-    public DefaultFlow(String name, String id, LinkType linkType, Start start) {
-        super(id, linkType == null ? LinkType.NORMAL : linkType);
+        super(id);
         this.name = name;
         this.start = start;
         start.bindFlow(this);
@@ -79,7 +76,7 @@ public class DefaultFlow extends AbstractNode implements Flow {
 
     @Override
     public final void addElement(Element element) {
-        Assert.assertFalse(elements.containsKey(element.getId()), "duplicate element key");
+        Assert.assertFalse(elements.containsKey(element.getId()), "duplicate element id");
         elements.put(element.getId(), element);
     }
 
@@ -96,6 +93,12 @@ public class DefaultFlow extends AbstractNode implements Flow {
     @Override
     public final Collection<Element> getElements() {
         return elements.values();
+    }
+
+    @Override
+    public final String getDsl() {
+        DslDecompiler decompiler = new DslDecompiler(this);
+        return decompiler.decompile();
     }
 
     @Override
@@ -163,9 +166,22 @@ public class DefaultFlow extends AbstractNode implements Flow {
 
         for (Node node : nodes) {
             // check predecessor size
-            if (!(node instanceof JoinGateway)) {
+            if (node instanceof JoinGateway) {
+                Assert.assertEquals(node.getPredecessors().size(),
+                        (int) node.getPredecessors().stream()
+                                .distinct()
+                                .count(),
+                        "duplicate predecessors");
+            } else {
                 Assert.assertTrue(node.getPredecessors().size() <= 1, "nodes other than joinGateway allow only one predecessor");
             }
+
+            // check duplicate successors
+            Assert.assertEquals(node.getSuccessors().size(),
+                    (int) node.getSuccessors().stream()
+                            .distinct()
+                            .count(),
+                    "duplicate successors");
 
             // check link relationship asymmetry
             for (Node predecessor : node.getPredecessors()) {
@@ -179,23 +195,10 @@ public class DefaultFlow extends AbstractNode implements Flow {
 
             // check link type
             if (node instanceof Condition || node instanceof Flow) {
-                for (Node successor : node.getSuccessors()) {
-                    LinkType linkType = successor.getLinkType();
-                    Assert.assertNotNull(linkType, "linkType");
-                    Assert.assertNotEquals(LinkType.NORMAL, linkType);
-                }
+                Assert.assertEmpty(node.getSuccessors(LinkType.NORMAL), "condition/flow only allows true and false link type");
             } else {
-                for (Node successor : node.getSuccessors()) {
-                    if (successor instanceof JoinGateway) {
-                        LinkType linkType = successor.getLinkType();
-                        Assert.assertNotNull(linkType, "linkType");
-                        Assert.assertEquals(LinkType.TRUE, linkType);
-                    } else {
-                        LinkType linkType = successor.getLinkType();
-                        Assert.assertNotNull(linkType, "linkType");
-                        Assert.assertEquals(LinkType.NORMAL, linkType);
-                    }
-                }
+                Assert.assertEmpty(node.getSuccessors(LinkType.TRUE), "action/joinGateway/exclusiveGateway only allows normal link type");
+                Assert.assertEmpty(node.getSuccessors(LinkType.FALSE), "action/joinGateway/exclusiveGateway only allows normal link type");
             }
 
             // check start
@@ -231,11 +234,10 @@ public class DefaultFlow extends AbstractNode implements Flow {
             }
         }
 
-        int nodeListenerNum = elements.values().stream()
+        int nodeListenerNum = (int) elements.values().stream()
                 .filter(e -> e instanceof Listener)
                 .map(e -> (Listener) e)
-                .filter(l -> l.getScope().isNode())
-                .collect(Collectors.toList()).size();
+                .filter(l -> l.getScope().isNode()).count();
 
         Assert.assertEquals(nodeListenerNum, nodeListeners.size(),
                 () -> String.format("listener relationship asymmetry. nodeListenerNum=%s, flowNodeListenerNum=%s", nodeListeners.size(), nodeListenerNum));

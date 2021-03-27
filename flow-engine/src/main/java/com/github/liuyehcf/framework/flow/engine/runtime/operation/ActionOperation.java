@@ -69,6 +69,6 @@ class ActionOperation extends AbstractOperation<Void> {
     private void continueForward() {
         context.markElementFinished(action);
 
-        forward(LinkType.NORMAL, action.getSuccessors());
+        forward(action, LinkType.NORMAL);
     }
 }

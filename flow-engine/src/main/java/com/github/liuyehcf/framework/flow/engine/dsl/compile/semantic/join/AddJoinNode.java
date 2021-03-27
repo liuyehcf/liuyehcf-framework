@@ -3,6 +3,7 @@ package com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.join;
 import com.github.liuyehcf.framework.flow.engine.dsl.CompilerContext;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.model.AttrName;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.AbstractSemanticAction;
+import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 import com.github.liuyehcf.framework.flow.engine.model.Node;
 
 /**
@@ -19,14 +20,17 @@ public class AddJoinNode extends AbstractSemanticAction {
      */
     private final int nodeStackOffset;
 
-    public AddJoinNode(int nodeStackOffset) {
+    private final LinkType linkType;
+
+    public AddJoinNode(int nodeStackOffset, LinkType linkType) {
         this.nodeStackOffset = nodeStackOffset;
+        this.linkType = linkType;
     }
 
     @Override
     public void onAction(CompilerContext context) {
         Node node = context.getAttr(nodeStackOffset, AttrName.NODE);
 
-        context.addJoinNode(node);
+        context.addJoinNode(node, linkType);
     }
 }

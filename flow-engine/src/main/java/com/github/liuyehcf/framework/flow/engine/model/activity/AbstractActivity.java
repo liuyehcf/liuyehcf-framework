@@ -2,7 +2,6 @@ package com.github.liuyehcf.framework.flow.engine.model.activity;
 
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.flow.engine.model.AbstractNode;
-import com.github.liuyehcf.framework.flow.engine.model.LinkType;
 
 /**
  * @author hechenfeng
@@ -16,8 +15,8 @@ public abstract class AbstractActivity extends AbstractNode implements Activity 
     private final String[] argumentNames;
     private final Object[] argumentValues;
 
-    AbstractActivity(String id, LinkType linkType, String name, String[] argumentNames, Object[] argumentValues) {
-        super(id, linkType);
+    AbstractActivity(String id, String name, String[] argumentNames, Object[] argumentValues) {
+        super(id);
         Assert.assertNotNull(name, "name");
         Assert.assertNotNull(argumentNames, "argumentNames");
         Assert.assertNotNull(argumentValues, "argumentValues");

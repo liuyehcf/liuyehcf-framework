@@ -25,8 +25,9 @@ class Constant {
     static final String CONDITION_EXPRESSION = "<condition expression>";
     static final String EPSILON_OR_LISTENERS = "<epsilon or listeners>";
     static final String LISTENERS = "<listeners>";
-    static final String EPSILON_OR_CHOOSE_OR_BLOCK = "<epsilon or choose or block>";
-    static final String EPSILON_OR_CHOOSE = "<epsilon or choose>";
+    static final String EPSILON_OR_ACTION_JOIN_MARK = "<epsilon or action join mark>";
+    static final String EPSILON_OR_CONDITION_JOIN_MARK = "<epsilon or condition join mark>";
+    static final String EPSILON_OR_SUB_JOIN_MARK = "<epsilon or sub join mark>";
 
     static final String MARK_CREATE_FLOW = "<mark create flow>";
     static final String MARK_LINK_TYPE_TRUE = "<mark link type true>";
@@ -37,10 +38,9 @@ class Constant {
     static final String MARK_EXIT_JOIN_SCOPE = "<mark exit join scope>";
     static final String MARK_ENTER_SELECT = "<mark enter select>";
     static final String MARK_EXIT_SELECT = "<mark exit select>";
-    static final String MARK_ENTER_SUB_OR_SUB_THEN = "<mark enter sub or sub then>";
+    static final String MARK_ENTER_SUB_FLOW = "<mark enter sub flow>";
     static final String MARK_EXIT_SUB = "<mark exit sub>";
     static final String MARK_EXIT_SUB_THEN = "<mark exit sub then>";
-    static final String MARK_ADD_SUB_FLOW = "<mark add sub flow>";
     static final String MARK_ADD_GLOBAL_LISTENER = "<mark add global listener>";
 
     static final String ACTION = "<action>";
@@ -85,6 +85,7 @@ class Constant {
     static final String NORMAL_COMMA = ",";
     static final String NORMAL_ASSIGN = "=";
     static final String NORMAL_BIT_AND = "&";
+    static final String NORMAL_BIT_REVERSE = "~";
     static final String NORMAL_BIT_OR = "|";
 
     /**

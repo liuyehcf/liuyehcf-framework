@@ -11,13 +11,6 @@ import java.util.List;
 public interface Node extends Element {
 
     /**
-     * return link type
-     *
-     * @return link type
-     */
-    LinkType getLinkType();
-
-    /**
      * add listener of current node
      *
      * @param listener listener
@@ -48,9 +41,10 @@ public interface Node extends Element {
     /**
      * add successor node of current node
      *
-     * @param node successor node
+     * @param node     successor node
+     * @param linkType linkType
      */
-    void addSuccessor(Node node);
+    void addSuccessor(Node node, LinkType linkType);
 
     /**
      * remove successor node of current node
@@ -79,4 +73,20 @@ public interface Node extends Element {
      * @return successor nodes
      */
     List<Node> getSuccessors();
+
+    /**
+     * get successors of link type
+     *
+     * @param linkType link type
+     * @return successor nodes
+     */
+    List<Node> getSuccessors(LinkType linkType);
+
+    /**
+     * get link type of specified successor
+     *
+     * @param node successor
+     * @return link type
+     */
+    LinkType getLinkType(Node node);
 }

@@ -93,7 +93,7 @@ class ConditionOperation extends AbstractOperation<Boolean> {
     }
 
     private void continueForward() {
-        context.setConditionOutput(condition, conditionOutput);
+        context.setConditionalOutput(condition, conditionOutput);
         LinkType linkType = conditionOutput ? LinkType.TRUE : LinkType.FALSE;
         LinkType unReachableLinkType = conditionOutput ? LinkType.FALSE : LinkType.TRUE;
 
@@ -105,6 +105,6 @@ class ConditionOperation extends AbstractOperation<Boolean> {
 
         context.markElementFinished(condition);
 
-        forward(linkType, condition.getSuccessors());
+        forward(condition, linkType);
     }
 }

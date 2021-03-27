@@ -7,6 +7,7 @@ import com.github.liuyehcf.framework.compile.engine.grammar.definition.SymbolStr
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.model.AttrName;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.attr.AssignAttrsToLeftNode;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.attr.AttrFilter;
+import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.attr.SetAttrToLeftNode;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.element.*;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.iterator.*;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.join.AddJoinNode;
@@ -173,7 +174,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <action expression> → <action> <epsilon or listeners> <mark action add listener> <epsilon or choose or block>
+                     * <action expression> → <action> <epsilon or listeners> <mark action add listener> <epsilon or action join mark>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(ACTION_EXPRESSION),
@@ -181,8 +182,24 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(ACTION),
                                     Symbol.createNonTerminator(EPSILON_OR_LISTENERS),
                                     Symbol.createNonTerminator(MARK_ACTION_ADD_LISTENER),
-                                    Symbol.createNonTerminator(EPSILON_OR_CHOOSE_OR_BLOCK)
+                                    Symbol.createNonTerminator(EPSILON_OR_ACTION_JOIN_MARK)
                             ),
+                            new PopIteratorNodeAndType(),
+                            new AttrFilter()
+                    ),
+                    /*
+                     * <action expression> → <action> <epsilon or listeners> <mark action add listener> <epsilon or action join mark> <block>
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(ACTION_EXPRESSION),
+                            SymbolString.create(
+                                    Symbol.createNonTerminator(ACTION),
+                                    Symbol.createNonTerminator(EPSILON_OR_LISTENERS),
+                                    Symbol.createNonTerminator(MARK_ACTION_ADD_LISTENER),
+                                    Symbol.createNonTerminator(EPSILON_OR_ACTION_JOIN_MARK),
+                                    Symbol.createNonTerminator(BLOCK)
+                            ),
+                            new PopIteratorNodeAndType(),
                             new AttrFilter()
                     )
             ),
@@ -270,41 +287,28 @@ abstract class BlockProductions {
 
 
             /*
-             * <epsilon or choose or block>
-             */
+             * <epsilon or action join mark>
+            */
             Production.create(
                     /*
-                     * <epsilon or choose or block> → ε
+                     * <epsilon or action join mark> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(EPSILON_OR_CHOOSE_OR_BLOCK),
+                            Symbol.createNonTerminator(EPSILON_OR_ACTION_JOIN_MARK),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
-                            new PopIteratorNodeAndType(),
                             new AttrFilter()
                     ),
                     /*
-                     * <epsilon or choose or block> → &
+                     * <epsilon or action join mark> → &
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(EPSILON_OR_CHOOSE_OR_BLOCK),
+                            Symbol.createNonTerminator(EPSILON_OR_ACTION_JOIN_MARK),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BIT_AND)
                             ),
-                            new AddJoinNode(-3),
-                            new PopIteratorNodeAndType(),
-                            new AttrFilter()
-                    ),
-                    /*
-                     * <epsilon or choose or block> → <block>
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(EPSILON_OR_CHOOSE_OR_BLOCK),
-                            SymbolString.create(
-                                    Symbol.createNonTerminator(BLOCK)
-                            ),
-                            new PopIteratorNodeAndType(),
+                            new AddJoinNode(-3, LinkType.NORMAL),
                             new AttrFilter()
                     )
             ),
@@ -315,22 +319,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <if then statement> → if ( <condition expression> )
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(IF_THEN_STATEMENT),
-                            SymbolString.create(
-                                    Symbol.createTerminator(NORMAL_IF),
-                                    Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
-                                    Symbol.createNonTerminator(CONDITION_EXPRESSION),
-                                    Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES)
-                            ),
-                            new PushIteratorLinkType(LinkType.TRUE),// just for pop logic's consistency
-                            new PopIteratorNodeAndType(),
-                            new AttrFilter()
-                    ),
-                    /*
-                     * <if then statement> → if ( <condition expression> ) &
+                     * <if then statement> → if ( <condition expression> ) <epsilon or condition join mark>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(IF_THEN_STATEMENT),
@@ -339,15 +328,14 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(CONDITION_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
-                                    Symbol.createTerminator(NORMAL_BIT_AND)
+                                    Symbol.createNonTerminator(EPSILON_OR_CONDITION_JOIN_MARK)
                             ),
-                            new AddJoinNode(-2),
                             new PushIteratorLinkType(LinkType.TRUE),// just for pop logic's consistency
                             new PopIteratorNodeAndType(),
                             new AttrFilter()
                     ),
                     /*
-                     * <if then statement> → if ( <condition expression> ) <mark link type true> <block>
+                     * <if then statement> → if ( <condition expression> ) <epsilon or condition join mark> <mark link type true> <block>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(IF_THEN_STATEMENT),
@@ -356,6 +344,7 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(CONDITION_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(EPSILON_OR_CONDITION_JOIN_MARK),
                                     Symbol.createNonTerminator(MARK_LINK_TYPE_TRUE),
                                     Symbol.createNonTerminator(BLOCK)
                             ),
@@ -381,6 +370,45 @@ abstract class BlockProductions {
                             new AddNodeListeners(0, -1),
                             new AssignAttrsToLeftNode(-1, AttrName.NODE),
                             new AttrFilter(AttrName.NODE)
+                    )
+            ),
+
+
+            /*
+             * <epsilon or condition join mark>
+            */
+            Production.create(
+                    /*
+                     * <epsilon or condition join mark> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_CONDITION_JOIN_MARK),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new AttrFilter()
+                    ),
+                    /*
+                     * <epsilon or condition join mark> → &
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_CONDITION_JOIN_MARK),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_BIT_AND)
+                            ),
+                            new AddJoinNode(-2, LinkType.TRUE),
+                            new AttrFilter()
+                    ),
+                    /*
+                     * <epsilon or condition join mark> → ~&
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_CONDITION_JOIN_MARK),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_BIT_REVERSE + NORMAL_BIT_AND)
+                            ),
+                            new AddJoinNode(-2, LinkType.FALSE),
+                            new AttrFilter()
                     )
             ),
 
@@ -427,7 +455,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <if then else statement> → if ( <condition expression> ) <mark link type true> <block> else <mark link type false> <block>
+                     * <if then else statement> → if ( <condition expression> ) <epsilon or condition join mark> <mark link type true> <block> else <mark link type false> <block>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(IF_THEN_ELSE_STATEMENT),
@@ -436,6 +464,7 @@ abstract class BlockProductions {
                                     Symbol.createTerminator(NORMAL_SMALL_LEFT_PARENTHESES),
                                     Symbol.createNonTerminator(CONDITION_EXPRESSION),
                                     Symbol.createTerminator(NORMAL_SMALL_RIGHT_PARENTHESES),
+                                    Symbol.createNonTerminator(EPSILON_OR_CONDITION_JOIN_MARK),
                                     Symbol.createNonTerminator(MARK_LINK_TYPE_TRUE),
                                     Symbol.createNonTerminator(BLOCK),
                                     Symbol.createTerminator(NORMAL_ELSE),
@@ -646,19 +675,18 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <sub statement> → sub <mark enter sub or sub then> <block> <mark add sub flow> <epsilon or global listeners> <mark add global listener> <mark exit sub> <epsilon or choose>
+                     * <sub statement> → sub <epsilon or sub join mark> <mark enter sub flow> <block> <epsilon or global listeners> <mark add global listener> <mark exit sub>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(SUB_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SUB),
-                                    Symbol.createNonTerminator(MARK_ENTER_SUB_OR_SUB_THEN),
+                                    Symbol.createNonTerminator(EPSILON_OR_SUB_JOIN_MARK),
+                                    Symbol.createNonTerminator(MARK_ENTER_SUB_FLOW),
                                     Symbol.createNonTerminator(BLOCK),
-                                    Symbol.createNonTerminator(MARK_ADD_SUB_FLOW),
                                     Symbol.createNonTerminator(EPSILON_OR_GLOBAL_LISTENERS),
                                     Symbol.createNonTerminator(MARK_ADD_GLOBAL_LISTENER),
-                                    Symbol.createNonTerminator(MARK_EXIT_SUB),
-                                    Symbol.createNonTerminator(EPSILON_OR_CHOOSE)
+                                    Symbol.createNonTerminator(MARK_EXIT_SUB)
                             ),
                             new AttrFilter()
                     )
@@ -670,15 +698,15 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <sub then statement> → sub <mark enter sub or sub then> <block> <mark add sub flow> <epsilon or global listeners> <mark add global listener> <mark exit sub then> then <mark link type true> <block>
+                     * <sub then statement> → sub <epsilon or sub join mark> <mark enter sub flow> <block> <epsilon or global listeners> <mark add global listener> <mark exit sub then> then <mark link type true> <block>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(SUB_THEN_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SUB),
-                                    Symbol.createNonTerminator(MARK_ENTER_SUB_OR_SUB_THEN),
+                                    Symbol.createNonTerminator(EPSILON_OR_SUB_JOIN_MARK),
+                                    Symbol.createNonTerminator(MARK_ENTER_SUB_FLOW),
                                     Symbol.createNonTerminator(BLOCK),
-                                    Symbol.createNonTerminator(MARK_ADD_SUB_FLOW),
                                     Symbol.createNonTerminator(EPSILON_OR_GLOBAL_LISTENERS),
                                     Symbol.createNonTerminator(MARK_ADD_GLOBAL_LISTENER),
                                     Symbol.createNonTerminator(MARK_EXIT_SUB_THEN),
@@ -697,15 +725,15 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <sub then else statement> → sub <mark enter sub or sub then> <block> <mark add sub flow> <epsilon or global listeners> <mark add global listener> <mark exit sub then> then <mark link type true> <block> else <mark link type false> <block>
+                     * <sub then else statement> → sub <epsilon or sub join mark> <mark enter sub flow> <block> <epsilon or global listeners> <mark add global listener> <mark exit sub then> then <mark link type true> <block> else <mark link type false> <block>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(SUB_THEN_ELSE_STATEMENT),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_SUB),
-                                    Symbol.createNonTerminator(MARK_ENTER_SUB_OR_SUB_THEN),
+                                    Symbol.createNonTerminator(EPSILON_OR_SUB_JOIN_MARK),
+                                    Symbol.createNonTerminator(MARK_ENTER_SUB_FLOW),
                                     Symbol.createNonTerminator(BLOCK),
-                                    Symbol.createNonTerminator(MARK_ADD_SUB_FLOW),
                                     Symbol.createNonTerminator(EPSILON_OR_GLOBAL_LISTENERS),
                                     Symbol.createNonTerminator(MARK_ADD_GLOBAL_LISTENER),
                                     Symbol.createNonTerminator(MARK_EXIT_SUB_THEN),
@@ -723,14 +751,14 @@ abstract class BlockProductions {
 
 
             /*
-             * <mark enter sub or sub then>
+             * <mark enter sub flow>
              */
             Production.create(
                     /*
-                     * <mark enter sub or sub then> → ε
+                     * <mark enter sub flow> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_ENTER_SUB_OR_SUB_THEN),
+                            Symbol.createNonTerminator(MARK_ENTER_SUB_FLOW),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
@@ -752,6 +780,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
+                            new BindSubFlow(),
                             new PopIteratorFlow(),
                             new PopIteratorNode(),
                             new AttrFilter()
@@ -771,25 +800,8 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
+                            new BindSubFlow(),
                             new PopIteratorFlow(),
-                            new AttrFilter()
-                    )
-            ),
-
-
-            /*
-             * <mark add sub flow>
-             */
-            Production.create(
-                    /*
-                     * <mark add sub flow> → ε
-                     */
-                    PrimaryProduction.create(
-                            Symbol.createNonTerminator(MARK_ADD_SUB_FLOW),
-                            SymbolString.create(
-                                    Symbol.EPSILON
-                            ),
-                            new AddSubFlow(),
                             new AttrFilter()
                     )
             ),
@@ -814,29 +826,40 @@ abstract class BlockProductions {
 
 
             /*
-             * <epsilon or choose>
+             * <epsilon or sub join mark>
              */
             Production.create(
                     /*
-                     * <epsilon or choose> → ε
+                     * <epsilon or sub join mark> → ε
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(EPSILON_OR_CHOOSE),
+                            Symbol.createNonTerminator(EPSILON_OR_SUB_JOIN_MARK),
                             SymbolString.create(
                                     Symbol.EPSILON
                             ),
                             new AttrFilter()
                     ),
                     /*
-                     * <epsilon or choose> → &
+                     * <epsilon or sub join mark> → &
                      */
                     PrimaryProduction.create(
-                            Symbol.createNonTerminator(EPSILON_OR_CHOOSE),
+                            Symbol.createNonTerminator(EPSILON_OR_SUB_JOIN_MARK),
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BIT_AND)
                             ),
-                            new AddJoinNode(-5),
-                            new AttrFilter()
+                            new SetAttrToLeftNode(AttrName.JOIN_MARK, LinkType.TRUE),
+                            new AttrFilter(AttrName.JOIN_MARK)
+                    ),
+                    /*
+                     * <epsilon or sub join mark> → ~&
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_SUB_JOIN_MARK),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_BIT_REVERSE + NORMAL_BIT_AND)
+                            ),
+                            new SetAttrToLeftNode(AttrName.JOIN_MARK, LinkType.FALSE),
+                            new AttrFilter(AttrName.JOIN_MARK)
                     )
             ),
     };

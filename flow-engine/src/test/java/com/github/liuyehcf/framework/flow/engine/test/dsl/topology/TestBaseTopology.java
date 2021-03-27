@@ -35,8 +35,8 @@ public class TestBaseTopology {
     }
 
     void assertFlow(Flow flow, LinkType linkType, int successorSize, int endNum, int listenerSize, int eventSize, int elementSize, Node predecessor) {
-        Assert.assertEquals(linkType, flow.getLinkType());
         if (predecessor != null) {
+            Assert.assertTrue(predecessor.getSuccessors(linkType).contains(flow));
             Assert.assertEquals(1, flow.getPredecessors().size());
         } else {
             Assert.assertEquals(0, flow.getPredecessors().size());
@@ -67,7 +67,7 @@ public class TestBaseTopology {
     }
 
     void assertActivity(Activity activity, LinkType linkType, String name, int argumentLength, int successorSize, int listenerSize, int eventSize, Node predecessor) {
-        Assert.assertEquals(linkType, activity.getLinkType());
+        Assert.assertTrue(predecessor.getSuccessors(linkType).contains(activity));
         Assert.assertEquals(name, activity.getName());
         Assert.assertEquals(argumentLength, activity.getArgumentNames().length);
         Assert.assertEquals(argumentLength, activity.getArgumentValues().length);
@@ -98,7 +98,7 @@ public class TestBaseTopology {
     }
 
     void assertExclusiveGateway(ExclusiveGateway gateway, LinkType linkType, int successorSize, int listenerSize, Node predecessor) {
-        Assert.assertEquals(linkType, gateway.getLinkType());
+        Assert.assertTrue(predecessor.getSuccessors(linkType).contains(gateway));
         Assert.assertEquals(1, gateway.getPredecessors().size());
         Assert.assertEquals(successorSize, gateway.getSuccessors().size());
         Assert.assertEquals(listenerSize, gateway.getListeners().size());

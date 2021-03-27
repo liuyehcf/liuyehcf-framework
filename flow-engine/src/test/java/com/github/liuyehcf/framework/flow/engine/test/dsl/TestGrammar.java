@@ -171,6 +171,112 @@ public class TestGrammar {
                 "        }\n" +
                 "    }\n" +
                 "}");
+
+        compile("{\n" +
+                "    join & {\n" +
+                "        actionA()&{\n" +
+                "            actionB()\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        compile("{\n" +
+                "    join & {\n" +
+                "        actionA()&{\n" +
+                "            actionB(),\n" +
+                "            actionC(){\n" +
+                "                actionD()\n" +
+                "            }\n" +
+                "        },\n" +
+                "        actionE()&\n" +
+                "    }\n" +
+                "}");
+
+        compile("{\n" +
+                "    join & {\n" +
+                "        if(conditionA())& {\n" +
+                "            actionA()\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        compile("{\n" +
+                "    join & {\n" +
+                "        if(conditionA())& {\n" +
+                "            actionA() {\n" +
+                "                actionB()\n" +
+                "            }\n" +
+                "        },\n" +
+                "        if(conditionB())&\n" +
+                "    }\n" +
+                "}");
+
+        compile("{\n" +
+                "    join & {\n" +
+                "        if(conditionA())~& {\n" +
+                "            actionA()\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        compile("{\n" +
+                "    join & {\n" +
+                "        if(conditionA())~& {\n" +
+                "            actionA() {\n" +
+                "                actionB()\n" +
+                "            }\n" +
+                "        },\n" +
+                "        if(conditionB())&\n" +
+                "    }\n" +
+                "}");
+
+        compile("{\n" +
+                "    join & {\n" +
+                "        if(conditionA()) & {\n" +
+                "            actionA()\n" +
+                "        } else{\n" +
+                "            actionB()\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        compile("{\n" +
+                "    join & {\n" +
+                "        if(conditionA()) ~& {\n" +
+                "            actionA()\n" +
+                "        } else{\n" +
+                "            actionB()\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        compile("{\n" +
+                "    join & {\n" +
+                "        if(conditionA()) & {\n" +
+                "            actionA(){\n" +
+                "                actionC()\n" +
+                "            }\n" +
+                "        } else{\n" +
+                "            actionB(){\n" +
+                "                actionD()&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        compile("{\n" +
+                "    join & {\n" +
+                "        if(conditionA()) ~& {\n" +
+                "            actionA(){\n" +
+                "                actionC()\n" +
+                "            }\n" +
+                "        } else{\n" +
+                "            actionB(){\n" +
+                "                actionD()&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
     }
 
     @Test

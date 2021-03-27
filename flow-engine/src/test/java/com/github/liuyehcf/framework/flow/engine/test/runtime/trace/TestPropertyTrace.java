@@ -171,6 +171,56 @@ public class TestPropertyTrace extends TestTraceBase {
     }
 
     @Test
+    public void testUpdatePropertyCascade2() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        if(setPropertyCondition(name=\"a\", value=1, output=true))&{\n" +
+                "            printAction(content=\"actionB\")& {\n" +
+                "                printAction(content=\"actionC\")&{\n" +
+                "                    setPropertyAction(name=\"a\", value=2)&\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertSetPropertyCondition(trace, "a", 1, true, PropertyUpdateType.CREATE, null);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintAction(trace, "actionB");
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionC");
+
+            trace = executionLink.getTraces().get(4);
+            assertSetPropertyAction(trace, "a", 2, PropertyUpdateType.UPDATE, 1);
+
+            trace = executionLink.getTraces().get(5);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
     public void testSingleGlobalBeforeListenerSetPropertyCreate() {
         Flow flow = compile("{\n" +
                 "    getPropertyAction(name=\"a\", expectedValue=1)\n" +

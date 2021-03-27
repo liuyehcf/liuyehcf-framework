@@ -6,7 +6,6 @@ import com.github.liuyehcf.framework.flow.engine.model.Element;
 import com.github.liuyehcf.framework.flow.engine.model.Executable;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.model.Node;
-import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.flow.engine.model.gateway.JoinGateway;
 import com.github.liuyehcf.framework.flow.engine.promise.ExecutionLinkPausePromise;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.interceptor.UnsafeDelegateInvocation;
@@ -152,17 +151,17 @@ public interface OperationContext {
     boolean markGlobalFailureListenerFinished();
 
     /**
-     * mark output of specified condition
+     * mark output of specified conditional node
      */
-    void setConditionOutput(Condition condition, boolean output);
+    void setConditionalOutput(Node node, boolean output);
 
     /**
-     * get output of specified condition
+     * get output of specified conditional node(condition/flow)
      *
-     * @param condition condition node
-     * @return null if condition hasn't executed yet
+     * @param node conditional node
+     * @return null if conditional node hasn't executed yet
      */
-    Boolean getConditionOutput(Condition condition);
+    Boolean getConditionalOutput(Node node);
 
     /**
      * reach gateway
