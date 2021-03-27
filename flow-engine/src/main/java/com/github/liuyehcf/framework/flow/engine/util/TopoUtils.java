@@ -40,9 +40,9 @@ public abstract class TopoUtils {
             List<Node> successors = node.getSuccessors();
 
             if (node instanceof Condition) {
-                List<Node> trueSuccessors = node.getSuccessors(LinkType.TRUE);
+                List<Node> trueSuccessors = node.getSuccessorsOf(LinkType.TRUE);
 
-                List<Node> falseSuccessors = node.getSuccessors(LinkType.FALSE);
+                List<Node> falseSuccessors = node.getSuccessorsOf(LinkType.FALSE);
 
                 if (trueSuccessors.size() > 1 || falseSuccessors.size() > 1) {
                     return false;

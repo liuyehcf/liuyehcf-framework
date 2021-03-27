@@ -40,37 +40,37 @@ public abstract class AbstractNode extends AbstractElement implements Node {
     }
 
     @Override
-    public final void addPredecessor(Node node) {
-        Assert.assertNotNull(node, "node");
-        predecessors.add(node);
+    public final void addPredecessor(Node predecessor) {
+        Assert.assertNotNull(predecessor, "node");
+        predecessors.add(predecessor);
     }
 
     @Override
-    public final void removePredecessor(Node node) {
-        Assert.assertNotNull(node, "node");
-        predecessors.remove(node);
+    public final void removePredecessor(Node predecessor) {
+        Assert.assertNotNull(predecessor, "node");
+        predecessors.remove(predecessor);
     }
 
     @Override
-    public final void addSuccessor(Node node, LinkType linkType) {
-        Assert.assertNotNull(node, "node");
+    public final void addSuccessor(Node successor, LinkType linkType) {
+        Assert.assertNotNull(successor, "node");
         Assert.assertNotNull(linkType, "linkType");
-        successors.add(node);
+        successors.add(successor);
         if (!successorMap.containsKey(linkType)) {
             successorMap.putIfAbsent(linkType, Lists.newCopyOnWriteArrayList());
         }
-        successorMap.get(linkType).add(node);
-        successorLinkTypeMap.put(node, linkType);
+        successorMap.get(linkType).add(successor);
+        successorLinkTypeMap.put(successor, linkType);
     }
 
     @Override
-    public final void removeSuccessor(Node node) {
-        Assert.assertNotNull(node, "node");
-        successors.remove(node);
+    public final void removeSuccessor(Node successor) {
+        Assert.assertNotNull(successor, "node");
+        successors.remove(successor);
         for (List<Node> nodes : successorMap.values()) {
-            nodes.remove(node);
+            nodes.remove(successor);
         }
-        successorLinkTypeMap.remove(node);
+        successorLinkTypeMap.remove(successor);
     }
 
     @Override
@@ -89,12 +89,12 @@ public abstract class AbstractNode extends AbstractElement implements Node {
     }
 
     @Override
-    public final List<Node> getSuccessors(LinkType linkType) {
+    public final List<Node> getSuccessorsOf(LinkType linkType) {
         return successorMap.get(linkType);
     }
 
     @Override
-    public final LinkType getLinkType(Node node) {
-        return successorLinkTypeMap.get(node);
+    public final LinkType getLinkTypeOf(Node successor) {
+        return successorLinkTypeMap.get(successor);
     }
 }

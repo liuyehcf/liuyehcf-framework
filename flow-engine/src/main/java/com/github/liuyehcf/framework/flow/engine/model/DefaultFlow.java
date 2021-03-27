@@ -195,10 +195,10 @@ public class DefaultFlow extends AbstractNode implements Flow {
 
             // check link type
             if (node instanceof Condition || node instanceof Flow) {
-                Assert.assertEmpty(node.getSuccessors(LinkType.NORMAL), "condition/flow only allows true and false link type");
+                Assert.assertEmpty(node.getSuccessorsOf(LinkType.NORMAL), "condition/flow only allows true and false link type");
             } else {
-                Assert.assertEmpty(node.getSuccessors(LinkType.TRUE), "action/joinGateway/exclusiveGateway only allows normal link type");
-                Assert.assertEmpty(node.getSuccessors(LinkType.FALSE), "action/joinGateway/exclusiveGateway only allows normal link type");
+                Assert.assertEmpty(node.getSuccessorsOf(LinkType.TRUE), "action/joinGateway/exclusiveGateway only allows normal link type");
+                Assert.assertEmpty(node.getSuccessorsOf(LinkType.FALSE), "action/joinGateway/exclusiveGateway only allows normal link type");
             }
 
             // check start

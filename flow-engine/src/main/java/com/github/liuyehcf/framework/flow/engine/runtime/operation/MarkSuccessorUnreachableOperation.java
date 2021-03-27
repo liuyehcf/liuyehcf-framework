@@ -69,7 +69,7 @@ class MarkSuccessorUnreachableOperation extends AbstractOperation<Void> {
     private List<Node> getDirectUnreachableSuccessors() {
         List<Node> unreachableDirectSuccessors = Lists.newArrayList();
 
-        for (Node successor : node.getSuccessors(unReachableLinkType)) {
+        for (Node successor : node.getSuccessorsOf(unReachableLinkType)) {
             if (successor instanceof JoinGateway) {
                 if (!isJoinGatewayUnreachable((JoinGateway) successor)) {
                     continue;

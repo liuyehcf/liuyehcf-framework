@@ -96,7 +96,7 @@ public abstract class AbstractOperation<T> implements Runnable {
     }
 
     final void forward(Node node, LinkType linkType) {
-        List<Node> actualSuccessors = node.getSuccessors(linkType);
+        List<Node> actualSuccessors = node.getSuccessorsOf(linkType);
 
         if (actualSuccessors.isEmpty()) {
             context.executeAsync(new FinishOperation(this.context));
@@ -248,7 +248,7 @@ public abstract class AbstractOperation<T> implements Runnable {
         int numOfUnreachable = 0;
         for (Node predecessor : joinGateway.getPredecessors()) {
             if (predecessor instanceof Condition || predecessor instanceof Flow) {
-                LinkType linkType = predecessor.getLinkType(joinGateway);
+                LinkType linkType = predecessor.getLinkTypeOf(joinGateway);
 
                 // in case of exclusive gateway, remaining conditions are unreachable
                 if (context.isNodeUnreachable(predecessor)) {

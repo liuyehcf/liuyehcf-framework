@@ -262,7 +262,7 @@ public class DslDecompiler {
                     .collect(Collectors.toList());
         }
         if (CollectionUtils.isNotEmpty(ancestors)) {
-            List<Node> successors = node.getSuccessors(linkType);
+            List<Node> successors = node.getSuccessorsOf(linkType);
             parseSegmentAndSort(ancestors, successors);
 
             if (isAncestorsOverlap(ancestors)) {
@@ -272,7 +272,7 @@ public class DslDecompiler {
             }
 
         } else {
-            List<Node> successors = node.getSuccessors(linkType);
+            List<Node> successors = node.getSuccessorsOf(linkType);
             handleSuccessors(successors, false);
         }
     }
@@ -302,7 +302,7 @@ public class DslDecompiler {
             handleSuccessors(Lists.newArrayList(ancestor.getRelatedSuccessors()), false);
             decreaseIdent();
             append(true, BIG_RIGHT_PARENTHESES, getNormalListenersOf(joinGateway));
-            List<Node> joinGatewaySuccessors = joinGateway.getSuccessors(LinkType.NORMAL);
+            List<Node> joinGatewaySuccessors = joinGateway.getSuccessorsOf(LinkType.NORMAL);
             if (!joinGatewaySuccessors.isEmpty()) {
                 appendln(false, SPACE, KEY_WORD_THEN, SPACE, BIG_LEFT_PARENTHESES);
                 increaseIdent();
@@ -341,7 +341,7 @@ public class DslDecompiler {
             handleSuccessors(successors.subList(firstIndexOfSuccessor, lastIndexOfSuccessor + 1), false);
             decreaseIdent();
             append(true, BIG_RIGHT_PARENTHESES, getNormalListenersOf(joinGateway));
-            List<Node> joinGatewaySuccessors = joinGateway.getSuccessors(LinkType.NORMAL);
+            List<Node> joinGatewaySuccessors = joinGateway.getSuccessorsOf(LinkType.NORMAL);
             if (!joinGatewaySuccessors.isEmpty()) {
                 appendln(false, SPACE, KEY_WORD_THEN, SPACE, BIG_LEFT_PARENTHESES);
                 increaseIdent();
@@ -521,7 +521,7 @@ public class DslDecompiler {
     }
 
     private boolean hasNonJoinGatewaySuccessors(Node node, LinkType linkType) {
-        List<Node> successors = node.getSuccessors(linkType);
+        List<Node> successors = node.getSuccessorsOf(linkType);
         return successors.stream().anyMatch((successor) -> !Objects.equals(ElementType.JOIN_GATEWAY, successor.getType()));
     }
 
@@ -578,7 +578,7 @@ public class DslDecompiler {
             return null;
         }
         Node joinGateway = joinGateways.get(0);
-        LinkType linkType = node.getLinkType(joinGateway);
+        LinkType linkType = node.getLinkTypeOf(joinGateway);
         Assert.assertNotNull(linkType);
         if (linkType == LinkType.FALSE) {
             return String.format("%s%s", BIT_REVERSE, BIT_AND);
@@ -681,7 +681,7 @@ public class DslDecompiler {
                 return false;
             }
             return relatedSuccessors.stream()
-                    .map(ancestor::getLinkType)
+                    .map(ancestor::getLinkTypeOf)
                     .distinct()
                     .count() == 1L;
         }
@@ -690,7 +690,7 @@ public class DslDecompiler {
             LinkType linkType = null;
             if (CollectionUtils.isNotEmpty(relatedSuccessors)) {
                 List<LinkType> linkTypes = relatedSuccessors.stream()
-                        .map(ancestor::getLinkType)
+                        .map(ancestor::getLinkTypeOf)
                         .distinct()
                         .collect(Collectors.toList());
                 Assert.assertTrue(linkTypes.size() == 1, "relatedSuccessors has more than one linkType");

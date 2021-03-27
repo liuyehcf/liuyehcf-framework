@@ -27,31 +27,31 @@ public interface Node extends Element {
     /**
      * add predecessor node of current node
      *
-     * @param node predecessor node
+     * @param predecessor predecessor node
      */
-    void addPredecessor(Node node);
+    void addPredecessor(Node predecessor);
 
     /**
      * remove predecessor node of current node
      *
-     * @param node predecessor node
+     * @param predecessor predecessor node
      */
-    void removePredecessor(Node node);
+    void removePredecessor(Node predecessor);
 
     /**
      * add successor node of current node
      *
-     * @param node     successor node
-     * @param linkType linkType
+     * @param successor successor node
+     * @param linkType  linkType
      */
-    void addSuccessor(Node node, LinkType linkType);
+    void addSuccessor(Node successor, LinkType linkType);
 
     /**
      * remove successor node of current node
      *
-     * @param node successor node
+     * @param successor successor node
      */
-    void removeSuccessor(Node node);
+    void removeSuccessor(Node successor);
 
     /**
      * listeners of this node
@@ -80,13 +80,13 @@ public interface Node extends Element {
      * @param linkType link type
      * @return successor nodes
      */
-    List<Node> getSuccessors(LinkType linkType);
+    List<Node> getSuccessorsOf(LinkType linkType);
 
     /**
      * get link type of specified successor
      *
-     * @param node successor
+     * @param successor successor
      * @return link type
      */
-    LinkType getLinkType(Node node);
+    LinkType getLinkTypeOf(Node successor);
 }
