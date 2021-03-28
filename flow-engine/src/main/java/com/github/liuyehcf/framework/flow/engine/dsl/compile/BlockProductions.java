@@ -11,7 +11,6 @@ import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.attr.SetAt
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.element.*;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.iterator.*;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.join.AddJoinNode;
-import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.join.AddSubFlowJoinNode;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.join.PopJoinScope;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.join.PushJoinScope;
 import com.github.liuyehcf.framework.flow.engine.model.LinkType;
@@ -309,7 +308,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BIT_AND)
                             ),
-                            new AddJoinNode(-3, LinkType.NORMAL),
+                            new AddJoinNode(LinkType.NORMAL),
                             new AttrFilter()
                     )
             ),
@@ -397,7 +396,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BIT_AND)
                             ),
-                            new AddJoinNode(-2, LinkType.TRUE),
+                            new AddJoinNode(LinkType.TRUE),
                             new AttrFilter()
                     ),
                     /*
@@ -408,7 +407,7 @@ abstract class BlockProductions {
                             SymbolString.create(
                                     Symbol.createTerminator(NORMAL_BIT_REVERSE + NORMAL_BIT_AND)
                             ),
-                            new AddJoinNode(-2, LinkType.FALSE),
+                            new AddJoinNode(LinkType.FALSE),
                             new AttrFilter()
                     )
             ),
@@ -783,7 +782,7 @@ abstract class BlockProductions {
                             ),
                             new BindSubFlow(),
                             new PopIteratorFlow(),
-                            new AddSubFlowJoinNode(),
+                            new AddJoinNode(null),
                             new PopIteratorNode(),
                             new AttrFilter()
                     )
@@ -804,7 +803,7 @@ abstract class BlockProductions {
                             ),
                             new BindSubFlow(),
                             new PopIteratorFlow(),
-                            new AddSubFlowJoinNode(),
+                            new AddJoinNode(null),
                             new AttrFilter()
                     )
             ),

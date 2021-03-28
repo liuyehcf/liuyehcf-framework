@@ -1,10 +1,10 @@
 package com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.join;
 
+import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.flow.engine.dsl.CompilerContext;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.model.AttrName;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.AbstractSemanticAction;
 import com.github.liuyehcf.framework.flow.engine.model.LinkType;
-import com.github.liuyehcf.framework.flow.engine.model.Node;
 
 /**
  * @author hechenfeng
@@ -18,19 +18,23 @@ public class AddJoinNode extends AbstractSemanticAction {
      * '-1' 表示栈次顶，以此类推
      * '1' 表示未来入栈的元素，以此类推
      */
-    private final int nodeStackOffset;
+    private static final int SUB_FLOW_JOIN_MARK_TACK_OFFSET = 0;
+
 
     private final LinkType linkType;
 
-    public AddJoinNode(int nodeStackOffset, LinkType linkType) {
-        this.nodeStackOffset = nodeStackOffset;
+    public AddJoinNode(LinkType linkType) {
         this.linkType = linkType;
     }
 
     @Override
     public void onAction(CompilerContext context) {
-        Node node = context.getAttr(nodeStackOffset, AttrName.NODE);
-
-        context.addJoinNode(node, linkType);
+        if (linkType != null) {
+            context.addJoinNode(context.peekNode(), linkType);
+        } else {
+            LinkType subFlowJoinMarkLinkType = context.getAttr(SUB_FLOW_JOIN_MARK_TACK_OFFSET, AttrName.SUB_FLOW_JOIN_MARK);
+            Assert.assertNotNull(subFlowJoinMarkLinkType, "subFlowJoinMarkLinkType");
+            context.addJoinNode(context.peekNode(), subFlowJoinMarkLinkType);
+        }
     }
 }
