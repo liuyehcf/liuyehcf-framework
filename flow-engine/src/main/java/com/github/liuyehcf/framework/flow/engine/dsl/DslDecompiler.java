@@ -100,12 +100,8 @@ public class DslDecompiler {
             Ancestor ancestor = findCommonAncestor(joinGateway, flow.getStart(), joinGateway.getPredecessors());
             Node ancestorNode = ancestor.getAncestor();
 
-            if (joinGateway.getPredecessors().size() == 1) {
-                Assert.assertNotEquals(ElementType.JOIN_GATEWAY, ancestorNode.getType(), "cascade joinGateway is not allowed in dsl");
-                ancestor = new Ancestor(joinGateway, ancestorNode.getPredecessors().get(0), Sets.newHashSet(ancestorNode));
-            }
-
-            while (Objects.equals(ElementType.EXCLUSIVE_GATEWAY, ancestor.getAncestor().getType())) {
+            while (ElementType.JOIN_GATEWAY.equals(ancestor.getAncestor().getType())
+                    || ElementType.EXCLUSIVE_GATEWAY.equals(ancestor.getAncestor().getType())) {
                 ancestor = new Ancestor(joinGateway, ancestorNode.getPredecessors().get(0), Sets.newHashSet(ancestorNode));
             }
 
@@ -289,28 +285,12 @@ public class DslDecompiler {
             Ancestor ancestor = ancestors.get(i);
 
             unrelatedSuccessors.removeAll(ancestor.getRelatedSuccessors());
-
-            // join gateway and related successors
-            JoinGateway joinGateway = ancestor.getJoinGateway();
-            appendln(true, KEY_WORD_JOIN, getJoinModeOf(joinGateway), BIG_LEFT_PARENTHESES);
-            increaseIdent();
-            handleSuccessors(Lists.newArrayList(ancestor.getRelatedSuccessors()), false);
-            decreaseIdent();
-            append(true, BIG_RIGHT_PARENTHESES, getNormalListenersOf(joinGateway));
-            List<Node> joinGatewaySuccessors = joinGateway.getSuccessorsOf(LinkType.NORMAL);
-            if (!joinGatewaySuccessors.isEmpty()) {
-                appendln(false, SPACE, KEY_WORD_THEN, SPACE, BIG_LEFT_PARENTHESES);
-                increaseIdent();
-                handleSuccessorsOf(joinGateway, LinkType.NORMAL);
-                decreaseIdent();
-                append(true, BIG_RIGHT_PARENTHESES);
-            }
+            handleJoinGateway(ancestor, Lists.newArrayList(ancestor.getRelatedSuccessors()));
 
             if (i != successors.size() - 1) {
                 appendln(false, COMMA);
             }
         }
-
 
         // last part
         if (!unrelatedSuccessors.isEmpty()) {
@@ -329,21 +309,7 @@ public class DslDecompiler {
                 handleSuccessors(successors.subList(lastProcessedIndex + 1, firstIndexOfSuccessor), true);
             }
 
-            // join gateway and related successors
-            JoinGateway joinGateway = ancestor.getJoinGateway();
-            appendln(true, KEY_WORD_JOIN, getJoinModeOf(joinGateway), BIG_LEFT_PARENTHESES);
-            increaseIdent();
-            handleSuccessors(successors.subList(firstIndexOfSuccessor, lastIndexOfSuccessor + 1), false);
-            decreaseIdent();
-            append(true, BIG_RIGHT_PARENTHESES, getNormalListenersOf(joinGateway));
-            List<Node> joinGatewaySuccessors = joinGateway.getSuccessorsOf(LinkType.NORMAL);
-            if (!joinGatewaySuccessors.isEmpty()) {
-                appendln(false, SPACE, KEY_WORD_THEN, SPACE, BIG_LEFT_PARENTHESES);
-                increaseIdent();
-                handleSuccessorsOf(joinGateway, LinkType.NORMAL);
-                decreaseIdent();
-                append(true, BIG_RIGHT_PARENTHESES);
-            }
+            handleJoinGateway(ancestor, successors.subList(firstIndexOfSuccessor, lastIndexOfSuccessor + 1));
 
             lastProcessedIndex = lastIndexOfSuccessor;
 
@@ -360,9 +326,27 @@ public class DslDecompiler {
         }
     }
 
+    private void handleJoinGateway(Ancestor ancestor, List<Node> relatedSuccessors) {
+        // join gateway and related successors
+        JoinGateway joinGateway = ancestor.getJoinGateway();
+        appendln(true, KEY_WORD_JOIN, getJoinModeOf(joinGateway), BIG_LEFT_PARENTHESES);
+        increaseIdent();
+        handleSuccessors(relatedSuccessors, false);
+        decreaseIdent();
+        append(true, BIG_RIGHT_PARENTHESES, getNormalListenersOf(joinGateway));
+        List<Node> joinGatewaySuccessors = joinGateway.getSuccessorsOf(LinkType.NORMAL);
+        if (!joinGatewaySuccessors.isEmpty()) {
+            appendln(false, SPACE, KEY_WORD_THEN, SPACE, BIG_LEFT_PARENTHESES);
+            increaseIdent();
+            handleSuccessorsOf(joinGateway, LinkType.NORMAL);
+            decreaseIdent();
+            append(true, BIG_RIGHT_PARENTHESES);
+        }
+    }
+
     private void handleSuccessors(List<Node> successors, boolean hasMoreSuccessors) {
         successors = successors.stream()
-                .filter((successor) -> !Objects.equals(ElementType.JOIN_GATEWAY, successor.getType()))
+                .filter((successor) -> !ElementType.JOIN_GATEWAY.equals(successor.getType()))
                 .collect(Collectors.toList());
 
         int size = successors.size();
@@ -517,7 +501,7 @@ public class DslDecompiler {
 
     private boolean hasNonJoinGatewaySuccessors(Node node, LinkType linkType) {
         List<Node> successors = node.getSuccessorsOf(linkType);
-        return successors.stream().anyMatch((successor) -> !Objects.equals(ElementType.JOIN_GATEWAY, successor.getType()));
+        return successors.stream().anyMatch((successor) -> !ElementType.JOIN_GATEWAY.equals(successor.getType()));
     }
 
     private String getJoinModeOf(JoinGateway joinGateway) {
@@ -565,7 +549,7 @@ public class DslDecompiler {
 
     private String getJoinMarkOf(Node node) {
         List<Node> joinGateways = node.getSuccessors().stream()
-                .filter((successor) -> Objects.equals(ElementType.JOIN_GATEWAY, successor.getType()))
+                .filter((successor) -> ElementType.JOIN_GATEWAY.equals(successor.getType()))
                 .collect(Collectors.toList());
         Assert.assertFalse(joinGateways.size() > 1, "successors contains more than one joinGateway");
 

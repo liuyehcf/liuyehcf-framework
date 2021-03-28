@@ -27,6 +27,7 @@ class Constant {
     static final String LISTENERS = "<listeners>";
     static final String EPSILON_OR_ACTION_JOIN_MARK = "<epsilon or action join mark>";
     static final String EPSILON_OR_CONDITION_JOIN_MARK = "<epsilon or condition join mark>";
+    static final String EPSILON_OR_JOIN_JOIN_MARK = "<epsilon or join join mark>";
     static final String EPSILON_OR_SUB_JOIN_MARK = "<epsilon or sub join mark>";
 
     static final String MARK_CREATE_FLOW = "<mark create flow>";

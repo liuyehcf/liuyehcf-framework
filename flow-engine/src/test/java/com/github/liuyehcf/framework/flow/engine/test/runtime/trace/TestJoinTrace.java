@@ -14,7 +14,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author hechenfeng
@@ -212,7 +211,7 @@ public class TestJoinTrace extends TestTraceBase {
 
                 if (executionLink.getTraces().size() > 1) {
                     trace = executionLink.getTraces().get(1);
-                    if (trace.getType().equals(ElementType.ACTION)) {
+                    if (ElementType.ACTION.equals(trace.getType())) {
                         assertPrintAction(trace, "actionA");
                     } else {
                         assertPrintCondition(trace, "conditionA", false);
@@ -309,7 +308,7 @@ public class TestJoinTrace extends TestTraceBase {
                 assertStart(trace);
 
                 trace = executionLink.getTraces().get(1);
-                if (trace.getType().equals(ElementType.ACTION)) {
+                if (ElementType.ACTION.equals(trace.getType())) {
                     assertThrowLinkTerminateAction(trace);
                 } else {
                     assertPrintCondition(trace, "conditionA", false);
@@ -1453,7 +1452,7 @@ public class TestJoinTrace extends TestTraceBase {
                 assertPrintCondition(trace, "conditionA", false);
 
                 trace = executionLink.getTraces().get(2);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "actionC");
@@ -2420,7 +2419,7 @@ public class TestJoinTrace extends TestTraceBase {
             assertFlow(trace);
 
             trace = executionLink.getTraces().get(4);
-            if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+            if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                 assertJoinGateway(trace);
             } else {
                 assertPrintAction(trace, "actionD");
@@ -2819,7 +2818,7 @@ public class TestJoinTrace extends TestTraceBase {
                 assertStart(trace);
 
                 trace = executionLink.getTraces().get(1);
-                if (trace.getType().equals(ElementType.ACTION)) {
+                if (ElementType.ACTION.equals(trace.getType())) {
                     assertThrowLinkTerminateAction(trace);
                 } else {
                     assertPrintCondition(trace, "conditionA", false);
@@ -4335,7 +4334,7 @@ public class TestJoinTrace extends TestTraceBase {
                 assertPrintCondition(trace, "conditionA", false);
 
                 trace = executionLink.getTraces().get(2);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "actionC");
@@ -5344,7 +5343,7 @@ public class TestJoinTrace extends TestTraceBase {
             assertFlow(trace);
 
             trace = executionLink.getTraces().get(4);
-            if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+            if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                 assertJoinGateway(trace);
             } else {
                 assertPrintAction(trace, "actionD");
@@ -5455,7 +5454,7 @@ public class TestJoinTrace extends TestTraceBase {
                 assertFlow(trace);
 
                 trace = executionLink.getTraces().get(4);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "actionD");
@@ -5659,7 +5658,7 @@ public class TestJoinTrace extends TestTraceBase {
                 assertStart(trace);
 
                 trace = executionLink.getTraces().get(1);
-                if (trace.getType().equals(ElementType.ACTION)) {
+                if (ElementType.ACTION.equals(trace.getType())) {
                     assertPrintAction(trace, "actionA");
                 } else {
                     assertPrintCondition(trace, "conditionA", true);
@@ -5692,7 +5691,7 @@ public class TestJoinTrace extends TestTraceBase {
 
                 if (executionLink.getTraces().size() > 1) {
                     trace = executionLink.getTraces().get(1);
-                    if (trace.getType().equals(ElementType.ACTION)) {
+                    if (ElementType.ACTION.equals(trace.getType())) {
                         assertPrintAction(trace, "actionA");
                     } else {
                         assertPrintCondition(trace, "condition[ABC]", null);
@@ -5866,7 +5865,7 @@ public class TestJoinTrace extends TestTraceBase {
 
                 if (executionLink.getTraces().size() > 1) {
                     trace = executionLink.getTraces().get(1);
-                    if (trace.getType().equals(ElementType.ACTION)) {
+                    if (ElementType.ACTION.equals(trace.getType())) {
                         if (trace.getName().equals("printAction")) {
                             assertPrintAction(trace, "actionA");
                         } else {
@@ -6456,7 +6455,7 @@ public class TestJoinTrace extends TestTraceBase {
 
             for (int i = 2; i < executionLink.getTraces().size(); i++) {
                 trace = executionLink.getTraces().get(i);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "action[BC]");
@@ -6723,7 +6722,7 @@ public class TestJoinTrace extends TestTraceBase {
 
             for (int i = 2; i < executionLink.getTraces().size(); i++) {
                 trace = executionLink.getTraces().get(i);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "action[AB]");
@@ -6888,7 +6887,7 @@ public class TestJoinTrace extends TestTraceBase {
 
             for (int i = 3; i < executionLink.getTraces().size(); i++) {
                 trace = executionLink.getTraces().get(i);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "actionB");
@@ -7069,7 +7068,7 @@ public class TestJoinTrace extends TestTraceBase {
 
             for (int i = 2; i < executionLink.getTraces().size(); i++) {
                 trace = executionLink.getTraces().get(i);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "action[AB]");
@@ -7201,7 +7200,7 @@ public class TestJoinTrace extends TestTraceBase {
                 assertPrintCondition(trace, "conditionA", false);
 
                 trace = executionLink.getTraces().get(2);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "actionC");
@@ -7251,7 +7250,7 @@ public class TestJoinTrace extends TestTraceBase {
 
             for (int i = 3; i < executionLink.getTraces().size(); i++) {
                 trace = executionLink.getTraces().get(i);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "actionB");
@@ -7298,7 +7297,7 @@ public class TestJoinTrace extends TestTraceBase {
                 assertPrintCondition(trace, "conditionA", false);
 
                 trace = executionLink.getTraces().get(2);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "actionC");
@@ -7633,7 +7632,7 @@ public class TestJoinTrace extends TestTraceBase {
 
             for (int i = 4; i < executionLink.getTraces().size(); i++) {
                 trace = executionLink.getTraces().get(i);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "action[BC]");
@@ -7834,7 +7833,7 @@ public class TestJoinTrace extends TestTraceBase {
 
             for (int i = 5; i < executionLink.getTraces().size(); i++) {
                 trace = executionLink.getTraces().get(i);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "actionC");
@@ -8057,7 +8056,7 @@ public class TestJoinTrace extends TestTraceBase {
 
             for (int i = 4; i < executionLink.getTraces().size(); i++) {
                 trace = executionLink.getTraces().get(i);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "action[BC]");
@@ -8217,7 +8216,7 @@ public class TestJoinTrace extends TestTraceBase {
             assertFlow(trace);
 
             trace = executionLink.getTraces().get(4);
-            if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+            if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                 assertJoinGateway(trace);
             } else {
                 assertPrintAction(trace, "actionD");
@@ -8271,7 +8270,7 @@ public class TestJoinTrace extends TestTraceBase {
 
             for (int i = 4; i < executionLink.getTraces().size(); i++) {
                 trace = executionLink.getTraces().get(i);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "action[BC]");
@@ -8328,7 +8327,7 @@ public class TestJoinTrace extends TestTraceBase {
                 assertFlow(trace);
 
                 trace = executionLink.getTraces().get(4);
-                if (Objects.equals(ElementType.JOIN_GATEWAY, trace.getType())) {
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
                     assertJoinGateway(trace);
                 } else {
                     assertPrintAction(trace, "actionD");

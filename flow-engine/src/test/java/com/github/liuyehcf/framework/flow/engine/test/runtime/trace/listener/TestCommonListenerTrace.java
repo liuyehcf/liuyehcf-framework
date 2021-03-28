@@ -2360,7 +2360,7 @@ public class TestCommonListenerTrace extends TestTraceBase {
                     assertStart(trace);
 
                     trace = executionLink.getTraces().get(1);
-                    if (trace.getType().equals(ElementType.ACTION)) {
+                    if (ElementType.ACTION.equals(trace.getType())) {
                         assertThrowLinkTerminateAction(trace);
                     } else {
                         assertThrowLinkTerminateCondition(trace);

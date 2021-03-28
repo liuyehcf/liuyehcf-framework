@@ -9,7 +9,6 @@ import com.google.common.collect.Lists;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author hechenfeng
@@ -26,7 +25,7 @@ public abstract class TopoUtils {
         }
 
         boolean hasSubFlow = flow.getElements().stream()
-                .anyMatch(element -> Objects.equals(ElementType.SUB_FLOW, element.getType()));
+                .anyMatch(element -> ElementType.SUB_FLOW.equals(element.getType()));
         if (hasSubFlow) {
             return false;
         }

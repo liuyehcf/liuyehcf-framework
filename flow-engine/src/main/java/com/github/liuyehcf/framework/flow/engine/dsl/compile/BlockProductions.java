@@ -571,7 +571,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <join statement> → join <join mode> <mark enter join scope> <block> <mark exit join scope> <epsilon or listeners> <mark join add listener>
+                     * <join statement> → join <join mode> <mark enter join scope> <block> <mark exit join scope> <epsilon or listeners> <mark join add listener> <epsilon or join join mark>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(JOIN_STATEMENT),
@@ -582,7 +582,8 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(BLOCK),
                                     Symbol.createNonTerminator(MARK_EXIT_JOIN_SCOPE),
                                     Symbol.createNonTerminator(EPSILON_OR_LISTENERS),
-                                    Symbol.createNonTerminator(MARK_JOIN_ADD_LISTENER)
+                                    Symbol.createNonTerminator(MARK_JOIN_ADD_LISTENER),
+                                    Symbol.createNonTerminator(EPSILON_OR_JOIN_JOIN_MARK)
                             ),
                             new PopIteratorNodeAndType(),
                             new AttrFilter()
@@ -595,7 +596,7 @@ abstract class BlockProductions {
              */
             Production.create(
                     /*
-                     * <join then statement> → join <join mode> <mark enter join scope> <block> <mark exit join scope> <epsilon or listeners> <mark join add listener> then <block>
+                     * <join then statement> → join <join mode> <mark enter join scope> <block> <mark exit join scope> <epsilon or listeners> <mark join add listener> <epsilon or join join mark> then <block>
                      */
                     PrimaryProduction.create(
                             Symbol.createNonTerminator(JOIN_THEN_STATEMENT),
@@ -607,6 +608,7 @@ abstract class BlockProductions {
                                     Symbol.createNonTerminator(MARK_EXIT_JOIN_SCOPE),
                                     Symbol.createNonTerminator(EPSILON_OR_LISTENERS),
                                     Symbol.createNonTerminator(MARK_JOIN_ADD_LISTENER),
+                                    Symbol.createNonTerminator(EPSILON_OR_JOIN_JOIN_MARK),
                                     Symbol.createTerminator(NORMAL_THEN),
                                     Symbol.createNonTerminator(BLOCK)
                             ),
@@ -665,6 +667,34 @@ abstract class BlockProductions {
                                     Symbol.EPSILON
                             ),
                             new AddNodeListeners(0, -2),
+                            new AttrFilter()
+                    )
+            ),
+
+
+            /*
+             * <epsilon or join join mark>
+             */
+            Production.create(
+                    /*
+                     * <epsilon or join join mark> → ε
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_JOIN_JOIN_MARK),
+                            SymbolString.create(
+                                    Symbol.EPSILON
+                            ),
+                            new AttrFilter()
+                    ),
+                    /*
+                     * <epsilon or join join mark> → &
+                     */
+                    PrimaryProduction.create(
+                            Symbol.createNonTerminator(EPSILON_OR_JOIN_JOIN_MARK),
+                            SymbolString.create(
+                                    Symbol.createTerminator(NORMAL_BIT_AND)
+                            ),
+                            new AddJoinNode(LinkType.NORMAL),
                             new AttrFilter()
                     )
             ),

@@ -263,7 +263,7 @@ public class TestJoinListenerTrace extends TestTraceBase {
 
                 if (executionLink.getTraces().size() > 1) {
                     trace = executionLink.getTraces().get(1);
-                    if (Objects.equals(ElementType.ACTION, trace.getType())) {
+                    if (ElementType.ACTION.equals(trace.getType())) {
                         assertPrintAction(trace, "actionA");
                     } else {
                         assertPrintCondition(trace, "conditionA", false);
@@ -379,7 +379,7 @@ public class TestJoinListenerTrace extends TestTraceBase {
                 assertStart(trace);
 
                 trace = executionLink.getTraces().get(1);
-                if (trace.getType().equals(ElementType.ACTION)) {
+                if (ElementType.ACTION.equals(trace.getType())) {
                     assertThrowLinkTerminateAction(trace);
                 } else {
                     assertPrintCondition(trace, "conditionA", false);
@@ -1106,7 +1106,7 @@ public class TestJoinListenerTrace extends TestTraceBase {
                 assertStart(trace);
 
                 trace = executionLink.getTraces().get(1);
-                if (trace.getType().equals(ElementType.ACTION)) {
+                if (ElementType.ACTION.equals(trace.getType())) {
                     assertThrowLinkTerminateAction(trace);
                 } else {
                     assertPrintCondition(trace, "conditionA", false);
@@ -1691,7 +1691,7 @@ public class TestJoinListenerTrace extends TestTraceBase {
                 assertStart(trace);
 
                 trace = executionLink.getTraces().get(1);
-                if (trace.getType().equals(ElementType.ACTION)) {
+                if (ElementType.ACTION.equals(trace.getType())) {
                     assertPrintAction(trace, "actionA");
                 } else {
                     assertPrintCondition(trace, "conditionA", true);

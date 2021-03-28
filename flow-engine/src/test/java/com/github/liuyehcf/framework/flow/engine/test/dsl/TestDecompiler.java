@@ -1059,6 +1059,17 @@ public class TestDecompiler {
     }
 
     @Test
+    public void testJoinWithJoin() {
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        join {\n" +
+                "            actionA()&\n" +
+                "        }&\n" +
+                "    }\n" +
+                "}");
+    }
+
+    @Test
     public void testJoinComplex() {
         testDecompile("{\n" +
                 "    if(conditionA()) {\n" +
