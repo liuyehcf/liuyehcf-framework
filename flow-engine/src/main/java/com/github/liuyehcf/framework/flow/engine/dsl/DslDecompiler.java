@@ -342,6 +342,16 @@ public class DslDecompiler {
     }
 
     private void handleAncestor(Ancestor ancestor, List<Ancestor> subAncestors, List<Node> distinctRelatedSuccessors) {
+        /*
+         * example of direct cascade ancestors
+         *  {
+         *      join {
+         *          join {
+         *              actionA()&
+         *          }&
+         *      }
+         *  }
+         */
         List<Ancestor> directCascadeAncestorGroup = Lists.newArrayList();
         directCascadeAncestorGroup.add(ancestor);
         Ancestor iter = ancestor;
@@ -524,6 +534,21 @@ public class DslDecompiler {
     }
 
     private List<List<Ancestor>> getSortedNonOverlapAncestorGroups(List<Ancestor> ancestors) {
+        /*
+         * example of ancestor group
+         *  {
+         *      join {
+         *          join {
+         *              actionA()&
+         *          }&,
+         *          join {
+         *              actionB()&
+         *          }&
+         *      }
+         *  }
+         *
+         * there is no overlap related successors between any two groups
+         */
         List<List<Ancestor>> ancestorGroups = Lists.newArrayList();
         for (Ancestor ancestor : ancestors) {
             List<Ancestor> overlapGroup = getOverlapGroup(ancestorGroups, ancestor);
