@@ -62,6 +62,8 @@ public class DslDecompiler {
      */
     private final Map<JoinGateway, JoinGateway> ancestorJoinGatewayOffSpringJoinGatewayMap = Maps.newHashMap();
 
+    private final Set<Node> reachedNodes = Sets.newHashSet();
+
     private final int identStepWidth;
     private final String identStep;
     private String ident = "";
@@ -102,6 +104,12 @@ public class DslDecompiler {
 
         decreaseIdent();
         append(true, BIG_RIGHT_PARENTHESES, getGlobalListeners());
+
+        int count = (int) flow.getElements().stream()
+                .filter(element -> element instanceof Node)
+                .filter(element -> !(element instanceof Start))
+                .count();
+        Assert.assertEquals(count, reachedNodes.size(), "some nodes are not traversed");
     }
 
     private void parseJoinGateway() {
@@ -269,7 +277,8 @@ public class DslDecompiler {
         List<Ancestor> ancestors = ancestorAncestorsMap.get(node);
         if (CollectionUtils.isNotEmpty(ancestors)) {
             ancestors = ancestors.stream()
-                    .filter((ancestor) -> Objects.equals(ancestor.getLinkType(), linkType))
+                    .filter(ancestor -> Objects.equals(ancestor.getLinkType(), linkType))
+                    .filter(ancestor -> !reachedNodes.contains(ancestor.getJoinGateway()))
                     .collect(Collectors.toList());
         }
         if (CollectionUtils.isNotEmpty(ancestors)) {
@@ -344,16 +353,16 @@ public class DslDecompiler {
         Ancestor firstAncestor = ancestorGroup.get(0);
 
         // avoid related successors reused
-        List<Node> actualRelatedSuccessors = Lists.newArrayList(firstAncestor.getRelatedSuccessors());
+        List<Node> distinctRelatedSuccessors = Lists.newArrayList(firstAncestor.getRelatedSuccessors());
         for (int i = 1; i < ancestorGroup.size(); i++) {
-            actualRelatedSuccessors.removeAll(ancestorGroup.get(i).getRelatedSuccessors());
+            distinctRelatedSuccessors.removeAll(ancestorGroup.get(i).getRelatedSuccessors());
         }
 
         List<Ancestor> subAncestors = ancestorGroup.subList(1, ancestorGroup.size());
-        handleAncestor(firstAncestor, subAncestors, actualRelatedSuccessors);
+        handleAncestor(firstAncestor, subAncestors, distinctRelatedSuccessors);
     }
 
-    private void handleAncestor(Ancestor ancestor, List<Ancestor> subAncestors, List<Node> actualRelatedSuccessors) {
+    private void handleAncestor(Ancestor ancestor, List<Ancestor> subAncestors, List<Node> distinctRelatedSuccessors) {
         List<Ancestor> directCascadeAncestorGroup = Lists.newArrayList();
         directCascadeAncestorGroup.add(ancestor);
         Ancestor iter = ancestor;
@@ -365,33 +374,37 @@ public class DslDecompiler {
         }
 
         handleDirectCascadeAncestorGroup(directCascadeAncestorGroup, 0,
-                getSortedNonOverlapAncestorGroups(subAncestors), actualRelatedSuccessors);
+                getSortedNonOverlapAncestorGroups(subAncestors), distinctRelatedSuccessors);
     }
 
-    private void handleDirectCascadeAncestorGroup(List<Ancestor> directCascadeAncestorGroup, int index, List<List<Ancestor>> remainNonOverlapAncestorGroups, List<Node> actualRelatedSuccessors) {
+    private void handleDirectCascadeAncestorGroup(List<Ancestor> directCascadeAncestorGroup, int index, List<List<Ancestor>> nextNonOverlapAncestorGroups, List<Node> distinctRelatedSuccessors) {
         if (index >= directCascadeAncestorGroup.size()) {
             return;
         }
         Ancestor ancestor = directCascadeAncestorGroup.get(index);
         // join gateway and related successors
         JoinGateway joinGateway = ancestor.getJoinGateway();
+        reachedNodes.add(joinGateway);
         appendln(true, KEY_WORD_JOIN, getJoinModeOf(joinGateway), BIG_LEFT_PARENTHESES);
         increaseIdent();
 
         // first processing direct cascade ancestors recursive
-        handleDirectCascadeAncestorGroup(directCascadeAncestorGroup, index + 1, remainNonOverlapAncestorGroups, actualRelatedSuccessors);
-        if (CollectionUtils.isEmpty(actualRelatedSuccessors)) {
+        handleDirectCascadeAncestorGroup(directCascadeAncestorGroup, index + 1, nextNonOverlapAncestorGroups, distinctRelatedSuccessors);
+        if (CollectionUtils.isEmpty(distinctRelatedSuccessors)) {
+            // todo how to explain this logical
             if (CollectionUtils.isEmpty(ancestor.getRelatedSuccessors())) {
+                appendln(false);
+            } else if (reachedNodes.containsAll(ancestor.getRelatedSuccessors())) {
                 appendln(false);
             }
         } else {
-            handleSuccessors(actualRelatedSuccessors);
-            actualRelatedSuccessors.clear();
+            handleSuccessors(distinctRelatedSuccessors);
+            distinctRelatedSuccessors.clear();
         }
 
         // inner of the direct cascade ancestor group
         if (index == directCascadeAncestorGroup.size() - 1) {
-            handleAncestorGroups(remainNonOverlapAncestorGroups, null);
+            handleAncestorGroups(nextNonOverlapAncestorGroups, null);
         }
 
         decreaseIdent();
@@ -447,6 +460,7 @@ public class DslDecompiler {
     }
 
     private void handleAction(Action action) {
+        reachedNodes.add(action);
         append(true, action.getName(), getParamsOf(action), getNormalListenersOf(action), getJoinMarkOf(action));
 
         if (hasNonJoinGatewaySuccessors(action, LinkType.NORMAL)) {
@@ -461,6 +475,7 @@ public class DslDecompiler {
     }
 
     private void handleCondition(Condition condition) {
+        reachedNodes.add(condition);
         append(true, KEY_WORD_IF, SMALL_LEFT_PARENTHESES, condition.getName(), getParamsOf(condition), getNormalListenersOf(condition), SMALL_RIGHT_PARENTHESES, getJoinMarkOf(condition));
 
         if (hasNonJoinGatewaySuccessors(condition, LinkType.TRUE)) {
@@ -493,6 +508,7 @@ public class DslDecompiler {
             Assert.assertEquals(ElementType.CONDITION, successor.getType(), "only condition can be successor of exclusiveGateway in dsl");
         }
 
+        reachedNodes.add(exclusiveGateway);
         appendln(true, KEY_WORD_SELECT, SPACE, BIG_LEFT_PARENTHESES);
 
         if (hasNonJoinGatewaySuccessors(exclusiveGateway, LinkType.NORMAL)) {
@@ -511,6 +527,7 @@ public class DslDecompiler {
 
         String subDsl = subFlowDecompiler.decompile();
 
+        reachedNodes.add(subFlow);
         append(false, subDsl, getJoinMarkOf(subFlow));
 
         if (hasNonJoinGatewaySuccessors(subFlow, LinkType.TRUE)) {
