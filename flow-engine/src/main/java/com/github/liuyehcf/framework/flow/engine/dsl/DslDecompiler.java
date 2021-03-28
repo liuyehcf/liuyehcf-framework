@@ -77,12 +77,7 @@ public class DslDecompiler {
         parseJoinGateway();
 
         if (flow.getFlow() != null) {
-            String joinMark = getJoinMarkOf(flow);
-            if (joinMark == null) {
-                appendln(true, KEY_WORD_SUB, SPACE, BIG_LEFT_PARENTHESES);
-            } else {
-                appendln(true, KEY_WORD_SUB, SPACE, joinMark, SPACE, BIG_LEFT_PARENTHESES);
-            }
+            appendln(true, KEY_WORD_SUB, SPACE, BIG_LEFT_PARENTHESES);
         } else {
             appendln(true, BIG_LEFT_PARENTHESES);
         }
@@ -466,7 +461,7 @@ public class DslDecompiler {
 
         String subDsl = subFlowDecompiler.decompile();
 
-        append(false, subDsl);
+        append(false, subDsl, getJoinMarkOf(subFlow));
 
         if (hasNonJoinGatewaySuccessors(subFlow, LinkType.TRUE)) {
             appendln(false, SPACE, KEY_WORD_THEN, SPACE, BIG_LEFT_PARENTHESES);

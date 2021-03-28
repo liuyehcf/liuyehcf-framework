@@ -778,9 +778,9 @@ public class TestSubTrace extends TestTraceBase {
     public void testSubNestedInJoin() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub &{\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }\n" +
+                "        }&\n" +
                 "    }\n" +
                 "}");
 
@@ -822,9 +822,9 @@ public class TestSubTrace extends TestTraceBase {
     public void testSubNestedInJoinReverse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~&{\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    }\n" +
                 "}");
 
@@ -862,9 +862,9 @@ public class TestSubTrace extends TestTraceBase {
     public void testSubNestedInJoinThen() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }\n" +
+                "        }&\n" +
                 "    } then {\n" +
                 "        sub {\n" +
                 "            printAction(content=\"actionB\")\n" +
@@ -918,9 +918,9 @@ public class TestSubTrace extends TestTraceBase {
     public void testSubNestedInJoinThenReverse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    } then {\n" +
                 "        sub {\n" +
                 "            printAction(content=\"actionB\")\n" +

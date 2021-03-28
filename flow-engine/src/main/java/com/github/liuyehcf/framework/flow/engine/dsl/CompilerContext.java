@@ -27,7 +27,6 @@ public class CompilerContext extends Context {
     private final LinkedList<FlowSegment> flowStack;
     private final IDGenerator idGenerator;
 
-
     public CompilerContext(Context context, LinkedList<FlowSegment> flowStack, IDGenerator idGenerator) {
         super(context.getRawPrimaryProduction(), context.getStack(), context.getLeftNode());
         this.flowStack = flowStack;
@@ -210,7 +209,7 @@ public class CompilerContext extends Context {
         return joinGateway;
     }
 
-    public void pushFlow(boolean isSubFlow, String flowName, String flowId, LinkType joinMarkLinkType) {
+    public void pushFlow(boolean isSubFlow, String flowName, String flowId) {
         FlowSegment flow;
         if (isSubFlow) {
             LinkType linkType = peekFlow().peekLinkType();
@@ -236,9 +235,6 @@ public class CompilerContext extends Context {
             peekNode.addSuccessor(flow, flow.getLinkType());
             flow.addPredecessor(peekNode);
             pushNode(flow);
-            if (joinMarkLinkType != null) {
-                addJoinNode(flow, joinMarkLinkType);
-            }
         }
         flowStack.push(flow);
     }
@@ -254,7 +250,7 @@ public class CompilerContext extends Context {
         return flowStack.pop();
     }
 
-    private FlowSegment peekFlow() {
+    public FlowSegment peekFlow() {
         FlowSegment flow = flowStack.peek();
 
         if (flow == null) {
@@ -291,8 +287,8 @@ public class CompilerContext extends Context {
         flow.pushLinkType(linkType);
     }
 
-    public void popLinkType() {
-        peekFlow().popLinkType();
+    public LinkType popLinkType() {
+        return peekFlow().popLinkType();
     }
 
     private void pushNode(Node node) {
@@ -300,8 +296,12 @@ public class CompilerContext extends Context {
         flow.pushNode(node);
     }
 
-    public void popNode() {
-        peekFlow().popNode();
+    public Node popNode() {
+        return peekFlow().popNode();
+    }
+
+    public Node peekNode() {
+        return peekFlow().peekNode();
     }
 
     private String generateId() {

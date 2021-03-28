@@ -83,7 +83,7 @@ public enum AttrName {
     JOIN_MODE,
 
     /**
-     * join mark
+     * join mark(&/~&) of sub flow
      */
-    JOIN_MARK
+    SUB_FLOW_JOIN_MARK,
 }

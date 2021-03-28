@@ -849,9 +849,9 @@ public class TestSubListenerTrace extends TestTraceBase {
     public void testSubNestedInJoinWithSubAndGlobalListener() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]\n" +
+                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]&\n" +
                 "    }\n" +
                 "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
 
@@ -904,9 +904,9 @@ public class TestSubListenerTrace extends TestTraceBase {
     public void testSubNestedInJoinWithSubReverseAndGlobalListener() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]\n" +
+                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]~&\n" +
                 "    }\n" +
                 "}[printListener(event=\"before\", content=\"listenerC\"), printListener(event=\"success\", content=\"listenerD\")]");
 
@@ -956,9 +956,9 @@ public class TestSubListenerTrace extends TestTraceBase {
     public void testSubNestedInJoinThenWithSubAndGlobalListener() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]\n" +
+                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]&\n" +
                 "    } then {\n" +
                 "        sub {\n" +
                 "            printAction(content=\"actionB\")\n" +
@@ -1030,9 +1030,9 @@ public class TestSubListenerTrace extends TestTraceBase {
     public void testSubNestedInJoinThenWithSubReverseAndGlobalListener() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]\n" +
+                "        }[printListener(event=\"before\", content=\"listenerA\"), printListener(event=\"success\", content=\"listenerB\")]~&\n" +
                 "    } then {\n" +
                 "        sub {\n" +
                 "            printAction(content=\"actionB\")\n" +

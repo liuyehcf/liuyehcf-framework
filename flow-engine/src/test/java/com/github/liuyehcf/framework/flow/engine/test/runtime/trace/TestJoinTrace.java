@@ -1545,9 +1545,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubWithTrueJoinMarkOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }\n" +
+                "        }&\n" +
                 "    }\n" +
                 "}");
 
@@ -1588,11 +1588,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubWithTrueJoinMarkOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        }\n" +
+                "        }&\n" +
                 "    }\n" +
                 "}");
 
@@ -1630,9 +1630,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubWithFalseJoinMarkOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    }\n" +
                 "}");
 
@@ -1670,11 +1670,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubWithFalseJoinMarkOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    }\n" +
                 "}");
 
@@ -1715,9 +1715,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -1781,11 +1781,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -1827,9 +1827,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -1880,11 +1880,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -1926,9 +1926,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -1976,11 +1976,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -2025,9 +2025,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -2054,11 +2054,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -2100,9 +2100,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -2168,11 +2168,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -2219,9 +2219,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -2274,11 +2274,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -2325,9 +2325,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -2377,11 +2377,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -2432,9 +2432,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -2463,11 +2463,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testHardAndJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join & {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -4442,9 +4442,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubWithTrueJoinMarkOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }\n" +
+                "        }&\n" +
                 "    }\n" +
                 "}");
 
@@ -4485,11 +4485,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubWithTrueJoinMarkOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        }\n" +
+                "        }&\n" +
                 "    }\n" +
                 "}");
 
@@ -4527,9 +4527,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubWithFalseJoinMarkOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    }\n" +
                 "}");
 
@@ -4567,11 +4567,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubWithFalseJoinMarkOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    }\n" +
                 "}");
 
@@ -4612,9 +4612,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -4678,11 +4678,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -4724,9 +4724,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -4777,11 +4777,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -4823,9 +4823,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -4873,11 +4873,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -4922,9 +4922,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -4975,11 +4975,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -5024,9 +5024,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -5092,11 +5092,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -5143,9 +5143,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -5198,11 +5198,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -5249,9 +5249,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -5301,11 +5301,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -5356,9 +5356,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -5411,11 +5411,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testSoftAndJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -7311,9 +7311,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubWithTrueJoinMarkOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }\n" +
+                "        }&\n" +
                 "    }\n" +
                 "}");
 
@@ -7354,11 +7354,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubWithTrueJoinMarkOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        }\n" +
+                "        }&\n" +
                 "    }\n" +
                 "}");
 
@@ -7396,9 +7396,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubWithFalseJoinMarkOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    }\n" +
                 "}");
 
@@ -7436,11 +7436,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubWithFalseJoinMarkOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    }\n" +
                 "}");
 
@@ -7481,9 +7481,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -7547,11 +7547,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -7593,9 +7593,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -7646,11 +7646,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -7692,9 +7692,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -7742,11 +7742,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -7791,9 +7791,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -7847,11 +7847,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -7896,9 +7896,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -7964,11 +7964,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenElseWithTrueJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -8015,9 +8015,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -8070,11 +8070,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenElseWithTrueJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -8122,9 +8122,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -8174,11 +8174,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenElseWithFalseJoinMarkAndNormalSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\"){\n" +
                 "                printAction(content=\"actionC\")\n" +
                 "            }\n" +
@@ -8229,9 +8229,9 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputTrue() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            printAction(content=\"actionA\")\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +
@@ -8284,11 +8284,11 @@ public class TestJoinTrace extends TestTraceBase {
     public void testOrJoinSubThenElseWithFalseJoinMarkAndJoinMarkSuccessorsOutputFalse() {
         Flow flow = compile("{\n" +
                 "    join | {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
                 "                printAction(content=\"actionA\")\n" +
                 "            } \n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            printAction(content=\"actionB\")&{\n" +
                 "                printAction(content=\"actionC\")&\n" +
                 "            }\n" +

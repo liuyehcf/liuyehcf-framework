@@ -779,39 +779,39 @@ public class TestDecompiler {
     public void testJoinWithSub() {
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        }\n" +
+                "        }&\n" +
                 "    }\n" +
                 "}");
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    }\n" +
                 "}");
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        },\n" +
-                "        sub & {\n" +
+                "        }~&,\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        }\n" +
+                "        }&\n" +
                 "    }\n" +
                 "}");
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        },\n" +
-                "        sub ~& {\n" +
+                "        }&,\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    }\n" +
                 "}");
     }
@@ -820,9 +820,9 @@ public class TestDecompiler {
     public void testJoinWithSubThen() {
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -832,9 +832,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB(),\n" +
                 "            actionC() {\n" +
                 "                actionD()\n" +
@@ -845,9 +845,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB()& {\n" +
                 "                actionC()&\n" +
                 "            }\n" +
@@ -857,9 +857,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB(),\n" +
                 "            actionC()& {\n" +
                 "                actionD()&\n" +
@@ -870,9 +870,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -882,9 +882,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB(),\n" +
                 "            actionC() {\n" +
                 "                actionD()\n" +
@@ -895,9 +895,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB()& {\n" +
                 "                actionC()&\n" +
                 "            }\n" +
@@ -907,9 +907,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB(),\n" +
                 "            actionC()& {\n" +
                 "                actionD()&\n" +
@@ -923,9 +923,9 @@ public class TestDecompiler {
     public void testJoinWithSubThenElse() {
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -939,9 +939,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -957,9 +957,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -973,9 +973,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -991,9 +991,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -1007,9 +1007,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -1025,9 +1025,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -1041,9 +1041,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -1167,9 +1167,9 @@ public class TestDecompiler {
     public void testJoinSubThen() {
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        }\n" +
+                "        }&\n" +
                 "    }\n" +
                 "}");
     }
@@ -1903,9 +1903,9 @@ public class TestDecompiler {
     public void testJoinThenWithSub() {
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        }\n" +
+                "        }&\n" +
                 "    } then {\n" +
                 "        actionX()\n" +
                 "    }\n" +
@@ -1913,9 +1913,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    } then {\n" +
                 "        actionX()\n" +
                 "    }\n" +
@@ -1923,12 +1923,12 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        },\n" +
-                "        sub & {\n" +
+                "        }~&,\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        }\n" +
+                "        }&\n" +
                 "    } then {\n" +
                 "        actionX()\n" +
                 "    }\n" +
@@ -1936,12 +1936,12 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        },\n" +
-                "        sub ~& {\n" +
+                "        }&,\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        }\n" +
+                "        }~&\n" +
                 "    } then {\n" +
                 "        actionX()\n" +
                 "    }\n" +
@@ -1952,9 +1952,9 @@ public class TestDecompiler {
     public void testJoinThenWithSubThen() {
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -1966,9 +1966,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB(),\n" +
                 "            actionC() {\n" +
                 "                actionD()\n" +
@@ -1981,9 +1981,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB()& {\n" +
                 "                actionC()&\n" +
                 "            }\n" +
@@ -1995,9 +1995,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB(),\n" +
                 "            actionC()& {\n" +
                 "                actionD()&\n" +
@@ -2010,9 +2010,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -2024,9 +2024,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB(),\n" +
                 "            actionC() {\n" +
                 "                actionD()\n" +
@@ -2039,9 +2039,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB()& {\n" +
                 "                actionC()&\n" +
                 "            }\n" +
@@ -2053,9 +2053,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB(),\n" +
                 "            actionC()& {\n" +
                 "                actionD()&\n" +
@@ -2071,9 +2071,9 @@ public class TestDecompiler {
     public void testJoinThenWithSubThenElse() {
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -2089,9 +2089,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -2109,9 +2109,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -2127,9 +2127,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub & {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -2147,9 +2147,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -2165,9 +2165,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -2185,9 +2185,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
@@ -2203,9 +2203,9 @@ public class TestDecompiler {
 
         testDecompile("{\n" +
                 "    join {\n" +
-                "        sub ~& {\n" +
+                "        sub {\n" +
                 "            actionA()\n" +
-                "        } then {\n" +
+                "        }~& then {\n" +
                 "            actionB() {\n" +
                 "                actionC()\n" +
                 "            }\n" +
