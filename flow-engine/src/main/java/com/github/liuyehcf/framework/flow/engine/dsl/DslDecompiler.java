@@ -48,14 +48,19 @@ public class DslDecompiler {
     private final StringBuilder buffer = new StringBuilder();
 
     /**
-     * ancestor node -> Ancestor
+     * ancestor node -> ancestor list
      */
-    private final Map<Node, List<Ancestor>> ancestorMap = Maps.newHashMap();
+    private final Map<Node, List<Ancestor>> ancestorAncestorsMap = Maps.newHashMap();
 
     /**
-     * offspring joinGateway -> ancestor joinGateway
+     * joinGateway -> joinGateway's ancestor
      */
-    private final Map<JoinGateway, JoinGateway> joinGatewayMap = Maps.newHashMap();
+    private final Map<JoinGateway, Ancestor> joinGatewayAncestorMap = Maps.newHashMap();
+
+    /**
+     * ancestor joinGateway -> offspring joinGateway
+     */
+    private final Map<JoinGateway, JoinGateway> ancestorJoinGatewayOffSpringJoinGatewayMap = Maps.newHashMap();
 
     private final int identStepWidth;
     private final String identStep;
@@ -114,7 +119,9 @@ public class DslDecompiler {
                 // exclusiveGateway has only one predecessor
                 ancestor = new Ancestor(joinGateway, ancestorNode.getPredecessors().get(0), Sets.newHashSet(ancestorNode));
             } else if (ElementType.JOIN_GATEWAY.equals(ancestor.getAncestor().getType())) {
-
+                if (isLinked(ancestor.getAncestor(), ancestor.getJoinGateway())) {
+                    ancestorJoinGatewayOffSpringJoinGatewayMap.put((JoinGateway) ancestor.getAncestor(), ancestor.getJoinGateway());
+                }
             } else if (!ancestor.containsSingleLinkType()) {
                 Node ancestorNode = ancestor.getAncestor();
                 // non joinGateway has only one predecessor
@@ -122,8 +129,9 @@ public class DslDecompiler {
             }
 
             ancestor.buildRelatedLinkType();
-            ancestorMap.putIfAbsent(ancestor.getAncestor(), Lists.newArrayList());
-            ancestorMap.get(ancestor.getAncestor()).add(ancestor);
+            ancestorAncestorsMap.putIfAbsent(ancestor.getAncestor(), Lists.newArrayList());
+            ancestorAncestorsMap.get(ancestor.getAncestor()).add(ancestor);
+            joinGatewayAncestorMap.put(ancestor.getJoinGateway(), ancestor);
         }
     }
 
@@ -258,47 +266,29 @@ public class DslDecompiler {
     }
 
     private void handleSuccessorsOf(Node node, LinkType linkType) {
-        List<Ancestor> ancestors = ancestorMap.get(node);
+        List<Ancestor> ancestors = ancestorAncestorsMap.get(node);
         if (CollectionUtils.isNotEmpty(ancestors)) {
             ancestors = ancestors.stream()
                     .filter((ancestor) -> Objects.equals(ancestor.getLinkType(), linkType))
                     .collect(Collectors.toList());
         }
         if (CollectionUtils.isNotEmpty(ancestors)) {
-            // ordinary means joinGateway isn't another joinGateway's ancestor
-            List<Ancestor> ordinaryAncestors = Lists.newArrayList();
-            LinkedList<Ancestor> stack = Lists.newLinkedList();
-            ancestors.forEach(stack::push);
-
-            // offspring joinGateway -> super joinGateway
-            Map<JoinGateway, JoinGateway> superJoinGatewayMap = Maps.newHashMap();
-            while (!stack.isEmpty()) {
-                Ancestor ancestor = stack.pop();
-                List<Ancestor> superAncestors = ancestorMap.get(ancestor.getJoinGateway());
-                if (CollectionUtils.isNotEmpty(superAncestors)) {
-                    superAncestors.forEach(superAncestor -> superJoinGatewayMap.put(ancestor.getJoinGateway(), superAncestor.getJoinGateway()));
-                    superAncestors.forEach(stack::push);
-                } else {
-                    ordinaryAncestors.add(ancestor);
-                }
-            }
-
             List<Node> successors = node.getSuccessorsOf(linkType);
-            parseSegmentAndSort(ordinaryAncestors, successors);
-            handleJoinGateways(ordinaryAncestors, superJoinGatewayMap, successors);
+            parseSegmentAndSort(ancestors, successors);
+            handleJoinGateways(ancestors, successors);
         } else {
             List<Node> successors = node.getSuccessorsOf(linkType);
-            handleSuccessors(successors, false);
+            handleSuccessors(successors);
         }
     }
 
-    private void handleJoinGateways(List<Ancestor> ancestors, Map<JoinGateway, JoinGateway> superJoinGatewayMap, List<Node> successors) {
+    private void handleJoinGateways(List<Ancestor> ancestors, List<Node> successors) {
         List<Node> unrelatedSuccessors = Lists.newArrayList(successors);
         for (int i = 0; i < ancestors.size(); i++) {
             Ancestor ancestor = ancestors.get(i);
 
             unrelatedSuccessors.removeAll(ancestor.getRelatedSuccessors());
-            handleJoinGateway(ancestor, Lists.newArrayList(ancestor.getRelatedSuccessors()));
+            handleJoinGateway(ancestor);
 
             if (i != ancestors.size() - 1) {
                 appendln(false, COMMA);
@@ -308,22 +298,44 @@ public class DslDecompiler {
         // last part
         if (!unrelatedSuccessors.isEmpty()) {
             appendln(false, COMMA);
-            handleSuccessors(unrelatedSuccessors, false);
+            handleSuccessors(unrelatedSuccessors);
         } else {
             appendln(false);
         }
     }
 
-    private void handleJoinGateway(Ancestor ancestor, List<Node> relatedSuccessors) {
+    private void handleJoinGateway(Ancestor originalAncestor) {
+        List<Ancestor> ancestors = Lists.newArrayList();
+        ancestors.add(originalAncestor);
+        Ancestor iter = originalAncestor;
+        JoinGateway offspringJoinGateway;
+        while ((offspringJoinGateway = ancestorJoinGatewayOffSpringJoinGatewayMap.get(iter.getJoinGateway())) != null) {
+            Ancestor offSpringAncestor = joinGatewayAncestorMap.get(offspringJoinGateway);
+            ancestors.add(0, offSpringAncestor);
+            iter = offSpringAncestor;
+        }
+
+        handleDirectCascadeJoinGateways(ancestors, 0);
+    }
+
+    private void handleDirectCascadeJoinGateways(List<Ancestor> ancestors, int index) {
+        if (index >= ancestors.size()) {
+            return;
+        }
+        Ancestor ancestor = ancestors.get(index);
         // join gateway and related successors
         JoinGateway joinGateway = ancestor.getJoinGateway();
         appendln(true, KEY_WORD_JOIN, getJoinModeOf(joinGateway), BIG_LEFT_PARENTHESES);
         increaseIdent();
-        handleSuccessors(relatedSuccessors, false);
+        handleDirectCascadeJoinGateways(ancestors, index + 1);
+        if (CollectionUtils.isEmpty(ancestor.getRelatedSuccessors())) {
+            appendln(false);
+        } else {
+            handleSuccessors(Lists.newArrayList(ancestor.getRelatedSuccessors()));
+        }
         decreaseIdent();
-        append(true, BIG_RIGHT_PARENTHESES, getNormalListenersOf(joinGateway));
-        List<Node> joinGatewaySuccessors = joinGateway.getSuccessorsOf(LinkType.NORMAL);
-        if (!joinGatewaySuccessors.isEmpty()) {
+        append(true, BIG_RIGHT_PARENTHESES, getNormalListenersOf(joinGateway), getJoinMarkOf(joinGateway));
+        if (hasNonJoinGatewaySuccessors(joinGateway, LinkType.NORMAL)) {
             appendln(false, SPACE, KEY_WORD_THEN, SPACE, BIG_LEFT_PARENTHESES);
             increaseIdent();
             handleSuccessorsOf(joinGateway, LinkType.NORMAL);
@@ -332,7 +344,12 @@ public class DslDecompiler {
         }
     }
 
-    private void handleSuccessors(List<Node> successors, boolean hasMoreSuccessors) {
+    private boolean isLinked(Node leftNode, Node rightNode) {
+        return leftNode.getSuccessors().contains(rightNode)
+                && rightNode.getPredecessors().contains(leftNode);
+    }
+
+    private void handleSuccessors(List<Node> successors) {
         successors = successors.stream()
                 .filter((successor) -> !ElementType.JOIN_GATEWAY.equals(successor.getType()))
                 .collect(Collectors.toList());
@@ -343,7 +360,7 @@ public class DslDecompiler {
             Node successor = successors.get(i);
             handleBaseType(successor);
 
-            if (hasMoreSuccessors || i != lastIndex) {
+            if (i != lastIndex) {
                 appendln(false, COMMA);
             } else {
                 appendln(false);

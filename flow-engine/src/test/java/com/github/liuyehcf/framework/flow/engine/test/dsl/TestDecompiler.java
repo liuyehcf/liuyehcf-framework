@@ -1070,6 +1070,40 @@ public class TestDecompiler {
                 "        }&\n" +
                 "    }\n" +
                 "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        join {\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    join {\n" +
+                "                        actionA()&\n" +
+                "                    }&\n" +
+                "                }&\n" +
+                "            }&\n" +
+                "        }&\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        join {\n" +
+                "            actionA()&\n" +
+                "        }&,\n" +
+                "        actionB()&\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        actionA(){\n" +
+                "            join {\n" +
+                "                actionB()&\n" +
+                "            }&\n" +
+                "        },\n" +
+                "        actionC()&\n" +
+                "    }\n" +
+                "}");
     }
 
     @Test

@@ -183,6 +183,11 @@ public class DefaultFlow extends AbstractNode implements Flow {
                             .count(),
                     "duplicate successors");
 
+            // check joinGateway successors
+            Assert.assertFalse((int) node.getSuccessors().stream()
+                    .filter(successor -> ElementType.JOIN_GATEWAY.equals(successor.getType()))
+                    .count() > 1, "successors contains more than one joinGateway");
+
             // check link relationship asymmetry
             for (Node predecessor : node.getPredecessors()) {
                 Assert.assertTrue(predecessor.getSuccessors().contains(node),
