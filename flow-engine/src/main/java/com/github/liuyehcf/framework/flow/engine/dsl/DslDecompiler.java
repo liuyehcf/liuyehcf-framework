@@ -62,11 +62,14 @@ public class DslDecompiler {
      */
     private final Map<JoinGateway, JoinGateway> ancestorJoinGatewayOffSpringJoinGatewayMap = Maps.newHashMap();
 
+    /**
+     * reached nodes
+     */
     private final Set<Node> reachedNodes = Sets.newHashSet();
 
     private final int identStepWidth;
     private final String identStep;
-    private String ident = "";
+    private String ident;
 
     public DslDecompiler(Flow flow) {
         this(flow, "", 4);
@@ -257,24 +260,10 @@ public class DslDecompiler {
         return null;
     }
 
-    private Set<Node> getAllSuccessors(Node node) {
-        Set<Node> allSuccessors = Sets.newHashSet();
-
-        LinkedList<Node> stack = Lists.newLinkedList();
-        stack.push(node);
-
-        while (!stack.isEmpty()) {
-            Node pop = stack.pop();
-            allSuccessors.add(pop);
-
-            pop.getSuccessors().forEach(stack::push);
-        }
-
-        return allSuccessors;
-    }
-
     private void handleSuccessorsOf(Node node, LinkType linkType) {
         List<Ancestor> ancestors = ancestorAncestorsMap.get(node);
+
+        // direct cascade ancestors may reached early, so wo filter those ancestors to avoiding reaching repeatedly
         if (CollectionUtils.isNotEmpty(ancestors)) {
             ancestors = ancestors.stream()
                     .filter(ancestor -> Objects.equals(ancestor.getLinkType(), linkType))
@@ -311,17 +300,6 @@ public class DslDecompiler {
             }
             Assert.assertNotEquals(-1, firstIndex, "cannot find first index of related successor");
             ancestor.setFirstIndexOfSuccessor(firstIndex);
-
-            int lastIndex = -1;
-            for (int i = successors.size() - 1; i >= 0; i--) {
-                Node successor = successors.get(i);
-                if (relatedSuccessors.contains(successor)) {
-                    lastIndex = i;
-                    break;
-                }
-            }
-            Assert.assertNotEquals(-1, lastIndex, "cannot find last index of related successor");
-            ancestor.setLastIndexOfSuccessor(lastIndex);
         }
     }
 
@@ -352,7 +330,8 @@ public class DslDecompiler {
     private void handleAncestorGroup(List<Ancestor> ancestorGroup) {
         Ancestor firstAncestor = ancestorGroup.get(0);
 
-        // avoid related successors reused
+        // first ancestor just need to process distinct related successors
+        // because overlap related successors will be process recursively
         List<Node> distinctRelatedSuccessors = Lists.newArrayList(firstAncestor.getRelatedSuccessors());
         for (int i = 1; i < ancestorGroup.size(); i++) {
             distinctRelatedSuccessors.removeAll(ancestorGroup.get(i).getRelatedSuccessors());
@@ -390,20 +369,18 @@ public class DslDecompiler {
 
         // first processing direct cascade ancestors recursive
         handleDirectCascadeAncestorGroup(directCascadeAncestorGroup, index + 1, nextNonOverlapAncestorGroups, distinctRelatedSuccessors);
-        if (CollectionUtils.isEmpty(distinctRelatedSuccessors)) {
-            // todo how to explain this logical
-            if (CollectionUtils.isEmpty(ancestor.getRelatedSuccessors())) {
-                appendln(false);
-            } else if (reachedNodes.containsAll(ancestor.getRelatedSuccessors())) {
+        if (CollectionUtils.isNotEmpty(distinctRelatedSuccessors)) {
+            // avoid reaching multiply times by direct cascade ancestors
+            if (!reachedNodes.containsAll(distinctRelatedSuccessors)) {
+                handleSuccessors(distinctRelatedSuccessors);
+            } else {
                 appendln(false);
             }
-        } else {
-            handleSuccessors(distinctRelatedSuccessors);
-            distinctRelatedSuccessors.clear();
         }
 
         // inner of the direct cascade ancestor group
         if (index == directCascadeAncestorGroup.size() - 1) {
+            // recursive processing of remaining ancestor in group
             handleAncestorGroups(nextNonOverlapAncestorGroups, null);
         }
 
@@ -416,11 +393,6 @@ public class DslDecompiler {
             decreaseIdent();
             append(true, BIG_RIGHT_PARENTHESES);
         }
-    }
-
-    private boolean isLinked(Node leftNode, Node rightNode) {
-        return leftNode.getSuccessors().contains(rightNode)
-                && rightNode.getPredecessors().contains(leftNode);
     }
 
     private void handleSuccessors(List<Node> successors) {
@@ -600,6 +572,11 @@ public class DslDecompiler {
         return null;
     }
 
+    private boolean isLinked(Node leftNode, Node rightNode) {
+        return leftNode.getSuccessors().contains(rightNode)
+                && rightNode.getPredecessors().contains(leftNode);
+    }
+
     private boolean isOverlap(Ancestor ancestor1, Ancestor ancestor2) {
         return ancestor1.getRelatedSuccessors().containsAll(ancestor2.getRelatedSuccessors())
                 || ancestor2.getRelatedSuccessors().containsAll(ancestor1.getRelatedSuccessors());
@@ -608,6 +585,22 @@ public class DslDecompiler {
     private boolean hasNonJoinGatewaySuccessors(Node node, LinkType linkType) {
         List<Node> successors = node.getSuccessorsOf(linkType);
         return successors.stream().anyMatch((successor) -> !ElementType.JOIN_GATEWAY.equals(successor.getType()));
+    }
+
+    private Set<Node> getAllSuccessors(Node node) {
+        Set<Node> allSuccessors = Sets.newHashSet();
+
+        LinkedList<Node> stack = Lists.newLinkedList();
+        stack.push(node);
+
+        while (!stack.isEmpty()) {
+            Node pop = stack.pop();
+            allSuccessors.add(pop);
+
+            pop.getSuccessors().forEach(stack::push);
+        }
+
+        return allSuccessors;
     }
 
     private String getJoinModeOf(JoinGateway joinGateway) {
@@ -732,8 +725,8 @@ public class DslDecompiler {
         return this;
     }
 
-    private DslDecompiler appendln(boolean needIdent, Object... contents) {
-        return append(needIdent, contents)
+    private void appendln(boolean needIdent, Object... contents) {
+        append(needIdent, contents)
                 .append(false, NEW_LINE);
     }
 
@@ -753,7 +746,6 @@ public class DslDecompiler {
         private final Set<Node> relatedSuccessors;
         private LinkType linkType;
         private int firstIndexOfSuccessor;
-        private int lastIndexOfSuccessor;
 
         private Ancestor(JoinGateway joinGateway, Node ancestor, Set<Node> relatedSuccessors) {
             this.joinGateway = joinGateway;
@@ -806,14 +798,6 @@ public class DslDecompiler {
 
         public void setFirstIndexOfSuccessor(int firstIndexOfSuccessor) {
             this.firstIndexOfSuccessor = firstIndexOfSuccessor;
-        }
-
-        public int getLastIndexOfSuccessor() {
-            return lastIndexOfSuccessor;
-        }
-
-        public void setLastIndexOfSuccessor(int lastIndexOfSuccessor) {
-            this.lastIndexOfSuccessor = lastIndexOfSuccessor;
         }
     }
 }

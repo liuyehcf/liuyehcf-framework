@@ -2734,6 +2734,17 @@ public class TestDecompiler {
         testDecompile("{\n" +
                 "    join {\n" +
                 "        join {\n" +
+                "            actionC()&,\n" +
+                "            actionD()&\n" +
+                "        }& then {\n" +
+                "            actionY()&\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        join {\n" +
                 "            join {\n" +
                 "                actionA()&,\n" +
                 "                actionB()&\n" +
