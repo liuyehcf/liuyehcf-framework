@@ -278,7 +278,9 @@ public class DslDecompiler {
 
             // now, we just guarantee there is no overlap between groups
             List<List<Ancestor>> ancestorGroups = getSortedNonOverlapAncestorGroups(ancestors);
-            handleAncestorGroups(ancestorGroups, Lists.newArrayList(successors));
+            List<Node> unRelatedSuccessors = Lists.newArrayList(successors);
+            ancestorGroups.forEach(group -> group.forEach(ancestor -> unRelatedSuccessors.removeAll(ancestor.getRelatedSuccessors())));
+            handleAncestorGroups(ancestorGroups, unRelatedSuccessors);
         } else {
             List<Node> successors = node.getSuccessorsOf(linkType);
             handleSuccessors(successors);
@@ -314,7 +316,7 @@ public class DslDecompiler {
         }
     }
 
-    private void handleAncestorGroups(List<List<Ancestor>> ancestorGroups, List<Node> unrelatedSuccessors) {
+    private void handleAncestorGroups(List<List<Ancestor>> ancestorGroups, List<Node> unRelatedSuccessors) {
         if (CollectionUtils.isEmpty(ancestorGroups)) {
             return;
         }
@@ -322,7 +324,7 @@ public class DslDecompiler {
         for (int i = 0; i < ancestorGroups.size(); i++) {
             List<Ancestor> ancestorGroup = ancestorGroups.get(i);
 
-            handleAncestorGroup(ancestorGroup, unrelatedSuccessors);
+            handleAncestorGroup(ancestorGroup);
 
             if (i != ancestorGroups.size() - 1) {
                 appendln(false, COMMA);
@@ -330,15 +332,15 @@ public class DslDecompiler {
         }
 
         // last part
-        if (!unrelatedSuccessors.isEmpty()) {
+        if (CollectionUtils.isNotEmpty(unRelatedSuccessors)) {
             appendln(false, COMMA);
-            handleSuccessors(unrelatedSuccessors);
+            handleSuccessors(Lists.newArrayList(unRelatedSuccessors));
         } else {
             appendln(false);
         }
     }
 
-    private void handleAncestorGroup(List<Ancestor> ancestorGroup, List<Node> unrelatedSuccessors) {
+    private void handleAncestorGroup(List<Ancestor> ancestorGroup) {
         Ancestor firstAncestor = ancestorGroup.get(0);
 
         // avoid related successors reused
@@ -347,13 +349,11 @@ public class DslDecompiler {
             actualRelatedSuccessors.removeAll(ancestorGroup.get(i).getRelatedSuccessors());
         }
 
-        unrelatedSuccessors.removeAll(actualRelatedSuccessors);
-
         List<Ancestor> subAncestors = ancestorGroup.subList(1, ancestorGroup.size());
-        handleAncestor(firstAncestor, subAncestors, actualRelatedSuccessors, unrelatedSuccessors);
+        handleAncestor(firstAncestor, subAncestors, actualRelatedSuccessors);
     }
 
-    private void handleAncestor(Ancestor ancestor, List<Ancestor> subAncestors, List<Node> actualRelatedSuccessors, List<Node> unrelatedSuccessors) {
+    private void handleAncestor(Ancestor ancestor, List<Ancestor> subAncestors, List<Node> actualRelatedSuccessors) {
         List<Ancestor> directCascadeAncestorGroup = Lists.newArrayList();
         directCascadeAncestorGroup.add(ancestor);
         Ancestor iter = ancestor;
@@ -365,10 +365,10 @@ public class DslDecompiler {
         }
 
         handleDirectCascadeAncestorGroup(directCascadeAncestorGroup, 0,
-                getSortedNonOverlapAncestorGroups(subAncestors), actualRelatedSuccessors, unrelatedSuccessors);
+                getSortedNonOverlapAncestorGroups(subAncestors), actualRelatedSuccessors);
     }
 
-    private void handleDirectCascadeAncestorGroup(List<Ancestor> directCascadeAncestorGroup, int index, List<List<Ancestor>> remainNonOverlapAncestorGroups, List<Node> actualRelatedSuccessors, List<Node> unrelatedSuccessors) {
+    private void handleDirectCascadeAncestorGroup(List<Ancestor> directCascadeAncestorGroup, int index, List<List<Ancestor>> remainNonOverlapAncestorGroups, List<Node> actualRelatedSuccessors) {
         if (index >= directCascadeAncestorGroup.size()) {
             return;
         }
@@ -379,16 +379,19 @@ public class DslDecompiler {
         increaseIdent();
 
         // first processing direct cascade ancestors recursive
-        handleDirectCascadeAncestorGroup(directCascadeAncestorGroup, index + 1, remainNonOverlapAncestorGroups, actualRelatedSuccessors, unrelatedSuccessors);
-        if (CollectionUtils.isEmpty(ancestor.getRelatedSuccessors())) {
-            appendln(false);
+        handleDirectCascadeAncestorGroup(directCascadeAncestorGroup, index + 1, remainNonOverlapAncestorGroups, actualRelatedSuccessors);
+        if (CollectionUtils.isEmpty(actualRelatedSuccessors)) {
+            if (CollectionUtils.isEmpty(ancestor.getRelatedSuccessors())) {
+                appendln(false);
+            }
         } else {
             handleSuccessors(actualRelatedSuccessors);
+            actualRelatedSuccessors.clear();
         }
 
         // inner of the direct cascade ancestor group
         if (index == directCascadeAncestorGroup.size() - 1) {
-            handleAncestorGroups(remainNonOverlapAncestorGroups, unrelatedSuccessors);
+            handleAncestorGroups(remainNonOverlapAncestorGroups, null);
         }
 
         decreaseIdent();
