@@ -117,8 +117,7 @@ public class DslDecompiler {
 
             } else if (!ancestor.containsSingleLinkType()) {
                 Node ancestorNode = ancestor.getAncestor();
-                // when method containsSingleLinkType returns false
-                // it means ancestor must not be joinGateway, so it has only one predecessor
+                // non joinGateway has only one predecessor
                 ancestor = new Ancestor(joinGateway, ancestorNode.getPredecessors().get(0), Sets.newHashSet(ancestorNode));
             }
 
@@ -645,9 +644,6 @@ public class DslDecompiler {
         }
 
         public boolean containsSingleLinkType() {
-            if (ElementType.JOIN_GATEWAY.equals(ancestor.getType())) {
-                return true;
-            }
             if (CollectionUtils.isEmpty(relatedSuccessors)) {
                 return false;
             }
