@@ -1063,25 +1063,102 @@ public class TestDecompiler {
 
     @Test
     public void testJoinWithJoin() {
+//        testDecompile("{\n" +
+//                "    join {\n" +
+//                "        join {\n" +
+//                "            actionA()&\n" +
+//                "        }&\n" +
+//                "    }\n" +
+//                "}");
+//
+//        testDecompile("{\n" +
+//                "    join {\n" +
+//                "        join {\n" +
+//                "            join {\n" +
+//                "                join {\n" +
+//                "                    join {\n" +
+//                "                        actionA()&\n" +
+//                "                    }&\n" +
+//                "                }&\n" +
+//                "            }&\n" +
+//                "        }&\n" +
+//                "    }\n" +
+//                "}");
+//
+//        testDecompile("{\n" +
+//                "    join {\n" +
+//                "        join {\n" +
+//                "            actionA()&\n" +
+//                "        }& then {\n" +
+//                "            actionB()&\n" +
+//                "        }\n" +
+//                "    }\n" +
+//                "}");
+
         testDecompile("{\n" +
                 "    join {\n" +
-                "        join {\n" +
-                "            actionA()&\n" +
-                "        }&\n" +
+                "        actionA() {\n" +
+                "            join {\n" +
+                "                actionB()&\n" +
+                "            }&,\n" +
+                "            join {\n" +
+                "                actionC()&\n" +
+                "            }&\n" +
+                "        }\n" +
                 "    }\n" +
                 "}");
 
         testDecompile("{\n" +
                 "    join {\n" +
                 "        join {\n" +
+                "            actionA()&\n" +
+                "        }& then {\n" +
+                "            actionB()&\n" +
+                "        }&,\n" +
+                "        actionC()&\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    actionA() {\n" +
+                "        join {\n" +
                 "            join {\n" +
                 "                join {\n" +
                 "                    join {\n" +
-                "                        actionA()&\n" +
+                "                        actionB()&\n" +
+                "                    }&,\n" +
+                "                    join {\n" +
+                "                        actionC()&\n" +
+                "                    }&\n" +
+                "                }&,\n" +
+                "                join {\n" +
+                "                    join {\n" +
+                "                        actionD()&\n" +
+                "                    }&,\n" +
+                "                    join {\n" +
+                "                        actionE()&\n" +
                 "                    }&\n" +
                 "                }&\n" +
-                "            }&\n" +
-                "        }&\n" +
+                "            }&,\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    join {\n" +
+                "                        actionF()&\n" +
+                "                    }&,\n" +
+                "                    join {\n" +
+                "                        actionG()&\n" +
+                "                    }&\n" +
+                "                }&,\n" +
+                "                join {\n" +
+                "                    join {\n" +
+                "                        actionH()&\n" +
+                "                    }&,\n" +
+                "                    join {\n" +
+                "                        actionI()&\n" +
+                "                    }&\n" +
+                "                }&\n" +
+                "            }\n" +
+                "        }\n" +
                 "    }\n" +
                 "}");
 

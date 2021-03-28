@@ -274,23 +274,21 @@ public class DslDecompiler {
         }
         if (CollectionUtils.isNotEmpty(ancestors)) {
             List<Node> successors = node.getSuccessorsOf(linkType);
-            parseSegmentAndSort(ancestors, successors);
-            handleJoinGateways(ancestors, successors);
+            List<List<Ancestor>> nonOverlapAncestorGroups = getSortedNonOverlapAncestorGroups(ancestors, successors);
+            handleAncestorGroups(nonOverlapAncestorGroups, successors);
         } else {
             List<Node> successors = node.getSuccessorsOf(linkType);
             handleSuccessors(successors);
         }
     }
 
-    private void handleJoinGateways(List<Ancestor> ancestors, List<Node> successors) {
+    private void handleAncestorGroups(List<List<Ancestor>> ancestorGroups, List<Node> successors) {
         List<Node> unrelatedSuccessors = Lists.newArrayList(successors);
-        for (int i = 0; i < ancestors.size(); i++) {
-            Ancestor ancestor = ancestors.get(i);
 
-            unrelatedSuccessors.removeAll(ancestor.getRelatedSuccessors());
-            handleJoinGateway(ancestor);
-
-            if (i != ancestors.size() - 1) {
+        for (int i = 0; i < ancestorGroups.size(); i++) {
+            List<Ancestor> ancestorGroup = ancestorGroups.get(i);
+            handleAncestorGroup(ancestorGroup, unrelatedSuccessors, 0);
+            if (i != ancestorGroups.size() - 1) {
                 appendln(false, COMMA);
             }
         }
@@ -302,6 +300,23 @@ public class DslDecompiler {
         } else {
             appendln(false);
         }
+    }
+
+    private void handleAncestorGroup(List<Ancestor> ancestorGroup, List<Node> unrelatedSuccessors, int index) {
+        if (index >= ancestorGroup.size()) {
+            return;
+        }
+
+        Ancestor ancestor = ancestorGroup.get(index);
+        unrelatedSuccessors.removeAll(ancestor.getRelatedSuccessors());
+
+        handleJoinGateway(ancestor);
+
+        if (index < ancestorGroup.size() - 1) {
+            appendln(false, COMMA);
+        }
+
+        handleAncestorGroup(ancestorGroup, unrelatedSuccessors, index + 1);
     }
 
     private void handleJoinGateway(Ancestor originalAncestor) {
@@ -473,7 +488,7 @@ public class DslDecompiler {
         }
     }
 
-    private void parseSegmentAndSort(List<Ancestor> ancestors, List<Node> successors) {
+    private List<List<Ancestor>> getSortedNonOverlapAncestorGroups(List<Ancestor> ancestors, List<Node> successors) {
         for (Ancestor ancestor : ancestors) {
             Set<Node> relatedSuccessors = ancestor.getRelatedSuccessors();
             Assert.assertNotEmpty(relatedSuccessors, "joinGateway's ancestor has no related successors");
@@ -501,7 +516,51 @@ public class DslDecompiler {
             ancestor.setLastIndexOfSuccessor(lastIndex);
         }
 
-        ancestors.sort(Comparator.comparingInt(o -> (int) o.getFirstIndexOfSuccessor()));
+        List<List<Ancestor>> nonOverlapAncestorGroups = Lists.newArrayList();
+        for (Ancestor ancestor : ancestors) {
+            List<Ancestor> overlapGroup = getOverlapGroup(nonOverlapAncestorGroups, ancestor);
+            if (overlapGroup != null) {
+                overlapGroup.add(ancestor);
+                overlapGroup.sort(Comparator.comparingInt(Ancestor::getFirstIndexOfSuccessor));
+            } else {
+                nonOverlapAncestorGroups.add(Lists.newArrayList(ancestor));
+            }
+        }
+
+        nonOverlapAncestorGroups.sort((group1, group2) -> {
+            Ancestor firstOfGroup1 = group1.get(0);
+            Ancestor firstOfGroup2 = group2.get(0);
+            if (firstOfGroup1.getFirstIndexOfSuccessor() <= firstOfGroup2.getFirstIndexOfSuccessor()
+                    && firstOfGroup1.getLastIndexOfSuccessor() >= firstOfGroup2.getLastIndexOfSuccessor()) {
+                if (firstOfGroup1.getFirstIndexOfSuccessor() == firstOfGroup2.getFirstIndexOfSuccessor()
+                        && firstOfGroup1.getLastIndexOfSuccessor() == firstOfGroup2.getLastIndexOfSuccessor()) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            } else {
+                return 1;
+            }
+        });
+        return nonOverlapAncestorGroups;
+    }
+
+    private List<Ancestor> getOverlapGroup(List<List<Ancestor>> nonOverlapAncestorGroups, Ancestor ancestor) {
+        for (List<Ancestor> nonOverlapAncestorGroup : nonOverlapAncestorGroups) {
+            Ancestor firstAncestor = nonOverlapAncestorGroup.get(0);
+            if (isOverlap(firstAncestor, ancestor)) {
+                return nonOverlapAncestorGroup;
+            }
+        }
+
+        return null;
+    }
+
+    private boolean isOverlap(Ancestor ancestor1, Ancestor ancestor2) {
+        return (ancestor1.getFirstIndexOfSuccessor() <= ancestor2.getFirstIndexOfSuccessor()
+                && ancestor1.getLastIndexOfSuccessor() >= ancestor2.getLastIndexOfSuccessor())
+                || (ancestor1.getFirstIndexOfSuccessor() > ancestor2.getFirstIndexOfSuccessor()
+                && ancestor1.getLastIndexOfSuccessor() < ancestor2.getLastIndexOfSuccessor());
     }
 
     private boolean hasNonJoinGatewaySuccessors(Node node, LinkType linkType) {
