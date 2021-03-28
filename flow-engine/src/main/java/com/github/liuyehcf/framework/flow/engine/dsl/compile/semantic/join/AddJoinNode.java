@@ -1,6 +1,5 @@
 package com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.join;
 
-import com.github.liuyehcf.framework.common.tools.asserts.Assert;
 import com.github.liuyehcf.framework.flow.engine.dsl.CompilerContext;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.model.AttrName;
 import com.github.liuyehcf.framework.flow.engine.dsl.compile.semantic.AbstractSemanticAction;
@@ -33,8 +32,9 @@ public class AddJoinNode extends AbstractSemanticAction {
             context.addJoinNode(context.peekNode(), linkType);
         } else {
             LinkType subFlowJoinMarkLinkType = context.getAttr(SUB_FLOW_JOIN_MARK_TACK_OFFSET, AttrName.SUB_FLOW_JOIN_MARK);
-            Assert.assertNotNull(subFlowJoinMarkLinkType, "subFlowJoinMarkLinkType");
-            context.addJoinNode(context.peekNode(), subFlowJoinMarkLinkType);
+            if (subFlowJoinMarkLinkType != null) {
+                context.addJoinNode(context.peekNode(), subFlowJoinMarkLinkType);
+            }
         }
     }
 }
