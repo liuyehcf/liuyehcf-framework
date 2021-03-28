@@ -46,7 +46,17 @@ public class DslDecompiler {
 
     private final Flow flow;
     private final StringBuilder buffer = new StringBuilder();
-    private final Map<Node, List<Ancestor>> ancestorDic = Maps.newHashMap();
+
+    /**
+     * ancestor node -> Ancestor
+     */
+    private final Map<Node, List<Ancestor>> ancestorMap = Maps.newHashMap();
+
+    /**
+     * offspring joinGateway -> ancestor joinGateway
+     */
+    private final Map<JoinGateway, JoinGateway> joinGatewayMap = Maps.newHashMap();
+
     private final int identStepWidth;
     private final String identStep;
     private String ident = "";
@@ -98,20 +108,23 @@ public class DslDecompiler {
 
         for (JoinGateway joinGateway : joinGateways) {
             Ancestor ancestor = findCommonAncestor(joinGateway, flow.getStart(), joinGateway.getPredecessors());
-            Node ancestorNode = ancestor.getAncestor();
 
-            while (ElementType.JOIN_GATEWAY.equals(ancestor.getAncestor().getType())
-                    || ElementType.EXCLUSIVE_GATEWAY.equals(ancestor.getAncestor().getType())) {
+            if (ElementType.EXCLUSIVE_GATEWAY.equals(ancestor.getAncestor().getType())) {
+                Node ancestorNode = ancestor.getAncestor();
+                // exclusiveGateway has only one predecessor
                 ancestor = new Ancestor(joinGateway, ancestorNode.getPredecessors().get(0), Sets.newHashSet(ancestorNode));
-            }
+            } else if (ElementType.JOIN_GATEWAY.equals(ancestor.getAncestor().getType())) {
 
-            while (!ancestor.containsSingleLinkType()) {
+            } else if (!ancestor.containsSingleLinkType()) {
+                Node ancestorNode = ancestor.getAncestor();
+                // when method containsSingleLinkType returns false
+                // it means ancestor must not be joinGateway, so it has only one predecessor
                 ancestor = new Ancestor(joinGateway, ancestorNode.getPredecessors().get(0), Sets.newHashSet(ancestorNode));
             }
 
             ancestor.buildRelatedLinkType();
-            ancestorDic.putIfAbsent(ancestor.getAncestor(), Lists.newArrayList());
-            ancestorDic.get(ancestor.getAncestor()).add(ancestor);
+            ancestorMap.putIfAbsent(ancestor.getAncestor(), Lists.newArrayList());
+            ancestorMap.get(ancestor.getAncestor()).add(ancestor);
         }
     }
 
@@ -246,40 +259,41 @@ public class DslDecompiler {
     }
 
     private void handleSuccessorsOf(Node node, LinkType linkType) {
-        List<Ancestor> ancestors = ancestorDic.get(node);
+        List<Ancestor> ancestors = ancestorMap.get(node);
         if (CollectionUtils.isNotEmpty(ancestors)) {
             ancestors = ancestors.stream()
                     .filter((ancestor) -> Objects.equals(ancestor.getLinkType(), linkType))
                     .collect(Collectors.toList());
         }
         if (CollectionUtils.isNotEmpty(ancestors)) {
-            List<Node> successors = node.getSuccessorsOf(linkType);
-            parseSegmentAndSort(ancestors, successors);
+            // ordinary means joinGateway isn't another joinGateway's ancestor
+            List<Ancestor> ordinaryAncestors = Lists.newArrayList();
+            LinkedList<Ancestor> stack = Lists.newLinkedList();
+            ancestors.forEach(stack::push);
 
-            if (isAncestorsOverlap(ancestors)) {
-                handleJoinGatewaysWithOverlap(ancestors, successors);
-            } else {
-                handleJoinGatewaysWithoutOverlap(ancestors, successors);
+            // offspring joinGateway -> super joinGateway
+            Map<JoinGateway, JoinGateway> superJoinGatewayMap = Maps.newHashMap();
+            while (!stack.isEmpty()) {
+                Ancestor ancestor = stack.pop();
+                List<Ancestor> superAncestors = ancestorMap.get(ancestor.getJoinGateway());
+                if (CollectionUtils.isNotEmpty(superAncestors)) {
+                    superAncestors.forEach(superAncestor -> superJoinGatewayMap.put(ancestor.getJoinGateway(), superAncestor.getJoinGateway()));
+                    superAncestors.forEach(stack::push);
+                } else {
+                    ordinaryAncestors.add(ancestor);
+                }
             }
 
+            List<Node> successors = node.getSuccessorsOf(linkType);
+            parseSegmentAndSort(ordinaryAncestors, successors);
+            handleJoinGateways(ordinaryAncestors, superJoinGatewayMap, successors);
         } else {
             List<Node> successors = node.getSuccessorsOf(linkType);
             handleSuccessors(successors, false);
         }
     }
 
-    private boolean isAncestorsOverlap(List<Ancestor> ancestors) {
-        int preLastIndex = -1;
-        for (Ancestor ancestor : ancestors) {
-            if (ancestor.getFirstIndexOfSuccessor() <= preLastIndex) {
-                return true;
-            }
-            preLastIndex = ancestor.getLastIndexOfSuccessor();
-        }
-        return false;
-    }
-
-    private void handleJoinGatewaysWithOverlap(List<Ancestor> ancestors, List<Node> successors) {
+    private void handleJoinGateways(List<Ancestor> ancestors, Map<JoinGateway, JoinGateway> superJoinGatewayMap, List<Node> successors) {
         List<Node> unrelatedSuccessors = Lists.newArrayList(successors);
         for (int i = 0; i < ancestors.size(); i++) {
             Ancestor ancestor = ancestors.get(i);
@@ -287,40 +301,15 @@ public class DslDecompiler {
             unrelatedSuccessors.removeAll(ancestor.getRelatedSuccessors());
             handleJoinGateway(ancestor, Lists.newArrayList(ancestor.getRelatedSuccessors()));
 
-            if (i != successors.size() - 1) {
+            if (i != ancestors.size() - 1) {
                 appendln(false, COMMA);
             }
         }
 
         // last part
         if (!unrelatedSuccessors.isEmpty()) {
+            appendln(false, COMMA);
             handleSuccessors(unrelatedSuccessors, false);
-        } else {
-            appendln(false);
-        }
-    }
-
-    private void handleJoinGatewaysWithoutOverlap(List<Ancestor> ancestors, List<Node> successors) {
-        int lastProcessedIndex = -1;
-        for (Ancestor ancestor : ancestors) {
-            int firstIndexOfSuccessor = ancestor.getFirstIndexOfSuccessor();
-            int lastIndexOfSuccessor = ancestor.getLastIndexOfSuccessor();
-            if (firstIndexOfSuccessor - lastProcessedIndex > 1) {
-                handleSuccessors(successors.subList(lastProcessedIndex + 1, firstIndexOfSuccessor), true);
-            }
-
-            handleJoinGateway(ancestor, successors.subList(firstIndexOfSuccessor, lastIndexOfSuccessor + 1));
-
-            lastProcessedIndex = lastIndexOfSuccessor;
-
-            if (lastProcessedIndex != successors.size() - 1) {
-                appendln(false, COMMA);
-            }
-        }
-
-        // last part
-        if (lastProcessedIndex < successors.size() - 1) {
-            handleSuccessors(successors.subList(lastProcessedIndex + 1, successors.size()), false);
         } else {
             appendln(false);
         }
@@ -656,6 +645,9 @@ public class DslDecompiler {
         }
 
         public boolean containsSingleLinkType() {
+            if (ElementType.JOIN_GATEWAY.equals(ancestor.getType())) {
+                return true;
+            }
             if (CollectionUtils.isEmpty(relatedSuccessors)) {
                 return false;
             }

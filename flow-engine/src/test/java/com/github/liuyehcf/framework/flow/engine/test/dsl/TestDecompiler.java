@@ -8,6 +8,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
+ * todo join 嵌套测试用例（一个joinGateway是另一个joinGateway的ancestor）
+ * todo join 嵌套，一个joinGateway是另外多个joinGateway的ancestor
+ *
  * @author hechenfeng
  * @date 2021/3/25
  */
@@ -219,9 +222,9 @@ public class TestDecompiler {
         testDecompile("{\n" +
                 "    join {\n" +
                 "        actionA()&,\n" +
-                "        actionB(),\n" +
                 "        actionC()&\n" +
-                "    }\n" +
+                "    },\n" +
+                "    actionB()\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -232,11 +235,11 @@ public class TestDecompiler {
                 "}");
 
         testDecompile("{\n" +
-                "    actionA(),\n" +
                 "    join {\n" +
                 "        actionB()&,\n" +
                 "        actionC()&\n" +
-                "    }\n" +
+                "    },\n" +
+                "    actionA()\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -266,7 +269,6 @@ public class TestDecompiler {
                 "}");
 
         testDecompile("{\n" +
-                "    actionG(),\n" +
                 "    join {\n" +
                 "        actionA()&,\n" +
                 "        actionB()&\n" +
@@ -278,39 +280,8 @@ public class TestDecompiler {
                 "    join {\n" +
                 "        actionE()&,\n" +
                 "        actionF()&\n" +
-                "    }\n" +
-                "}");
-
-        testDecompile("{\n" +
-                "    join {\n" +
-                "        actionA()&,\n" +
-                "        actionB()&\n" +
                 "    },\n" +
-                "    actionG(),\n" +
-                "    join {\n" +
-                "        actionC()&,\n" +
-                "        actionD()&\n" +
-                "    },\n" +
-                "    join {\n" +
-                "        actionE()&,\n" +
-                "        actionF()&\n" +
-                "    }\n" +
-                "}");
-
-        testDecompile("{\n" +
-                "    join {\n" +
-                "        actionA()&,\n" +
-                "        actionB()&\n" +
-                "    },\n" +
-                "    join {\n" +
-                "        actionC()&,\n" +
-                "        actionD()&\n" +
-                "    },\n" +
-                "    actionG(),\n" +
-                "    join {\n" +
-                "        actionE()&,\n" +
-                "        actionF()&\n" +
-                "    }\n" +
+                "    actionG()\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -330,41 +301,6 @@ public class TestDecompiler {
                 "}");
 
         testDecompile("{\n" +
-                "    actionG(),\n" +
-                "    join {\n" +
-                "        actionA()&,\n" +
-                "        actionB()&\n" +
-                "    },\n" +
-                "    actionH(),\n" +
-                "    join {\n" +
-                "        actionC()&,\n" +
-                "        actionD()&\n" +
-                "    },\n" +
-                "    join {\n" +
-                "        actionE()&,\n" +
-                "        actionF()&\n" +
-                "    }\n" +
-                "}");
-
-        testDecompile("{\n" +
-                "    actionG(),\n" +
-                "    join {\n" +
-                "        actionA()&,\n" +
-                "        actionB()&\n" +
-                "    },\n" +
-                "    join {\n" +
-                "        actionC()&,\n" +
-                "        actionD()&\n" +
-                "    },\n" +
-                "    actionH(),\n" +
-                "    join {\n" +
-                "        actionE()&,\n" +
-                "        actionF()&\n" +
-                "    }\n" +
-                "}");
-
-        testDecompile("{\n" +
-                "    actionG(),\n" +
                 "    join {\n" +
                 "        actionA()&,\n" +
                 "        actionB()&\n" +
@@ -377,7 +313,7 @@ public class TestDecompiler {
                 "        actionE()&,\n" +
                 "        actionF()&\n" +
                 "    },\n" +
-                "    actionH()\n" +
+                "    actionG()\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -385,16 +321,15 @@ public class TestDecompiler {
                 "        actionA()&,\n" +
                 "        actionB()&\n" +
                 "    },\n" +
-                "    actionG(),\n" +
                 "    join {\n" +
                 "        actionC()&,\n" +
                 "        actionD()&\n" +
                 "    },\n" +
-                "    actionH(),\n" +
                 "    join {\n" +
                 "        actionE()&,\n" +
                 "        actionF()&\n" +
-                "    }\n" +
+                "    },\n" +
+                "    actionG()\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -402,7 +337,6 @@ public class TestDecompiler {
                 "        actionA()&,\n" +
                 "        actionB()&\n" +
                 "    },\n" +
-                "    actionG(),\n" +
                 "    join {\n" +
                 "        actionC()&,\n" +
                 "        actionD()&\n" +
@@ -411,6 +345,7 @@ public class TestDecompiler {
                 "        actionE()&,\n" +
                 "        actionF()&\n" +
                 "    },\n" +
+                "    actionG(),\n" +
                 "    actionH()\n" +
                 "}");
 
@@ -423,11 +358,79 @@ public class TestDecompiler {
                 "        actionC()&,\n" +
                 "        actionD()&\n" +
                 "    },\n" +
-                "    actionG(),\n" +
                 "    join {\n" +
                 "        actionE()&,\n" +
                 "        actionF()&\n" +
                 "    },\n" +
+                "    actionG(),\n" +
+                "    actionH()\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        actionA()&,\n" +
+                "        actionB()&\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionC()&,\n" +
+                "        actionD()&\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionE()&,\n" +
+                "        actionF()&\n" +
+                "    },\n" +
+                "    actionG(),\n" +
+                "    actionH()\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        actionA()&,\n" +
+                "        actionB()&\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionC()&,\n" +
+                "        actionD()&\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionE()&,\n" +
+                "        actionF()&\n" +
+                "    },\n" +
+                "    actionG(),\n" +
+                "    actionH()\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        actionA()&,\n" +
+                "        actionB()&\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionC()&,\n" +
+                "        actionD()&\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionE()&,\n" +
+                "        actionF()&\n" +
+                "    },\n" +
+                "    actionG(),\n" +
+                "    actionH()\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        actionA()&,\n" +
+                "        actionB()&\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionC()&,\n" +
+                "        actionD()&\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionE()&,\n" +
+                "        actionF()&\n" +
+                "    },\n" +
+                "    actionG(),\n" +
                 "    actionH()\n" +
                 "}");
     }
@@ -1190,11 +1193,11 @@ public class TestDecompiler {
         testDecompile("{\n" +
                 "    join {\n" +
                 "        actionA()&,\n" +
-                "        actionB(),\n" +
                 "        actionC()&\n" +
                 "    } then {\n" +
                 "        actionD()\n" +
-                "    }\n" +
+                "    },\n" +
+                "    actionB()\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -1233,13 +1236,13 @@ public class TestDecompiler {
                 "}");
 
         testDecompile("{\n" +
-                "    actionA(),\n" +
                 "    join {\n" +
                 "        actionB()&,\n" +
                 "        actionC()&\n" +
                 "    } then {\n" +
                 "        actionD()\n" +
-                "    }\n" +
+                "    },\n" +
+                "    actionA()\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -1277,7 +1280,6 @@ public class TestDecompiler {
                 "}");
 
         testDecompile("{\n" +
-                "    actionG(),\n" +
                 "    join {\n" +
                 "        actionA()&,\n" +
                 "        actionB()&\n" +
@@ -1295,51 +1297,8 @@ public class TestDecompiler {
                 "        actionF()&\n" +
                 "    } then {\n" +
                 "        actionZ()\n" +
-                "    }\n" +
-                "}");
-
-        testDecompile("{\n" +
-                "    join {\n" +
-                "        actionA()&,\n" +
-                "        actionB()&\n" +
-                "    } then {\n" +
-                "        actionX()\n" +
                 "    },\n" +
-                "    actionG(),\n" +
-                "    join {\n" +
-                "        actionC()&,\n" +
-                "        actionD()&\n" +
-                "    } then {\n" +
-                "        actionY()\n" +
-                "    },\n" +
-                "    join {\n" +
-                "        actionE()&,\n" +
-                "        actionF()&\n" +
-                "    } then {\n" +
-                "        actionZ()\n" +
-                "    }\n" +
-                "}");
-
-        testDecompile("{\n" +
-                "    join {\n" +
-                "        actionA()&,\n" +
-                "        actionB()&\n" +
-                "    } then {\n" +
-                "        actionX()\n" +
-                "    },\n" +
-                "    join {\n" +
-                "        actionC()&,\n" +
-                "        actionD()&\n" +
-                "    } then {\n" +
-                "        actionY()\n" +
-                "    },\n" +
-                "    actionG(),\n" +
-                "    join {\n" +
-                "        actionE()&,\n" +
-                "        actionF()&\n" +
-                "    } then {\n" +
-                "        actionZ()\n" +
-                "    }\n" +
+                "    actionG()\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -1365,53 +1324,6 @@ public class TestDecompiler {
                 "}");
 
         testDecompile("{\n" +
-                "    actionG(),\n" +
-                "    join {\n" +
-                "        actionA()&,\n" +
-                "        actionB()&\n" +
-                "    } then {\n" +
-                "        actionX()\n" +
-                "    },\n" +
-                "    actionH(),\n" +
-                "    join {\n" +
-                "        actionC()&,\n" +
-                "        actionD()&\n" +
-                "    } then {\n" +
-                "        actionY()\n" +
-                "    },\n" +
-                "    join {\n" +
-                "        actionE()&,\n" +
-                "        actionF()&\n" +
-                "    } then {\n" +
-                "        actionZ()\n" +
-                "    }\n" +
-                "}");
-
-        testDecompile("{\n" +
-                "    actionG(),\n" +
-                "    join {\n" +
-                "        actionA()&,\n" +
-                "        actionB()&\n" +
-                "    } then {\n" +
-                "        actionX()\n" +
-                "    },\n" +
-                "    join {\n" +
-                "        actionC()&,\n" +
-                "        actionD()&\n" +
-                "    } then {\n" +
-                "        actionY()\n" +
-                "    },\n" +
-                "    actionH(),\n" +
-                "    join {\n" +
-                "        actionE()&,\n" +
-                "        actionF()&\n" +
-                "    } then {\n" +
-                "        actionZ()\n" +
-                "    }\n" +
-                "}");
-
-        testDecompile("{\n" +
-                "    actionG(),\n" +
                 "    join {\n" +
                 "        actionA()&,\n" +
                 "        actionB()&\n" +
@@ -1430,7 +1342,7 @@ public class TestDecompiler {
                 "    } then {\n" +
                 "        actionZ()\n" +
                 "    },\n" +
-                "    actionH()\n" +
+                "    actionG()\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -1440,20 +1352,19 @@ public class TestDecompiler {
                 "    } then {\n" +
                 "        actionX()\n" +
                 "    },\n" +
-                "    actionG(),\n" +
                 "    join {\n" +
                 "        actionC()&,\n" +
                 "        actionD()&\n" +
                 "    } then {\n" +
                 "        actionY()\n" +
                 "    },\n" +
-                "    actionH(),\n" +
                 "    join {\n" +
                 "        actionE()&,\n" +
                 "        actionF()&\n" +
                 "    } then {\n" +
                 "        actionZ()\n" +
-                "    }\n" +
+                "    },\n" +
+                "    actionG()\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -1463,7 +1374,6 @@ public class TestDecompiler {
                 "    } then {\n" +
                 "        actionX()\n" +
                 "    },\n" +
-                "    actionG(),\n" +
                 "    join {\n" +
                 "        actionC()&,\n" +
                 "        actionD()&\n" +
@@ -1476,6 +1386,7 @@ public class TestDecompiler {
                 "    } then {\n" +
                 "        actionZ()\n" +
                 "    },\n" +
+                "    actionG(),\n" +
                 "    actionH()\n" +
                 "}");
 
@@ -1492,13 +1403,105 @@ public class TestDecompiler {
                 "    } then {\n" +
                 "        actionY()\n" +
                 "    },\n" +
-                "    actionG(),\n" +
                 "    join {\n" +
                 "        actionE()&,\n" +
                 "        actionF()&\n" +
                 "    } then {\n" +
                 "        actionZ()\n" +
                 "    },\n" +
+                "    actionG(),\n" +
+                "    actionH()\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        actionA()&,\n" +
+                "        actionB()&\n" +
+                "    } then {\n" +
+                "        actionX()\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionC()&,\n" +
+                "        actionD()&\n" +
+                "    } then {\n" +
+                "        actionY()\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionE()&,\n" +
+                "        actionF()&\n" +
+                "    } then {\n" +
+                "        actionZ()\n" +
+                "    },\n" +
+                "    actionG(),\n" +
+                "    actionH()\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        actionA()&,\n" +
+                "        actionB()&\n" +
+                "    } then {\n" +
+                "        actionX()\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionC()&,\n" +
+                "        actionD()&\n" +
+                "    } then {\n" +
+                "        actionY()\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionE()&,\n" +
+                "        actionF()&\n" +
+                "    } then {\n" +
+                "        actionZ()\n" +
+                "    },\n" +
+                "    actionG(),\n" +
+                "    actionH()\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        actionA()&,\n" +
+                "        actionB()&\n" +
+                "    } then {\n" +
+                "        actionX()\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionC()&,\n" +
+                "        actionD()&\n" +
+                "    } then {\n" +
+                "        actionY()\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionE()&,\n" +
+                "        actionF()&\n" +
+                "    } then {\n" +
+                "        actionZ()\n" +
+                "    },\n" +
+                "    actionG(),\n" +
+                "    actionH()\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        actionA()&,\n" +
+                "        actionB()&\n" +
+                "    } then {\n" +
+                "        actionX()\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionC()&,\n" +
+                "        actionD()&\n" +
+                "    } then {\n" +
+                "        actionY()\n" +
+                "    },\n" +
+                "    join {\n" +
+                "        actionE()&,\n" +
+                "        actionF()&\n" +
+                "    } then {\n" +
+                "        actionZ()\n" +
+                "    },\n" +
+                "    actionG(),\n" +
                 "    actionH()\n" +
                 "}");
     }
