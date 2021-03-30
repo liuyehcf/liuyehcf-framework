@@ -1134,7 +1134,7 @@ __maven依赖__
 <dependency>
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>flow-engine-spring-boot-starter</artifactId>
-    <version>1.4.3</version>
+    <version>1.4.4</version>
 </dependency>
 ```
 
@@ -1400,7 +1400,7 @@ __maven依赖__
 <dependency>
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>flow-engine</artifactId>
-    <version>1.4.3</version>
+    <version>1.4.4</version>
 </dependency>
 ```
 
