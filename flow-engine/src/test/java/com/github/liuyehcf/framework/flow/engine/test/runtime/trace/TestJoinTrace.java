@@ -8424,4 +8424,581 @@ public class TestJoinTrace extends TestTraceBase {
             assertJoinGateway(trace);
         });
     }
+
+    @Test
+    public void testJoinCascadeJoin1() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        join {\n" +
+                "            printAction(content=\"actionA\")&\n" +
+                "        }&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+
+            trace = executionLink.getTraces().get(3);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testJoinCascadeJoin2() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        join {\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    join {\n" +
+                "                        printAction(content=\"actionA\")&\n" +
+                "                    }&\n" +
+                "                }&\n" +
+                "            }&\n" +
+                "        }&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            for (int i = 2; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                assertJoinGateway(trace);
+            }
+        });
+    }
+
+    @Test
+    public void testJoinCascadeJoin3() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        join {\n" +
+                "            printAction(content=\"actionA\")&\n" +
+                "        }& then {\n" +
+                "            printAction(content=\"actionB\")&\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(2);
+            assertJoinGateway(trace);
+
+            for (int i = 3; i < executionLink.getTraces().size() - 1; i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionB");
+                }
+            }
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testJoinCascadeJoin4() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        printAction(content=\"actionA\") {\n" +
+                "            join {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }&,\n" +
+                "            join {\n" +
+                "                printAction(content=\"actionC\")&\n" +
+                "            }&\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            for (int i = 2; i < 6; i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[BC]");
+                }
+            }
+
+            trace = executionLink.getTraces().get(6);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testJoinCascadeJoin5() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        join {\n" +
+                "            printAction(content=\"actionA\")&\n" +
+                "        }& then {\n" +
+                "            printAction(content=\"actionB\")&\n" +
+                "        },\n" +
+                "        printAction(content=\"actionC\")&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            for (int i = 1; i < executionLink.getTraces().size() - 1; i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[ABC]");
+                }
+            }
+
+            trace = executionLink.getTraces().get(5);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testJoinCascadeJoin6() {
+        Flow flow = compile("{\n" +
+                "    printAction(content=\"actionA\") {\n" +
+                "        join {\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    join {\n" +
+                "                        printAction(content=\"actionB\")&\n" +
+                "                    }&,\n" +
+                "                    join {\n" +
+                "                        printAction(content=\"actionC\")&\n" +
+                "                    }&\n" +
+                "                }&,\n" +
+                "                join {\n" +
+                "                    join {\n" +
+                "                        printAction(content=\"actionD\")&\n" +
+                "                    }&,\n" +
+                "                    join {\n" +
+                "                        printAction(content=\"actionE\")&\n" +
+                "                    }&\n" +
+                "                }&\n" +
+                "            }&,\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    join {\n" +
+                "                        printAction(content=\"actionF\")&\n" +
+                "                    }&,\n" +
+                "                    join {\n" +
+                "                        printAction(content=\"actionG\")&\n" +
+                "                    }&\n" +
+                "                }&,\n" +
+                "                join {\n" +
+                "                    join {\n" +
+                "                        printAction(content=\"actionH\")&\n" +
+                "                    }&,\n" +
+                "                    join {\n" +
+                "                        printAction(content=\"actionI\")&\n" +
+                "                    }&\n" +
+                "                }&\n" +
+                "            }&\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 25);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertPrintAction(trace, "actionA");
+
+            for (int i = 2; i < executionLink.getTraces().size() - 1; i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[B-I]");
+                }
+            }
+
+            trace = executionLink.getTraces().get(24);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testJoinCascadeJoin7() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        join {\n" +
+                "            printAction(content=\"actionA\")&\n" +
+                "        }&,\n" +
+                "        printAction(content=\"actionB\")&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            for (int i = 1; i < executionLink.getTraces().size() - 1; i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[AB]");
+                }
+            }
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testJoinCascadeJoin8() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        printAction(content=\"actionA\") {\n" +
+                "            join {\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }&\n" +
+                "        },\n" +
+                "        printAction(content=\"actionC\")&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            for (int i = 1; i < executionLink.getTraces().size() - 1; i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[ABC]");
+                }
+            }
+
+            trace = executionLink.getTraces().get(5);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testJoinCascadeJoin9() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        join {\n" +
+                "            join {\n" +
+                "                printAction(content=\"actionA\")&,\n" +
+                "                printAction(content=\"actionB\")&\n" +
+                "            }&\n" +
+                "        }&,\n" +
+                "        join {\n" +
+                "            join {\n" +
+                "                printAction(content=\"actionC\")&,\n" +
+                "                printAction(content=\"actionD\")&\n" +
+                "            }&\n" +
+                "        }&\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 10);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            for (int i = 1; i < executionLink.getTraces().size() - 1; i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[ABCD]");
+                }
+            }
+
+            trace = executionLink.getTraces().get(9);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testJoinCascadeJoin10() {
+        Flow flow = compile("{\n" +
+                "    sub {\n" +
+                "        join {\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    printAction(content=\"actionA\")&,\n" +
+                "                    printAction(content=\"actionB\")&\n" +
+                "                }&\n" +
+                "            }&,\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    printAction(content=\"actionC\")&,\n" +
+                "                    printAction(content=\"actionD\")&\n" +
+                "                }&\n" +
+                "            }&\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 12);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            for (int i = 2; i < executionLink.getTraces().size() - 2; i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[ABCD]");
+                }
+            }
+
+            trace = executionLink.getTraces().get(10);
+            assertJoinGateway(trace);
+
+            trace = executionLink.getTraces().get(11);
+            assertFlow(trace);
+        });
+    }
+
+    @Test
+    public void testJoinCascadeJoin11() {
+        Flow flow = compile("{\n" +
+                "    sub {\n" +
+                "        join {\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    printAction(content=\"actionA\")&,\n" +
+                "                    printAction(content=\"actionB\")&\n" +
+                "                }& then {\n" +
+                "                    printAction(content=\"actionX\")\n" +
+                "                }\n" +
+                "            }&,\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    printAction(content=\"actionC\")&,\n" +
+                "                    printAction(content=\"actionD\")&\n" +
+                "                }& then {\n" +
+                "                    printAction(content=\"actionY\")&\n" +
+                "                }\n" +
+                "            }&\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 14);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertStart(trace);
+
+            for (int i = 2; i < executionLink.getTraces().size() - 1; i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[ABCDXY]");
+                }
+            }
+
+            trace = executionLink.getTraces().get(13);
+            assertFlow(trace);
+        });
+    }
 }

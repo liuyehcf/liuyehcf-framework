@@ -142,9 +142,9 @@ public class TestRuntimeBase {
 
     protected Flow compile(String dsl) {
         System.out.println(dsl);
-        Flow flow = engine.compile(dsl);
-        String rebuildDsl = flow.getDsl();
-        Flow rebuildFlow = engine.compile(rebuildDsl);
+        Flow flow = engine.compile(dsl).get();
+        String rebuildDsl = engine.decompile(flow).get();
+        Flow rebuildFlow = engine.compile(rebuildDsl).get();
         Assert.assertTrue(isSame(flow, rebuildFlow));
         return flow;
     }

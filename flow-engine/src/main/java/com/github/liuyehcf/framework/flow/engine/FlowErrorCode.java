@@ -7,6 +7,7 @@ package com.github.liuyehcf.framework.flow.engine;
 public enum FlowErrorCode {
 
     COMPILE("001", "COMPILE"),
+    DECOMPILE("002", "DECOMPILE"),
 
     PROMISE("011", "PROMISE"),
 

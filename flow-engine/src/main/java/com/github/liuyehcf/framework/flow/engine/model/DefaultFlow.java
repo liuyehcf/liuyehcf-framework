@@ -2,8 +2,6 @@ package com.github.liuyehcf.framework.flow.engine.model;
 
 import com.alibaba.fastjson.JSON;
 import com.github.liuyehcf.framework.common.tools.asserts.Assert;
-import com.github.liuyehcf.framework.flow.engine.dsl.DslDecompiler;
-import com.github.liuyehcf.framework.flow.engine.model.activity.Action;
 import com.github.liuyehcf.framework.flow.engine.model.activity.Condition;
 import com.github.liuyehcf.framework.flow.engine.model.event.Event;
 import com.github.liuyehcf.framework.flow.engine.model.gateway.ExclusiveGateway;
@@ -95,13 +93,6 @@ public class DefaultFlow extends AbstractNode implements Flow {
         return elements.values();
     }
 
-    @Override
-    public final String getDsl() {
-        DslDecompiler decompiler = new DslDecompiler(this);
-        return decompiler.decompile();
-    }
-
-    @Override
     public final void init() {
         if (init.compareAndSet(false, true)) {
             checkUnreachableNodes();
@@ -109,6 +100,7 @@ public class DefaultFlow extends AbstractNode implements Flow {
             checkLink();
             checkListener();
             recordEnds();
+            initRecursively();
         }
     }
 
@@ -217,6 +209,7 @@ public class DefaultFlow extends AbstractNode implements Flow {
 
                 for (Node successor : node.getSuccessors()) {
                     Assert.assertTrue(successor instanceof Condition, "the type of exclusiveGateway's successor must be condition");
+                    Assert.assertEmpty(successor.getSuccessorsOf(LinkType.FALSE), "the condition after exclusiveGateway must have no false link successors");
                 }
             }
         }
@@ -250,15 +243,19 @@ public class DefaultFlow extends AbstractNode implements Flow {
 
     private void recordEnds() {
         for (Element element : elements.values()) {
-            // except exclusive gateway
-            if (element instanceof Action
-                    || element instanceof Condition
-                    || element instanceof JoinGateway
-                    || element instanceof Flow) {
+            if (element instanceof Node) {
                 Node node = (Node) element;
                 if (node.getSuccessors().isEmpty()) {
                     ends.add(node);
                 }
+            }
+        }
+    }
+
+    private void initRecursively() {
+        for (Element element : elements.values()) {
+            if (element instanceof Flow) {
+                ((DefaultFlow) element).init();
             }
         }
     }

@@ -40,6 +40,7 @@ public class TestDecompiler {
         DslDecompiler dslDecompiler = new DslDecompiler(flow);
         String rebuildDsl = dslDecompiler.decompile();
         System.out.println(rebuildDsl);
+        compile(rebuildDsl);
 
         Assert.assertEquals(expectedRebuildDsl, rebuildDsl);
     }
@@ -1266,15 +1267,6 @@ public class TestDecompiler {
                 "        },\n" +
                 "        actionC()&\n" +
                 "    }\n" +
-                "}", "{\n" +
-                "    join {\n" +
-                "        actionC()&\n" +
-                "        join {\n" +
-                "            actionA()&\n" +
-                "        }& then {\n" +
-                "            actionB()&\n" +
-                "        }\n" +
-                "    }\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -1327,13 +1319,6 @@ public class TestDecompiler {
                 "        }&,\n" +
                 "        actionB()&\n" +
                 "    }\n" +
-                "}", "{\n" +
-                "    join {\n" +
-                "        actionB()&\n" +
-                "        join {\n" +
-                "            actionA()&\n" +
-                "        }&\n" +
-                "    }\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -1361,6 +1346,25 @@ public class TestDecompiler {
                 "                actionD()&\n" +
                 "            }&\n" +
                 "        }&\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    sub {\n" +
+                "        join {\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    actionA()&,\n" +
+                "                    actionB()&\n" +
+                "                }&\n" +
+                "            }&,\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    actionC()&,\n" +
+                "                    actionD()&\n" +
+                "                }&\n" +
+                "            }&\n" +
+                "        }\n" +
                 "    }\n" +
                 "}");
     }
@@ -2634,17 +2638,6 @@ public class TestDecompiler {
                 "    } then {\n" +
                 "        actionD()\n" +
                 "    }\n" +
-                "}", "{\n" +
-                "    join {\n" +
-                "        actionC()&\n" +
-                "        join {\n" +
-                "            actionA()&\n" +
-                "        }& then {\n" +
-                "            actionB()&\n" +
-                "        }\n" +
-                "    } then {\n" +
-                "        actionD()\n" +
-                "    }\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -2707,15 +2700,6 @@ public class TestDecompiler {
                 "    } then {\n" +
                 "        actionC()\n" +
                 "    }\n" +
-                "}", "{\n" +
-                "    join {\n" +
-                "        actionB()&\n" +
-                "        join {\n" +
-                "            actionA()&\n" +
-                "        }&\n" +
-                "    } then {\n" +
-                "        actionC()\n" +
-                "    }\n" +
                 "}");
 
         testDecompile("{\n" +
@@ -2760,6 +2744,29 @@ public class TestDecompiler {
                 "                actionY()&\n" +
                 "            }\n" +
                 "        }&\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    sub {\n" +
+                "        join {\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    actionA()&,\n" +
+                "                    actionB()&\n" +
+                "                }& then {\n" +
+                "                    actionX()\n" +
+                "                }\n" +
+                "            }&,\n" +
+                "            join {\n" +
+                "                join {\n" +
+                "                    actionC()&,\n" +
+                "                    actionD()&\n" +
+                "                }& then {\n" +
+                "                    actionY()&\n" +
+                "                }\n" +
+                "            }&\n" +
+                "        }\n" +
                 "    }\n" +
                 "}");
     }
@@ -2938,6 +2945,101 @@ public class TestDecompiler {
                 "        if(conditionB())\n" +
                 "    }\n" +
                 "}");
+    }
+
+    @Test
+    public void testSelectJoin() {
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(conditionA())&\n" +
+                "        }\n" +
+                "    } then {\n" +
+                "        actionA()\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(conditionA())& {\n" +
+                "                actionA()&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(conditionA())& {\n" +
+                "                actionA()\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(conditionA()) {\n" +
+                "                actionA()&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}", "{\n" +
+                "    select {\n" +
+                "        if(conditionA()) {\n" +
+                "            join {\n" +
+                "                actionA()&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(conditionA())& {\n" +
+                "                actionA()&\n" +
+                "            },\n" +
+                "            if(conditionB())&\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(conditionA()) {\n" +
+                "                actionA()&\n" +
+                "            },\n" +
+                "            if(conditionB())&\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(conditionA())& {\n" +
+                "                actionA()\n" +
+                "            },\n" +
+                "            if(conditionB())&\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(conditionA())& {\n" +
+                "                actionA()&\n" +
+                "            },\n" +
+                "            if(conditionB())\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
 
         testDecompile("{\n" +
                 "    join {\n" +
@@ -2948,6 +3050,32 @@ public class TestDecompiler {
                 "            if(conditionB())\n" +
                 "        },\n" +
                 "        actionB()&\n" +
+                "    }\n" +
+                "}");
+
+        testDecompile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(conditionA()) {\n" +
+                "                select {\n" +
+                "                    if(conditionB())& {\n" +
+                "                        actionA()&\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}", "{\n" +
+                "    select {\n" +
+                "        if(conditionA()) {\n" +
+                "            join {\n" +
+                "                select {\n" +
+                "                    if(conditionB())& {\n" +
+                "                        actionA()&\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
                 "    }\n" +
                 "}");
     }

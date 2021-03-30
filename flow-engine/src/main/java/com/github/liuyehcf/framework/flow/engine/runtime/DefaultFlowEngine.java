@@ -8,7 +8,10 @@ import com.github.liuyehcf.framework.flow.engine.FlowEngine;
 import com.github.liuyehcf.framework.flow.engine.FlowErrorCode;
 import com.github.liuyehcf.framework.flow.engine.FlowException;
 import com.github.liuyehcf.framework.flow.engine.dsl.DslCompiler;
+import com.github.liuyehcf.framework.flow.engine.dsl.DslDecompiler;
+import com.github.liuyehcf.framework.flow.engine.model.DefaultFlow;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
+import com.github.liuyehcf.framework.flow.engine.promise.DefaultPromise;
 import com.github.liuyehcf.framework.flow.engine.promise.FlowPromise;
 import com.github.liuyehcf.framework.flow.engine.runtime.config.FlowProperties;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ActionDelegate;
@@ -219,35 +222,67 @@ public class DefaultFlowEngine implements FlowEngine {
     }
 
     @Override
-    public final Flow compile(String dsl) {
-        return doCompile(dsl);
+    public final Promise<Flow> compile(String dsl) {
+        Promise<Flow> promise = new DefaultPromise<>();
+
+        try {
+            getExecutor().execute(() -> {
+                try {
+                    CompileResult<Flow> compileResult = COMPILER.compile(dsl);
+
+                    if (!compileResult.isSuccess()) {
+                        promise.tryFailure(new FlowException(FlowErrorCode.COMPILE, compileResult.getError()));
+                        return;
+                    }
+
+                    promise.trySuccess(compileResult.getResult());
+                } catch (Throwable e) {
+                    promise.tryFailure(e);
+                }
+            });
+        } catch (Throwable e) {
+            promise.tryFailure(e);
+        }
+
+        return promise;
+    }
+
+    @Override
+    public final Promise<String> decompile(Flow flow) {
+        Promise<String> promise = new DefaultPromise<>();
+
+        try {
+            getExecutor().execute(() -> {
+                try {
+                    DslDecompiler decompiler = new DslDecompiler(flow);
+                    promise.trySuccess(decompiler.decompile());
+                } catch (Throwable e) {
+                    promise.tryFailure(new FlowException(FlowErrorCode.DECOMPILE, e));
+                }
+            });
+        } catch (Throwable e) {
+            promise.tryFailure(e);
+        }
+
+        return promise;
     }
 
     @Override
     public Promise<ExecutionInstance> startFlow(ExecutionCondition executionCondition) {
         Promise<ExecutionInstance> promise = new FlowPromise();
 
-        try {
-            Flow flow = executionCondition.getFlow();
-            if (flow == null) {
-                flow = doCompile(executionCondition.getDsl());
-            }
-            flow.init();
-
-            Map<String, Object> env = executionCondition.getEnv();
-            AtomicLong executionIdGenerator = executionCondition.getExecutionIdGenerator();
-
-            OperationContext operationContext = new DefaultOperationContext(this,
-                    flow,
-                    TopoUtils.isSingleLinkFlow(flow),
-                    executionCondition.getInstanceId(),
-                    env == null ? Maps.newHashMap() : env,
-                    executionCondition.getAttributes(),
-                    executionIdGenerator == null ? new AtomicLong(0) : executionIdGenerator,
-                    promise);
-            operationContext.executeAsync(new GlobalBeforeListenerOperation(operationContext));
-        } catch (Throwable e) {
-            promise.tryFailure(e);
+        Flow flow = executionCondition.getFlow();
+        if (flow == null) {
+            Promise<Flow> compilePromise = compile(executionCondition.getDsl());
+            compilePromise.addListener(f -> {
+                if (f.isSuccess()) {
+                    doStart(executionCondition, f.get(), promise);
+                } else {
+                    promise.tryFailure(f.cause());
+                }
+            });
+        } else {
+            doStart(executionCondition, flow, promise);
         }
 
         return promise;
@@ -265,13 +300,24 @@ public class DefaultFlowEngine implements FlowEngine {
         scheduledExecutor.shutdownNow();
     }
 
-    private Flow doCompile(String dsl) {
-        CompileResult<Flow> compile = COMPILER.compile(dsl);
+    private void doStart(ExecutionCondition executionCondition, Flow flow, Promise<ExecutionInstance> promise) {
+        try {
+            ((DefaultFlow) flow).init();
 
-        if (!compile.isSuccess()) {
-            throw new FlowException(FlowErrorCode.COMPILE, compile.getError());
+            Map<String, Object> env = executionCondition.getEnv();
+            AtomicLong executionIdGenerator = executionCondition.getExecutionIdGenerator();
+
+            OperationContext operationContext = new DefaultOperationContext(this,
+                    flow,
+                    TopoUtils.isSingleLinkFlow(flow),
+                    executionCondition.getInstanceId(),
+                    env == null ? Maps.newHashMap() : env,
+                    executionCondition.getAttributes(),
+                    executionIdGenerator == null ? new AtomicLong(0) : executionIdGenerator,
+                    promise);
+            operationContext.executeAsync(new GlobalBeforeListenerOperation(operationContext));
+        } catch (Throwable e) {
+            promise.tryFailure(e);
         }
-
-        return compile.getResult();
     }
 }

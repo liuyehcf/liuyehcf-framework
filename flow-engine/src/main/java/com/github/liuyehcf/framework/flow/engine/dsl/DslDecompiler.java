@@ -129,6 +129,12 @@ public class DslDecompiler {
                 Node ancestorNode = ancestor.getAncestor();
                 // exclusiveGateway has only one predecessor
                 ancestor = new Ancestor(joinGateway, ancestorNode.getPredecessors().get(0), Sets.newHashSet(ancestorNode));
+            } else if (ElementType.CONDITION.equals(ancestor.getAncestor().getType())
+                    && ElementType.EXCLUSIVE_GATEWAY.equals(ancestor.getAncestor().getPredecessors().get(0).getType())) {
+                // since select cannot be cascaded, there is no need to move backward
+                ExclusiveGateway exclusiveGateway = (ExclusiveGateway) ancestor.getAncestor().getPredecessors().get(0);
+                // condition has only one predecessor
+                ancestor = new Ancestor(joinGateway, exclusiveGateway.getPredecessors().get(0), Sets.newHashSet(exclusiveGateway));
             } else if (ElementType.JOIN_GATEWAY.equals(ancestor.getAncestor().getType())) {
                 if (isLinked(ancestor.getAncestor(), ancestor.getJoinGateway())) {
                     ancestorJoinGatewayOffSpringJoinGatewayMap.put((JoinGateway) ancestor.getAncestor(), ancestor.getJoinGateway());
@@ -278,7 +284,7 @@ public class DslDecompiler {
             List<List<Ancestor>> ancestorGroups = getSortedNonOverlapAncestorGroups(ancestors);
             List<Node> unRelatedSuccessors = Lists.newArrayList(successors);
             ancestorGroups.forEach(group -> group.forEach(ancestor -> unRelatedSuccessors.removeAll(ancestor.getRelatedSuccessors())));
-            handleAncestorGroups(ancestorGroups, unRelatedSuccessors);
+            handleAncestorGroups(ancestorGroups, unRelatedSuccessors, false);
         } else {
             List<Node> successors = node.getSuccessorsOf(linkType);
             handleSuccessors(successors);
@@ -303,7 +309,7 @@ public class DslDecompiler {
         }
     }
 
-    private void handleAncestorGroups(List<List<Ancestor>> ancestorGroups, List<Node> unRelatedSuccessors) {
+    private void handleAncestorGroups(List<List<Ancestor>> ancestorGroups, List<Node> unRelatedSuccessors, boolean hasNext) {
         if (CollectionUtils.isEmpty(ancestorGroups)) {
             return;
         }
@@ -323,7 +329,11 @@ public class DslDecompiler {
             appendln(false, COMMA);
             handleSuccessors(Lists.newArrayList(unRelatedSuccessors));
         } else {
-            appendln(false);
+            if (hasNext) {
+                appendln(false, COMMA);
+            } else {
+                appendln(false);
+            }
         }
     }
 
@@ -377,8 +387,16 @@ public class DslDecompiler {
         appendln(true, KEY_WORD_JOIN, getJoinModeOf(joinGateway), BIG_LEFT_PARENTHESES);
         increaseIdent();
 
-        // first processing direct cascade ancestors recursive
+        // at first, process direct cascade ancestors recursive
         handleDirectCascadeAncestorGroup(directCascadeAncestorGroup, index + 1, nextNonOverlapAncestorGroups, distinctRelatedSuccessors);
+
+        // here is the deepest of the direct cascade ancestor group
+        // recursive processing the next level
+        if (index == directCascadeAncestorGroup.size() - 1) {
+            handleAncestorGroups(nextNonOverlapAncestorGroups, null, CollectionUtils.isNotEmpty(distinctRelatedSuccessors));
+        }
+
+        // at last, process distinct related successors
         if (CollectionUtils.isNotEmpty(distinctRelatedSuccessors)) {
             // avoid reaching multiply times by direct cascade ancestors
             if (!reachedNodes.containsAll(distinctRelatedSuccessors)) {
@@ -386,12 +404,6 @@ public class DslDecompiler {
             } else {
                 appendln(false);
             }
-        }
-
-        // inner of the direct cascade ancestor group
-        if (index == directCascadeAncestorGroup.size() - 1) {
-            // recursive processing of remaining ancestor in group
-            handleAncestorGroups(nextNonOverlapAncestorGroups, null);
         }
 
         decreaseIdent();

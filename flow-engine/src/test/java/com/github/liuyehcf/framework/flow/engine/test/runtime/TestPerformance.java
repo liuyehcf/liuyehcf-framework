@@ -53,7 +53,7 @@ public class TestPerformance {
             }
         });
 
-        Flow flow = engine.compile(DSL);
+        Flow flow = engine.compile(DSL).get();
 
         while (System.currentTimeMillis() < endTimestamp) {
             engine.startFlow(new ExecutionCondition(flow));

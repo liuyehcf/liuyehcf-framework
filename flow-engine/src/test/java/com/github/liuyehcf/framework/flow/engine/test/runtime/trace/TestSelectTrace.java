@@ -2,6 +2,7 @@ package com.github.liuyehcf.framework.flow.engine.test.runtime.trace;
 
 import com.github.liuyehcf.framework.common.tools.collection.EnvBuilder;
 import com.github.liuyehcf.framework.common.tools.promise.Promise;
+import com.github.liuyehcf.framework.flow.engine.model.ElementType;
 import com.github.liuyehcf.framework.flow.engine.model.Flow;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionInstance;
 import com.github.liuyehcf.framework.flow.engine.runtime.statistics.ExecutionLink;
@@ -477,6 +478,1109 @@ public class TestSelectTrace extends TestTraceBase {
 
                 trace = executionLink.getTraces().get(2);
                 assertPrintCondition(trace, "condition[A-J]", false);
+            }
+        });
+    }
+
+    @Test
+    public void testSimpleSelectHardAndJoin1True() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true))&\n" +
+                "        }\n" +
+                "    } then {\n" +
+                "        printAction(content=\"actionA\")\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertJoinGateway(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionA");
+        });
+    }
+
+    @Test
+    public void testSimpleSelectHardAndJoin1False() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false))&\n" +
+                "        }\n" +
+                "    } then {\n" +
+                "        printAction(content=\"actionA\")\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectHardAndJoin2True() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "                printAction(content=\"actionA\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectHardAndJoin2False() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "                printAction(content=\"actionA\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectHardAndJoin3TrueTrue() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true)) {\n" +
+                "                select {\n" +
+                "                    if(printCondition(content=\"conditionB\", output=true))& {\n" +
+                "                        printAction(content=\"actionA\")&\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintCondition(trace, "conditionB", true);
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(6);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectHardAndJoin3TrueFalse() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true)) {\n" +
+                "                select {\n" +
+                "                    if(printCondition(content=\"conditionB\", output=false))& {\n" +
+                "                        printAction(content=\"actionA\")&\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintCondition(trace, "conditionB", false);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectHardAndJoin3False() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                select {\n" +
+                "                    if(printCondition(content=\"conditionB\", output=false))& {\n" +
+                "                        printAction(content=\"actionA\")&\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testComplexSelectHardAndJoin() {
+        Flow flow = compile("{\n" +
+                "    join & {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false))&,\n" +
+                "            if(printCondition(content=\"conditionB\", output=true))&{\n" +
+                "                printAction(content=\"actionA\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    } then {\n" +
+                "        printAction(content=\"actionB\")\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 3, 0);
+
+            for (int i = 0; i < executionInstance.getUnreachableLinks().size(); i++) {
+                executionLink = executionInstance.getUnreachableLinks().get(i);
+
+                trace = executionLink.getTraces().get(0);
+                assertStart(trace);
+
+                trace = executionLink.getTraces().get(1);
+                assertExclusiveGateway(trace);
+
+                if (executionLink.getTraces().size() > 2) {
+                    trace = executionLink.getTraces().get(2);
+                    assertPrintCondition(trace, "condition[AB]", null);
+                }
+
+                if (executionLink.getTraces().size() > 3) {
+                    trace = executionLink.getTraces().get(3);
+                    assertPrintAction(trace, "actionA");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testSimpleSelectSoftAndJoin1True() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true))&\n" +
+                "        }\n" +
+                "    } then {\n" +
+                "        printAction(content=\"actionA\")\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertJoinGateway(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionA");
+        });
+    }
+
+    @Test
+    public void testSimpleSelectSoftAndJoin1False() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false))&\n" +
+                "        }\n" +
+                "    } then {\n" +
+                "        printAction(content=\"actionA\")\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectSoftAndJoin2True() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "                printAction(content=\"actionA\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectSoftAndJoin2False() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "                printAction(content=\"actionA\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectSoftAndJoin3TrueTrue() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true)) {\n" +
+                "                select {\n" +
+                "                    if(printCondition(content=\"conditionB\", output=true))& {\n" +
+                "                        printAction(content=\"actionA\")&\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintCondition(trace, "conditionB", true);
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(6);
+            assertJoinGateway(trace);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectSoftAndJoin3TrueFalse() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true)) {\n" +
+                "                select {\n" +
+                "                    if(printCondition(content=\"conditionB\", output=false))& {\n" +
+                "                        printAction(content=\"actionA\")&\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintCondition(trace, "conditionB", false);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectSoftAndJoin3False() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                select {\n" +
+                "                    if(printCondition(content=\"conditionB\", output=false))& {\n" +
+                "                        printAction(content=\"actionA\")&\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testComplexSelectSoftAndJoin() {
+        Flow flow = compile("{\n" +
+                "    join {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false))&,\n" +
+                "            if(printCondition(content=\"conditionB\", output=true))&{\n" +
+                "                printAction(content=\"actionA\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    } then {\n" +
+                "        printAction(content=\"actionB\")\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 1, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionB", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertPrintAction(trace, "actionA");
+
+            trace = executionLink.getTraces().get(4);
+            assertJoinGateway(trace);
+
+            trace = executionLink.getTraces().get(5);
+            assertPrintAction(trace, "actionB");
+        });
+    }
+
+    @Test
+    public void testSimpleSelectOrJoin1True() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true))&\n" +
+                "        }\n" +
+                "    } then {\n" +
+                "        printAction(content=\"actionA\")\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertJoinGateway(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintAction(trace, "actionA");
+        });
+    }
+
+    @Test
+    public void testSimpleSelectOrJoin1False() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false))&\n" +
+                "        }\n" +
+                "    } then {\n" +
+                "        printAction(content=\"actionA\")\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectOrJoin2True() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true))& {\n" +
+                "                printAction(content=\"actionA\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 1, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 4, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            for (int i = 3; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionA");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testSimpleSelectOrJoin2TrueFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false))& {\n" +
+                "                printAction(content=\"actionA\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectOrJoin3TrueTrue() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true)) {\n" +
+                "                select {\n" +
+                "                    if(printCondition(content=\"conditionB\", output=true))& {\n" +
+                "                        printAction(content=\"actionA\")&\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 0, 1, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 6, 7);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintCondition(trace, "conditionB", true);
+
+            for (int i = 5; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "actionA");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testSimpleSelectOrJoin3TrueFalse() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=true)) {\n" +
+                "                select {\n" +
+                "                    if(printCondition(content=\"conditionB\", output=false))& {\n" +
+                "                        printAction(content=\"actionA\")&\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 5);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", true);
+
+            trace = executionLink.getTraces().get(3);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(4);
+            assertPrintCondition(trace, "conditionB", false);
+        });
+    }
+
+    @Test
+    public void testSimpleSelectOrJoin3False() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false)) {\n" +
+                "                select {\n" +
+                "                    if(printCondition(content=\"conditionB\", output=false))& {\n" +
+                "                        printAction(content=\"actionA\")&\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 0, 1, 0);
+
+            executionLink = executionInstance.getUnreachableLinks().get(0);
+            assertExecutionLink(executionLink, 3);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionA", false);
+        });
+    }
+
+    @Test
+    public void testComplexSelectOrJoin() {
+        Flow flow = compile("{\n" +
+                "    join | {\n" +
+                "        select {\n" +
+                "            if(printCondition(content=\"conditionA\", output=false))&,\n" +
+                "            if(printCondition(content=\"conditionB\", output=true))&{\n" +
+                "                printAction(content=\"actionA\")&\n" +
+                "            }\n" +
+                "        }\n" +
+                "    } then {\n" +
+                "        printAction(content=\"actionB\")\n" +
+                "    }\n" +
+                "}");
+
+        executeTimes(() -> {
+            Promise<ExecutionInstance> promise = startFlow(flow, null);
+
+            promise.sync();
+            assertPromise(promise, false, true, true, false);
+
+            ExecutionInstance executionInstance;
+            ExecutionLink executionLink;
+            Trace trace;
+
+            executionInstance = promise.get();
+            assertExecutionInstance(executionInstance, 1, 1, 2, 0);
+
+            executionLink = executionInstance.getLinks().get(0);
+            assertExecutionLink(executionLink, 5, 6);
+
+            trace = executionLink.getTraces().get(0);
+            assertStart(trace);
+
+            trace = executionLink.getTraces().get(1);
+            assertExclusiveGateway(trace);
+
+            trace = executionLink.getTraces().get(2);
+            assertPrintCondition(trace, "conditionB", true);
+
+            for (int i = 3; i < executionLink.getTraces().size(); i++) {
+                trace = executionLink.getTraces().get(i);
+                if (ElementType.JOIN_GATEWAY.equals(trace.getType())) {
+                    assertJoinGateway(trace);
+                } else {
+                    assertPrintAction(trace, "action[AB]");
+                }
             }
         });
     }

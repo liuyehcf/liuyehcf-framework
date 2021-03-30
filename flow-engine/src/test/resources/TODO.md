@@ -4,9 +4,20 @@
 1. ListenerEvent.failure 的拓扑以及trace测试用例
 1. if() 的trace以及拓扑测试用例
 1. 流引擎线程的拒绝策略要做限制
+1. 下面这个case无法编译:
+{
+    join {
+        select {
+            if(printCondition(content="conditionA", output=true))&
+        }
+    } then {
+        printAction(content="actionA")
+    }
+}
 
 # TODO
 
+1. 检查instanceof Condition的地方
 1. 反编译时，要判断flow是否可以转换成dsl，因为dsl一定是flow，而flow不一定是dsl
 failure的异常处理原则：
 1. 异常可以升级，但是不能降级

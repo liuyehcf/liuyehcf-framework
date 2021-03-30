@@ -26,11 +26,8 @@ public abstract class ReflectionUtils {
     public static Field getDelegateField(Delegate delegate, String fieldName) {
         try {
             Class<? extends Delegate> clazz = delegate.getClass();
-
             Field field = clazz.getDeclaredField(fieldName);
-
             field.setAccessible(true);
-
             return field;
         } catch (NoSuchFieldException e) {
             throw new FlowException(FlowErrorCode.DELEGATE_FIELD, e);
@@ -40,10 +37,12 @@ public abstract class ReflectionUtils {
     public static Method getDelegateFieldSetMethod(Delegate delegate, String fieldName) {
         try {
             Class<? extends Delegate> clazz = delegate.getClass();
-
             String setMethod = toSetMethod(fieldName);
+            Method method = clazz.getMethod(setMethod, DelegateField.class);
 
-            return clazz.getMethod(setMethod, DelegateField.class);
+            // allow calling methods of anonymous inner classes
+            method.setAccessible(true);
+            return method;
         } catch (NoSuchMethodException e) {
             return null;
         }

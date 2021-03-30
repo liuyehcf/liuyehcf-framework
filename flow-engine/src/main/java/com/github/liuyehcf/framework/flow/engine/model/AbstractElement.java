@@ -39,8 +39,6 @@ public abstract class AbstractElement implements Element {
             this.flow.addListener((Listener) this);
         } else if (this instanceof Event) {
             this.flow.addEvent((Event) this);
-        } else if (this instanceof Flow) {
-            ((Flow) this).init();
         }
     }
 

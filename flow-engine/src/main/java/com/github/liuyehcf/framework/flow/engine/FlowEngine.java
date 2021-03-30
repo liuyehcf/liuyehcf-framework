@@ -164,7 +164,15 @@ public interface FlowEngine {
      * @param dsl flow dsl
      * @return flow
      */
-    Flow compile(String dsl);
+    Promise<Flow> compile(String dsl);
+
+    /**
+     * decompile flow to dsl
+     *
+     * @param flow flow
+     * @return flow dsl
+     */
+    Promise<String> decompile(Flow flow);
 
     /**
      * start flow

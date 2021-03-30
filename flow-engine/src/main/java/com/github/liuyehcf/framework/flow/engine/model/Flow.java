@@ -112,16 +112,4 @@ public interface Flow extends Node, Serializable {
      * @return elements
      */
     Collection<Element> getElements();
-
-    /**
-     * get dsl of flow
-     *
-     * @return dsl
-     */
-    String getDsl();
-
-    /**
-     * init operations including kinds of check
-     */
-    void init();
 }
