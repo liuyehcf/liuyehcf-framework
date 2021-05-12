@@ -29,7 +29,7 @@
 
 其次，`ExpressionEngine`的实现思路与其他轻量级的求值器很不相同，其他求值器一般都是通过解释的方式运行，而`ExpressionEngine`则是直接将表达式编译成`字节码`（非`Java`字节码，而是自研的一套字节码，基本与`Java`字节码对标）。简单来说，`ExpressionEngine`的定位是介于`Groovy`这样的重量级脚本语言和`IKExpression`这样的轻量级表达式引擎之间
 
-__ExpressionEngine的特性：__
+**ExpressionEngine的特性：**
 
 1. 支持绝大多数运算操作符，包括算术操作符、关系运算符、逻辑操作符、位运算符、三元表达式`(?:)`
 1. 逻辑运算符支持短路运算
@@ -140,7 +140,7 @@ class AddFunction extends Function {
 }
 ```
 
-__注意到，函数的所有入参类型都是`ExpressionValue`，返回的结果类型也是`ExpressionValue`__
+**注意到，函数的所有入参类型都是`ExpressionValue`，返回的结果类型也是`ExpressionValue`**
 
 注册函数通过`ExpressionEngine.addFunction`方法，移除可以通过`removeFunction`
 
@@ -217,7 +217,7 @@ class Combine extends VarargsFunction {
 
 请注意，运算符重载使用不当，一定程度上会带来混乱
 
-__`ExpressionEngine`中的运算符，其运行时的行为是由一系列的运算符函数来完成的（函数的顺序通过`OperatorFunction.getOrder()`方法的返回值来控制，数值越小，优先级越高），因此上面说的重载，其实并不是真正意义上的重载，而是增加一种额外的行为，并不会覆盖已有的行为（对于上面的示例，`long & long`还是能够正常执行）__
+**`ExpressionEngine`中的运算符，其运行时的行为是由一系列的运算符函数来完成的（函数的顺序通过`OperatorFunction.getOrder()`方法的返回值来控制，数值越小，优先级越高），因此上面说的重载，其实并不是真正意义上的重载，而是增加一种额外的行为，并不会覆盖已有的行为（对于上面的示例，`long & long`还是能够正常执行）**
 
 * 内建的运算符函数，其order数值为`Integer.MAX_VALUE or Integer.MAX_VALUE >> 1`
 * 新增的运算符函数，默认的order为0（可以覆盖方法修改其返回值），因此默认就会排在内建的运算符函数之前
@@ -280,7 +280,7 @@ __`ExpressionEngine`中的运算符，其运行时的行为是由一系列的运
 
 如果要清除运算符所有默认的行为，那么调用`ExpressionEngine.cleanOperatorFunctions`或`ExpressionEngine.cleanOperatorFunction(type)`即可
 
-__`ExpressionEngine`允许重载的运算符以及对应的基类如下__
+**`ExpressionEngine`允许重载的运算符以及对应的基类如下**
 
 * 单目运算符
     1. `-`：NegOperatorFunction
@@ -305,7 +305,7 @@ __`ExpressionEngine`允许重载的运算符以及对应的基类如下__
     1. `!=`：CmpOperatorFunction
     * 上述比较运算符共享同一个基类，即：CmpOperatorFunction
 
-__再举一个比较运算符的例子，我们只需注册一个OperationFunction（通过继承CmpOperatorFunction，会更方便些），然后所有的比较运算符（`<`、`<=`、`>`、`>=`、`==`、`!=`、）均可生效__
+**再举一个比较运算符的例子，我们只需注册一个OperationFunction（通过继承CmpOperatorFunction，会更方便些），然后所有的比较运算符（`<`、`<=`、`>`、`>=`、`==`、`!=`、）均可生效**
 
 ```java
 public class TestExpressionEngine {
@@ -442,7 +442,7 @@ public class TestExpressionEngine {
 
 为了进一步提升执行效率，`ExpressionEngine`提供了代码优化的功能，默认开启，通过`ExpressionEngine.setOption(Option.OPTIMIZE_CODE, false);`进行关闭
 
-__代码优化的主要作用__：
+**代码优化的主要作用**：
 
 1. 清除不可达指令，减少字节码总体数量
 1. 计算常量表达式的值，若对于同一表达式多次执行，那么会有显著的性能提升
@@ -458,7 +458,7 @@ __代码优化的主要作用__：
     }
 ```
 
-__关闭代码优化时，编译得到的字节码序列如下__
+**关闭代码优化时，编译得到的字节码序列如下**
 
 ```
     0   :  _lconst 1
@@ -479,7 +479,7 @@ __关闭代码优化时，编译得到的字节码序列如下__
     15  :  _return
 ```
 
-__开启代码优化时，编译得到的字节码序列如下__
+**开启代码优化时，编译得到的字节码序列如下**
 
 ```
     0   :  _pload a

@@ -43,7 +43,7 @@
 
 # 1 Overview
 
-1. __丰富的原子能力__
+1. **丰富的原子能力**
     * Action
     * Condition
     * Gateway
@@ -61,7 +61,7 @@
             * node
             * global
     * SubFlow
-1. __简洁的流描述语言__
+1. **简洁的流描述语言**
     * 级联
     * 并联
     * 聚合
@@ -74,7 +74,7 @@
     * `sub`语句
     * `sub then`语句
     * `sub then else`语句
-1. __丰富的机制__
+1. **丰富的机制**
     * Promise
     * PromiseListener
     * DelegateInterceptor
@@ -82,8 +82,8 @@
     * ExecutionLink的暂停与重启
     * 线程池隔离
     * 异步执行超时设置
-1. __集成Spring-Boot-Starter__
-1. __数据统计__
+1. **集成Spring-Boot-Starter**
+1. **数据统计**
     * 执行链路
     * 变量更新记录
     * 节点执行时间
@@ -128,21 +128,21 @@
 
 ## 2.2 LinkType
 
-__在流引擎中，节点与节点之间的连线称为`Link`，其类型包含如下三种__
+**在流引擎中，节点与节点之间的连线称为`Link`，其类型包含如下三种**
 
 * `LinkType.TRUE`: true分支
 * `LinkType.FALSE`: false分支
 * `LinkType.NORMAL`: 默认分支
 
-__其中，`Condition`以及`Flow`与后继节点的连线的类型是`LinkType.TRUE`或`LinkType.FALSE`；其余类型的节点与后继节点的连线的类型是`LinkType.NORMAL`，请参考如下示意图__
+**其中，`Condition`以及`Flow`与后继节点的连线的类型是`LinkType.TRUE`或`LinkType.FALSE`；其余类型的节点与后继节点的连线的类型是`LinkType.NORMAL`，请参考如下示意图**
 
 ![linktype_example](images/linktype_example.png) 
 
-__在下文中，我们把某个节点与其后继节点的连线称为`后继Link`__
+**在下文中，我们把某个节点与其后继节点的连线称为`后继Link`**
 
 ## 2.3 Node
 
-__`Node`是流拓扑结构中的最基本元素，而其他元素，例如`Listener`只能依附于`Node`而存在，`Node`包括：__
+**`Node`是流拓扑结构中的最基本元素，而其他元素，例如`Listener`只能依附于`Node`而存在，`Node`包括：**
 
 * `Action`
 * `Condition`
@@ -154,7 +154,7 @@ __`Node`是流拓扑结构中的最基本元素，而其他元素，例如`Liste
 
 `Executable`是可执行Java代码的元素，包括`Action`、`Condition`以及`Listener`
 
-__注册__
+**注册**
 
 1. 非spring环境下，需要通过`com.github.liuyehcf.framework.flow.engine.FlowEngine`的静态方法进行注册
     * `registerActionDelegateFactory`
@@ -166,7 +166,7 @@ __注册__
     * `@ConditionBean`，该注解默认标记了`@Component`，节点名称通过names指定，可以指定多个别名
     * `@ListenerBean`，该注解默认标记了`@Component`，节点名称通过names指定，可以指定多个别名
 
-__命名__
+**命名**
 
 1. 标志符，例如`actionA`、`action1`、`_action_2`
 1. 标志符结合`.`，例如`my.test.condition3`
@@ -174,7 +174,7 @@ __命名__
 
 ### 2.4.1 Action
 
-__`Action`是一个可执行Java代码的普通节点，`Action`只允许类型为`LinkType.NORMAL`的后继Link，其继承关系如下__
+**`Action`是一个可执行Java代码的普通节点，`Action`只允许类型为`LinkType.NORMAL`的后继Link，其继承关系如下**
 
 ![action](images/action.png) 
 
@@ -201,7 +201,7 @@ public interface ActionDelegate extends Delegate {
 }
 ```
 
-__其中，`context`可用于__
+**其中，`context`可用于**
 
 1. 获取属性值
 1. 设置属性值（通过该方法设置属性值，会被引擎记录，作用于聚合逻辑，并且变更信息会保存到执行Trace当中）
@@ -210,11 +210,11 @@ __其中，`context`可用于__
 
 ### 2.4.2 Condition
 
-__`Condition`是一个可执行Java代码的条件节点，`Condition`只允许类型为`LinkType.TRUE`或`LinkType.FALSE`的后继Link__
+**`Condition`是一个可执行Java代码的条件节点，`Condition`只允许类型为`LinkType.TRUE`或`LinkType.FALSE`的后继Link**
 
 ![condition](images/condition.png) 
 
-如果我们要创建一个可以执行业务逻辑的`Condition`，只需要实现`ConditionDelegate`接口，__`onCondition`方法的返回值决定了整个流程的走向，若返回`true`则会走`LinkType.TRUE`分支，若返回`false`则会走`LinkType.FALSE`分支__
+如果我们要创建一个可以执行业务逻辑的`Condition`，只需要实现`ConditionDelegate`接口，**`onCondition`方法的返回值决定了整个流程的走向，若返回`true`则会走`LinkType.TRUE`分支，若返回`false`则会走`LinkType.FALSE`分支**
 
 ```java
 package com.github.liuyehcf.framework.flow.engine.runtime.delegate;
@@ -237,7 +237,7 @@ public interface ConditionDelegate extends Delegate {
 }
 ```
 
-__其中，`context`可用于__
+**其中，`context`可用于**
 
 1. 获取属性值
 1. 设置属性值（通过该方法设置属性值，会被引擎记录，作用于聚合逻辑，并且变更信息会保存到执行Trace当中）
@@ -246,7 +246,7 @@ __其中，`context`可用于__
 
 ### 2.4.3 Listener  
 
-__`Listener`不是流拓扑结构中的节点，`Listener`必须依附于节点而存在，包括__
+**`Listener`不是流拓扑结构中的节点，`Listener`必须依附于节点而存在，包括**
 
 1. `Flow`（`global/node` Scope）
     * 只允许对`Sub Flow`配置`node`的监听
@@ -258,7 +258,7 @@ __`Listener`不是流拓扑结构中的节点，`Listener`必须依附于节点�
     * `JoinGateway`
     * `ExclusiveGateway`
 
-__event: Listener触发时机__
+**event: Listener触发时机**
 
 1. `before`: 执行链路刚刚到达该`Listener`所依附的节点时触发（此时依附的节点尚未执行相关逻辑）
 1. `success`: 该`Listener`所依附的节点正常执行时触发
@@ -270,12 +270,12 @@ __event: Listener触发时机__
         1. 如果监听抛出的异常是`LinkExecutionTerminateException`时，那么最终抛出的异常就是`original-exception`
         1. 否则，抛出的异常就是`listener-exception`
 
-__scope: Listener的范围__
+**scope: Listener的范围**
 
 1. `node`: 节点级别的监听，该监听可以依附于`Action`、`Condition`、`Gateway`
 1. `global`: 流级别的监听，即仅在流开始前/成功执行/执行异常后触发
     * 如果流存在多个执行分支，那么`success/failure`监听也只会执行一次
-    * __例如下面的示意图，如果`actionA`、`actionB`和`actionC`都正常执行，那么该`GlobalSuccessListener`同样只会执行一次__
+    * **例如下面的示意图，如果`actionA`、`actionB`和`actionC`都正常执行，那么该`GlobalSuccessListener`同样只会执行一次**
 
 ![listener](images/global_success_example.png)  
 
@@ -326,7 +326,7 @@ public interface ListenerDelegate extends Delegate {
 }
 ```
 
-__其中，`context`可用于__
+**其中，`context`可用于**
 
 1. 获取属性值
 1. 设置属性值（通过该方法设置属性值，会被引擎记录，作用于聚合逻辑，并且变更信息会保存到执行Trace当中）
@@ -339,11 +339,11 @@ __其中，`context`可用于__
 
 ![delegate](images/delegate.png) 
 
-__如果`Delegate`需要配置一些变量，那么必须使用`DelegateField`，流引擎会自动注入，注入有以下两种方式__
+**如果`Delegate`需要配置一些变量，那么必须使用`DelegateField`，流引擎会自动注入，注入有以下两种方式**
 
 1. `set`方法，优先使用该方式，也推荐使用该方式（不会受Spring-Aop的影响）
 1. 字段注入（不推荐该方式，在Spring环境中，如果配置了AOP，那么该方式会失效，字段会注入到包装类）
-* __如果节点未指定该参数，那么通过`DelegateField.getValue`方法获取到的值为null，但`DelegateField`本身一定不是null__
+* **如果节点未指定该参数，那么通过`DelegateField.getValue`方法获取到的值为null，但`DelegateField`本身一定不是null**
 
 ```java
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ActionDelegate;
@@ -432,7 +432,7 @@ public interface Delegate {
 
 ### 2.5.1 ExclusiveGateway
 
-对于普通的节点，比如`Action`或者`Condition`，当后继节点有多个的时候，其默认的行为就是并发执行，如下图所示，`node 0`有n个后继节点，分别是`node 1`、`node 2`、...、`node n`。在`node 0`执行完毕后，__会`fork`出n个执行链路继续执行，并且在`fork`之后，每个执行链路独享环境变量，互不干扰__
+对于普通的节点，比如`Action`或者`Condition`，当后继节点有多个的时候，其默认的行为就是并发执行，如下图所示，`node 0`有n个后继节点，分别是`node 1`、`node 2`、...、`node n`。在`node 0`执行完毕后，**会`fork`出n个执行链路继续执行，并且在`fork`之后，每个执行链路独享环境变量，互不干扰**
 
 ![default_parallel](images/default_parallel.png)
 
@@ -440,7 +440,7 @@ public interface Delegate {
 
 ![exclusiveGateway](images/exclusiveGateway.png) 
 
-__`ExclusiveGateway`的后继节点必须是`Condition`，`ExclusiveGateway`能够保证最多只有一条后继链路得以执行，并且执行的顺序与节点执行的顺序完全一致，如下图所示__。`exclusiveGateway`包含n个后继的`Condition`，分别是`condition 1`、`condition 2`、...、`condition n`，首先`condition 1`会优先执行，如果执行结果为true，那么继续执行`condition 1`的后续节点；如果执行结果为false，那么会执行`condition 2`，以此类推
+**`ExclusiveGateway`的后继节点必须是`Condition`，`ExclusiveGateway`能够保证最多只有一条后继链路得以执行，并且执行的顺序与节点执行的顺序完全一致，如下图所示**。`exclusiveGateway`包含n个后继的`Condition`，分别是`condition 1`、`condition 2`、...、`condition n`，首先`condition 1`会优先执行，如果执行结果为true，那么继续执行`condition 1`的后续节点；如果执行结果为false，那么会执行`condition 2`，以此类推
 
 ![exclusive_parallel](images/exclusive_parallel.png)
 
@@ -448,7 +448,7 @@ __`ExclusiveGateway`的后继节点必须是`Condition`，`ExclusiveGateway`能�
 
 对于普通的节点，包含且仅包含一个前继节点（开始节点除外），但是`JoinGateway`允许包含多个前继节点，并进行聚合处理，包括
 
-1. 环境变量的聚合，`JoinGateway`会聚合所有前置分支的环境变量，__如果不同分支同时修改了同一个变量的值，那么聚合后，该变量的值可能是任意一个分支的值__
+1. 环境变量的聚合，`JoinGateway`会聚合所有前置分支的环境变量，**如果不同分支同时修改了同一个变量的值，那么聚合后，该变量的值可能是任意一个分支的值**
 1. 执行链路的聚合，`JoinGateway`会按照执行的时间顺序，聚合各前置分支的trace信息
 
 ![joinGateway](images/joinGateway.png) 
@@ -463,36 +463,36 @@ __`ExclusiveGateway`的后继节点必须是`Condition`，`ExclusiveGateway`能�
 
 * `actionB`在`conditionA`的`TRUE`后继分支上，也就是说，只有`conditionA`的执行结果是true，`actionB`才会执行
 
-__hard模式__
+**hard模式**
 
 1. 如果`conditionA`的执行结果为true，那么gateway允许通过
 1. 如果`conditionB`的执行结果为false，那么`actionB`就是不可达的，因此在`hard`的语义下，gateway不允许通过
 
-__soft模式__
+**soft模式**
 
 1. 如果`conditionA`的执行结果为true，那么gateway允许通过
 1. 如果`conditionB`的执行结果为false，那么`actionB`就是不可达的，因此在`soft`的语义下，所有可达的前继节点（只有`actionA`），gateway允许通过
 
-__or模式__
+**or模式**
 
 1. `actionA`或`actionB`中任意一个到达后，该gateway允许通过
 
 ## 2.6 Sub Flow
 
-__流引擎提供了`sub flow`的概念，极大地丰富了流编排的灵活度。我们可以将一组节点拓扑放到`sub flow`中，并且很容易能够感知这组节点拓扑的执行结果__
+**流引擎提供了`sub flow`的概念，极大地丰富了流编排的灵活度。我们可以将一组节点拓扑放到`sub flow`中，并且很容易能够感知这组节点拓扑的执行结果**
 
 考虑这样一个例子
 
 ![sub_flow_joingateway_cmp](images/sub_flow_joingateway_cmp.png)
 
-__在这种场景下，`sub flow`与`or`模式的`JoinGateway`非常相似，但是存在一个明显的区别：`sub flow`可以感知这组节点拓扑的执行情况；`or`模式的`JoinGateway`无法感知这组节点拓扑的执行情况__
+**在这种场景下，`sub flow`与`or`模式的`JoinGateway`非常相似，但是存在一个明显的区别：`sub flow`可以感知这组节点拓扑的执行情况；`or`模式的`JoinGateway`无法感知这组节点拓扑的执行情况**
 
 * 当`conditionA`、`conditionB`、`conditionC`中至少有一个节点的执行结果为true时，`or`模式的`JoinGateway`才允许通过，此时`actionB`才得以执行；若`conditionA`、`conditionB`、`conditionC`执行结果全部为false时，`actionB`不可达，且无法感知这一结果
 * 当`sub flow`执行成功时，`actionB`得以执行；当`sub flow`执行失败时，`actionC`得以执行。可以看到，很容易感知到`sub flow`的执行结果
 
-__如何定义`sub flow`执行成功：当存在任意一条分支成功执行（即任意一个分支到达叶子节点时），就认为`sub flow`执行成功，反之则认为`sub flow`执行失败__
+**如何定义`sub flow`执行成功：当存在任意一条分支成功执行（即任意一个分支到达叶子节点时），就认为`sub flow`执行成功，反之则认为`sub flow`执行失败**
 
-__`sub flow`的监听：我们可以为`sub flow`配置`global`以及`node`级别的`Listener`__
+**`sub flow`的监听：我们可以为`sub flow`配置`global`以及`node`级别的`Listener`**
 
 * `global`级别的`Listener`，其行为与流的`global`级别的`Listener`的行为一致
 * `node`级别的`Listener`，其行为与普通节点的`Listener`行为一致
@@ -620,14 +620,14 @@ __`sub flow`的监听：我们可以为`sub flow`配置`global`以及`node`级�
 
 ## 3.6 `join`语句
 
-__注意__
+**注意**
 
 1. 用`&`来标注需要聚合的节点
 1. 用`*`表示`hard`模式
 
 ![join_1](images/join_1.png) 
 
-__hard__
+**hard**
 
 ```
 {
@@ -639,7 +639,7 @@ __hard__
 }
 ```
 
-__soft__
+**soft**
 
 ```
 {
@@ -651,7 +651,7 @@ __soft__
 }
 ```
 
-__or__
+**or**
 
 ```
 {
@@ -665,7 +665,7 @@ __or__
 
 ![join_2](images/join_2.png) 
 
-__hard__
+**hard**
 
 ```
 {
@@ -681,7 +681,7 @@ __hard__
 }
 ```
 
-__soft__
+**soft**
 
 ```
 {
@@ -697,7 +697,7 @@ __soft__
 }
 ```
 
-__or__
+**or**
 
 ```
 {
@@ -715,11 +715,11 @@ __or__
 
 ## 3.7 `join then`语句
 
-__注意：需要用`&`来标注需要聚合的节点__
+**注意：需要用`&`来标注需要聚合的节点**
 
 ![join_then_1](images/join_then_1.png) 
 
-__hard__
+**hard**
 
 ```
 {
@@ -733,7 +733,7 @@ __hard__
 }
 ```
 
-__soft__
+**soft**
 
 ```
 {
@@ -747,7 +747,7 @@ __soft__
 }
 ```
 
-__or__
+**or**
 
 ```
 {
@@ -763,7 +763,7 @@ __or__
 
 ![join_then_2](images/join_then_2.png) 
 
-__hard__
+**hard**
 
 ```
 {
@@ -781,7 +781,7 @@ __hard__
 }
 ```
 
-__soft__
+**soft**
 
 ```
 {
@@ -799,7 +799,7 @@ __soft__
 }
 ```
 
-__or__
+**or**
 
 ```
 {
@@ -881,7 +881,7 @@ __or__
 
 ## 3.11 监听
 
-__全局监听__
+**全局监听**
 
 ```
 {
@@ -889,7 +889,7 @@ __全局监听__
 } [listenerA(event="before")]
 ```
 
-__action监听__
+**action监听**
 
 ```
 {
@@ -897,7 +897,7 @@ __action监听__
 }
 ```
 
-__condition监听__
+**condition监听**
 
 ```
 {
@@ -907,7 +907,7 @@ __condition监听__
 }
 ```
 
-__exclusiveGateway监听__
+**exclusiveGateway监听**
 
 ```
 {
@@ -922,7 +922,7 @@ __exclusiveGateway监听__
 }
 ```
 
-__joinGateway监听__
+**joinGateway监听**
 
 ```
 {
@@ -935,7 +935,7 @@ __joinGateway监听__
 }
 ```
 
-__subFlow监听__
+**subFlow监听**
 
 ```
 {
@@ -959,7 +959,7 @@ __subFlow监听__
 }
 ```
 
-__监听均支持多个，以逗号分隔__
+**监听均支持多个，以逗号分隔**
 
 ```
 {
@@ -979,7 +979,7 @@ __监听均支持多个，以逗号分隔__
 
 ## 4.1 Promise
 
-__流触发后会通过线程池全异步执行，提供promise用于感知流执行状态以及获取流执行结果（类似Netty的ChannelFuture/ChannelPromise），包含以下功能（全部并发安全）__
+**流触发后会通过线程池全异步执行，提供promise用于感知流执行状态以及获取流执行结果（类似Netty的ChannelFuture/ChannelPromise），包含以下功能（全部并发安全）**
 
 1. `boolean isCancelled()`: 判断流是否被取消
 1. `boolean isDone()`: 判断流是否已完成（成功/失败/取消）
@@ -989,7 +989,7 @@ __流触发后会通过线程池全异步执行，提供promise用于感知流�
 1. `boolean tryCancel()`: 尝试取消流，当流尚未完成时，才会取消成功
 1. `boolean trySuccess(T outcome)`: 尝试成功流，当流尚未完成时，且竞争成功时，返回true
 1. `boolean tryFailure(Throwable cause)`: 尝试失败流，当流尚未完成时，且竞争成功时，返回true
-1. `Promise addListener(PromiseListener listener)`: 添加监听，__保证监听一定执行（无论在流执行时，或执行完成后添加，都会确保触发监听）__
+1. `Promise addListener(PromiseListener listener)`: 添加监听，**保证监听一定执行（无论在流执行时，或执行完成后添加，都会确保触发监听）**
 1. `void sync()`: 同步阻塞，等待流执行完毕，不会抛出异常
 1. `boolean await(long timeout, TimeUnit unit)`: 同步阻塞指定时间，若在指定时间内流执行结束（包括成功/失败/取消），返回true，否则false
 1. `T get()`: 同步阻塞等待流执行结果，若流执行异常或者取消，将会抛出异常
@@ -997,7 +997,7 @@ __流触发后会通过线程池全异步执行，提供promise用于感知流�
 
 ## 4.2 PromiseListener
 
-__可以基于Promise配置监听，当流正常或者异常终止时，会触发监听。类似Netty的ChannelFuture/ChannelPromise__
+**可以基于Promise配置监听，当流正常或者异常终止时，会触发监听。类似Netty的ChannelFuture/ChannelPromise**
 
 1. 当`Promise`完成时，每个`PromiseListener`会按照添加的顺序依次执行，并且仅执行一次
 1. 无论`PromiseListener`的添加时机（可能在`Promise`完成前添加，也可能在`Promise`完成后添加），都会确保在当`Promise`完成时触发所有的`PromiseListener`
@@ -1006,7 +1006,7 @@ __可以基于Promise配置监听，当流正常或者异常终止时，会触�
 
 流引擎提供了暂停与重启ExecutionLink的能力，我们可以通过`ExecutableContext#pauseExecutionLink`来暂停当前的执行分支，该方法会返回一个`ExecutionLinkPausePromise`对象，后续可以通过`ExecutionLinkPausePromise#trySuccess(null)`方法来进行执行分支的重启，当然你也可以调用`ExecutionLinkPausePromise#tryCancel`来取消暂停（这会导致整个flow执行异常），或者调用`ExecutionLinkPausePromise#tryFailure(exception)`来抛出异常（当异常类型是`LinkExecutionTerminateException`时，可以终止当前分支的执行；否则会导致整个flow执行异常）
 
-__要注意的是，暂停并不会当前影响`Delegate`（`Action`、`Condition`、`Listener`）以及所有`DelegateInterceptor`的执行，这两者是不可分的原子执行单元。当前执行分支的暂停点为：下一个`Element`开始前，示意图如下：__
+**要注意的是，暂停并不会当前影响`Delegate`（`Action`、`Condition`、`Listener`）以及所有`DelegateInterceptor`的执行，这两者是不可分的原子执行单元。当前执行分支的暂停点为：下一个`Element`开始前，示意图如下：**
 
 * `elementA`：可以是`Action`、`Condition`、`Listener`
 * `elementB`：可以是`Action`、`Condition`、`Listener`、`JoinGateway`、`ExclusiveGateway`、`SubFlow`
@@ -1128,7 +1128,7 @@ public interface DelegateInvocation {
 
 集成了Spring-Boot-Start，无需任何配置即可集成流引擎
 
-__maven依赖__
+**maven依赖**
 
 ```xml
 <dependency>
@@ -1262,7 +1262,7 @@ public class PrintListener implements ListenerDelegate {
 
 ## 7.4 配置`DelegateInterceptor`
 
-__配置`DelegateInterceptor`__，可以用`@Scope`注解指定拦截器的先后顺序，其行为与Spring-Aop一致
+**配置`DelegateInterceptor`**，可以用`@Scope`注解指定拦截器的先后顺序，其行为与Spring-Aop一致
 
 ```java
 package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.demo;
@@ -1375,7 +1375,7 @@ public class DemoApplication {
 }
 ```
 
-__输出__
+**输出**
 
 ```
 enter DelegateInterceptorOrder1
@@ -1394,7 +1394,7 @@ trigger promise listener
 
 # 8 非Spring环境
 
-__maven依赖__
+**maven依赖**
 
 ```xml
 <dependency>
@@ -1404,7 +1404,7 @@ __maven依赖__
 </dependency>
 ```
 
-__示例代码__
+**示例代码**
 
 ```java
 package com.github.liuyehcf.framework.flow.engine.test.demo;
@@ -1492,7 +1492,7 @@ public class ReadmeDemo {
 }
 ```
 
-__输出__
+**输出**
 
 ```
 a0f9c342-241a-4489-badd-e8a5c9221e43

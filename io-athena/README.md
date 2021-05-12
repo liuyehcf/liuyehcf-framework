@@ -23,8 +23,8 @@
 
 | 符号 | 含义 |
 |:--|:--|
-| `N` | 集群节点总数，至少为1。__集群的总数不可动态扩展__ |
-| `M` | 集群高可用最少存活节点数，`M = N/2 + 1`。__当投票数量至少为`M`时，才算通过__ |
+| `N` | 集群节点总数，至少为1。**集群的总数不可动态扩展** |
+| `M` | 集群高可用最少存活节点数，`M = N/2 + 1`。**当投票数量至少为`M`时，才算通过** |
 | `seed` | 种子节点，是集群接入的入口 |
 | `leader` | 集群中的管理者，只有它才能修改成员的状态 |
 | `follower` | 集群中的普通成员，包括`seed`和`non-seed`，可以参与投票 |
@@ -64,7 +64,7 @@
 
 ## 状态机
 
-__节点状态及其含义如下__
+**节点状态及其含义如下**
 
 | 状态 | 说明 |
 |:--|:--|
@@ -74,7 +74,7 @@ __节点状态及其含义如下__
 | `leaving` | 当`leader`在超过`ttlTimeout`后没有收到节点心跳后，会将该节点标记为`leaving` |
 | `removed` | `leader`会将该节点标记为`leaving`后会进行一些清理工作，清理完毕后，将节点标记为`removed` |
 
-__状态机__
+**状态机**
 
 | 当前状态 | 条件 | 下一个状态 |
 |:--|:--|:--|
@@ -87,7 +87,7 @@ __状态机__
 
 ## 集群规范
 
-__集群启动__
+**集群启动**
 
 * `seed`启动：
 	1. 遍历所有其他`seed`，尝试加入集群
@@ -98,41 +98,41 @@ __集群启动__
 	1. 若加入成功，结束
 	1. 若加入失败，休息`retryInterval`之后，重复该流程直至结束
 
-__leader宕机后恢复__
+**leader宕机后恢复**
 
 1. 当存活节点数量至少为`M`时，可以选举出新的`leader`，集群恢复到正常状态
 1. 当存活节点数少于`M`后，集群变得不可用，节点本身仍然会尝试发起选举流程，但必然以失败告终
-	* __`seed`：当超过`3 * ttlTimeout`后仍然没有`leader`被选举出来，那么清理集群，递增版本号，直接将自身作为`leader`__
-	* __`non-seed`：当超过`3 * ttlTimeout`后仍然没有`leader`被选举出来，那么清理集群，重置版本号为1，重新尝试加入集群__
+	* **`seed`：当超过`3 * ttlTimeout`后仍然没有`leader`被选举出来，那么清理集群，递增版本号，直接将自身作为`leader`**
+	* **`non-seed`：当超过`3 * ttlTimeout`后仍然没有`leader`被选举出来，那么清理集群，重置版本号为1，重新尝试加入集群**
 
-__KeepAlive__
+**KeepAlive**
 
-1. __`follower`需要与`leader`保持心跳__
+1. **`follower`需要与`leader`保持心跳**
 	* `follower`发起`LeaderKeepAlive`
 	* `leader`回复`LeaderKeepAliveAck`
 	* `leader`超过`heartbeatTime`没收到`follower`的`LeaderKeepAlive`事件后，将`folllower`的状态标记为`unreachable`，并通知其他`follower`
 	* `leader`超过`ttlTimeout`没收到follower的`LeaderKeepAlive`事件后，将`folllower`的状态标记为`leaving`、`removed`，随后将该`follower`移除集群，并通知其他`follower`
 	* `follower`超过`ttlTimeout`没有收到`leader`的`LeaderKeepAliveAck`事件后，重置本地`leader`，发起`leader`选举流程，推举自己为`leader`
-1. __`leader`需要与所有`seed`保持心跳，避免产生孤岛__
+1. **`leader`需要与所有`seed`保持心跳，避免产生孤岛**
 	* `leader`发起`SeedKeepAlive`
 	* `seed`回复`SeedKeepAliveAck`
 	* 若`seed`发现对方观测的`leader`与本地观测的`leader`不是同一个，则依据一定的原则，发送`LeaderRelieve`强制让一个`leader`退位
 	* `leader`收到该消息后，通知其他`follower`重新尝试加入集群（需要清空集群，并重置版本为1），自己也重新尝试加入集群（需要清空集群，并重置版本为1）
-	* __`leader`冲突时比较策略：若版本不同，取版本号较大的那个，若版本相同，取`Address`较大的那个（先比较host字符串，再比较port）__
+	* **`leader`冲突时比较策略：若版本不同，取版本号较大的那个，若版本相同，取`Address`较大的那个（先比较host字符串，再比较port）**
 
 
-__follower probe__
+**follower probe**
 
 1. 与`leader`保持心跳，间隔时间为`heartbeatInterval`，检查`leader`的状态
 
-__leader probe__
+**leader probe**
 
 1. 与`follower`保持心跳，并进行异常处理，处理流程不再赘述
 1. 与所有`seed`保持心跳，避免产生孤岛
-	* __如果所有节点的种子配置相同，则可以完全避免__
-	* __如果所有节点的种子配置不同，则有一定概率产生孤岛__
+	* **如果所有节点的种子配置相同，则可以完全避免**
+	* **如果所有节点的种子配置不同，则有一定概率产生孤岛**
 
-__paxos__
+**paxos**
 
 1. 在一次选举中，每个提案的`id`必须不同
 1. 在一次选举结束后，要避免收到上一次的提案，造成`candidate`污染
@@ -142,6 +142,8 @@ __paxos__
 # 流程
 
 ## 普通节点加入流程(NORMAL_JOINING_PROCESS)
+
+**流程图源码**
 
 ```plantuml
 skinparam backgroundColor #EEEBDC
@@ -191,7 +193,13 @@ note right member: repeat this process from start\n(ask other seed)
 end
 ```
 
+**流程图**
+
+![NORMAL_JOINING_PROCESS](images/NORMAL_JOINING_PROCESS.png)
+
 ## 种子节点加入流程(SEED_JOINING_PROCESS)
+
+**流程图源码**
 
 ```plantuml
 skinparam backgroundColor #EEEBDC
@@ -231,9 +239,15 @@ note right seed1: let itself as leader
 end
 ```
 
+**流程图**
+
+![SEED_JOINING_PROCESS](images/SEED_JOINING_PROCESS.png)
+
 ## leader冲突检测处理流程(LEADER_CONFLICT_PROCESS)
 
 `leader1`发送`SeedKeepAlive`事件给`seed`，`seed`本地观测的`leader`为`leader2`
+
+**流程图源码**
 
 ```plantuml
 skinparam backgroundColor #EEEBDC
@@ -274,9 +288,15 @@ note right seed: do nothing
 end
 ```
 
+**流程图**
+
+![LEADER_CONFLICT_PROCESS](images/LEADER_CONFLICT_PROCESS.png)
+
 ## leader选举
 
-__在开始选举之前，需要先询问一下其他节点，在对方的视角下`leader`是否正常，如果得到至少`M`个回复表示`leader`不正常时，才开始选举流程，这是为了避免某个节点由于断线恢复造成的不必要的`leader`选举__
+**在开始选举之前，需要先询问一下其他节点，在对方的视角下`leader`是否正常，如果得到至少`M`个回复表示`leader`不正常时，才开始选举流程，这是为了避免某个节点由于断线恢复造成的不必要的`leader`选举**
+
+**流程图源码**
 
 ```plantuml
 skinparam backgroundColor #EEEBDC
@@ -329,9 +349,13 @@ end
 end
 ```
 
+**流程图**
+
+![LEADER_ELECT](images/LEADER_ELECT.png)
+
 ## 节点握手冲突
 
-__核心原则__
+**核心原则**
 
 1. 主动发起连接的一方会发送`active-greet`
 1. 被动连接的一方收到`active-greet`之后会回复`passive-greet`
@@ -389,6 +413,10 @@ alt active-greet from member1 to member2 arrive first
 note right timeline: this case is opposite with the upper case
 end
 ```
+
+**流程图**
+
+![HANDSHAKE_CONFLICT](images/HANDSHAKE_CONFLICT.png)
 
 # 异常case
 

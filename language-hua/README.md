@@ -134,7 +134,7 @@
 
 # 编译原理
 
-__[编译原理请移步博客](https://liuyehcf.github.io/categories/%E7%BC%96%E8%AF%91/)__
+**[编译原理请移步博客](https://liuyehcf.github.io/categories/%E7%BC%96%E8%AF%91/)**
 
 # 编译引擎介绍
 
@@ -196,7 +196,7 @@ HuaCompiler继承了LALR分析器，其文法定义参照[Java BNF定义](http:/
     * 涉及一个特殊的数据结构即可，参考`FutureSyntaxNodeStack`
 1. 布尔表达式的翻译
     * 正向/反向的转移指令。在识别布尔表达式的时候，填入正向的转移指令类型。在插入转移指令时，设置正向或者反向
-        * __所谓正向就是不成立时需要跳转，反向就是成立时需要跳转__
+        * **所谓正向就是不成立时需要跳转，反向就是成立时需要跳转**
         * 例如`if(<bool expression>)`、`while(<bool expression>)`、`for(;<bool expression>;)`就是正向
         * `do {} while(<bool expression>)`就是反向
     * 布尔表达式回填，生成转移指令时，并不知道跳转的代码段起始位置在哪里，需要进行到特定的位置进行回填
