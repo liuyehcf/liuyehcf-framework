@@ -43,6 +43,39 @@
 
 # 1 Overview
 
+## 前言
+
+`flow-engine`旨在为功能节点提供编排能力。下面以智能家居为背景，简单介绍flow-engine的用途：小王家中有一个智能温度计以及一个智能空调，分别接入了物联网平台，温度计每隔1分钟会上报一次温度，现要实现如下功能，当温度高于30摄氏度时，打开冷空调；当温度低于10摄氏度时，打开热空调；其余温度，关闭空调。我们可能会需要写如下逻辑
+
+```
+if (temperature > 30) {
+    control(airCondition, open, coldMode)
+} else if (temperature < 10) {
+    control(airCondition, open, heatMode)
+} else {
+    control(airCondition, close)
+}
+```
+
+后来小王家又新增了智能地暖，希望在温度低于10摄氏度时，打开地暖而非空调。**这时候我们又得修改代码并重新发布，十分麻烦**
+
+```
+if (temperature > 30) {
+    control(airCondition, open, coldMode)
+} else if (temperature < 10) {
+    control(floorHeating, open)
+} else {
+    control(airCondition, close)
+    control(floorHeating, close)
+}
+```
+
+借助`flow-engine`，我们可以把温度判断以及设备控制，作为两个独立的功能节点，然后利用`flow-engine`的描述语言进行功能节点的编排，通过`flow-engine`的接口就能实现实时部署
+
+**下面将介绍`flow-engine`的基本概念以及使用方法**
+
+## 功能清单
+
 1. **丰富的原子能力**
     * Action
     * Condition
