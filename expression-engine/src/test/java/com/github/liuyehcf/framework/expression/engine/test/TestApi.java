@@ -10,10 +10,7 @@ import com.github.liuyehcf.framework.expression.engine.core.function.operator.ad
 import com.github.liuyehcf.framework.expression.engine.core.function.operator.bitand.BitAndOperatorFunctionForLong;
 import com.github.liuyehcf.framework.expression.engine.core.function.operator.bitor.BitOrOperatorFunctionForLong;
 import com.github.liuyehcf.framework.expression.engine.core.function.operator.bitxor.BitXorOperatorFunctionForLong;
-import com.github.liuyehcf.framework.expression.engine.core.function.operator.cmp.CmpOperatorFunctionForComparableObject;
-import com.github.liuyehcf.framework.expression.engine.core.function.operator.cmp.CmpOperatorFunctionForDouble;
-import com.github.liuyehcf.framework.expression.engine.core.function.operator.cmp.CmpOperatorFunctionForLong;
-import com.github.liuyehcf.framework.expression.engine.core.function.operator.cmp.CmpOperatorFunctionForString;
+import com.github.liuyehcf.framework.expression.engine.core.function.operator.cmp.*;
 import com.github.liuyehcf.framework.expression.engine.core.function.operator.div.DivOperatorFunctionForDouble;
 import com.github.liuyehcf.framework.expression.engine.core.function.operator.div.DivOperatorFunctionForLong;
 import com.github.liuyehcf.framework.expression.engine.core.function.operator.mul.MulOperatorFunctionForDouble;
@@ -108,8 +105,9 @@ public class TestApi {
 
         // load cmp operator functions
         ExpressionEngine.addOperatorFunction(new CmpOperatorFunctionForComparableObject());
-        ExpressionEngine.addOperatorFunction(new CmpOperatorFunctionForLong());
         ExpressionEngine.addOperatorFunction(new CmpOperatorFunctionForDouble());
+        ExpressionEngine.addOperatorFunction(new CmpOperatorFunctionForLong());
+        ExpressionEngine.addOperatorFunction(new CmpOperatorFunctionForNull());
         ExpressionEngine.addOperatorFunction(new CmpOperatorFunctionForString());
 
         // load div operator functions

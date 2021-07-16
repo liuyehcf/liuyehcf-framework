@@ -37,6 +37,36 @@ public class TestCmp extends TestBase {
     }
 
     @Test
+    public void caseLessNull() {
+        boolean result = ExpressionEngine.execute("true< null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null < false");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("1L< null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null < -1");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("1.0f< null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null < -1.3e-2");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("'hello'< null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null < 'hello'");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null < null");
+        assertFalse(result);
+    }
+
+    @Test
     public void caseLessWrong() {
         expectedException(
                 () -> ExpressionEngine.execute("true < 1L"),
@@ -87,46 +117,6 @@ public class TestCmp extends TestBase {
                 () -> ExpressionEngine.execute("'hello'< .0"),
                 ExpressionException.class,
                 "could not find compatible operator(cmp) function. type1='java.lang.String', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("true< null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Boolean', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null < false"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Boolean'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1L< null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Long', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null < -1"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Long'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1.0f< null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Double', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null < -1.3e-2"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("'hello'< null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.String', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null < 'hello'"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.String'");
     }
 
     @Test
@@ -141,6 +131,36 @@ public class TestCmp extends TestBase {
         assertTrue(result);
 
         result = ExpressionEngine.execute("1.0f <= 1.0f");
+        assertTrue(result);
+    }
+
+    @Test
+    public void caseLessEqualNull() {
+        boolean result = ExpressionEngine.execute("true<= null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null <= false");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("1L<= null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null <= -1");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("1.0f<= null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null <= -1.3e-2");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("'hello'<= null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null <= 'hello'");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null <= null");
         assertTrue(result);
     }
 
@@ -195,46 +215,6 @@ public class TestCmp extends TestBase {
                 () -> ExpressionEngine.execute("'hello'<= .0"),
                 ExpressionException.class,
                 "could not find compatible operator(cmp) function. type1='java.lang.String', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("true<= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Boolean', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null <= false"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Boolean'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1L<= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Long', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null <= -1"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Long'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1.0f<= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Double', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null <= -1.3e-2"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("'hello'<= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.String', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null <= 'hello'"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.String'");
     }
 
     @Test
@@ -250,6 +230,36 @@ public class TestCmp extends TestBase {
 
         result = ExpressionEngine.execute("5.55f > 1.0f");
         assertTrue(result);
+    }
+
+    @Test
+    public void caseLargeNull() {
+        boolean result = ExpressionEngine.execute("true> null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null > false");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("1L> null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null > -1");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("1.0f> null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null > -1.3e-2");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("'hello'> null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null > 'hello'");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null > null");
+        assertFalse(result);
     }
 
     @Test
@@ -303,46 +313,6 @@ public class TestCmp extends TestBase {
                 () -> ExpressionEngine.execute("'hello'> .0"),
                 ExpressionException.class,
                 "could not find compatible operator(cmp) function. type1='java.lang.String', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("true> null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Boolean', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null > false"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Boolean'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1L> null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Long', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null > -1"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Long'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1.0f> null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Double', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null > -1.3e-2"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("'hello'> null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.String', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null > 'hello'"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.String'");
     }
 
     @Test
@@ -357,6 +327,36 @@ public class TestCmp extends TestBase {
         assertTrue(result);
 
         result = ExpressionEngine.execute("1.0f >= 1.0f");
+        assertTrue(result);
+    }
+
+    @Test
+    public void caseLargeEqualNull() {
+        boolean result = ExpressionEngine.execute("true>= null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null >= false");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("1L>= null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null >= -1");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("1.0f>= null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null >= -1.3e-2");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("'hello'>= null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null >= 'hello'");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null >= null");
         assertTrue(result);
     }
 
@@ -411,46 +411,6 @@ public class TestCmp extends TestBase {
                 () -> ExpressionEngine.execute("'hello'>= .0"),
                 ExpressionException.class,
                 "could not find compatible operator(cmp) function. type1='java.lang.String', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("true>= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Boolean', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null >= false"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Boolean'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1L>= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Long', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null >= -1"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Long'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1.0f>= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Double', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null >= -1.3e-2"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("'hello'>= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.String', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null >= 'hello'"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.String'");
     }
 
     @Test
@@ -465,6 +425,36 @@ public class TestCmp extends TestBase {
         assertTrue(result);
 
         result = ExpressionEngine.execute("1.0f == 1.0f");
+        assertTrue(result);
+    }
+
+    @Test
+    public void caseEqualNull() {
+        boolean result = ExpressionEngine.execute("true== null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null == false");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("1L== null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null == -1");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("1.0f== null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null == -1.3e-2");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("'hello'== null");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null == 'hello'");
+        assertFalse(result);
+
+        result = ExpressionEngine.execute("null == null");
         assertTrue(result);
     }
 
@@ -519,46 +509,6 @@ public class TestCmp extends TestBase {
                 () -> ExpressionEngine.execute("'hello'== .0"),
                 ExpressionException.class,
                 "could not find compatible operator(cmp) function. type1='java.lang.String', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("true== null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Boolean', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null == false"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Boolean'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1L== null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Long', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null == -1"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Long'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1.0f== null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Double', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null == -1.3e-2"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("'hello'== null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.String', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null == 'hello'"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.String'");
     }
 
     @Test
@@ -573,6 +523,36 @@ public class TestCmp extends TestBase {
         assertFalse(result);
 
         result = ExpressionEngine.execute("1.0f != 1.0f");
+        assertFalse(result);
+    }
+
+    @Test
+    public void caseNotEqualNull() {
+        boolean result = ExpressionEngine.execute("true!= null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null != false");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("1L!= null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null != -1");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("1.0f!= null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null != -1.3e-2");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("'hello'!= null");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null != 'hello'");
+        assertTrue(result);
+
+        result = ExpressionEngine.execute("null != null");
         assertFalse(result);
     }
 
@@ -627,46 +607,6 @@ public class TestCmp extends TestBase {
                 () -> ExpressionEngine.execute("'hello'!= .0"),
                 ExpressionException.class,
                 "could not find compatible operator(cmp) function. type1='java.lang.String', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("true!= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Boolean', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null != false"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Boolean'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1L!= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Long', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null != -1"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Long'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("1.0f!= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.Double', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null != -1.3e-2"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.Double'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("'hello'!= null"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='java.lang.String', type2='null'");
-
-        expectedException(
-                () -> ExpressionEngine.execute("null != 'hello'"),
-                ExpressionException.class,
-                "could not find compatible operator(cmp) function. type1='null', type2='java.lang.String'");
     }
 
     @Test
