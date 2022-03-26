@@ -7,7 +7,6 @@ import com.github.liuyehcf.framework.rpc.ares.ResponseHandler;
 import com.github.liuyehcf.framework.rpc.ares.converters.params.ObjectParamsConverter;
 import com.github.liuyehcf.framework.rpc.ares.converters.reqbody.*;
 import com.github.liuyehcf.framework.rpc.ares.converters.resbody.*;
-import lombok.Data;
 import org.apache.http.NoHttpResponseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -20,14 +19,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import sun.net.ConnectionResetException;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 @ConfigurationProperties(prefix = "ares.http.config")
-@Data
 public class AresAutoConfiguration {
 
     private int maxTotal = 200;
@@ -39,6 +36,42 @@ public class AresAutoConfiguration {
     private boolean enableDefaultParamsConverters = true;
     private boolean enableDefaultRequestBodyConverters = true;
     private boolean enableDefaultResponseBodyConverters = true;
+
+    public void setMaxTotal(int maxTotal) {
+        this.maxTotal = maxTotal;
+    }
+
+    public void setDefaultMaxPerRoute(int defaultMaxPerRoute) {
+        this.defaultMaxPerRoute = defaultMaxPerRoute;
+    }
+
+    public void setRetryTimes(int retryTimes) {
+        this.retryTimes = retryTimes;
+    }
+
+    public void setSocketTimeout(int socketTimeout) {
+        this.socketTimeout = socketTimeout;
+    }
+
+    public void setConnectTimeout(int connectTimeout) {
+        this.connectTimeout = connectTimeout;
+    }
+
+    public void setConnectionRequestTimeout(int connectionRequestTimeout) {
+        this.connectionRequestTimeout = connectionRequestTimeout;
+    }
+
+    public void setEnableDefaultParamsConverters(boolean enableDefaultParamsConverters) {
+        this.enableDefaultParamsConverters = enableDefaultParamsConverters;
+    }
+
+    public void setEnableDefaultRequestBodyConverters(boolean enableDefaultRequestBodyConverters) {
+        this.enableDefaultRequestBodyConverters = enableDefaultRequestBodyConverters;
+    }
+
+    public void setEnableDefaultResponseBodyConverters(boolean enableDefaultResponseBodyConverters) {
+        this.enableDefaultResponseBodyConverters = enableDefaultResponseBodyConverters;
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -54,7 +87,7 @@ public class AresAutoConfiguration {
                         return false;
                     }
                     return exception instanceof NoHttpResponseException
-                            || exception instanceof ConnectionResetException;
+                            || exception instanceof sun.net.ConnectionResetException;
                 })
                 .build();
     }

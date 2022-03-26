@@ -4,7 +4,6 @@ import com.github.liuyehcf.framework.rpc.ares.ParamsConverter;
 import com.github.liuyehcf.framework.rpc.ares.RequestBodyConverter;
 import com.github.liuyehcf.framework.rpc.ares.ResponseBodyConverter;
 import com.github.liuyehcf.framework.rpc.ares.ResponseHandler;
-import lombok.Data;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.springframework.beans.factory.FactoryBean;
@@ -18,7 +17,6 @@ import java.util.List;
  * @author hechenfeng
  * @date 2019/11/8
  */
-@Data
 public class AresSpringConsumerBean implements FactoryBean<Object>, InitializingBean {
 
     @Resource
@@ -35,6 +33,14 @@ public class AresSpringConsumerBean implements FactoryBean<Object>, Initializing
     private String schema;
     private String host;
     private int port;
+
+    public void setHttpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
+
+    public void setRequestConfig(RequestConfig requestConfig) {
+        this.requestConfig = requestConfig;
+    }
 
     @Override
     public Object getObject() {

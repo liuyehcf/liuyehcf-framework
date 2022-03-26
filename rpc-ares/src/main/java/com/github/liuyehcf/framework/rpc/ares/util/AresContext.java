@@ -1,8 +1,6 @@
 package com.github.liuyehcf.framework.rpc.ares.util;
 
 import com.github.liuyehcf.framework.rpc.ares.constant.SchemaType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 /**
  * @author hechenfeng
@@ -41,8 +39,6 @@ public abstract class AresContext {
         T invoke();
     }
 
-    @Data
-    @AllArgsConstructor
     public static final class Endpoint {
         /**
          * http schema
@@ -58,5 +54,23 @@ public abstract class AresContext {
          * http port
          */
         private final Integer port;
+
+        public Endpoint(SchemaType schema, String host, Integer port) {
+            this.schema = schema;
+            this.host = host;
+            this.port = port;
+        }
+
+        public SchemaType getSchema() {
+            return schema;
+        }
+
+        public String getHost() {
+            return host;
+        }
+
+        public Integer getPort() {
+            return port;
+        }
     }
 }
