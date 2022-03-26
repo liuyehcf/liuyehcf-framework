@@ -36,13 +36,13 @@ public class LL1<T> extends AbstractCfgCompiler<T> implements LLCompiler<T>, Ser
                 .registerGrammarConverter(LreElfGrammarConverter.class)
                 .build());
 
-        init();
+        LL1Init();
     }
 
     /**
      * 初始化方法
      */
-    private void init() {
+    private void LL1Init() {
         /*
          * 计算select集
          */

@@ -84,7 +84,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         this.analysisSymbols = new ArrayList<>();
         this.closureCnt = 0;
 
-        init();
+        LRInit();
     }
 
     static Item successor(Item preItem) {
@@ -325,7 +325,7 @@ public abstract class AbstractLRCompiler<T> extends AbstractCfgCompiler<T> imple
         return sb.toString();
     }
 
-    private void init() {
+    private void LRInit() {
         /*
          * 初始化项目集闭包
          */
