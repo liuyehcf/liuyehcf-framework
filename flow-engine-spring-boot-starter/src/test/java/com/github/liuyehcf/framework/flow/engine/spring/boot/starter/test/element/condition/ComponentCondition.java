@@ -3,7 +3,6 @@ package com.github.liuyehcf.framework.flow.engine.spring.boot.starter.test.eleme
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.ConditionDelegate;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.context.ConditionContext;
 import com.github.liuyehcf.framework.flow.engine.runtime.delegate.field.DelegateField;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,10 +10,13 @@ import org.springframework.stereotype.Component;
  * @date 2019/5/8
  */
 @Component
-@Setter
 public class ComponentCondition implements ConditionDelegate {
 
     private DelegateField output;
+
+    public void setOutput(DelegateField output) {
+        this.output = output;
+    }
 
     @Override
     public boolean onCondition(ConditionContext context) {

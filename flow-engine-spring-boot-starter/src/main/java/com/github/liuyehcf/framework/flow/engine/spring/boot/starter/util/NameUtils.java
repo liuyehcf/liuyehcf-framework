@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
  */
 public abstract class NameUtils {
 
-    private static final Pattern DOT_IDENTIFIER = Pattern.compile("[a-zA-Z_]([a-zA-Z_]|[0-9])*(\\.[a-zA-Z_]([a-zA-Z_]|[0-9])*)+");
-    private static final Pattern SLASH_IDENTIFIER = Pattern.compile("[a-zA-Z_]([a-zA-Z_]|[0-9])*(/[a-zA-Z_]([a-zA-Z_]|[0-9])*)+");
-    private static final Pattern IDENTIFIER = Pattern.compile("[a-zA-Z_]([a-zA-Z_]|[0-9])*");
+    private static final Pattern DOT_IDENTIFIER = Pattern.compile("[a-zA-Z_]([a-zA-Z_]|[0-9])*(\\.[a-zA-Z_][0-9a-zA-Z_]*)+");
+    private static final Pattern SLASH_IDENTIFIER = Pattern.compile("[a-zA-Z_]([a-zA-Z_]|[0-9])*(/[a-zA-Z_][0-9a-zA-Z_]*)+");
+    private static final Pattern IDENTIFIER = Pattern.compile("[a-zA-Z_][0-9a-zA-Z_]*");
 
     public static boolean isValidExecutableName(String name) {
         if (name == null) {
