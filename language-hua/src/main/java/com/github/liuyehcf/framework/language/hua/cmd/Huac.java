@@ -100,8 +100,7 @@ public class Huac extends BaseCmd {
 
     private String loadContent() {
         StringBuilder sb = new StringBuilder();
-        try {
-            BufferedReader fileReader = new BufferedReader(new FileReader(filePath));
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = fileReader.readLine()) != null) {
                 sb.append(line)

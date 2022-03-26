@@ -227,6 +227,11 @@ public class Type implements Serializable {
                 Objects.equals(typeName, type.typeName);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(typeName, typeWidth, dim);
+    }
+
     public String toTypeDescription() {
         StringBuilder sb = new StringBuilder();
         sb.append(typeName);
