@@ -33,9 +33,9 @@ public class TestConverter {
 
         AtomicReference<FullHttpResponse> inboundDataHolder = new AtomicReference<>();
         httpConverter.writeInbound(ConvertUtils.convertResponse2ByteBuf(
-                new DefaultFullHttpResponse(
-                        HttpVersion.HTTP_1_1,
-                        HttpResponseStatus.OK), true),
+                        new DefaultFullHttpResponse(
+                                HttpVersion.HTTP_1_1,
+                                HttpResponseStatus.OK), true),
                 (inboundData) -> inboundDataHolder.set(inboundData.retain()),
                 (outboundData) -> {
                     throw new UnsupportedOperationException();

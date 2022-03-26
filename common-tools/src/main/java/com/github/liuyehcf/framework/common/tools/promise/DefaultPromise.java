@@ -22,12 +22,12 @@ public class DefaultPromise<T> implements Promise<T> {
     private final List<PromiseListenerWrapper<T>> listeners = Lists.newCopyOnWriteArrayList();
     private final ReentrantLock waitLock = new ReentrantLock();
     private final Condition completeCondition = waitLock.newCondition();
-    private volatile T outcome;
     private volatile boolean isCanceled = false;
     private volatile boolean isDone = false;
     private volatile boolean isSuccess = false;
     private volatile boolean isFailure = false;
-    private volatile Throwable cause;
+    private T outcome;
+    private Throwable cause;
 
     @Override
     public final boolean isCancelled() {
@@ -203,7 +203,10 @@ public class DefaultPromise<T> implements Promise<T> {
             long nanoTimeout = TimeUnit.NANOSECONDS.convert(timeout, unit);
             long start = System.nanoTime();
 
-            completeCondition.await(timeout, unit);
+            boolean await = completeCondition.await(timeout, unit);
+            if (!await) {
+                report(true);
+            }
 
             long end = System.nanoTime();
 
@@ -230,6 +233,7 @@ public class DefaultPromise<T> implements Promise<T> {
             waitLock.lock();
             return callable.call();
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new PromiseException("interrupt", e);
         } catch (Throwable e) {
             throw reportUnknownError(e);

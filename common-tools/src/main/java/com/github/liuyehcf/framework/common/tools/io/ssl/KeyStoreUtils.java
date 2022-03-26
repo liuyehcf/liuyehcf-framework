@@ -33,7 +33,7 @@ public class KeyStoreUtils {
     public static final String DEFAULT_HASH_ALGORITHM = "SHA1WithRSA";
     public static final int DEFAULT_KEY_LENGTH = 2048;
     public static final String DEFAULT_SUBJECT_NAME = "CN=ROOT";
-    public static final long DEFAULT_VALIDATION = 365 * 24 * 3600;
+    public static final long DEFAULT_VALIDATION = 365 * 24 * 3600L;
     public static final String DEFAULT_KEY_ALIAS = "ROOT";
     public static final String DEFAULT_KEY_PASSWORD = "123456";
 
@@ -322,13 +322,12 @@ public class KeyStoreUtils {
         Assert.assertNotNull(hashAlgorithm, "hashAlgorithm");
         Assert.assertNotNull(validation, "validation");
 
-        try {
+        try (ASN1InputStream stream = new ASN1InputStream(publicKey.getEncoded())) {
             X500Name issuer = new X500Name(rootSubjectName);
             X500Name subject = new X500Name(subjectName);
 
             SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo.getInstance(
-                    new ASN1InputStream(publicKey.getEncoded()
-                    ).readObject());
+                    stream.readObject());
             X509v3CertificateBuilder certificateBuilder = new X509v3CertificateBuilder(
                     issuer,
                     BigInteger.valueOf(System.currentTimeMillis()),
