@@ -6,7 +6,7 @@
 
     <groupId>com.github.liuyehcf</groupId>
     <artifactId>rpc-ares</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>rpc-ares</name>
     <description>rpc ares</description>
