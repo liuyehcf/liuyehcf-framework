@@ -66,16 +66,16 @@ class DefaultUnsafeEnvoy implements UnsafeEnvoy {
     private final ProposalStatistics proposalStatistics;
     private final Map<Address, Long> latestLeaderKeepAliveTimestamps = Maps.newConcurrentMap();
 
-    private volatile ExecutorService systemEventLoop;
-    private volatile ExecutorService customEventLoop;
-    private volatile BlockingQueue<EventContext<?>> systemEventQueue;
-    private volatile BlockingQueue<EventContext<?>> customEventQueue;
-    private volatile EventLoopGroup serverBossGroup;
-    private volatile EventLoopGroup serverWorkerGroup;
-    private volatile EventLoopGroup clientWorkGroup;
+    private ExecutorService systemEventLoop;
+    private ExecutorService customEventLoop;
+    private BlockingQueue<EventContext<?>> systemEventQueue;
+    private BlockingQueue<EventContext<?>> customEventQueue;
+    private EventLoopGroup serverBossGroup;
+    private EventLoopGroup serverWorkerGroup;
+    private EventLoopGroup clientWorkGroup;
 
-    private volatile ChannelFuture channelFuture;
-    private volatile Receiver receiver;
+    private ChannelFuture channelFuture;
+    private Receiver receiver;
     private volatile boolean isRunning = false;
     private volatile long latestLeaderKeepAliveAckTimestamp;
 
@@ -411,6 +411,7 @@ class DefaultUnsafeEnvoy implements UnsafeEnvoy {
         try {
             channelFuture = bootstrap.bind(config.getPort()).sync();
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new AthenaException(e);
         }
     }
@@ -568,6 +569,9 @@ class DefaultUnsafeEnvoy implements UnsafeEnvoy {
             }
             throw new IOException("connect timeout");
         } catch (Throwable e) {
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
             LOGGER.debug("failed to create channel, errorMsg={}", e.getMessage());
             return null;
         }
@@ -581,6 +585,7 @@ class DefaultUnsafeEnvoy implements UnsafeEnvoy {
                 customEventQueue.put(context);
             }
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new AthenaException(e);
         }
     }
@@ -589,6 +594,7 @@ class DefaultUnsafeEnvoy implements UnsafeEnvoy {
         try {
             return systemEventQueue.take();
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new AthenaException(e);
         }
     }
@@ -597,6 +603,7 @@ class DefaultUnsafeEnvoy implements UnsafeEnvoy {
         try {
             return customEventQueue.take();
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new AthenaException(e);
         }
     }
@@ -628,6 +635,9 @@ class DefaultUnsafeEnvoy implements UnsafeEnvoy {
             try {
                 channel.close().sync();
             } catch (Throwable e) {
+                if (e instanceof InterruptedException) {
+                    Thread.currentThread().interrupt();
+                }
                 LOGGER.error("close channel catch exception, errorMsg={}", e.getMessage(), e);
             }
         }
