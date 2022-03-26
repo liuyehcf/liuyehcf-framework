@@ -11,7 +11,6 @@ import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import sun.security.tools.keytool.CertAndKeyGen;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -104,7 +103,7 @@ public class KeyStoreUtils {
             KeyStore keyStore = createKeyStore(keyStoreType);
 
             // create private key and self signed cert
-            CertAndKeyGen gen = new CertAndKeyGen(
+            sun.security.tools.keytool.CertAndKeyGen gen = new sun.security.tools.keytool.CertAndKeyGen(
                     encryptAlgorithm,
                     hashAlgorithm
             );
