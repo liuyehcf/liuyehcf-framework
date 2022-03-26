@@ -55,8 +55,8 @@ public class DefaultOperationContext implements OperationContext {
     private final Map<String, Set<String>> joinGatewayReachedLinkIds;
     private final Set<String> aggregatedJoinGatewayIds;
     private final AtomicLong executionIdGenerator;
-    private volatile Node node;
-    private volatile ExecutionLinkPausePromise executionLinkPausePromise;
+    private Node node;
+    private ExecutionLinkPausePromise executionLinkPausePromise;
 
     public DefaultOperationContext(FlowEngine engine,
                                    Flow flow,

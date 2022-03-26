@@ -13,7 +13,7 @@ public abstract class AbstractRegexpDelegateInterceptor implements DelegateInter
 
     private static final Map<String, Pattern> REGEX_PATTERNS = Maps.newConcurrentMap();
 
-    private volatile Pattern pattern;
+    private Pattern pattern;
 
     @Override
     public final boolean matches(String executableName) {

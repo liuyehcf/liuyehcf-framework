@@ -120,6 +120,9 @@ public class ReflectiveDelegateInvocation implements UnsafeDelegateInvocation {
                                 cause = e;
                             }
                         } catch (Throwable e) {
+                            if (e instanceof InterruptedException) {
+                                Thread.currentThread().interrupt();
+                            }
                             cause = e;
                         } finally {
                             if (cause != null) {

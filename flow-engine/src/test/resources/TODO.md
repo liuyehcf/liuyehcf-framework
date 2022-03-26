@@ -8,6 +8,7 @@
 # TODO
 
 failure的异常处理原则：
+
 1. 异常可以升级，但是不能降级
     * 当failure-Listener抛出LinkExecutionTerminateException时，以Listener依附的节点抛出的异常为主
     * 当failure-Listener抛出其他异常时，以Listener抛出的异常为主

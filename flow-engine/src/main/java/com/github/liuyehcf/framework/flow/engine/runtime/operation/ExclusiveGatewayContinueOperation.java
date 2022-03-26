@@ -21,7 +21,7 @@ class ExclusiveGatewayContinueOperation extends AbstractOperation<Void> implemen
 
     private final ExclusiveGateway exclusiveGateway;
     private final int indexOfSuccessor;
-    private volatile Promise<Boolean> promise;
+    private Promise<Boolean> promise;
     private volatile boolean isInListenerLoop = false;
 
     ExclusiveGatewayContinueOperation(OperationContext context, ExclusiveGateway exclusiveGateway, int indexOfSuccessor) {

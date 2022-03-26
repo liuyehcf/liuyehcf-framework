@@ -38,7 +38,7 @@ public abstract class AbstractExecutableContext<E extends Element> implements Ex
     private final Map<String, Attribute> localAttributes = Maps.newConcurrentMap();
     private final Map<String, Attribute> globalAttributes;
     private final List<PropertyUpdate> propertyUpdates = Lists.newCopyOnWriteArrayList();
-    private volatile ExecutionLinkPausePromise executionLinkPausePromise;
+    private ExecutionLinkPausePromise executionLinkPausePromise;
 
     AbstractExecutableContext(Element element, Promise<ExecutionInstance> promise, String instanceId, String linkId, long executionId,
                               Map<String, Object> env, Map<String, Attribute> globalAttributes) {

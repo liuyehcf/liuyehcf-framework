@@ -18,7 +18,7 @@ import com.github.liuyehcf.framework.flow.engine.runtime.operation.context.Opera
 class ConditionOperation extends AbstractOperation<Boolean> {
 
     private final Condition condition;
-    private volatile DelegateResult delegateResult;
+    private DelegateResult delegateResult;
     private volatile boolean conditionOutput;
 
     ConditionOperation(OperationContext context, Condition condition) {
