@@ -120,7 +120,6 @@
 	* `leader`收到该消息后，通知其他`follower`重新尝试加入集群（需要清空集群，并重置版本为1），自己也重新尝试加入集群（需要清空集群，并重置版本为1）
 	* **`leader`冲突时比较策略：若版本不同，取版本号较大的那个，若版本相同，取`Address`较大的那个（先比较host字符串，再比较port）**
 
-
 **follower probe**
 
 1. 与`leader`保持心跳，间隔时间为`heartbeatInterval`，检查`leader`的状态
