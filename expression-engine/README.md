@@ -561,4 +561,3 @@ Relational operators can be applied to Number types and String types.
 | `string.replaceAll(s, regex, replacement)` | Same as the `replaceAll` method in Java's String class. |
 | `string.replaceFirst(s, regex, replacement)` | Same as the `replaceFirst` method in Java's String class. |
 | `string.split(regex)` | Same as the `split` method in Java's String class. |
-
