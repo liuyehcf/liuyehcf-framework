@@ -131,7 +131,6 @@
 
 1. 一个可执行的.hclass文件必须包含`main(char[][])`方法，这是整个程序执行的入口
 
-
 # 编译原理
 
 **[编译原理请移步博客](https://liuyehcf.github.io/categories/%E7%BC%96%E8%AF%91/)**
@@ -168,6 +167,7 @@
 # hua语言
 
 HuaCompiler继承了LALR分析器，其文法定义参照[Java BNF定义](http://www.daimi.au.dk/dRegAut/JavaBNF.html)
+
 1. hua属于面向过程的语言，不支持类的定义
 1. 基本语法与java十分相似
 1. 由于面向过程，因此增加一个运算符`sizeof`用于计算数组大小
