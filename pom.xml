@@ -15,7 +15,7 @@
         <module>expression-engine</module>
         <module>flow-engine</module>
         <module>flow-engine-spring-boot-starter</module>
-        <module>rpc-maple</module>
+        <!-- <module>rpc-maple</module> -->
         <module>rpc-ares</module>
         <module>io-athena</module>
         <module>common-tools</module>
